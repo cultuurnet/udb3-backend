@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\Security\Permission\GodUserVoter;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Provides general security services usable by other services.
@@ -29,16 +28,16 @@ final class GeneralSecurityServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'god_user_voter',
-            fn() => new GodUserVoter($container->get('config')['user_permissions']['allow_all'])
+            fn () => new GodUserVoter($container->get('config')['user_permissions']['allow_all'])
         );
 
         $container->addShared(
             'user_constraints_read_repository',
-            fn() => new UserConstraintsReadRepository(
+            fn () => new UserConstraintsReadRepository(
                 $container->get('dbal_connection'),
-                new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
-                new StringLiteral(UserPermissionsServiceProvider::ROLE_PERMISSIONS_TABLE),
-                new StringLiteral(ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME),
+                UserPermissionsServiceProvider::USER_ROLES_TABLE,
+                UserPermissionsServiceProvider::ROLE_PERMISSIONS_TABLE,
+                ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME,
             )
         );
     }
