@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\StringLiteral;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -60,11 +61,17 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
             throw ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is required.');
         }
 
+        try {
+            $language = new Language($language);
+        } catch (InvalidArgumentException $e) {
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is must be exactly 2 lowercase letters long (for example "nl").');
+        }
+
         $imageId = $this->imageUploader->upload(
             $uploadedFile,
             new StringLiteral($description),
             new CopyrightHolder($copyrightHolder),
-            new Language($language)
+            $language
         );
 
         return new JsonResponse(

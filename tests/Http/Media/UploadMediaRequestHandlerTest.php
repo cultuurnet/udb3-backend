@@ -125,6 +125,14 @@ final class UploadMediaRequestHandlerTest extends TestCase
                 ],
                 ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is required.'),
             ],
+            'invalid language' => [
+                [
+                    'description' => 'Lenna',
+                    'copyrightHolder' => ' Dwight Hooker',
+                    'language' => 'foo',
+                ],
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is must be exactly 2 lowercase letters long (for example "nl").'),
+            ],
         ];
     }
 
