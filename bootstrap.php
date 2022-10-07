@@ -15,6 +15,15 @@ use CultuurNet\UDB3\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Error\SentryServiceProvider;
+use CultuurNet\UDB3\Event\EventCommandHandlerProvider;
+use CultuurNet\UDB3\Event\EventEditingServiceProvider;
+use CultuurNet\UDB3\Event\EventGeoCoordinatesServiceProvider;
+use CultuurNet\UDB3\Event\EventHistoryServiceProvider;
+use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
+use CultuurNet\UDB3\Event\EventPermissionServiceProvider;
+use CultuurNet\UDB3\Event\EventReadServiceProvider;
+use CultuurNet\UDB3\Event\EventRequestHandlerServiceProvider;
+use CultuurNet\UDB3\Event\ProductionServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventBus\EventBusServiceProvider;
@@ -34,10 +43,6 @@ use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
-use CultuurNet\UDB3\Silex\Event\EventCommandHandlerProvider;
-use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
-use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Event\EventRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
@@ -248,7 +253,7 @@ $app['cdbxml_contact_info_importer'] = $app->share(
     }
 );
 
-$app->register(new EventJSONLDServiceProvider());
+$container->addServiceProvider(new EventJSONLDServiceProvider());
 
 $app['event_calendar_repository'] = $app->share(
     function ($app) {
@@ -349,6 +354,7 @@ $app['places_locator_event_stream_decorator'] = $app->share(
     }
 );
 
+// @todo: remove usages of 'place_repository' with Class based share
 $app['place_repository'] = $app->share(
     function (Application $app) {
         $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
@@ -361,6 +367,12 @@ $app['place_repository'] = $app->share(
         );
 
         return $repository;
+    }
+);
+$container->addShared(
+    \CultuurNet\UDB3\Place\PlaceRepository::class,
+    function () use ($container): \CultuurNet\UDB3\Place\PlaceRepository {
+        return $container->get('place_repository');
     }
 );
 
@@ -684,22 +696,22 @@ $container->addServiceProvider(
 $app->register(new MetadataServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Export\ExportServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Event\EventReadServiceProvider());
-$app->register(new EventCommandHandlerProvider());
-$app->register(new EventRequestHandlerServiceProvider());
+$container->addServiceProvider(new EventEditingServiceProvider());
+$container->addServiceProvider(new EventReadServiceProvider());
+$container->addServiceProvider(new EventCommandHandlerProvider());
+$container->addServiceProvider(new EventRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceReadServiceProvider());
 $app->register(new PlaceRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
+$container->addServiceProvider(new EventPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $container->addServiceProvider(new LabelServiceProvider());
 $app->register(new RoleRequestHandlerServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Event\ProductionServiceProvider());
+$container->addServiceProvider(new ProductionServiceProvider());
 $app->register(new UiTPASServiceLabelsServiceProvider());
 $app->register(new UiTPASServiceEventServiceProvider());
 $app->register(new UiTPASServiceOrganizerServiceProvider());
@@ -744,10 +756,10 @@ $app->register(
 );
 
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Event\EventGeoCoordinatesServiceProvider());
+$container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServiceProvider());
 
-$app->register(new EventHistoryServiceProvider());
+$container->addServiceProvider(new EventHistoryServiceProvider());
 $app->register(new PlaceHistoryServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Media\MediaImportServiceProvider());
