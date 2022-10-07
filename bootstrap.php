@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Clock\SystemClock;
 use CultuurNet\UDB3\Culturefeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\EventBus\EventBusServiceProvider;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -36,7 +37,6 @@ use CultuurNet\UDB3\Silex\Event\EventCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventRequestHandlerServiceProvider;
-use CultuurNet\UDB3\Silex\EventBus\EventBusServiceProvider;
 use CultuurNet\UDB3\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
@@ -135,7 +135,7 @@ $container->addServiceProvider(new SentryServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 
 $container->addServiceProvider(new CommandBusServiceProvider());
-$app->register(new EventBusServiceProvider());
+$container->addServiceProvider(new EventBusServiceProvider());
 
 /**
  * CultureFeed services.
