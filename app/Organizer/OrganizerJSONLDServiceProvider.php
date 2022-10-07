@@ -42,7 +42,7 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 return new OrganizerLDProjector(
                     $container->get('organizer_jsonld_repository'),
-                    $$container->get('organizer_iri_generator'),
+                    $container->get('organizer_iri_generator'),
                     new JsonDocumentLanguageEnricher(
                         new OrganizerJsonDocumentLanguageAnalyzer()
                     ),
