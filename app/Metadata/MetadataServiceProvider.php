@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Metadata;
 
-use Broadway\Domain\Metadata;
 use Broadway\EventDispatcher\CallableEventDispatcher;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
@@ -27,8 +26,6 @@ final class MetadataServiceProvider extends AbstractServiceProvider
     {
         $container = $this->getContainer();
 
-        $container->addShared('context', '');
-
         $container->addShared(
             'metadata_enricher',
             function () use ($container) {
@@ -36,11 +33,6 @@ final class MetadataServiceProvider extends AbstractServiceProvider
                     function () use ($container) {
                         // Create a default context from application globals.
                         $context = ContextFactory::createFromGlobals($container);
-
-                        // Allow some processes to overwrite the context, like resque workers.
-                        if ($container->get('context') instanceof Metadata) {
-                            $context = $container->get('context');
-                        }
 
                         return ContextFactory::prepareForLogging($context);
                     }
