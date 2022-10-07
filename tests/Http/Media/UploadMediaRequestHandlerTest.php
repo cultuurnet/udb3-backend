@@ -144,6 +144,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @bugfix https://jira.uitdatabank.be/browse/III-5005
      */
     public function it_throws_if_no_a_file_was_uploaded_with_the_wrong_form_data_name(): void
     {
