@@ -183,7 +183,7 @@ $app['event_iri_generator'] = $app->share(
     }
 );
 
-$app->register(new GeneralSecurityServiceProvider());
+$container->addServiceProvider(new GeneralSecurityServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Security\OfferSecurityServiceProvider());
 $app->register(new OrganizerSecurityServiceProvider());
 
