@@ -254,7 +254,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(InvalidFileSize::class);
         $this->expectExceptionMessage('The size of the uploaded image could not be determined.');
 
         $uploader->upload($image, $description, $copyrightHolder, $language);
