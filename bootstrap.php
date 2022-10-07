@@ -32,8 +32,6 @@ use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
-use CultuurNet\UDB3\Security\GeneralSecurityServiceProvider;
-use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
 use CultuurNet\UDB3\Silex\Event\EventCommandHandlerProvider;
@@ -41,7 +39,7 @@ use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
+use CultuurNet\UDB3\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
@@ -52,6 +50,8 @@ use CultuurNet\UDB3\Silex\Place\PlaceRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
+use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
+use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsServiceProvider;
@@ -183,9 +183,9 @@ $app['event_iri_generator'] = $app->share(
     }
 );
 
-$container->addServiceProvider(new GeneralSecurityServiceProvider());
-$container->addServiceProvider(new \CultuurNet\UDB3\Security\OfferSecurityServiceProvider());
-$container->addServiceProvider(new OrganizerSecurityServiceProvider());
+$app->register(new GeneralSecurityServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Security\OfferSecurityServiceProvider());
+$app->register(new OrganizerSecurityServiceProvider());
 
 $app['cache'] = $app->share(
     function (Application $app) {
@@ -531,16 +531,13 @@ $app['user_roles_repository'] = $app->share(
     }
 );
 
-/**
- * @todo move this to a class.
- */
-const ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME = 'roles_search_v3';
+$app['role_search_v3_repository.table_name'] = new StringLiteral('roles_search_v3');
 
 $app['role_search_v3_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository(
             $app['dbal_connection'],
-            new StringLiteral(ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME)
+            $app['role_search_v3_repository.table_name']
         );
     }
 );
@@ -686,7 +683,7 @@ $container->addServiceProvider(
 
 $app->register(new MetadataServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventReadServiceProvider());
 $app->register(new EventCommandHandlerProvider());
@@ -707,16 +704,11 @@ $app->register(new UiTPASServiceLabelsServiceProvider());
 $app->register(new UiTPASServiceEventServiceProvider());
 $app->register(new UiTPASServiceOrganizerServiceProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
-    [
-        'media.upload_directory' => $app['config']['media']['upload_directory'],
-        'media.media_directory' => $app['config']['media']['media_directory'],
-        'media.file_size_limit' => $app['config']['media']['file_size_limit'] ?? 1000000
-     ],
+$container->addServiceProvider(
+    new \CultuurNet\UDB3\Media\MediaServiceProvider()
 );
 
-$app->register(new ImageStorageProvider());
+$container->addServiceProvider(new ImageStorageProvider());
 
 $app['predis.client'] = $app->share(function ($app) {
     $redisURI = isset($app['config']['redis']['uri']) ?
@@ -758,7 +750,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServi
 $app->register(new EventHistoryServiceProvider());
 $app->register(new PlaceHistoryServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Media\MediaImportServiceProvider());
 
 $container->addServiceProvider(new CuratorsServiceProvider());
 

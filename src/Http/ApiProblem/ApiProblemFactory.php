@@ -21,6 +21,7 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\UiTPAS\Validation\ChangeNotAllowedByTicketSales;
 use Error;
+use Exception;
 use League\Route\Http\Exception\MethodNotAllowedException;
 use League\Route\Http\Exception\NotFoundException;
 use Psr\Http\Message\ServerRequestInterface;
@@ -119,9 +120,48 @@ final class ApiProblemFactory
             case $e instanceof EventCannotBeRemovedFromProduction:
                 return ApiProblem::blank($e->getMessage(), $e->getCode() ?: 400);
 
+            // Because almost any exception will be an instance of \Exception, we need to do a strict comparison of the
+            // class name here to convert generic \Exception exceptions specifically.
+            case get_class($e) === Exception::class:
+                return self::convertGenericExceptionToApiProblem($e, $request);
+
             default:
-                return ApiProblem::blank($e->getMessage(), $e->getCode() ?: 500);
+                return self::convertToDefaultApiProblem($e);
         }
+    }
+
+    /**
+     * Returns a default ApiProblem for Throwables that cannot be resolved to a specific type.
+     */
+    private static function convertToDefaultApiProblem(Throwable $e): ApiProblem
+    {
+        // Note: When we have improved the validation of most endpoints, we should make this return a plain
+        // "Internal Server Error" instead.
+        return ApiProblem::blank($e->getMessage(), $e->getCode() ?: 500);
+    }
+
+    /**
+     * Usually we will convert \Exception to the default ApiProblem. However in some cases we want to convert generic
+     * exceptions thrown by external libraries to a more specific ApiProblem based on e.g. their message.
+     */
+    private static function convertGenericExceptionToApiProblem(
+        Exception $e,
+        ?ServerRequestInterface $request = null
+    ): ApiProblem {
+        $message = $e->getMessage();
+
+        // While this looks like a generic timeout that could occur anywhere, the message is specifically crafted by the
+        // culturefeed-php library. We use this library to contact either UiTPAS or UiTID v1 (the latter only to
+        // validate the old API keys). We can make a safe guess by checking if the requested URL contains "uitpas" which
+        // one is down. If there is no HTTP request (ie when running in CLI) this should not occur in theory, so it's
+        // probably best to not convert it to a Bad Gateway problem but make it a generic error so it gets logged in
+        // Sentry.
+        if ($request && strpos($message, 'A curl error (28) occurred: Operation timed out after') !== false) {
+            $service = strpos($request->getUri()->getPath(), 'uitpas') !== false ? 'UiTPAS' : 'UiTID v1';
+            return ApiProblem::badGateway("Could not contact the {$service} servers. Please try again later.");
+        }
+
+        return self::convertToDefaultApiProblem($e);
     }
 
     private static function convertCultureFeedExceptionToApiProblem(
@@ -150,6 +190,17 @@ final class ApiProblemFactory
                 );
             }
             return ApiProblem::urlNotFound($message);
+        }
+
+        if (strpos($title, 'event already has ticketsales') !== false) {
+            $message = 'Event has ticket sales in UiTPAS, which makes it impossible to change its organizer, UiTPAS card systems, and UiTPAS distribution keys.';
+            if ($routeParameters && $routeParameters->hasEventId()) {
+                $message = sprintf(
+                    'Event with id \'%s\' has ticket sales in UiTPAS, which makes it impossible to change its organizer, UiTPAS card systems, and UiTPAS distribution keys.',
+                    $routeParameters->getEventId()
+                );
+            }
+            return ApiProblem::eventHasUitpasTicketSales($message);
         }
 
         // In some cases the UiTPAS servers return a 404 error with an HTML page. In this case we treat it as UiTPAS
