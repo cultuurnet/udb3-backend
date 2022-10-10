@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\UiTPASService;
+namespace CultuurNet\UDB3\UiTPASService;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
