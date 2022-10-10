@@ -700,7 +700,7 @@ $container->addServiceProvider(new EventEditingServiceProvider());
 $container->addServiceProvider(new EventReadServiceProvider());
 $container->addServiceProvider(new EventCommandHandlerProvider());
 $container->addServiceProvider(new EventRequestHandlerServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceReadServiceProvider());
 $app->register(new PlaceRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
