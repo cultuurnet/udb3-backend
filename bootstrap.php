@@ -33,30 +33,31 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
+use CultuurNet\UDB3\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
+use CultuurNet\UDB3\Organizer\OrganizerCommandHandlerProvider;
+use CultuurNet\UDB3\Organizer\OrganizerJSONLDServiceProvider;
+use CultuurNet\UDB3\Organizer\OrganizerRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
+use CultuurNet\UDB3\Security\GeneralSecurityServiceProvider;
+use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
+use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
-use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Media\ImageStorageProvider;
-use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerCommandHandlerProvider;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
-use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
-use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerServiceProvider;
@@ -188,9 +189,9 @@ $app['event_iri_generator'] = $app->share(
     }
 );
 
-$app->register(new GeneralSecurityServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Security\OfferSecurityServiceProvider());
-$app->register(new OrganizerSecurityServiceProvider());
+$container->addServiceProvider(new GeneralSecurityServiceProvider());
+$container->addServiceProvider(new OfferSecurityServiceProvider());
+$container->addServiceProvider(new OrganizerSecurityServiceProvider());
 
 $app['cache'] = $app->share(
     function (Application $app) {
@@ -422,9 +423,9 @@ $app['organizer_iri_generator'] = $app->share(
     }
 );
 
-$app->register(new OrganizerRequestHandlerServiceProvider());
-$app->register(new OrganizerJSONLDServiceProvider());
-$app->register(new OrganizerCommandHandlerProvider());
+$container->addServiceProvider(new OrganizerRequestHandlerServiceProvider());
+$container->addServiceProvider(new OrganizerJSONLDServiceProvider());
+$container->addServiceProvider(new OrganizerCommandHandlerProvider());
 
 $app['eventstore_payload_serializer'] = $app->share(
     function ($app) {
@@ -543,13 +544,16 @@ $app['user_roles_repository'] = $app->share(
     }
 );
 
-$app['role_search_v3_repository.table_name'] = new StringLiteral('roles_search_v3');
+/**
+ * @todo move this to a class.
+ */
+const ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME = 'roles_search_v3';
 
 $app['role_search_v3_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository(
             $app['dbal_connection'],
-            $app['role_search_v3_repository.table_name']
+            new StringLiteral(ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME)
         );
     }
 );
@@ -693,7 +697,7 @@ $container->addServiceProvider(
     new AMQPPublisherServiceProvider()
 );
 
-$app->register(new MetadataServiceProvider());
+$container->addServiceProvider(new MetadataServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Export\ExportServiceProvider());
 $container->addServiceProvider(new EventEditingServiceProvider());
@@ -706,9 +710,9 @@ $app->register(new PlaceRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $container->addServiceProvider(new EventPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
-$app->register(new LabelServiceProvider());
+$container->addServiceProvider(new LabelServiceProvider());
 $app->register(new RoleRequestHandlerServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
 $container->addServiceProvider(new ProductionServiceProvider());
@@ -757,7 +761,7 @@ $app->register(
 
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerGeoCoordinatesServiceProvider());
 
 $container->addServiceProvider(new EventHistoryServiceProvider());
 $app->register(new PlaceHistoryServiceProvider());

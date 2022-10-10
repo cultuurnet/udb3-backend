@@ -2,36 +2,37 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Metadata;
+namespace CultuurNet\UDB3\Metadata;
 
-use Broadway\Domain\Metadata;
 use Broadway\EventDispatcher\CallableEventDispatcher;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\EventSourcing\LazyCallbackMetadataEnricher;
 use CultuurNet\UDB3\CommandHandling\ContextFactory;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class MetadataServiceProvider implements ServiceProviderInterface
+final class MetadataServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app)
+    protected function getProvidedServiceNames(): array
     {
-        $app['context'] = null;
+        return [
+            'metadata_enricher',
+            'event_stream_metadata_enricher',
+            'command_bus_event_dispatcher',
+        ];
+    }
 
-        $app['metadata_enricher'] = $app::share(
-            function (HybridContainerApplication $app) {
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'metadata_enricher',
+            function () use ($container) {
                 return new LazyCallbackMetadataEnricher(
-                    function () use ($app) {
+                    function () use ($container) {
                         // Create a default context from application globals.
-                        $container = $app->getLeagueContainer();
                         $context = ContextFactory::createFromGlobals($container);
-
-                        // Allow some processes to overwrite the context, like resque workers.
-                        if ($app['context'] instanceof Metadata) {
-                            $context = $app['context'];
-                        }
 
                         return ContextFactory::prepareForLogging($context);
                     }
@@ -39,24 +40,27 @@ final class MetadataServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['event_stream_metadata_enricher'] = $app::share(
-            function ($app) {
+        $container->addShared(
+            'event_stream_metadata_enricher',
+            function () use ($container) {
                 $eventStreamDecorator = new MetadataEnrichingEventStreamDecorator();
                 $eventStreamDecorator->registerEnricher(
-                    $app['metadata_enricher']
+                    $container->get('metadata_enricher')
                 );
                 return $eventStreamDecorator;
             }
         );
 
-        $app['command_bus_event_dispatcher'] = $app::share(
-            function (Application $app) {
+        $container->addShared(
+            'command_bus_event_dispatcher',
+            function () use ($container) {
                 $dispatcher = new CallableEventDispatcher();
                 $dispatcher->addListener(
                     ResqueCommandBus::EVENT_COMMAND_CONTEXT_SET,
-                    function ($context) use ($app) {
+                    function ($context) use ($container) {
                         // Overwrite the context based on the context stored with the resque command being executed.
-                        $app['context'] = $app::share(
+                        $container->addShared(
+                            'context',
                             function () use ($context) {
                                 return $context;
                             }
@@ -67,9 +71,5 @@ final class MetadataServiceProvider implements ServiceProviderInterface
                 return $dispatcher;
             }
         );
-    }
-
-    public function boot(Application $app)
-    {
     }
 }
