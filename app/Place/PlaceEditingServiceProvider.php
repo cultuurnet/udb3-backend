@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Place;
+namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 
 final class PlaceEditingServiceProvider extends AbstractServiceProvider

@@ -21,7 +21,7 @@ use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
+use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 
 final class EventBusServiceProvider extends AbstractServiceProvider

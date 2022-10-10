@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Place;
+namespace CultuurNet\UDB3\Place;
 
 use Broadway\EventHandling\EventBus;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
@@ -25,8 +25,6 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlacesEnrichedPlaceRepository;
-use CultuurNet\UDB3\Place\DummyPlaceProjectionEnricher;
-use CultuurNet\UDB3\Place\NilLocationEnrichedPlaceRepository;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceJsonDocumentLanguageAnalyzer;

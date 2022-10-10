@@ -49,9 +49,9 @@ use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Media\ImageStorageProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceHistoryServiceProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceRequestHandlerServiceProvider;
+use CultuurNet\UDB3\Place\PlaceHistoryServiceProvider;
+use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
+use CultuurNet\UDB3\Place\PlaceRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
@@ -700,12 +700,12 @@ $container->addServiceProvider(new EventEditingServiceProvider());
 $container->addServiceProvider(new EventReadServiceProvider());
 $container->addServiceProvider(new EventCommandHandlerProvider());
 $container->addServiceProvider(new EventRequestHandlerServiceProvider());
-$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
-$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Place\PlaceReadServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceEditingServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceReadServiceProvider());
 $container->addServiceProvider(new PlaceRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $container->addServiceProvider(new EventPermissionServiceProvider());
-$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlacePermissionServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $container->addServiceProvider(new LabelServiceProvider());
@@ -755,7 +755,7 @@ $app->register(
     ]
 );
 
-$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerGeoCoordinatesServiceProvider());
 

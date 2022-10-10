@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Place;
+namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
@@ -10,8 +10,6 @@ use CultuurNet\UDB3\Address\DefaultAddressFormatter;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
-use CultuurNet\UDB3\Place\GeoCoordinatesCommandHandler;
-use CultuurNet\UDB3\Place\GeoCoordinatesProcessManager;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 
