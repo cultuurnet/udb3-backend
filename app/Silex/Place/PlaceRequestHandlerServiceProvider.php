@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
@@ -17,54 +18,70 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class PlaceRequestHandlerServiceProvider implements ServiceProviderInterface
+final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[GetEventsRequestHandler::class] = $app->share(
-            function (Application $app) {
+        return [
+            GetEventsRequestHandler::class,
+            UpdateAddressRequestHandler::class,
+            ImportPlaceRequestHandler::class,
+            UpdateMajorInfoRequestHandler::class,
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            GetEventsRequestHandler::class,
+            function () use ($container) {
                 return new GetEventsRequestHandler(
-                    $app[EventRelationsRepository::class],
+                    $container->get(EventRelationsRepository::class),
                 );
             }
         );
 
-        $app[UpdateAddressRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateAddressRequestHandler(
-                $app['event_command_bus']
-            )
+        $container->addShared(
+            UpdateAddressRequestHandler::class,
+            function () use ($container) {
+                return new UpdateAddressRequestHandler(
+                    $container->get('event_command_bus')
+                );
+            }
         );
 
-        $app[ImportPlaceRequestHandler::class] = $app->share(
-            fn (Application $application) => new ImportPlaceRequestHandler(
-                $app['place_repository'],
-                $app['uuid_generator'],
-                new PlaceDenormalizer(),
-                new CombinedRequestBodyParser(
-                    new LegacyPlaceRequestBodyParser(),
-                    RemoveEmptyArraysRequestBodyParser::createForPlaces(),
-                    new ImportTermRequestBodyParser(new PlaceCategoryResolver()),
-                    new ImportPriceInfoRequestBodyParser($app['config']['base_price_translations']),
-                    ImagesPropertyPolyfillRequestBodyParser::createForPlaces(
-                        $app['media_object_iri_generator'],
-                        $app['media_object_repository']
-                    )
-                ),
-                $app['place_iri_generator'],
-                $app['event_command_bus'],
-                $app['import_image_collection_factory']
-            )
+        $container->addShared(
+            ImportPlaceRequestHandler::class,
+            function () use ($container) {
+                return new ImportPlaceRequestHandler(
+                    $container->get('place_repository'),
+                    $container->get('uuid_generator'),
+                    new PlaceDenormalizer(),
+                    new CombinedRequestBodyParser(
+                        new LegacyPlaceRequestBodyParser(),
+                        RemoveEmptyArraysRequestBodyParser::createForPlaces(),
+                        new ImportTermRequestBodyParser(new PlaceCategoryResolver()),
+                        new ImportPriceInfoRequestBodyParser($container->get('config')['base_price_translations']),
+                        ImagesPropertyPolyfillRequestBodyParser::createForPlaces(
+                            $container->get('media_object_iri_generator'),
+                            $container->get('media_object_repository')
+                        )
+                    ),
+                    $container->get('place_iri_generator'),
+                    $container->get('event_command_bus'),
+                    $container->get('import_image_collection_factory')
+                );
+            }
         );
 
-        $app[UpdateMajorInfoRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateMajorInfoRequestHandler($app['event_command_bus'])
+        $container->addShared(
+            UpdateMajorInfoRequestHandler::class,
+            function () use ($container) {
+                return new UpdateMajorInfoRequestHandler($container->get('event_command_bus'));
+            }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
