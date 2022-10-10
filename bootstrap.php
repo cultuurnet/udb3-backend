@@ -750,7 +750,7 @@ $app->register(
     ]
 );
 
-$app->register(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASIncomingEventServicesProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASIncomingEventServicesProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\GeocodingServiceProvider(),
