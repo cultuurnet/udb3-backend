@@ -37,16 +37,16 @@ use CultuurNet\UDB3\Term\TermRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class PlaceJSONLDServiceProvider implements ServiceProviderInterface
+final class PlaceJSONLDServiceProvider implements ServiceProviderInterface
 {
     public const PROJECTOR = 'place_jsonld_projector';
     public const JSONLD_PROJECTED_EVENT_FACTORY = 'place_jsonld_projected_event_factory';
 
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app[self::PROJECTOR] = $app->share(
             function ($app) {
-                $projector = new PlaceLDProjector(
+                return new PlaceLDProjector(
                     $app['place_jsonld_repository'],
                     $app['place_iri_generator'],
                     $app['organizer_service'],
@@ -58,8 +58,6 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                     $app['config']['base_price_translations'],
                     new VideoNormalizer($app['config']['media']['video_default_copyright'])
                 );
-
-                return $projector;
             }
         );
 
@@ -156,7 +154,7 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
         );
     }
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }
