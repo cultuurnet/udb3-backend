@@ -145,7 +145,7 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'place_jsonld_cache',
             function () use ($container) {
-                return $container->get('config')('place_jsonld');
+                return $container->get('cache')('place_jsonld');
             }
         );
 
