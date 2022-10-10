@@ -58,11 +58,11 @@ use CultuurNet\UDB3\Silex\Place\PlaceRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
-use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
+use CultuurNet\UDB3\Term\TermServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -772,7 +772,7 @@ $container->addServiceProvider(new CuratorsServiceProvider());
 
 $container->addServiceProvider(new Auth0ServiceProvider());
 
-$app->register(new TermServiceProvider());
+$container->addServiceProvider(new TermServiceProvider());
 
 $container->addServiceProvider(new JobsServiceProvider());
 
