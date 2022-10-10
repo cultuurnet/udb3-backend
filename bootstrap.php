@@ -717,7 +717,7 @@ $app->register(new RoleRequestHandlerServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
 $container->addServiceProvider(new ProductionServiceProvider());
 $app->register(new UiTPASServiceLabelsServiceProvider());
-$app->register(new UiTPASServiceEventServiceProvider());
+$container->addServiceProvider(new UiTPASServiceEventServiceProvider());
 $app->register(new UiTPASServiceOrganizerServiceProvider());
 
 $container->addServiceProvider(
