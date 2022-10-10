@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
@@ -87,8 +88,78 @@ use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-final class OfferServiceProvider implements ServiceProviderInterface
+final class OfferServiceProvider extends AbstractServiceProvider
 {
+    protected function getProvidedServiceNames(): array
+    {
+        return [
+            RelatedDocumentProjectedToJSONLDDispatcher::class,
+            OfferJsonDocumentReadRepository::class,
+            OfferMetadataRepository::class,
+            OfferMetadataProjector::class,
+            AutoApproveForUiTIDv1ApiKeysProcessManager::class,
+            PopularityRepository::class,
+            'iri_offer_identifier_factory',
+            'should_auto_approve_new_offer',
+            OfferRepository::class,
+            EventHasTicketSalesGuard::class,
+            UpdateTitleHandler::class,
+            UpdateAvailableFromHandler::class,
+            UpdateCalendarHandler::class,
+            UpdateStatusHandler::class,
+            UpdateBookingAvailabilityHandler::class,
+            UpdateTypeHandler::class,
+            UpdateFacilitiesHandler::class,
+            ChangeOwnerHandler::class,
+            AddLabelHandler::class,
+            RemoveLabelHandler::class,
+            ImportLabelsHandler::class,
+            AddVideoHandler::class,
+            UpdateVideoHandler::class,
+            DeleteVideoHandler::class,
+            ImportVideosHandler::class,
+            DeleteOfferHandler::class,
+            UpdatePriceInfoHandler::class,
+            UpdateOrganizerHandler::class,
+            DeleteOrganizerHandler::class,
+            GetDetailRequestHandler::class,
+            DeleteRequestHandler::class,
+            UpdateTypicalAgeRangeRequestHandler::class,
+            DeleteTypicalAgeRangeRequestHandler::class,
+            AddLabelRequestHandler::class,
+            RemoveLabelRequestHandler::class,
+            AddLabelFromJsonBodyRequestHandler::class,
+            UpdateBookingInfoRequestHandler::class,
+            UpdateContactPointRequestHandler::class,
+            UpdateTitleRequestHandler::class,
+            UpdateDescriptionRequestHandler::class,
+            UpdateAvailableFromRequestHandler::class,
+            GetHistoryRequestHandler::class,
+            GetPermissionsForCurrentUserRequestHandler::class,
+            GetPermissionsForGivenUserRequestHandler::class,
+            CurrentUserHasPermissionRequestHandler::class,
+            GivenUserHasPermissionRequestHandler::class,
+            UpdateOrganizerRequestHandler::class,
+            UpdateOrganizerFromJsonBodyRequestHandler::class,
+            DeleteOrganizerRequestHandler::class,
+            UpdateCalendarRequestHandler::class,
+            GetCalendarSummaryRequestHandler::class,
+            UpdateStatusRequestHandler::class,
+            UpdateBookingAvailabilityRequestHandler::class,
+            UpdateTypeRequestHandler::class,
+            UpdateFacilitiesRequestHandler::class,
+            UpdatePriceInfoRequestHandler::class,
+            AddImageRequestHandler::class,
+            SelectMainImageRequestHandler::class,
+            UpdateImageRequestHandler::class,
+            RemoveImageRequestHandler::class,
+            AddVideoRequestHandler::class,
+            UpdateVideosRequestHandler::class,
+            DeleteVideoRequestHandler::class,
+            PatchOfferRequestHandler::class,
+        ];
+    }
+
     public function register(Application $app): void
     {
         $app[RelatedDocumentProjectedToJSONLDDispatcher::class] = $app::share(
@@ -494,10 +565,5 @@ final class OfferServiceProvider implements ServiceProviderInterface
         $app[PatchOfferRequestHandler::class] = $app->share(
             fn (Application $app) => new PatchOfferRequestHandler($app['event_command_bus'])
         );
-    }
-
-
-    public function boot(Application $app): void
-    {
     }
 }
