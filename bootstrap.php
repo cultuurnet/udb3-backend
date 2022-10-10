@@ -760,7 +760,7 @@ $container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerGeoCoordinatesServiceProvider());
 
 $container->addServiceProvider(new EventHistoryServiceProvider());
-$app->register(new PlaceHistoryServiceProvider());
+$container->addServiceProvider(new PlaceHistoryServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Media\MediaImportServiceProvider());
 
