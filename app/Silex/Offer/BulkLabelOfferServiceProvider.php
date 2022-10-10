@@ -4,63 +4,70 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Offer\AddLabelToMultipleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelToQueryRequestHandler;
 use CultuurNet\UDB3\Offer\BulkLabelCommandHandler;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultipleJSONDeserializer;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierJSONDeserializer;
 use CultuurNet\UDB3\Search\ResultsGenerator;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class BulkLabelOfferServiceProvider implements ServiceProviderInterface
+final class BulkLabelOfferServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        // Set up the bulk label offer command handler.
-        $app['bulk_label_offer_command_handler'] = $app->share(
-            function (HybridContainerApplication $app) {
+        return [
+            'bulk_label_offer_command_handler',
+            AddLabelToQueryRequestHandler::class,
+            AddLabelToMultipleRequestHandler::class,
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'bulk_label_offer_command_handler',
+            function () use ($container) {
                 $searchResultsGenerator = new ResultsGenerator(
-                    $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_OFFERS]
+                    $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_OFFERS)
                 );
                 $searchResultsGenerator->setLogger(
-                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker('bulk-label-offer', 'search'))
+                    LoggerFactory::create($container, LoggerName::forResqueWorker('bulk-label-offer', 'search'))
                 );
 
                 return new BulkLabelCommandHandler(
                     $searchResultsGenerator,
-                    $app['event_command_bus']
+                    $container->get('event_command_bus')
                 );
             }
         );
 
-        $app[AddLabelToQueryRequestHandler::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            AddLabelToQueryRequestHandler::class,
+            function () use ($container) {
                 return new AddLabelToQueryRequestHandler(
-                    $app['bulk_label_offer_command_bus']
+                    $container->get('bulk_label_offer_command_bus')
                 );
             }
         );
 
-        $app[AddLabelToMultipleRequestHandler::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            AddLabelToMultipleRequestHandler::class,
+            function () use ($container) {
                 return new AddLabelToMultipleRequestHandler(
                     new AddLabelToMultipleJSONDeserializer(
                         new IriOfferIdentifierJSONDeserializer(
-                            $app['iri_offer_identifier_factory']
+                            $container->get('iri_offer_identifier_factory')
                         )
                     ),
-                    $app['bulk_label_offer_command_bus']
+                    $container->get('bulk_label_offer_command_bus')
                 );
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
