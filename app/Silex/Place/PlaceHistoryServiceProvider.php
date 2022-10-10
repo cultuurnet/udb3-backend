@@ -4,34 +4,40 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class PlaceHistoryServiceProvider implements ServiceProviderInterface
+final class PlaceHistoryServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[HistoryProjector::class] = $app->share(
-            function ($app) {
-                $projector = new HistoryProjector(
-                    $app['places_history_repository']
-                );
-                return $projector;
-            }
-        );
-
-        $app['places_history_repository'] = $app->share(
-            function ($app) {
-                return new CacheDocumentRepository(
-                    $app['cache']('place_history')
-                );
-            }
-        );
+        return [
+            HistoryProjector::class,
+            'places_history_repository',
+        ];
     }
 
-    public function boot(Application $app): void
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            HistoryProjector::class,
+            function () use ($container) {
+                return new HistoryProjector(
+                    $container->get('places_history_repository')
+                );
+            }
+        );
+
+        $container->addShared(
+            'places_history_repository',
+            function () use ($container) {
+                return new CacheDocumentRepository(
+                    $container->get('cache')('place_history')
+                );
+            }
+        );
     }
 }

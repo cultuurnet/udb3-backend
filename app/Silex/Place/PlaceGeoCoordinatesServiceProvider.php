@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Place\GeoCoordinatesCommandHandler;
 use CultuurNet\UDB3\Place\GeoCoordinatesProcessManager;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use Silex\Application;
 
 final class PlaceGeoCoordinatesServiceProvider extends AbstractServiceProvider
 {
