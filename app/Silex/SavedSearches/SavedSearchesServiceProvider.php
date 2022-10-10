@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\SavedSearches;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
@@ -16,83 +17,98 @@ use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\User\CurrentUser;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use League\Container\Container;
 use CultuurNet\UDB3\StringLiteral;
 
-class SavedSearchesServiceProvider implements ServiceProviderInterface
+final class SavedSearchesServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app['udb3_saved_searches_repo_sapi3'] = $app->share(
-            function (Application $app) {
+        return [
+            'udb3_saved_searches_repo_sapi3',
+            SavedSearchRepositoryInterface::class,
+            'saved_searches_command_handler',
+            ReadSavedSearchesRequestHandler::class,
+            CreateSavedSearchRequestHandler::class,
+            DeleteSavedSearchRequestHandler::class,
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'udb3_saved_searches_repo_sapi3',
+            function () use ($container) {
                 return new UDB3SavedSearchRepository(
-                    $app['dbal_connection'],
+                    $container->get('dbal_connection'),
                     new StringLiteral('saved_searches_sapi3'),
-                    $app['uuid_generator'],
-                    new StringLiteral($app[CurrentUser::class]->getId())
+                    $container->get('uuid_generator'),
+                    new StringLiteral($container->get(CurrentUser::class)->getId())
                 );
             }
         );
 
-        $app[SavedSearchRepositoryInterface::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            SavedSearchRepositoryInterface::class,
+            function () use ($container) {
                 return new CombinedSavedSearchRepository(
                     new Sapi3FixedSavedSearchRepository(
-                        $app[JsonWebToken::class],
-                        $app[Auth0UserIdentityResolver::class],
-                        $this->getCreatedByQueryMode($app)
+                        $container->get(JsonWebToken::class),
+                        $container->get(Auth0UserIdentityResolver::class),
+                        $this->getCreatedByQueryMode($container)
                     ),
-                    $app['udb3_saved_searches_repo_sapi3']
+                    $container->get('udb3_saved_searches_repo_sapi3')
                 );
             }
         );
 
-        $app['saved_searches_command_handler'] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            'saved_searches_command_handler',
+            function () use ($container) {
                 return new UDB3SavedSearchesCommandHandler(
-                    $app['udb3_saved_searches_repo_sapi3']
+                    $container->get('udb3_saved_searches_repo_sapi3')
                 );
             }
         );
 
-        $app[ReadSavedSearchesRequestHandler::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            ReadSavedSearchesRequestHandler::class,
+            function () use ($container) {
                 return new ReadSavedSearchesRequestHandler(
-                    $app[SavedSearchRepositoryInterface::class]
+                    $container->get(SavedSearchRepositoryInterface::class)
                 );
             }
         );
 
-        $app[CreateSavedSearchRequestHandler::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            CreateSavedSearchRequestHandler::class,
+            function () use ($container) {
                 return new CreateSavedSearchRequestHandler(
-                    $app[CurrentUser::class]->getId(),
-                    $app['event_command_bus']
+                    $container->get(CurrentUser::class)->getId(),
+                    $container->get('event_command_bus')
                 );
             }
         );
 
-        $app[DeleteSavedSearchRequestHandler::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            DeleteSavedSearchRequestHandler::class,
+            function () use ($container) {
                 return new DeleteSavedSearchRequestHandler(
-                    $app[CurrentUser::class]->getId(),
-                    $app['event_command_bus']
+                    $container->get(CurrentUser::class)->getId(),
+                    $container->get('event_command_bus')
                 );
             }
         );
     }
 
-    public function boot(Application $app): void
-    {
-    }
-
-    private function getCreatedByQueryMode(Application $app): CreatedByQueryMode
+    private function getCreatedByQueryMode(Container $container): CreatedByQueryMode
     {
         $createdByQueryMode = CreatedByQueryMode::uuid();
-        if (!empty($app['config']['created_by_query_mode'])) {
+        if (!empty($container->get('config')['created_by_query_mode'])) {
             $createdByQueryMode = new CreatedByQueryMode(
-                $app['config']['created_by_query_mode']
+                $container->get('config')['created_by_query_mode']
             );
         }
 
