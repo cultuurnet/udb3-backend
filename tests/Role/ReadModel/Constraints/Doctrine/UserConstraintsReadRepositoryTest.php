@@ -60,9 +60,9 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
         $this->userConstraintsReadRepository = new UserConstraintsReadRepository(
             $this->getConnection(),
-            $this->userRolesTableName,
-            $this->rolePermissionsTableName,
-            $this->rolesSearchTableName
+            $this->userRolesTableName->toNative(),
+            $this->rolePermissionsTableName->toNative(),
+            $this->rolesSearchTableName->toNative()
         );
 
         $this->seedUserRoles();

@@ -45,6 +45,9 @@ use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
+use CultuurNet\UDB3\Security\GeneralSecurityServiceProvider;
+use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
+use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
@@ -55,8 +58,6 @@ use CultuurNet\UDB3\Silex\Place\PlaceRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
-use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
-use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsServiceProvider;
@@ -188,9 +189,9 @@ $app['event_iri_generator'] = $app->share(
     }
 );
 
-$app->register(new GeneralSecurityServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Security\OfferSecurityServiceProvider());
-$app->register(new OrganizerSecurityServiceProvider());
+$container->addServiceProvider(new GeneralSecurityServiceProvider());
+$container->addServiceProvider(new OfferSecurityServiceProvider());
+$container->addServiceProvider(new OrganizerSecurityServiceProvider());
 
 $app['cache'] = $app->share(
     function (Application $app) {
@@ -543,13 +544,16 @@ $app['user_roles_repository'] = $app->share(
     }
 );
 
-$app['role_search_v3_repository.table_name'] = new StringLiteral('roles_search_v3');
+/**
+ * @todo move this to a class.
+ */
+const ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME = 'roles_search_v3';
 
 $app['role_search_v3_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository(
             $app['dbal_connection'],
-            $app['role_search_v3_repository.table_name']
+            new StringLiteral(ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME)
         );
     }
 );

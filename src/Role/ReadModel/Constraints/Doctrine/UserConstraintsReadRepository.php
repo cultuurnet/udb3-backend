@@ -23,14 +23,14 @@ class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInte
 
     public function __construct(
         Connection $connection,
-        StringLiteral $userRolesTableName,
-        StringLiteral $rolePermissionsTableName,
-        StringLiteral $rolesSearchTableName
+        string $userRolesTableName,
+        string $rolePermissionsTableName,
+        string $rolesSearchTableName
     ) {
         $this->connection = $connection;
-        $this->userRolesTableName = $userRolesTableName;
-        $this->rolePermissionsTableName = $rolePermissionsTableName;
-        $this->rolesSearchTableName = $rolesSearchTableName;
+        $this->userRolesTableName = new StringLiteral($userRolesTableName);
+        $this->rolePermissionsTableName = new StringLiteral($rolePermissionsTableName);
+        $this->rolesSearchTableName = new StringLiteral($rolesSearchTableName);
     }
 
     /**
