@@ -718,7 +718,7 @@ $app->register(new UserPermissionsServiceProvider());
 $container->addServiceProvider(new ProductionServiceProvider());
 $container->addServiceProvider(new UiTPASServiceLabelsServiceProvider());
 $container->addServiceProvider(new UiTPASServiceEventServiceProvider());
-$app->register(new UiTPASServiceOrganizerServiceProvider());
+$container->addServiceProvider(new UiTPASServiceOrganizerServiceProvider());
 
 $container->addServiceProvider(
     new \CultuurNet\UDB3\Media\MediaServiceProvider()
