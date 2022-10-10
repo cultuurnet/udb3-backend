@@ -734,7 +734,7 @@ $app['predis.client'] = $app->share(function ($app) {
 });
 
 $app->register(new Sapi3SearchServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
 // Provides authentication of HTTP requests. While the HTTP authentication is not needed in CLI context, the service
 // provider still needs to be registered in the general bootstrap.php instead of web/index.php so CLI commands have
