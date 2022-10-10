@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\StringLiteral;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -45,22 +46,34 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
         $language = $parsedBody['language'] ?? null;
 
         if (!$description) {
-            return new JsonResponse(['error' => 'description required'], 400);
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "description" is required.');
         }
 
-        if (!$copyrightHolder) {
-            return new JsonResponse(['error' => 'copyright holder required'], 400);
+        if ($copyrightHolder === null) {
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is required.');
+        }
+
+        try {
+            $copyrightHolder = new CopyrightHolder($copyrightHolder);
+        } catch (InvalidArgumentException $e) {
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is invalid: ' . $e->getMessage());
         }
 
         if (!$language) {
-            return new JsonResponse(['error' => 'language required'], 400);
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is required.');
+        }
+
+        try {
+            $language = new Language($language);
+        } catch (InvalidArgumentException $e) {
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is must be exactly 2 lowercase letters long (for example "nl").');
         }
 
         $imageId = $this->imageUploader->upload(
             $uploadedFile,
             new StringLiteral($description),
-            new CopyrightHolder($copyrightHolder),
-            new Language($language)
+            $copyrightHolder,
+            $language
         );
 
         return new JsonResponse(
