@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Search;
+namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
