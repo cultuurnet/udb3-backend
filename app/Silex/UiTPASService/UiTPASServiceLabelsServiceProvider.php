@@ -4,22 +4,27 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\UiTPASService;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASLabelsRequestHandler;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class UiTPASServiceLabelsServiceProvider implements ServiceProviderInterface
+final class UiTPASServiceLabelsServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[GetUiTPASLabelsRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetUiTPASLabelsRequestHandler(
-                $app['config']['uitpas']['labels']
-            )
-        );
+        return [GetUiTPASLabelsRequestHandler::class];
     }
 
-    public function boot(Application $app): void
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            GetUiTPASLabelsRequestHandler::class,
+            function () use ($container) {
+                return new GetUiTPASLabelsRequestHandler(
+                    $container->get('config')['uitpas']['labels']
+                );
+            }
+        );
     }
 }
