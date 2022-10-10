@@ -138,7 +138,7 @@ $app['event_store_factory'] = $app->protect(
 
 $container->addServiceProvider(new SentryServiceProvider());
 
-$container->addServiceProvider(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\SavedSearches\SavedSearchesServiceProvider());
 
 $container->addServiceProvider(new CommandBusServiceProvider());
 $container->addServiceProvider(new EventBusServiceProvider());
