@@ -340,7 +340,7 @@ $app['place_iri_generator'] = $app->share(
     }
 );
 
-$app->register(new PlaceJSONLDServiceProvider());
+$container->addServiceProvider(new PlaceJSONLDServiceProvider());
 
 $app['place_store'] = $app->share(
     function ($app) {
