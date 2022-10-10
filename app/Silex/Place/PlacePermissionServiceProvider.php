@@ -10,12 +10,9 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use CultuurNet\UDB3\StringLiteral;
 
-class PlacePermissionServiceProvider implements ServiceProviderInterface
+final class PlacePermissionServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app['place_owner.repository'] = $app->share(
             function (Application $app) {
@@ -37,10 +34,7 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }
