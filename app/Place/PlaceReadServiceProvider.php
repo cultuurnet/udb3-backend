@@ -18,7 +18,6 @@ final class PlaceReadServiceProvider extends AbstractServiceProvider
         return [
             PlaceRelationsProjector::class,
             PlaceRelationsRepository::class,
-            'place_main_language_query',
         ];
     }
 
@@ -40,18 +39,6 @@ final class PlaceReadServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 return new DBALPlaceRelationsRepository(
                     $container->get('dbal_connection')
-                );
-            }
-        );
-
-        $container->addShared(
-            'place_main_language_query',
-            function () use ($container) {
-                $fallbackLanguage = new Language('nl');
-
-                return new JSONLDMainLanguageQuery(
-                    $container->get('place_jsonld_repository'),
-                    $fallbackLanguage
                 );
             }
         );
