@@ -4,26 +4,29 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class PlaceEditingServiceProvider implements ServiceProviderInterface
+final class PlaceEditingServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[PlaceOrganizerRelationService::class] = $app->share(
-            function ($app) {
+        return [PlaceOrganizerRelationService::class];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            PlaceOrganizerRelationService::class,
+            function () use ($container) {
                 return new PlaceOrganizerRelationService(
-                    $app['event_command_bus'],
-                    $app[PlaceRelationsRepository::class]
+                    $container->get('event_command_bus'),
+                    $container->get(PlaceRelationsRepository::class)
                 );
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
