@@ -4,37 +4,44 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Security\ResourceOwner\Doctrine\DBALResourceOwnerRepository;
 use CultuurNet\UDB3\Place\ReadModel\Permission\Projector;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 use CultuurNet\UDB3\StringLiteral;
 
-final class PlacePermissionServiceProvider implements ServiceProviderInterface
+final class PlacePermissionServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app['place_owner.repository'] = $app->share(
-            function (Application $app) {
+        return [
+            'place_owner.repository',
+            'place_permission.projector',
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'place_owner.repository',
+            function () use ($container) {
                 return new DBALResourceOwnerRepository(
                     new StringLiteral('place_permission_readmodel'),
-                    $app['dbal_connection'],
+                    $container->get('dbal_connection'),
                     new StringLiteral('place_id')
                 );
             }
         );
 
-        $app['place_permission.projector'] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            'place_permission.projector',
+            function () use ($container) {
                 return new Projector(
-                    $app['place_owner.repository'],
-                    $app['cdbxml_created_by_resolver']
+                    $container->get('place_owner.repository'),
+                    $container->get('cdbxml_created_by_resolver')
                 );
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
