@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\UiTPAS;
+namespace CultuurNet\UDB3\UiTPAS;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
