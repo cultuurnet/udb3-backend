@@ -4,48 +4,56 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\JSONLDMainLanguageQuery;
 use CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine\DBALPlaceRelationsRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class PlaceReadServiceProvider implements ServiceProviderInterface
+final class PlaceReadServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[PlaceRelationsProjector::class] = $app->share(
-            function ($app) {
+        return [
+            PlaceRelationsProjector::class,
+            PlaceRelationsRepository::class,
+            'place_main_language_query',
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            PlaceRelationsProjector::class,
+            function () use ($container) {
                 return new PlaceRelationsProjector(
-                    $app[PlaceRelationsRepository::class]
+                    $container->get(PlaceRelationsRepository::class)
                 );
             }
         );
 
-        $app[PlaceRelationsRepository::class] = $app::share(
-            function ($app) {
+        $container->addShared(
+            PlaceRelationsRepository::class,
+            function () use ($container) {
                 return new DBALPlaceRelationsRepository(
-                    $app['dbal_connection']
+                    $container->get('dbal_connection')
                 );
             }
         );
 
-        $app['place_main_language_query'] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            'place_main_language_query',
+            function () use ($container) {
                 $fallbackLanguage = new Language('nl');
 
                 return new JSONLDMainLanguageQuery(
-                    $app['place_jsonld_repository'],
+                    $container->get('place_jsonld_repository'),
                     $fallbackLanguage
                 );
             }
         );
-    }
-
-
-    public function boot(Application $app)
-    {
     }
 }
