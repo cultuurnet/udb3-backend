@@ -705,7 +705,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceReadServiceProvider());
 $app->register(new PlaceRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $container->addServiceProvider(new EventPermissionServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $container->addServiceProvider(new LabelServiceProvider());
