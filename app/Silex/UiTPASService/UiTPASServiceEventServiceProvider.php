@@ -4,49 +4,72 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\UiTPASService;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class UiTPASServiceEventServiceProvider implements ServiceProviderInterface
+final class UiTPASServiceEventServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[GetUiTPASDetailRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetUiTPASDetailRequestHandler(
-                $app['uitpas'],
-                new CallableIriGenerator(
-                    fn (string $eventId) => $app['config']['url'] . '/uitpas/events' . $eventId
-                ),
-                new CallableIriGenerator(
-                    fn (string $eventId) => $app['config']['url'] . '/uitpas/events' . $eventId . '/card-systems'
-                )
-            )
-        );
-
-        $app[GetCardSystemsFromEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetCardSystemsFromEventRequestHandler($app['uitpas'])
-        );
-
-        $app[SetCardSystemsOnEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new SetCardSystemsOnEventRequestHandler($app['uitpas'])
-        );
-
-        $app[AddCardSystemToEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new AddCardSystemToEventRequestHandler($app['uitpas'])
-        );
-
-        $app[DeleteCardSystemFromEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new DeleteCardSystemFromEventRequestHandler($app['uitpas'])
-        );
+        return [
+            GetUiTPASDetailRequestHandler::class,
+            GetCardSystemsFromEventRequestHandler::class,
+            SetCardSystemsOnEventRequestHandler::class,
+            AddCardSystemToEventRequestHandler::class,
+            DeleteCardSystemFromEventRequestHandler::class,
+        ];
     }
 
-    public function boot(Application $app): void
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            GetUiTPASDetailRequestHandler::class,
+            function () use ($container) {
+                return new GetUiTPASDetailRequestHandler(
+                    $container->get('uitpas'),
+                    new CallableIriGenerator(
+                        fn (string $eventId) => $container->get('config')['url'] . '/uitpas/events' . $eventId
+                    ),
+                    new CallableIriGenerator(
+                        fn (string $eventId) => $container->get('config')['url'] . '/uitpas/events' . $eventId . '/card-systems'
+                    )
+                );
+            }
+        );
+
+        $container->addShared(
+            GetCardSystemsFromEventRequestHandler::class,
+            function () use ($container) {
+                return new GetCardSystemsFromEventRequestHandler($container->get('uitpas'));
+            }
+        );
+
+        $container->addShared(
+            SetCardSystemsOnEventRequestHandler::class,
+            function () use ($container) {
+                return new SetCardSystemsOnEventRequestHandler($container->get('uitpas'));
+            }
+        );
+
+        $container->addShared(
+            AddCardSystemToEventRequestHandler::class,
+            function () use ($container) {
+                return new AddCardSystemToEventRequestHandler($container->get('uitpas'));
+            }
+        );
+
+        $container->addShared(
+            DeleteCardSystemFromEventRequestHandler::class,
+            function () use ($container) {
+                return new DeleteCardSystemFromEventRequestHandler($container->get('uitpas'));
+            }
+        );
     }
 }
