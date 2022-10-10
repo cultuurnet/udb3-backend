@@ -4,20 +4,25 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\UiTPASService;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromOrganizerRequestHandler;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class UiTPASServiceOrganizerServiceProvider implements ServiceProviderInterface
+final class UiTPASServiceOrganizerServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[GetCardSystemsFromOrganizerRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetCardSystemsFromOrganizerRequestHandler($app['uitpas'])
-        );
+        return [GetCardSystemsFromOrganizerRequestHandler::class];
     }
 
-    public function boot(Application $app): void
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            GetCardSystemsFromOrganizerRequestHandler::class,
+            function () use ($container) {
+                return new GetCardSystemsFromOrganizerRequestHandler($container->get('uitpas'));
+            }
+        );
     }
 }
