@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\StringLiteral;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class UploadMediaRequestHandler implements RequestHandlerInterface
@@ -28,9 +29,11 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if (empty($request->getUploadedFiles())) {
+        $uploadedFiles = $request->getUploadedFiles();
+        if (!isset($uploadedFiles['file']) || !$uploadedFiles['file'] instanceof UploadedFileInterface) {
             throw ApiProblem::fileMissing('The file property is required');
         }
+        $uploadedFile = $uploadedFiles['file'];
 
         if (count($request->getUploadedFiles()) > 1) {
             throw ApiProblem::fileMissing('Only one file is allowed');
@@ -54,7 +57,7 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
         }
 
         $imageId = $this->imageUploader->upload(
-            $request->getUploadedFiles()['file'],
+            $uploadedFile,
             new StringLiteral($description),
             new CopyrightHolder($copyrightHolder),
             new Language($language)

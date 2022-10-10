@@ -81,7 +81,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
      * @test
      * @dataProvider incompleteRequestProvider
      */
-    public function it_returns_400_if_file_is_missing(array $body, JsonResponse $expectedResponse): void
+    public function it_returns_400_if_field_is_missing(array $body, JsonResponse $expectedResponse): void
     {
         $uploadedFile = $this->createUploadedFile('ABC', UPLOAD_ERR_OK, 'test.txt', 'text/plain');
 
@@ -126,7 +126,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_description_is_missing(): void
+    public function it_throws_if_no_file_is_uploaded(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withParsedBody([
@@ -134,6 +134,29 @@ final class UploadMediaRequestHandlerTest extends TestCase
                 'copyrightHolder' => ' Dwight Hooker',
                 'language' => 'nl',
             ])
+            ->build('POST');
+
+        $this->expectException(ApiProblem::class);
+        $this->expectExceptionMessage('File missing');
+
+        $this->uploadMediaRequestHandler->handle($request);
+    }
+
+    /**
+     * @test
+     * @bugfix https://jira.uitdatabank.be/browse/III-5005
+     */
+    public function it_throws_if_no_a_file_was_uploaded_with_the_wrong_form_data_name(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withParsedBody([
+                'description' => 'Lenna',
+                'copyrightHolder' => ' Dwight Hooker',
+                'language' => 'nl',
+            ])
+            ->withFiles(
+                ['another_file' => $this->createUploadedFile('ABC', UPLOAD_ERR_OK, 'test.txt', 'text/plain')]
+            )
             ->build('POST');
 
         $this->expectException(ApiProblem::class);

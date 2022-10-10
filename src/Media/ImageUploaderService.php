@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\StringLiteral;
 use League\Flysystem\FilesystemOperator;
 use Psr\Http\Message\UploadedFileInterface;
+use RuntimeException;
 
 class ImageUploaderService implements ImageUploaderInterface
 {
@@ -47,7 +48,7 @@ class ImageUploaderService implements ImageUploaderInterface
         int $maxFileSize = null
     ) {
         if ($maxFileSize < 0) {
-            throw new \RuntimeException('Max file size should be 0 or bigger inside config.yml.');
+            throw new RuntimeException('Max file size should be 0 or bigger inside config.yml.');
         }
 
         $this->uuidGenerator = $uuidGenerator;
@@ -106,8 +107,12 @@ class ImageUploaderService implements ImageUploaderInterface
     {
         $fileSize = $file->getSize();
 
-        if ($this->maxFileSize && !$fileSize) {
-            throw new \RuntimeException('The size of the uploaded image could not be determined.');
+        if ($fileSize === null) {
+            throw new RuntimeException('The size of the uploaded image could not be determined.');
+        }
+
+        if ($fileSize === 0) {
+            throw new InvalidFileSize('The size of the uploaded image must not be 0 bytes.');
         }
 
         if ($this->maxFileSize && $fileSize > $this->maxFileSize) {
