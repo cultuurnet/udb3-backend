@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\OrganizerService;
 
@@ -16,6 +17,7 @@ final class OrganizerServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
+            'organizer_iri_generator',
             'organizer_store',
             'organizers_locator_event_stream_decorator',
             'organizer_repository',
@@ -26,6 +28,13 @@ final class OrganizerServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         $container = $this->getContainer();
+
+        $container->addShared(
+            'organizer_iri_generator',
+            fn () => new CallableIriGenerator(
+                fn ($cdbid) => $container->get('config')['url'] . '/organizers/' . $cdbid
+            )
+        );
 
         $container->addShared(
             'organizer_store',

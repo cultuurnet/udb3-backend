@@ -320,14 +320,6 @@ $container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceServiceProvider()
 $container->addServiceProvider(new PlaceJSONLDServiceProvider());
 
 /** Organizer **/
-
-$container->addShared(
-    'organizer_iri_generator',
-    fn () => new CallableIriGenerator(
-        fn ($cdbid) => $container->get('config')['url'] . '/organizers/' . $cdbid
-    )
-);
-
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerServiceProvider());
 $container->addServiceProvider(new OrganizerRequestHandlerServiceProvider());
 $container->addServiceProvider(new OrganizerJSONLDServiceProvider());
