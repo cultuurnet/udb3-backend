@@ -70,7 +70,7 @@ final class LoggerFactory
                 new SentryHandler($container->get(HubInterface::class), Logger::ERROR),
                 $app[JsonWebToken::class] ?? null,
                 $app[ApiKey::class] ?? null,
-                $app['api_name'] ?? null
+                $container->get('config')['api_name'] ?? null
             );
         }
 

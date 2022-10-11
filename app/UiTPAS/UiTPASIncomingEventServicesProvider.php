@@ -37,7 +37,7 @@ final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
             function () use ($container) {
                 // If this service gets instantiated, it's because we're running the AMQP listener for UiTPAS messages
                 // so we should set the API name to UiTPAS listener.
-                $container->addShared('api_name', ApiName::UITPAS_LISTENER);
+                $container->get('config')['api_name'] = ApiName::UITPAS_LISTENER;
 
                 $uitpasDeserializerLocator = new SimpleDeserializerLocator();
                 $uitpasDeserializerLocator->registerDeserializer(

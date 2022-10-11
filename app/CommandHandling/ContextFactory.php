@@ -76,7 +76,7 @@ final class ContextFactory
             $container->get(CurrentUser::class)->getId(),
             $container->get(JsonWebToken::class),
             $container->get(ApiKey::class),
-            $container->get('api_name'),
+            $container->get('config')['api_name'],
             $container->get(Consumer::class)
         );
     }

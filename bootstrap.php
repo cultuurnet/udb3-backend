@@ -96,13 +96,19 @@ $app = new HybridContainerApplication($container);
 $container->delegate(new PimplePSRContainerBridge($app));
 $container->delegate(new ReflectionContainer(true));
 
-$app['api_name'] = defined('API_NAME') ? API_NAME : ApiName::UNKNOWN;
-
 if (!isset($udb3ConfigLocation)) {
     $udb3ConfigLocation = __DIR__;
 }
 
 $app['config'] = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
+
+// Set the 'api_name' in the config until a better solution is found
+$app['config'] = array_merge_recursive(
+    $app['config'],
+    [
+        'api_name' => defined('API_NAME') ? API_NAME : ApiName::UNKNOWN
+    ]
+);
 
 $app['system_user_id'] = $app::share(
     function () {
