@@ -738,13 +738,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider())
 // user who triggered the job is being impersonated.
 $container->addServiceProvider(new AuthServiceProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\UDB2EventServicesProvider(),
-    [
-        'udb2_place_external_id_mapping.file_location' => __DIR__ . '/config.external_id_mapping_place.php',
-        'udb2_organizer_external_id_mapping.file_location' => __DIR__ . '/config.external_id_mapping_organizer.php',
-    ]
-);
+$app->register(new \CultuurNet\UDB3\Silex\UDB2EventServicesProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASIncomingEventServicesProvider());
 
