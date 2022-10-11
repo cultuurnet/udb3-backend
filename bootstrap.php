@@ -333,32 +333,27 @@ $app['logger_factory.resque_worker'] = $app::protect(
 $container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceServiceProvider());
 $container->addServiceProvider(new PlaceJSONLDServiceProvider());
 
-$app['place_store'] = $app->share(
-    function ($app) {
-        return $app['event_store_factory'](AggregateType::place());
-    }
+$container->addShared(
+    'place_store',
+    fn () => $container->get('event_store_factory')(AggregateType::place())
 );
 
-$app['places_locator_event_stream_decorator'] = $app->share(
-    function (Application $app) {
-        return new OfferLocator($app['place_iri_generator']);
-    }
+$container->addShared(
+    'places_locator_event_stream_decorator',
+    fn () => new OfferLocator($container->get('place_iri_generator'))
 );
 
 // @todo: remove usages of 'place_repository' with Class based share
-$app['place_repository'] = $app->share(
-    function (Application $app) {
-        $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
-            $app['place_store'],
-            $app[EventBus::class],
-            array(
-                $app['event_stream_metadata_enricher'],
-                $app['places_locator_event_stream_decorator']
-            )
-        );
-
-        return $repository;
-    }
+$container->addShared(
+    'place_repository',
+    fn () => new \CultuurNet\UDB3\Place\PlaceRepository(
+        $container->get('place_store'),
+        $container->get(EventBus::class),
+        [
+            $container->get('event_stream_metadata_enricher'),
+            $container->get('places_locator_event_stream_decorator'),
+        ]
+    )
 );
 $container->addShared(
     \CultuurNet\UDB3\Place\PlaceRepository::class,
@@ -367,38 +362,33 @@ $container->addShared(
     }
 );
 
-$app['place_service'] = $app->share(
-    function ($app) {
-        return new LocalPlaceService(
-            $app['place_jsonld_repository'],
-            $app['place_repository'],
-            $app[PlaceRelationsRepository::class],
-            $app['place_iri_generator']
-        );
-    }
+$container->addShared(
+    'place_service',
+    fn () => new LocalPlaceService(
+        $container->get('place_jsonld_repository'),
+        $container->get('place_repository'),
+        $container->get(PlaceRelationsRepository::class),
+        $container->get('place_iri_generator'),
+    )
 );
 
-$app['duplicate_place_repository'] = $app->share(
-    function ($app) {
-        return new DBALDuplicatePlaceRepository(
-            $app['dbal_connection']
-        );
-    }
+$container->addShared(
+    'duplicate_place_repository',
+    fn () => new DBALDuplicatePlaceRepository($container->get('dbal_connection'))
 );
 
-$app['canonical_service'] = $app->share(
-    function ($app) {
-        return new CanonicalService(
-            $app['config']['museumpas']['label'],
-            $app['duplicate_place_repository'],
-            $app[EventRelationsRepository::class],
-            new DBALReadRepository(
-                $app['dbal_connection'],
-                new StringLiteral('labels_relations')
-            ),
-            $app['place_jsonld_repository']
-        );
-    }
+$container->addShared(
+    'canonical_service',
+    fn () => new CanonicalService(
+        $container->get('config')['museumpas']['label'],
+        $container->get('duplicate_place_repository'),
+        $container->get(EventRelationsRepository::class),
+        new DBALReadRepository(
+            $container->get('dbal_connection'),
+            new StringLiteral('labels_relations')
+        ),
+        $container->get('place_jsonld_repository'),
+    )
 );
 
 /** Organizer **/
