@@ -14,6 +14,7 @@ final class CultureFeedServiceProvider extends AbstractServiceProvider
     {
         return [
             'culturefeed',
+            'uitpas',
         ];
     }
 
@@ -31,6 +32,15 @@ final class CultureFeedServiceProvider extends AbstractServiceProvider
                 $oauthClient->setEndpoint($container->get('config')['uitid']['base_url']);
 
                 return new CultureFeed($oauthClient);
+            }
+        );
+
+        $container->addShared(
+            'uitpas',
+            function () use ($container) {
+                /** @var CultureFeed $cultureFeed */
+                $cultureFeed = $container->get('culturefeed');
+                return $cultureFeed->uitpas();
             }
         );
     }

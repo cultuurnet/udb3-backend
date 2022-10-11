@@ -342,15 +342,6 @@ $app['event_export_notification_mail_factory'] = $app->share(
     }
 );
 
-$container->addShared(
-    'uitpas',
-    function () use ($container) {
-        /** @var CultureFeed $cultureFeed */
-        $cultureFeed = $container->get('culturefeed');
-        return $cultureFeed->uitpas();
-    }
-);
-
 $container->addServiceProvider(
     new AMQPConnectionServiceProvider()
 );
