@@ -326,52 +326,40 @@ $container->addServiceProvider(new OrganizerJSONLDServiceProvider());
 $container->addServiceProvider(new OrganizerCommandHandlerProvider());
 
 /** Roles */
-
-$app['role_iri_generator'] = $app->share(
-    function ($app) {
-        return new CallableIriGenerator(
-            function ($roleId) use ($app) {
-                return $app['config']['url'] . '/roles/' . $roleId;
-            }
-        );
-    }
+$container->addShared(
+    'role_iri_generator',
+    fn () => new CallableIriGenerator(
+        fn ($roleId) => $container->get('config')['url'] . '/roles/' . $roleId
+    )
 );
 
-$app['role_store'] = $app->share(
-    function ($app) {
-        return $app['event_store_factory'](AggregateType::role());
-    }
+$container->addShared(
+    'role_store',
+    fn () => $container->get('event_store_factory')(AggregateType::role())
 );
 
-$app['real_role_repository'] = $app->share(
-    function ($app) {
-        $repository = new \CultuurNet\UDB3\Role\RoleRepository(
-            $app['role_store'],
-            $app[EventBus::class]
-        );
-
-        return $repository;
-    }
+$container->addShared(
+    'real_role_repository',
+    fn () => new \CultuurNet\UDB3\Role\RoleRepository(
+        $container->get('role_store'),
+        $container->get(EventBus::class),
+    )
 );
 
-$app['role_read_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
-            new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-                $app['cache']('role_detail')
-            ),
-            $app[EventBus::class],
-            new \CultuurNet\UDB3\Role\ReadModel\Detail\EventFactory()
-        );
-    }
+$container->addShared(
+    'role_read_repository',
+    fn () => new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
+        new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
+            $container->get('cache')('role_detail')
+        ),
+        $container->get(EventBus::class),
+        new \CultuurNet\UDB3\Role\ReadModel\Detail\EventFactory()
+    )
 );
 
-$app['user_roles_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-            $app['cache']('user_roles')
-        );
-    }
+$container->addShared(
+    'user_roles_repository',
+    fn () => new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository($container->get('cache')('user_roles'))
 );
 
 /**
@@ -379,90 +367,68 @@ $app['user_roles_repository'] = $app->share(
  */
 const ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME = 'roles_search_v3';
 
-$app['role_search_v3_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository(
-            $app['dbal_connection'],
-            new StringLiteral(ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME)
-        );
-    }
+$container->addShared(
+    'role_search_v3_repository',
+    fn () => new \CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository(
+        $container->get('dbal_connection'),
+        new StringLiteral(ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME)
+    )
 );
 
-$app['role_search_v3_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Search\Projector(
-            $app['role_search_v3_repository'],
-        );
-    }
+$container->addShared(
+    'role_search_v3_projector',
+    fn () => new \CultuurNet\UDB3\Role\ReadModel\Search\Projector($container->get('role_search_v3_repository'))
 );
 
-$app['role_detail_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Detail\Projector(
-            $app['role_read_repository']
-        );
-    }
+$container->addShared(
+    'role_detail_projector',
+    fn () => new \CultuurNet\UDB3\Role\ReadModel\Detail\Projector($container->get('role_read_repository'))
 );
 
-$app['user_roles_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Users\UserRolesProjector(
-            $app['user_roles_repository'],
-            $app['role_read_repository'],
-            $app['role_users_read_repository']
-        );
-    }
+$container->addShared(
+    'user_roles_projector',
+    fn () => new \CultuurNet\UDB3\Role\ReadModel\Users\UserRolesProjector(
+        $container->get('user_roles_repository'),
+        $container->get('role_read_repository'),
+        $container->get('role_users_read_repository'),
+    )
 );
 
-$app['role_labels_read_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-            $app['cache']('role_labels')
-        );
-    }
+$container->addShared(
+    'role_labels_read_repository',
+    fn () => new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository($container->get('cache')('role_labels'))
 );
 
-$app['role_labels_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Labels\RoleLabelsProjector(
-            $app['role_labels_read_repository'],
-            $app['labels.json_read_repository'],
-            $app['label_roles_read_repository']
-        );
-    }
+$container->addShared(
+    'role_labels_projector',
+    fn () => new \CultuurNet\UDB3\Role\ReadModel\Labels\RoleLabelsProjector(
+        $container->get('role_labels_read_repository'),
+        $container->get('labels.json_read_repository'),
+        $container->get('label_roles_read_repository'),
+    )
 );
 
-$app['label_roles_read_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-            $app['cache']('label_roles')
-        );
-    }
+$container->addShared(
+    'label_roles_read_repository',
+    fn () => new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository($container->get('cache')('label_roles'))
 );
 
-$app['label_roles_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Labels\LabelRolesProjector(
-            $app['label_roles_read_repository']
-        );
-    }
+$container->addShared(
+    'label_roles_projector',
+    fn () => new \CultuurNet\UDB3\Role\ReadModel\Labels\LabelRolesProjector($container->get('label_roles_read_repository'))
 );
 
-$app['role_users_read_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-            $app['cache']('role_users')
-        );
-    }
+$container->addShared(
+    'role_users_read_repository',
+    fn () => new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository($container->get('cache')('role_users'))
 );
 
-$app['role_users_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Users\RoleUsersProjector(
-            $app['role_users_read_repository'],
-            $app[Auth0UserIdentityResolver::class]
-        );
-    }
+$container->addShared(
+    'role_users_projector',
+    fn () => new \CultuurNet\UDB3\Role\ReadModel\Users\RoleUsersProjector(
+        $container->get('role_users_read_repository'),
+        $container->get(Auth0UserIdentityResolver::class),
+    )
 );
 
 $app['event_export_notification_mail_factory'] = $app->share(
