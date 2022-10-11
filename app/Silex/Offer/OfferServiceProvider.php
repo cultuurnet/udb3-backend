@@ -78,15 +78,12 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\UiTPAS\Validation\EventHasTicketSalesGuard;
 use CultuurNet\UDB3\User\CurrentUser;
 use Ramsey\Uuid\UuidFactory;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 final class OfferServiceProvider extends AbstractServiceProvider
 {
@@ -160,410 +157,490 @@ final class OfferServiceProvider extends AbstractServiceProvider
         ];
     }
 
-    public function register(Application $app): void
+    public function register(): void
     {
-        $app[RelatedDocumentProjectedToJSONLDDispatcher::class] = $app::share(
-            fn (Application $app) => new RelatedDocumentProjectedToJSONLDDispatcher(
-                $app[EventBus::class],
-                $app[EventRelationsRepository::class],
-                $app[PlaceRelationsRepository::class],
-                $app['event_iri_generator'],
-                $app['place_iri_generator'],
-            )
-        );
+        $container = $this->getContainer();
 
-        $app[OfferJsonDocumentReadRepository::class] = $app->share(
-            fn (Application $app) => new OfferJsonDocumentReadRepository(
-                $app['event_jsonld_repository'],
-                $app['place_jsonld_repository']
-            )
-        );
-
-        $app[OfferMetadataRepository::class] = $app->share(
-            function (Application $app) {
-                return new OfferMetadataRepository($app['dbal_connection']);
-            }
-        );
-
-        $app[OfferMetadataProjector::class] = $app->share(
-            function (Application $app) {
-                return new OfferMetadataProjector(
-                    $app[OfferMetadataRepository::class],
-                    $app['config']['api_key_consumers']
+        $container->addShared(
+            RelatedDocumentProjectedToJSONLDDispatcher::class,
+            function () use ($container) {
+                return new RelatedDocumentProjectedToJSONLDDispatcher(
+                    $container->get(EventBus::class),
+                    $container->get(EventRelationsRepository::class),
+                    $container->get(PlaceRelationsRepository::class),
+                    $container->get('event_iri_generator'),
+                    $container->get('place_iri_generator')
                 );
             }
         );
 
-        $app[AutoApproveForUiTIDv1ApiKeysProcessManager::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            OfferJsonDocumentReadRepository::class,
+            function () use ($container) {
+                return new OfferJsonDocumentReadRepository(
+                    $container->get('event_jsonld_repository'),
+                    $container->get('place_jsonld_repository')
+                );
+            }
+        );
+
+        $container->addShared(
+            OfferMetadataRepository::class,
+            function () use ($container) {
+                return new OfferMetadataRepository($container->get('dbal_connection'));
+            }
+        );
+
+        $container->addShared(
+            OfferMetadataProjector::class,
+            function () use ($container) {
+                return new OfferMetadataProjector(
+                    $container->get(OfferMetadataRepository::class),
+                    $container->get('config')['api_key_consumers']
+                );
+            }
+        );
+
+        $container->addShared(
+            AutoApproveForUiTIDv1ApiKeysProcessManager::class,
+            function () use ($container) {
                 return new ReplayFilteringEventListener(
                     new AutoApproveForUiTIDv1ApiKeysProcessManager(
-                        $app[OfferRepository::class],
-                        $app[ConsumerReadRepository::class],
-                        $app['should_auto_approve_new_offer']
+                        $container->get(OfferRepository::class),
+                        $container->get(ConsumerReadRepository::class),
+                        $container->get('should_auto_approve_new_offer')
                     )
                 );
             }
         );
 
-        $app[PopularityRepository::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            PopularityRepository::class,
+            function () use ($container) {
                 return new DBALPopularityRepository(
-                    $app['dbal_connection']
+                    $container->get('dbal_connection')
                 );
             }
         );
 
-        $app['iri_offer_identifier_factory'] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            'iri_offer_identifier_factory',
+            function () use ($container) {
                 return new IriOfferIdentifierFactory(
-                    $app['config']['offer_url_regex']
+                    $container->get('config')['offer_url_regex']
                 );
             }
         );
 
-        $app['should_auto_approve_new_offer'] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            'should_auto_approve_new_offer',
+            function () use ($container) {
                 return new ConsumerIsInPermissionGroup(
-                    (string) $app['config']['uitid']['auto_approve_group_id']
+                    (string) $container->get('config')['uitid']['auto_approve_group_id']
                 );
             }
         );
 
-        $app[OfferRepository::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            OfferRepository::class,
+            function () use ($container) {
                 return new OfferRepository(
-                    $app['event_repository'],
-                    $app['place_repository']
+                    $container->get('event_repository'),
+                    $container->get('place_repository')
                 );
             }
         );
 
-        $app[EventHasTicketSalesGuard::class] = $app->share(
-            fn (HybridContainerApplication $app) => new EventHasTicketSalesGuard(
-                $app['uitpas'],
-                $app['event_repository'],
-                LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('uitpas', 'ticket-sales'))
-            )
-        );
-
-        $app[UpdateTitleHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateTitleHandler($app[OfferRepository::class]);
+        $container->addShared(
+            EventHasTicketSalesGuard::class,
+            function () use ($container) {
+                return new EventHasTicketSalesGuard(
+                    $container->get('uitpas'),
+                    $container->get('event_repository'),
+                    LoggerFactory::create($container, LoggerName::forService('uitpas', 'ticket-sales'))
+                );
             }
         );
 
-        $app[UpdateAvailableFromHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateAvailableFromHandler($app[OfferRepository::class]);
+        $container->addShared(
+            UpdateTitleHandler::class,
+            function () use ($container) {
+                return new UpdateTitleHandler($container->get(OfferRepository::class));
             }
         );
 
-        $app[UpdateCalendarHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateCalendarHandler($app[OfferRepository::class]);
+        $container->addShared(
+            UpdateAvailableFromHandler::class,
+            function () use ($container) {
+                return new UpdateAvailableFromHandler($container->get(OfferRepository::class));
             }
         );
 
-        $app[UpdateStatusHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateStatusHandler($app[OfferRepository::class]);
+        $container->addShared(
+            UpdateCalendarHandler::class,
+            function () use ($container) {
+                return new UpdateCalendarHandler($container->get(OfferRepository::class));
             }
         );
 
-        $app[UpdateBookingAvailabilityHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateBookingAvailabilityHandler($app[OfferRepository::class]);
+        $container->addShared(
+            UpdateStatusHandler::class,
+            function () use ($container) {
+                return new UpdateStatusHandler($container->get(OfferRepository::class));
             }
         );
 
-        $app[UpdateTypeHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateTypeHandler($app[OfferRepository::class]);
+        $container->addShared(
+            UpdateBookingAvailabilityHandler::class,
+            function () use ($container) {
+                return new UpdateBookingAvailabilityHandler($container->get(OfferRepository::class));
             }
         );
 
-        $app[UpdateFacilitiesHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateFacilitiesHandler($app[OfferRepository::class]);
+        $container->addShared(
+            UpdateTypeHandler::class,
+            function () use ($container) {
+                return new UpdateTypeHandler($container->get(OfferRepository::class));
             }
         );
 
-        $app[ChangeOwnerHandler::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            UpdateFacilitiesHandler::class,
+            function () use ($container) {
+                return new UpdateFacilitiesHandler($container->get(OfferRepository::class));
+            }
+        );
+
+        $container->addShared(
+            ChangeOwnerHandler::class,
+            function () use ($container) {
                 return new ChangeOwnerHandler(
-                    $app[OfferRepository::class],
-                    $app['offer_owner_query']
+                    $container->get(OfferRepository::class),
+                    $container->get('offer_owner_query')
                 );
             }
         );
 
-        $app[AddLabelHandler::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            AddLabelHandler::class,
+            function () use ($container) {
                 return new AddLabelHandler(
-                    $app[OfferRepository::class],
-                    $app['labels.constraint_aware_service'],
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+                    $container->get(OfferRepository::class),
+                    $container->get('labels.constraint_aware_service'),
+                    $container->get(LabelServiceProvider::JSON_READ_REPOSITORY)
                 );
             }
         );
 
-        $app[RemoveLabelHandler::class] = $app->share(
-            function (Application $app) {
-                return new RemoveLabelHandler($app[OfferRepository::class]);
+        $container->addShared(
+            RemoveLabelHandler::class,
+            function () use ($container) {
+                return new RemoveLabelHandler($container->get(OfferRepository::class));
             }
         );
 
-        $app[ImportLabelsHandler::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            ImportLabelsHandler::class,
+            function () use ($container) {
                 return new ImportLabelsHandler(
-                    $app[OfferRepository::class],
+                    $container->get(OfferRepository::class),
                     new LabelImportPreProcessor(
-                        $app['labels.constraint_aware_service'],
-                        $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                        $app[CurrentUser::class]->getId()
+                        $container->get('labels.constraint_aware_service'),
+                        $container->get(LabelServiceProvider::JSON_READ_REPOSITORY),
+                        $container->get(CurrentUser::class)->getId()
                     )
                 );
             }
         );
 
-        $app[AddVideoHandler::class] = $app->share(
-            fn (Application $app) => new AddVideoHandler($app[OfferRepository::class])
+        $container->addShared(
+            AddVideoHandler::class,
+            function () use ($container) {
+                return new AddVideoHandler($container->get(OfferRepository::class));
+            }
         );
 
-        $app[UpdateVideoHandler::class] = $app->share(
-            fn (Application $app) => new UpdateVideoHandler($app[OfferRepository::class])
+        $container->addShared(
+            UpdateVideoHandler::class,
+            function () use ($container) {
+                return new UpdateVideoHandler($container->get(OfferRepository::class));
+            }
         );
 
-        $app[DeleteVideoHandler::class] = $app->share(
-            fn (Application $application) => new DeleteVideoHandler($app[OfferRepository::class])
+        $container->addShared(
+            DeleteVideoHandler::class,
+            function () use ($container) {
+                return  new DeleteVideoHandler($container->get(OfferRepository::class));
+            }
         );
 
-        $app[ImportVideosHandler::class] = $app->share(
-            fn (Application $app) => new ImportVideosHandler($app[OfferRepository::class])
+        $container->addShared(
+            ImportVideosHandler::class,
+            function () use ($container) {
+                return  new ImportVideosHandler($container->get(OfferRepository::class));
+            }
         );
 
-        $app[DeleteOfferHandler::class] = $app->share(
-            fn (Application $application) => new DeleteOfferHandler($app[OfferRepository::class])
+        $container->addShared(
+            DeleteOfferHandler::class,
+            fn () => new DeleteOfferHandler($container->get(OfferRepository::class))
         );
 
-        $app[UpdatePriceInfoHandler::class] = $app->share(
-            fn (Application $application) => new UpdatePriceInfoHandler($app[OfferRepository::class])
+        $container->addShared(
+            UpdatePriceInfoHandler::class,
+            fn () => new UpdatePriceInfoHandler($container->get(OfferRepository::class))
         );
 
-        $app[UpdateOrganizerHandler::class] = $app->share(
-            fn (Application $application) => new UpdateOrganizerHandler(
-                $app[OfferRepository::class],
-                $app[EventHasTicketSalesGuard::class]
+        $container->addShared(
+            UpdateOrganizerHandler::class,
+            fn () => new UpdateOrganizerHandler(
+                $container->get(OfferRepository::class),
+                $container->get(EventHasTicketSalesGuard::class)
             )
         );
 
-        $app[DeleteOrganizerHandler::class] = $app->share(
-            fn (Application $application) => new DeleteOrganizerHandler(
-                $app[OfferRepository::class],
-                $app[EventHasTicketSalesGuard::class]
+        $container->addShared(
+            DeleteOrganizerHandler::class,
+            fn () => new DeleteOrganizerHandler(
+                $container->get(OfferRepository::class),
+                $container->get(EventHasTicketSalesGuard::class)
             )
         );
 
-        $app[GetDetailRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetDetailRequestHandler($app[OfferJsonDocumentReadRepository::class])
+        $container->addShared(
+            GetDetailRequestHandler::class,
+            fn () => new GetDetailRequestHandler($container->get(OfferJsonDocumentReadRepository::class))
         );
 
-        $app[DeleteRequestHandler::class] = $app->share(
-            fn (Application $app) => new DeleteRequestHandler($app['event_command_bus'])
+        $container->addShared(
+            DeleteRequestHandler::class,
+            fn () => new DeleteRequestHandler($container->get('event_command_bus'))
         );
 
-        $app[UpdateTypicalAgeRangeRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateTypicalAgeRangeRequestHandler($app['event_command_bus']);
+        $container->addShared(
+            UpdateTypicalAgeRangeRequestHandler::class,
+            function () use ($container) {
+                return new UpdateTypicalAgeRangeRequestHandler($container->get('event_command_bus'));
             }
         );
 
-        $app[DeleteTypicalAgeRangeRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new DeleteTypicalAgeRangeRequestHandler($app['event_command_bus']);
+        $container->addShared(
+            DeleteTypicalAgeRangeRequestHandler::class,
+            function () use ($container) {
+                return new DeleteTypicalAgeRangeRequestHandler($container->get('event_command_bus'));
             }
         );
 
-        $app[AddLabelRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new AddLabelRequestHandler($app['event_command_bus']);
+        $container->addShared(
+            AddLabelRequestHandler::class,
+            function () use ($container) {
+                return new AddLabelRequestHandler($container->get('event_command_bus'));
             }
         );
 
-        $app[RemoveLabelRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new RemoveLabelRequestHandler($app['event_command_bus']);
+        $container->addShared(
+            RemoveLabelRequestHandler::class,
+            function () use ($container) {
+                return new RemoveLabelRequestHandler($container->get('event_command_bus'));
             }
         );
 
-        $app[AddLabelFromJsonBodyRequestHandler::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            AddLabelFromJsonBodyRequestHandler::class,
+            function () use ($container) {
                 return new AddLabelFromJsonBodyRequestHandler(
-                    $app['event_command_bus'],
+                    $container->get('event_command_bus'),
                     new LabelJSONDeserializer()
                 );
             }
         );
 
-        $app[UpdateBookingInfoRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateBookingInfoRequestHandler($app['event_command_bus']);
+        $container->addShared(
+            UpdateBookingInfoRequestHandler::class,
+            function () use ($container) {
+                return new UpdateBookingInfoRequestHandler($container->get('event_command_bus'));
             }
         );
 
-        $app[UpdateContactPointRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateContactPointRequestHandler($app['event_command_bus']);
+        $container->addShared(
+            UpdateContactPointRequestHandler::class,
+            function () use ($container) {
+                return new UpdateContactPointRequestHandler($container->get('event_command_bus'));
             }
         );
 
-        $app[UpdateTitleRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateTitleRequestHandler($app['event_command_bus'])
+        $container->addShared(
+            UpdateTitleRequestHandler::class,
+            fn () => new UpdateTitleRequestHandler($container->get('event_command_bus'))
         );
 
-        $app[UpdateDescriptionRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateDescriptionRequestHandler(
-                $app['event_command_bus'],
+        $container->addShared(
+            UpdateDescriptionRequestHandler::class,
+            fn () => new UpdateDescriptionRequestHandler(
+                $container->get('event_command_bus'),
                 new DescriptionJSONDeserializer()
             )
         );
 
-        $app[UpdateAvailableFromRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateAvailableFromRequestHandler($app['event_command_bus'])
+        $container->addShared(
+            UpdateAvailableFromRequestHandler::class,
+            fn () => new UpdateAvailableFromRequestHandler($container->get('event_command_bus'))
         );
 
-        $app[GetHistoryRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetHistoryRequestHandler(
-                $app['event_history_repository'],
-                $app['places_history_repository'],
-                $app[CurrentUser::class]->isGodUser()
+        $container->addShared(
+            GetHistoryRequestHandler::class,
+            fn () => new GetHistoryRequestHandler(
+                $container->get('event_history_repository'),
+                $container->get('places_history_repository'),
+                $container->get(CurrentUser::class)->isGodUser()
             )
         );
 
-        $app[GetPermissionsForCurrentUserRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetPermissionsForCurrentUserRequestHandler(
-                $app['offer_permission_voter'],
-                $app[CurrentUser::class]->getId()
+        $container->addShared(
+            GetPermissionsForCurrentUserRequestHandler::class,
+            fn () => new GetPermissionsForCurrentUserRequestHandler(
+                $container->get('offer_permission_voter'),
+                $container->get(CurrentUser::class)->getId()
             )
         );
 
-        $app[GetPermissionsForGivenUserRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetPermissionsForGivenUserRequestHandler(
-                $app['offer_permission_voter']
+        $container->addShared(
+            GetPermissionsForGivenUserRequestHandler::class,
+            fn () => new GetPermissionsForGivenUserRequestHandler(
+                $container->get('offer_permission_voter')
             )
         );
 
-        $app[CurrentUserHasPermissionRequestHandler::class] = $app->share(
-            fn (Application $app) => new CurrentUserHasPermissionRequestHandler(
+        $container->addShared(
+            CurrentUserHasPermissionRequestHandler::class,
+            fn () => new CurrentUserHasPermissionRequestHandler(
                 Permission::aanbodBewerken(),
-                $app['offer_permission_voter'],
-                $app[CurrentUser::class]->getId()
+                $container->get('offer_permission_voter'),
+                $container->get(CurrentUser::class)->getId()
             )
         );
 
-        $app[GivenUserHasPermissionRequestHandler::class] = $app->share(
-            fn (Application $app) => new GivenUserHasPermissionRequestHandler(
+        $container->addShared(
+            GivenUserHasPermissionRequestHandler::class,
+            fn () => new GivenUserHasPermissionRequestHandler(
                 Permission::aanbodBewerken(),
-                $app['offer_permission_voter']
+                $container->get('offer_permission_voter')
             )
         );
 
-        $app[UpdateOrganizerRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateOrganizerRequestHandler(
-                $app['event_command_bus'],
-                $app['organizer_jsonld_repository']
+        $container->addShared(
+            UpdateOrganizerRequestHandler::class,
+            fn () => new UpdateOrganizerRequestHandler(
+                $container->get('event_command_bus'),
+                $container->get('organizer_jsonld_repository')
             )
         );
 
-        $app[UpdateOrganizerFromJsonBodyRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateOrganizerFromJsonBodyRequestHandler(
-                $app['event_command_bus'],
-                $app['organizer_jsonld_repository']
+        $container->addShared(
+            UpdateOrganizerFromJsonBodyRequestHandler::class,
+            fn () => new UpdateOrganizerFromJsonBodyRequestHandler(
+                $container->get('event_command_bus'),
+                $container->get('organizer_jsonld_repository')
             )
         );
 
-        $app[DeleteOrganizerRequestHandler::class] = $app->share(
-            fn (Application $app) => new DeleteOrganizerRequestHandler(
-                $app['event_command_bus']
+        $container->addShared(
+            DeleteOrganizerRequestHandler::class,
+            fn () => new DeleteOrganizerRequestHandler(
+                $container->get('event_command_bus')
             )
         );
 
-        $app[UpdateCalendarRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateCalendarRequestHandler($app['event_command_bus'])
+        $container->addShared(
+            UpdateCalendarRequestHandler::class,
+            fn () => new UpdateCalendarRequestHandler($container->get('event_command_bus'))
         );
 
-        $app[GetCalendarSummaryRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetCalendarSummaryRequestHandler($app[OfferJsonDocumentReadRepository::class])
+        $container->addShared(
+            GetCalendarSummaryRequestHandler::class,
+            fn () => new GetCalendarSummaryRequestHandler($container->get(OfferJsonDocumentReadRepository::class))
         );
 
-        $app[UpdateStatusRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateStatusRequestHandler($app['event_command_bus'])
+        $container->addShared(
+            UpdateStatusRequestHandler::class,
+            fn () => new UpdateStatusRequestHandler($container->get('event_command_bus'))
         );
 
-        $app[UpdateBookingAvailabilityRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateBookingAvailabilityRequestHandler($app['event_command_bus'])
+        $container->addShared(
+            UpdateBookingAvailabilityRequestHandler::class,
+            fn () => new UpdateBookingAvailabilityRequestHandler($container->get('event_command_bus'))
         );
 
-        $app[UpdateTypeRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateTypeRequestHandler($app['event_command_bus'])
+        $container->addShared(
+            UpdateTypeRequestHandler::class,
+            fn () => new UpdateTypeRequestHandler($container->get('event_command_bus'))
         );
 
-        $app[UpdateFacilitiesRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateFacilitiesRequestHandler($app['event_command_bus'])
+        $container->addShared(
+            UpdateFacilitiesRequestHandler::class,
+            fn () => new UpdateFacilitiesRequestHandler($container->get('event_command_bus'))
         );
 
-        $app[UpdatePriceInfoRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdatePriceInfoRequestHandler($app['event_command_bus'])
+        $container->addShared(
+            UpdatePriceInfoRequestHandler::class,
+            fn () => new UpdatePriceInfoRequestHandler($container->get('event_command_bus'))
         );
 
-        $app[AddImageRequestHandler::class] = $app->share(
-            fn (Application $app) => new AddImageRequestHandler(
-                $app['event_command_bus']
+        $container->addShared(
+            AddImageRequestHandler::class,
+            fn () => new AddImageRequestHandler(
+                $container->get('event_command_bus')
             )
         );
 
-        $app[SelectMainImageRequestHandler::class] = $app->share(
-            fn (Application $app) => new SelectMainImageRequestHandler(
-                $app['event_command_bus'],
-                $app['media_manager']
+        $container->addShared(
+            SelectMainImageRequestHandler::class,
+            fn () => new SelectMainImageRequestHandler(
+                $container->get('event_command_bus'),
+                $container->get('media_manager')
             )
         );
 
-        $app[UpdateImageRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateImageRequestHandler(
-                $app['event_command_bus']
+        $container->addShared(
+            UpdateImageRequestHandler::class,
+            fn () => new UpdateImageRequestHandler(
+                $container->get('event_command_bus')
             )
         );
 
-        $app[RemoveImageRequestHandler::class] = $app->share(
-            fn (Application $app) => new RemoveImageRequestHandler(
-                $app['event_command_bus'],
-                $app['media_manager']
+        $container->addShared(
+            RemoveImageRequestHandler::class,
+            fn () => new RemoveImageRequestHandler(
+                $container->get('event_command_bus'),
+                $container->get('media_manager')
             )
         );
 
-        $app[AddVideoRequestHandler::class] = $app->share(
-            fn (Application $app) => new AddVideoRequestHandler(
-                $app['event_command_bus'],
+        $container->addShared(
+            AddVideoRequestHandler::class,
+            fn () => new AddVideoRequestHandler(
+                $container->get('event_command_bus'),
                 new UuidFactory()
             )
         );
 
-        $app[UpdateVideosRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateVideosRequestHandler(
-                $app['event_command_bus']
+        $container->addShared(
+            UpdateVideosRequestHandler::class,
+            fn () => new UpdateVideosRequestHandler(
+                $container->get('event_command_bus')
             )
         );
 
-        $app[DeleteVideoRequestHandler::class] = $app->share(
-            fn (Application $app) => new DeleteVideoRequestHandler(
-                $app['event_command_bus']
+        $container->addShared(
+            DeleteVideoRequestHandler::class,
+            fn () => new DeleteVideoRequestHandler(
+                $container->get('event_command_bus')
             )
         );
 
-        $app[PatchOfferRequestHandler::class] = $app->share(
-            fn (Application $app) => new PatchOfferRequestHandler($app['event_command_bus'])
+        $container->addShared(
+            PatchOfferRequestHandler::class,
+            fn () => new PatchOfferRequestHandler($container->get('event_command_bus'))
         );
     }
 }
