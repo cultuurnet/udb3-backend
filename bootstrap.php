@@ -330,14 +330,7 @@ $app['logger_factory.resque_worker'] = $app::protect(
 
 
 /** Place **/
-
-$container->addShared(
-    'place_iri_generator',
-    fn () => new CallableIriGenerator(
-        fn ($cdbid) => $container->get('config')['url'] . '/place/' . $cdbid
-    )
-);
-
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceServiceProvider());
 $container->addServiceProvider(new PlaceJSONLDServiceProvider());
 
 $app['place_store'] = $app->share(
