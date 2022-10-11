@@ -331,14 +331,11 @@ $app['logger_factory.resque_worker'] = $app::protect(
 
 /** Place **/
 
-$app['place_iri_generator'] = $app->share(
-    function ($app) {
-        return new CallableIriGenerator(
-            function ($cdbid) use ($app) {
-                return $app['config']['url'] . '/place/' . $cdbid;
-            }
-        );
-    }
+$container->addShared(
+    'place_iri_generator',
+    fn () => new CallableIriGenerator(
+        fn ($cdbid) => $container->get('config')['url'] . '/place/' . $cdbid
+    )
 );
 
 $container->addServiceProvider(new PlaceJSONLDServiceProvider());
