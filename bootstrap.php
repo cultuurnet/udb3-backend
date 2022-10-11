@@ -354,25 +354,11 @@ $app['real_role_repository'] = $app->share(
     }
 );
 
-// There is a role_read_repository that broadcasts any changes to role details.
-// Use the repository to make changes, else other read models that contain role details will not be updated.
-$app['role_detail_cache'] = $app->share(
-    function ($app) {
-        return $app['cache']('role_detail');
-    }
-);
-
-$app['user_roles_cache'] = $app->share(
-    function ($app) {
-        return $app['cache']('user_roles');
-    }
-);
-
 $app['role_read_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
             new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-                $app['role_detail_cache']
+                $app['cache']('role_detail')
             ),
             $app[EventBus::class],
             new \CultuurNet\UDB3\Role\ReadModel\Detail\EventFactory()
@@ -383,7 +369,7 @@ $app['role_read_repository'] = $app->share(
 $app['user_roles_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-            $app['user_roles_cache']
+            $app['cache']('user_roles')
         );
     }
 );
@@ -428,16 +414,10 @@ $app['user_roles_projector'] = $app->share(
     }
 );
 
-$app['role_labels_cache'] = $app->share(
-    function ($app) {
-        return $app['cache']('role_labels');
-    }
-);
-
 $app['role_labels_read_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-            $app['role_labels_cache']
+            $app['cache']('role_labels')
         );
     }
 );
@@ -452,16 +432,10 @@ $app['role_labels_projector'] = $app->share(
     }
 );
 
-$app['label_roles_cache'] = $app->share(
-    function ($app) {
-        return $app['cache']('label_roles');
-    }
-);
-
 $app['label_roles_read_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-            $app['label_roles_cache']
+            $app['cache']('label_roles')
         );
     }
 );
@@ -474,16 +448,10 @@ $app['label_roles_projector'] = $app->share(
     }
 );
 
-$app['role_users_cache'] = $app->share(
-    function ($app) {
-        return $app['cache']('role_users');
-    }
-);
-
 $app['role_users_read_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-            $app['role_users_cache']
+            $app['cache']('role_users')
         );
     }
 );
