@@ -96,7 +96,7 @@ final class AMQPPublisherServiceProvider extends AbstractServiceProvider
 
                         // Check if the app is running in the CLI environment and route the messages to the "cli" queue.
                         // If not, route them to the "api" queue.
-                        return $container->get('api_name') === ApiName::CLI ? 'cli' : 'api';
+                        return $container->get(ApiName::class) === ApiName::CLI ? 'cli' : 'api';
                     }
                 );
 

@@ -13,7 +13,9 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-const API_NAME = ApiName::CLI;
+// Set the API_NAME either to "UITPAS_LISTENER" if the "amqp-listen-uitpas" command is run, or the generic ApiName "CLI"
+// otherwise.
+define('API_NAME', isset($argv[1]) && $argv[1] === 'amqp-listen-uitpas' ? ApiName::UITPAS_LISTENER : ApiName::CLI);
 
 /** @var DefinitionContainerInterface $container */
 $container = require __DIR__ . '/../bootstrap.php';
