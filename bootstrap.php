@@ -333,64 +333,6 @@ $app['logger_factory.resque_worker'] = $app::protect(
 $container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceServiceProvider());
 $container->addServiceProvider(new PlaceJSONLDServiceProvider());
 
-$container->addShared(
-    'place_store',
-    fn () => $container->get('event_store_factory')(AggregateType::place())
-);
-
-$container->addShared(
-    'places_locator_event_stream_decorator',
-    fn () => new OfferLocator($container->get('place_iri_generator'))
-);
-
-// @todo: remove usages of 'place_repository' with Class based share
-$container->addShared(
-    'place_repository',
-    fn () => new \CultuurNet\UDB3\Place\PlaceRepository(
-        $container->get('place_store'),
-        $container->get(EventBus::class),
-        [
-            $container->get('event_stream_metadata_enricher'),
-            $container->get('places_locator_event_stream_decorator'),
-        ]
-    )
-);
-$container->addShared(
-    \CultuurNet\UDB3\Place\PlaceRepository::class,
-    function () use ($container): \CultuurNet\UDB3\Place\PlaceRepository {
-        return $container->get('place_repository');
-    }
-);
-
-$container->addShared(
-    'place_service',
-    fn () => new LocalPlaceService(
-        $container->get('place_jsonld_repository'),
-        $container->get('place_repository'),
-        $container->get(PlaceRelationsRepository::class),
-        $container->get('place_iri_generator'),
-    )
-);
-
-$container->addShared(
-    'duplicate_place_repository',
-    fn () => new DBALDuplicatePlaceRepository($container->get('dbal_connection'))
-);
-
-$container->addShared(
-    'canonical_service',
-    fn () => new CanonicalService(
-        $container->get('config')['museumpas']['label'],
-        $container->get('duplicate_place_repository'),
-        $container->get(EventRelationsRepository::class),
-        new DBALReadRepository(
-            $container->get('dbal_connection'),
-            new StringLiteral('labels_relations')
-        ),
-        $container->get('place_jsonld_repository'),
-    )
-);
-
 /** Organizer **/
 
 $app['organizer_iri_generator'] = $app->share(
