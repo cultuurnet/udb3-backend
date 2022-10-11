@@ -6,52 +6,47 @@ namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\ExternalId\ArrayMappingService;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 
-class UDB2EventServicesProvider implements ServiceProviderInterface
+final class UDB2EventServicesProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app['udb2_event_cdbid_extractor'] = $app->share(
-            function (Application $app) {
-                return new EventCdbIdExtractor(
-                    $app['udb2_place_external_id_mapping_service'],
-                    $app['udb2_organizer_external_id_mapping_service']
-                );
-            }
-        );
+        return [
+            'udb2_event_cdbid_extractor',
+        ];
+    }
 
-        $app['udb2_place_external_id_mapping_service'] = $app->share(
-            function (Application $app) {
-                return $app['udb2_external_id_mapping_service_factory'](__DIR__ . '../../config.external_id_mapping_place.php');
-            }
-        );
+    public function register(): void
+    {
+        $container = $this->getContainer();
 
-        $app['udb2_organizer_external_id_mapping_service'] = $app->share(
-            function (Application $app) {
-                return $app['udb2_external_id_mapping_service_factory'](__DIR__ . '../../config.external_id_mapping_organizer.php');
-            }
-        );
-
-        $app['udb2_external_id_mapping_service_factory'] = $app->protect(
-            function ($mappingFileLocation) {
-                $map = [];
-
-                if (file_exists($mappingFileLocation)) {
-                    $mapping = require $mappingFileLocation;
-
-                    if (is_array($mapping)) {
-                        $map = $mapping;
-                    }
-                }
-
-                return new ArrayMappingService($map);
-            }
+        $container->addShared(
+            'udb2_event_cdbid_extractor',
+            fn () => $this->buildUdb2EventCbidExtractor(),
         );
     }
 
-    public function boot(Application $app): void
+    private function buildUdb2EventCbidExtractor(): EventCdbIdExtractor
     {
+        return new EventCdbIdExtractor(
+            $this->buildMappingServiceForLocation(__DIR__ . '../../config.external_id_mapping_place.php'),
+            $this->buildMappingServiceForLocation(__DIR__ . '../../config.external_id_mapping_organizer.php'),
+        );
+    }
+
+    private function buildMappingServiceForLocation(string $mappingFileLocation): ArrayMappingService
+    {
+        $map = [];
+
+        if (file_exists($mappingFileLocation)) {
+            $mapping = require $mappingFileLocation;
+
+            if (is_array($mapping)) {
+                $map = $mapping;
+            }
+        }
+
+        return new ArrayMappingService($map);
     }
 }
