@@ -60,9 +60,12 @@ final class SwiftMailerServiceProvider extends AbstractServiceProvider
                 $transport->setHost($options['host']);
                 $transport->setPort($options['port']);
                 $transport->setEncryption($options['encryption']);
-                $transport->setUsername($options['username']);
-                $transport->setPassword($options['password']);
-                $transport->setAuthMode($options['auth_mode']);
+
+                // The following methods are "magic" methods which PHPStan does not recognize on this class for some
+                // reason.
+                $transport->setUsername($options['username']); /** @phpstan-ignore-line */
+                $transport->setPassword($options['password']); /** @phpstan-ignore-line */
+                $transport->setAuthMode($options['auth_mode']); /** @phpstan-ignore-line */
 
                 return new Swift_Mailer($transport);
             }
