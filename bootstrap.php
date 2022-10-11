@@ -181,11 +181,9 @@ $container->addServiceProvider(new OrganizerSecurityServiceProvider());
 
 $app['cache'] = $app->share(
     function (Application $app) {
-        $parameters = $app['config']['cache']['redis'];
-
-        return function ($cacheType) use ($parameters) {
+        return function ($cacheType) use ($app) {
             $redisClient = new Predis\Client(
-                $parameters,
+                $app['config']['cache']['redis'],
                 [
                     'prefix' => $cacheType . '_',
                 ]
