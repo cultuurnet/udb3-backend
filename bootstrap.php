@@ -179,15 +179,7 @@ $container->addServiceProvider(new GeneralSecurityServiceProvider());
 $container->addServiceProvider(new OfferSecurityServiceProvider());
 $container->addServiceProvider(new OrganizerSecurityServiceProvider());
 
-$container->addShared(
-    'cache',
-    fn ($cacheType) => new Doctrine\Common\Cache\PredisCache(
-        new Predis\Client(
-            $app['config']['cache']['redis'],
-            ['prefix' => $cacheType . '_']
-        )
-    )
-);
+$container->addServiceProvider(new \CultuurNet\UDB3\Cache\CacheServiceProvider());
 
 $app['dbal_connection'] = $app->share(
     function ($app) {
