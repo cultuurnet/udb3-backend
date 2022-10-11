@@ -68,7 +68,7 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
         return [
             'api_client_id' => $clientId ?? 'null',
             'api_key' => $this->apiKey ? $this->apiKey->toString() : 'null',
-            'api_name' => API_NAME ?? 'null',
+            'api_name' => $this->apiName ?? 'null',
         ];
     }
 
