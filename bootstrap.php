@@ -52,12 +52,12 @@ use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Media\ImageStorageProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceHistoryServiceProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceRequestHandlerServiceProvider;
+use CultuurNet\UDB3\Place\PlaceHistoryServiceProvider;
+use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
+use CultuurNet\UDB3\Place\PlaceRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
-use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
+use CultuurNet\UDB3\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceLabelsServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceOrganizerServiceProvider;
@@ -138,7 +138,7 @@ $app['event_store_factory'] = $app->protect(
 
 $container->addServiceProvider(new SentryServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\SavedSearches\SavedSearchesServiceProvider());
 
 $container->addServiceProvider(new CommandBusServiceProvider());
 $container->addServiceProvider(new EventBusServiceProvider());
@@ -341,7 +341,7 @@ $app['place_iri_generator'] = $app->share(
     }
 );
 
-$app->register(new PlaceJSONLDServiceProvider());
+$container->addServiceProvider(new PlaceJSONLDServiceProvider());
 
 $app['place_store'] = $app->share(
     function ($app) {
@@ -704,12 +704,12 @@ $container->addServiceProvider(new EventEditingServiceProvider());
 $container->addServiceProvider(new EventReadServiceProvider());
 $container->addServiceProvider(new EventCommandHandlerProvider());
 $container->addServiceProvider(new EventRequestHandlerServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceReadServiceProvider());
-$app->register(new PlaceRequestHandlerServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceEditingServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceReadServiceProvider());
+$container->addServiceProvider(new PlaceRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $container->addServiceProvider(new EventPermissionServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlacePermissionServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $container->addServiceProvider(new LabelServiceProvider());

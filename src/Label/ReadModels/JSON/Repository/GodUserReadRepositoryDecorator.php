@@ -41,7 +41,7 @@ final class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
         return $this->repository->canUseLabel($userId, $name);
     }
 
-    public function search(Query $query): ?array
+    public function search(Query $query): array
     {
         return $this->repository->search($query);
     }

@@ -90,23 +90,20 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         $query = new Query($name, $userId);
         $foundLabels = $this->search($query);
 
-        if ($foundLabels) {
-            $nameLowerCase = mb_strtolower($name);
-            foreach ($foundLabels as $foundLabel) {
-                $foundLabelLowerCase = mb_strtolower($foundLabel->getName()->toNative());
-                if ($nameLowerCase === $foundLabelLowerCase) {
-                    return true;
-                }
+        $nameLowerCase = mb_strtolower($name);
+        foreach ($foundLabels as $foundLabel) {
+            $foundLabelLowerCase = mb_strtolower($foundLabel->getName()->toNative());
+            if ($nameLowerCase === $foundLabelLowerCase) {
+                return true;
             }
         }
-
         return false;
     }
 
     /**
-     * @return Entity[]|null
+     * @return Entity[]
      */
-    public function search(Query $query): ?array
+    public function search(Query $query): array
     {
         $queryBuilder = $this->createSearchQuery($query);
 
@@ -252,11 +249,11 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
     }
 
     /**
-     * @return Entity[]|null
+     * @return Entity[]
      */
-    private function getResults(QueryBuilder $queryBuilder): ?array
+    private function getResults(QueryBuilder $queryBuilder): array
     {
-        $entities = null;
+        $entities = [];
 
         $statement = $queryBuilder->execute();
         $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);

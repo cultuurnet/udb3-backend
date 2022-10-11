@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Media;
 
-use Broadway\Repository\AggregateNotFoundException;
-use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Media\MediaManager;
+use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Media\MediaUrlMapping;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -41,8 +42,8 @@ final class GetMediaRequestHandler implements RequestHandlerInterface
 
         try {
             $mediaObject = $this->mediaManager->get(new UUID($id));
-        } catch (AggregateNotFoundException $ex) {
-            throw new EntityNotFoundException(sprintf('Media with id: %s not found.', $id));
+        } catch (MediaObjectNotFoundException | InvalidArgumentException $e) {
+            throw ApiProblem::mediaObjectNotFound($id);
         }
 
         $serializedMediaObject = $this->serializer->serialize($mediaObject);

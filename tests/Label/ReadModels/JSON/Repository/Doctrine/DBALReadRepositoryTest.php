@@ -313,13 +313,11 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_returns_null_when_nothing_matches_search(): void
+    public function it_returns_an_empty_array_when_nothing_matches_search(): void
     {
         $search = new Query('nothing_please');
-
         $entities = $this->dbalReadRepository->search($search);
-
-        $this->assertNull($entities);
+        $this->assertEquals([], $entities);
     }
 
     /**
