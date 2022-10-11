@@ -428,12 +428,6 @@ $app['user_roles_projector'] = $app->share(
     }
 );
 
-$app['role_permissions_cache'] = $app->share(
-    function ($app) {
-        return $app['cache']('role_permissions');
-    }
-);
-
 $app['role_labels_cache'] = $app->share(
     function ($app) {
         return $app['cache']('role_labels');
