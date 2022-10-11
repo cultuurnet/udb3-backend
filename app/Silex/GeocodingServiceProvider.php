@@ -4,25 +4,33 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Geocoding\CachedGeocodingService;
 use CultuurNet\UDB3\Geocoding\DefaultGeocodingService;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
 use Geocoder\StatefulGeocoder;
 use Http\Adapter\Guzzle7\Client;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class GeocodingServiceProvider implements ServiceProviderInterface
+final class GeocodingServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app)
+    protected function getProvidedServiceNames(): array
     {
-        $app[GeocodingService::class] = $app->share(
-            function (HybridContainerApplication $app) {
-                $googleMapsApiKey = isset($app['config']['google_maps_api_key']) ? $app['config']['google_maps_api_key'] : null;
+        return [
+            GeocodingService::class,
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            GeocodingService::class,
+            function () use ($container) {
+                $googleMapsApiKey = isset($container->get('config')['google_maps_api_key']) ? $container->get('config')['google_maps_api_key'] : null;
 
                 $geocodingService = new DefaultGeocodingService(
                     new StatefulGeocoder(
@@ -32,18 +40,14 @@ class GeocodingServiceProvider implements ServiceProviderInterface
                             $googleMapsApiKey
                         )
                     ),
-                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('geo-coordinates', 'google'))
+                    LoggerFactory::create($container, LoggerName::forService('geo-coordinates', 'google'))
                 );
 
                 return new CachedGeocodingService(
                     $geocodingService,
-                    $app['cache']('geocoords')
+                    $container->get('cache')('geocoords')
                 );
             }
         );
-    }
-
-    public function boot(Application $app)
-    {
     }
 }

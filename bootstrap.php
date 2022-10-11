@@ -752,7 +752,7 @@ $app->register(
 
 $app->register(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASIncomingEventServicesProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\GeocodingServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Silex\GeocodingServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
