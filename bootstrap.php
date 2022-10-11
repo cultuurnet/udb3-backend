@@ -124,16 +124,7 @@ $app['config'] = array_merge_recursive(
 
 $app['debug'] = $app['config']['debug'] ?? false;
 
-$container->addShared(
-    'event_store_factory',
-    fn (AggregateType $aggregateType) => new AggregateAwareDBALEventStore(
-        $container->get('dbal_connection'),
-        $container->get('eventstore_payload_serializer'),
-        new \Broadway\Serializer\SimpleInterfaceSerializer(),
-        'event_store',
-        $aggregateType
-    )
-);
+$container->addServiceProvider(new \CultuurNet\UDB3\Event\EventStoreServiceProvider());
 
 $container->addServiceProvider(new SentryServiceProvider());
 
