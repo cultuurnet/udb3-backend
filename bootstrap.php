@@ -57,7 +57,7 @@ use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Place\PlaceRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
-use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
+use CultuurNet\UDB3\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerServiceProvider;
@@ -733,7 +733,7 @@ $app['predis.client'] = $app->share(function ($app) {
     return new Predis\Client($redisURI);
 });
 
-$app->register(new Sapi3SearchServiceProvider());
+$container->addServiceProvider(new Sapi3SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
 // Provides authentication of HTTP requests. While the HTTP authentication is not needed in CLI context, the service
