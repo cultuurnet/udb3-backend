@@ -713,7 +713,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider()
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $container->addServiceProvider(new LabelServiceProvider());
-$app->register(new RoleRequestHandlerServiceProvider());
+$container->addServiceProvider(new RoleRequestHandlerServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
 $container->addServiceProvider(new ProductionServiceProvider());
 $app->register(new UiTPASServiceLabelsServiceProvider());
