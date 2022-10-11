@@ -331,45 +331,10 @@ $app['organizer_iri_generator'] = $app->share(
     }
 );
 
+$container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerServiceProvider());
 $container->addServiceProvider(new OrganizerRequestHandlerServiceProvider());
 $container->addServiceProvider(new OrganizerJSONLDServiceProvider());
 $container->addServiceProvider(new OrganizerCommandHandlerProvider());
-
-$container->addShared(
-    'organizer_store',
-    fn () => new UniqueDBALEventStoreDecorator(
-        $container->get('event_store_factory')(AggregateType::organizer()),
-        $container->get('dbal_connection'),
-        'organizer_unique_websites',
-        new WebsiteUniqueConstraintService(new WebsiteNormalizer())
-    )
-);
-
-$container->addShared(
-    'organizers_locator_event_stream_decorator',
-    fn () => new OfferLocator($container->get('organizer_iri_generator'))
-);
-
-$container->addShared(
-    'organizer_repository',
-    fn () => new \CultuurNet\UDB3\Organizer\OrganizerRepository(
-        $container->get('organizer_store'),
-        $container->get(EventBus::class),
-        [
-            $container->get('event_stream_metadata_enricher'),
-            $container->get('organizers_locator_event_stream_decorator'),
-        ]
-    )
-);
-
-$container->addShared(
-    'organizer_service',
-    fn () => new \CultuurNet\UDB3\OrganizerService(
-        $container->get('organizer_jsonld_repository'),
-        $container->get('organizer_repository'),
-        $container->get('organizer_iri_generator'),
-    )
-);
 
 /** Roles */
 
