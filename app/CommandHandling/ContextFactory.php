@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\CommandHandling;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
+use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\User\CurrentUser;
 use Psr\Container\ContainerInterface;
@@ -76,7 +77,7 @@ final class ContextFactory
             $container->get(CurrentUser::class)->getId(),
             $container->get(JsonWebToken::class),
             $container->get(ApiKey::class),
-            API_NAME,
+            $container->get(ApiName::class),
             $container->get(Consumer::class)
         );
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Error;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
+use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use Monolog\Handler\GroupHandler;
 use Monolog\Handler\StreamHandler;
@@ -70,7 +71,7 @@ final class LoggerFactory
                 new SentryHandler($container->get(HubInterface::class), Logger::ERROR),
                 $container->get(JsonWebToken::class),
                 $container->get(ApiKey::class),
-                API_NAME
+                $container->get(ApiName::class)
             );
         }
 
