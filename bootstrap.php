@@ -335,44 +335,40 @@ $container->addServiceProvider(new OrganizerRequestHandlerServiceProvider());
 $container->addServiceProvider(new OrganizerJSONLDServiceProvider());
 $container->addServiceProvider(new OrganizerCommandHandlerProvider());
 
-$app['organizer_store'] = $app->share(
-    function ($app) {
-        return new UniqueDBALEventStoreDecorator(
-            $app['event_store_factory'](AggregateType::organizer()),
-            $app['dbal_connection'],
-            'organizer_unique_websites',
-            new WebsiteUniqueConstraintService(new WebsiteNormalizer())
-        );
-    }
+$container->addShared(
+    'organizer_store',
+    fn () => new UniqueDBALEventStoreDecorator(
+        $container->get('event_store_factory')(AggregateType::organizer()),
+        $container->get('dbal_connection'),
+        'organizer_unique_websites',
+        new WebsiteUniqueConstraintService(new WebsiteNormalizer())
+    )
 );
 
-$app['organizers_locator_event_stream_decorator'] = $app->share(
-    function (Application $app) {
-        return new OfferLocator($app['organizer_iri_generator']);
-    }
+$container->addShared(
+    'organizers_locator_event_stream_decorator',
+    fn () => new OfferLocator($container->get('organizer_iri_generator'))
 );
 
-$app['organizer_repository'] = $app->share(
-    function (Application $app) {
-        return new \CultuurNet\UDB3\Organizer\OrganizerRepository(
-            $app['organizer_store'],
-            $app[EventBus::class],
-            array(
-                $app['event_stream_metadata_enricher'],
-                $app['organizers_locator_event_stream_decorator']
-            )
-        );
-    }
+$container->addShared(
+    'organizer_repository',
+    fn () => new \CultuurNet\UDB3\Organizer\OrganizerRepository(
+        $container->get('organizer_store'),
+        $container->get(EventBus::class),
+        [
+            $container->get('event_stream_metadata_enricher'),
+            $container->get('organizers_locator_event_stream_decorator'),
+        ]
+    )
 );
 
-$app['organizer_service'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\OrganizerService(
-            $app['organizer_jsonld_repository'],
-            $app['organizer_repository'],
-            $app['organizer_iri_generator']
-        );
-    }
+$container->addShared(
+    'organizer_service',
+    fn () => new \CultuurNet\UDB3\OrganizerService(
+        $container->get('organizer_jsonld_repository'),
+        $container->get('organizer_repository'),
+        $container->get('organizer_iri_generator'),
+    )
 );
 
 /** Roles */
