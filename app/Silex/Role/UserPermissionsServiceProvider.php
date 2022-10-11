@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Role;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsReadRepository;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsWriteRepository;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsProjector;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 use CultuurNet\UDB3\StringLiteral;
 
-class UserPermissionsServiceProvider implements ServiceProviderInterface
+final class UserPermissionsServiceProvider extends AbstractServiceProvider
 {
     public const USER_ROLES_TABLE = 'user_roles';
     public const ROLE_PERMISSIONS_TABLE = 'role_permissions';
@@ -20,49 +19,41 @@ class UserPermissionsServiceProvider implements ServiceProviderInterface
     public const USER_PERMISSIONS_WRITE_REPOSITORY = 'user_permissions_write_repository';
 
     public const USER_PERMISSIONS_PROJECTOR = 'roles.user_permissions_projector';
-    /**
-     * Registers services on the given app.
-     *
-     * This method should only be used to configure services and parameters.
-     * It should not get services.
-     */
-    public function register(Application $app)
+
+    protected function getProvidedServiceNames(): array
     {
-        $app[self::USER_PERMISSIONS_READ_REPOSITORY] = $app->share(
-            function ($app) {
-                return new UserPermissionsReadRepository(
-                    $app['dbal_connection'],
-                    self::USER_ROLES_TABLE,
-                    self::ROLE_PERMISSIONS_TABLE
-                );
-            }
-        );
-
-        $app[self::USER_PERMISSIONS_WRITE_REPOSITORY] = $app->share(
-            function ($app) {
-                return new UserPermissionsWriteRepository(
-                    $app['dbal_connection'],
-                    new StringLiteral(self::USER_ROLES_TABLE),
-                    new StringLiteral(self::ROLE_PERMISSIONS_TABLE)
-                );
-            }
-        );
-
-        $app[self::USER_PERMISSIONS_PROJECTOR] = $app->share(
-            function ($app) {
-                return new UserPermissionsProjector($app[self::USER_PERMISSIONS_WRITE_REPOSITORY]);
-            }
-        );
+        return [
+            self::USER_PERMISSIONS_READ_REPOSITORY,
+            self::USER_PERMISSIONS_WRITE_REPOSITORY,
+            self::USER_PERMISSIONS_PROJECTOR,
+        ];
     }
 
-    /**
-     * Bootstraps the application.
-     *
-     * This method is called after all services are registered
-     * and should be used for "dynamic" configuration (whenever
-     * a service must be requested).
-     */
-    public function boot(Application $app)
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            self::USER_PERMISSIONS_READ_REPOSITORY,
+            fn () => new UserPermissionsReadRepository(
+                $container->get('dbal_connection'),
+                self::USER_ROLES_TABLE,
+                self::ROLE_PERMISSIONS_TABLE,
+            )
+        );
+
+        $container->addShared(
+            self::USER_PERMISSIONS_WRITE_REPOSITORY,
+            fn () => new UserPermissionsWriteRepository(
+                $container->get('dbal_connection'),
+                new StringLiteral(self::USER_ROLES_TABLE),
+                new StringLiteral(self::ROLE_PERMISSIONS_TABLE)
+            )
+        );
+
+        $container->addShared(
+            self::USER_PERMISSIONS_PROJECTOR,
+            fn () => new UserPermissionsProjector($container->get(self::USER_PERMISSIONS_WRITE_REPOSITORY))
+        );
     }
 }

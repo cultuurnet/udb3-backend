@@ -714,7 +714,7 @@ $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerPermissio
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $container->addServiceProvider(new LabelServiceProvider());
 $container->addServiceProvider(new RoleRequestHandlerServiceProvider());
-$app->register(new UserPermissionsServiceProvider());
+$container->addServiceProvider(new UserPermissionsServiceProvider());
 $container->addServiceProvider(new ProductionServiceProvider());
 $app->register(new UiTPASServiceLabelsServiceProvider());
 $app->register(new UiTPASServiceEventServiceProvider());
