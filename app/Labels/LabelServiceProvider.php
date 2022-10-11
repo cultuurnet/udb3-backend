@@ -6,8 +6,11 @@ namespace CultuurNet\UDB3\Labels;
 
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\GetLabelRequestHandler;
@@ -35,10 +38,7 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepo
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\LabelRolesWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
-use CultuurNet\UDB3\AggregateType;
-use CultuurNet\UDB3\Error\LoggerFactory;
-use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\User\CurrentUser;
 use League\Container\Container;

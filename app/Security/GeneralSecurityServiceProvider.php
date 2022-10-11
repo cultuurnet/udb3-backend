@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
+use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Security\Permission\GodUserVoter;
-use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 
 /**
  * Provides general security services usable by other services.
