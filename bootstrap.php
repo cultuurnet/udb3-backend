@@ -395,13 +395,6 @@ $container->addServiceProvider(
 
 $container->addServiceProvider(new ImageStorageProvider());
 
-$app['predis.client'] = $app->share(function ($app) {
-    $redisURI = isset($app['config']['redis']['uri']) ?
-        $app['config']['redis']['uri'] : 'tcp://127.0.0.1:6379';
-
-    return new Predis\Client($redisURI);
-});
-
 $container->addServiceProvider(new Sapi3SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
