@@ -17,18 +17,18 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
     private UserPermissionsWriteRepositoryInterface $repository;
 
-    private StringLiteral $userRoleTableName;
+    private string $userRoleTableName;
 
-    private StringLiteral $rolePermissionTableName;
+    private string $rolePermissionTableName;
 
     public function setUp(): void
     {
-        $this->userRoleTableName = new StringLiteral('user_role');
-        $this->rolePermissionTableName = new StringLiteral('role_permission');
+        $this->userRoleTableName = 'user_role';
+        $this->rolePermissionTableName = 'role_permission';
 
         $schemaConfigurator = new SchemaConfigurator(
-            $this->userRoleTableName,
-            $this->rolePermissionTableName
+            new StringLiteral($this->userRoleTableName),
+            new StringLiteral($this->rolePermissionTableName),
         );
 
         $schemaManager = $this->getConnection()->getSchemaManager();
@@ -38,7 +38,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
         $this->repository = new UserPermissionsWriteRepository(
             $this->getConnection(),
             $this->userRoleTableName,
-            $this->rolePermissionTableName
+            $this->rolePermissionTableName,
         );
     }
 
@@ -52,7 +52,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository->addUserRole($userId, $roleId);
 
-        $rows = $this->getTableRows($this->userRoleTableName->toNative());
+        $rows = $this->getTableRows($this->userRoleTableName);
 
         $expectedRows = [
             [
@@ -74,7 +74,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository->addRolePermission($roleId, $permission);
 
-        $rows = $this->getTableRows($this->rolePermissionTableName->toNative());
+        $rows = $this->getTableRows($this->rolePermissionTableName);
 
         $expectedRows = [
             [
@@ -121,7 +121,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository->removeRolePermission($roleId, $permission);
 
-        $rows = $this->getTableRows($this->rolePermissionTableName->toNative());
+        $rows = $this->getTableRows($this->rolePermissionTableName);
 
         $expectedRows = [
             [
@@ -180,8 +180,8 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository->removeRole($roleId);
 
-        $rolePermissions = $this->getTableRows($this->rolePermissionTableName->toNative());
-        $userRoles = $this->getTableRows($this->userRoleTableName->toNative());
+        $rolePermissions = $this->getTableRows($this->rolePermissionTableName);
+        $userRoles = $this->getTableRows($this->userRoleTableName);
 
         $expectedRolePermissions = [
             [
@@ -221,7 +221,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository->removeUserRole($userId, $roleId);
 
-        $rows = $this->getTableRows($this->userRoleTableName->toNative());
+        $rows = $this->getTableRows($this->userRoleTableName);
 
 
         $expectedRows = [

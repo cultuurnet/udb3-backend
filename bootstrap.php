@@ -45,6 +45,8 @@ use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
+use CultuurNet\UDB3\Role\RoleRequestHandlerServiceProvider;
+use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
@@ -52,15 +54,13 @@ use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Media\ImageStorageProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceHistoryServiceProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceRequestHandlerServiceProvider;
-use CultuurNet\UDB3\Silex\Role\RoleRequestHandlerServiceProvider;
-use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
-use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
-use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventServiceProvider;
-use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsServiceProvider;
-use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerServiceProvider;
+use CultuurNet\UDB3\Place\PlaceHistoryServiceProvider;
+use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
+use CultuurNet\UDB3\Place\PlaceRequestHandlerServiceProvider;
+use CultuurNet\UDB3\Search\Sapi3SearchServiceProvider;
+use CultuurNet\UDB3\UiTPASService\UiTPASServiceEventServiceProvider;
+use CultuurNet\UDB3\UiTPASService\UiTPASServiceLabelsServiceProvider;
+use CultuurNet\UDB3\UiTPASService\UiTPASServiceOrganizerServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Term\TermServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
@@ -98,10 +98,6 @@ $container->delegate(new ReflectionContainer(true));
 
 $app['api_name'] = defined('API_NAME') ? API_NAME : ApiName::UNKNOWN;
 
-if (!isset($udb3ConfigLocation)) {
-    $udb3ConfigLocation = __DIR__;
-}
-
 $app['config'] = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
 
 $app['system_user_id'] = $app::share(
@@ -138,7 +134,7 @@ $app['event_store_factory'] = $app->protect(
 
 $container->addServiceProvider(new SentryServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\SavedSearches\SavedSearchesServiceProvider());
 
 $container->addServiceProvider(new CommandBusServiceProvider());
 $container->addServiceProvider(new EventBusServiceProvider());
@@ -341,7 +337,7 @@ $app['place_iri_generator'] = $app->share(
     }
 );
 
-$app->register(new PlaceJSONLDServiceProvider());
+$container->addServiceProvider(new PlaceJSONLDServiceProvider());
 
 $app['place_store'] = $app->share(
     function ($app) {
@@ -704,21 +700,21 @@ $container->addServiceProvider(new EventEditingServiceProvider());
 $container->addServiceProvider(new EventReadServiceProvider());
 $container->addServiceProvider(new EventCommandHandlerProvider());
 $container->addServiceProvider(new EventRequestHandlerServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceReadServiceProvider());
-$app->register(new PlaceRequestHandlerServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceEditingServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceReadServiceProvider());
+$container->addServiceProvider(new PlaceRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $container->addServiceProvider(new EventPermissionServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlacePermissionServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $container->addServiceProvider(new LabelServiceProvider());
-$app->register(new RoleRequestHandlerServiceProvider());
-$app->register(new UserPermissionsServiceProvider());
+$container->addServiceProvider(new RoleRequestHandlerServiceProvider());
+$container->addServiceProvider(new UserPermissionsServiceProvider());
 $container->addServiceProvider(new ProductionServiceProvider());
-$app->register(new UiTPASServiceLabelsServiceProvider());
-$app->register(new UiTPASServiceEventServiceProvider());
-$app->register(new UiTPASServiceOrganizerServiceProvider());
+$container->addServiceProvider(new UiTPASServiceLabelsServiceProvider());
+$container->addServiceProvider(new UiTPASServiceEventServiceProvider());
+$container->addServiceProvider(new UiTPASServiceOrganizerServiceProvider());
 
 $container->addServiceProvider(
     new \CultuurNet\UDB3\Media\MediaServiceProvider()
@@ -733,8 +729,8 @@ $app['predis.client'] = $app->share(function ($app) {
     return new Predis\Client($redisURI);
 });
 
-$app->register(new Sapi3SearchServiceProvider());
-$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
+$container->addServiceProvider(new Sapi3SearchServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
 // Provides authentication of HTTP requests. While the HTTP authentication is not needed in CLI context, the service
 // provider still needs to be registered in the general bootstrap.php instead of web/index.php so CLI commands have
@@ -742,29 +738,18 @@ $container->addServiceProvider(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferSe
 // user who triggered the job is being impersonated.
 $container->addServiceProvider(new AuthServiceProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\UDB2EventServicesProvider(),
-    [
-        'udb2_place_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_place.php',
-        'udb2_organizer_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_organizer.php',
-    ]
-);
+$container->addServiceProvider(new \CultuurNet\UDB3\UDB2\UDB2EventServicesProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASIncomingEventServicesProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\GeocodingServiceProvider(),
-    [
-        'geocoding_service.google_maps_api_key' => isset($app['config']['google_maps_api_key']) ? $app['config']['google_maps_api_key'] : null,
-    ]
-);
+$container->addServiceProvider(new \CultuurNet\UDB3\Geocoding\GeocodingServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerGeoCoordinatesServiceProvider());
 
 $container->addServiceProvider(new EventHistoryServiceProvider());
-$app->register(new PlaceHistoryServiceProvider());
+$container->addServiceProvider(new PlaceHistoryServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Media\MediaImportServiceProvider());
 

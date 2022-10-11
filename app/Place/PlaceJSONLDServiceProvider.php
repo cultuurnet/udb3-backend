@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Place;
+namespace CultuurNet\UDB3\Place;
 
 use Broadway\EventHandling\EventBus;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
@@ -10,6 +10,7 @@ use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
@@ -24,8 +25,6 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlacesEnrichedPlaceRepository;
-use CultuurNet\UDB3\Place\DummyPlaceProjectionEnricher;
-use CultuurNet\UDB3\Place\NilLocationEnrichedPlaceRepository;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceJsonDocumentLanguageAnalyzer;
@@ -34,110 +33,123 @@ use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Term\TermRepository;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class PlaceJSONLDServiceProvider implements ServiceProviderInterface
+final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
 {
     public const PROJECTOR = 'place_jsonld_projector';
     public const JSONLD_PROJECTED_EVENT_FACTORY = 'place_jsonld_projected_event_factory';
 
-    public function register(Application $app)
+    protected function getProvidedServiceNames(): array
     {
-        $app[self::PROJECTOR] = $app->share(
-            function ($app) {
-                $projector = new PlaceLDProjector(
-                    $app['place_jsonld_repository'],
-                    $app['place_iri_generator'],
-                    $app['organizer_service'],
-                    $app['media_object_serializer'],
-                    $app['place_cdbxml_importer'],
+        return [
+            self::PROJECTOR,
+            self::JSONLD_PROJECTED_EVENT_FACTORY,
+            'place_jsonld_repository',
+            'place_jsonld_cache',
+            'place_cdbxml_importer',
+        ];
+    }
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            self::PROJECTOR,
+            function () use ($container) {
+                return new PlaceLDProjector(
+                    $container->get('place_jsonld_repository'),
+                    $container->get('place_iri_generator'),
+                    $container->get('organizer_service'),
+                    $container->get('media_object_serializer'),
+                    $container->get('place_cdbxml_importer'),
                     new JsonDocumentLanguageEnricher(
                         new PlaceJsonDocumentLanguageAnalyzer()
                     ),
-                    $app['config']['base_price_translations'],
-                    new VideoNormalizer($app['config']['media']['video_default_copyright'])
+                    $container->get('config')['base_price_translations'],
+                    new VideoNormalizer($container->get('config')['media']['video_default_copyright'])
                 );
-
-                return $projector;
             }
         );
 
-        $app[self::JSONLD_PROJECTED_EVENT_FACTORY] = $app->share(
-            function ($app) {
+        $container->addShared(
+            self::JSONLD_PROJECTED_EVENT_FACTORY,
+            function () use ($container) {
                 return new EventFactory(
-                    $app['place_iri_generator']
+                    $container->get('place_iri_generator')
                 );
             }
         );
 
-        $app['place_jsonld_repository'] = $app->share(
-            function ($app) {
+        $container->addShared(
+            'place_jsonld_repository',
+            function () use ($container) {
                 $dummyPlaceIds = [];
-                if (isset($app['config']['bookable_event']['dummy_place_ids'])) {
-                    $dummyPlaceIds = $app['config']['bookable_event']['dummy_place_ids'];
+                if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
+                    $dummyPlaceIds = $container->get('config')['bookable_event']['dummy_place_ids'];
                 }
                 $repository = new DummyPlaceProjectionEnricher(
                     new CacheDocumentRepository(
-                        $app['place_jsonld_cache']
+                        $container->get('place_jsonld_cache')
                     ),
                     $dummyPlaceIds
                 );
 
                 $repository = EmbeddingRelatedResourcesOfferRepository::createForPlaceRepository(
                     $repository,
-                    $app['organizer_jsonld_repository']
+                    $container->get('organizer_jsonld_repository')
                 );
 
                 $repository = new NilLocationEnrichedPlaceRepository(
-                    new NilLocationNormalizer($app['place_iri_generator']),
+                    new NilLocationNormalizer($container->get('place_iri_generator')),
                     $repository
                 );
 
                 $repository = new OfferMetadataEnrichedOfferRepository(
-                    $app[OfferMetadataRepository::class],
+                    $container->get(OfferMetadataRepository::class),
                     $repository
                 );
 
                 $repository = new PopularityEnrichedOfferRepository(
-                    $app[PopularityRepository::class],
+                    $container->get(PopularityRepository::class),
                     $repository
                 );
 
-                if (isset($app['config']['polyfill_duplicate_places']) && $app['config']['polyfill_duplicate_places']) {
+                if (isset($container->get('config')['polyfill_duplicate_places']) && $container->get('config')['polyfill_duplicate_places']) {
                     $repository = new DuplicatePlacesEnrichedPlaceRepository(
-                        $app['duplicate_place_repository'],
-                        $app['place_iri_generator'],
+                        $container->get('duplicate_place_repository'),
+                        $container->get('place_iri_generator'),
                         $repository
                     );
                 }
 
                 $repository = new PropertyPolyfillOfferRepository(
                     $repository,
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                    $container->get(LabelServiceProvider::JSON_READ_REPOSITORY),
                     OfferType::place()
                 );
 
-                $repository = new TermLabelOfferRepositoryDecorator($repository, $app[TermRepository::class]);
+                $repository = new TermLabelOfferRepositoryDecorator($repository, $container->get(TermRepository::class));
 
-                $repository = new MediaUrlOfferRepositoryDecorator($repository, $app['media_url_mapping']);
+                $repository = new MediaUrlOfferRepositoryDecorator($repository, $container->get('media_url_mapping'));
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
-                    $app[EventBus::class],
-                    $app[self::JSONLD_PROJECTED_EVENT_FACTORY]
+                    $container->get(EventBus::class),
+                    $container->get(self::JSONLD_PROJECTED_EVENT_FACTORY)
                 );
             }
         );
 
-        $app['place_jsonld_cache'] = $app->share(
-            function ($app) {
-                return $app['cache']('place_jsonld');
+        $container->addShared(
+            'place_jsonld_cache',
+            function () use ($container) {
+                return $container->get('cache')('place_jsonld');
             }
         );
 
-        $app['place_cdbxml_importer'] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            'place_cdbxml_importer',
+            function () use ($container) {
                 return new CdbXMLImporter(
                     new CdbXMLItemBaseImporter(
                         new CdbXmlPriceInfoParser(
@@ -146,17 +158,13 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                                 new CurrencyRepository()
                             )
                         ),
-                        $app['config']['base_price_translations']
+                        $container->get('config')['base_price_translations']
                     ),
-                    $app['calendar_factory'],
-                    $app['cdbxml_contact_info_importer'],
-                    $app[CdbXMLToJsonLDLabelImporter::class]
+                    $container->get('calendar_factory'),
+                    $container->get('cdbxml_contact_info_importer'),
+                    $container->get(CdbXMLToJsonLDLabelImporter::class)
                 );
             }
         );
-    }
-
-    public function boot(Application $app)
-    {
     }
 }

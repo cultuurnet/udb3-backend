@@ -14,7 +14,7 @@ interface ReadRepositoryInterface
 
     public function canUseLabel(string $userId, string $name): bool;
 
-    public function search(Query $query): ?array;
+    public function search(Query $query): array;
 
     public function searchTotalLabels(Query $query): int;
 }

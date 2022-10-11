@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Offer\IriOfferIdentifierJSONDeserializer;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
+use CultuurNet\UDB3\Search\Sapi3SearchServiceProvider;
 
 final class BulkLabelOfferServiceProvider extends AbstractServiceProvider
 {

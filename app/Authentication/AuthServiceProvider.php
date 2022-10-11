@@ -12,13 +12,13 @@ use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
+use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV1JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV2JwtValidator;
-use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
-use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Impersonator;
-use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\User\CurrentUser;
 
 final class AuthServiceProvider extends AbstractServiceProvider
