@@ -98,10 +98,6 @@ $container->delegate(new ReflectionContainer(true));
 
 $app['api_name'] = defined('API_NAME') ? API_NAME : ApiName::UNKNOWN;
 
-if (!isset($udb3ConfigLocation)) {
-    $udb3ConfigLocation = __DIR__;
-}
-
 $app['config'] = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
 
 $app['system_user_id'] = $app::share(
@@ -742,22 +738,11 @@ $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider())
 // user who triggered the job is being impersonated.
 $container->addServiceProvider(new AuthServiceProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\UDB2EventServicesProvider(),
-    [
-        'udb2_place_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_place.php',
-        'udb2_organizer_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_organizer.php',
-    ]
-);
+$container->addServiceProvider(new \CultuurNet\UDB3\UDB2\UDB2EventServicesProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASIncomingEventServicesProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\GeocodingServiceProvider(),
-    [
-        'geocoding_service.google_maps_api_key' => isset($app['config']['google_maps_api_key']) ? $app['config']['google_maps_api_key'] : null,
-    ]
-);
+$container->addServiceProvider(new \CultuurNet\UDB3\Geocoding\GeocodingServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
