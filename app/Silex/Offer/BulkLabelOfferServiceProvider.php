@@ -49,25 +49,17 @@ final class BulkLabelOfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             AddLabelToQueryRequestHandler::class,
-            function () use ($container) {
-                return new AddLabelToQueryRequestHandler(
-                    $container->get('bulk_label_offer_command_bus')
-                );
-            }
+            fn () => new AddLabelToQueryRequestHandler($container->get('bulk_label_offer_command_bus'))
         );
 
         $container->addShared(
             AddLabelToMultipleRequestHandler::class,
-            function () use ($container) {
-                return new AddLabelToMultipleRequestHandler(
-                    new AddLabelToMultipleJSONDeserializer(
-                        new IriOfferIdentifierJSONDeserializer(
-                            $container->get('iri_offer_identifier_factory')
-                        )
-                    ),
-                    $container->get('bulk_label_offer_command_bus')
-                );
-            }
+            fn () => new AddLabelToMultipleRequestHandler(
+                new AddLabelToMultipleJSONDeserializer(
+                    new IriOfferIdentifierJSONDeserializer($container->get('iri_offer_identifier_factory'))
+                ),
+                $container->get('bulk_label_offer_command_bus')
+            )
         );
     }
 }
