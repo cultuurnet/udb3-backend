@@ -98,10 +98,6 @@ $container->delegate(new ReflectionContainer(true));
 
 $app['api_name'] = defined('API_NAME') ? API_NAME : ApiName::UNKNOWN;
 
-if (!isset($udb3ConfigLocation)) {
-    $udb3ConfigLocation = __DIR__;
-}
-
 $app['config'] = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
 
 $app['system_user_id'] = $app::share(
@@ -745,8 +741,8 @@ $container->addServiceProvider(new AuthServiceProvider());
 $app->register(
     new \CultuurNet\UDB3\Silex\UDB2EventServicesProvider(),
     [
-        'udb2_place_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_place.php',
-        'udb2_organizer_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_organizer.php',
+        'udb2_place_external_id_mapping.file_location' => __DIR__ . '/config.external_id_mapping_place.php',
+        'udb2_organizer_external_id_mapping.file_location' => __DIR__ . '/config.external_id_mapping_organizer.php',
     ]
 );
 
