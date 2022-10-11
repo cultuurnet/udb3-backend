@@ -4,46 +4,54 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\User;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class UserServiceProvider implements ServiceProviderInterface
+final class UserServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app['cdbxml_created_by_resolver'] = $app->share(
-            function (HybridContainerApplication $app) {
+        return [
+            'cdbxml_created_by_resolver',
+            GetUserByEmailRequestHandler::class,
+            GetCurrentUserRequestHandler::class,
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'cdbxml_created_by_resolver',
+            function () use ($container) {
                 $resolver = new CdbXmlCreatedByToUserIdResolver(
-                    $app[Auth0UserIdentityResolver::class]
+                    $container->get(Auth0UserIdentityResolver::class)
                 );
 
-                $resolver->setLogger(LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('xml-conversion', 'created-by-resolver')));
+                $resolver->setLogger(LoggerFactory::create($container, LoggerName::forService('xml-conversion', 'created-by-resolver')));
 
                 return $resolver;
             }
         );
 
-        $app[GetUserByEmailRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetUserByEmailRequestHandler($app[Auth0UserIdentityResolver::class])
+        $container->addShared(
+            GetUserByEmailRequestHandler::class,
+            fn () => new GetUserByEmailRequestHandler($container->get(Auth0UserIdentityResolver::class))
         );
 
-        $app[GetCurrentUserRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetCurrentUserRequestHandler(
-                $app[Auth0UserIdentityResolver::class],
-                $app[JsonWebToken::class]
+        $container->addShared(
+            GetCurrentUserRequestHandler::class,
+            fn () => new GetCurrentUserRequestHandler(
+                $container->get(Auth0UserIdentityResolver::class),
+                $container->get(JsonWebToken::class)
             )
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
