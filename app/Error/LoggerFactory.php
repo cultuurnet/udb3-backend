@@ -68,8 +68,8 @@ final class LoggerFactory
         if (!isset(self::$sentryHandler)) {
             self::$sentryHandler = new SentryHandlerScopeDecorator(
                 new SentryHandler($container->get(HubInterface::class), Logger::ERROR),
-                $app[JsonWebToken::class] ?? null,
-                $app[ApiKey::class] ?? null,
+                $container->get(JsonWebToken::class),
+                $container->get(ApiKey::class),
                 API_NAME ?? null
             );
         }
