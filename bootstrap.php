@@ -64,6 +64,7 @@ use CultuurNet\UDB3\UiTPASService\UiTPASServiceOrganizerServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Term\TermServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
+use League\Container\Argument\Literal\StringArgument;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Monolog\Logger;
@@ -99,6 +100,8 @@ $container = new Container();
 $app = new HybridContainerApplication($container);
 $container->delegate(new PimplePSRContainerBridge($app));
 $container->delegate(new ReflectionContainer(true));
+
+$container->addShared(ApiName::class, new StringArgument(API_NAME));
 
 if (!isset($udb3ConfigLocation)) {
     $udb3ConfigLocation = __DIR__;
