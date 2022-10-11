@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Offer;
+namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Offer\AddLabelToMultipleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelToQueryRequestHandler;
-use CultuurNet\UDB3\Offer\BulkLabelCommandHandler;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultipleJSONDeserializer;
-use CultuurNet\UDB3\Offer\IriOfferIdentifierJSONDeserializer;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;

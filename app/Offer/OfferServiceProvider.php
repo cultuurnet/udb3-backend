@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Offer;
+namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
@@ -67,8 +67,6 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTitleHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
-use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
-use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\DBALPopularityRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
