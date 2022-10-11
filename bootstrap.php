@@ -124,16 +124,15 @@ $app['config'] = array_merge_recursive(
 
 $app['debug'] = $app['config']['debug'] ?? false;
 
-$app['event_store_factory'] = $app->protect(
-    function (AggregateType $aggregateType) use ($app) {
-        return new AggregateAwareDBALEventStore(
-            $app['dbal_connection'],
-            $app['eventstore_payload_serializer'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
-            'event_store',
-            $aggregateType
-        );
-    }
+$container->addShared(
+    'event_store_factory',
+    fn (AggregateType $aggregateType) => new AggregateAwareDBALEventStore(
+        $container->get('dbal_connection'),
+        $container->get('eventstore_payload_serializer'),
+        new \Broadway\Serializer\SimpleInterfaceSerializer(),
+        'event_store',
+        $aggregateType
+    )
 );
 
 $container->addServiceProvider(new SentryServiceProvider());
