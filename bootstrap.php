@@ -354,7 +354,7 @@ $app['organizers_locator_event_stream_decorator'] = $app->share(
 
 $app['organizer_repository'] = $app->share(
     function (Application $app) {
-        $repository = new \CultuurNet\UDB3\Organizer\OrganizerRepository(
+        return new \CultuurNet\UDB3\Organizer\OrganizerRepository(
             $app['organizer_store'],
             $app[EventBus::class],
             array(
@@ -362,20 +362,16 @@ $app['organizer_repository'] = $app->share(
                 $app['organizers_locator_event_stream_decorator']
             )
         );
-
-        return $repository;
     }
 );
 
 $app['organizer_service'] = $app->share(
     function ($app) {
-        $service = new \CultuurNet\UDB3\OrganizerService(
+        return new \CultuurNet\UDB3\OrganizerService(
             $app['organizer_jsonld_repository'],
             $app['organizer_repository'],
             $app['organizer_iri_generator']
         );
-
-        return $service;
     }
 );
 
