@@ -40,7 +40,7 @@ final class SwiftMailerServiceProvider extends AbstractServiceProvider
                                 new Swift_Transport_Esmtp_Auth_LoginAuthenticator(),
                                 new Swift_Transport_Esmtp_Auth_PlainAuthenticator(),
                             ]
-                         )
+                        ),
                     ],
                     new Swift_Events_SimpleEventDispatcher()
                 );
