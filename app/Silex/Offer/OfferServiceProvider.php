@@ -163,222 +163,168 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             RelatedDocumentProjectedToJSONLDDispatcher::class,
-            function () use ($container) {
-                return new RelatedDocumentProjectedToJSONLDDispatcher(
-                    $container->get(EventBus::class),
-                    $container->get(EventRelationsRepository::class),
-                    $container->get(PlaceRelationsRepository::class),
-                    $container->get('event_iri_generator'),
-                    $container->get('place_iri_generator')
-                );
-            }
+            fn () => new RelatedDocumentProjectedToJSONLDDispatcher(
+                $container->get(EventBus::class),
+                $container->get(EventRelationsRepository::class),
+                $container->get(PlaceRelationsRepository::class),
+                $container->get('event_iri_generator'),
+                $container->get('place_iri_generator')
+            )
         );
 
         $container->addShared(
             OfferJsonDocumentReadRepository::class,
-            function () use ($container) {
-                return new OfferJsonDocumentReadRepository(
-                    $container->get('event_jsonld_repository'),
-                    $container->get('place_jsonld_repository')
-                );
-            }
+            fn () => new OfferJsonDocumentReadRepository(
+                $container->get('event_jsonld_repository'),
+                $container->get('place_jsonld_repository')
+            )
         );
 
         $container->addShared(
             OfferMetadataRepository::class,
-            function () use ($container) {
-                return new OfferMetadataRepository($container->get('dbal_connection'));
-            }
+            fn () => new OfferMetadataRepository($container->get('dbal_connection'))
         );
 
         $container->addShared(
             OfferMetadataProjector::class,
-            function () use ($container) {
-                return new OfferMetadataProjector(
-                    $container->get(OfferMetadataRepository::class),
-                    $container->get('config')['api_key_consumers']
-                );
-            }
+            fn () => new OfferMetadataProjector(
+                $container->get(OfferMetadataRepository::class),
+                $container->get('config')['api_key_consumers']
+            )
         );
 
         $container->addShared(
             AutoApproveForUiTIDv1ApiKeysProcessManager::class,
-            function () use ($container) {
-                return new ReplayFilteringEventListener(
-                    new AutoApproveForUiTIDv1ApiKeysProcessManager(
-                        $container->get(OfferRepository::class),
-                        $container->get(ConsumerReadRepository::class),
-                        $container->get('should_auto_approve_new_offer')
-                    )
-                );
-            }
+            fn () => new ReplayFilteringEventListener(
+                new AutoApproveForUiTIDv1ApiKeysProcessManager(
+                    $container->get(OfferRepository::class),
+                    $container->get(ConsumerReadRepository::class),
+                    $container->get('should_auto_approve_new_offer')
+                )
+            )
         );
 
         $container->addShared(
             PopularityRepository::class,
-            function () use ($container) {
-                return new DBALPopularityRepository(
-                    $container->get('dbal_connection')
-                );
-            }
+            fn () => new DBALPopularityRepository($container->get('dbal_connection'))
         );
 
         $container->addShared(
             'iri_offer_identifier_factory',
-            function () use ($container) {
-                return new IriOfferIdentifierFactory(
-                    $container->get('config')['offer_url_regex']
-                );
-            }
+            fn () => new IriOfferIdentifierFactory($container->get('config')['offer_url_regex'])
         );
 
         $container->addShared(
             'should_auto_approve_new_offer',
-            function () use ($container) {
-                return new ConsumerIsInPermissionGroup(
-                    (string) $container->get('config')['uitid']['auto_approve_group_id']
-                );
-            }
+            fn () => new ConsumerIsInPermissionGroup(
+                (string) $container->get('config')['uitid']['auto_approve_group_id']
+            )
         );
 
         $container->addShared(
             OfferRepository::class,
-            function () use ($container) {
-                return new OfferRepository(
-                    $container->get('event_repository'),
-                    $container->get('place_repository')
-                );
-            }
+            fn () => new OfferRepository(
+                $container->get('event_repository'),
+                $container->get('place_repository')
+            )
         );
 
         $container->addShared(
             EventHasTicketSalesGuard::class,
-            function () use ($container) {
-                return new EventHasTicketSalesGuard(
-                    $container->get('uitpas'),
-                    $container->get('event_repository'),
-                    LoggerFactory::create($container, LoggerName::forService('uitpas', 'ticket-sales'))
-                );
-            }
+            fn () => new EventHasTicketSalesGuard(
+                $container->get('uitpas'),
+                $container->get('event_repository'),
+                LoggerFactory::create($container, LoggerName::forService('uitpas', 'ticket-sales'))
+            )
         );
 
         $container->addShared(
             UpdateTitleHandler::class,
-            function () use ($container) {
-                return new UpdateTitleHandler($container->get(OfferRepository::class));
-            }
+            fn () => new UpdateTitleHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
             UpdateAvailableFromHandler::class,
-            function () use ($container) {
-                return new UpdateAvailableFromHandler($container->get(OfferRepository::class));
-            }
+            fn () => new UpdateAvailableFromHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
             UpdateCalendarHandler::class,
-            function () use ($container) {
-                return new UpdateCalendarHandler($container->get(OfferRepository::class));
-            }
+            fn () => new UpdateCalendarHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
             UpdateStatusHandler::class,
-            function () use ($container) {
-                return new UpdateStatusHandler($container->get(OfferRepository::class));
-            }
+            fn () => new UpdateStatusHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
             UpdateBookingAvailabilityHandler::class,
-            function () use ($container) {
-                return new UpdateBookingAvailabilityHandler($container->get(OfferRepository::class));
-            }
+            fn () => new UpdateBookingAvailabilityHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
             UpdateTypeHandler::class,
-            function () use ($container) {
-                return new UpdateTypeHandler($container->get(OfferRepository::class));
-            }
+            fn () => new UpdateTypeHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
             UpdateFacilitiesHandler::class,
-            function () use ($container) {
-                return new UpdateFacilitiesHandler($container->get(OfferRepository::class));
-            }
+            fn () => new UpdateFacilitiesHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
             ChangeOwnerHandler::class,
-            function () use ($container) {
-                return new ChangeOwnerHandler(
-                    $container->get(OfferRepository::class),
-                    $container->get('offer_owner_query')
-                );
-            }
+            fn () => new ChangeOwnerHandler(
+                $container->get(OfferRepository::class),
+                $container->get('offer_owner_query')
+            )
         );
 
         $container->addShared(
             AddLabelHandler::class,
-            function () use ($container) {
-                return new AddLabelHandler(
-                    $container->get(OfferRepository::class),
-                    $container->get('labels.constraint_aware_service'),
-                    $container->get(LabelServiceProvider::JSON_READ_REPOSITORY)
-                );
-            }
+            fn () => new AddLabelHandler(
+                $container->get(OfferRepository::class),
+                $container->get('labels.constraint_aware_service'),
+                $container->get(LabelServiceProvider::JSON_READ_REPOSITORY)
+            )
         );
 
         $container->addShared(
             RemoveLabelHandler::class,
-            function () use ($container) {
-                return new RemoveLabelHandler($container->get(OfferRepository::class));
-            }
+            fn () => new RemoveLabelHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
             ImportLabelsHandler::class,
-            function () use ($container) {
-                return new ImportLabelsHandler(
-                    $container->get(OfferRepository::class),
-                    new LabelImportPreProcessor(
-                        $container->get('labels.constraint_aware_service'),
-                        $container->get(LabelServiceProvider::JSON_READ_REPOSITORY),
-                        $container->get(CurrentUser::class)->getId()
-                    )
-                );
-            }
+            fn () => new ImportLabelsHandler(
+                $container->get(OfferRepository::class),
+                new LabelImportPreProcessor(
+                    $container->get('labels.constraint_aware_service'),
+                    $container->get(LabelServiceProvider::JSON_READ_REPOSITORY),
+                    $container->get(CurrentUser::class)->getId()
+                )
+            )
         );
 
         $container->addShared(
             AddVideoHandler::class,
-            function () use ($container) {
-                return new AddVideoHandler($container->get(OfferRepository::class));
-            }
+            fn () => new AddVideoHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
             UpdateVideoHandler::class,
-            function () use ($container) {
-                return new UpdateVideoHandler($container->get(OfferRepository::class));
-            }
+            fn () => new UpdateVideoHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
             DeleteVideoHandler::class,
-            function () use ($container) {
-                return  new DeleteVideoHandler($container->get(OfferRepository::class));
-            }
+            fn () => new DeleteVideoHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
             ImportVideosHandler::class,
-            function () use ($container) {
-                return  new ImportVideosHandler($container->get(OfferRepository::class));
-            }
+            fn () => new ImportVideosHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
@@ -419,54 +365,40 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             UpdateTypicalAgeRangeRequestHandler::class,
-            function () use ($container) {
-                return new UpdateTypicalAgeRangeRequestHandler($container->get('event_command_bus'));
-            }
+            fn () => new UpdateTypicalAgeRangeRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
             DeleteTypicalAgeRangeRequestHandler::class,
-            function () use ($container) {
-                return new DeleteTypicalAgeRangeRequestHandler($container->get('event_command_bus'));
-            }
+            fn () => new DeleteTypicalAgeRangeRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
             AddLabelRequestHandler::class,
-            function () use ($container) {
-                return new AddLabelRequestHandler($container->get('event_command_bus'));
-            }
+            fn () => new AddLabelRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
             RemoveLabelRequestHandler::class,
-            function () use ($container) {
-                return new RemoveLabelRequestHandler($container->get('event_command_bus'));
-            }
+            fn () => new RemoveLabelRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
             AddLabelFromJsonBodyRequestHandler::class,
-            function () use ($container) {
-                return new AddLabelFromJsonBodyRequestHandler(
-                    $container->get('event_command_bus'),
-                    new LabelJSONDeserializer()
-                );
-            }
+            fn () => new AddLabelFromJsonBodyRequestHandler(
+                $container->get('event_command_bus'),
+                new LabelJSONDeserializer()
+            )
         );
 
         $container->addShared(
             UpdateBookingInfoRequestHandler::class,
-            function () use ($container) {
-                return new UpdateBookingInfoRequestHandler($container->get('event_command_bus'));
-            }
+            fn () => new UpdateBookingInfoRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
             UpdateContactPointRequestHandler::class,
-            function () use ($container) {
-                return new UpdateContactPointRequestHandler($container->get('event_command_bus'));
-            }
+            fn () => new UpdateContactPointRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
@@ -506,9 +438,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             GetPermissionsForGivenUserRequestHandler::class,
-            fn () => new GetPermissionsForGivenUserRequestHandler(
-                $container->get('offer_permission_voter')
-            )
+            fn () => new GetPermissionsForGivenUserRequestHandler($container->get('offer_permission_voter'))
         );
 
         $container->addShared(
@@ -546,9 +476,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             DeleteOrganizerRequestHandler::class,
-            fn () => new DeleteOrganizerRequestHandler(
-                $container->get('event_command_bus')
-            )
+            fn () => new DeleteOrganizerRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
@@ -588,9 +516,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             AddImageRequestHandler::class,
-            fn () => new AddImageRequestHandler(
-                $container->get('event_command_bus')
-            )
+            fn () => new AddImageRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
@@ -603,9 +529,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             UpdateImageRequestHandler::class,
-            fn () => new UpdateImageRequestHandler(
-                $container->get('event_command_bus')
-            )
+            fn () => new UpdateImageRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
@@ -626,16 +550,12 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             UpdateVideosRequestHandler::class,
-            fn () => new UpdateVideosRequestHandler(
-                $container->get('event_command_bus')
-            )
+            fn () => new UpdateVideosRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
             DeleteVideoRequestHandler::class,
-            fn () => new DeleteVideoRequestHandler(
-                $container->get('event_command_bus')
-            )
+            fn () => new DeleteVideoRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
