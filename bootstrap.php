@@ -328,19 +328,6 @@ $container->addServiceProvider(new OrganizerCommandHandlerProvider());
 /** Roles */
 $container->addServiceProvider(new \CultuurNet\UDB3\Role\RoleServiceProvider());
 
-$container->addShared(
-    'event_export_notification_mail_factory',
-    fn () => new \CultuurNet\UDB3\EventExport\Notification\Swift\DefaultMessageFactory(
-        new \CultuurNet\UDB3\EventExport\Notification\DefaultPlainTextBodyFactory(),
-        new \CultuurNet\UDB3\EventExport\Notification\DefaultHTMLBodyFactory(),
-        new \CultuurNet\UDB3\EventExport\Notification\LiteralSubjectFactory(
-            $container->get('config')['export']['mail']['subject']
-        ),
-        $container->get('config')['mail']['sender']['address'],
-        $container->get('config')['mail']['sender']['name']
-    )
-);
-
 $container->addServiceProvider(
     new AMQPConnectionServiceProvider()
 );
