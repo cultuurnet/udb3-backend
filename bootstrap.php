@@ -335,11 +335,6 @@ $container->addServiceProvider(new OrganizerRequestHandlerServiceProvider());
 $container->addServiceProvider(new OrganizerJSONLDServiceProvider());
 $container->addServiceProvider(new OrganizerCommandHandlerProvider());
 
-$container->addShared(
-    'eventstore_payload_serializer',
-    fn () => \CultuurNet\UDB3\BackwardsCompatiblePayloadSerializerFactory::createSerializer($container->get(LabelServiceProvider::JSON_READ_REPOSITORY))
-);
-
 $app['organizer_store'] = $app->share(
     function ($app) {
         $eventStore = $app['event_store_factory'](AggregateType::organizer());

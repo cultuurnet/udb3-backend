@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event;
 use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
+use CultuurNet\UDB3\Labels\LabelServiceProvider;
 
 final class EventStoreServiceProvider extends AbstractServiceProvider
 {
@@ -14,6 +15,7 @@ final class EventStoreServiceProvider extends AbstractServiceProvider
     {
         return [
             'event_store_factory',
+            'eventstore_payload_serializer',
         ];
     }
 
@@ -30,6 +32,11 @@ final class EventStoreServiceProvider extends AbstractServiceProvider
                 'event_store',
                 $aggregateType
             )
+        );
+
+        $container->addShared(
+            'eventstore_payload_serializer',
+            fn () => \CultuurNet\UDB3\BackwardsCompatiblePayloadSerializerFactory::createSerializer($container->get(LabelServiceProvider::JSON_READ_REPOSITORY))
         );
     }
 }
