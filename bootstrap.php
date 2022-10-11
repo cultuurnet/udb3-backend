@@ -352,10 +352,9 @@ $app['uitpas'] = $app->share(
 
 // This service is used by the background worker to impersonate the user
 // who initially queued the command.
-$app['impersonator'] = $app->share(
-    function () {
-        return new \CultuurNet\UDB3\Impersonator();
-    }
+$container->addShared(
+    'impersonator',
+    fn () => new \CultuurNet\UDB3\Impersonator()
 );
 
 $container->addServiceProvider(
