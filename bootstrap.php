@@ -342,10 +342,11 @@ $app['event_export_notification_mail_factory'] = $app->share(
     }
 );
 
-$app['uitpas'] = $app->share(
-    function (Application $app) {
+$container->addShared(
+    'uitpas',
+    function () use ($container) {
         /** @var CultureFeed $cultureFeed */
-        $cultureFeed = $app['culturefeed'];
+        $cultureFeed = $container->get('culturefeed');
         return $cultureFeed->uitpas();
     }
 );
