@@ -37,8 +37,8 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository = new UserPermissionsWriteRepository(
             $this->getConnection(),
-            $this->userRoleTableName,
-            $this->rolePermissionTableName
+            $this->userRoleTableName->toNative(),
+            $this->rolePermissionTableName->toNative()
         );
     }
 

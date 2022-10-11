@@ -20,12 +20,12 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
 
     public function __construct(
         Connection $connection,
-        StringLiteral $userRoleTableName,
-        StringLiteral $rolePermissionTableName
+        string $userRoleTableName,
+        string $rolePermissionTableName
     ) {
         $this->connection = $connection;
-        $this->userRoleTableName = $userRoleTableName;
-        $this->rolePermissionTableName = $rolePermissionTableName;
+        $this->userRoleTableName = new StringLiteral($userRoleTableName);
+        $this->rolePermissionTableName = new StringLiteral($rolePermissionTableName);
     }
 
     /**

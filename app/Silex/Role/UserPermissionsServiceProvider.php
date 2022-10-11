@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsReadRepository;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsWriteRepository;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsProjector;
-use CultuurNet\UDB3\StringLiteral;
 
 final class UserPermissionsServiceProvider extends AbstractServiceProvider
 {
@@ -46,8 +45,8 @@ final class UserPermissionsServiceProvider extends AbstractServiceProvider
             self::USER_PERMISSIONS_WRITE_REPOSITORY,
             fn () => new UserPermissionsWriteRepository(
                 $container->get('dbal_connection'),
-                new StringLiteral(self::USER_ROLES_TABLE),
-                new StringLiteral(self::ROLE_PERMISSIONS_TABLE)
+                self::USER_ROLES_TABLE,
+                self::ROLE_PERMISSIONS_TABLE,
             )
         );
 
