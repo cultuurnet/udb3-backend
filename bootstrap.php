@@ -328,8 +328,6 @@ $container->addServiceProvider(new OrganizerCommandHandlerProvider());
 /** Roles */
 $container->addServiceProvider(new \CultuurNet\UDB3\Role\RoleServiceProvider());
 
-const ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME = 'roles_search_v3';
-
 $app['event_export_notification_mail_factory'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\EventExport\Notification\Swift\DefaultMessageFactory(

@@ -22,7 +22,7 @@ use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 
 final class RoleServiceProvider extends AbstractServiceProvider
 {
-    private const ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME = 'roles_search_v3';
+    public const ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME = 'roles_search_v3';
 
     protected function getProvidedServiceNames(): array
     {

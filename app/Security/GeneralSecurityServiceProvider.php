@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
+use CultuurNet\UDB3\Role\RoleServiceProvider;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Security\Permission\GodUserVoter;
 
@@ -37,7 +38,7 @@ final class GeneralSecurityServiceProvider extends AbstractServiceProvider
                 $container->get('dbal_connection'),
                 UserPermissionsServiceProvider::USER_ROLES_TABLE,
                 UserPermissionsServiceProvider::ROLE_PERMISSIONS_TABLE,
-                ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME,
+                RoleServiceProvider::ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME,
             )
         );
     }
