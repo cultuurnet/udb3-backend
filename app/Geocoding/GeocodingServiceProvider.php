@@ -27,7 +27,7 @@ final class GeocodingServiceProvider extends AbstractServiceProvider
         $container->addShared(
             GeocodingService::class,
             function () use ($container) {
-                $googleMapsApiKey = isset($container->get('config')['google_maps_api_key']) ? $container->get('config')['google_maps_api_key'] : null;
+                $googleMapsApiKey = $container->get('config')['google_maps_api_key'] ?? null;
 
                 $geocodingService = new DefaultGeocodingService(
                     new StatefulGeocoder(
