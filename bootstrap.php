@@ -179,19 +179,15 @@ $container->addServiceProvider(new GeneralSecurityServiceProvider());
 $container->addServiceProvider(new OfferSecurityServiceProvider());
 $container->addServiceProvider(new OrganizerSecurityServiceProvider());
 
-$app['cache'] = $app->share(
-    function (Application $app) {
-        return function ($cacheType) use ($app) {
-            return new Doctrine\Common\Cache\PredisCache(new Predis\Client(
-                $app['config']['cache']['redis'],
-                [
-                    'prefix' => $cacheType . '_',
-                ]
-            ));
-        };
-    }
+$container->addShared(
+    'cache',
+    fn ($cacheType) => new Doctrine\Common\Cache\PredisCache(
+        new Predis\Client(
+            $app['config']['cache']['redis'],
+            ['prefix' => $cacheType . '_']
+        )
+    )
 );
-
 
 $app['dbal_connection'] = $app->share(
     function ($app) {
