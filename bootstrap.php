@@ -328,18 +328,17 @@ $container->addServiceProvider(new OrganizerCommandHandlerProvider());
 /** Roles */
 $container->addServiceProvider(new \CultuurNet\UDB3\Role\RoleServiceProvider());
 
-$app['event_export_notification_mail_factory'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\EventExport\Notification\Swift\DefaultMessageFactory(
-            new \CultuurNet\UDB3\EventExport\Notification\DefaultPlainTextBodyFactory(),
-            new \CultuurNet\UDB3\EventExport\Notification\DefaultHTMLBodyFactory(),
-            new \CultuurNet\UDB3\EventExport\Notification\LiteralSubjectFactory(
-                $app['config']['export']['mail']['subject']
-            ),
-            $app['config']['mail']['sender']['address'],
-            $app['config']['mail']['sender']['name']
-        );
-    }
+$container->addShared(
+    'event_export_notification_mail_factory',
+    fn () => new \CultuurNet\UDB3\EventExport\Notification\Swift\DefaultMessageFactory(
+        new \CultuurNet\UDB3\EventExport\Notification\DefaultPlainTextBodyFactory(),
+        new \CultuurNet\UDB3\EventExport\Notification\DefaultHTMLBodyFactory(),
+        new \CultuurNet\UDB3\EventExport\Notification\LiteralSubjectFactory(
+            $container->get('config')['export']['mail']['subject']
+        ),
+        $container->get('config')['mail']['sender']['address'],
+        $container->get('config')['mail']['sender']['name']
+    )
 );
 
 $container->addServiceProvider(
