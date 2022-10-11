@@ -96,6 +96,9 @@ final class AMQPPublisherServiceProvider extends AbstractServiceProvider
 
                         // Check if the app is running in the CLI environment and route the messages to the "cli" queue.
                         // If not, route them to the "api" queue.
+                        // We have to ignore this check in PHPStan because PHPStan always evaluates API_NAME to
+                        // the default ApiName::Unknown and says that the comparison will always evaluate the same way.
+                        /** @phpstan-ignore-next-line */
                         return API_NAME === ApiName::CLI ? 'cli' : 'api';
                     }
                 );
