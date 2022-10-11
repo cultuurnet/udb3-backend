@@ -70,6 +70,10 @@ use Monolog\Logger;
 use Silex\Application;
 use SocketIO\Emitter;
 
+if (!defined('API_NAME')) {
+    define('API_NAME', ApiName::UNKNOWN);
+}
+
 date_default_timezone_set('Europe/Brussels');
 
 /**
