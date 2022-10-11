@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Media;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
@@ -81,7 +80,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
      * @test
      * @dataProvider incompleteRequestProvider
      */
-    public function it_returns_400_if_file_is_missing(array $body, JsonResponse $expectedResponse): void
+    public function it_throws_an_api_problem_if_a_field_is_missing_or_invalid(array $body, ApiProblem $apiProblem): void
     {
         $uploadedFile = $this->createUploadedFile('ABC', UPLOAD_ERR_OK, 'test.txt', 'text/plain');
 
@@ -90,10 +89,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
             ->withFiles(['file' => $uploadedFile])
             ->build('POST');
 
-        $response = $this->uploadMediaRequestHandler->handle($request);
-
-        $this->assertEquals($expectedResponse->getStatusCode(), $response->getStatusCode());
-        $this->assertEquals($expectedResponse->getBody()->getContents(), $response->getBody()->getContents());
+        $this->assertCallableThrowsApiProblem($apiProblem, fn () => $this->uploadMediaRequestHandler->handle($request));
     }
 
     public function incompleteRequestProvider(): array
@@ -104,21 +100,53 @@ final class UploadMediaRequestHandlerTest extends TestCase
                     'copyrightHolder' => ' Dwight Hooker',
                     'language' => 'nl',
                 ],
-                new JsonResponse(['error' => 'description required'], 400),
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "description" is required.'),
             ],
             'missing copyright holder' => [
                 [
                     'description' => 'Lenna',
                     'language' => 'nl',
                 ],
-                new JsonResponse(['error' => 'copyright holder required'], 400),
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is required.'),
+            ],
+            'copyright holder empty' => [
+                [
+                    'description' => 'Lenna',
+                    'language' => 'nl',
+                    'copyrightHolder' => '',
+                ],
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is invalid: Given string should not be empty.'),
+            ],
+            'copyright holder too short' => [
+                [
+                    'description' => 'Lenna',
+                    'language' => 'nl',
+                    'copyrightHolder' => 'a',
+                ],
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is invalid: CopyrightHolder \'a\' should not be shorter than 2 chars.'),
+            ],
+            'copyright holder too long' => [
+                [
+                    'description' => 'Lenna',
+                    'language' => 'nl',
+                    'copyrightHolder' => str_repeat('a', 251),
+                ],
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is invalid: CopyrightHolder \'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\' should not be longer than 250 chars.'),
             ],
             'missing language' => [
                 [
                     'description' => 'Lenna',
                     'copyrightHolder' => ' Dwight Hooker',
                 ],
-                new JsonResponse(['error' => 'language required'], 400),
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is required.'),
+            ],
+            'invalid language' => [
+                [
+                    'description' => 'Lenna',
+                    'copyrightHolder' => ' Dwight Hooker',
+                    'language' => 'foo',
+                ],
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is must be exactly 2 lowercase letters long (for example "nl").'),
             ],
         ];
     }
@@ -126,7 +154,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_description_is_missing(): void
+    public function it_throws_if_no_file_is_uploaded(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withParsedBody([
@@ -134,6 +162,29 @@ final class UploadMediaRequestHandlerTest extends TestCase
                 'copyrightHolder' => ' Dwight Hooker',
                 'language' => 'nl',
             ])
+            ->build('POST');
+
+        $this->expectException(ApiProblem::class);
+        $this->expectExceptionMessage('File missing');
+
+        $this->uploadMediaRequestHandler->handle($request);
+    }
+
+    /**
+     * @test
+     * @bugfix https://jira.uitdatabank.be/browse/III-5005
+     */
+    public function it_throws_if_no_a_file_was_uploaded_with_the_wrong_form_data_name(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withParsedBody([
+                'description' => 'Lenna',
+                'copyrightHolder' => ' Dwight Hooker',
+                'language' => 'nl',
+            ])
+            ->withFiles(
+                ['another_file' => $this->createUploadedFile('ABC', UPLOAD_ERR_OK, 'test.txt', 'text/plain')]
+            )
             ->build('POST');
 
         $this->expectException(ApiProblem::class);
