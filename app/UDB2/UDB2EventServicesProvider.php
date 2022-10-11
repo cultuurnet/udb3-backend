@@ -23,15 +23,10 @@ final class UDB2EventServicesProvider extends AbstractServiceProvider
 
         $container->addShared(
             'udb2_event_cdbid_extractor',
-            fn () => $this->buildUdb2EventCbidExtractor(),
-        );
-    }
-
-    private function buildUdb2EventCbidExtractor(): EventCdbIdExtractor
-    {
-        return new EventCdbIdExtractor(
-            $this->buildMappingServiceForLocation(__DIR__ . '../../config.external_id_mapping_place.php'),
-            $this->buildMappingServiceForLocation(__DIR__ . '../../config.external_id_mapping_organizer.php'),
+            fn () => new EventCdbIdExtractor(
+                $this->buildMappingServiceForLocation(__DIR__ . '../../config.external_id_mapping_place.php'),
+                $this->buildMappingServiceForLocation(__DIR__ . '../../config.external_id_mapping_organizer.php'),
+            ),
         );
     }
 
