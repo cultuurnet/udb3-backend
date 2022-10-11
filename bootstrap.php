@@ -707,7 +707,7 @@ $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $container->addServiceProvider(new EventPermissionServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Place\PlacePermissionServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $container->addServiceProvider(new LabelServiceProvider());
 $container->addServiceProvider(new RoleRequestHandlerServiceProvider());
 $container->addServiceProvider(new UserPermissionsServiceProvider());
@@ -730,7 +730,7 @@ $app['predis.client'] = $app->share(function ($app) {
 });
 
 $container->addServiceProvider(new Sapi3SearchServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
 // Provides authentication of HTTP requests. While the HTTP authentication is not needed in CLI context, the service
 // provider still needs to be registered in the general bootstrap.php instead of web/index.php so CLI commands have
