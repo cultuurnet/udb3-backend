@@ -350,13 +350,6 @@ $app['uitpas'] = $app->share(
     }
 );
 
-// This service is used by the background worker to impersonate the user
-// who initially queued the command.
-$container->addShared(
-    'impersonator',
-    fn () => new \CultuurNet\UDB3\Impersonator()
-);
-
 $container->addServiceProvider(
     new AMQPConnectionServiceProvider()
 );
