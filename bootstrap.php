@@ -71,10 +71,6 @@ use Monolog\Logger;
 use Silex\Application;
 use SocketIO\Emitter;
 
-if (!defined('API_NAME')) {
-    define('API_NAME', ApiName::UNKNOWN);
-}
-
 date_default_timezone_set('Europe/Brussels');
 
 /**
@@ -101,6 +97,9 @@ $app = new HybridContainerApplication($container);
 $container->delegate(new PimplePSRContainerBridge($app));
 $container->delegate(new ReflectionContainer(true));
 
+if (!defined('API_NAME')) {
+    define('API_NAME', ApiName::UNKNOWN);
+}
 $container->addShared(ApiName::class, new StringArgument(API_NAME));
 
 if (!isset($udb3ConfigLocation)) {
