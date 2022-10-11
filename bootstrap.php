@@ -58,9 +58,9 @@ use CultuurNet\UDB3\Place\PlaceRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Search\Sapi3SearchServiceProvider;
-use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventServiceProvider;
-use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsServiceProvider;
-use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerServiceProvider;
+use CultuurNet\UDB3\UiTPASService\UiTPASServiceEventServiceProvider;
+use CultuurNet\UDB3\UiTPASService\UiTPASServiceLabelsServiceProvider;
+use CultuurNet\UDB3\UiTPASService\UiTPASServiceOrganizerServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Term\TermServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
@@ -716,9 +716,9 @@ $container->addServiceProvider(new LabelServiceProvider());
 $app->register(new RoleRequestHandlerServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
 $container->addServiceProvider(new ProductionServiceProvider());
-$app->register(new UiTPASServiceLabelsServiceProvider());
-$app->register(new UiTPASServiceEventServiceProvider());
-$app->register(new UiTPASServiceOrganizerServiceProvider());
+$container->addServiceProvider(new UiTPASServiceLabelsServiceProvider());
+$container->addServiceProvider(new UiTPASServiceEventServiceProvider());
+$container->addServiceProvider(new UiTPASServiceOrganizerServiceProvider());
 
 $container->addServiceProvider(
     new \CultuurNet\UDB3\Media\MediaServiceProvider()
