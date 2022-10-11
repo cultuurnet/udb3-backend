@@ -45,6 +45,8 @@ use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
+use CultuurNet\UDB3\Role\RoleRequestHandlerServiceProvider;
+use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
@@ -55,8 +57,6 @@ use CultuurNet\UDB3\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Place\PlaceHistoryServiceProvider;
 use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Place\PlaceRequestHandlerServiceProvider;
-use CultuurNet\UDB3\Silex\Role\RoleRequestHandlerServiceProvider;
-use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceLabelsServiceProvider;
@@ -97,10 +97,6 @@ $container->delegate(new PimplePSRContainerBridge($app));
 $container->delegate(new ReflectionContainer(true));
 
 $app['api_name'] = defined('API_NAME') ? API_NAME : ApiName::UNKNOWN;
-
-if (!isset($udb3ConfigLocation)) {
-    $udb3ConfigLocation = __DIR__;
-}
 
 $app['config'] = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
 
@@ -625,8 +621,8 @@ $container->addServiceProvider(new \CultuurNet\UDB3\Place\PlacePermissionService
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $container->addServiceProvider(new LabelServiceProvider());
-$app->register(new RoleRequestHandlerServiceProvider());
-$app->register(new UserPermissionsServiceProvider());
+$container->addServiceProvider(new RoleRequestHandlerServiceProvider());
+$container->addServiceProvider(new UserPermissionsServiceProvider());
 $container->addServiceProvider(new ProductionServiceProvider());
 $container->addServiceProvider(new UiTPASServiceLabelsServiceProvider());
 $container->addServiceProvider(new UiTPASServiceEventServiceProvider());
@@ -654,22 +650,11 @@ $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider())
 // user who triggered the job is being impersonated.
 $container->addServiceProvider(new AuthServiceProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\UDB2EventServicesProvider(),
-    [
-        'udb2_place_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_place.php',
-        'udb2_organizer_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_organizer.php',
-    ]
-);
+$container->addServiceProvider(new \CultuurNet\UDB3\UDB2\UDB2EventServicesProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASIncomingEventServicesProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\GeocodingServiceProvider(),
-    [
-        'geocoding_service.google_maps_api_key' => isset($app['config']['google_maps_api_key']) ? $app['config']['google_maps_api_key'] : null,
-    ]
-);
+$container->addServiceProvider(new \CultuurNet\UDB3\Geocoding\GeocodingServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new EventGeoCoordinatesServiceProvider());

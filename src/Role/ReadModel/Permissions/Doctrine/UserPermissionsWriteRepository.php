@@ -14,14 +14,14 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
 {
     private Connection $connection;
 
-    private StringLiteral $userRoleTableName;
+    private string $userRoleTableName;
 
-    private StringLiteral $rolePermissionTableName;
+    private string $rolePermissionTableName;
 
     public function __construct(
         Connection $connection,
-        StringLiteral $userRoleTableName,
-        StringLiteral $rolePermissionTableName
+        string $userRoleTableName,
+        string $rolePermissionTableName
     ) {
         $this->connection = $connection;
         $this->userRoleTableName = $userRoleTableName;

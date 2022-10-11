@@ -14,15 +14,15 @@ use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
+use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
 use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
-use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
-use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider;
 use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
+use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 
 final class EventBusServiceProvider extends AbstractServiceProvider
 {
