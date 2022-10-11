@@ -733,7 +733,7 @@ $app['predis.client'] = $app->share(function ($app) {
     return new Predis\Client($redisURI);
 });
 
-$app->register(new Sapi3SearchServiceProvider());
+$container->addServiceProvider(new Sapi3SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
 // Provides authentication of HTTP requests. While the HTTP authentication is not needed in CLI context, the service
@@ -759,12 +759,12 @@ $app->register(
     ]
 );
 
-$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerGeoCoordinatesServiceProvider());
 
 $container->addServiceProvider(new EventHistoryServiceProvider());
-$app->register(new PlaceHistoryServiceProvider());
+$container->addServiceProvider(new PlaceHistoryServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Media\MediaImportServiceProvider());
 
