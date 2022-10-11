@@ -22,11 +22,7 @@ class GeocodingServiceProvider implements ServiceProviderInterface
     {
         $app[GeocodingService::class] = $app->share(
             function (HybridContainerApplication $app) {
-                $googleMapsApiKey = null;
-
-                if (isset($app['geocoding_service.google_maps_api_key'])) {
-                    $googleMapsApiKey = $app['geocoding_service.google_maps_api_key'];
-                }
+                $googleMapsApiKey = isset($app['config']['google_maps_api_key']) ? $app['config']['google_maps_api_key'] : null;
 
                 $geocodingService = new DefaultGeocodingService(
                     new StatefulGeocoder(

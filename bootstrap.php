@@ -752,12 +752,7 @@ $app->register(
 
 $app->register(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASIncomingEventServicesProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\GeocodingServiceProvider(),
-    [
-        'geocoding_service.google_maps_api_key' => isset($app['config']['google_maps_api_key']) ? $app['config']['google_maps_api_key'] : null,
-    ]
-);
+$app->register(new \CultuurNet\UDB3\Silex\GeocodingServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
