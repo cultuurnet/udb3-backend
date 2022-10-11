@@ -182,14 +182,12 @@ $container->addServiceProvider(new OrganizerSecurityServiceProvider());
 $app['cache'] = $app->share(
     function (Application $app) {
         return function ($cacheType) use ($app) {
-            $redisClient = new Predis\Client(
+            return new Doctrine\Common\Cache\PredisCache(new Predis\Client(
                 $app['config']['cache']['redis'],
                 [
                     'prefix' => $cacheType . '_',
                 ]
-            );
-
-            return new Doctrine\Common\Cache\PredisCache($redisClient);
+            ));
         };
     }
 );
