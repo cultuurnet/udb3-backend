@@ -738,7 +738,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider())
 // user who triggered the job is being impersonated.
 $container->addServiceProvider(new AuthServiceProvider());
 
-$container->addServiceProvider(new \CultuurNet\UDB3\Silex\UDB2EventServicesProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\UDB2\UDB2EventServicesProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASIncomingEventServicesProvider());
 
