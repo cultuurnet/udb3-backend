@@ -157,6 +157,5 @@ final class ExportServiceProvider extends AbstractServiceProvider
                 $container->get('config')['mail']['sender']['name']
             )
         );
-
     }
 }
