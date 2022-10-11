@@ -337,10 +337,8 @@ $container->addServiceProvider(new OrganizerCommandHandlerProvider());
 
 $app['organizer_store'] = $app->share(
     function ($app) {
-        $eventStore = $app['event_store_factory'](AggregateType::organizer());
-
         return new UniqueDBALEventStoreDecorator(
-            $eventStore,
+            $app['event_store_factory'](AggregateType::organizer()),
             $app['dbal_connection'],
             'organizer_unique_websites',
             new WebsiteUniqueConstraintService(new WebsiteNormalizer())
