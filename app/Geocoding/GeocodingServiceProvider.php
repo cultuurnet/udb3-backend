@@ -2,12 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Geocoding;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Geocoding\CachedGeocodingService;
-use CultuurNet\UDB3\Geocoding\DefaultGeocodingService;
-use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
