@@ -169,6 +169,14 @@ $app['uuid_generator'] = $app->share(
     }
 );
 
+$container->addServiceProvider(new GeneralSecurityServiceProvider());
+$container->addServiceProvider(new OfferSecurityServiceProvider());
+$container->addServiceProvider(new OrganizerSecurityServiceProvider());
+
+$container->addServiceProvider(new \CultuurNet\UDB3\Cache\CacheServiceProvider());
+
+$container->addServiceProvider(new \CultuurNet\UDB3\Database\DatabaseServiceProvider());
+
 $app['event_iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
@@ -178,14 +186,6 @@ $app['event_iri_generator'] = $app->share(
         );
     }
 );
-
-$container->addServiceProvider(new GeneralSecurityServiceProvider());
-$container->addServiceProvider(new OfferSecurityServiceProvider());
-$container->addServiceProvider(new OrganizerSecurityServiceProvider());
-
-$container->addServiceProvider(new \CultuurNet\UDB3\Cache\CacheServiceProvider());
-
-$container->addServiceProvider(new \CultuurNet\UDB3\Database\DatabaseServiceProvider());
 
 $app['dbal_event_store'] = $app->share(
     function ($app) {
@@ -198,20 +198,6 @@ $app['event_store'] = $app->share(
         return new \CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator($app['dbal_event_store']);
     }
 );
-
-$app['calendar_factory'] = $app->share(
-    function () {
-        return new CalendarFactory();
-    }
-);
-
-$app['cdbxml_contact_info_importer'] = $app->share(
-    function () {
-        return new CdbXmlContactInfoImporter();
-    }
-);
-
-$container->addServiceProvider(new EventJSONLDServiceProvider());
 
 $app['event_calendar_repository'] = $app->share(
     function ($app) {
@@ -253,6 +239,20 @@ $app['event_repository'] = $app->share(
         );
 
         return $repository;
+    }
+);
+
+$container->addServiceProvider(new EventJSONLDServiceProvider());
+
+$app['calendar_factory'] = $app->share(
+    function () {
+        return new CalendarFactory();
+    }
+);
+
+$app['cdbxml_contact_info_importer'] = $app->share(
+    function () {
+        return new CdbXmlContactInfoImporter();
     }
 );
 
