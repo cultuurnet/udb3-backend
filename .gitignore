@@ -10,6 +10,7 @@
 /web/images
 *.pem
 config*.php
+!ConfigurationServiceProvider.php
 phpunit.xml
 external_id_mapping_organizer.yml
 external_id_mapping_place.yml
