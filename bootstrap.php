@@ -51,8 +51,6 @@ use CultuurNet\UDB3\SavedSearches\SavedSearchesServiceProvider;
 use CultuurNet\UDB3\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
-use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Place\PlaceHistoryServiceProvider;
@@ -79,21 +77,7 @@ date_default_timezone_set('Europe/Brussels');
  */
 libxml_use_internal_errors(true);
 
-/**
- * Set up a PSR-11 container using league/container. The goal is for this container to replace the Silex Application
- * object (a Pimple container).
- * We inject this new PSR container into the Silex application (extended via HybridContainerApplication) so that Silex
- * service definitions can fetch services from the PSR container (if they exist there) instead of the Silex container.
- * We then wrap the Silex container in a decorator that makes it PSR-11 compatible and set that as a delegate on the
- * league container so that service definitions in the league container can fetch services from the Silex container if
- * they do not exist in the league container.
- * Lastly we set a ReflectionContainer as a second delegate on the league container to enable auto-wiring in the league
- * container. Because the Silex container also looks up missing services in the league container, it also gets auto-
- * wiring this way.
- */
 $container = new Container();
-$app = new HybridContainerApplication($container);
-$container->delegate(new PimplePSRContainerBridge($app));
 $container->delegate(new ReflectionContainer(true));
 
 $container->addServiceProvider(new ConfigurationServiceProvider());
