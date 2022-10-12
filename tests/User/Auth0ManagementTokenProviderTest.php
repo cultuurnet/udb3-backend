@@ -2,12 +2,8 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\User;
+namespace CultuurNet\UDB3\User;
 
-use CultuurNet\UDB3\User\Auth0ManagementTokenGenerator;
-use CultuurNet\UDB3\User\Auth0ManagementTokenProvider;
-use CultuurNet\UDB3\User\Auth0ManagementTokenRepository;
-use CultuurNet\UDB3\User\Auth0Token;
 use DateTimeImmutable;
 use Lcobucci\JWT\Token;
 use PHPUnit\Framework\TestCase;
