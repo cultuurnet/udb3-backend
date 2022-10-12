@@ -8,8 +8,11 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CompositeCommandValidator;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\ValidatingCommandBusDecorator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\EventCommandHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
+use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Place\CommandHandler as PlaceCommandHandler;
 use CultuurNet\UDB3\Role\CommandHandler as RoleCommandHandler;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
@@ -20,7 +23,11 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
+use Monolog\Logger;
+use Predis\Client;
 use Psr\Container\ContainerInterface;
+use Redis;
+use SocketIO\Emitter;
 
 final class CommandBusServiceProvider extends AbstractServiceProvider
 {
@@ -245,6 +252,36 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                 $commandBus->subscribe($container->get('bulk_label_offer_command_handler'));
                 return $commandBus;
             }
+        );
+
+        $container->addShared(
+            'logger_factory.resque_worker',
+            new \League\Container\Argument\Literal\CallableArgument(
+                function ($queueName) use ($container) {
+                    $redisConfig = [
+                        'host' => '127.0.0.1',
+                        'port' => 6379,
+                    ];
+                    if (extension_loaded('redis')) {
+                        $redis = new Redis();
+                        $redis->connect(
+                            $redisConfig['host'],
+                            $redisConfig['port']
+                        );
+                    } else {
+                        $redis = new Client(
+                            [
+                                'host' => $redisConfig['host'],
+                                'port' => $redisConfig['port']
+                            ]
+                        );
+                        $redis->connect();
+                    }
+                    $socketIOHandler = new SocketIOEmitterHandler(new Emitter($redis), Logger::INFO);
+
+                    return LoggerFactory::create($container, LoggerName::forResqueWorker($queueName), [$socketIOHandler]);
+                }
+            )
         );
     }
 
