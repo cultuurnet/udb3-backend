@@ -119,20 +119,16 @@ $container->addServiceProvider(new CultureFeedServiceProvider());
  */
 $container->addServiceProvider(new SwiftMailerServiceProvider());
 
-$app['timezone'] = $app->share(
-    function (Application $app) {
-        return new DateTimeZone(
-            empty($app['config']['timezone']) ? 'Europe/Brussels' : $app['config']['timezone']
-        );
-    }
+$container->addShared(
+    'timezone',
+    fn () => new DateTimeZone(
+        empty($container->get('config')['timezone']) ? 'Europe/Brussels' : $container->get('config')['timezone']
+    )
 );
 
-$app['clock'] = $app->share(
-    function (Application $app) {
-        return new SystemClock(
-            $app['timezone']
-        );
-    }
+$container->addShared(
+    'clock',
+    fn () => new SystemClock($container->get('timezone'))
 );
 
 $app['uuid_generator'] = $app->share(
