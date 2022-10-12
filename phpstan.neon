@@ -10,3 +10,6 @@ parameters:
 		- tests/bootstrap.php
 	scanFiles:
 		- vendor/gridonic/princexml-php/lib/prince.php
+	excludePaths:
+		- tests/Event/Productions/SimilarEventsRepositoryTest.php
+		- tests/Http/Productions/SuggestProductionRequestHandlerTest.php
