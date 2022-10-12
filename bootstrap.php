@@ -102,12 +102,6 @@ $container->addServiceProvider(new \CultuurNet\UDB3\Configuration\ConfigurationS
 
 $app['config'] = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
 
-$app['system_user_id'] = $app::share(
-    function () {
-        return '00000000-0000-0000-0000-000000000000';
-    }
-);
-
 // Add the system user to the list of god users.
 $app['config'] = array_merge_recursive(
     $app['config'],

@@ -14,6 +14,7 @@ final class ConfigurationServiceProvider extends AbstractServiceProvider
     {
         return [
             ApiName::class,
+            'system_user_id',
         ];
     }
 
@@ -26,5 +27,9 @@ final class ConfigurationServiceProvider extends AbstractServiceProvider
         }
         $container->addShared(ApiName::class, new StringArgument(API_NAME));
 
+        $container->addShared(
+            'system_user_id',
+            fn () => '00000000-0000-0000-0000-000000000000',
+        );
     }
 }
