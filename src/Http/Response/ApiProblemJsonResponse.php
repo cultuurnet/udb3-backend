@@ -21,7 +21,7 @@ class ApiProblemJsonResponse extends JsonResponse
 
         $headers->setHeader('Content-Type', 'application/problem+json');
 
-        $status = $problem->getStatus() ?? 400;
+        $status = $problem->getStatus();
         $data = $problem->toArray();
 
         parent::__construct(
