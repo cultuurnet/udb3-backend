@@ -13,7 +13,7 @@ class HTMLFileWriterTest extends TestCase
      */
     protected $filePath;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->filePath = $this->getFilePath();
@@ -524,7 +524,7 @@ class HTMLFileWriterTest extends TestCase
     /**
      * @inheritdoc
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         if ($this->filePath && file_exists($this->filePath)) {
             unlink($this->filePath);

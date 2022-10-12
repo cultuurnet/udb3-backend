@@ -21,7 +21,7 @@ class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
      */
     protected $deserializer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->userId = new StringLiteral('xyx');
 

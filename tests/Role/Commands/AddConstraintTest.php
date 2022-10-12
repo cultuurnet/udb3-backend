@@ -25,7 +25,7 @@ class AddConstraintTest extends TestCase
      */
     protected $addConstraint;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('7ec197c5-b816-43e1-b057-ba1d25a04567');
         $this->query = new Query('city:3000');

@@ -24,7 +24,7 @@ class EventOrganizerPromotionQueryFactoryTest extends TestCase
      */
     protected $unixTime = 435052800;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->queryFactory = new EventOrganizerPromotionQueryFactory(
             new FrozenClock(

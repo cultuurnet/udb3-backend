@@ -24,7 +24,7 @@ class LabelRolesWriteRepositoryTest extends TestCase
      */
     private $labelRolesWriteRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->labelRolesTableName = new StringLiteral('label_roles');
 

@@ -16,7 +16,7 @@ class RecordedOnTest extends TestCase
      */
     private $recordedOn;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(
             DateTime::fromString('2018-01-16T12:13:33Z')

@@ -18,7 +18,7 @@ class UploadImageTest extends TestCase
      */
     private $uploadImage;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uploadImage = new UploadImage(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),

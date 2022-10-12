@@ -31,7 +31,7 @@ class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
      */
     private $adapter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $place = new ImmutablePlace(
             new UUID('6ba87a6b-efea-4467-9e87-458d145384d9'),

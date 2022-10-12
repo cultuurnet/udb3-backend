@@ -13,7 +13,7 @@ class DeleteTypicalAgeRangeTest extends TestCase
      */
     protected $deleteTypicalAgeRange;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->deleteTypicalAgeRange = new DeleteTypicalAgeRange('id');
     }

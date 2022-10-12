@@ -27,7 +27,7 @@ class AbstractDBALRepositoryTest extends TestCase
      */
     private $abstractDBALRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->connection = DriverManager::getConnection(
             [

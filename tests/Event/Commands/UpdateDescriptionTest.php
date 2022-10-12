@@ -15,7 +15,7 @@ class UpdateDescriptionTest extends TestCase
      */
     protected $updateDescription;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->updateDescription = new UpdateDescription(
             'id',

@@ -29,7 +29,7 @@ abstract class StringFilterTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->filter = $this->getFilter();

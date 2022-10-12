@@ -17,7 +17,7 @@ class UpdateBookingInfoTest extends TestCase
      */
     protected $updateBookingInfo;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->updateBookingInfo = new UpdateBookingInfo(
             'id',

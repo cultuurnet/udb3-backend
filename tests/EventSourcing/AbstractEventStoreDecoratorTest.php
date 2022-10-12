@@ -21,7 +21,7 @@ class AbstractEventStoreDecoratorTest extends TestCase
      */
     private $abstractEventStoreDecorator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->eventStore = $this->createMock(EventStore::class);
 

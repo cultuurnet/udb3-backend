@@ -24,7 +24,7 @@ class JSONLDMainLanguageQueryTest extends TestCase
      */
     private $query;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->documentRepository = $this->createMock(DocumentRepository::class);
         $this->query = new JSONLDMainLanguageQuery($this->documentRepository, new Language('nl'));

@@ -26,7 +26,7 @@ class AbstractPublishedTest extends TestCase
      */
     private $abstractPublished;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->itemId = '3dc2b894-9a80-11e6-9f33-a24fc0d9649c';
 

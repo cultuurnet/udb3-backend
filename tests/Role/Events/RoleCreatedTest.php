@@ -25,7 +25,7 @@ class RoleCreatedTest extends TestCase
      */
     protected $roleCreated;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('12c98a43-978b-4a6f-a7da-67a4350a6fa1');
 

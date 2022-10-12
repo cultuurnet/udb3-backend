@@ -25,7 +25,7 @@ class ValidatingCommandBusDecoratorTest extends TestCase
      */
     private $decorator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->decoratee = $this->createMock(CommandBus::class);
         $this->validator = $this->createMock(CommandValidatorInterface::class);

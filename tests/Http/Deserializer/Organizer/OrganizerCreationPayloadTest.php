@@ -47,7 +47,7 @@ class OrganizerCreationPayloadTest extends TestCase
      */
     private $organizerCreationPayload;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->mainLanguage = new Language('en');
 

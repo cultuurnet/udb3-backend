@@ -16,7 +16,7 @@ class UrlJSONDeserializerTest extends TestCase
      */
     private $urlJSONDeserializer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->urlJSONDeserializer = new UrlJSONDeserializer();
     }

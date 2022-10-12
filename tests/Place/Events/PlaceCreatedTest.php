@@ -36,7 +36,7 @@ class PlaceCreatedTest extends TestCase
      */
     private $placeCreated;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->address = new Address(
             new Street('Blubstraat 69'),

@@ -13,7 +13,7 @@ class DayOfWeekCollectionTest extends TestCase
      */
     private $dayOfWeekCollection;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dayOfWeekCollection = new DayOfWeekCollection(
             DayOfWeek::WEDNESDAY()

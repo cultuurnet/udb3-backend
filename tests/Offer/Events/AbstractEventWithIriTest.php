@@ -23,7 +23,7 @@ class AbstractEventWithIriTest extends TestCase
      */
     protected $iri;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->id = '1';
         $this->iri = 'event/1';

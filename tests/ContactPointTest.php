@@ -34,7 +34,7 @@ class ContactPointTest extends TestCase
      */
     private $contactPoint;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->phones = ['012 34 56 78', '987 65 43 21'];
 

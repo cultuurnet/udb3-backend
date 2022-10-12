@@ -22,7 +22,7 @@ class ReplayFilteringEventListenerTest extends TestCase
      */
     private $filteringEventListener;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->eventListener = $this->createMock(EventListener::class);
 

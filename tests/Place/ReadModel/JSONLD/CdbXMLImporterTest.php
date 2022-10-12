@@ -24,7 +24,7 @@ class CdbXMLImporterTest extends TestCase
      */
     protected $importer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->importer = new CdbXMLImporter(
             new CdbXMLItemBaseImporter(

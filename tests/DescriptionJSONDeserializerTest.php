@@ -14,7 +14,7 @@ class DescriptionJSONDeserializerTest extends TestCase
      */
     private $deserializer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->deserializer = new DescriptionJSONDeserializer();
     }
