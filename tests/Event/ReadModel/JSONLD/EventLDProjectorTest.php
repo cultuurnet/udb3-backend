@@ -827,7 +827,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedBookingInfo->price = 9.99;
         $expectedBookingInfo->description = 'Iedereen aan dezelfde prijs';
 
-        $this->assertInternalType('object', $bookingInfo);
+        $this->assertIsObject($bookingInfo);
         $this->assertEquals($expectedBookingInfo, $bookingInfo);
     }
 
@@ -849,7 +849,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedBookingInfo->price = 9.99;
         $expectedBookingInfo->description = 'Iedereen aan dezelfde prijs';
 
-        $this->assertInternalType('object', $bookingInfo);
+        $this->assertIsObject($bookingInfo);
         $this->assertEquals($expectedBookingInfo, $bookingInfo);
     }
 
@@ -869,7 +869,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedBookingInfo = new stdClass();
         $expectedBookingInfo->description = 'Gratis voor iedereen!';
 
-        $this->assertInternalType('object', $bookingInfo);
+        $this->assertIsObject($bookingInfo);
         $this->assertEquals($expectedBookingInfo, $bookingInfo);
     }
 
