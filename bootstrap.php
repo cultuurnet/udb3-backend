@@ -107,13 +107,16 @@ $config = array_merge_recursive(
     [
         'user_permissions' => [
             'allow_all' => [
-                $app['system_user_id']
+                $container->get('system_user_id'),
             ],
         ],
     ]
 );
 
-$app['config'] = $config;
+$container->addShared(
+    'config',
+    fn () => $config
+);
 
 $container->addServiceProvider(new \CultuurNet\UDB3\EventStore\EventStoreServiceProvider());
 
