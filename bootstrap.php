@@ -98,10 +98,7 @@ $app = new HybridContainerApplication($container);
 $container->delegate(new PimplePSRContainerBridge($app));
 $container->delegate(new ReflectionContainer(true));
 
-if (!defined('API_NAME')) {
-    define('API_NAME', ApiName::UNKNOWN);
-}
-$container->addShared(ApiName::class, new StringArgument(API_NAME));
+$container->addServiceProvider(new \CultuurNet\UDB3\Configuration\ConfigurationServiceProvider());
 
 $app['config'] = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
 
