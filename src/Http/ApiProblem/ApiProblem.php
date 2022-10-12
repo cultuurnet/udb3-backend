@@ -421,8 +421,16 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function eventHasUitpasTicketSales($detail): self
+    public static function eventHasUitpasTicketSales(?string $eventId = null): self
     {
+        $detail = 'Event has ticket sales in UiTPAS, which makes it impossible to change its organizer, UiTPAS card systems, and UiTPAS distribution keys.';
+        if ($eventId) {
+            $detail = sprintf(
+                'Event with id \'%s\' has ticket sales in UiTPAS, which makes it impossible to change its organizer, UiTPAS card systems, and UiTPAS distribution keys.',
+                $eventId
+            );
+        }
+
         return self::create(
             'https://api.publiq.be/probs/uitdatabank/event-has-uitpas-ticket-sales',
             'Event has UiTPAS ticket sales',
