@@ -56,7 +56,6 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\Item;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use Exception;
 use CultuurNet\UDB3\StringLiteral;
 
 class OfferTest extends AggregateRootScenarioTestCase
