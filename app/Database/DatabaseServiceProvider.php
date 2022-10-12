@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Database;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use Doctrine\Common\EventManager;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Event\Listeners\SQLSessionInit;
 
 final class DatabaseServiceProvider extends AbstractServiceProvider
 {
@@ -22,20 +25,18 @@ final class DatabaseServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'dbal_connection',
             function () use ($container) {
-                $eventManager = new \Doctrine\Common\EventManager();
+                $eventManager = new EventManager();
                 $sqlMode = 'NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES';
                 $query = "SET SESSION sql_mode = '{$sqlMode}'";
                 $eventManager->addEventSubscriber(
-                    new \Doctrine\DBAL\Event\Listeners\SQLSessionInit($query)
+                    new SQLSessionInit($query)
                 );
 
-                $connection = \Doctrine\DBAL\DriverManager::getConnection(
+                return DriverManager::getConnection(
                     $container->get('config')['database'],
                     null,
                     $eventManager
                 );
-
-                return $connection;
             }
         );
     }
