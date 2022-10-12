@@ -27,7 +27,7 @@ class OfferMetadataEnrichedOfferRepositoryTest extends TestCase
      */
     private $offerMetadataEnrichedOfferRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->offerMetadataRepository = $this->createMock(OfferMetadataRepository::class);
         $this->decoratedRepository = new InMemoryDocumentRepository();

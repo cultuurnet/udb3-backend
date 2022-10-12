@@ -31,7 +31,7 @@ class AbstractDescriptionTranslatedTest extends TestCase
      */
     protected $description;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->language = new Language('en');

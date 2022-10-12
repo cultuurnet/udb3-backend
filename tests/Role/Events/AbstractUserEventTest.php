@@ -26,7 +26,7 @@ class AbstractUserEventTest extends TestCase
      */
     private $userId;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('7c296342-d72b-4444-9f8b-2a0c99763c9a');
 

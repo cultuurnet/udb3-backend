@@ -26,7 +26,7 @@ class AbstractUserCommandTest extends TestCase
      */
     private $userId;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('ebb777b2-6735-4636-8f60-f7bde4576036');
 

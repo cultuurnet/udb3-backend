@@ -38,7 +38,7 @@ class LocalPlaceServiceTest extends TestCase
      */
     private $localPlaceService;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->documentRepository = $this->createMock(
             DocumentRepository::class

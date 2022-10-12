@@ -14,7 +14,7 @@ class IriOfferIdentifierTest extends TestCase
      */
     private $identifier;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->identifier = new IriOfferIdentifier(
             new Url('http://du.de/place/1'),

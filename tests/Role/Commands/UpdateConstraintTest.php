@@ -25,7 +25,7 @@ class UpdateConstraintTest extends TestCase
      */
     protected $updateConstraint;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('f311378a-a34a-4d5f-ad49-a861f022ccb1');
         $this->query = new Query('city:3000');

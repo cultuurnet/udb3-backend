@@ -107,14 +107,7 @@ class UserPermissionsReadRepositoryTest extends TestCase
             Permission::gebruikersBeheren(),
             Permission::aanbodModereren(),
         ];
-        $this->assertEquals(
-            $expectedPermissions,
-            $permissions,
-            'User permissions do not match expected!',
-            0.0,
-            10,
-            true
-        );
+        $this->assertEqualsCanonicalizing($expectedPermissions, $permissions, 'User permissions do not match expected!');
 
         $otherUserPermissions = $this->repository->getPermissions('otherUserId');
         $this->assertEmpty($otherUserPermissions);

@@ -25,7 +25,7 @@ class AbstractLabelEventTest extends TestCase
      */
     protected $event;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('1e99c6ab-6ff2-4611-96fa-eda8b8a78ae9');
         $this->labelId = new UUID('d50852d1-5351-46bc-8221-238c2d47e3cf');

@@ -24,7 +24,7 @@ class AbstractUpdateTypicalAgeRangeTest extends TestCase
      */
     protected $typicalAgeRange;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->typicalAgeRange = '3-12';

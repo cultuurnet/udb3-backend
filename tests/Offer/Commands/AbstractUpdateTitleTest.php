@@ -31,7 +31,7 @@ class AbstractUpdateTitleTest extends TestCase
      */
     protected $language;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->title = new Title('This is the event title update.');

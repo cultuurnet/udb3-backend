@@ -26,7 +26,7 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
      */
     private $popularityEnrichedOfferRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->popularityRepository = new InMemoryPopularityRepository();
         $this->decoratedRepository = new InMemoryDocumentRepository();

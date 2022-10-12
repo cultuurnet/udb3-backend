@@ -75,7 +75,7 @@ class CommandBusForwardingConsumerTest extends TestCase
     private $deserializer;
 
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->connection = $this->createMock(AMQPStreamConnection::class);
 

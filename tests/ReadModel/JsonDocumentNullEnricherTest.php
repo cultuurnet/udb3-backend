@@ -14,7 +14,7 @@ class JsonDocumentNullEnricherTest extends TestCase
      */
     private $enricher;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->enricher = new JsonDocumentNullEnricher();
     }

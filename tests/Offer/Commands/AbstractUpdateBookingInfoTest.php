@@ -28,7 +28,7 @@ class AbstractUpdateBookingInfoTest extends TestCase
      */
     protected $bookingInfo;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->bookingInfo = new BookingInfo(

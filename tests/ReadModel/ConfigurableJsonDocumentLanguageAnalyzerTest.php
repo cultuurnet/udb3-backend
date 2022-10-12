@@ -14,7 +14,7 @@ class ConfigurableJsonDocumentLanguageAnalyzerTest extends TestCase
      */
     private $analyzer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->analyzer = new ConfigurableJsonDocumentLanguageAnalyzer(
             [

@@ -29,7 +29,7 @@ class MediaObjectSerializerTest extends TestCase
      */
     protected $iriGenerator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
         $this->serializer = new MediaObjectSerializer($this->iriGenerator);

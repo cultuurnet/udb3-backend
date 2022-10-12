@@ -38,7 +38,7 @@ class MultilingualStringTest extends TestCase
      */
     private $multilingualString;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->originalLanguage = new Language('nl');
         $this->originalString = new StringLiteral(

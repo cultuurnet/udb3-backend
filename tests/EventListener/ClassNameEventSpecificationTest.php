@@ -16,7 +16,7 @@ class ClassNameEventSpecificationTest extends TestCase
      */
     private $labelAdded;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->labelAdded = new LabelAdded(
             '26e36905-64d0-4cac-ba41-6d6dcd997ca0',

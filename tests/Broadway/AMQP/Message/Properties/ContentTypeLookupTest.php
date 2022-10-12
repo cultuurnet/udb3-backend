@@ -14,7 +14,7 @@ class ContentTypeLookupTest extends TestCase
      */
     protected $contentTypeLookup;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->contentTypeLookup = new ContentTypeLookup();
     }

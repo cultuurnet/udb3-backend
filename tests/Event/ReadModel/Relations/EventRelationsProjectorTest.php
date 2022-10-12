@@ -37,7 +37,7 @@ class EventRelationsProjectorTest extends TestCase
      */
     private $projector;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->repository = $this->createMock(EventRelationsRepository::class);
 

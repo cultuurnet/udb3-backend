@@ -18,7 +18,7 @@ class OfferLocatorTest extends TestCase
      */
     protected $iriGenerator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
     }

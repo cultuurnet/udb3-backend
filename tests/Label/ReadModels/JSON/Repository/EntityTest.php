@@ -52,7 +52,7 @@ class EntityTest extends TestCase
      */
     private $entityWithDefaults;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('17d17095-a628-4cfe-98c2-3306bb6af450');
 

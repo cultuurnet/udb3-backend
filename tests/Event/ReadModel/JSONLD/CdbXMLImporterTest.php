@@ -42,7 +42,7 @@ class CdbXMLImporterTest extends TestCase
      */
     protected $slugger;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->importer = new CdbXMLImporter(
             new CdbXMLItemBaseImporter(

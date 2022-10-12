@@ -13,7 +13,7 @@ class ActorItemFactoryTest extends TestCase
      */
     private $factory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->factory = new ActorItemFactory(
             \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.3')

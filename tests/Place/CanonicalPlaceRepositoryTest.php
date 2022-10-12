@@ -19,7 +19,7 @@ class CanonicalPlaceRepositoryTest extends TestCase
      */
     private $placeRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->placeRepository = $this->createMock(PlaceRepository::class);
         $this->canonicalPlaceRepository = new CanonicalPlaceRepository($this->placeRepository);

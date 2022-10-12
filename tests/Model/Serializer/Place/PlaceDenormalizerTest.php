@@ -83,7 +83,7 @@ class PlaceDenormalizerTest extends TestCase
      */
     private $denormalizer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->denormalizer = new PlaceDenormalizer();
     }

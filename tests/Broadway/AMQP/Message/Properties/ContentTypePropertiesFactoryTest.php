@@ -23,7 +23,7 @@ class ContentTypePropertiesFactoryTest extends TestCase
      */
     private $contentTypePropertiesFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->contentTypeLookup = (new ContentTypeLookup())
             ->withContentType(

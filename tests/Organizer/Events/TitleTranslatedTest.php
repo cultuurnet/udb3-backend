@@ -27,7 +27,7 @@ class TitleTranslatedTest extends TestCase
      */
     private $titleTranslatedAsArray;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->organizerId = '3ad6c135-9b2d-4360-8886-3a58aaf66039';
 

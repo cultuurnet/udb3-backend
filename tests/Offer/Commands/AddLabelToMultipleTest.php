@@ -26,7 +26,7 @@ class AddLabelToMultipleTest extends TestCase
 
     protected Label $label;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->offerIdentifiers = OfferIdentifierCollection::fromArray(
             [

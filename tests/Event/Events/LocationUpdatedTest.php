@@ -29,7 +29,7 @@ class LocationUpdatedTest extends TestCase
      */
     private $locationUpdated;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->eventId = '3ed90f18-93a3-4340-981d-12e57efa0211';
 

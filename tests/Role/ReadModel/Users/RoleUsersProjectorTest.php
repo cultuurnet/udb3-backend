@@ -44,7 +44,7 @@ class RoleUsersProjectorTest extends TestCase
      */
     private $userIdentityDetail;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->repository = $this->createMock(DocumentRepository::class);
 

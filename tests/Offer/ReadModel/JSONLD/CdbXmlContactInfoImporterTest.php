@@ -18,7 +18,7 @@ class CdbXmlContactInfoImporterTest extends TestCase
      */
     private $cdbContactInfo;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->cdbXmlContactInfoImporter = new CdbXmlContactInfoImporter();
 

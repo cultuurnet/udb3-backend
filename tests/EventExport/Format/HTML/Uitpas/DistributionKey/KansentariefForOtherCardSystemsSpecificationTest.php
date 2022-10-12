@@ -15,7 +15,7 @@ class KansentariefForOtherCardSystemsSpecificationTest extends TestCase
      */
     protected $specification;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->specification = new KansentariefForOtherCardSystemsSpecification();
     }

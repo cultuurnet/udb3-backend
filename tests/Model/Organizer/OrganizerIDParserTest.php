@@ -15,7 +15,7 @@ class OrganizerIDParserTest extends TestCase
      */
     private $parser;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->parser = new OrganizerIDParser();
     }

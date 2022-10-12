@@ -11,12 +11,12 @@ use PHPUnit\Framework\TestCase;
 class ValidatingCommandBusDecoratorTest extends TestCase
 {
     /**
-     * @var CommandBus|\PHPUnit_Framework_MockObject_MockObject
+     * @var CommandBus|\PHPUnit\Framework\MockObject\MockObject
      */
     private $decoratee;
 
     /**
-     * @var CommandValidatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var CommandValidatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $validator;
 
@@ -25,7 +25,7 @@ class ValidatingCommandBusDecoratorTest extends TestCase
      */
     private $decorator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->decoratee = $this->createMock(CommandBus::class);
         $this->validator = $this->createMock(CommandValidatorInterface::class);

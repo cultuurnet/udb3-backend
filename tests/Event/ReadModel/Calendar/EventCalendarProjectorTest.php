@@ -36,7 +36,7 @@ class EventCalendarProjectorTest extends TestCase
      */
     protected $cdbXMLEventFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->cdbXMLEventFactory = new CdbXMLEventFactory();
 

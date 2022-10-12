@@ -27,7 +27,7 @@ class CompositePropertiesFactoryTest extends TestCase
      */
     private $compositeFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->mockFactory1 = $this->createMock(PropertiesFactoryInterface::class);
         $this->mockFactory2 = $this->createMock(PropertiesFactoryInterface::class);

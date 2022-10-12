@@ -43,7 +43,7 @@ class PlaceRepositoryTest extends TestCase
      */
     private $eventBus;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

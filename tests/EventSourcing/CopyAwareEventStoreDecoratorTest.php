@@ -24,7 +24,7 @@ class CopyAwareEventStoreDecoratorTest extends TestCase
      */
     protected $copyAwareEventStore;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->eventStore = $this->createMock(EventStore::class);
         $this->copyAwareEventStore = new CopyAwareEventStoreDecorator($this->eventStore);

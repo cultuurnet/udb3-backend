@@ -31,7 +31,7 @@ class AbstractUpdateDescriptionTest extends TestCase
      */
     protected $language;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->description = new Description('This is the event description update.');

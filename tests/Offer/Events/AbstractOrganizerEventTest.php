@@ -23,7 +23,7 @@ class AbstractOrganizerEventTest extends TestCase
      */
     protected $organizerId;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->organizerId = 'my-organizer-123';

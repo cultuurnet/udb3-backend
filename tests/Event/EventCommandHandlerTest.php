@@ -14,7 +14,6 @@ use CultuurNet\UDB3\CalendarType;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
-use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;

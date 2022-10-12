@@ -33,7 +33,7 @@ class EventCreatedTest extends TestCase
      */
     private $eventCreated;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->location = new LocationId('335be568-aaf0-4147-80b6-9267daafe23b');
 

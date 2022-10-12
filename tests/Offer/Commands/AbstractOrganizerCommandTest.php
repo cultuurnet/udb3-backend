@@ -24,7 +24,7 @@ class AbstractOrganizerCommandTest extends TestCase
      */
     protected $organizerId;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->organizerId = 'organizer-456';
