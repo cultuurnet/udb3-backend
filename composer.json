@@ -129,6 +129,8 @@
       "composer cs"
     ],
     "cs": "php-cs-fixer fix -v --diff --dry-run",
-    "cs-fix": "php-cs-fixer fix -v --diff"
+    "cs-fix": "php-cs-fixer fix -v --diff",
+    "rector": "vendor/bin/rector process --dry-run",
+    "rector-fix": "vendor/bin/rector process"
   }
 }
