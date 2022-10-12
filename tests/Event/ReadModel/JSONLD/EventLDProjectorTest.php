@@ -95,7 +95,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     protected $cdbXMLImporter;
 
-    public function __construct(string $name = null, array $data = [], string $dataName = '')
+    public function __construct(string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName, 'CultuurNet\\UDB3\\Event');
     }
