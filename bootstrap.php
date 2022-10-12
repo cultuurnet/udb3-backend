@@ -139,12 +139,6 @@ $app['calendar_factory'] = $app->share(
     }
 );
 
-$app['cdbxml_contact_info_importer'] = $app->share(
-    function () {
-        return new CdbXmlContactInfoImporter();
-    }
-);
-
 $app['logger_factory.resque_worker'] = $app::protect(
     function ($queueName) use ($app) {
         $redisConfig = [
