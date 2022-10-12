@@ -6,6 +6,15 @@ use Rector\Config\RectorConfig;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 
 return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->paths(
+        [
+            __DIR__ . '/app',
+            __DIR__ . '/src',
+            __DIR__ . '/tests',
+            __DIR__ . '/web',
+        ]
+    );
+
     $rectorConfig->sets([
         PHPUnitSetList::PHPUNIT_80,
     ]);
