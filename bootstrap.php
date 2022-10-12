@@ -198,14 +198,8 @@ $app['event_store'] = $app->share(
 $app['event_calendar_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Event\ReadModel\Calendar\CacheCalendarRepository(
-            $app['event_calendar_cache']
+            $app['cache']('event_calendar')
         );
-    }
-);
-
-$app['event_calendar_cache'] = $app->share(
-    function (Application $app) {
-        return $app['cache']('event_calendar');
     }
 );
 
