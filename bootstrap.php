@@ -100,7 +100,9 @@ $container->delegate(new ReflectionContainer(true));
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Configuration\ConfigurationServiceProvider());
 
-$app['config'] = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
+$config = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
+
+$app['config'] = $config;
 
 // Add the system user to the list of god users.
 $app['config'] = array_merge_recursive(
