@@ -9,16 +9,12 @@ use PHPUnit\Framework\TestCase;
 
 class AudienceTest extends TestCase
 {
-    private string $itemId;
-
     private AudienceType $audienceType;
 
     private Audience $audience;
 
     protected function setUp(): void
     {
-        $this->itemId = '6eaaa9b6-d0d2-11e6-bf26-cec0c932ce01';
-
         $this->audienceType = AudienceType::education();
 
         $this->audience = new Audience(

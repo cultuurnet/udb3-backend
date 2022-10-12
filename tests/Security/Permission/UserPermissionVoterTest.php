@@ -17,8 +17,6 @@ class UserPermissionVoterTest extends TestCase
      */
     private $userPermissionsReadRepository;
 
-    private Permission $requiredPermission;
-
     private UserPermissionVoter $userPermissionVoter;
 
     private StringLiteral $userId;
@@ -42,8 +40,6 @@ class UserPermissionVoterTest extends TestCase
                         in_array($permission->toString(), $permissions, true);
                 }
             );
-
-        $this->requiredPermission = Permission::voorzieningenBewerken();
 
         $this->userPermissionVoter = new UserPermissionVoter($this->userPermissionsReadRepository);
     }

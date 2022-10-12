@@ -37,9 +37,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     use OfferCommandHandlerTestTrait;
 
-
-    private EventCommandFactory $commandFactory;
-
     protected function createCommandHandler(
         EventStore $eventStore,
         EventBus $eventBus
@@ -52,8 +49,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->organizerRepository = $this->createMock(Repository::class);
 
         $this->mediaManager = $this->createMock(MediaManager::class);
-
-        $this->commandFactory = new EventCommandFactory();
 
         return new EventCommandHandler(
             $repository,

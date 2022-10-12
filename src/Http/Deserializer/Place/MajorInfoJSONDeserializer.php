@@ -41,11 +41,6 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
      */
     private $calendarDeserializer;
 
-    /**
-     * @var ThemeJSONDeserializer
-     */
-    private $themeDeserializer;
-
     public function __construct()
     {
         $assoc = true;
@@ -59,7 +54,6 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
             new CalendarJSONParser(),
             new CalendarForPlaceDataValidator()
         );
-        $this->themeDeserializer = new ThemeJSONDeserializer();
     }
 
     /**
