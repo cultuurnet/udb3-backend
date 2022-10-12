@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer;
 
+use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
@@ -65,7 +66,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
                 return new ImportOrganizerRequestHandler(
                     $container->get('organizer_repository'),
                     $container->get('event_command_bus'),
-                    $container->get('uuid_generator'),
+                    new Version4Generator(),
                     $container->get('organizer_iri_generator'),
                     new CombinedRequestBodyParser(
                         new LegacyOrganizerRequestBodyParser(),

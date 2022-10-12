@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Curators;
 
+use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Curators\CreateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\DeleteNewsArticleRequestHandler;
@@ -55,7 +56,7 @@ final class CuratorsServiceProvider extends AbstractServiceProvider
             function () use ($container): CreateNewsArticleRequestHandler {
                 return new CreateNewsArticleRequestHandler(
                     $container->get(NewsArticleRepository::class),
-                    $container->get('uuid_generator'),
+                    new Version4Generator(),
                 );
             }
         );

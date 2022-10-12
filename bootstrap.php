@@ -121,12 +121,6 @@ $container->addServiceProvider(new SwiftMailerServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Clock\ClockServiceProvider());
 
-$app['uuid_generator'] = $app->share(
-    function () {
-        return new \Broadway\UuidGenerator\Rfc4122\Version4Generator();
-    }
-);
-
 $container->addServiceProvider(new GeneralSecurityServiceProvider());
 $container->addServiceProvider(new OfferSecurityServiceProvider());
 $container->addServiceProvider(new OrganizerSecurityServiceProvider());
