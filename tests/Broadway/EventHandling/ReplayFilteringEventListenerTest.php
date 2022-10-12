@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 class ReplayFilteringEventListenerTest extends TestCase
 {
     /**
-     * @var EventListener|\PHPUnit_Framework_MockObject_MockObject
+     * @var EventListener|\PHPUnit\Framework\MockObject\MockObject
      */
     private $eventListener;
 

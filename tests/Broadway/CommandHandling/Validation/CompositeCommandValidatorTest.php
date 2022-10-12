@@ -15,13 +15,13 @@ class CompositeCommandValidatorTest extends TestCase
     {
         $command = (object) ['do' => 'something'];
 
-        /** @var CommandValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $validator1 */
+        /** @var CommandValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validator1 */
         $validator1 = $this->createMock(CommandValidatorInterface::class);
         $validator1->expects($this->once())
             ->method('validate')
             ->with($command);
 
-        /** @var CommandValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $validator2 */
+        /** @var CommandValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validator2 */
         $validator2 = $this->createMock(CommandValidatorInterface::class);
         $validator2->expects($this->once())
             ->method('validate')
@@ -39,19 +39,19 @@ class CompositeCommandValidatorTest extends TestCase
     {
         $command = (object) ['do' => 'something'];
 
-        /** @var CommandValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $validator1 */
+        /** @var CommandValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validator1 */
         $validator1 = $this->createMock(CommandValidatorInterface::class);
         $validator1->expects($this->once())
             ->method('validate')
             ->with($command);
 
-        /** @var CommandValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $validator2 */
+        /** @var CommandValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validator2 */
         $validator2 = $this->createMock(CommandValidatorInterface::class);
         $validator2->expects($this->once())
             ->method('validate')
             ->with($command);
 
-        /** @var CommandValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $validator3 */
+        /** @var CommandValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validator3 */
         $validator3 = $this->createMock(CommandValidatorInterface::class);
         $validator3->expects($this->once())
             ->method('validate')
