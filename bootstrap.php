@@ -100,24 +100,6 @@ $container->delegate(new ReflectionContainer(true));
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Configuration\ConfigurationServiceProvider());
 
-$config = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
-// Add the system user to the list of god users.
-$config = array_merge_recursive(
-    $config,
-    [
-        'user_permissions' => [
-            'allow_all' => [
-                $container->get('system_user_id'),
-            ],
-        ],
-    ]
-);
-
-$container->addShared(
-    'config',
-    fn () => $config
-);
-
 $container->addServiceProvider(new \CultuurNet\UDB3\EventStore\EventStoreServiceProvider());
 
 $container->addServiceProvider(new SentryServiceProvider());

@@ -23,6 +23,11 @@ final class ConfigurationServiceProvider extends AbstractServiceProvider
     {
         $container = $this->getContainer();
 
+        $container->addShared(
+            'config',
+            fn () => $this->getConfiguration($container)
+        );
+
         if (!defined('API_NAME')) {
             define('API_NAME', ApiName::UNKNOWN);
         }
@@ -36,6 +41,23 @@ final class ConfigurationServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'debug',
             fn () => $container->get('config')['debug'] ?? false
+        );
+    }
+
+    private function getConfiguration($container): array
+    {
+        $config = file_exists(__DIR__ . '/../../config.php') ? require __DIR__ . '/../../config.php' : [];
+
+        // Add the system user to the list of god users.
+        return array_merge_recursive(
+            $config,
+            [
+                'user_permissions' => [
+                    'allow_all' => [
+                        $container->get('system_user_id'),
+                    ],
+                ],
+            ]
         );
     }
 }
