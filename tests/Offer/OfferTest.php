@@ -440,10 +440,10 @@ class OfferTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
-     * @expectedException     Exception
      */
     public function it_should_throw_an_exception_when_selecting_an_unknown_main_image(): void
     {
+        $this->expectException(\Exception::class);
         $this->offer->selectMainImage($this->image);
     }
 
@@ -1381,11 +1381,11 @@ class OfferTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
-     * @expectedException        Exception
-     * @expectedExceptionMessage You can not approve an offer that is not ready for validation
      */
     public function it_should_not_approve_an_offer_after_it_was_rejected(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('You can not approve an offer that is not ready for validation');
         $itemId = '4b5f30bf-a612-4cb9-bba0-4a77a4385a73';
         $reason = new StringLiteral('There are spelling mistakes in the description.');
 
@@ -1437,11 +1437,11 @@ class OfferTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
-     * @expectedException        Exception
-     * @expectedExceptionMessage The offer has already been rejected for another reason: The title is misleading.
      */
     public function it_should_not_reject_an_offer_that_is_already_rejected_for_a_different_reason(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('The offer has already been rejected for another reason: The title is misleading.');
         $itemId = '1cb18f8c-5be4-4301-9761-dea2bbfa9a1f';
         $reason = new StringLiteral('The title is misleading.');
         $differentReason = new StringLiteral('I\'m afraid I can\'t let you do that.');
@@ -1521,11 +1521,11 @@ class OfferTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
-     * @expectedException        Exception
-     * @expectedExceptionMessage The offer has already been rejected for another reason: duplicate
      */
     public function it_should_reject_an_offer_when_it_is_flagged_as_duplicate(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('The offer has already been rejected for another reason: duplicate');
         $itemId = '0e3a13ec-a88d-4cd5-9565-d7b00690c52f';
         $reason = new StringLiteral('The theme does not match the description.');
 
@@ -1575,11 +1575,11 @@ class OfferTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
-     * @expectedException        Exception
-     * @expectedExceptionMessage The offer has already been rejected for another reason: inappropriate
      */
     public function it_should_not_reject_an_offer_when_it_is_flagged_as_inappropriate(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('The offer has already been rejected for another reason: inappropriate');
         $itemId = '05f4b7f7-a0ed-4530-8b25-2a573fe7f305';
         $reason = new StringLiteral('The theme does not match the description.');
 
@@ -1601,11 +1601,11 @@ class OfferTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
-     * @expectedException        Exception
-     * @expectedExceptionMessage You can not reject an offer that is not ready for validation
      */
     public function it_should_not_reject_an_offer_that_is_flagged_as_approved(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('You can not reject an offer that is not ready for validation');
         $itemId = '5988798b-c211-4c04-a9f4-ceb2568d93b3';
         $reason = new StringLiteral('Yeah, but no, but yeah...');
 
