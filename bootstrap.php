@@ -185,8 +185,9 @@ $container->addServiceProvider(new OrganizerSecurityServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Cache\CacheServiceProvider());
 
-$app['dbal_connection'] = $app->share(
-    function ($app) {
+$container->addShared(
+    'dbal_connection',
+    function () use ($container) {
         $eventManager = new \Doctrine\Common\EventManager();
         $sqlMode = 'NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES';
         $query = "SET SESSION sql_mode = '{$sqlMode}'";
@@ -195,7 +196,7 @@ $app['dbal_connection'] = $app->share(
         );
 
         $connection = \Doctrine\DBAL\DriverManager::getConnection(
-            $app['config']['database'],
+            $container->get('config')['database'],
             null,
             $eventManager
         );
