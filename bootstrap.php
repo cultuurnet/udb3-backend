@@ -187,15 +187,11 @@ $app['event_iri_generator'] = $app->share(
     }
 );
 
-$app['dbal_event_store'] = $app->share(
-    function ($app) {
-        return $app['event_store_factory'](AggregateType::event());
-    }
-);
-
 $app['event_store'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator($app['dbal_event_store']);
+        return new \CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator(
+            $app['event_store_factory'](AggregateType::event())
+        );
     }
 );
 
