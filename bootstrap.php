@@ -133,31 +133,34 @@ $container->addServiceProvider(new \CultuurNet\UDB3\Event\EventServiceProvider()
 
 $container->addServiceProvider(new EventJSONLDServiceProvider());
 
-$app['logger_factory.resque_worker'] = $app::protect(
-    function ($queueName) use ($app) {
-        $redisConfig = [
-            'host' => '127.0.0.1',
-            'port' => 6379,
-        ];
-        if (extension_loaded('redis')) {
-            $redis = new Redis();
-            $redis->connect(
-                $redisConfig['host'],
-                $redisConfig['port']
-            );
-        } else {
-            $redis = new Predis\Client(
-                [
-                    'host' => $redisConfig['host'],
-                    'port' => $redisConfig['port']
-                ]
-            );
-            $redis->connect();
-        }
-        $socketIOHandler = new SocketIOEmitterHandler(new Emitter($redis), Logger::INFO);
+$container->addShared(
+    'logger_factory.resque_worker',
+    new \League\Container\Argument\Literal\CallableArgument(
+        function ($queueName) use ($container) {
+            $redisConfig = [
+                'host' => '127.0.0.1',
+                'port' => 6379,
+            ];
+            if (extension_loaded('redis')) {
+                $redis = new Redis();
+                $redis->connect(
+                    $redisConfig['host'],
+                    $redisConfig['port']
+                );
+            } else {
+                $redis = new Predis\Client(
+                    [
+                        'host' => $redisConfig['host'],
+                        'port' => $redisConfig['port']
+                    ]
+                );
+                $redis->connect();
+            }
+            $socketIOHandler = new SocketIOEmitterHandler(new Emitter($redis), Logger::INFO);
 
-        return LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker($queueName), [$socketIOHandler]);
-    }
+            return LoggerFactory::create($container, LoggerName::forResqueWorker($queueName), [$socketIOHandler]);
+        }
+    )
 );
 
 /** Production */
