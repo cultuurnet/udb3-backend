@@ -177,59 +177,49 @@ $container->addServiceProvider(new \CultuurNet\UDB3\Cache\CacheServiceProvider()
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Database\DatabaseServiceProvider());
 
-$app['event_iri_generator'] = $app->share(
-    function ($app) {
-        return new CallableIriGenerator(
-            function ($cdbid) use ($app) {
-                return $app['config']['url'] . '/event/' . $cdbid;
-            }
-        );
-    }
+$container->addShared(
+    'event_iri_generator',
+    fn () => new CallableIriGenerator(
+        fn ($cdbid) => $container->get('config')['url'] . '/event/' . $cdbid
+    )
 );
 
-$app['event_store'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator(
-            $app['event_store_factory'](AggregateType::event())
-        );
-    }
+$container->addShared(
+    'event_store',
+    fn () => new \CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator(
+        $container->get('event_store_factory')(AggregateType::event())
+    )
 );
 
-$app['event_calendar_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Event\ReadModel\Calendar\CacheCalendarRepository(
-            $app['cache']('event_calendar')
-        );
-    }
+$container->addShared(
+    'event_calendar_repository',
+    fn () => new \CultuurNet\UDB3\Event\ReadModel\Calendar\CacheCalendarRepository(
+        $container->get('cache')('event_calendar')
+    )
 );
 
-$app['event_calendar_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Event\ReadModel\Calendar\EventCalendarProjector(
-            $app['event_calendar_repository']
-        );
-    }
+$container->addShared(
+    'event_calendar_projector',
+    fn () => new \CultuurNet\UDB3\Event\ReadModel\Calendar\EventCalendarProjector(
+        $container->get('event_calendar_repository')
+    )
 );
 
-$app['events_locator_event_stream_decorator'] = $app->share(
-    function (Application $app) {
-        return new OfferLocator($app['event_iri_generator']);
-    }
+$container->addShared(
+    'events_locator_event_stream_decorator',
+    fn () => new OfferLocator($container->get('event_iri_generator'))
 );
 
-$app['event_repository'] = $app->share(
-    function ($app) {
-        $repository = new \CultuurNet\UDB3\Event\EventRepository(
-            $app['event_store'],
-            $app[EventBus::class],
-            [
-                $app['event_stream_metadata_enricher'],
-                $app['events_locator_event_stream_decorator']
-            ]
-        );
-
-        return $repository;
-    }
+$container->addShared(
+    'event_repository',
+    fn () => new \CultuurNet\UDB3\Event\EventRepository(
+        $container->get('event_store'),
+        $container->get(EventBus::class),
+        [
+            $container->get('event_stream_metadata_enricher'),
+            $container->get('events_locator_event_stream_decorator'),
+        ]
+    )
 );
 
 $container->addServiceProvider(new EventJSONLDServiceProvider());
