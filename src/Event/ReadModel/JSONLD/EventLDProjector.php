@@ -562,11 +562,6 @@ class EventLDProjector extends OfferLDProjector implements
             return [
                 '@id' => $this->placeService->iri($placeId),
             ];
-        } catch (DocumentDoesNotExist $e) {
-            // In case the place can not be found at the moment, just add its ID
-            return [
-                '@id' => $this->placeService->iri($placeId),
-            ];
         }
     }
 

@@ -24,11 +24,6 @@ final class MajorInfoUpdated extends PlaceEvent
     private $eventType;
 
     /**
-     * @var Theme|null
-     */
-    private $theme;
-
-    /**
      * @var Address
      */
     private $address;

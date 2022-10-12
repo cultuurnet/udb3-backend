@@ -33,11 +33,6 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     use OfferCommandHandlerTestTrait;
 
     /**
-     * @var PlaceCommandFactory
-     */
-    private $commandFactory;
-
-    /**
      * @test
      */
     public function it_can_update_major_info_of_a_place()
@@ -131,8 +126,6 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->organizerRepository = $this->createMock(Repository::class);
 
         $this->mediaManager = $this->createMock(MediaManager::class);
-
-        $this->commandFactory = new PlaceCommandFactory();
 
         return new CommandHandler(
             $repository,

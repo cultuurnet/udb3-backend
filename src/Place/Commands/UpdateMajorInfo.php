@@ -24,11 +24,6 @@ class UpdateMajorInfo extends AbstractCommand
     private $eventType;
 
     /**
-     * @var Theme|null
-     */
-    private $theme;
-
-    /**
      * @var Address
      */
     private $address;

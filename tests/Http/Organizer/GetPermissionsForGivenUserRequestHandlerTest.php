@@ -24,8 +24,6 @@ final class GetPermissionsForGivenUserRequestHandlerTest extends TestCase
      */
     private $voter;
 
-    private string $currentUserId;
-
     private GetPermissionsForGivenUserRequestHandler $getPermissionsForGivenUserRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;

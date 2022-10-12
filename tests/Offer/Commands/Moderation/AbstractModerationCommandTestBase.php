@@ -25,7 +25,7 @@ abstract class AbstractModerationCommandTestBase extends TestCase
     abstract public function getModerationCommandClass();
 
     /**
-     * @return AbstractModerationCommand
+     * @return mixed
      */
     private function createModerationCommand()
     {

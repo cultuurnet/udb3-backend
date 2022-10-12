@@ -16,12 +16,6 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
 {
     private string $godUserId;
 
-    private string $ownerUserId;
-
-    private string $roleUserId;
-
-    private string $notAllowedUserId;
-
     /**
      * @var ResourceOwnerQuery|MockObject
      */
@@ -32,9 +26,6 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
     protected function setUp(): void
     {
         $this->godUserId = 'bb0bf2b3-49ba-4f2a-a1e4-ce7ec93a5ea0';
-        $this->ownerUserId = '9cb28282-30a1-4afc-aa23-fc825c7d8ac3';
-        $this->roleUserId = 'a8ae681a-3945-4fce-9ec1-aee09e8d0234';
-        $this->notAllowedUserId = '4b7d9a94-e4ff-4840-92b2-2f3f37ee99d4';
 
         $this->permissionRepository = $this->createMock(
             ResourceOwnerQuery::class
