@@ -511,14 +511,4 @@ class ProjectorTest extends TestCase
     {
         return $this->documentWithConstraint(null);
     }
-
-    private function documentWithExtraConstraint(
-        JsonDocument $document,
-        Query $query
-    ): JsonDocument {
-        $json = $document->getBody();
-        $json->constraints->{'v3'} = $query->toNative();
-
-        return $document->withBody($json);
-    }
 }
