@@ -177,50 +177,7 @@ $container->addServiceProvider(new \CultuurNet\UDB3\Cache\CacheServiceProvider()
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Database\DatabaseServiceProvider());
 
-$container->addShared(
-    'event_iri_generator',
-    fn () => new CallableIriGenerator(
-        fn ($cdbid) => $container->get('config')['url'] . '/event/' . $cdbid
-    )
-);
-
-$container->addShared(
-    'event_store',
-    fn () => new \CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator(
-        $container->get('event_store_factory')(AggregateType::event())
-    )
-);
-
-$container->addShared(
-    'event_calendar_repository',
-    fn () => new \CultuurNet\UDB3\Event\ReadModel\Calendar\CacheCalendarRepository(
-        $container->get('cache')('event_calendar')
-    )
-);
-
-$container->addShared(
-    'event_calendar_projector',
-    fn () => new \CultuurNet\UDB3\Event\ReadModel\Calendar\EventCalendarProjector(
-        $container->get('event_calendar_repository')
-    )
-);
-
-$container->addShared(
-    'events_locator_event_stream_decorator',
-    fn () => new OfferLocator($container->get('event_iri_generator'))
-);
-
-$container->addShared(
-    'event_repository',
-    fn () => new \CultuurNet\UDB3\Event\EventRepository(
-        $container->get('event_store'),
-        $container->get(EventBus::class),
-        [
-            $container->get('event_stream_metadata_enricher'),
-            $container->get('events_locator_event_stream_decorator'),
-        ]
-    )
-);
+$container->addServiceProvider(new \CultuurNet\UDB3\Event\EventServiceProvider());
 
 $container->addServiceProvider(new EventJSONLDServiceProvider());
 
