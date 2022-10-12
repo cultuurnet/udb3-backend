@@ -185,25 +185,7 @@ $container->addServiceProvider(new OrganizerSecurityServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Cache\CacheServiceProvider());
 
-$container->addShared(
-    'dbal_connection',
-    function () use ($container) {
-        $eventManager = new \Doctrine\Common\EventManager();
-        $sqlMode = 'NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES';
-        $query = "SET SESSION sql_mode = '{$sqlMode}'";
-        $eventManager->addEventSubscriber(
-            new \Doctrine\DBAL\Event\Listeners\SQLSessionInit($query)
-        );
-
-        $connection = \Doctrine\DBAL\DriverManager::getConnection(
-            $container->get('config')['database'],
-            null,
-            $eventManager
-        );
-
-        return $connection;
-    }
-);
+$container->addServiceProvider(new \CultuurNet\UDB3\Database\DatabaseServiceProvider());
 
 $app['dbal_event_store'] = $app->share(
     function ($app) {
