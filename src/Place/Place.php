@@ -82,8 +82,6 @@ class Place extends Offer
      */
     private array $addresses;
 
-    private bool $isDuplicate = false;
-
     /**
      * @var string[]
      */
