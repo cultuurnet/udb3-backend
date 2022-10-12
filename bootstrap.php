@@ -544,7 +544,9 @@ $app['user_roles_repository'] = $app->share(
 /**
  * @todo move this to a class.
  */
-const ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME = 'roles_search_v3';
+if (!defined('ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME')) {
+    define('ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME', 'roles_search_v3');
+}
 
 $app['role_search_v3_repository'] = $app->share(
     function ($app) {
