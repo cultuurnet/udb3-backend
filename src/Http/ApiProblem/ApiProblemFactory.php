@@ -193,14 +193,8 @@ final class ApiProblemFactory
         }
 
         if (strpos($title, 'event already has ticketsales') !== false) {
-            $message = 'Event has ticket sales in UiTPAS, which makes it impossible to change its organizer, UiTPAS card systems, and UiTPAS distribution keys.';
-            if ($routeParameters && $routeParameters->hasEventId()) {
-                $message = sprintf(
-                    'Event with id \'%s\' has ticket sales in UiTPAS, which makes it impossible to change its organizer, UiTPAS card systems, and UiTPAS distribution keys.',
-                    $routeParameters->getEventId()
-                );
-            }
-            return ApiProblem::eventHasUitpasTicketSales($message);
+            $eventId = $routeParameters && $routeParameters->hasEventId() ? $routeParameters->getEventId() : null;
+            return ApiProblem::eventHasUitpasTicketSales($eventId);
         }
 
         // In some cases the UiTPAS servers return a 404 error with an HTML page. In this case we treat it as UiTPAS

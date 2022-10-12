@@ -58,6 +58,7 @@ use CultuurNet\UDB3\Place\PlaceHistoryServiceProvider;
 use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Place\PlaceRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Search\Sapi3SearchServiceProvider;
+use CultuurNet\UDB3\SwiftMailer\SwiftMailerServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceLabelsServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceOrganizerServiceProvider;
@@ -141,11 +142,7 @@ $container->addServiceProvider(new CultureFeedServiceProvider());
 /**
  * Mailing service.
  */
-$app->register(new Silex\Provider\SwiftmailerServiceProvider());
-$app['swiftmailer.use_spool'] = false;
-if ($app['config']['swiftmailer.options']) {
-    $app['swiftmailer.options'] = $app['config']['swiftmailer.options'];
-}
+$container->addServiceProvider(new SwiftMailerServiceProvider());
 
 $app['timezone'] = $app->share(
     function (Application $app) {
