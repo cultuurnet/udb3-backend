@@ -10,31 +10,13 @@ use CultuurNet\UDB3\StringLiteral;
 class ShortDescription extends StringLiteral
 {
     /**
-     * @var StringFilterInterface
-     */
-    private static $cdbXmlToJsonLdFilter;
-
-    /**
      * @param string $shortDescriptionAsString
      * @return ShortDescription
      */
     public static function fromCdbXmlToJsonLdFormat($shortDescriptionAsString)
     {
-        $cdbXmlToJsonLdFilter = self::getCdbXmlToJsonLdFilter();
-
         return new ShortDescription(
-            $cdbXmlToJsonLdFilter->filter($shortDescriptionAsString)
+            (new CdbXmlShortDescriptionToJsonLdFilter())->filter($shortDescriptionAsString)
         );
-    }
-
-    /**
-     * @return StringFilterInterface
-     */
-    private static function getCdbXmlToJsonLdFilter()
-    {
-        if (!isset(self::$cdbXmlToJsonLdFilter)) {
-            self::$cdbXmlToJsonLdFilter = new CdbXmlShortDescriptionToJsonLdFilter();
-        }
-        return self::$cdbXmlToJsonLdFilter;
     }
 }
