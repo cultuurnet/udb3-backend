@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
-use CultuurNet\UDB3\Place\Commands\PlaceCommandFactory;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;

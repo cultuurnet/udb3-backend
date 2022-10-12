@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Place\PlaceEvent;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 
 final class MajorInfoUpdated extends PlaceEvent
