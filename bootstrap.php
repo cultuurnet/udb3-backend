@@ -133,12 +133,6 @@ $container->addServiceProvider(new \CultuurNet\UDB3\Event\EventServiceProvider()
 
 $container->addServiceProvider(new EventJSONLDServiceProvider());
 
-$app['calendar_factory'] = $app->share(
-    function () {
-        return new CalendarFactory();
-    }
-);
-
 $app['logger_factory.resque_worker'] = $app::protect(
     function ($queueName) use ($app) {
         $redisConfig = [
