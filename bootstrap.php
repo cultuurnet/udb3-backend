@@ -121,9 +121,9 @@ $container->addServiceProvider(new SwiftMailerServiceProvider());
 
 $app['timezone'] = $app->share(
     function (Application $app) {
-        $timezoneName = empty($app['config']['timezone']) ? 'Europe/Brussels' : $app['config']['timezone'];
-
-        return new DateTimeZone($timezoneName);
+        return new DateTimeZone(
+            empty($app['config']['timezone']) ? 'Europe/Brussels' : $app['config']['timezone']
+        );
     }
 );
 
