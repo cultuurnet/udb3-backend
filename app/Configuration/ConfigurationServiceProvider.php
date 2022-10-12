@@ -15,6 +15,7 @@ final class ConfigurationServiceProvider extends AbstractServiceProvider
         return [
             ApiName::class,
             'system_user_id',
+            'debug',
         ];
     }
 
@@ -30,6 +31,11 @@ final class ConfigurationServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'system_user_id',
             fn () => '00000000-0000-0000-0000-000000000000',
+        );
+
+        $container->addShared(
+            'debug',
+            fn () => $container->get('config')['debug'] ?? false
         );
     }
 }

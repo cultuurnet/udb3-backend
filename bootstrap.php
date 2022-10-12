@@ -114,8 +114,6 @@ $app['config'] = array_merge_recursive(
     ]
 );
 
-$app['debug'] = $app['config']['debug'] ?? false;
-
 $container->addServiceProvider(new \CultuurNet\UDB3\EventStore\EventStoreServiceProvider());
 
 $container->addServiceProvider(new SentryServiceProvider());
