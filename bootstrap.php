@@ -64,6 +64,7 @@ use CultuurNet\UDB3\UiTPASService\UiTPASServiceOrganizerServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Term\TermServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
+use League\Container\Argument\Literal\StringArgument;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Monolog\Logger;
@@ -96,7 +97,10 @@ $app = new HybridContainerApplication($container);
 $container->delegate(new PimplePSRContainerBridge($app));
 $container->delegate(new ReflectionContainer(true));
 
-$app['api_name'] = defined('API_NAME') ? API_NAME : ApiName::UNKNOWN;
+if (!defined('API_NAME')) {
+    define('API_NAME', ApiName::UNKNOWN);
+}
+$container->addShared(ApiName::class, new StringArgument(API_NAME));
 
 $app['config'] = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
 
@@ -330,11 +334,11 @@ $container->addServiceProvider(new EventRequestHandlerServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceEditingServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Place\PlaceReadServiceProvider());
 $container->addServiceProvider(new PlaceRequestHandlerServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\User\UserServiceProvider());
 $container->addServiceProvider(new EventPermissionServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Place\PlacePermissionServiceProvider());
 $container->addServiceProvider(new \CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Offer\OfferServiceProvider());
 $container->addServiceProvider(new LabelServiceProvider());
 $container->addServiceProvider(new RoleRequestHandlerServiceProvider());
 $container->addServiceProvider(new UserPermissionsServiceProvider());
@@ -350,7 +354,7 @@ $container->addServiceProvider(
 $container->addServiceProvider(new ImageStorageProvider());
 
 $container->addServiceProvider(new Sapi3SearchServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Offer\BulkLabelOfferServiceProvider());
 
 // Provides authentication of HTTP requests. While the HTTP authentication is not needed in CLI context, the service
 // provider still needs to be registered in the general bootstrap.php instead of web/index.php so CLI commands have
@@ -360,7 +364,7 @@ $container->addServiceProvider(new AuthServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\UDB2\UDB2EventServicesProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASIncomingEventServicesProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\UiTPAS\UiTPASIncomingEventServicesProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Geocoding\GeocodingServiceProvider());
 

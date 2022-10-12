@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\UiTPAS\Label;
+namespace CultuurNet\UDB3\UiTPAS\Label;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
-use CultuurNet\UDB3\UiTPAS\Label\InMemoryUiTPASLabelsRepository;
 use PHPUnit\Framework\TestCase;
 
 final class InMemoryUiTPASLabelsRepositoryTest extends TestCase

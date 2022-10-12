@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\User;
+namespace CultuurNet\UDB3\User;
 
 use Auth0\SDK\Contract\API\Management\UsersInterface;
 use Auth0\SDK\Contract\API\ManagementInterface;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 

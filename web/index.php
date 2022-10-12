@@ -16,7 +16,7 @@ use League\Container\DefinitionContainerInterface;
 use League\Route\Router;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
-const API_NAME = ApiName::JSONLD;
+define('API_NAME', ApiName::JSONLD);
 
 /** @var DefinitionContainerInterface $container */
 $container = require __DIR__ . '/../bootstrap.php';
