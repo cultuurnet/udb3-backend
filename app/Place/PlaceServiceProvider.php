@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\StringLiteral;
 
-class PlaceServiceProvider extends AbstractServiceProvider
+final class PlaceServiceProvider extends AbstractServiceProvider
 {
     protected function getProvidedServiceNames(): array
     {
