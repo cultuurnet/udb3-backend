@@ -219,7 +219,7 @@ $container->addServiceProvider(new TermServiceProvider());
 $container->addServiceProvider(new JobsServiceProvider());
 
 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
-    LocationId::setDummyPlaceForEducationIds($app['config']['bookable_event']['dummy_place_ids']);
+    LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);
 }
 
 return $container;
