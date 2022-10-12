@@ -16,6 +16,7 @@ final class ConfigurationServiceProvider extends AbstractServiceProvider
             ApiName::class,
             'system_user_id',
             'debug',
+            'config',
         ];
     }
 
