@@ -27,7 +27,7 @@ final class EventStoreServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'event_store_factory',
             new CallableArgument(
-                fn(AggregateType $aggregateType) => new AggregateAwareDBALEventStore(
+                fn (AggregateType $aggregateType) => new AggregateAwareDBALEventStore(
                     $container->get('dbal_connection'),
                     $container->get('eventstore_payload_serializer'),
                     new \Broadway\Serializer\SimpleInterfaceSerializer(),
