@@ -32,6 +32,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
             ApiKey::class,
             ConsumerReadRepository::class,
             Consumer::class,
+            Impersonator::class,
         ];
     }
 
@@ -170,6 +171,13 @@ final class AuthServiceProvider extends AbstractServiceProvider
                 $consumerReadRepository = $container->get(ConsumerReadRepository::class);
                 return $consumerReadRepository->getConsumer($apiKey);
             }
+        );
+
+        // This service is used by the background worker to impersonate the user
+        // who initially queued the command.
+        $container->addShared(
+            'impersonator',
+            fn () => new Impersonator()
         );
     }
 }

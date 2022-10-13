@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
+use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
@@ -56,7 +57,7 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             function () use ($container): ImportEventRequestHandler {
                 return new ImportEventRequestHandler(
                     $container->get('event_repository'),
-                    $container->get('uuid_generator'),
+                    new Version4Generator(),
                     $container->get('event_iri_generator'),
                     new EventDenormalizer(),
                     new CombinedRequestBodyParser(

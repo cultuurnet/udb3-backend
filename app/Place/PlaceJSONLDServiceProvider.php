@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Place;
 use Broadway\EventHandling\EventBus;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
@@ -17,6 +18,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\EmbeddingRelatedResourcesOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\MediaUrlOfferRepositoryDecorator;
@@ -160,8 +162,8 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
                         ),
                         $container->get('config')['base_price_translations']
                     ),
-                    $container->get('calendar_factory'),
-                    $container->get('cdbxml_contact_info_importer'),
+                    $container->get(CalendarFactory::class),
+                    $container->get(CdbXmlContactInfoImporter::class),
                     $container->get(CdbXMLToJsonLDLabelImporter::class)
                 );
             }

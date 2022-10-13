@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
+use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
@@ -58,7 +59,7 @@ final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 return new ImportPlaceRequestHandler(
                     $container->get('place_repository'),
-                    $container->get('uuid_generator'),
+                    new Version4Generator(),
                     new PlaceDenormalizer(),
                     new CombinedRequestBodyParser(
                         new LegacyPlaceRequestBodyParser(),

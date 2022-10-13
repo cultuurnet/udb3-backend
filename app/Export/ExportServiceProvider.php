@@ -37,6 +37,7 @@ final class ExportServiceProvider extends AbstractServiceProvider
             ExportEventsAsJsonLdRequestHandler::class,
             ExportEventsAsOoXmlRequestHandler::class,
             ExportEventsAsPdfRequestHandler::class,
+            'event_export_notification_mail_factory',
         ];
     }
 
@@ -142,6 +143,19 @@ final class ExportServiceProvider extends AbstractServiceProvider
             function () use ($container): ExportEventsAsPdfRequestHandler {
                 return new ExportEventsAsPdfRequestHandler($container->get('event_export_command_bus'));
             }
+        );
+
+        $container->addShared(
+            'event_export_notification_mail_factory',
+            fn () => new \CultuurNet\UDB3\EventExport\Notification\Swift\DefaultMessageFactory(
+                new \CultuurNet\UDB3\EventExport\Notification\DefaultPlainTextBodyFactory(),
+                new \CultuurNet\UDB3\EventExport\Notification\DefaultHTMLBodyFactory(),
+                new \CultuurNet\UDB3\EventExport\Notification\LiteralSubjectFactory(
+                    $container->get('config')['export']['mail']['subject']
+                ),
+                $container->get('config')['mail']['sender']['address'],
+                $container->get('config')['mail']['sender']['name']
+            )
         );
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches;
 
+use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
@@ -40,7 +41,7 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
                 return new UDB3SavedSearchRepository(
                     $container->get('dbal_connection'),
                     new StringLiteral('saved_searches_sapi3'),
-                    $container->get('uuid_generator'),
+                    new Version4Generator(),
                     new StringLiteral($container->get(CurrentUser::class)->getId())
                 );
             }
