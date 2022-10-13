@@ -41,6 +41,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             'event_export_command_bus_out',
             'bulk_label_offer_command_bus',
             'bulk_label_offer_command_bus_out',
+            'logger_factory.resque_worker',
         ];
     }
 
