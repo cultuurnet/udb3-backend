@@ -24,7 +24,7 @@ class EventCdbIdExtractorTest extends TestCase
      */
     private $cdbIdExtractor;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->placeExternalIdMappingService = new ArrayMappingService(
             [

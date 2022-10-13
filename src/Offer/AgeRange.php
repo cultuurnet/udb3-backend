@@ -74,8 +74,7 @@ class AgeRange
     public static function fromString(string $ageRangeString): AgeRange
     {
         $stringValues = explode('-', $ageRangeString);
-
-        if (empty($stringValues) || !isset($stringValues[1])) {
+        if (!isset($stringValues[1])) {
             throw new InvalidAgeRangeException(
                 'Date-range string is not valid because it is missing a hyphen.'
             );

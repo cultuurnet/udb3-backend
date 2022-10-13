@@ -15,7 +15,7 @@ class EventThemeResolverTest extends TestCase
      */
     private $themeResolver;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->themeResolver = new EventThemeResolver();
     }

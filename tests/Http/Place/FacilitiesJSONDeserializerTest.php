@@ -19,7 +19,7 @@ class FacilitiesJSONDeserializerTest extends TestCase
      */
     private $facilityResolver;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->facilityResolver = $this->createMock(OfferFacilityResolverInterface::class);
     }

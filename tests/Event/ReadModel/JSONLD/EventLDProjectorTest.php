@@ -95,7 +95,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     protected $cdbXMLImporter;
 
-    public function __construct(string $name = null, array $data = [], string $dataName = '')
+    public function __construct(string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName, 'CultuurNet\\UDB3\\Event');
     }
@@ -827,7 +827,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedBookingInfo->price = 9.99;
         $expectedBookingInfo->description = 'Iedereen aan dezelfde prijs';
 
-        $this->assertInternalType('object', $bookingInfo);
+        $this->assertIsObject($bookingInfo);
         $this->assertEquals($expectedBookingInfo, $bookingInfo);
     }
 
@@ -849,7 +849,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedBookingInfo->price = 9.99;
         $expectedBookingInfo->description = 'Iedereen aan dezelfde prijs';
 
-        $this->assertInternalType('object', $bookingInfo);
+        $this->assertIsObject($bookingInfo);
         $this->assertEquals($expectedBookingInfo, $bookingInfo);
     }
 
@@ -869,7 +869,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedBookingInfo = new stdClass();
         $expectedBookingInfo->description = 'Gratis voor iedereen!';
 
-        $this->assertInternalType('object', $bookingInfo);
+        $this->assertIsObject($bookingInfo);
         $this->assertEquals($expectedBookingInfo, $bookingInfo);
     }
 

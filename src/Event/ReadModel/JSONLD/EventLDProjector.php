@@ -78,7 +78,6 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\PlaceTypeResolver;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
@@ -558,11 +557,6 @@ class EventLDProjector extends OfferLDProjector implements
 
             return (array) json_decode($placeJSONLD);
         } catch (EntityNotFoundException $e) {
-            // In case the place can not be found at the moment, just add its ID
-            return [
-                '@id' => $this->placeService->iri($placeId),
-            ];
-        } catch (DocumentDoesNotExist $e) {
             // In case the place can not be found at the moment, just add its ID
             return [
                 '@id' => $this->placeService->iri($placeId),

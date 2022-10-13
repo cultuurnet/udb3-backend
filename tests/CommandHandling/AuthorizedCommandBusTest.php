@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\CommandHandling;
 
-use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -16,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class AuthorizedCommandBusTest extends TestCase
 {
     /**
-     * @var CommandBus|ContextAwareInterface|MockObject
+     * @var AbstractContextAwareCommandBus|MockObject
      */
     private $decoratee;
 
@@ -36,7 +35,7 @@ class AuthorizedCommandBusTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->decoratee = $this->createMock([CommandBus::class, ContextAwareInterface::class]);
+        $this->decoratee = $this->createMock(AbstractContextAwareCommandBus::class);
 
         $this->userId = '9bd817a3-670e-4720-affa-7636e29073ce';
 

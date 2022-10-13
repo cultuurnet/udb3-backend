@@ -18,7 +18,7 @@ class AnyOfTest extends TestCase
      */
     private $anyOf;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $specifications = new SpecificationCollection();
 

@@ -41,7 +41,7 @@ class LabelCommandBusSecurityTest extends TestCase
      */
     private $addLabel;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->securityDecoratee = $this->createMock(CommandBusSecurity::class);
 

@@ -24,7 +24,7 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
     public const EVENT_COMMAND_CONTEXT_SET = 'broadway.command_handling.context';
 
     /**
-     * @var CommandBus|ContextAwareInterface
+     * @var CommandBus
      */
     protected $decoratee;
 

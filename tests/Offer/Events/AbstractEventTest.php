@@ -19,7 +19,7 @@ class AbstractEventTest extends TestCase
      */
     protected $itemId;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->event = new MockAbstractEvent($this->itemId);

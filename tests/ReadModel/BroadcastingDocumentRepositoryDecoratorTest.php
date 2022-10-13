@@ -30,7 +30,7 @@ class BroadcastingDocumentRepositoryDecoratorTest extends TestCase
      */
     protected $eventFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->decoratedRepository = $this->createMock(DocumentRepository::class);
         $this->eventBus = $this->createMock(EventBus::class);

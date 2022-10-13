@@ -17,7 +17,7 @@ class DBALResourceOwnerRepositoryTest extends TestCase
      */
     private $repository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $table = new StringLiteral('event_permission');
         $idField = new StringLiteral('event_id');

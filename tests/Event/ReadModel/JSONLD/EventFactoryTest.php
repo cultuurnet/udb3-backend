@@ -21,7 +21,7 @@ class EventFactoryTest extends TestCase
      */
     private $factory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
 

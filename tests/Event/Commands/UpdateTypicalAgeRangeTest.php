@@ -13,7 +13,7 @@ class UpdateTypicalAgeRangeTest extends TestCase
      */
     protected $updateTypicalAgeRange;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->updateTypicalAgeRange = new UpdateTypicalAgeRange('id', '1-14');
     }

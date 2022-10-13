@@ -19,7 +19,7 @@ class JsonDocumentLanguageEnricherTest extends TestCase
      */
     private $enricher;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->languageAnalyzer = new ConfigurableJsonDocumentLanguageAnalyzer(
             [

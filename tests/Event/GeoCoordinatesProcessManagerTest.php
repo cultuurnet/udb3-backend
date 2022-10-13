@@ -38,7 +38,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
      */
     private $processManager;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
         $this->addressFactory = new CultureFeedAddressFactory();

@@ -91,7 +91,7 @@ class EventDenormalizerTest extends TestCase
      */
     private $uuidFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
 

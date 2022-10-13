@@ -85,14 +85,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
             new StringLiteral('zipCode:3000'),
         ];
 
-        $this->assertEquals(
-            $expectedConstraints,
-            $constraints,
-            'Constraints do not match expected!',
-            0.0,
-            0,
-            true
-        );
+        $this->assertEqualsCanonicalizing($expectedConstraints, $constraints, 'Constraints do not match expected!');
     }
 
     /**

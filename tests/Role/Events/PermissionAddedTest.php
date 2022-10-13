@@ -25,7 +25,7 @@ class PermissionAddedTest extends TestCase
      */
     protected $event;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('abb75a3f-92b3-4dbf-ba9a-d7e98e4f3655');
 

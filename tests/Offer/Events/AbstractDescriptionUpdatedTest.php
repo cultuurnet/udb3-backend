@@ -25,7 +25,7 @@ class AbstractDescriptionUpdatedTest extends TestCase
      */
     protected $description;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->description = new Description('Description');

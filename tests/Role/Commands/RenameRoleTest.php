@@ -21,7 +21,7 @@ class RenameRoleTest extends TestCase
      */
     protected $renameRole;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('45264080-03ba-4ae7-87ee-0865a1ed0ae2');
 

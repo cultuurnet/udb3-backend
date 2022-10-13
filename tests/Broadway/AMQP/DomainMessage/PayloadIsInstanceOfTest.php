@@ -19,7 +19,7 @@ class PayloadIsInstanceOfTest extends TestCase
      */
     private $domainMessage;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->domainMessage = new DomainMessage(
             'F68E71A1-DBB0-4542-AEE5-BD937E095F74',

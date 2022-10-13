@@ -9,7 +9,7 @@ abstract class Collection implements \IteratorAggregate, \Countable
     private array $values;
 
     /**
-     * @param array ...$values
+     * @param mixed ...$values
      */
     public function __construct(...$values)
     {

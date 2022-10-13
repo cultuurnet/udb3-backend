@@ -151,6 +151,8 @@ final class EventExportService implements EventExportServiceInterface
             $events = $this->search($query, $logger);
         }
 
+        $tmpPath = null;
+
         try {
             $tmpDir = sys_get_temp_dir();
             $tmpFileName = $this->uuidGenerator->generate();
@@ -187,7 +189,7 @@ final class EventExportService implements EventExportServiceInterface
 
             return $finalUrl;
         } catch (\Exception $e) {
-            if (isset($tmpPath) && $tmpPath && file_exists($tmpPath)) {
+            if ($tmpPath !== null && file_exists($tmpPath)) {
                 unlink($tmpPath);
             }
 

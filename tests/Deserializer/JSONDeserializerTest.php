@@ -19,7 +19,7 @@ class JSONDeserializerTest extends TestCase
      */
     private $assocDeserializer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->deserializer = new JSONDeserializer();
 

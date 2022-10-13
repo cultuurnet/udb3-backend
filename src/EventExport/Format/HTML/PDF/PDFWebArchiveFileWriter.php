@@ -15,10 +15,7 @@ use PrinceXMLPhp\PrinceWrapper;
  */
 class PDFWebArchiveFileWriter extends WebArchiveFileWriter
 {
-    /**
-     * @var \Prince
-     */
-    protected $prince;
+    protected PrinceWrapper $prince;
 
     /**
      * @param string                                  $princeXMLBinaryPath

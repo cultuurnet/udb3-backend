@@ -74,7 +74,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
      */
     private $completeAdapter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->offer = new ImmutableEvent(
             new UUID('91060c19-a860-4a47-8591-8a779bfa520a'),

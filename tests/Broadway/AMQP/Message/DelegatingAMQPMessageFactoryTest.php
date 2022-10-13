@@ -31,7 +31,7 @@ class DelegatingAMQPMessageFactoryTest extends TestCase
      */
     private $messageFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->bodyFactory = $this->createMock(BodyFactoryInterface::class);
         $this->propertiesFactory = $this->createMock(PropertiesFactoryInterface::class);

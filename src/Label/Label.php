@@ -25,8 +25,6 @@ class Label extends EventSourcedAggregateRoot
 
     private Privacy $privacy;
 
-    private UUID $parentUuid;
-
     public function getAggregateRootId(): string
     {
         return $this->uuid->toString();
@@ -109,8 +107,6 @@ class Label extends EventSourcedAggregateRoot
     public function applyCopyCreated(CopyCreated $copyCreated): void
     {
         $this->applyCreated($copyCreated);
-
-        $this->parentUuid = $copyCreated->getParentUuid();
     }
 
     public function applyMadeVisible(MadeVisible $madeVisible): void

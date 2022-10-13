@@ -46,7 +46,7 @@ class RoleLabelsProjectorTest extends TestCase
      */
     private $roleLabelsRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->roleLabelsRepository = $this->createMock(DocumentRepository::class);
         $this->labelJsonRepository = $this->createMock(ReadRepositoryInterface::class);

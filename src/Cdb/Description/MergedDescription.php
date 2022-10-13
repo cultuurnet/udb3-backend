@@ -4,21 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Cdb\Description;
 
-use CultuurNet\UDB3\StringFilter\StringFilterInterface;
 use CultuurNet\UDB3\StringLiteral;
 
 class MergedDescription extends StringLiteral
 {
-    /**
-     * @var StringFilterInterface
-     */
-    private static $shortDescriptionUDB2FormattingFilter;
-
-    /**
-     * @var StringFilterInterface
-     */
-    private static $shortDescriptionUDB3FormattingFilter;
-
     /**
      * @return MergedDescription
      * @throws \InvalidArgumentException
@@ -62,8 +51,8 @@ class MergedDescription extends StringLiteral
 
         $shortAsStringWithoutEllipsis = rtrim($shortAsString, '. ');
 
-        $longFormattedAsUdb2Short = self::getShortDescriptionUDB2FormattingFilter()->filter($longAsString);
-        $longFormattedAsUdb3Short = self::getShortDescriptionUDB3FormattingFilter()->filter($longAsString);
+        $longFormattedAsUdb2Short = (new ShortDescriptionUDB2FormattingFilter())->filter($longAsString);
+        $longFormattedAsUdb3Short = (new ShortDescriptionUDB3FormattingFilter())->filter($longAsString);
 
         $udb2Comparison = strncmp(
             $longFormattedAsUdb2Short,
@@ -84,27 +73,5 @@ class MergedDescription extends StringLiteral
         } else {
             return new MergedDescription($shortAsString . PHP_EOL . PHP_EOL . $longAsString);
         }
-    }
-
-    /**
-     * @return StringFilterInterface
-     */
-    private static function getShortDescriptionUDB2FormattingFilter()
-    {
-        if (!isset(self::$shortDescriptionUDB2FormattingFilter)) {
-            self::$shortDescriptionUDB2FormattingFilter = new ShortDescriptionUDB2FormattingFilter();
-        }
-        return self::$shortDescriptionUDB2FormattingFilter;
-    }
-
-    /**
-     * @return StringFilterInterface
-     */
-    private static function getShortDescriptionUDB3FormattingFilter()
-    {
-        if (!isset(self::$shortDescriptionUDB3FormattingFilter)) {
-            self::$shortDescriptionUDB3FormattingFilter = new ShortDescriptionUDB3FormattingFilter();
-        }
-        return self::$shortDescriptionUDB3FormattingFilter;
     }
 }

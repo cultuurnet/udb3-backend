@@ -33,7 +33,7 @@ final class PlaceRelationsProjectorTest extends TestCase
      */
     private $projector;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->repository = $this->createMock(PlaceRelationsRepository::class);
 

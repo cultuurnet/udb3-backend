@@ -13,7 +13,7 @@ class CulturefeedSluggerTest extends TestCase
      */
     protected $slugger;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->slugger = new CulturefeedSlugger();
     }

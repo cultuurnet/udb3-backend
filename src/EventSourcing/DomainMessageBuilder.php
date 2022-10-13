@@ -16,25 +16,10 @@ use Ramsey\Uuid\UuidFactoryInterface;
  */
 class DomainMessageBuilder
 {
-    /**
-     * @var string
-     */
-    private $userId;
-
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var int
-     */
-    private $playhead;
-
-    /**
-     * @var DateTime
-     */
-    private $recordedOn;
+    private ?string $userId = null;
+    private ?string $id = null;
+    private ?int $playhead = null;
+    private ?DateTime $recordedOn = null;
 
     /**
      * @var null|bool

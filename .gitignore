@@ -20,3 +20,4 @@ external_id_mapping_place.yml
 term_mapping_*.yml
 .php_cs.cache
 .env
+.phpunit.result.cache
