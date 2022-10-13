@@ -21,8 +21,6 @@ class GetUserPermissionsRequestHandlerTest extends TestCase
      */
     private $permissionsRepository;
 
-    private string $currentUserId;
-
     protected function setUp(): void
     {
         $this->permissionsRepository = $this->createMock(UserPermissionsReadRepositoryInterface::class);

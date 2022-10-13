@@ -14,7 +14,6 @@ use CultuurNet\UDB3\CalendarType;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
-use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
@@ -37,9 +36,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     use OfferCommandHandlerTestTrait;
 
-
-    private EventCommandFactory $commandFactory;
-
     protected function createCommandHandler(
         EventStore $eventStore,
         EventBus $eventBus
@@ -52,8 +48,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->organizerRepository = $this->createMock(Repository::class);
 
         $this->mediaManager = $this->createMock(MediaManager::class);
-
-        $this->commandFactory = new EventCommandFactory();
 
         return new EventCommandHandler(
             $repository,

@@ -27,17 +27,6 @@ abstract class AbstractExtendsTest extends TestCase
     /**
      * @test
      */
-    public function it_extends_an_abstract_event(): void
-    {
-        $this->assertTrue(is_subclass_of(
-            $this->event,
-            AbstractEvent::class
-        ));
-    }
-
-    /**
-     * @test
-     */
     public function it_can_deserialize(): void
     {
         $actualEvent = $this->deserialize(

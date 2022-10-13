@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
-use CultuurNet\UDB3\Place\Commands\PlaceCommandFactory;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
@@ -31,11 +30,6 @@ use CultuurNet\UDB3\Title;
 class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     use OfferCommandHandlerTestTrait;
-
-    /**
-     * @var PlaceCommandFactory
-     */
-    private $commandFactory;
 
     /**
      * @test
@@ -131,8 +125,6 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->organizerRepository = $this->createMock(Repository::class);
 
         $this->mediaManager = $this->createMock(MediaManager::class);
-
-        $this->commandFactory = new PlaceCommandFactory();
 
         return new CommandHandler(
             $repository,

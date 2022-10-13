@@ -20,8 +20,6 @@ class CanonicalServiceTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    private DBALDuplicatePlaceRepository $duplicatePlaceRepository;
-
     private CanonicalService $canonicalService;
 
     private string $museumPassPlaceId;
@@ -178,8 +176,6 @@ class CanonicalServiceTest extends TestCase
                 'place'=> $this->mostEventsPlaceId,
             ]
         );
-
-        $this->duplicatePlaceRepository = new DBALDuplicatePlaceRepository($this->getConnection());
 
         for ($i = 0; $i < 10; $i++) {
             $placeId = '4b4ca084-b78e-474f-b868-6f9df2d20df' . $i;

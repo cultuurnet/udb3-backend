@@ -30,8 +30,6 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
 
     private UpdatePriceInfoRequestHandler $updatePriceInfoRequestHandler;
 
-    private Psr7RequestBuilder $psr7RequestBuilder;
-
     protected function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);

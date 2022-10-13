@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForPlaceDataValidator;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Http\Deserializer\Event\EventTypeJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Theme\ThemeJSONDeserializer;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -41,11 +40,6 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
      */
     private $calendarDeserializer;
 
-    /**
-     * @var ThemeJSONDeserializer
-     */
-    private $themeDeserializer;
-
     public function __construct()
     {
         $assoc = true;
@@ -59,7 +53,6 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
             new CalendarJSONParser(),
             new CalendarForPlaceDataValidator()
         );
-        $this->themeDeserializer = new ThemeJSONDeserializer();
     }
 
     /**
