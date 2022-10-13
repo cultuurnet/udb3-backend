@@ -18,7 +18,7 @@ class ArrayMappingServiceTest extends TestCase
      */
     private $mappingService;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->array = [
             'SKB Import:Organisation_6666' => 'b91a72d0-7d69-4fe2-81f4-5c0f29001089',

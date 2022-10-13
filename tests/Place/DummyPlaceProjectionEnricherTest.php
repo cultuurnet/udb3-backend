@@ -27,7 +27,7 @@ class DummyPlaceProjectionEnricherTest extends TestCase
      */
     private $dummyPlaceId;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dummyPlaceId = Uuid::uuid4()->toString();
         $this->repository = $this->createMock(DocumentRepository::class);

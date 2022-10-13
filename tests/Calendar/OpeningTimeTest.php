@@ -25,7 +25,7 @@ class OpeningTimeTest extends TestCase
      */
     private $openingTime;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->hour = new Hour(9);
         $this->minute = new Minute(30);

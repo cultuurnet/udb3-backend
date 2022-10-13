@@ -23,7 +23,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
      */
     private $iriOfferIdentifierFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->iriOfferIdentifierFactory = $this->createMock(IriOfferIdentifierFactoryInterface::class);
         $this->deserializer = new IriOfferIdentifierJSONDeserializer(

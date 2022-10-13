@@ -22,7 +22,7 @@ class DBALRepositoryTest extends TestCase
      */
     private $tableName;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->repository = new DBALEventRelationsRepository(
             $this->getConnection()

@@ -29,7 +29,7 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
      */
     private $writeRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->writeRepository = $this->createMock(WriteRepositoryInterface::class);
         $this->eventBus = $this->createMock(EventBus::class);

@@ -31,7 +31,7 @@ class CalendarUpdatedTest extends TestCase
      */
     private $calendarUpdated;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->placeId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
 

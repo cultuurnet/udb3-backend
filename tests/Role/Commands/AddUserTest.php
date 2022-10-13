@@ -21,7 +21,7 @@ class AddUserTest extends TestCase
 
     private string $userId;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('7ce4cb7e-af7c-4724-bfbe-d943ac2b949a');
 

@@ -13,7 +13,7 @@ class RemoveConstraintTest extends TestCase
 
     private RemoveConstraint $removeConstraint;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('45e61f58-e11b-4045-91a0-540e51c3a98d');
 

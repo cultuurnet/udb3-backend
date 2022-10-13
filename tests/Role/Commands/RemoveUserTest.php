@@ -15,7 +15,7 @@ class RemoveUserTest extends TestCase
 
     private string $userId;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('67780d64-b401-4040-af1f-5f424e0b7306');
 

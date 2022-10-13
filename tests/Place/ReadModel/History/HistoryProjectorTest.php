@@ -623,8 +623,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Video \'91c75325-3830-4000-b580-5778b2de4548\' toegevoegd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -655,8 +655,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Video \'91c75325-3830-4000-b580-5778b2de4548\' verwijderd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -691,8 +691,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Video \'91c75325-3830-4000-b580-5778b2de4548\' aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -893,8 +893,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Publicatiedatum aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1112,8 +1112,8 @@ class HistoryProjectorTest extends TestCase
             [
                 [
                     'date' => self::OCCURRED_ON_FORMATTED,
-                    'author' => self::META_USER_ID,
                     'description' => $eventDescription,
+                    'author' => self::META_USER_ID,
                     'apiKey' => self::META_AUTH_API_KEY,
                     'api' => self::META_API,
                     'consumerName' => self::META_CONSUMER,

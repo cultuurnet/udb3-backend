@@ -13,7 +13,7 @@ class EventItemFactoryTest extends TestCase
      */
     private $factory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->factory = new EventItemFactory(
             \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.3')

@@ -16,7 +16,7 @@ class ContactPointJSONDeserializerTest extends TestCase
      */
     private $contactPointJSONDeserializer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->contactPointJSONDeserializer = new ContactPointJSONDeserializer();
     }

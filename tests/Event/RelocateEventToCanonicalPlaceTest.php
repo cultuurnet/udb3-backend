@@ -38,7 +38,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
      */
     private $canonicalPlaceRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
         $this->canonicalPlaceRepository = $this->createMock(CanonicalPlaceRepository::class);

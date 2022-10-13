@@ -14,7 +14,7 @@ class SimpleDeserializerLocatorTest extends TestCase
      */
     protected $deserializerLocator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->deserializerLocator = new SimpleDeserializerLocator();
     }

@@ -20,7 +20,7 @@ class CombinedResourceOwnerQueryTest extends TestCase
      */
     private $combinedPermissionQuery;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->permissionQueries[] = $this->createPermissionQuery([
             new StringLiteral('offerId1'),

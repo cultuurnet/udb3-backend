@@ -16,7 +16,7 @@ class GoogleMapUrlGeneratorTest extends TestCase
      */
     private $generator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->generator = new GoogleMapUrlGenerator(
             self::TEST_API_KEY

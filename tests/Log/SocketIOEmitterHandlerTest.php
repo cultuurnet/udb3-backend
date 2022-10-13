@@ -21,7 +21,7 @@ class SocketIOEmitterHandlerTest extends TestCase
      */
     protected $emitter;
 
-    public function setUp()
+    public function setUp(): void
     {
         // SocketIO\Emitter unfortunately does not adhere to an interface, so
         // we need to use the implementation and ensure all required

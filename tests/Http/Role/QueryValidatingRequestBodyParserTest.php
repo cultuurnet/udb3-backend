@@ -19,7 +19,7 @@ class QueryValidatingRequestBodyParserTest extends TestCase
 
     private JsonRequestBodyParser $jsonParser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->parser = new QueryValidatingRequestBodyParser();
         $this->jsonParser = new JsonRequestBodyParser();

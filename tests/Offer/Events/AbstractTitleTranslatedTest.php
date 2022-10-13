@@ -31,7 +31,7 @@ class AbstractTitleTranslatedTest extends TestCase
      */
     protected $title;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->language = new Language('en');

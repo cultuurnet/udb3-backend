@@ -15,7 +15,7 @@ class AddLabelToQueryTest extends TestCase
      */
     protected $labelQuery;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->labelQuery = new AddLabelToQuery(
             'query',

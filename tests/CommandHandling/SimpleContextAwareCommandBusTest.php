@@ -21,7 +21,7 @@ class SimpleContextAwareCommandBusTest extends TestCase
      */
     protected $commandHandler;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->commandBus = new SimpleContextAwareCommandBus();
 

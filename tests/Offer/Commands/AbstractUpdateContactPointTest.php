@@ -25,7 +25,7 @@ class AbstractUpdateContactPointTest extends TestCase
      */
     protected $contactPoint;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->contactPoint = new ContactPoint(

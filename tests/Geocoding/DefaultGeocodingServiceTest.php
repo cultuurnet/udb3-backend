@@ -34,7 +34,7 @@ class DefaultGeocodingServiceTest extends TestCase
      */
     private $service;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->geocoder = $this->createMock(Geocoder::class);
         $this->logger = $this->createMock(LoggerInterface::class);

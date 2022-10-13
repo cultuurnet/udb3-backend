@@ -30,7 +30,7 @@ class KansentariefDiscountSpecificationTest extends TestCase
      */
     protected $cardSystems;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->specification = new KansentariefDiscountSpecification();
     }

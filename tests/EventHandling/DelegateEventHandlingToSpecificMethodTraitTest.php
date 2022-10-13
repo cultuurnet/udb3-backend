@@ -27,7 +27,7 @@ class DelegateEventHandlingToSpecificMethodTraitTest extends TestCase
      */
     private $mockLDProjector;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->mockedMockLDProjector = $this
             ->getMockBuilder(MockLDProjector::class)

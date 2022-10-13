@@ -15,7 +15,7 @@ class LabelJSONDeserializerTest extends TestCase
 
     private LabelJSONDeserializer $deserializer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->label = new Label(new LabelName('test-label'));
         $this->deserializer = new LabelJSONDeserializer();

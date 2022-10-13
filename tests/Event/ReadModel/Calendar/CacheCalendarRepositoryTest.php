@@ -22,7 +22,7 @@ class CacheCalendarRepositoryTest extends TestCase
      */
     protected $calendar;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->eventId = '24b1e348-f27d-4f70-ae1a-871074267c2e';
 

@@ -28,7 +28,7 @@ class CachedGeocodingServiceTest extends TestCase
      */
     private $service;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->cache = new ArrayCache();
         $this->decoratee = $this->createMock(GeocodingService::class);

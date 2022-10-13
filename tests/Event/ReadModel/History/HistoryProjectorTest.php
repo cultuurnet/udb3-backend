@@ -213,8 +213,8 @@ class HistoryProjectorTest extends TestCase
             self::EVENT_ID_1,
             [
                 (object) [
-                    'description' => 'Event aangepast via UDB2',
                     'date' => '2015-03-25T10:17:19+02:00',
+                    'description' => 'Event aangepast via UDB2',
                 ],
                 (object) [
                     'date' => '2015-03-04T10:17:19+02:00',
@@ -334,8 +334,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => $now->format('c'),
-                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
                     'description' => 'Event gekopieerd van ' . $originalEventId,
+                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
                 ],
             ]
         );
@@ -369,8 +369,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-26T10:17:19+02:00',
-                    'author' => '3d4a9602-44ee-45c9-809e-621e2671e0c8',
                     'description' => 'Titel vertaald (fr)',
+                    'author' => '3d4a9602-44ee-45c9-809e-621e2671e0c8',
                 ],
             ]
         );
@@ -404,8 +404,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Beschrijving vertaald (fr)',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -438,8 +438,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
                     'description' => "Label 'foo' toegepast",
+                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
                 ],
             ]
         );
@@ -472,8 +472,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
                     'description' => "Label 'foo' verwijderd",
+                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
                 ],
             ]
         );
@@ -501,8 +501,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Goedgekeurd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -530,8 +530,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Toegang aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -559,8 +559,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Deelnamevorm (fysiek / online) aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -588,8 +588,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Online url aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -617,8 +617,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Online url verwijderd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -646,8 +646,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Reservatie-info aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -675,8 +675,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Kalender-info aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -704,8 +704,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Contact-info aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -733,8 +733,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Beschrijving aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -762,8 +762,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Event verwijderd uit UiTdatabank',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -791,8 +791,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Voorzieningen aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -820,8 +820,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afgekeurd als duplicaat',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -849,8 +849,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afgekeurd als ongepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -884,8 +884,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Geocoördinaten automatisch aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -922,8 +922,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' toegevoegd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -960,8 +960,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' verwijderd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -994,8 +994,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1046,13 +1046,13 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' geïmporteerd uit UDB2',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' geïmporteerd uit UDB2',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1103,13 +1103,13 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' aangepast via UDB2',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' aangepast via UDB2',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1144,8 +1144,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Video \'91c75325-3830-4000-b580-5778b2de4548\' toegevoegd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1176,8 +1176,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Video \'91c75325-3830-4000-b580-5778b2de4548\' verwijderd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1212,8 +1212,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Video \'91c75325-3830-4000-b580-5778b2de4548\' aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1241,8 +1241,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Labels geïmporteerd uit JSON-LD',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1270,8 +1270,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => "Locatie aangepast naar '827b7d8d-8821-4870-a48b-bea9d44f557c'",
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1308,8 +1308,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Hoofdafbeelding geselecteerd: \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\'',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1343,8 +1343,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'MajorInfo aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1375,8 +1375,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Organisatie \'0d7d2247-ebaa-4ff0-baf9-8ea274579cc3\' verwijderd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1407,8 +1407,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Organisatie \'0d7d2247-ebaa-4ff0-baf9-8ea274579cc3\' toegevoegd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1443,8 +1443,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Prijs-info aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1478,8 +1478,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Gepubliceerd (publicatiedatum: \'2015-04-30T02:00:00+02:00\')',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1507,8 +1507,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => "Afgekeurd, reden: 'not good enough'",
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1539,8 +1539,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Publicatiedatum aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1568,8 +1568,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Thema aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1597,8 +1597,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Thema verwijderd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1626,8 +1626,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Titel aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1655,8 +1655,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Type aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1684,8 +1684,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Leeftijds-info verwijderd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );
@@ -1713,8 +1713,8 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Leeftijds-info aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
         );

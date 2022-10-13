@@ -22,7 +22,7 @@ class UpdateMajorInfoTest extends TestCase
      */
     protected $updateMajorInfo;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->updateMajorInfo = new UpdateMajorInfo(
             'id',

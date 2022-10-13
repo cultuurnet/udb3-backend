@@ -27,7 +27,7 @@ class DBALRepositoryTest extends TestCase
      */
     private $tableName;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tableName = new StringLiteral('test_roles_search');
 

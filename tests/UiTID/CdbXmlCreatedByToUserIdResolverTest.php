@@ -29,7 +29,7 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
      */
     private $resolver;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->users = $this->createMock(UserIdentityResolver::class);
         $this->resolver = new CdbXmlCreatedByToUserIdResolver($this->users);

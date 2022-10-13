@@ -24,7 +24,7 @@ class PublishedTest extends TestCase
      */
     private $published;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->itemId = '75d90bc2-9b64-11e6-9f33-a24fc0d9649c';
 

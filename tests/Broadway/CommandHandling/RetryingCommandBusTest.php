@@ -24,7 +24,7 @@ class RetryingCommandBusTest extends TestCase
      */
     private $commandBus;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->decoratee = $this->createMock(CommandBus::class);
         $this->commandBus = new RetryingCommandBus($this->decoratee);

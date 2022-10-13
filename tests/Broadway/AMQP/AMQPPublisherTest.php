@@ -50,7 +50,7 @@ class AMQPPublisherTest extends TestCase
      */
     private $messageFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->amqpChannel = $this->createMock(AMQPChannel::class);
 

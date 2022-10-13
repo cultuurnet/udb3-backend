@@ -27,7 +27,7 @@ class LabelRolesProjectorTest extends TestCase
      */
     private $labelRolesProjector;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->labelRolesWriteRepository = $this->createMock(
             LabelRolesWriteRepositoryInterface::class

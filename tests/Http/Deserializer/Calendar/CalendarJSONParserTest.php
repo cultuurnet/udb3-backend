@@ -31,7 +31,7 @@ class CalendarJSONParserTest extends TestCase
      */
     private $calendarJSONParser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $updateCalendar = file_get_contents(__DIR__ . '/samples/calendar_all_fields.json');
         $this->updateCalendarAsArray = json_decode($updateCalendar, true);

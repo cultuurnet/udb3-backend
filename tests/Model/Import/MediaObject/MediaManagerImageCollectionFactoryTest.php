@@ -36,7 +36,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
      */
     private $factory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->mediaManager = $this->createMock(MediaManagerInterface::class);
         $this->factory = new MediaManagerImageCollectionFactory($this->mediaManager);

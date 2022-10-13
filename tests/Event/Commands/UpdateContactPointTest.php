@@ -14,7 +14,7 @@ class UpdateContactPointTest extends TestCase
      */
     protected $updateContactPoint;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->updateContactPoint = new UpdateContactPoint(
             'id',

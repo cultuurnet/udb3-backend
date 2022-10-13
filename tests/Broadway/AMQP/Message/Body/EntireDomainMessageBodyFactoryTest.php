@@ -19,7 +19,7 @@ class EntireDomainMessageBodyFactoryTest extends TestCase
      */
     private $entireDomainMessageBodyFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->entireDomainMessageBodyFactory = new EntireDomainMessageBodyFactory();
     }
