@@ -266,13 +266,13 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $redis = new Redis();
                         $redis->connect(
                             $redisConfig['host'],
-                            $redisConfig['port']
+                            $redisConfig['port'],
                         );
                     } else {
                         $redis = new Client(
                             [
                                 'host' => $redisConfig['host'],
-                                'port' => $redisConfig['port']
+                                'port' => $redisConfig['port'],
                             ]
                         );
                         $redis->connect();
