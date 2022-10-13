@@ -115,9 +115,6 @@ $container->addServiceProvider(new EventServiceProvider());
 
 $container->addServiceProvider(new EventJSONLDServiceProvider());
 
-/** Production */
-
-
 /** Place **/
 $container->addServiceProvider(new PlaceServiceProvider());
 $container->addServiceProvider(new PlaceJSONLDServiceProvider());
@@ -131,13 +128,9 @@ $container->addServiceProvider(new OrganizerCommandHandlerProvider());
 /** Roles */
 $container->addServiceProvider(new RoleServiceProvider());
 
-$container->addServiceProvider(
-    new AMQPConnectionServiceProvider()
-);
+$container->addServiceProvider(new AMQPConnectionServiceProvider());
 
-$container->addServiceProvider(
-    new AMQPPublisherServiceProvider()
-);
+$container->addServiceProvider(new AMQPPublisherServiceProvider());
 
 $container->addServiceProvider(new MetadataServiceProvider());
 
@@ -162,9 +155,7 @@ $container->addServiceProvider(new UiTPASServiceLabelsServiceProvider());
 $container->addServiceProvider(new UiTPASServiceEventServiceProvider());
 $container->addServiceProvider(new UiTPASServiceOrganizerServiceProvider());
 
-$container->addServiceProvider(
-    new MediaServiceProvider()
-);
+$container->addServiceProvider(new MediaServiceProvider());
 
 $container->addServiceProvider(new ImageStorageProvider());
 
