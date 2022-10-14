@@ -32,7 +32,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
             ApiKey::class,
             ConsumerReadRepository::class,
             Consumer::class,
-            Impersonator::class,
+            'impersonator',
         ];
     }
 
