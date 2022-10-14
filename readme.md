@@ -1,6 +1,6 @@
 # UDB3 backend
 
-udb3-silex is the app that provides most of the backend of UiTdatabank v3, aka UDB3.
+This repository contains the PHP app that provides most of the backend of UiTdatabank v3, aka UDB3.
 
 ## Contributing
 
