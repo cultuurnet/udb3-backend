@@ -40,15 +40,11 @@ Logs are located in the `./logs` directory.
   
 ### Worker logs
 
-The following logs contain info about CLI commands that run continuously as supervisor scripts.
+The following logs contain info about CLI commands that run continuously.
 
-- `amqp.curators.log` contains logs about the [uit-curatoren](https://github.com/cultuurnet/uit-curatoren/) events that get processed through the `amqp-listen-curators` CLI command
-- `amqp.json-imports.log` contains logs about JSON-LD imports that get processed through the `amqp-listen-imports` CLI command
-- `amqp.xml-imports.log` contains logs about XML imports that get processed through the `amqp-listen` CLI command
 - `amqp.uitpas.log` contains logs about UiTPAS events that get processed through the `amqp-listen-uitpas` CLI command
 - `resque.bulk-label-offer.log` contains logs about the resque worker for the `bulk_label_offer` queue
 - `resque.event-export.log` contains logs about the resque worker for the `event_export` queue
-- `resque.imports.log` contains logs about the resque worker for the (JSON-LD) `imports` queue
   
 ### Service logs
 
