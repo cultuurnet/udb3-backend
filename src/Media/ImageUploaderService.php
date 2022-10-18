@@ -68,8 +68,8 @@ class ImageUploaderService implements ImageUploaderInterface
             throw new InvalidFileType('The file did not upload correctly.');
         }
 
-        $mimeTypeString = $this->getFileMimeType($file);
-        $this->guardMimeTypeSupported($mimeTypeString);
+        $mimeType = $this->getFileMimeType($file);
+        $this->guardMimeTypeSupported($mimeType);
 
         $this->guardFileSizeLimit($file);
 
@@ -81,7 +81,7 @@ class ImageUploaderService implements ImageUploaderInterface
         $this->commandBus->dispatch(
             new UploadImage(
                 $fileId,
-                MIMEType::fromNative($mimeTypeString),
+                MIMEType::fromNative($mimeType),
                 $description,
                 $copyrightHolder,
                 new StringLiteral($destination),
