@@ -68,10 +68,7 @@ class ImageUploaderService implements ImageUploaderInterface
             throw new InvalidFileType('The file did not upload correctly.');
         }
 
-        $mimeTypeString = $file->getClientMediaType();
-        if (!$mimeTypeString) {
-            throw new InvalidFileType('The type of the uploaded file can not be guessed.');
-        }
+        $mimeTypeString = $this->getFileMimeType($file);
 
         $supportedMimeTypes = array_keys($this->supportedMimeTypes);
         if (!\in_array($mimeTypeString, $supportedMimeTypes, true)) {
@@ -101,6 +98,16 @@ class ImageUploaderService implements ImageUploaderInterface
         );
 
         return $fileId;
+    }
+
+    private function getFileMimeType(UploadedFileInterface $file): string
+    {
+        $mimeType = $file->getClientMediaType();
+        if ($mimeType) {
+            return $mimeType;
+        }
+
+        throw new InvalidFileType('The type of the uploaded file can not be guessed.');
     }
 
     private function guardFileSizeLimit(UploadedFileInterface $file): void
