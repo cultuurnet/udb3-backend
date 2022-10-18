@@ -17,20 +17,8 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class BookingInfoJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var DataValidatorInterface
-     */
-    private $validator;
-
-
     public function __construct(DataValidatorInterface $validator = null)
     {
-        if (!$validator) {
-            $validator = new BookingInfoDataValidator();
-        }
-
-        $this->validator = $validator;
-
         parent::__construct(true);
     }
 
@@ -41,8 +29,6 @@ class BookingInfoJSONDeserializer extends JSONDeserializer
     {
         /* @var array $data */
         $data = parent::deserialize($data);
-
-        $this->validator->validate($data);
 
         $bookingInfo = $data['bookingInfo'];
 

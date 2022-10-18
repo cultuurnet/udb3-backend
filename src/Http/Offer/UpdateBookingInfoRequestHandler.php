@@ -8,6 +8,9 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo as EventUpdateBookingInfo;
 use CultuurNet\UDB3\Http\Deserializer\BookingInfo\BookingInfoJSONDeserializer;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -32,6 +35,19 @@ final class UpdateBookingInfoRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
+        $offerType = $routeParameters->getOfferType();
+
+        $parser = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(
+                JsonSchemaLocator::getSchemaFileByOfferType(
+                    $offerType,
+                    JsonSchemaLocator::EVENT_BOOKING_INFO,
+                    JsonSchemaLocator::PLACE_BOOKING_INFO
+                )
+            )
+        );
+        $request = $parser->parse($request);
+
         $bookingInfo = $this->bookingInfoDeserializer->deserialize(new StringLiteral($request->getBody()->getContents()));
 
         if ($routeParameters->getOfferType()->sameAs(OfferType::event())) {
