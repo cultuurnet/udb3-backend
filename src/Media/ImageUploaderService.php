@@ -76,6 +76,8 @@ class ImageUploaderService implements ImageUploaderInterface
         $fileId = new UUID($this->uuidGenerator->generate());
         $fileName = $fileId->toString() . '.' . $this->guessExtensionForMimeType($mimeType);
         $destination = $this->getUploadDirectory() . '/' . $fileName;
+
+        $file->getStream()->rewind();
         $this->filesystem->write($destination, $file->getStream()->getContents());
 
         $this->commandBus->dispatch(
@@ -94,12 +96,12 @@ class ImageUploaderService implements ImageUploaderInterface
 
     private function getFileMimeType(UploadedFileInterface $file): string
     {
-        $mimeType = $file->getClientMediaType();
-        if ($mimeType) {
-            return $mimeType;
-        }
+        $finfo = new \finfo();
+        $file->getStream()->rewind();
 
-        throw new InvalidFileType('The type of the uploaded file can not be guessed.');
+        /** @var string|false $mimeType */
+        $mimeType = $finfo->buffer($file->getStream()->getContents(), FILEINFO_MIME_TYPE);
+        return $mimeType !== false ? $mimeType : $file->getClientMediaType();
     }
 
     private function guardMimeTypeSupported(string $mimeType): void
