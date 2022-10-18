@@ -45,6 +45,7 @@ final class UpdateBookingInfoRequestHandler implements RequestHandlerInterface
                     JsonSchemaLocator::PLACE_BOOKING_INFO
                 )
             ),
+            new BookingInfoValidatingRequestBodyParser(),
             new DenormalizingRequestBodyParser(new BookingInfoDenormalizer(), BookingInfo::class)
         );
         $request = $parser->parse($request);
