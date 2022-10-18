@@ -74,7 +74,7 @@ class ImageUploaderService implements ImageUploaderInterface
         $this->guardFileSizeLimit($file);
 
         $fileId = new UUID($this->uuidGenerator->generate());
-        $fileName = $fileId->toString() . '.' . $this->guessExtensionForMimeType($file->getClientMediaType());
+        $fileName = $fileId->toString() . '.' . $this->guessExtensionForMimeType($mimeType);
         $destination = $this->getUploadDirectory() . '/' . $fileName;
         $this->filesystem->write($destination, $file->getStream()->getContents());
 
