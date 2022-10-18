@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Deserializer\BookingInfo;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\BookingInfo;
-use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -17,7 +16,7 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class BookingInfoJSONDeserializer extends JSONDeserializer
 {
-    public function __construct(DataValidatorInterface $validator = null)
+    public function __construct()
     {
         parent::__construct(true);
     }
