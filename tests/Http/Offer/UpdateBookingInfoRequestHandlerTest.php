@@ -154,5 +154,17 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
                 ),
             ],
         ];
+
+        yield 'url without urlLabel' => [
+            'input' => [
+                'url' => 'https://www.publiq.be/',
+            ],
+            'schemaErrors' => [
+                new SchemaError(
+                    '/',
+                    '\'urlLabel\' property is required by \'url\' property'
+                ),
+            ],
+        ];
     }
 }
