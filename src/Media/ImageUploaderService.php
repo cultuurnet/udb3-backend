@@ -73,8 +73,6 @@ class ImageUploaderService implements ImageUploaderInterface
 
         $this->guardFileSizeLimit($file);
 
-        $mimeType = MIMEType::fromNative($mimeTypeString);
-
         $fileId = new UUID($this->uuidGenerator->generate());
         $fileName = $fileId->toString() . '.' . $this->guessExtensionForMimeType($file->getClientMediaType());
         $destination = $this->getUploadDirectory() . '/' . $fileName;
@@ -83,7 +81,7 @@ class ImageUploaderService implements ImageUploaderInterface
         $this->commandBus->dispatch(
             new UploadImage(
                 $fileId,
-                $mimeType,
+                MIMEType::fromNative($mimeTypeString),
                 $description,
                 $copyrightHolder,
                 new StringLiteral($destination),
