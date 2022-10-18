@@ -57,15 +57,9 @@ final class UpdateBookingInfoRequestHandler implements RequestHandlerInterface
         $bookingInfo = LegacyBookingInfo::fromUdb3ModelBookingInfo($bookingInfo);
 
         if ($routeParameters->getOfferType()->sameAs(OfferType::event())) {
-            $updateBookingInfo = new EventUpdateBookingInfo(
-                $offerId,
-                $bookingInfo
-            );
+            $updateBookingInfo = new EventUpdateBookingInfo($offerId, $bookingInfo);
         } else {
-            $updateBookingInfo = new PlaceUpdateBookingInfo(
-                $offerId,
-                $bookingInfo
-            );
+            $updateBookingInfo = new PlaceUpdateBookingInfo($offerId, $bookingInfo);
         }
         $this->commandBus->dispatch($updateBookingInfo);
 
