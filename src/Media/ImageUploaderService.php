@@ -69,13 +69,7 @@ class ImageUploaderService implements ImageUploaderInterface
         }
 
         $mimeTypeString = $this->getFileMimeType($file);
-
-        $supportedMimeTypes = array_keys($this->supportedMimeTypes);
-        if (!\in_array($mimeTypeString, $supportedMimeTypes, true)) {
-            throw new InvalidFileType(
-                'The uploaded file has mime type "' . $mimeTypeString . '" instead of ' . \implode(',', $supportedMimeTypes)
-            );
-        }
+        $this->guardMimeTypeSupported($mimeTypeString);
 
         $this->guardFileSizeLimit($file);
 
@@ -108,6 +102,16 @@ class ImageUploaderService implements ImageUploaderInterface
         }
 
         throw new InvalidFileType('The type of the uploaded file can not be guessed.');
+    }
+
+    private function guardMimeTypeSupported(string $mimeType): void
+    {
+        $supportedMimeTypes = array_keys($this->supportedMimeTypes);
+        if (!\in_array($mimeType, $supportedMimeTypes, true)) {
+            throw new InvalidFileType(
+                'The uploaded file has mime type "' . $mimeType . '" instead of ' . \implode(',', $supportedMimeTypes)
+            );
+        }
     }
 
     private function guardFileSizeLimit(UploadedFileInterface $file): void
