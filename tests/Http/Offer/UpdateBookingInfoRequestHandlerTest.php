@@ -8,6 +8,8 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo as EventUpdateBookingInfo;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -22,6 +24,8 @@ use PHPUnit\Framework\TestCase;
 final class UpdateBookingInfoRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
+
+    use AssertApiProblemTrait;
 
     private const OFFER_ID = 'd2a039e9-f4d6-4080-ae33-a106b5d3d47b';
 
@@ -117,7 +121,7 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
      * @test
      * @dataProvider provideApiProblemTestData
      */
-    public function it_throws_an_api_problem_when_invalid_data(array $input): void
+    public function it_throws_an_api_problem_when_invalid_data(array $input, array $schemaErrors): void
     {
         $updateBookingInfoRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', 'events')
@@ -126,8 +130,10 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             ->build('PUT');
 
 
-        $this->expectException(ApiProblem::class);
-        $this->updateBookingInfoRequestHandler->handle($updateBookingInfoRequest);
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(...$schemaErrors),
+            fn () => $this->updateBookingInfoRequestHandler->handle($updateBookingInfoRequest)
+        );
     }
 
     public function provideApiProblemTestData(): Iterator
@@ -140,7 +146,13 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
                 'email' => 'info@publiq.be',
                 'availabilityStarts' => '2028-01-01T00:00:00+01:00',
                 'availabilityEnds' => '2023-01-31T23:59:59+01:00',
-            ]
+            ],
+            'schemaErrors' => [
+                new SchemaError(
+                    '/availabilityEnds',
+                    'availabilityEnds should not be before availabilityStarts'
+                ),
+            ],
         ];
     }
 }
