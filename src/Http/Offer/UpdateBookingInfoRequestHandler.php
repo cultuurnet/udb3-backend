@@ -6,9 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\BookingInfo as LegacyBookingInfo;
-use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo as EventUpdateBookingInfo;
-use CultuurNet\UDB3\Http\Deserializer\BookingInfo\BookingInfoJSONDeserializer;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -25,13 +23,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class UpdateBookingInfoRequestHandler implements RequestHandlerInterface
 {
-    private JSONDeserializer $bookingInfoDeserializer;
     private CommandBus $commandBus;
 
     public function __construct(CommandBus $commandBus)
     {
         $this->commandBus = $commandBus;
-        $this->bookingInfoDeserializer = new BookingInfoJSONDeserializer();
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
