@@ -37,6 +37,7 @@ final class UpdateBookingInfoRequestHandler implements RequestHandlerInterface
         $offerType = $routeParameters->getOfferType();
 
         $parser = RequestBodyParserFactory::createBaseParser(
+            new LegacyUpdateBookingInfoRequestBodyParser(),
             new JsonSchemaValidatingRequestBodyParser(
                 JsonSchemaLocator::getSchemaFileByOfferType(
                     $offerType,
