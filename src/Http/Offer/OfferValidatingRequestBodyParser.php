@@ -18,7 +18,7 @@ final class OfferValidatingRequestBodyParser implements RequestBodyParser
     public function __construct(OfferType $offerType)
     {
         $this->combinedRequestBodyParser = new CombinedRequestBodyParser(
-            new BookingInfoValidatingRequestBodyParser(),
+            new BookingInfoValidatingRequestBodyParser('bookingInfo'),
             new CalendarValidatingRequestBodyParser(),
             new DuplicateLabelValidatingRequestBodyParser(),
             new PriceInfoDuplicateNameValidatingRequestBodyParser(),

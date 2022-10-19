@@ -7,6 +7,9 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo as EventUpdateBookingInfo;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -15,11 +18,14 @@ use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo as PlaceUpdateBookingInfo;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use Iterator;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateBookingInfoRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
+
+    use AssertApiProblemTrait;
 
     private const OFFER_ID = 'd2a039e9-f4d6-4080-ae33-a106b5d3d47b';
 
@@ -106,6 +112,57 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
                 'updateBookingInfo' => new PlaceUpdateBookingInfo(
                     self::OFFER_ID,
                     $bookingInfo
+                ),
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideApiProblemTestData
+     */
+    public function it_throws_an_api_problem_when_invalid_data(array $input, array $schemaErrors): void
+    {
+        $updateBookingInfoRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', self::OFFER_ID)
+            ->withJsonBodyFromArray($input)
+            ->build('PUT');
+
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(...$schemaErrors),
+            fn () => $this->updateBookingInfoRequestHandler->handle($updateBookingInfoRequest)
+        );
+    }
+
+    public function provideApiProblemTestData(): Iterator
+    {
+        yield 'start date is after end date' => [
+            'input' => [
+                'url' => 'https://www.publiq.be/',
+                'urlLabel' => ['nl' => 'Publiq vzw'],
+                'phone' => '02/1232323',
+                'email' => 'info@publiq.be',
+                'availabilityStarts' => '2028-01-01T00:00:00+01:00',
+                'availabilityEnds' => '2023-01-31T23:59:59+01:00',
+            ],
+            'schemaErrors' => [
+                new SchemaError(
+                    '/availabilityEnds',
+                    'availabilityEnds should not be before availabilityStarts'
+                ),
+            ],
+        ];
+
+        yield 'url without urlLabel' => [
+            'input' => [
+                'url' => 'https://www.publiq.be/',
+            ],
+            'schemaErrors' => [
+                new SchemaError(
+                    '/',
+                    '\'urlLabel\' property is required by \'url\' property'
                 ),
             ],
         ];
