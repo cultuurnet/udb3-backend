@@ -69,7 +69,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         $this->addArgument(
             'start-cluster-id',
             InputArgument::OPTIONAL,
-            'Enter starting cluster id?'
+            'The id of the cluster to start processing from (useful for resuming a previous run).'
         );
     }
 
