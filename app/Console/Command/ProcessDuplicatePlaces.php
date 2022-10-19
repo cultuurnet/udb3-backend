@@ -67,7 +67,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             'Execute a dry-run of the process-duplicates script.'
         );
         $this->addArgument(
-            'starting_cluster_id',
+            'start-cluster-id',
             InputArgument::OPTIONAL,
             'Enter starting cluster id?'
         );
@@ -76,7 +76,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $dryRun = (bool)$input->getOption('dry-run');
-        $startingClusterId = (int)$input->getArgument('starting_cluster_id');
+        $startingClusterId = (int)$input->getArgument('start-cluster-id');
 
         $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
 
