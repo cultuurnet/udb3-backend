@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac3cd3441103012d6bbc1c7a1323fcc9",
+    "content-hash": "a07a771e5952458ff73b41d866dcaad2",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -10379,7 +10379,8 @@
         "ext-redis": "*",
         "ext-simplexml": "*",
         "ext-tidy": "*",
-        "ext-xmlreader": "*"
+        "ext-xmlreader": "*",
+        "ext-fileinfo": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"

@@ -21,6 +21,7 @@
     "ext-simplexml": "*",
     "ext-tidy": "*",
     "ext-xmlreader": "*",
+    "ext-fileinfo": "*",
     "auth0/auth0-php": "^8.2",
     "broadway/broadway": "^2.4",
     "cakephp/chronos": "^1.3",

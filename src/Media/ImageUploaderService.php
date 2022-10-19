@@ -68,31 +68,22 @@ class ImageUploaderService implements ImageUploaderInterface
             throw new InvalidFileType('The file did not upload correctly.');
         }
 
-        $mimeTypeString = $file->getClientMediaType();
-        if (!$mimeTypeString) {
-            throw new InvalidFileType('The type of the uploaded file can not be guessed.');
-        }
-
-        $supportedMimeTypes = array_keys($this->supportedMimeTypes);
-        if (!\in_array($mimeTypeString, $supportedMimeTypes, true)) {
-            throw new InvalidFileType(
-                'The uploaded file has mime type "' . $mimeTypeString . '" instead of ' . \implode(',', $supportedMimeTypes)
-            );
-        }
+        $mimeType = $this->getFileMimeType($file);
+        $this->guardMimeTypeSupported($mimeType);
 
         $this->guardFileSizeLimit($file);
 
-        $mimeType = MIMEType::fromNative($mimeTypeString);
-
         $fileId = new UUID($this->uuidGenerator->generate());
-        $fileName = $fileId->toString() . '.' . $this->guessExtensionForMimeType($file->getClientMediaType());
+        $fileName = $fileId->toString() . '.' . $this->guessExtensionForMimeType($mimeType);
         $destination = $this->getUploadDirectory() . '/' . $fileName;
+
+        $file->getStream()->rewind();
         $this->filesystem->write($destination, $file->getStream()->getContents());
 
         $this->commandBus->dispatch(
             new UploadImage(
                 $fileId,
-                $mimeType,
+                MIMEType::fromNative($mimeType),
                 $description,
                 $copyrightHolder,
                 new StringLiteral($destination),
@@ -101,6 +92,26 @@ class ImageUploaderService implements ImageUploaderInterface
         );
 
         return $fileId;
+    }
+
+    private function getFileMimeType(UploadedFileInterface $file): string
+    {
+        $finfo = new \finfo();
+        $file->getStream()->rewind();
+
+        /** @var string|false $mimeType */
+        $mimeType = $finfo->buffer($file->getStream()->getContents(), FILEINFO_MIME_TYPE);
+        return $mimeType !== false ? $mimeType : $file->getClientMediaType();
+    }
+
+    private function guardMimeTypeSupported(string $mimeType): void
+    {
+        $supportedMimeTypes = array_keys($this->supportedMimeTypes);
+        if (!\in_array($mimeType, $supportedMimeTypes, true)) {
+            throw new InvalidFileType(
+                'The uploaded file has mime type "' . $mimeType . '" instead of ' . \implode(',', $supportedMimeTypes)
+            );
+        }
     }
 
     private function guardFileSizeLimit(UploadedFileInterface $file): void

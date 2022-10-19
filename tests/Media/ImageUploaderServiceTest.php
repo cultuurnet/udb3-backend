@@ -74,12 +74,12 @@ class ImageUploaderServiceTest extends TestCase
             ->willReturn(UPLOAD_ERR_OK);
 
         $image
-            ->expects($this->once())
-            ->method('getClientMediaType')
-            ->willReturn('video/avi');
+            ->expects($this->any())
+            ->method('getStream')
+            ->willReturn(new Stream(fopen(__DIR__ . '/files/not-an-image.txt', 'rb')));
 
         $this->expectException(InvalidFileType::class);
-        $this->expectExceptionMessage('The uploaded file has mime type "video/avi" instead of image/png,image/jpeg,image/gif');
+        $this->expectExceptionMessage('The uploaded file has mime type "text/plain" instead of image/png,image/jpeg,image/gif');
 
         $this->uploader->upload($image, $description, $copyrightHolder, $language);
     }
@@ -97,12 +97,7 @@ class ImageUploaderServiceTest extends TestCase
             ->willReturn(UPLOAD_ERR_OK);
 
         $image
-            ->expects($this->exactly(2))
-            ->method('getClientMediaType')
-            ->willReturn('image/png');
-
-        $image
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('getStream')
             ->willReturn(new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')));
 
@@ -162,33 +157,6 @@ class ImageUploaderServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_the_file_type_can_not_be_guessed(): void
-    {
-        $image = $this->createMock(UploadedFileInterface::class);
-
-        $image
-            ->expects($this->once())
-            ->method('getError')
-            ->willReturn(UPLOAD_ERR_OK);
-
-        $image
-            ->expects($this->once())
-            ->method('getClientMediaType')
-            ->willReturn('');
-
-        $description = new StringLiteral('file description');
-        $copyrightHolder = new CopyrightHolder('Dude Man');
-        $language = new Language('en');
-
-        $this->expectException(InvalidFileType::class);
-        $this->expectExceptionMessage('The type of the uploaded file can not be guessed.');
-
-        $this->uploader->upload($image, $description, $copyrightHolder, $language);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_throw_an_exception_when_the_file_size_limit_is_exceeded(): void
     {
         $uploader = new ImageUploaderService(
@@ -208,13 +176,13 @@ class ImageUploaderServiceTest extends TestCase
 
         $image
             ->expects($this->once())
-            ->method('getClientMediaType')
-            ->willReturn('image/png');
-
-        $image
-            ->expects($this->once())
             ->method('getSize')
             ->willReturn(1000001);
+
+        $image
+            ->expects($this->any())
+            ->method('getStream')
+            ->willReturn(new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')));
 
         $description = new StringLiteral('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
@@ -248,13 +216,13 @@ class ImageUploaderServiceTest extends TestCase
 
         $image
             ->expects($this->once())
-            ->method('getClientMediaType')
-            ->willReturn('image/png');
-
-        $image
-            ->expects($this->once())
             ->method('getSize')
             ->willReturn(0);
+
+        $image
+            ->expects($this->any())
+            ->method('getStream')
+            ->willReturn(new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')));
 
         $description = new StringLiteral('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
@@ -288,13 +256,13 @@ class ImageUploaderServiceTest extends TestCase
 
         $image
             ->expects($this->once())
-            ->method('getClientMediaType')
-            ->willReturn('image/png');
-
-        $image
-            ->expects($this->once())
             ->method('getSize')
             ->willReturn(null);
+
+        $image
+            ->expects($this->any())
+            ->method('getStream')
+            ->willReturn(new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')));
 
         $description = new StringLiteral('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
@@ -319,17 +287,12 @@ class ImageUploaderServiceTest extends TestCase
             ->willReturn(UPLOAD_ERR_OK);
 
         $image
-            ->expects($this->exactly(2))
-            ->method('getClientMediaType')
-            ->willReturn('image/jpeg');
-
-        $image
             ->expects($this->once())
             ->method('getSize')
             ->willReturn(5000);
 
         $image
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('getStream')
             ->willReturn(new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')));
 
@@ -345,7 +308,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
-        $expectedDestination = $this->directory . '/' . $this->fileId->toString() . '.jpeg';
+        $expectedDestination = $this->directory . '/' . $this->fileId->toString() . '.png';
 
         $generatedUuid = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $this->uuidGenerator
