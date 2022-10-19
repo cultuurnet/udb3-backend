@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
 use PDO;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -65,11 +66,17 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             InputOption::VALUE_NONE,
             'Execute a dry-run of the process-duplicates script.'
         );
+        $this->addArgument(
+            'starting_cluster_id',
+            InputArgument::OPTIONAL,
+            'Enter starting cluster id?'
+        );
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $dryRun = (bool)$input->getOption('dry-run');
+        $startingClusterId = (int)$input->getArgument('starting_cluster_id');
 
         $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
 
@@ -83,6 +90,10 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         }
 
         foreach ($clusterIds as $clusterId) {
+            if ($clusterId < $startingClusterId) {
+                continue;
+            }
+
             // 1. Set the canonical of a cluster
             try {
                 $canonicalId = $this->canonicalService->getCanonical($clusterId);
