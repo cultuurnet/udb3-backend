@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription as EventUpdateDescription;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
@@ -33,10 +32,7 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->updateDescriptionRequestHandler = new UpdateDescriptionRequestHandler(
-            $this->commandBus,
-            new DescriptionJSONDeserializer()
-        );
+        $this->updateDescriptionRequestHandler = new UpdateDescriptionRequestHandler($this->commandBus);
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
 
