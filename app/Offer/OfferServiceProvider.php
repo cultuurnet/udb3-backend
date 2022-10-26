@@ -9,7 +9,6 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
@@ -406,10 +405,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             UpdateDescriptionRequestHandler::class,
-            fn () => new UpdateDescriptionRequestHandler(
-                $container->get('event_command_bus'),
-                new DescriptionJSONDeserializer()
-            )
+            fn () => new UpdateDescriptionRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
