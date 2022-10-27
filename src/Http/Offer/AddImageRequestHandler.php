@@ -30,6 +30,8 @@ final class AddImageRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
+        $offerType = $routeParameters->getOfferType();
+
         $bodyContent = Json::decode($request->getBody()->getContents());
 
         if (empty($bodyContent->mediaObjectId)) {
@@ -39,7 +41,7 @@ final class AddImageRequestHandler implements RequestHandlerInterface
         // @todo Validate that this id exists and is in fact an image and not a different type of media object
         $imageId = new UUID($bodyContent->mediaObjectId);
 
-        if ($routeParameters->getOfferType()->sameAs(OfferType::event())) {
+        if ($offerType->sameAs(OfferType::event())) {
             $addImage = new EventAddImage(
                 $offerId,
                 $imageId
