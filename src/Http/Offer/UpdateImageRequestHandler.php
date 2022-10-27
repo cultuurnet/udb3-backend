@@ -32,7 +32,9 @@ final class UpdateImageRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
+        $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
+
         try {
             $mediaId = new UUID($routeParameters->getMediaId());
         } catch (\InvalidArgumentException $exception) {
@@ -43,7 +45,7 @@ final class UpdateImageRequestHandler implements RequestHandlerInterface
         $description = new StringLiteral($bodyContent->description);
         $copyrightHolder = new CopyrightHolder($bodyContent->copyrightHolder);
 
-        if ($routeParameters->getOfferType()->sameAs(OfferType::event())) {
+        if ($offerType->sameAs(OfferType::event())) {
             $updateImage = new EventUpdateImage(
                 $offerId,
                 $mediaId,
