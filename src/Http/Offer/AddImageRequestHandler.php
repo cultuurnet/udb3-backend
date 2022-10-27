@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Event\Commands\AddImage as EventAddImage;
+use CultuurNet\UDB3\Http\Organizer\AddMediaObjectPropertiesRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
@@ -23,9 +25,12 @@ final class AddImageRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
-    public function __construct(CommandBus $commandBus)
+    private Repository $mediaRepository;
+
+    public function __construct(CommandBus $commandBus, Repository $mediaRepository)
     {
         $this->commandBus = $commandBus;
+        $this->mediaRepository = $mediaRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -43,12 +48,12 @@ final class AddImageRequestHandler implements RequestHandlerInterface
                     JsonSchemaLocator::EVENT_IMAGE_POST,
                     JsonSchemaLocator::PLACE_IMAGE_POST,
                 )
-            )
+            ),
+            new AddMediaObjectPropertiesRequestBodyParser($this->mediaRepository, 'mediaObjectId'),
         );
 
         $request = $requestBodyParser->parse($request);
 
-        // @todo Validate that this id exists and is in fact an image and not a different type of media object
         $imageId = new UUID($bodyContent->mediaObjectId);
 
         if ($offerType->sameAs(OfferType::event())) {
