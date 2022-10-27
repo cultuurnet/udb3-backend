@@ -6,7 +6,9 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\AddImage as EventAddImage;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Json;
@@ -34,9 +36,17 @@ final class AddImageRequestHandler implements RequestHandlerInterface
 
         $bodyContent = Json::decode($request->getBody()->getContents());
 
-        if (empty($bodyContent->mediaObjectId)) {
-            throw ApiProblem::bodyInvalidDataWithDetail('media object id required');
-        }
+        $requestBodyParser = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(
+                JsonSchemaLocator::getSchemaFileByOfferType(
+                    $offerType,
+                    JsonSchemaLocator::EVENT_IMAGE_POST,
+                    JsonSchemaLocator::PLACE_IMAGE_POST,
+                )
+            )
+        );
+
+        $request = $requestBodyParser->parse($request);
 
         // @todo Validate that this id exists and is in fact an image and not a different type of media object
         $imageId = new UUID($bodyContent->mediaObjectId);

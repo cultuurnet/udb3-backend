@@ -8,6 +8,7 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\AddImage as EventAddImage;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -89,7 +90,9 @@ final class AddImageRequestHandlerTest extends TestCase
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidDataWithDetail('media object id required'),
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/', 'The required properties (mediaObjectId) are missing')
+            ),
             fn () => $this->addImageRequestHandler->handle($addImageRequest)
         );
     }
