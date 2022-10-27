@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateImage as EventUpdateImage;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -19,6 +21,8 @@ use PHPUnit\Framework\TestCase;
 class UpdateImageRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
+
+    use AssertApiProblemTrait;
 
     private const OFFER_ID = 'd2a039e9-f4d6-4080-ae33-a106b5d3d47b';
     private const MEDIA_ID = '0d24c18a-0bd5-46c1-b331-1fa38012bded';
@@ -75,6 +79,33 @@ class UpdateImageRequestHandlerTest extends TestCase
             new NoContentResponse(),
             $response
         );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
+    public function it_throws_an_api_problem_when_the_image_is_not_a_uuid(string $offerType): void
+    {
+        $unknownImage = 'not-an-image';
+        $updateImageRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', self::OFFER_ID)
+            ->withRouteParameter('mediaId', $unknownImage)
+            ->withJsonBodyFromArray(
+                [
+                    'description' => 'A new picture of a picture',
+                    'copyrightHolder' => 'Public Domain',
+                ]
+            )
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::imageNotFound($unknownImage),
+            fn () => $this->updateImageRequestHandler->handle($updateImageRequest)
+        );
+
+        $this->assertEmpty($this->commandBus->getRecordedCommands());
     }
 
     public function offerTypeDataProvider(): array

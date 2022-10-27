@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateImage as EventUpdateImage;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Json;
@@ -32,7 +33,11 @@ final class UpdateImageRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
-        $mediaId = new UUID($routeParameters->getMediaId());
+        try {
+            $mediaId = new UUID($routeParameters->getMediaId());
+        } catch (\InvalidArgumentException $exception) {
+            throw ApiProblem::imageNotFound($routeParameters->getMediaId());
+        }
         $bodyContent = Json::decode($request->getBody()->getContents());
 
         $description = new StringLiteral($bodyContent->description);
