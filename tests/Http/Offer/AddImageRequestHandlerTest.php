@@ -105,22 +105,18 @@ final class AddImageRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider offerTypeDataProvider
+     * @dataProvider invalidBodyDataProvider
      */
-    public function it_throws_on_missing_media_id(string $offerType): void
+    public function it_throws_on_missing_media_id(string $body, ApiProblem $expectedProblem): void
     {
         $addImageRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerType', 'events')
             ->withRouteParameter('offerId', self::OFFER_ID)
-            ->withBodyFromString(
-                '{}'
-            )
+            ->withBodyFromString($body)
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData(
-                new SchemaError('/', 'The required properties (mediaObjectId) are missing')
-            ),
+            $expectedProblem,
             fn () => $this->addImageRequestHandler->handle($addImageRequest)
         );
     }
@@ -163,6 +159,30 @@ final class AddImageRequestHandlerTest extends TestCase
                 'addImage' => new PlaceAddImage(
                     self::OFFER_ID,
                     new UUID(self::MEDIA_ID)
+                ),
+            ],
+        ];
+    }
+
+    public function invalidBodyDataProvider(): array
+    {
+        return [
+            [
+                '{}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (mediaObjectId) are missing')
+                ),
+            ],
+            [
+                '{"mediaObjectId": 1}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/mediaObjectId', 'The data (integer) must match the type: string')
+                ),
+            ],
+            [
+                '{"mediaObjectId": "not-a-uuid"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/mediaObjectId', 'The data must match the \'uuid\' format')
                 ),
             ],
         ];
