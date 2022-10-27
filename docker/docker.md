@@ -3,7 +3,7 @@
 ## Prerequisite
 - Install Docker Desktop
 
-## Setup
+## Configure
 
 ### .env file
 Copy `env.dist` to the root folder and rename it to `.env`
@@ -33,3 +33,25 @@ You'll have to update your `config.php` file accordingly with the values of your
 - amqp.user
 - amqp.password
 - amqp.vhost
+
+
+### Acceptance tests
+
+To make the acceptance tests work with Docker, you'll need to change the `base_url` inside `config.yml` of the acceptance test repository.
+
+
+## Start
+
+### Docker
+
+Start the docker containers with the following command. Make sure to execute this inside the root of the project so the `.env` can be used.
+```
+$ docker-compose up -d
+```
+
+### Migrations
+
+To migrate the database, run the following command:
+```
+$ make migrate
+```
