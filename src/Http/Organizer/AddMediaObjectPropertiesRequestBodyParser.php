@@ -15,16 +15,19 @@ final class AddMediaObjectPropertiesRequestBodyParser implements RequestBodyPars
 {
     private Repository $mediaRepository;
 
-    public function __construct(Repository $mediaRepository)
+    private string $idField;
+
+    public function __construct(Repository $mediaRepository, string $idField = 'id')
     {
         $this->mediaRepository = $mediaRepository;
+        $this->idField = $idField;
     }
 
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
         $data = (array) $request->getParsedBody();
 
-        $imageId = $data['id'];
+        $imageId = $data[$this->idField];
 
         try {
             /** @var MediaObject $mediaObject */
@@ -34,7 +37,7 @@ final class AddMediaObjectPropertiesRequestBodyParser implements RequestBodyPars
         }
 
         $convertedData = [];
-        $convertedData['id'] = $imageId;
+        $convertedData[$this->idField] = $imageId;
         $convertedData['language'] = $data['language'] ?? $mediaObject->getLanguage()->getCode();
         $convertedData['description'] = $data['description'] ?? $mediaObject->getDescription()->toNative();
         $convertedData['copyrightHolder'] = $data['copyrightHolder'] ?? $mediaObject->getCopyrightHolder()->toString();
