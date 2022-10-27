@@ -6,17 +6,15 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\Repository;
-use CultuurNet\UDB3\Event\Commands\AddImage as EventAddImage;
 use CultuurNet\UDB3\Http\Organizer\AddMediaObjectPropertiesRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\Commands\AddImage as PlaceAddImage;
+use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
+use CultuurNet\UDB3\Offer\Serializers\AddImageDenormalizer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -39,8 +37,6 @@ final class AddImageRequestHandler implements RequestHandlerInterface
         $offerId = $routeParameters->getOfferId();
         $offerType = $routeParameters->getOfferType();
 
-        $bodyContent = Json::decode($request->getBody()->getContents());
-
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(
                 JsonSchemaLocator::getSchemaFileByOfferType(
@@ -50,23 +46,16 @@ final class AddImageRequestHandler implements RequestHandlerInterface
                 )
             ),
             new AddMediaObjectPropertiesRequestBodyParser($this->mediaRepository, 'mediaObjectId'),
+            new DenormalizingRequestBodyParser(
+                new AddImageDenormalizer($offerType, $offerId),
+                AbstractAddImage::class
+            ),
         );
 
         $request = $requestBodyParser->parse($request);
 
-        $imageId = new UUID($bodyContent->mediaObjectId);
-
-        if ($offerType->sameAs(OfferType::event())) {
-            $addImage = new EventAddImage(
-                $offerId,
-                $imageId
-            );
-        } else {
-            $addImage = new PlaceAddImage(
-                $offerId,
-                $imageId
-            );
-        }
+        /** @var AbstractAddImage $addImage */
+        $addImage = $requestBodyParser->parse($request)->getParsedBody();
 
         $this->commandBus->dispatch($addImage);
 
