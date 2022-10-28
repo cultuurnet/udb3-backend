@@ -1,5 +1,8 @@
 .PHONY: ci stan cs cs-fix test
 
+install:
+	docker exec -it php.uitdatabank composer install --ignore-platform-reqs
+
 ci:
 	docker exec -it php.uitdatabank composer ci
 
@@ -14,3 +17,6 @@ cs-fix:
 
 test:
 	docker exec -it php.uitdatabank composer test
+
+migrate:
+	docker exec -it php.uitdatabank ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
