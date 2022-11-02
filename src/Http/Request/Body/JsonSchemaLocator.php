@@ -26,6 +26,7 @@ final class JsonSchemaLocator
     public const EVENT_CALENDAR_PUT = 'event-calendar-put.json';
     public const EVENT_DESCRIPTION_PUT = 'event-description-put.json';
     public const EVENT_FACILITIES_PUT = 'event-facilities-put.json';
+    public const EVENT_IMAGE_PUT = 'event-image-put.json';
     public const EVENT_PRICE_INFO_PUT = 'event-priceInfo.json';
     public const EVENT_STATUS = 'event-status.json';
     public const EVENT_SUB_EVENT_PATCH = 'event-subEvent-patch.json';
@@ -40,6 +41,7 @@ final class JsonSchemaLocator
     public const PLACE_CALENDAR_PUT = 'place-calendar-put.json';
     public const PLACE_DESCRIPTION_PUT = 'place-description-put.json';
     public const PLACE_FACILITIES_PUT = 'place-facilities-put.json';
+    public const PLACE_IMAGE_PUT = 'place-image-put.json';
     public const PLACE_PRICE_INFO_PUT = 'place-priceInfo.json';
     public const PLACE_STATUS = 'place-status.json';
     public const PLACE_VIDEOS_PATCH = 'place-videos-patch.json';

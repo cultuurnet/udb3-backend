@@ -8,6 +8,7 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateImage as EventUpdateImage;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -127,6 +128,67 @@ class UpdateImageRequestHandlerTest extends TestCase
                     new UUID(self::MEDIA_ID),
                     new StringLiteral('A new picture of a picture'),
                     new CopyrightHolder('Public Domain')
+                ),
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidBodyDataProvider
+     */
+    public function it_throws_an_api_problem_for_an_invalid_body(string $body, ApiProblem $expectedApiProblem): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', self::OFFER_ID)
+            ->withRouteParameter('mediaId', self::MEDIA_ID)
+            ->withBodyFromString($body)
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            $expectedApiProblem,
+            fn () => $this->updateImageRequestHandler->handle($request)
+        );
+    }
+
+    public function invalidBodyDataProvider(): array
+    {
+        return [
+            [
+                '{}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (description, copyrightHolder) are missing')
+                ),
+            ],
+            [
+                '{"copyrightHolder": "madewithlove"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (description) are missing')
+                ),
+            ],
+            [
+                '{"description": "An image"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (copyrightHolder) are missing')
+                ),
+            ],
+            [
+                '{"description": 1, "copyrightHolder": "madewithlove"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/description', 'The data (integer) must match the type: string')
+                ),
+            ],
+            [
+                '{"description": "", "copyrightHolder": "madewithlove"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/description', 'Minimum string length is 1, found 0')
+                ),
+            ],
+            [
+                '{"description": "An image", "copyrightHolder": "ma"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/copyrightHolder', 'Minimum string length is 3, found 2')
                 ),
             ],
         ];
