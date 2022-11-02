@@ -185,9 +185,9 @@ class UpdateImageRequestHandlerTest extends TestCase
                 ),
             ],
             [
-                '{"description": "An image", "copyrightHolder": "ma"}',
+                '{"description": "An image", "copyrightHolder": "m"}',
                 ApiProblem::bodyInvalidData(
-                    new SchemaError('/copyrightHolder', 'Minimum string length is 3, found 2')
+                    new SchemaError('/copyrightHolder', 'Minimum string length is 2, found 1')
                 ),
             ],
         ];

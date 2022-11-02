@@ -5580,12 +5580,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "6455c2a7a11ec58a3826679c28e8e803bf78968c"
+                "reference": "7549bd316f628fd00f5df849521b014800cbd04d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/6455c2a7a11ec58a3826679c28e8e803bf78968c",
-                "reference": "6455c2a7a11ec58a3826679c28e8e803bf78968c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/7549bd316f628fd00f5df849521b014800cbd04d",
+                "reference": "7549bd316f628fd00f5df849521b014800cbd04d",
                 "shasum": ""
             },
             "type": "library",
@@ -5604,7 +5604,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/uitdatabank/III-4258-offer-image-update"
             },
-            "time": "2022-10-27T13:45:50+00:00"
+            "time": "2022-11-02T12:27:19+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
