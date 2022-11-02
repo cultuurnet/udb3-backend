@@ -8,6 +8,7 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\SelectMainImage as EventSelectMainImage;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -112,20 +113,18 @@ final class SelectMainImageRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider offerTypeDataProvider
+     * @dataProvider invalidRequestBodyProvider
      */
-    public function it_throws_on_missing_media_id(string $offerType): void
+    public function it_throws_on_missing_media_id(string $body, ApiProblem $expectedProblem): void
     {
         $selectMainImageRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerType', 'events')
             ->withRouteParameter('offerId', self::OFFER_ID)
-            ->withBodyFromString(
-                '{}'
-            )
+            ->withBodyFromString($body)
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidDataWithDetail('media object id required'),
+            $expectedProblem,
             fn () => $this->selectMainImageRequestHandler->handle($selectMainImageRequest)
         );
     }
@@ -153,6 +152,24 @@ final class SelectMainImageRequestHandlerTest extends TestCase
                 'selectMainImage' => new PlaceSelectMainImage(
                     self::OFFER_ID,
                     $image
+                ),
+            ],
+        ];
+    }
+
+    public function invalidRequestBodyProvider(): array
+    {
+        return [
+            [
+                '{}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (mediaObjectId) are missing')
+                ),
+            ],
+            [
+                '{"mediaObjectId": "not-a-uuid"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/mediaObjectId', 'The data must match the \'uuid\' format')
                 ),
             ],
         ];
