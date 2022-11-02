@@ -37,6 +37,8 @@ final class SelectMainImageRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
+        $offerType = $routeParameters->getOfferType();
+
         $bodyContent = Json::decode($request->getBody()->getContents());
 
         if (empty($bodyContent->mediaObjectId)) {
@@ -48,7 +50,7 @@ final class SelectMainImageRequestHandler implements RequestHandlerInterface
         // Can we be sure that the given $mediaObjectId points to an image and not a different type?
         $image = $this->mediaManager->getImage($mediaObjectId);
 
-        if ($routeParameters->getOfferType()->sameAs(OfferType::event())) {
+        if ($offerType->sameAs(OfferType::event())) {
             $selectMainImage = new EventSelectMainImage(
                 $offerId,
                 $image
