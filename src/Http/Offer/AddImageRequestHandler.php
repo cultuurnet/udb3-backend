@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\Repository;
-use CultuurNet\UDB3\Http\Organizer\AddMediaObjectPropertiesRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -45,7 +44,7 @@ final class AddImageRequestHandler implements RequestHandlerInterface
                     JsonSchemaLocator::PLACE_IMAGE_POST,
                 )
             ),
-            new AddMediaObjectPropertiesRequestBodyParser($this->mediaRepository, 'mediaObjectId'),
+            new AddMediaObjectPropertiesRequestBodyParser($this->mediaRepository),
             new DenormalizingRequestBodyParser(
                 new AddImageDenormalizer($offerType, $offerId),
                 AbstractAddImage::class
