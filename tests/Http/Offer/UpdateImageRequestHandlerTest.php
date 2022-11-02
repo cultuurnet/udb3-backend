@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractUpdateImage;
 use CultuurNet\UDB3\Place\Commands\UpdateImage as PlaceUpdateImage;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\TestCase;
 
 class UpdateImageRequestHandlerTest extends TestCase
@@ -117,7 +116,7 @@ class UpdateImageRequestHandlerTest extends TestCase
                 'updateImage' => new EventUpdateImage(
                     self::OFFER_ID,
                     new UUID(self::MEDIA_ID),
-                    new StringLiteral('A new picture of a picture'),
+                    'A new picture of a picture',
                     new CopyrightHolder('Public Domain')
                 ),
             ],
@@ -126,7 +125,7 @@ class UpdateImageRequestHandlerTest extends TestCase
                 'updateImage' => new PlaceUpdateImage(
                     self::OFFER_ID,
                     new UUID(self::MEDIA_ID),
-                    new StringLiteral('A new picture of a picture'),
+                    'A new picture of a picture',
                     new CopyrightHolder('Public Domain')
                 ),
             ],

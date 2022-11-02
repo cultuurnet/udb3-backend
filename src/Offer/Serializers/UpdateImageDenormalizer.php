@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractUpdateImage;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\Commands\UpdateImage as PlaceUpdateImage;
-use CultuurNet\UDB3\StringLiteral;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class UpdateImageDenormalizer implements DenormalizerInterface
@@ -34,14 +33,14 @@ final class UpdateImageDenormalizer implements DenormalizerInterface
             return new EventUpdateImage(
                 $this->offerId,
                 $this->mediaObjectId,
-                new StringLiteral($data['description']),
+                $data['description'],
                 new CopyrightHolder($data['copyrightHolder'])
             );
         } else {
             return new PlaceUpdateImage(
                 $this->offerId,
                 $this->mediaObjectId,
-                new StringLiteral($data['description']),
+                $data['description'],
                 new CopyrightHolder($data['copyrightHolder'])
             );
         }
