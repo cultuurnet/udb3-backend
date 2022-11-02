@@ -5,15 +5,25 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use Broadway\Repository\AggregateNotFoundException;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Event\Commands\AddImage as EventAddImage;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Media\MediaObject;
+use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Place\Commands\AddImage as PlaceAddImage;
+use CultuurNet\UDB3\StringLiteral;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class AddImageRequestHandlerTest extends TestCase
@@ -30,12 +40,18 @@ final class AddImageRequestHandlerTest extends TestCase
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
+    /** @var Repository|MockObject */
+    private $imageRepository;
+
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
 
+        $this->imageRepository = $this->createMock(Repository::class);
+
         $this->addImageRequestHandler = new AddImageRequestHandler(
-            $this->commandBus
+            $this->commandBus,
+            $this->imageRepository,
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
@@ -59,6 +75,19 @@ final class AddImageRequestHandlerTest extends TestCase
             )
             ->build('POST');
 
+        $this->imageRepository->method('load')
+            ->with(self::MEDIA_ID)
+            ->willReturn(
+                MediaObject::create(
+                    new UUID(self::MEDIA_ID),
+                    MIMEType::fromSubtype('jpeg'),
+                    new StringLiteral('Uploaded image'),
+                    new CopyrightHolder('madewithlove'),
+                    new Url('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
+                    new LegacyLanguage('nl')
+                )
+            );
+
         $response = $this->addImageRequestHandler->handle($addImageRequest);
 
         $this->assertEquals(
@@ -76,21 +105,42 @@ final class AddImageRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider offerTypeDataProvider
+     * @dataProvider invalidBodyDataProvider
      */
-    public function it_throws_on_missing_media_id(string $offerType): void
+    public function it_throws_on_missing_media_id(string $body, ApiProblem $expectedProblem): void
     {
         $addImageRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerType', 'events')
             ->withRouteParameter('offerId', self::OFFER_ID)
-            ->withBodyFromString(
-                '{}'
-            )
+            ->withBodyFromString($body)
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidDataWithDetail('media object id required'),
+            $expectedProblem,
             fn () => $this->addImageRequestHandler->handle($addImageRequest)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
+    public function it_throws_an_api_problem_when_image_not_found(string $offerType): void
+    {
+        $unknownImageId = '08805a3c-ffe0-4c94-a1bc-453a6dd9d01f';
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', self::OFFER_ID)
+            ->withJsonBodyFromArray(['mediaObjectId' => $unknownImageId])
+            ->build('POST');
+
+        $this->imageRepository->method('load')
+            ->with($unknownImageId)
+            ->willThrowException(new AggregateNotFoundException());
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::imageNotFound($unknownImageId),
+            fn () => $this->addImageRequestHandler->handle($request)
         );
     }
 
@@ -109,6 +159,30 @@ final class AddImageRequestHandlerTest extends TestCase
                 'addImage' => new PlaceAddImage(
                     self::OFFER_ID,
                     new UUID(self::MEDIA_ID)
+                ),
+            ],
+        ];
+    }
+
+    public function invalidBodyDataProvider(): array
+    {
+        return [
+            [
+                '{}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (mediaObjectId) are missing')
+                ),
+            ],
+            [
+                '{"mediaObjectId": 1}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/mediaObjectId', 'The data (integer) must match the type: string')
+                ),
+            ],
+            [
+                '{"mediaObjectId": "not-a-uuid"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/mediaObjectId', 'The data must match the \'uuid\' format')
                 ),
             ],
         ];

@@ -510,7 +510,10 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             AddImageRequestHandler::class,
-            fn () => new AddImageRequestHandler($container->get('event_command_bus'))
+            fn () => new AddImageRequestHandler(
+                $container->get('event_command_bus'),
+                $container->get('media_object_repository'),
+            )
         );
 
         $container->addShared(
