@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -43,8 +42,6 @@ final class SelectMainImageRequestHandler implements RequestHandlerInterface
         $offerId = $routeParameters->getOfferId();
         $offerType = $routeParameters->getOfferType();
 
-        $bodyContent = Json::decode($request->getBody()->getContents());
-
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(
                 JsonSchemaLocator::getSchemaFileByOfferType(
@@ -55,9 +52,8 @@ final class SelectMainImageRequestHandler implements RequestHandlerInterface
             ),
         );
 
-        $requestBodyParser->parse($request);
-
-        $mediaObjectId = new UUID($bodyContent->mediaObjectId);
+        $parsedBody = (array) $requestBodyParser->parse($request)->getParsedBody();
+        $mediaObjectId = new UUID($parsedBody['mediaObjectId']);
 
         // Can we be sure that the given $mediaObjectId points to an image and not a different type?
         try {
