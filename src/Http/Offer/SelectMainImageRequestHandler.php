@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Deserializer\Offer\SelectMainImageDenormalizer;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -14,6 +15,7 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractSelectMainImage;
+use CultuurNet\UDB3\Offer\ImageMustBeLinkedException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -55,7 +57,11 @@ final class SelectMainImageRequestHandler implements RequestHandlerInterface
         /** @var AbstractSelectMainImage $selectMainImage */
         $selectMainImage = $requestBodyParser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch($selectMainImage);
+        try {
+            $this->commandBus->dispatch($selectMainImage);
+        } catch (ImageMustBeLinkedException $exception) {
+            throw ApiProblem::imageMustBeLinkedToResource();
+        }
 
         return new NoContentResponse();
     }

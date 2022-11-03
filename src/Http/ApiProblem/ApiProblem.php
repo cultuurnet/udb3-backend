@@ -486,4 +486,13 @@ final class ApiProblem extends Exception
             $detail
         );
     }
+
+    public static function imageMustBeLinkedToResource(): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/body/main-image-must-be-linked-to-resource',
+            'Main image must be linked to resource',
+            400
+        );
+    }
 }
