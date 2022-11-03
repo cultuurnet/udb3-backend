@@ -165,7 +165,7 @@ final class SelectMainImageRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::imageMustBeLinkedToResource(),
+            ApiProblem::imageMustBeLinkedToResource(self::MEDIA_ID),
             fn () => $this->selectMainImageRequestHandler->handle($selectMainImageRequest)
         );
     }

@@ -60,7 +60,7 @@ final class SelectMainImageRequestHandler implements RequestHandlerInterface
         try {
             $this->commandBus->dispatch($selectMainImage);
         } catch (ImageMustBeLinkedException $exception) {
-            throw ApiProblem::imageMustBeLinkedToResource();
+            throw ApiProblem::imageMustBeLinkedToResource($selectMainImage->getImage()->getMediaObjectId()->toString());
         }
 
         return new NoContentResponse();
