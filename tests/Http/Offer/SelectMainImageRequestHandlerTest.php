@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
+use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -125,6 +126,28 @@ final class SelectMainImageRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             $expectedProblem,
+            fn () => $this->selectMainImageRequestHandler->handle($selectMainImageRequest)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_image_does_not_exist(): void
+    {
+        $this->mediaManager
+            ->method('getImage')
+            ->with(new UUID(self::MEDIA_ID))
+            ->willThrowException(new MediaObjectNotFoundException());
+
+        $selectMainImageRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', self::OFFER_ID)
+            ->withJsonBodyFromArray(['mediaObjectId' => self::MEDIA_ID])
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::imageNotFound(self::MEDIA_ID),
             fn () => $this->selectMainImageRequestHandler->handle($selectMainImageRequest)
         );
     }
