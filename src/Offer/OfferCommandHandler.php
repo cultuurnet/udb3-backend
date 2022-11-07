@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractPublish;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractReject;
 use CultuurNet\UDB3\Organizer\Organizer;
+use CultuurNet\UDB3\StringLiteral;
 
 abstract class OfferCommandHandler extends Udb3CommandHandler
 {
@@ -200,7 +201,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer = $this->load($updateImage->getItemId());
         $offer->updateImage(
             $updateImage->getMediaObjectId(),
-            $updateImage->getDescription(),
+            new StringLiteral($updateImage->getDescription()),
             $updateImage->getCopyrightHolder()
         );
         $this->offerRepository->save($offer);
