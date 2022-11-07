@@ -196,7 +196,7 @@ trait OfferCommandHandlerTestTrait
     {
         $itemId = '1';
         $mediaObjectId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
-        $description = new StringLiteral('A description.');
+        $description = 'A description.';
         $copyrightHolder = new CopyrightHolder('Dirk');
         $imageAdded = $this->getEventClass('ImageAdded');
         $commandClass = $this->getCommandClass('UpdateImage');
@@ -232,7 +232,7 @@ trait OfferCommandHandlerTestTrait
                 new $eventClass(
                     $itemId,
                     $mediaObjectId->toString(),
-                    $description->toNative(),
+                    $description,
                     $copyrightHolder->toString()
                 ),
             ]);
