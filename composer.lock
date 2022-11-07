@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a07a771e5952458ff73b41d866dcaad2",
+    "content-hash": "c2f85d11d75396feb5589ee0aac7701b",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5576,19 +5576,18 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-main",
+            "version": "dev-uitdatabank/III-4263-event-contact-point",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "7549bd316f628fd00f5df849521b014800cbd04d"
+                "reference": "40ff52c3aab248d56eb7715796feb2592f88945c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/7549bd316f628fd00f5df849521b014800cbd04d",
-                "reference": "7549bd316f628fd00f5df849521b014800cbd04d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/40ff52c3aab248d56eb7715796feb2592f88945c",
+                "reference": "40ff52c3aab248d56eb7715796feb2592f88945c",
                 "shasum": ""
             },
-            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5603,9 +5602,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/uitdatabank/III-4263-event-contact-point"
             },
-            "time": "2022-11-02T12:27:19+00:00"
+            "time": "2022-11-17T07:48:06+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
