@@ -12,7 +12,7 @@ class EventFacilityResolver extends OfferFacilityResolver
     /**
      * @inheritdoc
      */
-    final protected function getFacilities()
+    final protected function getFacilities(): array
     {
         return [
             '3.23.2.0.0' => new Facility('3.23.2.0.0', 'Assistentie'),
@@ -36,6 +36,8 @@ class EventFacilityResolver extends OfferFacilityResolver
             '3.38.0.0.0' => new Facility('3.38.0.0.0', 'Inter-assistentie'),
             '3.39.0.0.0' => new Facility('3.39.0.0.0', 'Begeleiderspas'),
             '3.40.0.0.0' => new Facility('3.40.0.0.0', 'Inter-events'),
+            'H28fcfRKFQAQs00K9NF9hh' => new Facility('H28fcfRKFQAQs00K9NF9hh', 'Prikkelarm aanbod'),
+            '4Vz9eZf0cnQmtfqcGGnNMF' => new Facility('4Vz9eZf0cnQmtfqcGGnNMF', 'Afspraken en voorspelbaarheid'),
         ];
     }
 }
