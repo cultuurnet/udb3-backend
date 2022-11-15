@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Offer\ImageMustBeLinkedException;
 use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
@@ -365,24 +366,15 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
 
     public function updateMainImage(UUID $imageId): void
     {
-        if ($this->needsUpdateMainImage($imageId)) {
+        if (!$this->hasImage($imageId)) {
+            throw new ImageMustBeLinkedException();
+        }
+
+        if ($this->mainImageId !== $imageId->toString()) {
             $this->apply(
                 new MainImageUpdated($this->actorId, $imageId->toString())
             );
         }
-    }
-
-    private function needsUpdateMainImage(UUID $mainImageId): bool
-    {
-        // When the organizer has no images it can't be set as main.
-        // If the organizer does not contain the main image as a normal image it can't be set as main.
-        if (!$this->hasImage($mainImageId)) {
-            return false;
-        }
-
-        // Only set it as main when there is a difference.
-        // This is to prevent having events in the event store with no change.
-        return $this->mainImageId !== $mainImageId->toString();
     }
 
     private function hasImage(UUID $imageId): bool

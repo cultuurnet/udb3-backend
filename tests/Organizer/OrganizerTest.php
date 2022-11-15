@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
+use CultuurNet\UDB3\Offer\ImageMustBeLinkedException;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -1133,29 +1134,6 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $organizer->updateMainImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
                 [],
             ],
-            'Main image can not be set on organizer with no images' => [
-                [
-                    $organizerCreated,
-                ],
-                fn (Organizer $organizer) =>
-                    $organizer->updateMainImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
-                [],
-            ],
-            'Main image can not be set when organizer does not contain the image' => [
-                [
-                    $organizerCreated,
-                    new ImageAdded(
-                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
-                        'cf539408-bba9-4e77-9f85-72019013db37',
-                        'nl',
-                        'Beschrijving',
-                        'publiq'
-                    ),
-                ],
-                fn (Organizer $organizer) =>
-                    $organizer->updateMainImage(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
-                [],
-            ],
             'Main image is not updated when it is already the main image' => [
                 [
                     new ImageAdded(
@@ -1202,6 +1180,24 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ],
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_when_selecting_an_unknown_main_image(): void
+    {
+        $this->expectException(ImageMustBeLinkedException::class);
+        $this->scenario
+            ->given([
+                new OrganizerCreatedWithUniqueWebsite(
+                    'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                    'en',
+                    'https://www.publiq.be',
+                    'publiq'
+                ),
+            ])
+            ->when(fn (Organizer $organizer) => $organizer->updateMainImage(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')));
     }
 
     /**
