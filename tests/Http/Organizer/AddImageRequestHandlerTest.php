@@ -246,10 +246,10 @@ final class AddImageRequestHandlerTest extends TestCase
                     "id":"08805a3c-ffe0-4c94-a1bc-453a6dd9d01f",
                     "language":"en",
                     "description":"A nice image",
-                    "copyrightHolder":""
+                    "copyrightHolder":"a"
                 }',
                 ApiProblem::bodyInvalidData(
-                    new SchemaError('/copyrightHolder', 'Minimum string length is 3, found 0')
+                    new SchemaError('/copyrightHolder', 'Minimum string length is 2, found 1')
                 ),
             ],
             [
