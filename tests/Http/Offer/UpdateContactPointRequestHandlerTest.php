@@ -73,10 +73,13 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
      * @test
      * @dataProvider provideInvalidRequestBodies
      */
-    public function it_throws_updating_when_contact_point_is_incomplete(array $request, ApiProblem $expectedProblem): void
-    {
+    public function it_throws_updating_when_contact_point_is_incomplete(
+        string $offerType,
+        array $request,
+        ApiProblem $expectedProblem
+    ): void {
         $updateContactPointRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', self::OFFER_ID)
             ->withJsonBodyFromArray($request)
             ->build('PUT');
@@ -89,110 +92,121 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
 
     public function provideInvalidRequestBodies(): Iterator
     {
-        yield 'all properties missing' => [
-            'request' => [
-                'mail' => [
-                    'info@publiq.be',
-                ],
-            ],
-            'expectedProblem' => ApiProblem::bodyInvalidData(
-                new SchemaError('/', 'The required properties (phone, email, url) are missing')
-            ),
-        ];
+        $offers = ['events', 'places'];
 
-        yield 'all properties are strings iso arrays' => [
-            'request' => [
-                'phone' => '0475/123123',
-                'email' => 'info@publiq.be',
-                'url' => 'https://www.publiq.be/',
-            ],
-            'expectedProblem' => ApiProblem::bodyInvalidData(
-                new SchemaError('/phone', 'The data (string) must match the type: array'),
-                new SchemaError('/email', 'The data (string) must match the type: array'),
-                new SchemaError('/url', 'The data (string) must match the type: array'),
-            ),
-        ];
+        foreach ($offers as $offerType) {
+            yield 'all properties missing ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'mail' => ['info@publiq.be'],
+                ],
+                'expectedProblem' => ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (phone, email, url) are missing')
+                ),
+            ];
+
+            yield 'all properties are strings iso arrays ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'phone' => '0475/123123',
+                    'email' => 'info@publiq.be',
+                    'url' => 'https://www.publiq.be/',
+                ],
+                'expectedProblem' => ApiProblem::bodyInvalidData(
+                    new SchemaError('/phone', 'The data (string) must match the type: array'),
+                    new SchemaError('/email', 'The data (string) must match the type: array'),
+                    new SchemaError('/url', 'The data (string) must match the type: array'),
+                ),
+            ];
+        }
     }
 
     public function offerTypeDataProvider(): Iterator
     {
-        yield 'legacy format' => [
-            'offerType' => 'events',
-            'request' => [
-                'contactPoint' => [
-                    'url' => ['https://www.publiq.be/'],
-                    'email' => [],
-                    'phone' => ['0475/123123', '02/123123'],
+        $offers = [
+            'events'=> EventUpdateContactPoint::class,
+            'places' => PlaceUpdateContactPoint::class,
+        ];
+
+        foreach ($offers as $offerType => $offerCommand) {
+            yield 'legacy format ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'contactPoint' => [
+                        'url' => ['https://www.publiq.be/'],
+                        'email' => [],
+                        'phone' => ['0475/123123', '02/123123'],
+                    ],
                 ],
-            ],
-            'expectedCommand' => new EventUpdateContactPoint(
-                self::OFFER_ID,
-                new ContactPoint(
-                    ['0475/123123', '02/123123'],
-                    [],
-                    ['https://www.publiq.be/']
-                )
-            ),
-        ];
+                'expectedCommand' => new $offerCommand(
+                    self::OFFER_ID,
+                    new ContactPoint(
+                        ['0475/123123', '02/123123'],
+                        [],
+                        ['https://www.publiq.be/']
+                    )
+                ),
+            ];
 
-        yield 'all properties are empty arrays' => [
-            'offerType' => 'events',
-            'request' => [
-                'phone' => [],
-                'email' => [],
-                'url' => [],
-            ],
-            'expectedCommand' => new EventUpdateContactPoint(
-                self::OFFER_ID,
-                new ContactPoint([], [], []),
-            ),
-        ];
+            yield 'all properties are empty arrays ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'phone' => [],
+                    'email' => [],
+                    'url' => [],
+                ],
+                'expectedCommand' => new $offerCommand(
+                    self::OFFER_ID,
+                    new ContactPoint([], [], []),
+                ),
+            ];
 
-        yield 'all properties have an empty string' => [
-            'offerType' => 'events',
-            'request' => [
-                'phone' => [''],
-                'email' => [''],
-                'url' => [''],
-            ],
-            'expectedCommand' => new EventUpdateContactPoint(
-                self::OFFER_ID,
-                new ContactPoint([''], [''], ['']),
-            ),
-        ];
+            yield 'all properties have an empty string ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'phone' => [''],
+                    'email' => [''],
+                    'url' => [''],
+                ],
+                'expectedCommand' => new $offerCommand(
+                    self::OFFER_ID,
+                    new ContactPoint([''], [''], ['']),
+                ),
+            ];
 
-        yield 'all properties filled in with one value' => [
-            'offerType' => 'events',
-            'request' => [
-                'url' => ['https://www.publiq.be/'],
-                'email' => ['info@publiq.be'],
-                'phone' => ['0475/123123'],
-            ],
-            'expectedCommand' => new EventUpdateContactPoint(
-                self::OFFER_ID,
-                new ContactPoint(
-                    ['0475/123123'],
-                    ['info@publiq.be'],
-                    ['https://www.publiq.be/']
-                )
-            ),
-        ];
+            yield 'all properties filled in with one value ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'url' => ['https://www.publiq.be/'],
+                    'email' => ['info@publiq.be'],
+                    'phone' => ['0475/123123'],
+                ],
+                'expectedCommand' => new $offerCommand(
+                    self::OFFER_ID,
+                    new ContactPoint(
+                        ['0475/123123'],
+                        ['info@publiq.be'],
+                        ['https://www.publiq.be/']
+                    )
+                ),
+            ];
 
-        yield 'all properties filled in with multiple values' => [
-            'offerType' => 'events',
-            'request' => [
-                'url' => ['https://www.publiq.be/', 'https://madewithlove.com'],
-                'email' => ['info@publiq.be', 'info@madewithlove.com'],
-                'phone' => ['0475/123123', '0473/123456'],
-            ],
-            'expectedCommand' => new EventUpdateContactPoint(
-                self::OFFER_ID,
-                new ContactPoint(
-                    ['0475/123123', '0473/123456'],
-                    ['info@publiq.be', 'info@madewithlove.com'],
-                    ['https://www.publiq.be/', 'https://madewithlove.com'],
-                )
-            ),
-        ];
+            yield 'all properties filled in with multiple values ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'url' => ['https://www.publiq.be/', 'https://madewithlove.com'],
+                    'email' => ['info@publiq.be', 'info@madewithlove.com'],
+                    'phone' => ['0475/123123', '0473/123456'],
+                ],
+                'expectedCommand' => new $offerCommand(
+                    self::OFFER_ID,
+                    new ContactPoint(
+                        ['0475/123123', '0473/123456'],
+                        ['info@publiq.be', 'info@madewithlove.com'],
+                        ['https://www.publiq.be/', 'https://madewithlove.com'],
+                    )
+                ),
+            ];
+        }
     }
 }
