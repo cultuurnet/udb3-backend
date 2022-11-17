@@ -99,7 +99,7 @@ pipeline {
             stages {
                 stage('Publish snapshot') {
                     steps {
-                        publishAptlySnapshot snapshotName: "${env.JOB_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-production", distributions: 'xenial'
+                        publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'xenial'
                     }
                 }
                 stage('Deploy') {
@@ -135,7 +135,7 @@ pipeline {
             stages {
                 stage('Publish snapshot') {
                     steps {
-                        publishAptlySnapshot snapshotName: "${env.JOB_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-production", distributions: 'xenial'
+                        publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'xenial'
                     }
                 }
                 stage('Deploy') {

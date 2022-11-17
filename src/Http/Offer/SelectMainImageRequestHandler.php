@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\Commands\SelectMainImage as EventSelectMainImage;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Deserializer\Offer\SelectMainImageDenormalizer;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\Commands\SelectMainImage as PlaceSelectMainImage;
+use CultuurNet\UDB3\Offer\Commands\Image\AbstractSelectMainImage;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -32,33 +32,28 @@ final class SelectMainImageRequestHandler implements RequestHandlerInterface
         $this->mediaManager = $mediaManager;
     }
 
-
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
-        $bodyContent = Json::decode($request->getBody()->getContents());
+        $offerType = $routeParameters->getOfferType();
 
-        if (empty($bodyContent->mediaObjectId)) {
-            throw ApiProblem::bodyInvalidDataWithDetail('media object id required');
-        }
+        $requestBodyParser = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(
+                JsonSchemaLocator::getSchemaFileByOfferType(
+                    $offerType,
+                    JsonSchemaLocator::EVENT_MAIN_IMAGE_PUT,
+                    JsonSchemaLocator::PLACE_MAIN_IMAGE_PUT,
+                )
+            ),
+            new DenormalizingRequestBodyParser(
+                new SelectMainImageDenormalizer($this->mediaManager, $offerType, $offerId),
+                AbstractSelectMainImage::class
+            ),
+        );
 
-        $mediaObjectId = new UUID($bodyContent->mediaObjectId);
-
-        // Can we be sure that the given $mediaObjectId points to an image and not a different type?
-        $image = $this->mediaManager->getImage($mediaObjectId);
-
-        if ($routeParameters->getOfferType()->sameAs(OfferType::event())) {
-            $selectMainImage = new EventSelectMainImage(
-                $offerId,
-                $image
-            );
-        } else {
-            $selectMainImage = new PlaceSelectMainImage(
-                $offerId,
-                $image
-            );
-        }
+        /** @var AbstractSelectMainImage $selectMainImage */
+        $selectMainImage = $requestBodyParser->parse($request)->getParsedBody();
 
         $this->commandBus->dispatch($selectMainImage);
 
