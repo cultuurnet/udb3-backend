@@ -47,12 +47,13 @@ final class UpdateContactPointRequestHandler implements RequestHandlerInterface
             ),
         );
 
-        $request = $requestBodyParser->parse($request);
+        /** @var \stdClass $parsedBody */
+        $parsedBody = $requestBodyParser->parse($request)->getParsedBody();
 
         $contactPoint = new ContactPoint(
-            $bodyContent->contactPoint->phone,
-            $bodyContent->contactPoint->email,
-            $bodyContent->contactPoint->url
+            $parsedBody->phone,
+            $parsedBody->email,
+            $parsedBody->url
         );
 
         if ($offerType->sameAs(OfferType::event())) {

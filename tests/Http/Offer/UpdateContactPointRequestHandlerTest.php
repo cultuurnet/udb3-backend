@@ -91,14 +91,12 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
     {
         yield 'missing mail' => [
             'request' => [
-                'contactPoint' => [
-                    'url' => [
-                        'https://www.publiq.be/',
-                    ],
-                    'phone' => [
-                        '0475/123123',
-                        '02/123123',
-                    ],
+                'url' => [
+                    'https://www.publiq.be/',
+                ],
+                'phone' => [
+                    '0475/123123',
+                    '02/123123',
                 ],
             ],
             'expectedProblem' => ApiProblem::bodyInvalidData(
@@ -109,7 +107,7 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
 
     public function offerTypeDataProvider(): Iterator
     {
-        yield 'missing mail events' => [
+        yield 'legacy format' => [
             'offerType' => 'events',
             'request' => [
                 'contactPoint' => [
@@ -138,18 +136,43 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
             ),
         ];
 
-        yield 'missing mail places' => [
-            'offerType' => 'places',
+        yield 'missing mail events' => [
+            'offerType' => 'events',
             'request' => [
-                'contactPoint' => [
-                    'url' => [
-                        'https://www.publiq.be/',
-                    ],
-                    'email' => [],
-                    'phone' => [
+                'url' => [
+                    'https://www.publiq.be/',
+                ],
+                'email' => [],
+                'phone' => [
+                    '0475/123123',
+                    '02/123123',
+                ],
+            ],
+            'expectedCommand' => new EventUpdateContactPoint(
+                self::OFFER_ID,
+                new ContactPoint(
+                    [
                         '0475/123123',
                         '02/123123',
                     ],
+                    [],
+                    [
+                        'https://www.publiq.be/',
+                    ]
+                )
+            ),
+        ];
+
+        yield 'missing mail places' => [
+            'offerType' => 'places',
+            'request' => [
+                'url' => [
+                    'https://www.publiq.be/',
+                ],
+                'email' => [],
+                'phone' => [
+                    '0475/123123',
+                    '02/123123',
                 ],
             ],
             'expectedCommand' => new PlaceUpdateContactPoint(
