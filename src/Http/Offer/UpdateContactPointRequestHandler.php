@@ -7,7 +7,9 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint as EventUpdateContactPoint;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Json;
@@ -30,26 +32,30 @@ final class UpdateContactPointRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
+        $offerType = $routeParameters->getOfferType();
+
         $bodyContent = Json::decode($request->getBody()->getContents());
 
-        // @todo Use a data validator and change to an exception so it can be converted to an API problem
-        if (
-            empty($bodyContent->contactPoint) ||
-            !isset(
-                $bodyContent->contactPoint->url,
-                $bodyContent->contactPoint->email,
-                $bodyContent->contactPoint->phone
-            )
-        ) {
-            throw ApiProblem::bodyInvalidDataWithDetail('contactPoint and his properties required');
-        }
+        $requestBodyParser = RequestBodyParserFactory::createBaseParser(
+            new LegacyContactPointRequestBodyParser(),
+            new JsonSchemaValidatingRequestBodyParser(
+                JsonSchemaLocator::getSchemaFileByOfferType(
+                    $offerType,
+                    JsonSchemaLocator::EVENT_CONTACT_POINT_PUT,
+                    JsonSchemaLocator::PLACE_CONTACT_POINT_PUT,
+                )
+            ),
+        );
+
+        $request = $requestBodyParser->parse($request);
+
         $contactPoint = new ContactPoint(
             $bodyContent->contactPoint->phone,
             $bodyContent->contactPoint->email,
             $bodyContent->contactPoint->url
         );
 
-        if ($routeParameters->getOfferType()->sameAs(OfferType::event())) {
+        if ($offerType->sameAs(OfferType::event())) {
             $updateContactPoint = new EventUpdateContactPoint(
                 $offerId,
                 $contactPoint

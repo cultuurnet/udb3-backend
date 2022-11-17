@@ -9,6 +9,7 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint as EventUpdateContactPoint;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -100,7 +101,9 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                     ],
                 ],
             ],
-            'expectedProblem' => ApiProblem::bodyInvalidDataWithDetail('contactPoint and his properties required'),
+            'expectedProblem' => ApiProblem::bodyInvalidData(
+                new SchemaError('/', 'The required properties (email) are missing')
+            ),
         ];
     }
 
