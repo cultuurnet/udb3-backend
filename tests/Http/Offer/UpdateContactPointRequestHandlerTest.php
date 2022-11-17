@@ -120,81 +120,77 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
             'offerType' => 'events',
             'request' => [
                 'contactPoint' => [
-                    'url' => [
-                        'https://www.publiq.be/',
-                    ],
+                    'url' => ['https://www.publiq.be/'],
                     'email' => [],
-                    'phone' => [
-                        '0475/123123',
-                        '02/123123',
-                    ],
+                    'phone' => ['0475/123123', '02/123123'],
                 ],
             ],
             'expectedCommand' => new EventUpdateContactPoint(
                 self::OFFER_ID,
                 new ContactPoint(
-                    [
-                        '0475/123123',
-                        '02/123123',
-                    ],
+                    ['0475/123123', '02/123123'],
                     [],
-                    [
-                        'https://www.publiq.be/',
-                    ]
+                    ['https://www.publiq.be/']
                 )
             ),
         ];
 
-        yield 'missing mail events' => [
+        yield 'all properties are empty arrays' => [
             'offerType' => 'events',
             'request' => [
-                'url' => [
-                    'https://www.publiq.be/',
-                ],
+                'phone' => [],
                 'email' => [],
-                'phone' => [
-                    '0475/123123',
-                    '02/123123',
-                ],
+                'url' => [],
+            ],
+            'expectedCommand' => new EventUpdateContactPoint(
+                self::OFFER_ID,
+                new ContactPoint([], [], []),
+            ),
+        ];
+
+        yield 'all properties have an empty string' => [
+            'offerType' => 'events',
+            'request' => [
+                'phone' => [''],
+                'email' => [''],
+                'url' => [''],
+            ],
+            'expectedCommand' => new EventUpdateContactPoint(
+                self::OFFER_ID,
+                new ContactPoint([''], [''], ['']),
+            ),
+        ];
+
+        yield 'all properties filled in with one value' => [
+            'offerType' => 'events',
+            'request' => [
+                'url' => ['https://www.publiq.be/'],
+                'email' => ['info@publiq.be'],
+                'phone' => ['0475/123123'],
             ],
             'expectedCommand' => new EventUpdateContactPoint(
                 self::OFFER_ID,
                 new ContactPoint(
-                    [
-                        '0475/123123',
-                        '02/123123',
-                    ],
-                    [],
-                    [
-                        'https://www.publiq.be/',
-                    ]
+                    ['0475/123123'],
+                    ['info@publiq.be'],
+                    ['https://www.publiq.be/']
                 )
             ),
         ];
 
-        yield 'missing mail places' => [
-            'offerType' => 'places',
+        yield 'all properties filled in with multiple values' => [
+            'offerType' => 'events',
             'request' => [
-                'url' => [
-                    'https://www.publiq.be/',
-                ],
-                'email' => [],
-                'phone' => [
-                    '0475/123123',
-                    '02/123123',
-                ],
+                'url' => ['https://www.publiq.be/', 'https://madewithlove.com'],
+                'email' => ['info@publiq.be', 'info@madewithlove.com'],
+                'phone' => ['0475/123123', '0473/123456'],
             ],
-            'expectedCommand' => new PlaceUpdateContactPoint(
+            'expectedCommand' => new EventUpdateContactPoint(
                 self::OFFER_ID,
                 new ContactPoint(
-                    [
-                        '0475/123123',
-                        '02/123123',
-                    ],
-                    [],
-                    [
-                        'https://www.publiq.be/',
-                    ]
+                    ['0475/123123', '0473/123456'],
+                    ['info@publiq.be', 'info@madewithlove.com'],
+                    ['https://www.publiq.be/', 'https://madewithlove.com'],
                 )
             ),
         ];
