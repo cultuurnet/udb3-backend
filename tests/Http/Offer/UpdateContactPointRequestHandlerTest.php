@@ -89,18 +89,27 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
 
     public function provideInvalidRequestBodies(): Iterator
     {
-        yield 'missing mail' => [
+        yield 'all properties missing' => [
             'request' => [
-                'url' => [
-                    'https://www.publiq.be/',
-                ],
-                'phone' => [
-                    '0475/123123',
-                    '02/123123',
+                'mail' => [
+                    'info@publiq.be',
                 ],
             ],
             'expectedProblem' => ApiProblem::bodyInvalidData(
-                new SchemaError('/', 'The required properties (email) are missing')
+                new SchemaError('/', 'The required properties (phone, email, url) are missing')
+            ),
+        ];
+
+        yield 'all properties are strings iso arrays' => [
+            'request' => [
+                'phone' => '0475/123123',
+                'email' => 'info@publiq.be',
+                'url' => 'https://www.publiq.be/',
+            ],
+            'expectedProblem' => ApiProblem::bodyInvalidData(
+                new SchemaError('/phone', 'The data (string) must match the type: array'),
+                new SchemaError('/email', 'The data (string) must match the type: array'),
+                new SchemaError('/url', 'The data (string) must match the type: array'),
             ),
         ];
     }
