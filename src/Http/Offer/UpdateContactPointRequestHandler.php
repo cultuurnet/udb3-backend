@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Event\Commands\UpdateContactPoint as EventUpdateContactPoint;
+use CultuurNet\UDB3\Http\Deserializer\Offer\UpdateContactPointDenormalizer;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\Commands\UpdateContactPoint as PlaceUpdateContactPoint;
+use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -34,8 +32,6 @@ final class UpdateContactPointRequestHandler implements RequestHandlerInterface
         $offerId = $routeParameters->getOfferId();
         $offerType = $routeParameters->getOfferType();
 
-        $bodyContent = Json::decode($request->getBody()->getContents());
-
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new LegacyContactPointRequestBodyParser(),
             new JsonSchemaValidatingRequestBodyParser(
@@ -45,28 +41,14 @@ final class UpdateContactPointRequestHandler implements RequestHandlerInterface
                     JsonSchemaLocator::PLACE_CONTACT_POINT_PUT,
                 )
             ),
+            new DenormalizingRequestBodyParser(
+                new UpdateContactPointDenormalizer($offerType, $offerId),
+                AbstractUpdateContactPoint::class,
+            ),
         );
 
-        /** @var \stdClass $parsedBody */
-        $parsedBody = $requestBodyParser->parse($request)->getParsedBody();
-
-        $contactPoint = new ContactPoint(
-            $parsedBody->phone,
-            $parsedBody->email,
-            $parsedBody->url
-        );
-
-        if ($offerType->sameAs(OfferType::event())) {
-            $updateContactPoint = new EventUpdateContactPoint(
-                $offerId,
-                $contactPoint
-            );
-        } else {
-            $updateContactPoint = new PlaceUpdateContactPoint(
-                $offerId,
-                $contactPoint
-            );
-        }
+        /** @var AbstractUpdateContactPoint $updateContactPoint */
+        $updateContactPoint = $requestBodyParser->parse($request)->getParsedBody();
 
         $this->commandBus->dispatch($updateContactPoint);
 
