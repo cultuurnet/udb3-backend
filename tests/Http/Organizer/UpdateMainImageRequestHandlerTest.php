@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Organizer;
 
+use Broadway\CommandHandling\CommandBus;
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -11,20 +13,19 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\ImageMustBeLinkedException;
 use CultuurNet\UDB3\Organizer\Commands\UpdateMainImage;
-use CultuurNet\UDB3\ThrowingTraceableCommandBus;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateMainImageRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    private ThrowingTraceableCommandBus $commandBus;
+    private TraceableCommandBus $commandBus;
 
     private UpdateMainImageRequestHandler $updateMainImageRequestHandler;
 
     protected function setUp(): void
     {
-        $this->commandBus = new ThrowingTraceableCommandBus();
+        $this->commandBus = new TraceableCommandBus();
 
         $this->updateMainImageRequestHandler = new UpdateMainImageRequestHandler($this->commandBus);
 
@@ -82,7 +83,12 @@ final class UpdateMainImageRequestHandlerTest extends TestCase
      */
     public function it_throws_when_image_is_not_linked_to_offer(): void
     {
-        $this->commandBus->throwsOnDispatch(new ImageMustBeLinkedException());
+        $commandBus = $this->createMock(CommandBus::class);
+        $commandBus->expects($this->once())
+            ->method('dispatch')
+            ->willThrowException(new ImageMustBeLinkedException());
+
+        $handler = new UpdateMainImageRequestHandler($commandBus);
 
         $imageId = '03789a2f-5063-4062-b7cb-95a0a2280d92';
         $request = (new Psr7RequestBuilder())
@@ -94,7 +100,7 @@ final class UpdateMainImageRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::imageMustBeLinkedToResource($imageId),
-            fn () => $this->updateMainImageRequestHandler->handle($request)
+            fn () => $handler->handle($request)
         );
     }
 

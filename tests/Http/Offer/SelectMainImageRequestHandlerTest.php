@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
+use Broadway\CommandHandling\CommandBus;
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\SelectMainImage as EventSelectMainImage;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
@@ -23,7 +25,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractSelectMainImage;
 use CultuurNet\UDB3\Offer\ImageMustBeLinkedException;
 use CultuurNet\UDB3\Place\Commands\SelectMainImage as PlaceSelectMainImage;
-use CultuurNet\UDB3\ThrowingTraceableCommandBus;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -35,7 +36,7 @@ final class SelectMainImageRequestHandlerTest extends TestCase
     private const OFFER_ID = 'd2a039e9-f4d6-4080-ae33-a106b5d3d47b';
     private const MEDIA_ID = '0d24c18a-0bd5-46c1-b331-1fa38012bded';
 
-    private ThrowingTraceableCommandBus $commandBus;
+    private TraceableCommandBus $commandBus;
 
     /**
      * @var MediaManagerInterface|MockObject
@@ -50,7 +51,7 @@ final class SelectMainImageRequestHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->commandBus = new ThrowingTraceableCommandBus();
+        $this->commandBus = new TraceableCommandBus();
 
         $this->mediaManager = $this->createMock(
             MediaManagerInterface::class
@@ -156,7 +157,15 @@ final class SelectMainImageRequestHandlerTest extends TestCase
     {
         $this->givenThereIsAnImage();
 
-        $this->commandBus->throwsOnDispatch(new ImageMustBeLinkedException());
+        $commandBus = $this->createMock(CommandBus::class);
+        $commandBus->expects($this->once())
+            ->method('dispatch')
+            ->willThrowException(new ImageMustBeLinkedException());
+
+        $handler = new SelectMainImageRequestHandler(
+            $commandBus,
+            $this->mediaManager
+        );
 
         $selectMainImageRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', 'events')
@@ -166,7 +175,7 @@ final class SelectMainImageRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::imageMustBeLinkedToResource(self::MEDIA_ID),
-            fn () => $this->selectMainImageRequestHandler->handle($selectMainImageRequest)
+            fn () => $handler->handle($selectMainImageRequest)
         );
     }
 
