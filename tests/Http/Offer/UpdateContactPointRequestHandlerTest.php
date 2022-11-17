@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint as PlaceUpdateContactPoint;
+use Iterator;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateContactPointRequestHandlerTest extends TestCase
@@ -86,32 +87,38 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider offerTypeDataProvider
+     * @dataProvider provideInvalidRequestBodies
      */
-    public function it_throws_updating_whn_contact_point_is_incomplete(string $offerType): void
+    public function it_throws_updating_when_contact_point_is_incomplete(array $request, ApiProblem $expectedProblem): void
     {
         $updateContactPointRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerType', 'events')
             ->withRouteParameter('offerId', self::OFFER_ID)
-            ->withJsonBodyFromArray(
-                [
-                    'contactPoint' => [
-                        'url' => [
-                            'https://www.publiq.be/',
-                        ],
-                        'phone' => [
-                            '0475/123123',
-                            '02/123123',
-                        ],
-                    ],
-                ]
-            )
+            ->withJsonBodyFromArray($request)
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidDataWithDetail('contactPoint and his properties required'),
+            $expectedProblem,
             fn () => $this->updateContactPointRequestHandler->handle($updateContactPointRequest)
         );
+    }
+
+    public function provideInvalidRequestBodies(): Iterator
+    {
+        yield 'missing mail' => [
+            'request' => [
+                'contactPoint' => [
+                    'url' => [
+                        'https://www.publiq.be/',
+                    ],
+                    'phone' => [
+                        '0475/123123',
+                        '02/123123',
+                    ],
+                ],
+            ],
+            'expectedProblem' => ApiProblem::bodyInvalidDataWithDetail('contactPoint and his properties required'),
+        ];
     }
 
     public function offerTypeDataProvider(): array
