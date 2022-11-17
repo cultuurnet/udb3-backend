@@ -49,35 +49,18 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
      */
     public function it_handles_updating_the_contact_point_of_an_offer(
         string $offerType,
-        AbstractUpdateContactPoint $updateContactPoint
+        array $request,
+        AbstractUpdateContactPoint $expectedCommand
     ): void {
         $updateContactPointRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', self::OFFER_ID)
-            ->withJsonBodyFromArray(
-                [
-                    'contactPoint' => [
-                        'url' => [
-                            'https://www.publiq.be/',
-                        ],
-                        'email' => [],
-                        'phone' => [
-                            '0475/123123',
-                            '02/123123',
-                        ],
-                    ],
-                ]
-            )
+            ->withJsonBodyFromArray($request)
             ->build('PUT');
 
         $response = $this->updateContactPointRequestHandler->handle($updateContactPointRequest);
 
-        $this->assertEquals(
-            [
-                $updateContactPoint,
-            ],
-            $this->commandBus->getRecordedCommands()
-        );
+        $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
 
         $this->assertJsonResponse(
             new NoContentResponse(),
@@ -121,34 +104,64 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
         ];
     }
 
-    public function offerTypeDataProvider(): array
+    public function offerTypeDataProvider(): Iterator
     {
-        $contactPoint = new ContactPoint(
-            [
-                '0475/123123',
-                '02/123123',
+        yield 'missing mail events' => [
+            'offerType' => 'events',
+            'request' => [
+                'contactPoint' => [
+                    'url' => [
+                        'https://www.publiq.be/',
+                    ],
+                    'email' => [],
+                    'phone' => [
+                        '0475/123123',
+                        '02/123123',
+                    ],
+                ],
             ],
-            [],
-            [
-                'https://www.publiq.be/',
-            ]
-        );
+            'expectedCommand' => new EventUpdateContactPoint(
+                self::OFFER_ID,
+                new ContactPoint(
+                    [
+                        '0475/123123',
+                        '02/123123',
+                    ],
+                    [],
+                    [
+                        'https://www.publiq.be/',
+                    ]
+                )
+            ),
+        ];
 
-        return [
-            [
-                'offerType' => 'events',
-                'updateContactPoint' => new EventUpdateContactPoint(
-                    self::OFFER_ID,
-                    $contactPoint
-                ),
+        yield 'missing mail places' => [
+            'offerType' => 'places',
+            'request' => [
+                'contactPoint' => [
+                    'url' => [
+                        'https://www.publiq.be/',
+                    ],
+                    'email' => [],
+                    'phone' => [
+                        '0475/123123',
+                        '02/123123',
+                    ],
+                ],
             ],
-            [
-                'offerType' => 'places',
-                'updateContactPoint' => new PlaceUpdateContactPoint(
-                    self::OFFER_ID,
-                    $contactPoint
-                ),
-            ],
+            'expectedCommand' => new PlaceUpdateContactPoint(
+                self::OFFER_ID,
+                new ContactPoint(
+                    [
+                        '0475/123123',
+                        '02/123123',
+                    ],
+                    [],
+                    [
+                        'https://www.publiq.be/',
+                    ]
+                )
+            ),
         ];
     }
 }
