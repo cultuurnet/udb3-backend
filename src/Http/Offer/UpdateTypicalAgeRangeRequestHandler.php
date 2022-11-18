@@ -6,14 +6,15 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange as EventUpdateTypicalAgeRange;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange as PlaceUpdateTypicalAgeRange;
-use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -31,19 +32,25 @@ final class UpdateTypicalAgeRangeRequestHandler implements RequestHandlerInterfa
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
+        $offerType = $routeParameters->getOfferType();
+
         $bodyContent = Json::decode($request->getBody()->getContents());
 
-        // @todo Use a data validator and change to an exception so it can be converted to an API problem
-        if (empty($bodyContent->typicalAgeRange)) {
-            return new JsonResponse(
-                ['error' => 'typicalAgeRange required'],
-                StatusCodeInterface::STATUS_BAD_REQUEST
-            );
-        }
+        $requestBodyParser = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(
+                JsonSchemaLocator::getSchemaFileByOfferType(
+                    $offerType,
+                    JsonSchemaLocator::EVENT_TYPICAL_AGE_RANGE_PUT,
+                    JsonSchemaLocator::PLACE_TYPICAL_AGE_RANGE_PUT,
+                )
+            ),
+        );
+
+        $parsedBody = $requestBodyParser->parse($request);
 
         $ageRange = AgeRange::fromString($bodyContent->typicalAgeRange);
 
-        if ($routeParameters->getOfferType()->sameAs(OfferType::event())) {
+        if ($offerType->sameAs(OfferType::event())) {
             $updateTypicalAgeRange = new EventUpdateTypicalAgeRange(
                 $offerId,
                 $ageRange

@@ -8,6 +8,7 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange as EventUpdateTypicalAgeRange;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -142,24 +143,30 @@ final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
             yield 'empty body ' . $offerType => [
                 'offerType' => $offerType,
                 'request' => '{}',
-                'expectedProblem' => ApiProblem::bodyInvalidData(),
+                'expectedProblem' => ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (typicalAgeRange) are missing')
+                ),
             ];
 
             yield 'empty typical age range ' . $offerType => [
                 'offerType' => $offerType,
                 'request' => '{ "typicalAgeRange": ""}',
-                'expectedProblem' => ApiProblem::bodyInvalidData(),
+                'expectedProblem' => ApiProblem::bodyInvalidData(
+                    new SchemaError('/typicalAgeRange', 'The string should match pattern: ^[\d]*-[\d]*$')
+                ),
             ];
 
             yield 'typical age range is not a range ' . $offerType => [
                 'offerType' => $offerType,
                 'request' => '{ "typicalAgeRange": "6"}',
-                'expectedProblem' => ApiProblem::bodyInvalidData(),
+                'expectedProblem' => ApiProblem::bodyInvalidData(
+                    new SchemaError('/typicalAgeRange', 'The string should match pattern: ^[\d]*-[\d]*$')
+                ),
             ];
 
             yield 'minimum age is bigger than maximum age ' . $offerType => [
                 'offerType' => $offerType,
-                'request' => '{ "typicalAgeRange": "6"}',
+                'request' => '{ "typicalAgeRange": "12-6"}',
                 'expectedProblem' => ApiProblem::bodyInvalidData(),
             ];
         }

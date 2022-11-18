@@ -14,8 +14,8 @@ use RuntimeException;
 final class JsonSchemaLocator
 {
     private static ?string $schemaDirectory;
-
     public const EVENT = 'event.json';
+
     public const EVENT_NAME_PUT = 'event-name-put.json';
     public const EVENT_ATTENDANCE_MODE_PUT = 'event-attendanceMode-put.json';
     public const EVENT_ONLINE_URL_PUT = 'event-onlineUrl-put.json';
@@ -32,6 +32,7 @@ final class JsonSchemaLocator
     public const EVENT_PRICE_INFO_PUT = 'event-priceInfo.json';
     public const EVENT_STATUS = 'event-status.json';
     public const EVENT_SUB_EVENT_PATCH = 'event-subEvent-patch.json';
+    public const EVENT_TYPICAL_AGE_RANGE_PUT = 'event-typicalAgeRange-put.json';
     public const EVENT_VIDEOS_PATCH = 'event-videos-patch.json';
     public const EVENT_VIDEOS_POST = 'event-videos-post.json';
 
@@ -48,6 +49,7 @@ final class JsonSchemaLocator
     public const PLACE_MAIN_IMAGE_PUT = 'place-main-image-put.json';
     public const PLACE_PRICE_INFO_PUT = 'place-priceInfo.json';
     public const PLACE_STATUS = 'place-status.json';
+    public const PLACE_TYPICAL_AGE_RANGE_PUT = 'place-typicalAgeRange-put.json';
     public const PLACE_VIDEOS_PATCH = 'place-videos-patch.json';
     public const PLACE_VIDEOS_POST = 'place-videos-post.json';
 
