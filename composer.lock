@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a07a771e5952458ff73b41d866dcaad2",
+    "content-hash": "b2dfc7816ecea17265c31d2149e42169",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5576,19 +5576,18 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-main",
+            "version": "dev-uitdatabank/III-4272-update-workflow-status-endpoint",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "a91349027cbe7c5bf86ee973c36e05347aad6dc6"
+                "reference": "dcffa7abecd2defc0196382bda0de33d780b2c02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/a91349027cbe7c5bf86ee973c36e05347aad6dc6",
-                "reference": "a91349027cbe7c5bf86ee973c36e05347aad6dc6",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/dcffa7abecd2defc0196382bda0de33d780b2c02",
+                "reference": "dcffa7abecd2defc0196382bda0de33d780b2c02",
                 "shasum": ""
             },
-            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5603,9 +5602,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-4272-update-workflow-status-endpoint"
             },
-            "time": "2022-11-07T05:58:15+00:00"
+            "time": "2022-11-18T13:03:33+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -10383,5 +10382,5 @@
         "ext-fileinfo": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.1.0"
 }
