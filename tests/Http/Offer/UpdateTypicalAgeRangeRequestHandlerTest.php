@@ -72,12 +72,39 @@ final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
         ];
 
         foreach ($offers as $offerType => $offerCommand) {
-            yield 'min and max age are filled in  ' . $offerType => [
+            yield 'min and max age are filled in ' . $offerType => [
                 'offerType' => $offerType,
                 'request' => '{ "typicalAgeRange": "1-12" }',
                 'updateTypicalAgeRange' => new $offerCommand(
                     self::OFFER_ID,
                     '1-12'
+                ),
+            ];
+
+            yield 'min age is filled in ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => '{ "typicalAgeRange": "6-" }',
+                'updateTypicalAgeRange' => new $offerCommand(
+                    self::OFFER_ID,
+                    '6-'
+                ),
+            ];
+
+            yield 'max age is filled in ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => '{ "typicalAgeRange": "-12" }',
+                'updateTypicalAgeRange' => new $offerCommand(
+                    self::OFFER_ID,
+                    '0-12'
+                ),
+            ];
+
+            yield 'all ages ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => '{ "typicalAgeRange": "-" }',
+                'updateTypicalAgeRange' => new $offerCommand(
+                    self::OFFER_ID,
+                    '-'
                 ),
             ];
         }
