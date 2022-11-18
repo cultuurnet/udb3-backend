@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange as PlaceUpdateTypicalAgeRange;
+use Iterator;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
@@ -44,24 +45,18 @@ final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
      */
     public function it_handles_updating_the_typical_age_range_of_an_offer(
         string $offerType,
+        string $request,
         AbstractUpdateTypicalAgeRange $updateTypicalAgeRange
     ): void {
         $updateTypicalAgeRangeRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', self::OFFER_ID)
-            ->withBodyFromString(
-                '{ "typicalAgeRange": "1-12" }'
-            )
+            ->withBodyFromString($request)
             ->build('PUT');
 
         $response = $this->updateTypicalAgeRangeRequestHandler->handle($updateTypicalAgeRangeRequest);
 
-        $this->assertEquals(
-            [
-                $updateTypicalAgeRange,
-            ],
-            $this->commandBus->getRecordedCommands()
-        );
+        $this->assertEquals([$updateTypicalAgeRange], $this->commandBus->getRecordedCommands());
 
         $this->assertJsonResponse(
             new NoContentResponse(),
@@ -69,23 +64,22 @@ final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
         );
     }
 
-    public function offerTypeDataProvider(): array
+    public function offerTypeDataProvider(): Iterator
     {
-        return [
-            [
-                'offerType' => 'events',
-                'updateTypicalAgeRange' => new EventUpdateTypicalAgeRange(
-                    self::OFFER_ID,
-                    '1-12'
-                ),
-            ],
-            [
-                'offerType' => 'places',
-                'updateTypicalAgeRange' => new PlaceUpdateTypicalAgeRange(
-                    self::OFFER_ID,
-                    '1-12'
-                ),
-            ],
+        $offers = [
+            'events' => EventUpdateTypicalAgeRange::class,
+            'places' => PlaceUpdateTypicalAgeRange::class,
         ];
+
+        foreach ($offers as $offerType => $offerCommand) {
+            yield 'min and max age are filled in  ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => '{ "typicalAgeRange": "1-12" }',
+                'updateTypicalAgeRange' => new $offerCommand(
+                    self::OFFER_ID,
+                    '1-12'
+                ),
+            ];
+        }
     }
 }
