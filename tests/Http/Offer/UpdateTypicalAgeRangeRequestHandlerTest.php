@@ -167,7 +167,9 @@ final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
             yield 'minimum age is bigger than maximum age ' . $offerType => [
                 'offerType' => $offerType,
                 'request' => '{ "typicalAgeRange": "12-6"}',
-                'expectedProblem' => ApiProblem::bodyInvalidData(),
+                'expectedProblem' => ApiProblem::bodyInvalidData(
+                    new SchemaError('/typicalAgeRange', '"from" age should not exceed "to" age')
+                ),
             ];
         }
     }
