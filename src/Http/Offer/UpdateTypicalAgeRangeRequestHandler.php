@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange as EventUpdateTypicalAgeRange;
+use CultuurNet\UDB3\Http\Deserializer\Offer\UpdateTypicalAgeRangeDenormalizer;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
@@ -13,6 +15,7 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\AgeRange;
+use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange as PlaceUpdateTypicalAgeRange;
 use Psr\Http\Message\ResponseInterface;
@@ -34,8 +37,6 @@ final class UpdateTypicalAgeRangeRequestHandler implements RequestHandlerInterfa
         $offerId = $routeParameters->getOfferId();
         $offerType = $routeParameters->getOfferType();
 
-        $bodyContent = Json::decode($request->getBody()->getContents());
-
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(
                 JsonSchemaLocator::getSchemaFileByOfferType(
@@ -44,23 +45,14 @@ final class UpdateTypicalAgeRangeRequestHandler implements RequestHandlerInterfa
                     JsonSchemaLocator::PLACE_TYPICAL_AGE_RANGE_PUT,
                 )
             ),
+            new DenormalizingRequestBodyParser(
+                new UpdateTypicalAgeRangeDenormalizer($offerType, $offerId),
+                AbstractUpdateTypicalAgeRange::class
+            )
         );
 
-        $parsedBody = $requestBodyParser->parse($request);
-
-        $ageRange = AgeRange::fromString($bodyContent->typicalAgeRange);
-
-        if ($offerType->sameAs(OfferType::event())) {
-            $updateTypicalAgeRange = new EventUpdateTypicalAgeRange(
-                $offerId,
-                $ageRange
-            );
-        } else {
-            $updateTypicalAgeRange = new PlaceUpdateTypicalAgeRange(
-                $offerId,
-                $ageRange
-            );
-        }
+        /** @var AbstractUpdateTypicalAgeRange $updateTypicalAgeRange */
+        $updateTypicalAgeRange = $requestBodyParser->parse($request)->getParsedBody();
 
         $this->commandBus->dispatch($updateTypicalAgeRange);
 
