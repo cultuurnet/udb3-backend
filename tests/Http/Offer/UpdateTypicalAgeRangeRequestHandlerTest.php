@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange as EventUpdateTypicalAgeRange;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -17,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
+    use AssertApiProblemTrait;
 
     private const OFFER_ID = 'd2a039e9-f4d6-4080-ae33-a106b5d3d47b';
 
@@ -106,6 +109,58 @@ final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
                     self::OFFER_ID,
                     '-'
                 ),
+            ];
+        }
+    }
+
+    /**
+     * @test
+     * @dataProvider provideInvalidRequestBodies
+     */
+    public function it_throws_when_the_request_body_is_invalid(
+        string $offerType,
+        string $request,
+        ApiProblem $expectedProblem
+    ): void {
+        $updateTypicalAgeRangeRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', self::OFFER_ID)
+            ->withBodyFromString($request)
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            $expectedProblem,
+            fn () => $this->updateTypicalAgeRangeRequestHandler->handle($updateTypicalAgeRangeRequest)
+        );
+    }
+
+    public function provideInvalidRequestBodies(): Iterator
+    {
+        $offers = ['events', 'places'];
+
+        foreach ($offers as $offerType) {
+            yield 'empty body ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => '{}',
+                'expectedProblem' => ApiProblem::bodyInvalidData(),
+            ];
+
+            yield 'empty typical age range ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => '{ "typicalAgeRange": ""}',
+                'expectedProblem' => ApiProblem::bodyInvalidData(),
+            ];
+
+            yield 'typical age range is not a range ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => '{ "typicalAgeRange": "6"}',
+                'expectedProblem' => ApiProblem::bodyInvalidData(),
+            ];
+
+            yield 'minimum age is bigger than maximum age ' . $offerType => [
+                'offerType' => $offerType,
+                'request' => '{ "typicalAgeRange": "6"}',
+                'expectedProblem' => ApiProblem::bodyInvalidData(),
             ];
         }
     }
