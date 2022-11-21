@@ -5580,12 +5580,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "dcffa7abecd2defc0196382bda0de33d780b2c02"
+                "reference": "7a364cbee96da8b05a862c863a34f1fc9f3b84be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/dcffa7abecd2defc0196382bda0de33d780b2c02",
-                "reference": "dcffa7abecd2defc0196382bda0de33d780b2c02",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/7a364cbee96da8b05a862c863a34f1fc9f3b84be",
+                "reference": "7a364cbee96da8b05a862c863a34f1fc9f3b84be",
                 "shasum": ""
             },
             "type": "library",
@@ -5602,9 +5602,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-4272-update-workflow-status-endpoint"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/uitdatabank/III-4272-update-workflow-status-endpoint"
             },
-            "time": "2022-11-18T13:03:33+00:00"
+            "time": "2022-11-18T13:48:23+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
