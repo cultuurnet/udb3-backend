@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ee064afd114bcf0e3b0d8c506068a46",
+    "content-hash": "a07a771e5952458ff73b41d866dcaad2",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5576,7 +5576,7 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-uitdatabank/III-4269-offer-typical-age-range",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
@@ -5588,6 +5588,7 @@
                 "reference": "389c4f1cf65bde885dd33f6887ff594e946db0ab",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5602,7 +5603,7 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/uitdatabank/III-4269-offer-typical-age-range"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
             "time": "2022-11-18T08:28:53+00:00"
         },
