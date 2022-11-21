@@ -583,7 +583,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public function selectMainImage(Image $image): void
     {
         if (!$this->images->findImageByUUID($image->getMediaObjectId())) {
-            throw new \InvalidArgumentException('You can not select a random image to be main, it has to be added to the item.');
+            throw new ImageMustBeLinkedException();
         }
 
         $oldMainImage = $this->images->getMain();
