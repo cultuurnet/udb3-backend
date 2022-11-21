@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Commands;
 
+use CultuurNet\UDB3\Offer\AgeRange;
 use PHPUnit\Framework\TestCase;
 
 class UpdateTypicalAgeRangeTest extends TestCase
@@ -15,7 +16,7 @@ class UpdateTypicalAgeRangeTest extends TestCase
 
     public function setUp(): void
     {
-        $this->updateTypicalAgeRange = new UpdateTypicalAgeRange('id', '1-14');
+        $this->updateTypicalAgeRange = new UpdateTypicalAgeRange('id', AgeRange::fromString('1-14'));
     }
 
     /**
@@ -23,7 +24,7 @@ class UpdateTypicalAgeRangeTest extends TestCase
      */
     public function it_is_possible_to_instantiate_the_command_with_parameters()
     {
-        $expectedTypicalAgeRange = new UpdateTypicalAgeRange('id', '1-14');
+        $expectedTypicalAgeRange = new UpdateTypicalAgeRange('id', AgeRange::fromString('1-14'));
 
         $this->assertEquals($expectedTypicalAgeRange, $this->updateTypicalAgeRange);
     }
