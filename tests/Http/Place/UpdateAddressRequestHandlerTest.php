@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -110,7 +111,9 @@ class UpdateAddressRequestHandlerTest extends TestCase
     {
         yield 'missing properties' => [
             'requestData' => ['properties' => 'missing'],
-            'expectedProblem' => ApiProblem::bodyInvalidData(),
+            'expectedProblem' => ApiProblem::bodyInvalidData(
+                new SchemaError('/', 'The required properties (addressCountry, addressLocality, postalCode, streetAddress) are missing')
+            ),
         ];
 
         yield 'empty properties' => [
@@ -120,7 +123,12 @@ class UpdateAddressRequestHandlerTest extends TestCase
                 'addressLocality' => '',
                 'addressCountry' => '',
             ],
-            'expectedProblem' => ApiProblem::bodyInvalidData(),
+            'expectedProblem' => ApiProblem::bodyInvalidData(
+                new SchemaError('/addressCountry', 'Minimum string length is 1, found 0'),
+                new SchemaError('/addressLocality', 'Minimum string length is 1, found 0'),
+                new SchemaError('/postalCode', 'Minimum string length is 1, found 0'),
+                new SchemaError('/streetAddress', 'Minimum string length is 1, found 0'),
+            ),
         ];
 
         yield 'incorrect country code' => [
@@ -130,7 +138,9 @@ class UpdateAddressRequestHandlerTest extends TestCase
                 'addressLocality' => 'Gent',
                 'addressCountry' => 'BEL',
             ],
-            'expectedProblem' => ApiProblem::bodyInvalidData(),
+            'expectedProblem' => ApiProblem::bodyInvalidData(
+                new SchemaError('/addressCountry', 'Maximum string length is 2, found 3')
+            ),
         ];
     }
 }
