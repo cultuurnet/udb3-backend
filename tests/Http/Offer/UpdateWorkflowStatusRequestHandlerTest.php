@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\Moderation\Reject;
@@ -14,7 +13,7 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\StringLiteral;
-use \Iterator;
+use Iterator;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use PHPUnit\Framework\TestCase;
@@ -225,32 +224,32 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
     {
         yield 'string_instead_of_object' => [
             'READY_FOR_VALIDATION',
-            new SchemaError('/', 'Root element must be an array or object')
+            new SchemaError('/', 'Root element must be an array or object'),
         ];
 
         yield 'array_instead_of_object' => [
             [],
-            new SchemaError('/', 'The data (array) must match the type: object')
+            new SchemaError('/', 'The data (array) must match the type: object'),
         ];
 
         yield 'missing_workflowStatus_property' => [
             (object) [],
-            new SchemaError('/', 'The required properties (workflowStatus) are missing')
+            new SchemaError('/', 'The required properties (workflowStatus) are missing'),
         ];
 
         yield 'invalid_workflowStatus_value' => [
             (object) ['workflowStatus' => 'NOT_VALID'],
-            new SchemaError('/workflowStatus', 'The data should match one item from enum')
+            new SchemaError('/workflowStatus', 'The data should match one item from enum'),
         ];
 
         yield 'missing_reason_for_workflowStatus_rejected' => [
             (object) ['workflowStatus' => 'REJECTED'],
-            new SchemaError('/', 'The required properties (reason) are missing')
+            new SchemaError('/', 'The required properties (reason) are missing'),
         ];
 
         yield 'invalid_availableFrom' => [
             (object) ['workflowStatus' => 'READY_FOR_VALIDATION', 'availableFrom' => 'invalid'],
-            new SchemaError('/availableFrom', 'The data must match the \'date-time\' format')
+            new SchemaError('/availableFrom', 'The data must match the \'date-time\' format'),
         ];
     }
 }
