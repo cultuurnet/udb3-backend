@@ -50,7 +50,7 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
      */
     public function it_handles_updating_the_contact_point_of_an_offer(
         string $offerType,
-        array $request,
+        array $requestData,
         AbstractUpdateContactPoint $expectedCommand
     ): void {
         $updateContactPointRequest = $this->psr7RequestBuilder
