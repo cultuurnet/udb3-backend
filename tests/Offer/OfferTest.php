@@ -442,7 +442,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_throw_an_exception_when_selecting_an_unknown_main_image(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ImageMustBeLinkedException::class);
         $this->offer->selectMainImage($this->image);
     }
 
