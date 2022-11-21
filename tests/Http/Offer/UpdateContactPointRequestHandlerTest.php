@@ -56,7 +56,7 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
         $updateContactPointRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', self::OFFER_ID)
-            ->withJsonBodyFromArray($request)
+            ->withJsonBodyFromArray($requestData)
             ->build('PUT');
 
         $response = $this->updateContactPointRequestHandler->handle($updateContactPointRequest);
