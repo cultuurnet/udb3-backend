@@ -9,16 +9,15 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
-use InvalidArgumentException;
+use Iterator;
 use PHPUnit\Framework\TestCase;
 
 class UpdateAddressRequestHandlerTest extends TestCase
@@ -91,82 +90,47 @@ class UpdateAddressRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider provideInvalidRequestDataScenarios
      */
-    public function it_throws_on_invalid_country(): void
+    public function it_throws_on_invalid_request_bodies(array $requestData, ApiProblem $expectedProblem): void
     {
         $updateAddressRequest = $this->psr7RequestBuilder
             ->withRouteParameter('placeId', self::PLACE_ID)
             ->withRouteParameter('language', 'nl')
-            ->withBodyFromString(
-                '{
-                    "streetAddress": "Veldstraat 11",
-                    "postalCode": "9000",
-                    "addressLocality": "Gent",
-                    "addressCountry": "BEL"
-                }'
-            )
+            ->withJsonBodyFromArray($requestData)
             ->build('PUT');
 
-        $this->expectException(InvalidArgumentException::class);
-
-        $this->updateAddressRequestHandler->handle($updateAddressRequest);
+        $this->assertCallableThrowsApiProblem(
+            $expectedProblem,
+            fn () => $this->updateAddressRequestHandler->handle($updateAddressRequest)
+        );
     }
 
-    /**
-     * @test
-     * @dataProvider emptyValueDataProvider
-     */
-    public function it_throws_on_empty_values(array $emptyValueAddress): void
+    public function provideInvalidRequestDataScenarios(): Iterator
     {
-        $updateAddressRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('placeId', self::PLACE_ID)
-            ->withRouteParameter('language', 'nl')
-            ->withBodyFromString(
-                Json::encode($emptyValueAddress)
-            )
-            ->build('PUT');
+        yield 'missing properties' => [
+            'requestData' => ['properties' => 'missing'],
+            'expectedProblem' => ApiProblem::bodyInvalidData(),
+        ];
 
-        $this->expectException(DataValidationException::class);
-
-        $this->updateAddressRequestHandler->handle($updateAddressRequest);
-    }
-
-
-    public function emptyValueDataProvider(): array
-    {
-        return [
-            [
-                [
-                    'streetAddress' => '',
-                    'postalCode' => '9000',
-                    'addressLocality' => 'Gent',
-                    'addressCountry' => 'BE',
-                    ],
-                ],
-            [
-                [
-                    'streetAddress' => 'Veldstraat 11',
-                    'postalCode' => '',
-                    'addressLocality' => 'Gent',
-                    'addressCountry' => 'BE',
-                    ],
-                ],
-            [
-                [
-                    'streetAddress' => 'Veldstraat 11',
-                    'postalCode' => '9000',
-                    'addressLocality' => '',
-                    'addressCountry' => 'BE',
-                    ],
-                ],
-            [
-                [
-                    'streetAddress' => 'Veldstraat 11',
-                    'postalCode' => '9000',
-                    'addressLocality' => 'Gent',
-                    'addressCountry' => '',
-                ],
+        yield 'empty properties' => [
+            'requestData' => [
+                'streetAddress' => '',
+                'postalCode' => '',
+                'addressLocality' => '',
+                'addressCountry' => '',
             ],
+            'expectedProblem' => ApiProblem::bodyInvalidData(),
+        ];
+
+        yield 'incorrect country code' => [
+            'requestData' => [
+                'streetAddress' => 'Veldstraat 11',
+                'postalCode' => '9000',
+                'addressLocality' => 'Gent',
+                'addressCountry' => 'BEL',
+            ],
+            'expectedProblem' => ApiProblem::bodyInvalidData(),
         ];
     }
 }
