@@ -10,38 +10,23 @@ use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
 class UpdateAddress extends AbstractCommand
 {
-    /**
-     * @var Address
-     */
-    private $address;
+    private Address $address;
 
-    /**
-     * @var Language
-     */
-    private $language;
+    private Language $language;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, Address $address, Language $language)
+    public function __construct(string $itemId, Address $address, Language $language)
     {
         parent::__construct($itemId);
         $this->address = $address;
         $this->language = $language;
     }
 
-    /**
-     * @return Address
-     */
-    public function getAddress()
+    public function getAddress(): Address
     {
         return $this->address;
     }
 
-    /**
-     * @return Language
-     */
-    public function getLanguage()
+    public function getLanguage(): Language
     {
         return $this->language;
     }
