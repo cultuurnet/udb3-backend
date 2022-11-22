@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use CultuurNet\UDB3\Event\Commands\Moderation\Approve;
-use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
-use CultuurNet\UDB3\Event\Commands\Moderation\Reject;
+use CultuurNet\UDB3\Event\Commands\Moderation\Approve as ApproveEvent;
+use CultuurNet\UDB3\Event\Commands\Moderation\Publish as PublishEvent;
+use CultuurNet\UDB3\Event\Commands\Moderation\Reject as RejectEvent;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
+use CultuurNet\UDB3\Place\Commands\Moderation\Approve as ApprovePlace;
+use CultuurNet\UDB3\Place\Commands\Moderation\Publish as PublishPlace;
+use CultuurNet\UDB3\Place\Commands\Moderation\Reject as RejectPlace;
 use CultuurNet\UDB3\StringLiteral;
 use Iterator;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
@@ -34,11 +37,12 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeDataProvider
      */
-    public function it_dispatches_no_command_for_workflow_status_draft(): void
+    public function it_dispatches_no_command_for_workflow_status_draft(string $offerType): void
     {
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'd1422721-f226-48fd-a26d-cb21599ee533')
             ->withJsonBodyFromArray(['workflowStatus' => 'DRAFT'])
             ->build('PUT');
@@ -51,11 +55,15 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider publishCommandDataProvider
      */
-    public function it_dispatches_a_publish_command_for_workflow_status_ready_for_validation(): void
+    public function it_dispatches_a_publish_command_for_workflow_status_ready_for_validation(
+        string $offerType,
+        string $publishCommandClassName
+    ): void
     {
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'd1422721-f226-48fd-a26d-cb21599ee533')
             ->withJsonBodyFromArray(['workflowStatus' => 'READY_FOR_VALIDATION'])
             ->build('PUT');
@@ -68,17 +76,21 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
         // Note that we cannot assert the complete Publish command because the publicationDate (set to now) is always
         // slightly different from the one that we would generate.
         $command = $commands[0];
-        $this->assertInstanceOf(Publish::class, $command);
+        $this->assertInstanceOf($publishCommandClassName, $command);
         $this->assertEquals('d1422721-f226-48fd-a26d-cb21599ee533', $command->getItemId());
     }
 
     /**
      * @test
+     * @dataProvider publishCommandDataProvider
      */
-    public function it_dispatches_a_publish_command_for_workflow_status_ready_for_validation_with_an_available_from(): void
+    public function it_dispatches_a_publish_command_for_workflow_status_ready_for_validation_with_an_available_from(
+        string $offerType,
+        string $publishCommandClassName
+    ): void
     {
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'd1422721-f226-48fd-a26d-cb21599ee533')
             ->withJsonBodyFromArray(
                 [
@@ -99,25 +111,29 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
         // Also note that the publication date MUST be in the future, otherwise the current date will be used. That is
         // why we use a date in 2222 to avoid the test failing at some point in the foreseeable future.
         $command = $commands[0];
-        $this->assertInstanceOf(Publish::class, $command);
+        $this->assertInstanceOf($publishCommandClassName, $command);
         $this->assertEquals('d1422721-f226-48fd-a26d-cb21599ee533', $command->getItemId());
         $this->assertEquals('2222-03-04T12:32:10+01:00', $command->getPublicationDate()->format(DATE_RFC3339));
     }
 
     /**
      * @test
+     * @dataProvider approveCommandDataProvider
      */
-    public function it_dispatches_an_approve_command_for_workflow_status_approved(): void
+    public function it_dispatches_an_approve_command_for_workflow_status_approved(
+        string $offerType,
+        string $approveCommandClassName
+    ): void
     {
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'd1422721-f226-48fd-a26d-cb21599ee533')
             ->withJsonBodyFromArray(['workflowStatus' => 'APPROVED'])
             ->build('PUT');
 
         $this->updateWorkflowStatusRequestHandler->handle($request);
 
-        $expected = new Approve('d1422721-f226-48fd-a26d-cb21599ee533');
+        $expected = new $approveCommandClassName('d1422721-f226-48fd-a26d-cb21599ee533');
 
         $commands = $this->commandBus->getRecordedCommands();
         $this->assertEquals([$expected], $commands);
@@ -125,25 +141,28 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider rejectCommandDataProvider
      */
-    public function it_dispatches_a_reject_command_for_workflow_status_rejected(): void
-    {
+    public function it_dispatches_a_reject_command_for_workflow_status_rejected(
+        string $offerType,
+        string $rejectCommandClassName
+    ): void {
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'd1422721-f226-48fd-a26d-cb21599ee533')
             ->withJsonBodyFromArray(
                 [
                     'workflowStatus' => 'REJECTED',
-                    'reason' => 'Events that focus primarily on religion are not allowed in UiTdatabank.',
+                    'reason' => 'Offers that focus primarily on religion are not allowed in UiTdatabank.',
                 ]
             )
             ->build('PUT');
 
         $this->updateWorkflowStatusRequestHandler->handle($request);
 
-        $expected = new Reject(
+        $expected = new $rejectCommandClassName(
             'd1422721-f226-48fd-a26d-cb21599ee533',
-            new StringLiteral('Events that focus primarily on religion are not allowed in UiTdatabank.')
+            new StringLiteral('Offers that focus primarily on religion are not allowed in UiTdatabank.')
         );
 
         $commands = $this->commandBus->getRecordedCommands();
@@ -152,11 +171,12 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeDataProvider
      */
-    public function it_dispatches_a_delete_command_for_workflow_status_deleted(): void
+    public function it_dispatches_a_delete_command_for_workflow_status_deleted(string $offerType): void
     {
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'd1422721-f226-48fd-a26d-cb21599ee533')
             ->withJsonBodyFromArray(['workflowStatus' => 'DELETED'])
             ->build('PUT');
@@ -171,11 +191,12 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeDataProvider
      */
-    public function it_throws_on_empty_body(): void
+    public function it_throws_on_empty_body(string $offerType): void
     {
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'd1422721-f226-48fd-a26d-cb21599ee533')
             ->build('PUT');
 
@@ -187,11 +208,12 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeDataProvider
      */
-    public function it_throws_on_invalid_json_syntax_in_body(): void
+    public function it_throws_on_invalid_json_syntax_in_body(string $offerType): void
     {
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'd1422721-f226-48fd-a26d-cb21599ee533')
             ->withBodyFromString('{}}')
             ->build('PUT');
@@ -206,10 +228,10 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
      * @test
      * @dataProvider invalidBodyDataProvider
      */
-    public function it_throws_on_invalid_body_data($bodyData, SchemaError ...$expectedSchemaErrors): void
+    public function it_throws_on_invalid_body_data(string $offerType, $bodyData, SchemaError ...$expectedSchemaErrors): void
     {
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'd1422721-f226-48fd-a26d-cb21599ee533')
             ->withBodyFromString(Json::encode($bodyData))
             ->build('PUT');
@@ -220,36 +242,69 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
         );
     }
 
+    public function offerTypeDataProvider(): array
+    {
+        return [['events'], ['places']];
+    }
+
+    public function publishCommandDataProvider(): Iterator
+    {
+        yield ['events', PublishEvent::class];
+        yield ['places', PublishPlace::class];
+    }
+
+    public function approveCommandDataProvider(): Iterator
+    {
+        yield ['events', ApproveEvent::class];
+        yield ['places', ApprovePlace::class];
+    }
+
+    public function rejectCommandDataProvider(): Iterator
+    {
+        yield ['events', RejectEvent::class];
+        yield ['places', RejectPlace::class];
+    }
+
     public function invalidBodyDataProvider(): Iterator
     {
-        yield 'string_instead_of_object' => [
-            'READY_FOR_VALIDATION',
-            new SchemaError('/', 'Root element must be an array or object'),
-        ];
+        foreach ($this->offerTypeDataProvider() as $data) {
+            $offerType = reset($data);
 
-        yield 'array_instead_of_object' => [
-            [],
-            new SchemaError('/', 'The data (array) must match the type: object'),
-        ];
+            yield $offerType . '_string_instead_of_object' => [
+                $offerType,
+                'READY_FOR_VALIDATION',
+                new SchemaError('/', 'Root element must be an array or object'),
+            ];
 
-        yield 'missing_workflowStatus_property' => [
-            (object) [],
-            new SchemaError('/', 'The required properties (workflowStatus) are missing'),
-        ];
+            yield $offerType . '_array_instead_of_object' => [
+                $offerType,
+                [],
+                new SchemaError('/', 'The data (array) must match the type: object'),
+            ];
 
-        yield 'invalid_workflowStatus_value' => [
-            (object) ['workflowStatus' => 'NOT_VALID'],
-            new SchemaError('/workflowStatus', 'The data should match one item from enum'),
-        ];
+            yield $offerType . '_missing_workflowStatus_property' => [
+                $offerType,
+                (object) [],
+                new SchemaError('/', 'The required properties (workflowStatus) are missing'),
+            ];
 
-        yield 'missing_reason_for_workflowStatus_rejected' => [
-            (object) ['workflowStatus' => 'REJECTED'],
-            new SchemaError('/', 'The required properties (reason) are missing'),
-        ];
+            yield $offerType . '_invalid_workflowStatus_value' => [
+                $offerType,
+                (object) ['workflowStatus' => 'NOT_VALID'],
+                new SchemaError('/workflowStatus', 'The data should match one item from enum'),
+            ];
 
-        yield 'invalid_availableFrom' => [
-            (object) ['workflowStatus' => 'READY_FOR_VALIDATION', 'availableFrom' => 'invalid'],
-            new SchemaError('/availableFrom', 'The data must match the \'date-time\' format'),
-        ];
+            yield $offerType . '_missing_reason_for_workflowStatus_rejected' => [
+                $offerType,
+                (object) ['workflowStatus' => 'REJECTED'],
+                new SchemaError('/', 'The required properties (reason) are missing'),
+            ];
+
+            yield $offerType . '_invalid_availableFrom' => [
+                $offerType,
+                (object) ['workflowStatus' => 'READY_FOR_VALIDATION', 'availableFrom' => 'invalid'],
+                new SchemaError('/availableFrom', 'The data must match the \'date-time\' format'),
+            ];
+        }
     }
 }
