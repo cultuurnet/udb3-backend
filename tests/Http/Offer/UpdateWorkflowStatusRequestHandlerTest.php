@@ -60,8 +60,7 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
     public function it_dispatches_a_publish_command_for_workflow_status_ready_for_validation(
         string $offerType,
         string $publishCommandClassName
-    ): void
-    {
+    ): void {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'd1422721-f226-48fd-a26d-cb21599ee533')
@@ -87,8 +86,7 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
     public function it_dispatches_a_publish_command_for_workflow_status_ready_for_validation_with_an_available_from(
         string $offerType,
         string $publishCommandClassName
-    ): void
-    {
+    ): void {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'd1422721-f226-48fd-a26d-cb21599ee533')
@@ -123,8 +121,7 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
     public function it_dispatches_an_approve_command_for_workflow_status_approved(
         string $offerType,
         string $approveCommandClassName
-    ): void
-    {
+    ): void {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'd1422721-f226-48fd-a26d-cb21599ee533')
