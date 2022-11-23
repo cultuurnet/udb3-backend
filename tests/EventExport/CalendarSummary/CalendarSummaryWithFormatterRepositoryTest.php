@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\CalendarSummary;
 
+use Carbon\Carbon;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -17,6 +18,8 @@ final class CalendarSummaryWithFormatterRepositoryTest extends TestCase
 
     public function setUp(): void
     {
+        Carbon::setTestNow(Carbon::create(2022));
+
         $eventRepository = new InMemoryDocumentRepository();
         $eventRepository->save(
             new JsonDocument(
@@ -97,19 +100,19 @@ final class CalendarSummaryWithFormatterRepositoryTest extends TestCase
     {
         return [
             [
-                'result' => 'Van 23/9/22 tot 7/10/22',
+                'result' => '23 sep - 7 okt',
                 'contentType' => ContentType::plain(),
                 'format' => Format::xs(),
             ],
             [
-                'result' => 'Van 23 september 2022 tot 7 oktober 2022',
+                'result' => '23 sep - 7 okt',
                 'contentType' => ContentType::plain(),
                 'format' => Format::sm(),
             ],
             [
-                'result' => 'Vrijdag 23 september 2022' . PHP_EOL .
-                    'Vrijdag 30 september 2022' . PHP_EOL .
-                    'Vrijdag 7 oktober 2022',
+                'result' => 'Vr 23 september 2022' . PHP_EOL .
+                    'Vr 30 september 2022' . PHP_EOL .
+                    'Vr 7 oktober 2022',
                 'contentType' => ContentType::plain(),
                 'format' => Format::md(),
             ],
@@ -121,50 +124,28 @@ final class CalendarSummaryWithFormatterRepositoryTest extends TestCase
                 'format' => Format::lg(),
             ],
             [
-                'result' => '<span class="cf-from cf-meta">Van</span> <span class="cf-date">23/9/22</span> <span class="cf-to cf-meta">tot</span> <span class="cf-date">7/10/22</span>',
+                'result' => '<span class="cf-date">23</span> <span class="cf-month">sep</span> <span class="cf-year">2022</span> - <span class="cf-date">7</span> <span class="cf-month">okt</span>',
                 'contentType' => ContentType::html(),
                 'format' => Format::xs(),
             ],
             [
-                'result' => '<span class="cf-from cf-meta">Van</span> ' .
-                    '<span class="cf-date">23 september 2022</span> ' .
-                    '<span class="cf-to cf-meta">tot</span> ' .
-                    '<span class="cf-date">7 oktober 2022</span>',
+                'result' => '<span class="cf-date">23 sep</span> <span class="cf-to cf-meta">-</span> <span class="cf-date">7 okt</span>',
                 'contentType' => ContentType::html(),
                 'format' => Format::sm(),
             ],
             [
                 'result' => '<ul class="cnw-event-date-info">' .
-                    '<li><span class="cf-weekday cf-meta">Vrijdag</span> ' .
-                    '<span class="cf-date">23 september 2022</span></li>' .
-                    '<li><span class="cf-weekday cf-meta">Vrijdag</span> ' .
-                    '<span class="cf-date">30 september 2022</span></li>' .
-                    '<li><span class="cf-weekday cf-meta">Vrijdag</span> ' .
-                    '<span class="cf-date">7 oktober 2022</span></li></ul>',
+                    '<li><span class="cf-weekday cf-meta">Vr</span> <span class="cf-date">23 september 2022</span></li>' .
+                    '<li><span class="cf-weekday cf-meta">Vr</span> <span class="cf-date">30 september 2022</span></li>' .
+                    '<li><span class="cf-weekday cf-meta">Vr</span> <span class="cf-date">7 oktober 2022</span></li></ul>',
                 'contentType' => ContentType::html(),
                 'format' => Format::md(),
             ],
             [
                 'result' => '<ul class="cnw-event-date-info">' .
-                    '<li><time itemprop="startDate" datetime="2022-09-23T18:00:00+00:00">' .
-                    '<span class="cf-weekday cf-meta">Vrijdag</span> ' .
-                    '<span class="cf-date">23 september 2022</span> ' .
-                    '<span class="cf-from cf-meta">van</span> ' .
-                    '<span class="cf-time">20:00</span></time> ' .
-                    '<span class="cf-to cf-meta">tot</span> ' .
-                    '<time itemprop="endDate" datetime="2022-09-23T21:00:00+00:00">' .
-                    '<span class="cf-time">23:00</span></time></li>' .
-                    '<li><time itemprop="startDate" datetime="2022-09-30T18:00:00+00:00">' .
-                    '<span class="cf-weekday cf-meta">Vrijdag</span> ' .
-                    '<span class="cf-date">30 september 2022</span> ' .
-                    '<span class="cf-from cf-meta">van</span> ' .
-                    '<span class="cf-time">20:00</span></time> ' .
-                    '<span class="cf-to cf-meta">tot</span> ' .
-                    '<time itemprop="endDate" datetime="2022-09-30T21:00:00+00:00">' .
-                    '<span class="cf-time">23:00</span></time></li>' .
-                    '<li><time itemprop="startDate" datetime="2022-10-06T22:00:00+00:00">' .
-                    '<span class="cf-weekday cf-meta">Vrijdag</span> ' .
-                    '<span class="cf-date">7 oktober 2022</span></time></li></ul>',
+                    '<li><time itemprop="startDate" datetime="2022-09-23T20:00:00+02:00"><span class="cf-weekday cf-meta">Vrijdag</span> <span class="cf-date">23 september 2022</span> <span class="cf-from cf-meta">van</span> <span class="cf-time">20:00</span></time> <span class="cf-to cf-meta">tot</span> <time itemprop="endDate" datetime="2022-09-23T23:00:00+02:00"><span class="cf-time">23:00</span></time></li>' .
+                    '<li><time itemprop="startDate" datetime="2022-09-30T20:00:00+02:00"><span class="cf-weekday cf-meta">Vrijdag</span> <span class="cf-date">30 september 2022</span> <span class="cf-from cf-meta">van</span> <span class="cf-time">20:00</span></time> <span class="cf-to cf-meta">tot</span> <time itemprop="endDate" datetime="2022-09-30T23:00:00+02:00"><span class="cf-time">23:00</span></time></li>' .
+                    '<li><time itemprop="startDate" datetime="2022-10-07T00:00:00+02:00"><span class="cf-weekday cf-meta">Vrijdag</span> <span class="cf-date">7 oktober 2022</span></time></li></ul>',
                 'contentType' => ContentType::html(),
                 'format' => Format::lg(),
             ],
