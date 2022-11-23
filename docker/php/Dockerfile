@@ -1,8 +1,12 @@
 FROM php:7.4-fpm
 
-RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev
+RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev zlib1g-dev libpng-dev libzip-dev
 
 RUN docker-php-ext-install mysqli pdo_mysql bcmath tidy sockets
+
+RUN pecl install -o -f redis &&  rm -rf /tmp/pear &&  docker-php-ext-enable redis
+
+RUN docker-php-ext-configure zip && docker-php-ext-install zip
 
 RUN docker-php-ext-configure intl && docker-php-ext-install intl
 
