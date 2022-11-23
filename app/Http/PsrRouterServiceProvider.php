@@ -62,6 +62,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateWorkflowStatusRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
@@ -397,6 +398,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
         $router->put('/{offerType:events|places}/{offerId}/organizer/{organizerId}/', UpdateOrganizerRequestHandler::class);
         $router->delete('/{offerType:events|places}/{offerId}/organizer/{organizerId}/', DeleteOfferOrganizerRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/workflow-status/', UpdateWorkflowStatusRequestHandler::class);
 
         $router->patch('/{offerType:events|places}/{offerId}/', PatchOfferRequestHandler::class);
 
