@@ -26,7 +26,7 @@ class HTMLFileWriterTest extends TestCase
     {
         $events = [];
 
-        $this->assertFileNotExists($this->filePath);
+        $this->assertFileDoesNotExist($this->filePath);
 
         $fileWriter = $this->createHTMLFileWriter(
             [
