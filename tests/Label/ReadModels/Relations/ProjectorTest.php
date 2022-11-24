@@ -261,27 +261,27 @@ class ProjectorTest extends TestCase
             $payload
         );
 
-        $this->writeRepository->expects($this->at(0))
+        $this->writeRepository->expects($this->once())
             ->method('deleteImportedByRelationId')
             ->with($itemId);
 
-        $this->writeRepository->expects($this->at(1))
+        $this->writeRepository->expects($this->exactly(2))
             ->method('save')
-            ->with(
-                '2dotstwice',
-                $relationType,
-                $itemId,
-                true
+            ->withConsecutive(
+                [
+                    '2dotstwice',
+                    $relationType,
+                    $itemId,
+                    true,
+                ],
+                [
+                    'cultuurnet',
+                    $relationType,
+                    $itemId,
+                    true,
+                ],
             );
 
-        $this->writeRepository->expects($this->at(2))
-            ->method('save')
-            ->with(
-                'cultuurnet',
-                $relationType,
-                $itemId,
-                true
-            );
 
         $this->relationsReadRepository->expects($this->once())
             ->method('getLabelRelationsForItem')
