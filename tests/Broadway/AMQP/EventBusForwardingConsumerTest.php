@@ -204,28 +204,21 @@ class EventBusForwardingConsumerTest extends TestCase
         $context = [];
         $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
 
-        $this->logger
-            ->expects($this->at(0))
+        $this->logger->expects($this->exactly(3))
             ->method('info')
-            ->with(
-                'received message with content-type application/vnd.cultuurnet.udb3-events.dummy-event+json',
-                $context
-            );
-
-        $this->logger
-            ->expects($this->at(1))
-            ->method('info')
-            ->with(
-                'passing on message to event bus',
-                $context
-            );
-
-        $this->logger
-            ->expects($this->at(2))
-            ->method('info')
-            ->with(
-                'message acknowledged',
-                $context
+            ->withConsecutive(
+                [
+                    'received message with content-type application/vnd.cultuurnet.udb3-events.dummy-event+json',
+                    $context,
+                ],
+                [
+                    'passing on message to event bus',
+                    $context,
+                ],
+                [
+                    'message acknowledged',
+                    $context,
+                ]
             );
 
         $this->deserializerLocator->expects($this->once())
