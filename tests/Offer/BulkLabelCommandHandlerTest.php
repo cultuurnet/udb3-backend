@@ -18,7 +18,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class BulkLabelCommandHandlerTest extends TestCase
+final class BulkLabelCommandHandlerTest extends TestCase
 {
     /**
      * @var ResultsGeneratorInterface|MockObject
@@ -30,27 +30,21 @@ class BulkLabelCommandHandlerTest extends TestCase
      */
     private $logger;
 
-    /**
-     * @var BulkLabelCommandHandler
-     */
-    private $commandHandler;
+    private BulkLabelCommandHandler $commandHandler;
 
-    /**
-     * @var string
-     */
-    private $query;
+    private string $query;
 
     private Label $label;
 
     /**
      * @var IriOfferIdentifier[]
      */
-    private $offerIdentifiers;
+    private array $offerIdentifiers;
 
     /**
      * @var ItemIdentifier[]
      */
-    private $itemIdentifiers;
+    private array $itemIdentifiers;
 
     /**
      * @var CommandBus|MockObject
@@ -152,9 +146,9 @@ class BulkLabelCommandHandlerTest extends TestCase
         // Make sure the other offer is still labelled.
         $this->commandBus->method('dispatch')->will(
             $this->onConsecutiveCalls(
-              $this->throwException($exception),
-              false
-          )
+                $this->throwException($exception),
+                false
+            )
         );
 
         // Make sure we log the occur.

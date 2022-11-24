@@ -19,27 +19,18 @@ use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidFactory;
 use CultuurNet\UDB3\StringLiteral;
 
-class EventBusForwardingConsumerTest extends TestCase
+final class EventBusForwardingConsumerTest extends TestCase
 {
     /**
      * @var AMQPStreamConnection|MockObject
      */
     private $connection;
 
-    /**
-     * @var StringLiteral
-     */
-    private $queueName;
+    private StringLiteral $queueName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $exchangeName;
+    private StringLiteral $exchangeName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $consumerTag;
+    private StringLiteral $consumerTag;
 
     /**
      * @var EventBus|MockObject
@@ -58,15 +49,10 @@ class EventBusForwardingConsumerTest extends TestCase
 
     /**
      * Seconds to delay the actual consumption of the message after it arrived.
-     *
-     * @var int
      */
-    private $delay;
+    private int $delay;
 
-    /**
-     * @var EventBusForwardingConsumer
-     */
-    private $eventBusForwardingConsumer;
+    private EventBusForwardingConsumer $eventBusForwardingConsumer;
 
     /**
      * @var LoggerInterface|MockObject
@@ -119,7 +105,7 @@ class EventBusForwardingConsumerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_the_connection()
+    public function it_can_get_the_connection(): void
     {
         $this->channel->expects($this->once())
             ->method('basic_qos')
@@ -143,7 +129,7 @@ class EventBusForwardingConsumerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_publish_the_message_on_the_event_bus()
+    public function it_can_publish_the_message_on_the_event_bus(): void
     {
         $context = [];
         $context['correlation_id'] = 'my-correlation-id-123';
@@ -199,7 +185,7 @@ class EventBusForwardingConsumerTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_messages_when_consuming()
+    public function it_logs_messages_when_consuming(): void
     {
         $context = [];
         $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
@@ -243,7 +229,7 @@ class EventBusForwardingConsumerTest extends TestCase
     /**
      * @test
      */
-    public function it_rejects_the_massage_when_an_error_occurs()
+    public function it_rejects_the_massage_when_an_error_occurs(): void
     {
         $context = [];
         $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
@@ -274,7 +260,7 @@ class EventBusForwardingConsumerTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_messages_when_rejecting_a_message()
+    public function it_logs_messages_when_rejecting_a_message(): void
     {
         $context = [];
         $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
@@ -329,9 +315,6 @@ class EventBusForwardingConsumerTest extends TestCase
      */
     public function it_automatically_acknowledges_when_no_deserializer_was_found(): void
     {
-        $context = [];
-        $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
-
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
             ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
