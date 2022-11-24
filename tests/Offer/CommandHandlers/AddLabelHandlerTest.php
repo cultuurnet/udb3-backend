@@ -96,13 +96,18 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_should_use_visibility_from_the_command_if_the_label_did_not_exist_before(): void
     {
-        $this->labelService->expects($this->at(0))
+        $this->labelService->expects($this->exactly(2))
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('visible'), true);
-
-        $this->labelService->expects($this->at(1))
-            ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('hidden'), false);
+            ->withConsecutive(
+                [
+                    new LabelName('visible'),
+                    true,
+                ],
+                [
+                    new LabelName('hidden'),
+                    false,
+                ]
+            );
 
         $id = '4c6d4bb8-702b-49f1-b0ca-e51eb09a1c19';
 
