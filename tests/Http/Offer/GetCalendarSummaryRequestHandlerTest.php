@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\HtmlResponse;
@@ -27,6 +29,7 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
         $this->getCalendarSummaryRequestHandler = new GetCalendarSummaryRequestHandler(
             $this->repositoryMockFactory->create()
         );
+        Carbon::setTestNow(CarbonImmutable::create(2022, 5, 3));
     }
 
     /**
@@ -239,6 +242,39 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
                 'calendarType' => 'single',
                 'startDate' => '2021-01-01T00:00:00+01:00',
                 'endDate' => '2021-01-10T00:00:00+01:00',
+                'status' => ['type' => 'Available'],
+                'bookingAvailability' => ['type' => 'Available'],
+            ]
+        );
+        $eventDocument = new JsonDocument($eventId, $eventJson);
+        $this->repositoryMockFactory->expectEventDocument($eventDocument);
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', $eventId)
+            ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?format=xs')
+            ->build('GET');
+
+        $expectedContent = 'Van 1 jan 2021 tot 10 jan 2021';
+
+        $response = $this->getCalendarSummaryRequestHandler->handle($request);
+
+        $this->assertInstanceOf(PlainTextResponse::class, $response);
+        $this->assertEquals($expectedContent, $response->getBody()->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function it_omits_the_current_year(): void
+    {
+        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
+        $eventJson = Json::encode(
+            [
+                '@context' => '/contexts/event',
+                'calendarType' => 'single',
+                'startDate' => '2022-01-01T00:00:00+01:00',
+                'endDate' => '2022-01-10T00:00:00+01:00',
                 'status' => ['type' => 'Available'],
                 'bookingAvailability' => ['type' => 'Available'],
             ]
