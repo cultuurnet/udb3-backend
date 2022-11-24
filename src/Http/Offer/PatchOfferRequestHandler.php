@@ -14,6 +14,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+/**
+ * Note: Currently this request handler can only change the workflowStatus of an Offer, based on a specific custom
+ * mime-type being included in the content-type header.
+ * This functionality has been superseded by UpdateWorkflowStatusRequestHandler.
+ */
 final class PatchOfferRequestHandler implements RequestHandlerInterface
 {
     public const DOMAIN_MODEL_REGEX = '/.*domain-model=([a-zA-Z]*)/';

@@ -45,6 +45,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateWorkflowStatusRequestHandler;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
@@ -150,6 +151,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             AddVideoRequestHandler::class,
             UpdateVideosRequestHandler::class,
             DeleteVideoRequestHandler::class,
+            UpdateWorkflowStatusRequestHandler::class,
             PatchOfferRequestHandler::class,
         ];
     }
@@ -553,6 +555,11 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             DeleteVideoRequestHandler::class,
             fn () => new DeleteVideoRequestHandler($container->get('event_command_bus'))
+        );
+
+        $container->addShared(
+            UpdateWorkflowStatusRequestHandler::class,
+            fn () => new UpdateWorkflowStatusRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
