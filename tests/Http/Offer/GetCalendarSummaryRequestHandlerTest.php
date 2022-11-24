@@ -252,7 +252,7 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
             ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?format=xs')
             ->build('GET');
 
-        $expectedContent = 'Van 1 jan tot 10 jan';
+        $expectedContent = 'Van 1 jan 2021 tot 10 jan 2021';
 
         $response = $this->getCalendarSummaryRequestHandler->handle($request);
 
