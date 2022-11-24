@@ -280,27 +280,25 @@ class EventBusForwardingConsumerTest extends TestCase
         $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
 
         $this->logger
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('info')
-            ->with(
+            ->withConsecutive(
+                [
                 'received message with content-type application/vnd.cultuurnet.udb3-events.dummy-event+json',
-                $context
+                $context,
+                    ],
+                [
+                    'message rejected',
+                    $context,
+                ]
             );
 
         $this->logger
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('error')
             ->with(
                 'Deserializerlocator error',
                 $context + ['exception' => new \InvalidArgumentException('Deserializerlocator error')]
-            );
-
-        $this->logger
-            ->expects($this->at(2))
-            ->method('info')
-            ->with(
-                'message rejected',
-                $context
             );
 
         $this->deserializerLocator->expects($this->once())
