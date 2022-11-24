@@ -39,6 +39,7 @@ final class JsonSchemaLocator
     public const EVENT_WORKFLOW_STATUS_PUT = 'event-workflowStatus-put.json';
 
     public const PLACE = 'place.json';
+    public const PLACE_ADDRESS_PUT = 'place-address-put.json';
     public const PLACE_NAME_PUT = 'place-name-put.json';
     public const PLACE_AVAILABLE_FROM_PUT = 'place-availableFrom-put.json';
     public const PLACE_BOOKING_AVAILABILITY = 'place-bookingAvailability.json';
