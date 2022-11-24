@@ -61,6 +61,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
@@ -693,7 +694,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                     new LegacyLanguage('nl'),
                     new LegacyDescription('Nederlandse beschrijving')
                 ),
-                new UpdateTypicalAgeRange($eventId, '6-12'),
+                new UpdateTypicalAgeRange($eventId, AgeRange::fromString('6-12')),
                 new UpdatePriceInfo(
                     $eventId,
                     new PriceInfo(
