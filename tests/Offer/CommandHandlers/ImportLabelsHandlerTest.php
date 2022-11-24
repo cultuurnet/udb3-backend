@@ -71,13 +71,26 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_should_import_labels_and_also_record_label_added_events(): void
     {
-        $this->labelService->expects($this->at(0))
+        /*$this->labelService->expects($this->at(0))
             ->method('createLabelAggregateIfNew')
             ->with(new LabelName('foo'), true);
 
         $this->labelService->expects($this->at(1))
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('bar'), false);
+            ->with(new LabelName('bar'), false);*/
+
+        $this->labelService->expects($this->exactly(2))
+            ->method('createLabelAggregateIfNew')
+            ->withConsecutive(
+                [
+                    new LabelName('foo'),
+                    true,
+                ],
+                [
+                    new LabelName('bar'),
+                    false,
+                ]
+            );
 
         $this->labelPermissionRepository->expects($this->any())
             ->method('getByName')
