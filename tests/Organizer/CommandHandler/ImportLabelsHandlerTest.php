@@ -59,13 +59,18 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_handles_label_imports(): void
     {
-        $this->labelService->expects($this->at(0))
+        $this->labelService->expects($this->exactly(2))
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('foo'), true);
-
-        $this->labelService->expects($this->at(1))
-            ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('bar'), true);
+            ->withConsecutive(
+                [
+                    new LabelName('foo'),
+                    true,
+                ],
+                [
+                    new LabelName('bar'),
+                    true,
+                ]
+            );
 
         $id = '86a51894-e18e-4a6a-b7c5-d774e8c81074';
 

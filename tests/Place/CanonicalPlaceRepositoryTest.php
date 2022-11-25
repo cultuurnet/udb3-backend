@@ -59,13 +59,18 @@ class CanonicalPlaceRepositoryTest extends TestCase
         $canonicalPlace->method('getAggregateRootId')->willReturn($canonicalPlaceId);
 
         $place->method('getCanonicalPlaceId')->willReturn($secondLevelDuplicatePlaceId);
-        $this->placeRepository->expects($this->at(0))->method('load')->with($placeId)->willReturn($place);
-
         $secondLevelDuplicatePlace->method('getCanonicalPlaceId')->willReturn($canonicalPlaceId);
-        $this->placeRepository->expects($this->at(1))->method('load')->with($secondLevelDuplicatePlaceId)->willReturn($secondLevelDuplicatePlace);
-
         $canonicalPlace->method('getCanonicalPlaceId')->willReturn(null);
-        $this->placeRepository->expects($this->at(2))->method('load')->with($canonicalPlaceId)->willReturn($canonicalPlace);
+
+        $this->placeRepository->expects($this->any())
+            ->method('load')
+            ->willReturnMap(
+                [
+                    [$placeId, $place],
+                    [$secondLevelDuplicatePlaceId, $secondLevelDuplicatePlace],
+                    [$canonicalPlaceId, $canonicalPlace],
+                ]
+            );
 
         $canonicalPlace = $this->canonicalPlaceRepository->findCanonicalFor($placeId);
 
