@@ -144,14 +144,14 @@ final class BulkLabelCommandHandlerTest extends TestCase
     ): void {
         // One label action should fail.
         // Make sure the other offer is still labelled.
-        $this->commandBus->method('dispatch')->will(
+        $this->commandBus->method('dispatch')->withConsecutive(
+            [new AddLabel($this->offerIdentifiers[1]->getId(), $this->label)],
+            [new AddLabel($this->offerIdentifiers[2]->getId(), $this->label)]
+        )->will(
             $this->onConsecutiveCalls(
                 $this->throwException($exception),
                 false
             )
-        )->withConsecutive(
-            [new AddLabel($this->offerIdentifiers[1]->getId(), $this->label)],
-            [new AddLabel($this->offerIdentifiers[2]->getId(), $this->label)]
         );
 
         // Make sure we log the occur.
