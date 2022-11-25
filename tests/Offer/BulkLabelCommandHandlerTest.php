@@ -149,6 +149,9 @@ final class BulkLabelCommandHandlerTest extends TestCase
                 $this->throwException($exception),
                 false
             )
+        )->withConsecutive(
+            [new AddLabel($this->offerIdentifiers[1]->getId(), $this->label)],
+            [new AddLabel($this->offerIdentifiers[2]->getId(), $this->label)]
         );
 
         // Make sure we log the occur.
