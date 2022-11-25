@@ -270,9 +270,9 @@ final class EventBusForwardingConsumerTest extends TestCase
             ->method('info')
             ->withConsecutive(
                 [
-                'received message with content-type application/vnd.cultuurnet.udb3-events.dummy-event+json',
-                $context,
-                    ],
+                    'received message with content-type application/vnd.cultuurnet.udb3-events.dummy-event+json',
+                    $context,
+                ],
                 [
                     'message rejected',
                     $context,
