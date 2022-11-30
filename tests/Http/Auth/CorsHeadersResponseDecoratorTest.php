@@ -7,9 +7,6 @@ namespace CultuurNet\UDB3\Http\Auth;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
 final class CorsHeadersResponseDecoratorTest extends TestCase
 {
