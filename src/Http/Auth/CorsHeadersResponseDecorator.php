@@ -21,7 +21,7 @@ use Psr\Http\Server\RequestHandlerInterface;
  *
  * The easiest approach is to just add the headers to every response.
  */
-final class CorsHeadersMiddleware implements MiddlewareInterface
+final class CorsHeadersResponseDecorator
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

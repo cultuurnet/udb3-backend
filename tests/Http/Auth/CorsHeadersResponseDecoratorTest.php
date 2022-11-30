@@ -11,14 +11,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class CorsHeadersMiddlewareTest extends TestCase
+final class CorsHeadersResponseDecoratorTest extends TestCase
 {
-    private CorsHeadersMiddleware $corsHeadersMiddleware;
+    private CorsHeadersResponseDecorator $corsHeadersMiddleware;
     private RequestHandlerInterface $requestHandler;
 
     protected function setUp(): void
     {
-        $this->corsHeadersMiddleware = new CorsHeadersMiddleware();
+        $this->corsHeadersMiddleware = new CorsHeadersResponseDecorator();
         $this->requestHandler = new class() implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
