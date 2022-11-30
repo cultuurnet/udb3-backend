@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http;
 
 use Broadway\EventHandling\EventBus;
-use CultuurNet\UDB3\Http\Auth\CorsHeadersMiddleware;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Http\Curators\CreateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\DeleteNewsArticleRequestHandler;
@@ -223,9 +222,6 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
         // Determines if a request requires authentication or not, and if yes it checks the JWT and optionally the API
         // key to determine if the request is correctly authenticated.
         $router->middleware($container->get(RequestAuthenticatorMiddleware::class));
-
-        // Adds CORS headers to every response that we return.
-        $router->middleware(new CorsHeadersMiddleware());
     }
 
     private function bindNewsArticles(Router $router): void
