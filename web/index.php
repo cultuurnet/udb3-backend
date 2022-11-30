@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use CultuurNet\UDB3\Http\Auth\CorsHeadersResponseDecorator;
 use CultuurNet\UDB3\Http\LegacyPathRewriter;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\ApiName;
@@ -51,5 +52,10 @@ try {
     $webErrorHandler = $container->get(WebErrorHandler::class);
     $response = $webErrorHandler->handle($request, $throwable);
 }
+
+// Always add CORS headers to the response. We do not do this in a middleware because in some cases an error is
+// thrown/caught out of the middleware stack and then the CORS middleware would not be triggered and no CORS headers
+// would be added to the 4XX or 5XX response. (For example in the catch above.)
+$response = (new CorsHeadersResponseDecorator())->decorate($request, $response);
 
 (new SapiStreamEmitter())->emit($response);
