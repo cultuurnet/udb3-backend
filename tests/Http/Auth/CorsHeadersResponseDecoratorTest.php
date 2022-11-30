@@ -13,18 +13,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class CorsHeadersResponseDecoratorTest extends TestCase
 {
-    private CorsHeadersResponseDecorator $corsHeadersMiddleware;
-    private RequestHandlerInterface $requestHandler;
+    private CorsHeadersResponseDecorator $corsHeadersResponseDecorator;
 
     protected function setUp(): void
     {
-        $this->corsHeadersMiddleware = new CorsHeadersResponseDecorator();
-        $this->requestHandler = new class() implements RequestHandlerInterface {
-            public function handle(ServerRequestInterface $request): ResponseInterface
-            {
-                return new NoContentResponse();
-            }
-        };
+        $this->corsHeadersResponseDecorator = new CorsHeadersResponseDecorator();
     }
 
     /**
@@ -42,7 +35,7 @@ final class CorsHeadersResponseDecoratorTest extends TestCase
             'Access-Control-Allow-Headers' => ['authorization,x-api-key'],
         ];
 
-        $response = $this->corsHeadersMiddleware->process($givenRequest, $this->requestHandler);
+        $response = $this->corsHeadersResponseDecorator->decorate($givenRequest, new NoContentResponse());
         $actualHeaders = $response->getHeaders();
 
         $this->assertEquals($expectedHeaders, $actualHeaders);
@@ -65,7 +58,7 @@ final class CorsHeadersResponseDecoratorTest extends TestCase
             'Access-Control-Allow-Headers' => ['authorization,x-api-key'],
         ];
 
-        $response = $this->corsHeadersMiddleware->process($givenRequest, $this->requestHandler);
+        $response = $this->corsHeadersResponseDecorator->decorate($givenRequest, new NoContentResponse());
         $actualHeaders = $response->getHeaders();
 
         $this->assertEquals($expectedHeaders, $actualHeaders);
@@ -88,7 +81,7 @@ final class CorsHeadersResponseDecoratorTest extends TestCase
             'Access-Control-Allow-Headers' => ['authorization,x-api-key,x-mock-header'],
         ];
 
-        $response = $this->corsHeadersMiddleware->process($givenRequest, $this->requestHandler);
+        $response = $this->corsHeadersResponseDecorator->decorate($givenRequest, new NoContentResponse());
         $actualHeaders = $response->getHeaders();
 
         $this->assertEquals($expectedHeaders, $actualHeaders);
