@@ -7,24 +7,14 @@ namespace CultuurNet\UDB3\Http\Auth;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
-final class CorsHeadersMiddlewareTest extends TestCase
+final class CorsHeadersResponseDecoratorTest extends TestCase
 {
-    private CorsHeadersMiddleware $corsHeadersMiddleware;
-    private RequestHandlerInterface $requestHandler;
+    private CorsHeadersResponseDecorator $corsHeadersResponseDecorator;
 
     protected function setUp(): void
     {
-        $this->corsHeadersMiddleware = new CorsHeadersMiddleware();
-        $this->requestHandler = new class() implements RequestHandlerInterface {
-            public function handle(ServerRequestInterface $request): ResponseInterface
-            {
-                return new NoContentResponse();
-            }
-        };
+        $this->corsHeadersResponseDecorator = new CorsHeadersResponseDecorator();
     }
 
     /**
@@ -42,7 +32,7 @@ final class CorsHeadersMiddlewareTest extends TestCase
             'Access-Control-Allow-Headers' => ['authorization,x-api-key'],
         ];
 
-        $response = $this->corsHeadersMiddleware->process($givenRequest, $this->requestHandler);
+        $response = $this->corsHeadersResponseDecorator->decorate($givenRequest, new NoContentResponse());
         $actualHeaders = $response->getHeaders();
 
         $this->assertEquals($expectedHeaders, $actualHeaders);
@@ -65,7 +55,7 @@ final class CorsHeadersMiddlewareTest extends TestCase
             'Access-Control-Allow-Headers' => ['authorization,x-api-key'],
         ];
 
-        $response = $this->corsHeadersMiddleware->process($givenRequest, $this->requestHandler);
+        $response = $this->corsHeadersResponseDecorator->decorate($givenRequest, new NoContentResponse());
         $actualHeaders = $response->getHeaders();
 
         $this->assertEquals($expectedHeaders, $actualHeaders);
@@ -88,7 +78,7 @@ final class CorsHeadersMiddlewareTest extends TestCase
             'Access-Control-Allow-Headers' => ['authorization,x-api-key,x-mock-header'],
         ];
 
-        $response = $this->corsHeadersMiddleware->process($givenRequest, $this->requestHandler);
+        $response = $this->corsHeadersResponseDecorator->decorate($givenRequest, new NoContentResponse());
         $actualHeaders = $response->getHeaders();
 
         $this->assertEquals($expectedHeaders, $actualHeaders);
