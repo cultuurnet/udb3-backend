@@ -82,7 +82,7 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
                 'updateDescription' => new EventUpdateDescription(
                     self::OFFER_ID,
                     new Language('en'),
-                    new Description("Some info about the offer")
+                    new Description('Some info about the offer')
                 ),
             ],
             [
@@ -91,7 +91,7 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
                 'updateDescription' => new PlaceUpdateDescription(
                     self::OFFER_ID,
                     new Language('en'),
-                    new Description("Some info about the offer")
+                    new Description('Some info about the offer')
                 ),
             ],
             [
@@ -100,7 +100,7 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
                 'updateDescription' => new EventUpdateDescription(
                     self::OFFER_ID,
                     new Language('en'),
-                    new Description("")
+                    new Description('')
                 ),
             ],
             [
@@ -109,7 +109,7 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
                 'updateDescription' => new PlaceUpdateDescription(
                     self::OFFER_ID,
                     new Language('en'),
-                    new Description("")
+                    new Description('')
                 ),
             ],
         ];
