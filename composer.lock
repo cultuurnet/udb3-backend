@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b7498e4559b9e9f93064c597459df2f",
+    "content-hash": "04476b036d9b7f7bd1794b05d6f5d296",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5559,7 +5559,7 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-uitdatabank/fix-empty-offer-description",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
@@ -5571,6 +5571,7 @@
                 "reference": "70c13cd3b6d73394851ed849612bff293d576eea",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5585,7 +5586,7 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/uitdatabank/fix-empty-offer-description"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
             "time": "2022-12-12T10:16:18+00:00"
         },
