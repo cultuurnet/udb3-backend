@@ -94,6 +94,24 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
                     new Description("Some info about the offer")
                 ),
             ],
+            [
+                'offerType' => 'events',
+                'request' => '{"description": ""}',
+                'updateDescription' => new EventUpdateDescription(
+                    self::OFFER_ID,
+                    new Language('en'),
+                    new Description("")
+                ),
+            ],
+            [
+                'offerType' => 'places',
+                'request' => '{"description": ""}',
+                'updateDescription' => new PlaceUpdateDescription(
+                    self::OFFER_ID,
+                    new Language('en'),
+                    new Description("")
+                ),
+            ],
         ];
     }
 
@@ -129,18 +147,6 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
                 '{"description": 1}',
                 ApiProblem::bodyInvalidData(
                     new SchemaError('/description', 'The data (integer) must match the type: string')
-                ),
-            ],
-            [
-                '{"description": ""}',
-                ApiProblem::bodyInvalidData(
-                    new SchemaError('/description', 'Minimum string length is 1, found 0')
-                ),
-            ],
-            [
-                '{"description": "     "}',
-                ApiProblem::bodyInvalidData(
-                    new SchemaError('/description', 'The string should match pattern: \S')
                 ),
             ],
         ];
