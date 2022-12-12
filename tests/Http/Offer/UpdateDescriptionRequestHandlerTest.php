@@ -24,7 +24,6 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
     use AssertApiProblemTrait;
 
     private const OFFER_ID = 'd2a039e9-f4d6-4080-ae33-a106b5d3d47b';
-    private const DESCRIPTION = 'Some info about the offer';
 
     private TraceableCommandBus $commandBus;
 
@@ -45,19 +44,18 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider descriptionProvider
+     * @dataProvider validRequestsProvider
      */
     public function it_handles_updating_the_description_of_an_offer(
         string $offerType,
+        string $request,
         AbstractUpdateDescription $updateDescription
     ): void {
         $updateDescriptionRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', self::OFFER_ID)
             ->withRouteParameter('language', 'en')
-            ->withJsonBodyFromArray([
-                'description' => self::DESCRIPTION,
-            ])
+            ->withBodyFromString($request)
             ->build('PUT');
 
         $response = $this->updateDescriptionRequestHandler->handle($updateDescriptionRequest);
@@ -75,23 +73,25 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
         );
     }
 
-    public function descriptionProvider(): array
+    public function validRequestsProvider(): array
     {
         return [
             [
                 'offerType' => 'events',
+                'request' => '{"description": "Some info about the offer"}',
                 'updateDescription' => new EventUpdateDescription(
                     self::OFFER_ID,
                     new Language('en'),
-                    new Description(self::DESCRIPTION)
+                    new Description("Some info about the offer")
                 ),
             ],
             [
                 'offerType' => 'places',
+                'request' => '{"description": "Some info about the offer"}',
                 'updateDescription' => new PlaceUpdateDescription(
                     self::OFFER_ID,
                     new Language('en'),
-                    new Description(self::DESCRIPTION)
+                    new Description("Some info about the offer")
                 ),
             ],
         ];
