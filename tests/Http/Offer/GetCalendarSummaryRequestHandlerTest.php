@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
@@ -29,7 +28,7 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
         $this->getCalendarSummaryRequestHandler = new GetCalendarSummaryRequestHandler(
             $this->repositoryMockFactory->create()
         );
-        Carbon::setTestNow(CarbonImmutable::create(2022, 5, 3));
+        CarbonImmutable::setTestNow(CarbonImmutable::create(2022, 5, 3));
     }
 
     /**
