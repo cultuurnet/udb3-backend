@@ -65,7 +65,7 @@ final class CdbXmlPriceInfoParser
         }
 
         $basePrice = new BasePrice(
-            MoneyFactory::createFromFloat($basePrice, new Currency('EUR'))
+            MoneyFactory::create($basePrice, new Currency('EUR'))
         );
 
         /* @var Tariff[] $tariffs */
@@ -103,7 +103,7 @@ final class CdbXmlPriceInfoParser
                 if (!isset($tariffs[$tariffIndex])) {
                     $tariff = new Tariff(
                         new MultilingualString(new LegacyLanguage($language), new StringLiteral((string) $tariffName)),
-                        MoneyFactory::createFromFloat($tariffPrice, new Currency('EUR'))
+                        MoneyFactory::create($tariffPrice, new Currency('EUR'))
                     );
                 } else {
                     $tariff = $tariffs[$tariffIndex];

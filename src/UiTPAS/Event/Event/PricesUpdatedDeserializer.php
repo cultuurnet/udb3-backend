@@ -72,7 +72,7 @@ final class PricesUpdatedDeserializer extends JSONDeserializer
 
             $tariffs[] = new Tariff(
                 new TranslatedTariffName(new Language('nl'), new TariffName($name)),
-                MoneyFactory::createFromFloat($tariff->price, new Currency('EUR'))
+                MoneyFactory::create($tariff->price, new Currency('EUR'))
             );
         }
 

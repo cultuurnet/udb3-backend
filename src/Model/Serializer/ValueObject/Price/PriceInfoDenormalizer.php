@@ -96,7 +96,7 @@ class PriceInfoDenormalizer implements DenormalizerInterface
 
         return new Tariff(
             $tariffName,
-            MoneyFactory::createFromFloat($tariffData['price'], new Currency('EUR'))
+            MoneyFactory::create($tariffData['price'], new Currency('EUR'))
         );
     }
 }

@@ -9,8 +9,11 @@ use Money\Money;
 
 final class MoneyFactory
 {
-    public static function createFromFloat(
-        float $price,
+    /**
+     * @param string|int|float $price
+     */
+    public static function create(
+        $price,
         Currency $currency
     ): Money {
         return new Money((int) round(($price*100)), $currency);
