@@ -96,7 +96,12 @@ class PriceInfoDenormalizer implements DenormalizerInterface
 
         return new Tariff(
             $tariffName,
-            new Money((int) ($tariffData['price']*100), new Currency('EUR'))
+            new Money($this->getPrecisionValue($tariffData['price']), new Currency('EUR'))
         );
+    }
+
+    private function getPrecisionValue(float $price): int
+    {
+        return intval(bcmul(strval($price), '100'));
     }
 }
