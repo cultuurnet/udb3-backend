@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\PriceInfo;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff as Udb3ModelTariff;
+use CultuurNet\UDB3\MoneyFactory;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 use Money\Money;
@@ -56,7 +57,7 @@ class Tariff implements Serializable
     {
         return new Tariff(
             MultilingualString::deserialize($data['name']),
-            new Money((int) $data['price'], new Currency($data['currency']))
+            MoneyFactory::createFromStringInCents($data['price'], new Currency($data['currency']))
         );
     }
 
