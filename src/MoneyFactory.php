@@ -16,8 +16,11 @@ final class MoneyFactory
         return new Money((int) round(($price*100)), $currency);
     }
 
-    public static function createFromStringInCents(
-        string $price,
+    /**
+     * @param string|int $price
+     */
+    public static function createFromCentsValue(
+        $price,
         Currency $currency
     ): Money {
         return new Money((int) $price, $currency);

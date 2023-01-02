@@ -45,7 +45,7 @@ class BasePrice implements Serializable
     public static function deserialize(array $data): BasePrice
     {
         return new BasePrice(
-            MoneyFactory::createFromStringInCents($data['price'], new Currency($data['currency']))
+            MoneyFactory::createFromCentsValue($data['price'], new Currency($data['currency']))
         );
     }
 
