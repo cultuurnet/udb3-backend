@@ -102,6 +102,6 @@ class PriceInfoDenormalizer implements DenormalizerInterface
 
     private function getPrecisionValue(float $price): int
     {
-        return (int) (bcmul((string) $price, '100'));
+        return (int) (bcmul((string) $price, '100', 0));
     }
 }
