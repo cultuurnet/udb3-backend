@@ -57,7 +57,7 @@ class Tariff implements Serializable
     {
         return new Tariff(
             MultilingualString::deserialize($data['name']),
-            MoneyFactory::createFromCentsValue($data['price'], new Currency($data['currency']))
+            MoneyFactory::createFromCents($data['price'], new Currency($data['currency']))
         );
     }
 

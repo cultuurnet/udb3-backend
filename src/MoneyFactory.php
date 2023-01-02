@@ -20,9 +20,9 @@ final class MoneyFactory
     }
 
     /**
-     * @param string|int $price
+     * @param string|int|float $price
      */
-    public static function createFromCentsValue(
+    public static function createFromCents(
         $price,
         Currency $currency
     ): Money {
