@@ -8,8 +8,8 @@ use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
+use CultuurNet\UDB3\MoneyFactory;
 use Money\Currency;
-use Money\Money;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -96,7 +96,7 @@ class PriceInfoDenormalizer implements DenormalizerInterface
 
         return new Tariff(
             $tariffName,
-            new Money((int) ($tariffData['price']*100), new Currency('EUR'))
+            MoneyFactory::createFromFloat($tariffData['price'], new Currency('EUR'))
         );
     }
 }

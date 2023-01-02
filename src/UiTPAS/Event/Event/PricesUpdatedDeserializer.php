@@ -11,9 +11,9 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\MoneyFactory;
 use CultuurNet\UDB3\StringLiteral;
 use Money\Currency;
-use Money\Money;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Validator;
 use stdClass;
@@ -69,14 +69,10 @@ final class PricesUpdatedDeserializer extends JSONDeserializer
         $tariffs = [];
         foreach ($dto->tariffs as $tariff) {
             $name = $tariff->name;
-            $price = (int) ($tariff->price * 100);
 
             $tariffs[] = new Tariff(
                 new TranslatedTariffName(new Language('nl'), new TariffName($name)),
-                new Money(
-                    $price,
-                    new Currency('EUR')
-                )
+                MoneyFactory::createFromFloat($tariff->price, new Currency('EUR'))
             );
         }
 
