@@ -15,4 +15,11 @@ final class MoneyFactory
     ): Money {
         return new Money((int) round(($price*100)), $currency);
     }
+
+    public static function createFromStringInCents(
+        string $price,
+        Currency $currency
+    ): Money {
+        return new Money((int) $price, $currency);
+    }
 }
