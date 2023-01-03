@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\CalendarSummary;
 
-use Carbon\Carbon;
-use Carbon\CarbonImmutable;
+use CultuurNet\CalendarSummaryV3\CalendarSummaryTester;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -19,7 +18,7 @@ final class CalendarSummaryWithFormatterRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        CarbonImmutable::setTestNow(Carbon::create(2022));
+        CalendarSummaryTester::setTestNow(2022);
 
         $eventRepository = new InMemoryDocumentRepository();
         $eventRepository->save(
