@@ -775,16 +775,16 @@
         },
         {
             "name": "cultuurnet/calendar-summary-v3",
-            "version": "v4.0.2",
+            "version": "v4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "212ed0c4a180c3e91b89a287178dbbbd2eac3a6c"
+                "reference": "bdd97cd998301bcb0468e44e24b864466f3fc60f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/212ed0c4a180c3e91b89a287178dbbbd2eac3a6c",
-                "reference": "212ed0c4a180c3e91b89a287178dbbbd2eac3a6c",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/bdd97cd998301bcb0468e44e24b864466f3fc60f",
+                "reference": "bdd97cd998301bcb0468e44e24b864466f3fc60f",
                 "shasum": ""
             },
             "require": {
@@ -821,9 +821,9 @@
             "description": "Library to convert cultuurnet dates to a readable summary",
             "support": {
                 "issues": "https://github.com/cultuurnet/calendar-summary-v3/issues",
-                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.0.2"
+                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.0.3"
             },
-            "time": "2022-12-06T14:59:39+00:00"
+            "time": "2023-01-03T07:49:10+00:00"
         },
         {
             "name": "cultuurnet/cdb",
