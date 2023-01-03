@@ -8,13 +8,13 @@ use CultureFeed_Cdb_Data_Detail;
 use CultureFeed_Cdb_Data_Price;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\MoneyFactory;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
-use Money\Money;
 
 final class CdbXmlPriceInfoParser
 {
@@ -65,7 +65,7 @@ final class CdbXmlPriceInfoParser
         }
 
         $basePrice = new BasePrice(
-            new Money((int) ($basePrice * 100), new Currency('EUR'))
+            MoneyFactory::create($basePrice, new Currency('EUR'))
         );
 
         /* @var Tariff[] $tariffs */
@@ -103,7 +103,7 @@ final class CdbXmlPriceInfoParser
                 if (!isset($tariffs[$tariffIndex])) {
                     $tariff = new Tariff(
                         new MultilingualString(new LegacyLanguage($language), new StringLiteral((string) $tariffName)),
-                        new Money((int)($tariffPrice * 100), new Currency('EUR'))
+                        MoneyFactory::create($tariffPrice, new Currency('EUR'))
                     );
                 } else {
                     $tariff = $tariffs[$tariffIndex];
