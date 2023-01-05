@@ -238,19 +238,29 @@ class HTMLEventFormatter
 
     private function addPriceInfo(stdClass $event, array &$formattedEvent): void
     {
+        $mainLanguage = $event->mainLanguage ?? 'nl';
         $basePrice = null;
+        $uitpasPrices = [];
+        $format = fn (stdClass $priceObject): string => $this->priceFormatter->format((float) $priceObject->price);
 
         if (property_exists($event, 'priceInfo') && is_array($event->priceInfo)) {
             foreach ($event->priceInfo as $price) {
-                if ($price->category === 'base') {
-                    $basePrice = $price;
-                    break;
+                switch ($price->category) {
+                    case 'base':
+                        $basePrice = $format($price);
+                        break;
+                    case 'uitpas':
+                        $uitpasPrices[] = $format($price) . ' ' . $price->name->{$mainLanguage};
+                        break;
                 }
             }
         }
 
-        $formattedEvent['price'] =
-            $basePrice ? $this->priceFormatter->format((float) $basePrice->price) : 'Niet ingevoerd';
+        $formattedEvent['price'] = $basePrice ?? 'Niet ingevoerd';
+
+        if (count($uitpasPrices) > 0) {
+            $formattedEvent['uitpasPrices'] = $uitpasPrices;
+        }
     }
 
     private function addMediaObject(stdClass $event, array &$formattedEvent): void

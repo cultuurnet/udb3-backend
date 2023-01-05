@@ -226,6 +226,39 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
+    public function it_includes_uitpas_prices_if_available(): void
+    {
+        $eventWithoutBookingInfo = $this->getFormattedEventFromJSONFile('event_with_uitpas_prices.json');
+        $expectedFormattedEvent = [
+            'image' => 'http://media.uitdatabank.be/20141211/558bb7cf-5ff8-40b4-872b-5f5b46bb16c2.jpg',
+            'type' => 'Cursus of workshop',
+            'title' => 'Lessenreeks MURGA',
+            'description' => "Wij zijn Murga çava, een vrolijke groep van 20 percussionisten,\n" . "jong en oud, uit Herent en omgeving. Bij ons is iedereen welkom!\n" . "Muzikale voorkennis is geen vereiste. Behalve percussie staan we\n" . 'ook open voor blazers, dansers of ander talent...',
+            'address' => [
+                'name' => 'GC De Wildeman',
+                'street' => 'Schoolstraat 15',
+                'postcode' => '3020',
+                'municipality' => 'Herent',
+                'country' => 'BE',
+                'concatenated' => 'Schoolstraat 15 3020 Herent BE',
+                'isDummyAddress' => false,
+            ],
+            'price' => '8',
+            'uitpasPrices' => [
+                '1,5 Kansentarief met UiTPAS Dender',
+                '1,6 Kansentarief met UiTPAS Regio Gent',
+                '1,6 Kansentarief met UiTPAS Oostende',
+                '1,6 Kansentarief met UiTPAS Bornem',
+            ],
+            'brands' => [],
+            'dates' => 'van 01/09/14 tot 29/06/15',
+        ];
+        $this->assertEventFormatting($expectedFormattedEvent, $eventWithoutBookingInfo);
+    }
+
+    /**
+     * @test
+     */
     public function it_gracefully_handles_events_without_description(): void
     {
         $eventWithoutDescription = $this->getFormattedEventFromJSONFile('event_without_description.json');
