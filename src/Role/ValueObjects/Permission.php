@@ -21,6 +21,7 @@ class Permission extends Enum
             'Voorzieningen bewerken',
             'Producties aanmaken',
             'Films aanmaken',
+            'Bijdragers beheren',
         ];
     }
 
@@ -80,6 +81,11 @@ class Permission extends Enum
     public static function filmsAanmaken(): Permission
     {
         return new self('Films aanmaken');
+    }
+
+    public static function bijdragersBeheren(): Permission
+    {
+        return new self('Bijdragers beheren');
     }
 
     // The API exposes the permissions in uppercase and underscore format.
