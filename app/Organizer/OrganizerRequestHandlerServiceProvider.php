@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
@@ -19,6 +20,7 @@ use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\LegacyOrganizerRequestBodyParser;
+use CultuurNet\UDB3\Http\Organizer\ManageContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;
@@ -52,6 +54,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             AddLabelRequestHandler::class,
             DeleteLabelRequestHandler::class,
             GetPermissionsForCurrentUserRequestHandler::class,
+            ManageContributorsRequestHandler::class,
             GetPermissionsForGivenUserRequestHandler::class,
         ];
     }
@@ -196,6 +199,11 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
                     $container->get(CurrentUser::class)->getId()
                 );
             }
+        );
+
+        $container->addShared(
+            ManageContributorsRequestHandler::class,
+            fn () => new ManageContributorsRequestHandler($container->get(ContributorRepository::class))
         );
 
         $container->addShared(
