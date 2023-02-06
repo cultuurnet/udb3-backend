@@ -55,6 +55,7 @@ class GetUserPermissionsRequestHandlerTest extends TestCase
             'VOORZIENINGEN_BEWERKEN',
             'PRODUCTIES_AANMAKEN',
             'FILMS_AANMAKEN',
+            'BIJDRAGERS_BEHEREN',
             'MEDIA_UPLOADEN',
         ];
 
