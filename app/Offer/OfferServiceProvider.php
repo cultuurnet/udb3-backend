@@ -9,6 +9,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
@@ -25,6 +26,7 @@ use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\ManageContributors;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveLabelRequestHandler;
@@ -94,6 +96,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             OfferMetadataProjector::class,
             AutoApproveForUiTIDv1ApiKeysProcessManager::class,
             PopularityRepository::class,
+            ContributorRepository::class,
             'iri_offer_identifier_factory',
             'should_auto_approve_new_offer',
             OfferRepository::class,
@@ -152,6 +155,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdateVideosRequestHandler::class,
             DeleteVideoRequestHandler::class,
             UpdateWorkflowStatusRequestHandler::class,
+            ManageContributors::class,
             PatchOfferRequestHandler::class,
         ];
     }
@@ -206,6 +210,11 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             PopularityRepository::class,
             fn () => new DBALPopularityRepository($container->get('dbal_connection'))
+        );
+
+        $container->addShared(
+            ContributorRepository::class,
+            fn () => new ContributorRepository($container->get('dbal_connection'))
         );
 
         $container->addShared(
@@ -560,6 +569,11 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             UpdateWorkflowStatusRequestHandler::class,
             fn () => new UpdateWorkflowStatusRequestHandler($container->get('event_command_bus'))
+        );
+
+        $container->addShared(
+            ManageContributors::class,
+            fn () => new ManageContributors($container->get(ContributorRepository::class))
         );
 
         $container->addShared(
