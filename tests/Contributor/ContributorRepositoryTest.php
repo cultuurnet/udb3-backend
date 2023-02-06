@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use PHPUnit\Framework\TestCase;
 
-final class ContributorReadRepositoryTest extends TestCase
+final class ContributorRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
@@ -63,8 +63,7 @@ final class ContributorReadRepositoryTest extends TestCase
         );
 
         $this->contributorRepository = new ContributorRepository(
-            $this->getConnection(),
-            $contributorRelationsTableName
+            $this->getConnection()
         );
     }
 
