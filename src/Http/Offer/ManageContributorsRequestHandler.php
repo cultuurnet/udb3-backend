@@ -31,12 +31,19 @@ final class ManageContributors implements RequestHandlerInterface
         $emails = JSON::decode($request->getBody()->getContents());
 
         $this->contributorRepository->deleteContributors(new UUID($offerId));
-        foreach ($emails as $email) {
-            $this->contributorRepository->addContributor(
-                new UUID($offerId),
-                new EmailAddress($email)
+
+        try {
+            foreach ($emails as $email) {
+                $this->contributorRepository->addContributor(
+                    new UUID($offerId),
+                    new EmailAddress($email)
+                );
+            }
+            return new NoContentResponse();
+        } catch (\InvalidArgumentException $exception) {
+            throw ApiProblem::bodyInvalidData(
+                new SchemaError('/contributors', $exception->getMessage())
             );
         }
-        return new NoContentResponse();
     }
 }
