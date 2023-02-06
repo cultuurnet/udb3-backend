@@ -41,6 +41,7 @@ use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\ManageContributors;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveLabelRequestHandler;
@@ -111,6 +112,7 @@ use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler as GetOrganizerPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler as GetOrganizerPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\ManageContributors as ManageOrganizerContributors;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler as UpdateOrganizerAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler as UpdateOrganizerContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler as UpdateOrganizerDescriptionRequestHandler;
@@ -342,6 +344,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
             $routeGroup->get('{organizerId}/permissions/', GetOrganizerPermissionsForCurrentUserRequestHandler::class);
             $routeGroup->get('{organizerId}/permissions/{userId}/', GetOrganizerPermissionsForGivenUserRequestHandler::class);
+
+            $routeGroup->put('{organizerId}/contributors/', ManageOrganizerContributors::class);
         });
     }
 
@@ -396,6 +400,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
         $router->delete('/{offerType:events|places}/{offerId}/organizer/{organizerId}/', DeleteOfferOrganizerRequestHandler::class);
 
         $router->put('/{offerType:events|places}/{offerId}/workflow-status/', UpdateWorkflowStatusRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/contributors/', ManageContributors::class);
 
         $router->patch('/{offerType:events|places}/{offerId}/', PatchOfferRequestHandler::class);
 
