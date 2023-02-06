@@ -112,7 +112,7 @@ use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler as GetOrganizerPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler as GetOrganizerPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\ManageContributors as ManageOrganizerContributors;
+use CultuurNet\UDB3\Http\Organizer\ManageContributorsRequestHandler as ManageContributorsOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler as UpdateOrganizerAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler as UpdateOrganizerContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler as UpdateOrganizerDescriptionRequestHandler;
@@ -345,7 +345,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->get('{organizerId}/permissions/', GetOrganizerPermissionsForCurrentUserRequestHandler::class);
             $routeGroup->get('{organizerId}/permissions/{userId}/', GetOrganizerPermissionsForGivenUserRequestHandler::class);
 
-            $routeGroup->put('{organizerId}/contributors/', ManageOrganizerContributors::class);
+            $routeGroup->put('{organizerId}/contributors/', ManageContributorsOrganizerRequestHandler::class);
         });
     }
 
