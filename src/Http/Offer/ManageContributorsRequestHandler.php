@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Contributor\ContributorRepositoryInterface;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Json;
