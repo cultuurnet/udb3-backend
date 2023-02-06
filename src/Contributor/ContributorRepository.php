@@ -13,14 +13,12 @@ final class ContributorRepository implements ContributorRepositoryInterface
 {
     private Connection $connection;
 
-    private string $manageContributorsTableName;
+    private const TABLE = 'contributor_relations';
 
     public function __construct(
-        Connection $connection,
-        string $manageContributorsTableName
+        Connection $connection
     ) {
         $this->connection = $connection;
-        $this->manageContributorsTableName = $manageContributorsTableName;
     }
 
     /**
@@ -30,7 +28,7 @@ final class ContributorRepository implements ContributorRepositoryInterface
     {
         $results = $this->connection->createQueryBuilder()
             ->select('email')
-            ->from($this->manageContributorsTableName)
+            ->from(self::TABLE)
             ->where('uuid = :id')
             ->setParameter(':id', $id->toString())
             ->execute()
@@ -46,7 +44,7 @@ final class ContributorRepository implements ContributorRepositoryInterface
     {
         $results = $this->connection->createQueryBuilder()
             ->select('email')
-            ->from($this->manageContributorsTableName)
+            ->from(self::TABLE)
             ->where('uuid = :id')
             ->andWhere('email = :email')
             ->setParameter(':id', $id->toString())
@@ -61,7 +59,7 @@ final class ContributorRepository implements ContributorRepositoryInterface
     {
         $this->connection
             ->insert(
-                $this->manageContributorsTableName,
+                self::TABLE,
                 [
                     'uuid' => $id->toString(),
                     'email' => $emailAddress->toString(),
@@ -73,7 +71,7 @@ final class ContributorRepository implements ContributorRepositoryInterface
     {
         $this->connection
             ->delete(
-                $this->manageContributorsTableName,
+                self::TABLE,
                 ['uuid' => $id->toString()]
             );
     }
