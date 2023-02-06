@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Contributor;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 
 final class ContributorServiceProvider extends AbstractServiceProvider
 {
-
     protected function getProvidedServiceNames(): array
     {
         return [
-            ContributorRepository::class
+            ContributorRepository::class,
         ];
     }
 
