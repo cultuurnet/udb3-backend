@@ -213,11 +213,6 @@ final class OfferServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            ContributorRepository::class,
-            fn () => new ContributorRepository($container->get('dbal_connection'))
-        );
-
-        $container->addShared(
             'iri_offer_identifier_factory',
             fn () => new IriOfferIdentifierFactory($container->get('config')['offer_url_regex'])
         );

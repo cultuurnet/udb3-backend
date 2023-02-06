@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Cache\CacheServiceProvider;
 use CultuurNet\UDB3\Clock\ClockServiceProvider;
 use CultuurNet\UDB3\CommandHandling\CommandBusServiceProvider;
 use CultuurNet\UDB3\Configuration\ConfigurationServiceProvider;
+use CultuurNet\UDB3\Contributor\ContributorServiceProvider;
 use CultuurNet\UDB3\Culturefeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Database\DatabaseServiceProvider;
@@ -90,6 +91,7 @@ $container->addServiceProvider(new SwiftMailerServiceProvider());
 $container->addServiceProvider(new ClockServiceProvider());
 $container->addServiceProvider(new CacheServiceProvider());
 $container->addServiceProvider(new DatabaseServiceProvider());
+$container->addServiceProvider(new ContributorServiceProvider());
 
 /** Queue */
 $container->addServiceProvider(new AMQPConnectionServiceProvider());
