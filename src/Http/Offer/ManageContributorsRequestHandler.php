@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class ManageContributors implements RequestHandlerInterface
+final class ManageContributorsRequestHandler implements RequestHandlerInterface
 {
     private ContributorRepositoryInterface $contributorRepository;
 
