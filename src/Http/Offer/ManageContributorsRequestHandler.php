@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
+use Broadway\Repository\AggregateNotFoundException;
 use CultuurNet\UDB3\Contributor\ContributorRepositoryInterface;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Deserializer\ContributorDenormalizer;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -37,6 +39,12 @@ final class ManageContributorsRequestHandler implements RequestHandlerInterface
         $routeParameters = new RouteParameters($request);
         $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
+
+        try {
+            $this->offerRepository->load($offerId);
+        } catch (AggregateNotFoundException $exception) {
+            throw ApiProblem::offerNotFound($offerType, $offerId);
+        }
 
         $parser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(
