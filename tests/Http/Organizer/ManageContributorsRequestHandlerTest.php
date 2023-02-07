@@ -66,16 +66,16 @@ final class ManageContributorsRequestHandlerTest extends TestCase
             ->withRouteParameter('offerId', '4c47cbf8-8406-4af6-b6e7-fddd78e0efd8')
             ->withJsonBodyFromArray(
                 [
-                    '09/1231212',
                     'piet@gent.be',
                     'an@gent.be',
+                    '09/1231212',
                 ]
             )
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/contributors', 'Given string is not a valid e-mail address.')
+                new SchemaError('/2', 'The data must match the \'email\' format')
             ),
             fn () => $this->manageContributorsRequestHandler->handle($invalidContributorsRequest)
         );
