@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Contributor;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use PHPUnit\Framework\TestCase;
 
 final class ContributorRepositoryTest extends TestCase
@@ -73,11 +74,11 @@ final class ContributorRepositoryTest extends TestCase
     public function it_gets_the_contributors_of_an_item(): void
     {
         $this->assertEquals(
-            [
+            EmailAddresses::fromArray([
                 new EmailAddress('an@brussel.be'),
                 new EmailAddress('piet@brussel.be'),
                 new EmailAddress('info@brussel.be'),
-            ],
+            ]),
             $this->contributorRepository->getContributors($this->brusselsEvent)
         );
     }
@@ -113,10 +114,10 @@ final class ContributorRepositoryTest extends TestCase
         );
 
         $this->assertEquals(
-            [
+            EmailAddresses::fromArray([
                 new EmailAddress('info@gent.be'),
                 new EmailAddress('vragen@gent.be'),
-            ],
+            ]),
             $this->contributorRepository->getContributors($this->ghentEvent)
         );
     }
@@ -129,7 +130,7 @@ final class ContributorRepositoryTest extends TestCase
         $this->contributorRepository->deleteContributors($this->brusselsEvent);
 
         $this->assertEquals(
-            [],
+            EmailAddresses::fromArray([]),
             $this->contributorRepository->getContributors($this->brusselsEvent)
         );
     }

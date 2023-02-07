@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Contributor;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 
@@ -21,10 +22,7 @@ final class ContributorRepository implements ContributorRepositoryInterface
         $this->connection = $connection;
     }
 
-    /**
-     * @return EmailAddress[]
-     */
-    public function getContributors(UUID $id): array
+    public function getContributors(UUID $id): EmailAddresses
     {
         $results = $this->connection->createQueryBuilder()
             ->select('email')
@@ -34,9 +32,11 @@ final class ContributorRepository implements ContributorRepositoryInterface
             ->execute()
             ->fetchAll(FetchMode::COLUMN);
 
-        return array_map(
+        return EmailAddresses::fromArray(
+            array_map(
             fn (string $email) => new EmailAddress($email),
             $results
+        )
         );
     }
 
