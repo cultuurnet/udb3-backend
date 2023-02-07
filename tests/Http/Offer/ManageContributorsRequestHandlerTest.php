@@ -75,7 +75,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/contributors', 'Given string is not a valid e-mail address.')
+                new SchemaError('/0', 'The data must match the \'email\' format')
             ),
             fn () => $this->manageContributorsRequestHandler->handle($invalidContributorsRequest)
         );
