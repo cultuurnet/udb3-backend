@@ -34,9 +34,9 @@ final class ContributorRepository implements ContributorRepositoryInterface
 
         return EmailAddresses::fromArray(
             array_map(
-            fn (string $email) => new EmailAddress($email),
-            $results
-        )
+                fn (string $email) => new EmailAddress($email),
+                $results
+            )
         );
     }
 
