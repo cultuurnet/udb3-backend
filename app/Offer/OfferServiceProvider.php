@@ -568,7 +568,10 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             ManageContributorsRequestHandler::class,
-            fn () => new ManageContributorsRequestHandler($container->get(ContributorRepository::class))
+            fn () => new ManageContributorsRequestHandler(
+                $container->get(OfferRepository::class),
+                $container->get(ContributorRepository::class)
+            )
         );
 
         $container->addShared(
