@@ -37,6 +37,7 @@ final class JsonSchemaLocator
     public const EVENT_VIDEOS_PATCH = 'event-videos-patch.json';
     public const EVENT_VIDEOS_POST = 'event-videos-post.json';
     public const EVENT_WORKFLOW_STATUS_PUT = 'event-workflowStatus-put.json';
+    public const EVENT_CONTRIBUTORS_PUT = 'event-contributors-put.json';
 
     public const PLACE = 'place.json';
     public const PLACE_ADDRESS_PUT = 'place-address-put.json';
@@ -57,6 +58,7 @@ final class JsonSchemaLocator
     public const PLACE_VIDEOS_PATCH = 'place-videos-patch.json';
     public const PLACE_VIDEOS_POST = 'place-videos-post.json';
     public const PLACE_WORKFLOW_STATUS_PUT = 'place-workflowStatus-put.json';
+    public const PLACE_CONTRIBUTORS_PUT = 'place-contributors-put.json';
 
     public const ORGANIZER = 'organizer.json';
     public const ORGANIZER_NAME_PUT = 'organizer-name-put.json';
@@ -67,6 +69,7 @@ final class JsonSchemaLocator
     public const ORGANIZER_IMAGE_POST = 'organizer-image-post.json';
     public const ORGANIZER_MAIN_IMAGE_PUT = 'organizer-main-image-put.json';
     public const ORGANIZER_IMAGES_PATCH = 'organizer-images-patch.json';
+    public const ORGANIZER_CONTRIBUTORS_PUT = 'organizer-contributors-put.json';
 
     public const NEWS_ARTICLE_POST = 'newsArticle-post.json';
 
