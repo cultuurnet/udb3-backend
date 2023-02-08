@@ -15,16 +15,22 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class ManageContributorsRequestHandler implements RequestHandlerInterface
 {
+    private OrganizerRepository $organizerRepository;
+
     private ContributorRepositoryInterface $contributorRepository;
 
-    public function __construct(ContributorRepositoryInterface $contributorRepository)
-    {
+    public function __construct(
+        OrganizerRepository $organizerRepository,
+        ContributorRepositoryInterface $contributorRepository
+    ) {
+        $this->organizerRepository = $organizerRepository;
         $this->contributorRepository = $contributorRepository;
     }
 

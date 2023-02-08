@@ -203,7 +203,10 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
 
         $container->addShared(
             ManageContributorsRequestHandler::class,
-            fn () => new ManageContributorsRequestHandler($container->get(ContributorRepository::class))
+            fn () => new ManageContributorsRequestHandler(
+                $container->get('organizer_repository'),
+                $container->get(ContributorRepository::class)
+            )
         );
 
         $container->addShared(
