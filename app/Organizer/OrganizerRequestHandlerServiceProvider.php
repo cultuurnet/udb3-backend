@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Contributor\DbalContributorRepository;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
@@ -20,7 +19,6 @@ use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\LegacyOrganizerRequestBodyParser;
-use CultuurNet\UDB3\Http\Organizer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;

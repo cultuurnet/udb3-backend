@@ -25,7 +25,6 @@ use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
-use CultuurNet\UDB3\Http\Offer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveLabelRequestHandler;
