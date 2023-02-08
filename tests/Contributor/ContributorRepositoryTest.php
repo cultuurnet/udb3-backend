@@ -106,32 +106,24 @@ final class ContributorRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_add_a_contributor(): void
+    public function it_can_overwrite_contributor(): void
     {
-        $this->contributorRepository->addContributor(
+        $this->contributorRepository->overwriteContributors(
             $this->ghentEvent,
-            new EmailAddress('vragen@gent.be')
+            EmailAddresses::fromArray(
+                [
+                    new EmailAddress('pol@gent.be'),
+                    new EmailAddress('mieke@gent.be'),
+                ]
+            )
         );
 
         $this->assertEquals(
             EmailAddresses::fromArray([
-                new EmailAddress('info@gent.be'),
-                new EmailAddress('vragen@gent.be'),
+                new EmailAddress('pol@gent.be'),
+                new EmailAddress('mieke@gent.be'),
             ]),
             $this->contributorRepository->getContributors($this->ghentEvent)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_delete_contributors(): void
-    {
-        $this->contributorRepository->deleteContributors($this->brusselsEvent);
-
-        $this->assertEquals(
-            EmailAddresses::fromArray([]),
-            $this->contributorRepository->getContributors($this->brusselsEvent)
         );
     }
 }

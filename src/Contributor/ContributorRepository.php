@@ -55,24 +55,27 @@ final class ContributorRepository implements ContributorRepositoryInterface
         return count($results) > 0;
     }
 
-    public function addContributor(UUID $id, EmailAddress $emailAddress): void
+    public function overwriteContributors(UUID $id, EmailAddresses $emailAddresses)
     {
-        $this->connection
-            ->insert(
-                self::TABLE,
-                [
-                    'uuid' => $id->toString(),
-                    'email' => $emailAddress->toString(),
-                ]
-            );
-    }
-
-    public function deleteContributors(UUID $id): void
-    {
-        $this->connection
-            ->delete(
-                self::TABLE,
-                ['uuid' => $id->toString()]
-            );
+        $this->connection->transactional(
+            function (Connection $connection) use ($id, $emailAddresses) {
+                $connection
+                    ->delete(
+                        self::TABLE,
+                        ['uuid' => $id->toString()]
+                    );
+                $emailsAsArray = $emailAddresses->toArray();
+                foreach ($emailsAsArray as $email) {
+                    $connection
+                        ->insert(
+                            self::TABLE,
+                            [
+                                'uuid' => $id->toString(),
+                                'email' => $email->toString(),
+                            ]
+                        );
+                }
+            }
+        );
     }
 }

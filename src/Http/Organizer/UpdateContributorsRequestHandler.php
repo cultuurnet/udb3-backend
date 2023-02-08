@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use Psr\Http\Message\ResponseInterface;
@@ -60,16 +59,11 @@ final class UpdateContributorsRequestHandler implements RequestHandlerInterface
         /** @var EmailAddresses $emails */
         $emails = $parser->parse($request)->getParsedBody();
 
-        $this->contributorRepository->deleteContributors(new UUID($organizerId));
+        $this->contributorRepository->overwriteContributors(
+            new UUID($organizerId),
+            $emails
+        );
 
-        $emailsAsArray = $emails->toArray();
-        /** @var EmailAddress $email */
-        foreach ($emailsAsArray as $email) {
-            $this->contributorRepository->addContributor(
-                new UUID($organizerId),
-                $email
-            );
-        }
         return new NoContentResponse();
     }
 }
