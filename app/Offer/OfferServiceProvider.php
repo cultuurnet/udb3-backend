@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
@@ -155,6 +156,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdateVideosRequestHandler::class,
             DeleteVideoRequestHandler::class,
             UpdateWorkflowStatusRequestHandler::class,
+            GetContributorsRequestHandler::class,
             ManageContributorsRequestHandler::class,
             PatchOfferRequestHandler::class,
         ];
@@ -564,6 +566,14 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             UpdateWorkflowStatusRequestHandler::class,
             fn () => new UpdateWorkflowStatusRequestHandler($container->get('event_command_bus'))
+        );
+
+        $container->addShared(
+            GetContributorsRequestHandler::class,
+            fn () => new GetContributorsRequestHandler(
+                $container->get(OfferRepository::class),
+                $container->get(ContributorRepository::class)
+            )
         );
 
         $container->addShared(
