@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\Repository\AggregateNotFoundException;
-use CultuurNet\UDB3\Contributor\ContributorRepositoryInterface;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
@@ -34,14 +34,14 @@ final class GetContributorsRequestHandlerTest extends TestCase
     private $offerRepository;
 
     /**
-     * @var ContributorRepositoryInterface|MockObject
+     * @var ContributorRepository|MockObject
      */
     private $contributorRepository;
 
     public function setUp(): void
     {
         $this->offerRepository = $this->createMock(OfferRepository::class);
-        $this->contributorRepository = $this->createMock(ContributorRepositoryInterface::class);
+        $this->contributorRepository = $this->createMock(ContributorRepository::class);
 
         $this->getContributorsRequestHandler = new GetContributorsRequestHandler(
             $this->offerRepository,
