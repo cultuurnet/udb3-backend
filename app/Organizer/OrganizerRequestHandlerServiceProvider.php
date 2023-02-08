@@ -207,7 +207,9 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             GetContributorsRequestHandler::class,
             fn () => new GetContributorsRequestHandler(
                 $container->get('organizer_repository'),
-                $container->get(ContributorRepository::class)
+                $container->get(ContributorRepository::class),
+                $container->get('organizer_permission_voter'),
+                $container->get(CurrentUser::class)->getId()
             )
         );
 
