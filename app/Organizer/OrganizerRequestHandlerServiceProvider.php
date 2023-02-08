@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\LegacyOrganizerRequestBodyParser;
-use CultuurNet\UDB3\Http\Organizer\ManageContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;
@@ -56,7 +55,6 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             DeleteLabelRequestHandler::class,
             GetPermissionsForCurrentUserRequestHandler::class,
             GetContributorsRequestHandler::class,
-            ManageContributorsRequestHandler::class,
             GetPermissionsForGivenUserRequestHandler::class,
         ];
     }
@@ -206,14 +204,6 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
         $container->addShared(
             GetContributorsRequestHandler::class,
             fn () => new GetContributorsRequestHandler(
-                $container->get('organizer_repository'),
-                $container->get(ContributorRepository::class)
-            )
-        );
-
-        $container->addShared(
-            ManageContributorsRequestHandler::class,
-            fn () => new ManageContributorsRequestHandler(
                 $container->get('organizer_repository'),
                 $container->get(ContributorRepository::class)
             )

@@ -27,7 +27,6 @@ use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
-use CultuurNet\UDB3\Http\Offer\ManageContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveLabelRequestHandler;
@@ -37,6 +36,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
@@ -63,6 +63,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateContributorsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateOrganizerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdatePriceInfoHandler;
@@ -97,7 +98,6 @@ final class OfferServiceProvider extends AbstractServiceProvider
             OfferMetadataProjector::class,
             AutoApproveForUiTIDv1ApiKeysProcessManager::class,
             PopularityRepository::class,
-            ContributorRepository::class,
             'iri_offer_identifier_factory',
             'should_auto_approve_new_offer',
             OfferRepository::class,
@@ -121,6 +121,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdatePriceInfoHandler::class,
             UpdateOrganizerHandler::class,
             DeleteOrganizerHandler::class,
+            UpdateContributorsHandler::class,
             GetDetailRequestHandler::class,
             DeleteRequestHandler::class,
             UpdateTypicalAgeRangeRequestHandler::class,
@@ -156,8 +157,8 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdateVideosRequestHandler::class,
             DeleteVideoRequestHandler::class,
             UpdateWorkflowStatusRequestHandler::class,
+            UpdateContributorsRequestHandler::class,
             GetContributorsRequestHandler::class,
-            ManageContributorsRequestHandler::class,
             PatchOfferRequestHandler::class,
         ];
     }
@@ -355,6 +356,14 @@ final class OfferServiceProvider extends AbstractServiceProvider
             fn () => new DeleteOrganizerHandler(
                 $container->get(OfferRepository::class),
                 $container->get(EventHasTicketSalesGuard::class)
+            )
+        );
+
+        $container->addShared(
+            UpdateContributorsHandler::class,
+            fn () => new UpdateContributorsHandler(
+                $container->get(OfferRepository::class),
+                $container->get(ContributorRepository::class)
             )
         );
 
@@ -577,11 +586,8 @@ final class OfferServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            ManageContributorsRequestHandler::class,
-            fn () => new ManageContributorsRequestHandler(
-                $container->get(OfferRepository::class),
-                $container->get(ContributorRepository::class)
-            )
+            UpdateContributorsRequestHandler::class,
+            fn () => new UpdateContributorsRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(

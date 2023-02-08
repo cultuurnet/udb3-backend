@@ -21,7 +21,7 @@ final class ContributorServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             ContributorRepository::class,
-            fn () => new ContributorRepository($container->get('dbal_connection'))
+            fn () => new DbalContributorRepository($container->get('dbal_connection'))
         );
     }
 }

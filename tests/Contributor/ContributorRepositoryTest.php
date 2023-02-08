@@ -8,6 +8,9 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\TestCase;
 
 final class ContributorRepositoryTest extends TestCase
@@ -18,7 +21,17 @@ final class ContributorRepositoryTest extends TestCase
 
     private UUID $ghentEvent;
 
-    private ContributorRepository $contributorRepository;
+    private DbalContributorRepository $contributorRepository;
+
+    private static function getTableDefinition(Schema $schema): Table
+    {
+        $table = $schema->createTable('contributor_relations');
+
+        $table->addColumn('uuid', Type::GUID)->setLength(36)->setNotnull(true);
+        $table->addColumn('email', Type::TEXT)->setNotnull(true);
+
+        return $table;
+    }
 
     public function setUp(): void
     {
@@ -29,7 +42,7 @@ final class ContributorRepositoryTest extends TestCase
         $this->ghentEvent = new UUID('9e4c6ef8-3bbc-45ab-9828-c621f781c978');
 
         $this->createTable(
-            ContributorRelationsConfigurator::getTableDefinition(
+            self::getTableDefinition(
                 $this->createSchema()
             )
         );
@@ -63,7 +76,7 @@ final class ContributorRepositoryTest extends TestCase
             ]
         );
 
-        $this->contributorRepository = new ContributorRepository(
+        $this->contributorRepository = new DbalContributorRepository(
             $this->getConnection()
         );
     }
@@ -106,32 +119,24 @@ final class ContributorRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_add_a_contributor(): void
+    public function it_can_overwrite_contributor(): void
     {
-        $this->contributorRepository->addContributor(
+        $this->contributorRepository->overwriteContributors(
             $this->ghentEvent,
-            new EmailAddress('vragen@gent.be')
+            EmailAddresses::fromArray(
+                [
+                    new EmailAddress('pol@gent.be'),
+                    new EmailAddress('mieke@gent.be'),
+                ]
+            )
         );
 
         $this->assertEquals(
             EmailAddresses::fromArray([
-                new EmailAddress('info@gent.be'),
-                new EmailAddress('vragen@gent.be'),
+                new EmailAddress('pol@gent.be'),
+                new EmailAddress('mieke@gent.be'),
             ]),
             $this->contributorRepository->getContributors($this->ghentEvent)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_delete_contributors(): void
-    {
-        $this->contributorRepository->deleteContributors($this->brusselsEvent);
-
-        $this->assertEquals(
-            EmailAddresses::fromArray([]),
-            $this->contributorRepository->getContributors($this->brusselsEvent)
         );
     }
 }
