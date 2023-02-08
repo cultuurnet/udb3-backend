@@ -21,7 +21,7 @@ final class ContributorRepositoryTest extends TestCase
 
     private UUID $ghentEvent;
 
-    private ContributorRepository $contributorRepository;
+    private DbalContributorRepository $contributorRepository;
 
     private static function getTableDefinition(Schema $schema): Table
     {
@@ -76,7 +76,7 @@ final class ContributorRepositoryTest extends TestCase
             ]
         );
 
-        $this->contributorRepository = new ContributorRepository(
+        $this->contributorRepository = new DbalContributorRepository(
             $this->getConnection()
         );
     }

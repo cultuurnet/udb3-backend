@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Contributor\ContributorRepository;
+use CultuurNet\UDB3\Contributor\DbalContributorRepository;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
@@ -205,7 +205,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             UpdateContributorsRequestHandler::class,
             fn () => new UpdateContributorsRequestHandler(
                 $container->get('organizer_repository'),
-                $container->get(ContributorRepository::class)
+                $container->get(DbalContributorRepository::class)
             )
         );
 

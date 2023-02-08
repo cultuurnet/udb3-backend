@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Organizer;
 
 use Broadway\Repository\AggregateNotFoundException;
-use CultuurNet\UDB3\Contributor\ContributorRepositoryInterface;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Deserializer\ContributorDenormalizer;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
@@ -25,11 +25,11 @@ final class UpdateContributorsRequestHandler implements RequestHandlerInterface
 {
     private OrganizerRepository $organizerRepository;
 
-    private ContributorRepositoryInterface $contributorRepository;
+    private ContributorRepository $contributorRepository;
 
     public function __construct(
         OrganizerRepository $organizerRepository,
-        ContributorRepositoryInterface $contributorRepository
+        ContributorRepository $contributorRepository
     ) {
         $this->organizerRepository = $organizerRepository;
         $this->contributorRepository = $contributorRepository;
