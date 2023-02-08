@@ -8,6 +8,9 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\TestCase;
 
 final class ContributorRepositoryTest extends TestCase
@@ -20,6 +23,16 @@ final class ContributorRepositoryTest extends TestCase
 
     private ContributorRepository $contributorRepository;
 
+    private static function getTableDefinition(Schema $schema): Table
+    {
+        $table = $schema->createTable('contributor_relations');
+
+        $table->addColumn('uuid', Type::GUID)->setLength(36)->setNotnull(true);
+        $table->addColumn('email', Type::TEXT)->setNotnull(true);
+
+        return $table;
+    }
+
     public function setUp(): void
     {
         $contributorRelationsTableName = 'contributor_relations';
@@ -29,7 +42,7 @@ final class ContributorRepositoryTest extends TestCase
         $this->ghentEvent = new UUID('9e4c6ef8-3bbc-45ab-9828-c621f781c978');
 
         $this->createTable(
-            ContributorRelationsConfigurator::getTableDefinition(
+            self::getTableDefinition(
                 $this->createSchema()
             )
         );
