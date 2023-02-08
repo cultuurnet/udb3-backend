@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\LegacyOrganizerRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
@@ -56,6 +57,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             GetPermissionsForCurrentUserRequestHandler::class,
             GetContributorsRequestHandler::class,
             GetPermissionsForGivenUserRequestHandler::class,
+            UpdateContributorsRequestHandler::class,
         ];
     }
 
@@ -216,6 +218,11 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
                     $container->get('organizer_permission_voter')
                 );
             }
+        );
+
+        $container->addShared(
+            UpdateContributorsRequestHandler::class,
+            fn () => new UpdateContributorsRequestHandler($container->get('event_command_bus'))
         );
     }
 }
