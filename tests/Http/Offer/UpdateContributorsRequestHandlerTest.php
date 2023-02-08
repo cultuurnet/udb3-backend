@@ -26,9 +26,8 @@ final class UpdateContributorsRequestHandlerTest extends TestCase
 
     public function setUp(): void
     {
-        $commandBus = new TraceableCommandBus();
         $this->updateContributorsRequestHandler = new UpdateContributorsRequestHandler(
-            $commandBus
+            new TraceableCommandBus()
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
