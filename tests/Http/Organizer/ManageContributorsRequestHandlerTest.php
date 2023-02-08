@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +21,8 @@ final class ManageContributorsRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
+
+    private UUID $organizerId;
 
     private ManageContributorsRequestHandler $manageContributorsRequestHandler;
 
@@ -32,6 +35,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
 
     public function setUp(): void
     {
+        $this->organizerId = new UUID('4c47cbf8-8406-4af6-b6e7-fddd78e0efd8');
         $this->organizerRepository = $this->createMock(OrganizerRepository::class);
         $this->manageContributorsRequestHandler = new ManageContributorsRequestHandler(
             $this->organizerRepository,
@@ -47,8 +51,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
     public function it_handles_managing_contributors(): void
     {
         $manageContributorsRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('organizerId', '4c47cbf8-8406-4af6-b6e7-fddd78e0efd8')
+            ->withRouteParameter('organizerId', $this->organizerId->toString())
             ->withJsonBodyFromArray(
                 [
                     'jan@gent.be',
@@ -72,8 +75,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
     public function it_handles_invalid_emails(): void
     {
         $invalidContributorsRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('organizerId', '4c47cbf8-8406-4af6-b6e7-fddd78e0efd8')
+            ->withRouteParameter('organizerId', $this->organizerId->toString())
             ->withJsonBodyFromArray(
                 [
                     'piet@gent.be',
@@ -96,15 +98,13 @@ final class ManageContributorsRequestHandlerTest extends TestCase
      */
     public function it_handles_unknown_organizer(): void
     {
-        $unknownOrganizerId = '4ecb33d8-8068-45c9-a58e-e5fb767cb08a';
         $this->organizerRepository->expects($this->once())
             ->method('load')
-            ->with($unknownOrganizerId)
+            ->with($this->organizerId->toString())
             ->willThrowException(new AggregateNotFoundException());
 
         $unkownOrganizerRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('organizerId', $unknownOrganizerId)
+            ->withRouteParameter('organizerId', $this->organizerId->toString())
             ->withJsonBodyFromArray(
                 [
                     'piet@gent.be',
@@ -115,7 +115,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::organizerNotFound($unknownOrganizerId),
+            ApiProblem::organizerNotFound($this->organizerId->toString()),
             fn () => $this->manageContributorsRequestHandler->handle($unkownOrganizerRequest)
         );
     }
