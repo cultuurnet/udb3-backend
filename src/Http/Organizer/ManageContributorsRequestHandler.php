@@ -39,12 +39,12 @@ final class ManageContributorsRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $offerId = $routeParameters->getOfferId();
+        $organizerId = $routeParameters->getOrganizerId();
 
         try {
-            $this->organizerRepository->load($offerId);
+            $this->organizerRepository->load($organizerId);
         } catch (AggregateNotFoundException $exception) {
-            throw ApiProblem::organizerNotFound($offerId);
+            throw ApiProblem::organizerNotFound($organizerId);
         }
 
         $parser = RequestBodyParserFactory::createBaseParser(
@@ -60,13 +60,13 @@ final class ManageContributorsRequestHandler implements RequestHandlerInterface
         /** @var EmailAddresses $emails */
         $emails = $parser->parse($request)->getParsedBody();
 
-        $this->contributorRepository->deleteContributors(new UUID($offerId));
+        $this->contributorRepository->deleteContributors(new UUID($organizerId));
 
         $emailsAsArray = $emails->toArray();
         /** @var EmailAddress $email */
         foreach ($emailsAsArray as $email) {
             $this->contributorRepository->addContributor(
-                new UUID($offerId),
+                new UUID($organizerId),
                 $email
             );
         }
