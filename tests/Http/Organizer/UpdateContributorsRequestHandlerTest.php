@@ -17,14 +17,14 @@ use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class ManageContributorsRequestHandlerTest extends TestCase
+final class UpdateContributorsRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
 
     private UUID $organizerId;
 
-    private ManageContributorsRequestHandler $manageContributorsRequestHandler;
+    private UpdateContributorsRequestHandler $updateContributorsRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -37,7 +37,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
     {
         $this->organizerId = new UUID('4c47cbf8-8406-4af6-b6e7-fddd78e0efd8');
         $this->organizerRepository = $this->createMock(OrganizerRepository::class);
-        $this->manageContributorsRequestHandler = new ManageContributorsRequestHandler(
+        $this->updateContributorsRequestHandler = new UpdateContributorsRequestHandler(
             $this->organizerRepository,
             $this->createMock(ContributorRepositoryInterface::class)
         );
@@ -48,9 +48,9 @@ final class ManageContributorsRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_managing_contributors(): void
+    public function it_handles_updating_contributors(): void
     {
-        $manageContributorsRequest = $this->psr7RequestBuilder
+        $updateContributorsRequest = $this->psr7RequestBuilder
             ->withRouteParameter('organizerId', $this->organizerId->toString())
             ->withJsonBodyFromArray(
                 [
@@ -61,7 +61,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
             )
             ->build('PUT');
 
-        $response = $this->manageContributorsRequestHandler->handle($manageContributorsRequest);
+        $response = $this->updateContributorsRequestHandler->handle($updateContributorsRequest);
 
         $this->assertJsonResponse(
             new NoContentResponse(),
@@ -89,7 +89,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError('/2', 'The data must match the \'email\' format')
             ),
-            fn () => $this->manageContributorsRequestHandler->handle($invalidContributorsRequest)
+            fn () => $this->updateContributorsRequestHandler->handle($invalidContributorsRequest)
         );
     }
 
@@ -116,7 +116,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::organizerNotFound($this->organizerId->toString()),
-            fn () => $this->manageContributorsRequestHandler->handle($unkownOrganizerRequest)
+            fn () => $this->updateContributorsRequestHandler->handle($unkownOrganizerRequest)
         );
     }
 }
