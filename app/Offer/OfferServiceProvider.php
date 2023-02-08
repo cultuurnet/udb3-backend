@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
-use CultuurNet\UDB3\Http\Offer\ManageContributorsRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveLabelRequestHandler;
@@ -155,7 +155,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdateVideosRequestHandler::class,
             DeleteVideoRequestHandler::class,
             UpdateWorkflowStatusRequestHandler::class,
-            ManageContributorsRequestHandler::class,
+            UpdateContributorsRequestHandler::class,
             PatchOfferRequestHandler::class,
         ];
     }
@@ -567,8 +567,8 @@ final class OfferServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            ManageContributorsRequestHandler::class,
-            fn () => new ManageContributorsRequestHandler(
+            UpdateContributorsRequestHandler::class,
+            fn () => new UpdateContributorsRequestHandler(
                 $container->get(OfferRepository::class),
                 $container->get(ContributorRepository::class)
             )

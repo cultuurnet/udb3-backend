@@ -41,7 +41,7 @@ use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
-use CultuurNet\UDB3\Http\Offer\ManageContributorsRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveLabelRequestHandler;
@@ -401,7 +401,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
         $router->put('/{offerType:events|places}/{offerId}/workflow-status/', UpdateWorkflowStatusRequestHandler::class);
 
-        $router->put('/{offerType:events|places}/{offerId}/contributors/', ManageContributorsRequestHandler::class);
+        $router->put('/{offerType:events|places}/{offerId}/contributors/', UpdateContributorsRequestHandler::class);
 
         $router->patch('/{offerType:events|places}/{offerId}/', PatchOfferRequestHandler::class);
 

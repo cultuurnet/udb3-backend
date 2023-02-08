@@ -17,12 +17,12 @@ use CultuurNet\UDB3\Offer\OfferType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class ManageContributorsRequestHandlerTest extends TestCase
+final class UpdateContributorsRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
 
-    private ManageContributorsRequestHandler $manageContributorsRequestHandler;
+    private UpdateContributorsRequestHandler $updateContributorsRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -34,7 +34,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
     public function setUp(): void
     {
         $this->offerRepository = $this->createMock(OfferRepository::class);
-        $this->manageContributorsRequestHandler = new ManageContributorsRequestHandler(
+        $this->updateContributorsRequestHandler = new UpdateContributorsRequestHandler(
             $this->offerRepository,
             $this->createMock(ContributorRepositoryInterface::class)
         );
@@ -46,12 +46,12 @@ final class ManageContributorsRequestHandlerTest extends TestCase
      * @test
      * @dataProvider offerDataProvider
      */
-    public function it_handles_managing_contributors(
+    public function it_handles_updating_contributors(
         OfferType $offerType,
         string $offerRouteParameter,
         string $offerId
     ): void {
-        $manageContributorsRequest = $this->psr7RequestBuilder
+        $updateContributorsRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerRouteParameter)
             ->withRouteParameter('offerId', $offerId)
             ->withJsonBodyFromArray(
@@ -63,7 +63,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
             )
             ->build('PUT');
 
-        $response = $this->manageContributorsRequestHandler->handle($manageContributorsRequest);
+        $response = $this->updateContributorsRequestHandler->handle($updateContributorsRequest);
 
         $this->assertJsonResponse(
             new NoContentResponse(),
@@ -96,7 +96,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError('/0', 'The data must match the \'email\' format')
             ),
-            fn () => $this->manageContributorsRequestHandler->handle($invalidContributorsRequest)
+            fn () => $this->updateContributorsRequestHandler->handle($invalidContributorsRequest)
         );
     }
 
@@ -128,7 +128,7 @@ final class ManageContributorsRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::offerNotFound($offerType, $offerId),
-            fn () => $this->manageContributorsRequestHandler->handle($unkownOfferRequest)
+            fn () => $this->updateContributorsRequestHandler->handle($unkownOfferRequest)
         );
     }
 
