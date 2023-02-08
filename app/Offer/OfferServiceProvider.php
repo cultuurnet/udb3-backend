@@ -9,6 +9,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
@@ -34,6 +35,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
@@ -154,6 +156,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdateVideosRequestHandler::class,
             DeleteVideoRequestHandler::class,
             UpdateWorkflowStatusRequestHandler::class,
+            UpdateContributorsRequestHandler::class,
             PatchOfferRequestHandler::class,
         ];
     }
@@ -570,6 +573,11 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             UpdateWorkflowStatusRequestHandler::class,
             fn () => new UpdateWorkflowStatusRequestHandler($container->get('event_command_bus'))
+        );
+
+        $container->addShared(
+            UpdateContributorsRequestHandler::class,
+            fn () => new UpdateContributorsRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
