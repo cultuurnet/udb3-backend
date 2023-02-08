@@ -60,6 +60,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateContributorsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateOrganizerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdatePriceInfoHandler;
@@ -117,6 +118,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdatePriceInfoHandler::class,
             UpdateOrganizerHandler::class,
             DeleteOrganizerHandler::class,
+            UpdateContributorsHandler::class,
             GetDetailRequestHandler::class,
             DeleteRequestHandler::class,
             UpdateTypicalAgeRangeRequestHandler::class,
@@ -349,6 +351,14 @@ final class OfferServiceProvider extends AbstractServiceProvider
             fn () => new DeleteOrganizerHandler(
                 $container->get(OfferRepository::class),
                 $container->get(EventHasTicketSalesGuard::class)
+            )
+        );
+
+        $container->addShared(
+            UpdateContributorsHandler::class,
+            fn () => new UpdateContributorsHandler(
+                $container->get(OfferRepository::class),
+                $container->get(ContributorRepository::class)
             )
         );
 
