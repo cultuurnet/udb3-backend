@@ -581,7 +581,9 @@ final class OfferServiceProvider extends AbstractServiceProvider
             GetContributorsRequestHandler::class,
             fn () => new GetContributorsRequestHandler(
                 $container->get(OfferRepository::class),
-                $container->get(ContributorRepository::class)
+                $container->get(ContributorRepository::class),
+                $container->get('offer_permission_voter'),
+                $container->get(CurrentUser::class)->getId()
             )
         );
 

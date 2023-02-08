@@ -16,6 +16,9 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\Permission\PermissionVoter;
+use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -38,14 +41,25 @@ final class GetContributorsRequestHandlerTest extends TestCase
      */
     private $contributorRepository;
 
+    /**
+     * @var PermissionVoter|MockObject
+     */
+    private $permissionVoter;
+
+    private ?string $currentUserId;
+
     public function setUp(): void
     {
         $this->offerRepository = $this->createMock(OfferRepository::class);
         $this->contributorRepository = $this->createMock(ContributorRepository::class);
+        $this->permissionVoter = $this->createMock(PermissionVoter::class);
+        $this->currentUserId = '0b7ca1e2-e2e5-467f-9e7d-0cd481d66ee5';
 
         $this->getContributorsRequestHandler = new GetContributorsRequestHandler(
             $this->offerRepository,
-            $this->contributorRepository
+            $this->contributorRepository,
+            $this->permissionVoter,
+            $this->currentUserId
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
@@ -60,6 +74,11 @@ final class GetContributorsRequestHandlerTest extends TestCase
         string $offerRouteParameter,
         string $offerId
     ): void {
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(Permission::aanbodBewerken(), new StringLiteral($offerId), new StringLiteral($this->currentUserId))
+            ->willReturn(true);
+
         $this->contributorRepository->expects($this->once())
             ->method('getContributors')
             ->with(new UUID($offerId))
@@ -106,6 +125,38 @@ final class GetContributorsRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::offerNotFound($offerType, $offerId),
+            fn () => $this->getContributorsRequestHandler->handle($getContributorsRequest)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerDataProvider
+     */
+    public function it_handles_forbidden_offers(
+        OfferType $offerType,
+        string $offerRouteParameter,
+        string $offerId
+    ): void {
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(Permission::aanbodBewerken(), new StringLiteral($offerId), new StringLiteral($this->currentUserId))
+            ->willReturn(false);
+
+        $getContributorsRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerType', $offerRouteParameter)
+            ->withRouteParameter('offerId', $offerId)
+            ->build('GET');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::forbidden(
+                sprintf(
+                    'User %s has no permission "%s" on resource %s',
+                    $this->currentUserId,
+                    Permission::aanbodBewerken()->toString(),
+                    $offerId
+                )
+            ),
             fn () => $this->getContributorsRequestHandler->handle($getContributorsRequest)
         );
     }
