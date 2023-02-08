@@ -27,7 +27,6 @@ class PermissionTest extends TestCase
                 Permission::voorzieningenBewerken()->toString(),
                 Permission::productiesAanmaken()->toString(),
                 Permission::filmsAanmaken()->toString(),
-                Permission::bijdragersBeheren()->toString(),
             ],
             $permissions
         );
