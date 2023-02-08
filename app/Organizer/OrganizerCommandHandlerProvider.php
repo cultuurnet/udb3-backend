@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
@@ -20,6 +21,7 @@ use CultuurNet\UDB3\Organizer\CommandHandler\RemoveImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContributorsHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler;
@@ -50,6 +52,7 @@ final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
             RemoveImageHandler::class,
             ImportImagesHandler::class,
             ChangeOwnerHandler::class,
+            UpdateContributorsHandler::class,
         ];
     }
     public function register(): void
@@ -188,6 +191,14 @@ final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
             function () use ($container) {
                 return new ChangeOwnerHandler($container->get('organizer_repository'));
             }
+        );
+
+        $container->addShared(
+            UpdateContributorsHandler::class,
+            fn () => new UpdateContributorsHandler(
+                $container->get('organizer_repository'),
+                $container->get(ContributorRepository::class)
+            )
         );
     }
 }
