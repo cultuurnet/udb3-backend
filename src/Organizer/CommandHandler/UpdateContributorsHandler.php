@@ -27,6 +27,7 @@ final class UpdateContributorsHandler implements CommandHandler
             return;
         }
 
+        // Load the organizer to check that it actually exists
         $this->organizerRepository->load($command->getItemId());
 
         $this->contributorRepository->overwriteContributors(

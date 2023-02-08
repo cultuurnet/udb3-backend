@@ -27,6 +27,7 @@ final class UpdateContributorsHandler implements CommandHandler
             return;
         }
 
+        // Load the offer to check that it actually exists
         $this->offerRepository->load($command->getItemId());
 
         $this->contributorRepository->overwriteContributors(
