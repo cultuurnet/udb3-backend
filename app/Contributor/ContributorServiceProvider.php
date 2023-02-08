@@ -11,7 +11,7 @@ final class ContributorServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
-            DbalContributorRepository::class,
+            ContributorRepository::class,
         ];
     }
 
@@ -20,7 +20,7 @@ final class ContributorServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->addShared(
-            DbalContributorRepository::class,
+            ContributorRepository::class,
             fn () => new DbalContributorRepository($container->get('dbal_connection'))
         );
     }

@@ -9,7 +9,6 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Contributor\DbalContributorRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
@@ -96,7 +95,6 @@ final class OfferServiceProvider extends AbstractServiceProvider
             OfferMetadataProjector::class,
             AutoApproveForUiTIDv1ApiKeysProcessManager::class,
             PopularityRepository::class,
-            DbalContributorRepository::class,
             'iri_offer_identifier_factory',
             'should_auto_approve_new_offer',
             OfferRepository::class,
@@ -155,7 +153,6 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdateVideosRequestHandler::class,
             DeleteVideoRequestHandler::class,
             UpdateWorkflowStatusRequestHandler::class,
-            UpdateContributorsRequestHandler::class,
             PatchOfferRequestHandler::class,
         ];
     }
@@ -564,14 +561,6 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             UpdateWorkflowStatusRequestHandler::class,
             fn () => new UpdateWorkflowStatusRequestHandler($container->get('event_command_bus'))
-        );
-
-        $container->addShared(
-            UpdateContributorsRequestHandler::class,
-            fn () => new UpdateContributorsRequestHandler(
-                $container->get(OfferRepository::class),
-                $container->get(DbalContributorRepository::class)
-            )
         );
 
         $container->addShared(

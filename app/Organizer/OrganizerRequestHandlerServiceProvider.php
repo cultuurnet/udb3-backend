@@ -54,7 +54,6 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             AddLabelRequestHandler::class,
             DeleteLabelRequestHandler::class,
             GetPermissionsForCurrentUserRequestHandler::class,
-            UpdateContributorsRequestHandler::class,
             GetPermissionsForGivenUserRequestHandler::class,
         ];
     }
@@ -199,14 +198,6 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
                     $container->get(CurrentUser::class)->getId()
                 );
             }
-        );
-
-        $container->addShared(
-            UpdateContributorsRequestHandler::class,
-            fn () => new UpdateContributorsRequestHandler(
-                $container->get('organizer_repository'),
-                $container->get(DbalContributorRepository::class)
-            )
         );
 
         $container->addShared(
