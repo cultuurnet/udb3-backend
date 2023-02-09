@@ -9,7 +9,6 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
@@ -62,7 +61,6 @@ use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\UpdateContributorsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateOrganizerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdatePriceInfoHandler;
@@ -120,7 +118,6 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdatePriceInfoHandler::class,
             UpdateOrganizerHandler::class,
             DeleteOrganizerHandler::class,
-            UpdateContributorsHandler::class,
             GetDetailRequestHandler::class,
             DeleteRequestHandler::class,
             UpdateTypicalAgeRangeRequestHandler::class,
@@ -354,14 +351,6 @@ final class OfferServiceProvider extends AbstractServiceProvider
             fn () => new DeleteOrganizerHandler(
                 $container->get(OfferRepository::class),
                 $container->get(EventHasTicketSalesGuard::class)
-            )
-        );
-
-        $container->addShared(
-            UpdateContributorsHandler::class,
-            fn () => new UpdateContributorsHandler(
-                $container->get(OfferRepository::class),
-                $container->get(ContributorRepository::class)
             )
         );
 
