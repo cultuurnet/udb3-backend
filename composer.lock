@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "04476b036d9b7f7bd1794b05d6f5d296",
+    "content-hash": "38b0c52e25be96357aef1b88aa223e68",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5563,12 +5563,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "70c13cd3b6d73394851ed849612bff293d576eea"
+                "reference": "c84d51acbefec0cde9a7d99182cab96d60c6fff2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/70c13cd3b6d73394851ed849612bff293d576eea",
-                "reference": "70c13cd3b6d73394851ed849612bff293d576eea",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/c84d51acbefec0cde9a7d99182cab96d60c6fff2",
+                "reference": "c84d51acbefec0cde9a7d99182cab96d60c6fff2",
                 "shasum": ""
             },
             "default-branch": true,
@@ -5588,7 +5588,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
-            "time": "2022-12-12T10:16:18+00:00"
+            "time": "2023-02-08T10:57:28+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -10379,6 +10379,7 @@
     "platform": {
         "php": ">=7.4",
         "ext-dom": "*",
+        "ext-fileinfo": "*",
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-libxml": "*",
@@ -10387,9 +10388,8 @@
         "ext-redis": "*",
         "ext-simplexml": "*",
         "ext-tidy": "*",
-        "ext-xmlreader": "*",
-        "ext-fileinfo": "*"
+        "ext-xmlreader": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.1.0"
 }

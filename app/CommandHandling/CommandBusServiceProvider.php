@@ -172,6 +172,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdatePriceInfoHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateOrganizerHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\DeleteOrganizerHandler::class));
+                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateContributorsHandler::class));
 
                         // Event command handlers
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler::class));
@@ -202,6 +203,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\RemoveImageHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\ImportImagesHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\ChangeOwnerHandler::class));
+                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateContributorsHandler::class));
 
                         $commandBus->subscribe($container->get(LabelServiceProvider::COMMAND_HANDLER));
                     }
