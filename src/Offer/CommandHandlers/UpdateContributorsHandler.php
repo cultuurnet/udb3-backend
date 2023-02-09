@@ -21,6 +21,7 @@ final class UpdateContributorsHandler implements CommandHandler
         $this->offerRepository = $offerRepository;
         $this->contributorRepository = $contributorRepository;
     }
+
     public function handle($command): void
     {
         if (!($command instanceof UpdateContributors)) {
