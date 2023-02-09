@@ -9,6 +9,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
@@ -20,6 +21,7 @@ use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
@@ -154,6 +156,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             DeleteVideoRequestHandler::class,
             UpdateWorkflowStatusRequestHandler::class,
             UpdateContributorsRequestHandler::class,
+            GetContributorsRequestHandler::class,
             PatchOfferRequestHandler::class,
         ];
     }
@@ -562,6 +565,16 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             UpdateWorkflowStatusRequestHandler::class,
             fn () => new UpdateWorkflowStatusRequestHandler($container->get('event_command_bus'))
+        );
+
+        $container->addShared(
+            GetContributorsRequestHandler::class,
+            fn () => new GetContributorsRequestHandler(
+                $container->get(OfferRepository::class),
+                $container->get(ContributorRepository::class),
+                $container->get('offer_permission_voter'),
+                $container->get(CurrentUser::class)->getId()
+            )
         );
 
         $container->addShared(

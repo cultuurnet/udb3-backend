@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
@@ -14,6 +15,7 @@ use CultuurNet\UDB3\Http\Organizer\DeleteDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
@@ -53,6 +55,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             AddLabelRequestHandler::class,
             DeleteLabelRequestHandler::class,
             GetPermissionsForCurrentUserRequestHandler::class,
+            GetContributorsRequestHandler::class,
             GetPermissionsForGivenUserRequestHandler::class,
             UpdateContributorsRequestHandler::class,
         ];
@@ -198,6 +201,16 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
                     $container->get(CurrentUser::class)->getId()
                 );
             }
+        );
+
+        $container->addShared(
+            GetContributorsRequestHandler::class,
+            fn () => new GetContributorsRequestHandler(
+                $container->get('organizer_repository'),
+                $container->get(ContributorRepository::class),
+                $container->get('organizer_permission_voter'),
+                $container->get(CurrentUser::class)->getId()
+            )
         );
 
         $container->addShared(
