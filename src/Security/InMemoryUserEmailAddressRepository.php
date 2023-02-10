@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 final class InMemoryUserEmailAddressRepository implements UserEmailAddressRepository
 {
     /**
-     * @var EmailAddress[] $mappedUserIds
+     * @var EmailAddress[]
      */
     private static array $mappedUserIds = [];
 

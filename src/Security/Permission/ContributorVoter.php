@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\UserEmailAddressRepository;
 use CultuurNet\UDB3\StringLiteral;
