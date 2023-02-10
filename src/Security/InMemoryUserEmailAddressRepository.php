@@ -8,6 +8,9 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 final class InMemoryUserEmailAddressRepository implements UserEmailAddressRepository
 {
+    /**
+     * @var EmailAddress[] $mappedUserIds
+     */
     private static array $mappedUserIds = [];
 
     public static function addUserEmail(string $userId, EmailAddress $emailAddress): void
@@ -18,9 +21,7 @@ final class InMemoryUserEmailAddressRepository implements UserEmailAddressReposi
     public function getEmailForUserId(string $userId): ?EmailAddress
     {
         if (array_key_exists($userId, self::$mappedUserIds)) {
-            /** @var EmailAddress $emailAddress */
-            $emailAddress = self::$mappedUserIds[$userId];
-            return $emailAddress;
+            return self::$mappedUserIds[$userId];
         }
         return null;
     }
