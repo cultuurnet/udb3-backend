@@ -28,9 +28,7 @@ final class ContributorVoter implements PermissionVoter
     public function isAllowed(Permission $permission, StringLiteral $itemId, StringLiteral $userId): bool
     {
         $email = $this->repository->getEmailForUserId($userId->toNative());
-        return $email &&
-            in_array($email, $this->getEmailAddressesForItem($itemId->toNative())->toArray()
-            );
+        return $email && in_array($email, $this->getEmailAddressesForItem($itemId->toNative())->toArray());
     }
 
     private function getEmailAddressesForItem(string $itemId): EmailAddresses
