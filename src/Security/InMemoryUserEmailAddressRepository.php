@@ -10,7 +10,7 @@ final class InMemoryUserEmailAddressRepository implements UserEmailAddressReposi
 {
     private static array $mappedUserIds = [];
 
-    public static function addUserEmail(string $userId, EmailAddress $emailAddress)
+    public static function addUserEmail(string $userId, EmailAddress $emailAddress): void
     {
         self::$mappedUserIds[$userId] = $emailAddress;
     }
