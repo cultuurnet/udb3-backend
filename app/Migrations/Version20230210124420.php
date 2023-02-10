@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\Migrations\AbstractMigration;
 
 final class Version20230210124420 extends AbstractMigration
@@ -14,7 +13,6 @@ final class Version20230210124420 extends AbstractMigration
     {
         $table = $schema->getTable('contributor_relations');
         $table->addIndex(['uuid']);
-
     }
 
     public function down(Schema $schema): void
