@@ -199,7 +199,7 @@ class JsonWebTokenTest extends TestCase
 
         $auth0Token = JsonWebTokenFactory::createWithClaims(
             [
-                'https://publiq.be/email' => 'mock@example.com'
+                'https://publiq.be/email' => 'mock@example.com',
             ]
         );
 
