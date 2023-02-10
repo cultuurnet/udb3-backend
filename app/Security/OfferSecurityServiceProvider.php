@@ -21,7 +21,6 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
     {
         return [
             'offer_owner_query',
-            UserEmailAddressRepository::class,
             'offer_permission_voter',
         ];
     }
@@ -36,11 +35,6 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
                 $container->get('event_owner.repository'),
                 $container->get('place_owner.repository'),
             ])
-        );
-
-        $container->addShared(
-            UserEmailAddressRepository::class,
-            fn () => new InMemoryUserEmailAddressRepository()
         );
 
         $container->addShared(
