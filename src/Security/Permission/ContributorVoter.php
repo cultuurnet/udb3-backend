@@ -28,6 +28,6 @@ final class ContributorVoter implements PermissionVoter
     public function isAllowed(Permission $permission, StringLiteral $itemId, StringLiteral $userId): bool
     {
         $email = $this->repository->getEmailForUserId($userId->toNative());
-        return $email &&  $this->contributorRepository->isContributor(new UUID($itemId), $email);
+        return $email &&  $this->contributorRepository->isContributor(new UUID($itemId->toNative()), $email);
     }
 }
