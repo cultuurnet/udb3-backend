@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Security;
+
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+
+final class InMemoryUserEmailAddressRepository implements UserEmailAddressRepository
+{
+    private static array $mappedUserIds = [];
+
+    public static function addUserEmail(string $userId, EmailAddress $emailAddress)
+    {
+        self::$mappedUserIds[$userId] = $emailAddress;
+    }
+
+    public function getEmailForUserId(string $userId): ?EmailAddress
+    {
+        if (array_key_exists($userId, self::$mappedUserIds)) {
+            /** @var EmailAddress $emailAddress */
+            $emailAddress = self::$mappedUserIds[$userId];
+            return $emailAddress;
+        }
+        return null;
+    }
+}
