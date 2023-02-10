@@ -119,6 +119,9 @@ final class JsonWebToken
         if ($this->token->hasClaim('email')) {
             return new EmailAddress($this->token->getClaim('email'));
         }
+        if ($this->token->hasClaim('https://publiq.be/email')) {
+            return new EmailAddress($this->token->getClaim('https://publiq.be/email'));
+        }
         return null;
     }
 
