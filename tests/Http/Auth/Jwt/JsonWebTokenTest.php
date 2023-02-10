@@ -191,11 +191,15 @@ class JsonWebTokenTest extends TestCase
      */
     public function it_can_get_an_email_from_a_token(): void
     {
-        $tokenWithEmail = JsonWebTokenFactory::createWithClaims(
+        $jwtToken = JsonWebTokenFactory::createWithClaims(
             [
-                'uid' => 'c82bd40c-1932-4c45-bd5d-a76cc9907cee',
-                'nick' => 'mock-nickname',
                 'email' => 'mock@example.com',
+            ]
+        );
+
+        $auth0Token = JsonWebTokenFactory::createWithClaims(
+            [
+                'https://publiq.be/email' => 'mock@example.com'
             ]
         );
 
@@ -208,7 +212,12 @@ class JsonWebTokenTest extends TestCase
 
         $this->assertEquals(
             new EmailAddress('mock@example.com'),
-            $tokenWithEmail->getEmailAddress()
+            $jwtToken->getEmailAddress()
+        );
+
+        $this->assertEquals(
+            new EmailAddress('mock@example.com'),
+            $auth0Token->getEmailAddress()
         );
 
         $this->assertNull($tokenWithoutEmail->getEmailAddress());
