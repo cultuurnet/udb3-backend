@@ -6,7 +6,9 @@ namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
+use CultuurNet\UDB3\Security\Permission\ContributorVoter;
 use CultuurNet\UDB3\Security\Permission\ResourceOwnerVoter;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
 use GuzzleHttp\Psr7\Uri;
@@ -34,6 +36,10 @@ final class OrganizerSecurityServiceProvider extends AbstractServiceProvider
                     $container->get(ApiName::class) !== ApiName::CLI &&
                     isset($container->get('config')['performance']['resource_owner_cache']) &&
                     $container->get('config')['performance']['resource_owner_cache']
+                ),
+                new ContributorVoter(
+                    $container->get(UserEmailAddressRepository::class),
+                    $container->get(ContributorRepository::class)
                 ),
                 new Sapi3RoleConstraintVoter(
                     $container->get('user_constraints_read_repository'),
