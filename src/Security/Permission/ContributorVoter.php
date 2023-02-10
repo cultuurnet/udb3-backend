@@ -12,7 +12,7 @@ use CultuurNet\UDB3\StringLiteral;
 
 final class ContributorVoter implements PermissionVoter
 {
-    private UserEmailAddressRepository $repository;
+    private UserEmailAddressRepository $userEmailAddressRepository;
 
     private ContributorRepository $contributorRepository;
 
@@ -20,13 +20,13 @@ final class ContributorVoter implements PermissionVoter
         UserEmailAddressRepository $repository,
         ContributorRepository $contributorRepository
     ) {
-        $this->repository = $repository;
+        $this->userEmailAddressRepository = $repository;
         $this->contributorRepository = $contributorRepository;
     }
 
     public function isAllowed(Permission $permission, StringLiteral $itemId, StringLiteral $userId): bool
     {
-        $email = $this->repository->getEmailForUserId($userId->toNative());
+        $email = $this->userEmailAddressRepository->getEmailForUserId($userId->toNative());
         return $email && $this->contributorRepository->isContributor(new UUID($itemId->toNative()), $email);
     }
 }
