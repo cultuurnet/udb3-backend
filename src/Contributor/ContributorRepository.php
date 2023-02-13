@@ -14,5 +14,5 @@ interface ContributorRepository
 
     public function isContributor(UUID $id, EmailAddress $emailAddress): bool;
 
-    public function overwriteContributors(UUID $id, EmailAddresses $emailAddresses);
+    public function overwriteContributors(UUID $id, EmailAddresses $emailAddresses): void;
 }
