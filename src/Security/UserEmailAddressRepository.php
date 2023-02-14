@@ -8,7 +8,5 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 interface UserEmailAddressRepository
 {
-    public static function addUserEmail(string $userId, EmailAddress $emailAddress): void;
-
     public function getEmailForUserId(string $userId): ?EmailAddress;
 }

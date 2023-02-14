@@ -58,7 +58,7 @@ final class UserServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             UserEmailAddressRepository::class,
-            fn () => new InMemoryUserEmailAddressRepository()
+            fn () => new InMemoryUserEmailAddressRepository($container->get(JsonWebToken::class))
         );
     }
 }
