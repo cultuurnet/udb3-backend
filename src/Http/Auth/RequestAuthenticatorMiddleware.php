@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Http\Auth\Jwt\JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsReadRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Security\UserEmailAddressRepository;
 use CultuurNet\UDB3\User\CurrentUser;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -44,7 +43,6 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
     private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
     private UserPermissionsReadRepository $userPermissionReadRepository;
-    private UserEmailAddressRepository $userEmailAddressRepository;
 
     public function __construct(
         JwtValidator $uitIdV1JwtValidator,
@@ -52,8 +50,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
         ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck,
-        UserPermissionsReadRepository $userPermissionsReadRepository,
-        UserEmailAddressRepository $userEmailAddressRepository
+        UserPermissionsReadRepository $userPermissionsReadRepository
     ) {
         $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
         $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
@@ -61,7 +58,6 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
         $this->apiKeyConsumerPermissionCheck = $apiKeyConsumerPermissionCheck;
         $this->userPermissionReadRepository = $userPermissionsReadRepository;
-        $this->userEmailAddressRepository = $userEmailAddressRepository;
     }
 
     public function addPublicRoute(string $pathPattern, array $methods = []): void
@@ -145,12 +141,6 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 
         $validator->verifySignature($this->token);
         $validator->validateClaims($this->token);
-        if ($this->token->getEmailAddress()) {
-            $this->userEmailAddressRepository::addUserEmail(
-                $this->token->getUserId(),
-                $this->token->getEmailAddress()
-            );
-        }
     }
 
     private function authenticateApiKey(ServerRequestInterface $request): void

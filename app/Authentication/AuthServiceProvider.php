@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Impersonator;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Security\UserEmailAddressRepository;
 use CultuurNet\UDB3\User\CurrentUser;
 
 final class AuthServiceProvider extends AbstractServiceProvider
@@ -59,8 +58,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                     new CultureFeedApiKeyAuthenticator($container->get(ConsumerReadRepository::class)),
                     $container->get(ConsumerReadRepository::class),
                     new ConsumerIsInPermissionGroup((string) $container->get('config')['api_key']['group_id']),
-                    $container->get(UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY),
-                    $container->get(UserEmailAddressRepository::class)
+                    $container->get(UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY)
                 );
 
                 // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs,
