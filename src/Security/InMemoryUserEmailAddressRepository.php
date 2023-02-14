@@ -18,6 +18,10 @@ final class InMemoryUserEmailAddressRepository implements UserEmailAddressReposi
 
     public function getEmailForUserId(string $userId): ?EmailAddress
     {
-        return $this->token->getEmailAddress();
+        if ($this->token->getUserId() === $userId) {
+            return $this->token->getEmailAddress();
+        }
+
+        return null;
     }
 }
