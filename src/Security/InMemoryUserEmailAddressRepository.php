@@ -4,25 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
+use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 final class InMemoryUserEmailAddressRepository implements UserEmailAddressRepository
 {
-    /**
-     * @var EmailAddress[]
-     */
-    private static array $mappedUserIds = [];
+    private JsonWebToken $token;
 
-    public static function addUserEmail(string $userId, EmailAddress $emailAddress): void
+    public function __construct(JsonWebToken $token)
     {
-        self::$mappedUserIds[$userId] = $emailAddress;
+        $this->token = $token;
     }
 
     public function getEmailForUserId(string $userId): ?EmailAddress
     {
-        if (array_key_exists($userId, self::$mappedUserIds)) {
-            return self::$mappedUserIds[$userId];
-        }
-        return null;
+        return $this->token->getEmailAddress();
     }
 }
