@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Contributor\ContributorRepository;
+use CultuurNet\UDB3\Event\Events\UpdateEventContributors;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\Commands\UpdateContributors;
 use CultuurNet\UDB3\Offer\OfferRepository;
@@ -33,7 +35,8 @@ final class UpdateContributorsHandler implements CommandHandler
 
         $this->contributorRepository->overwriteContributors(
             new UUID($command->getItemId()),
-            $command->getEmailAddresses()
+            $command->getEmailAddresses(),
+            $command instanceof UpdateEventContributors ? ItemType::event() : ItemType::place()
         );
     }
 }
