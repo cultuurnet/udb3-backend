@@ -13,6 +13,8 @@ Copy `docker-compose.yml.dist` to the root folder and rename it to `docker-compo
 
 ### config.php file
 
+Get the latest `config.php` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-backend
+
 In your `config.php` file, you have to change some of the hosts to work with Docker instead of Vagrant.
 
 You'll need to change the following lines to work with docker hosts:
