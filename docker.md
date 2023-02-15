@@ -8,10 +8,9 @@
 ### .env file
 Copy `env.dist` to the root folder and rename it to `.env`
 
-### docker-compose file
-Copy `docker-compose.yml.dist` to the root folder and rename it to `docker-compose.yml`
-
 ### config.php file
+
+Get the latest `config.php` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-backend
 
 In your `config.php` file, you have to change some of the hosts to work with Docker instead of Vagrant.
 
@@ -46,7 +45,14 @@ To make the acceptance tests work with Docker, you'll need to change the `base_u
 
 Start the docker containers with the following command. Make sure to execute this inside the root of the project so the `.env` can be used.
 ```
-$ docker-compose up -d
+$ make up
+```
+
+### Composer install
+
+To install all composer packages, run the:
+```
+$ make install
 ```
 
 ### Migrations
@@ -54,4 +60,11 @@ $ docker-compose up -d
 To migrate the database, run the following command:
 ```
 $ make migrate
+```
+
+### CI
+
+To execute all CI tasks, run the following command:
+```
+$ make ci
 ```
