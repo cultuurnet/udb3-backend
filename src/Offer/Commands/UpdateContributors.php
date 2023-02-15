@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 
-final class UpdateContributors implements AuthorizableCommand
+abstract class UpdateContributors implements AuthorizableCommand
 {
     private string $offerId;
 
