@@ -10,6 +10,8 @@ use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Security\InMemoryUserEmailAddressRepository;
+use CultuurNet\UDB3\Security\UserEmailAddressRepository;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 
 final class UserServiceProvider extends AbstractServiceProvider
@@ -20,6 +22,7 @@ final class UserServiceProvider extends AbstractServiceProvider
             'cdbxml_created_by_resolver',
             GetUserByEmailRequestHandler::class,
             GetCurrentUserRequestHandler::class,
+            UserEmailAddressRepository::class,
         ];
     }
 
@@ -51,6 +54,11 @@ final class UserServiceProvider extends AbstractServiceProvider
                 $container->get(Auth0UserIdentityResolver::class),
                 $container->get(JsonWebToken::class)
             )
+        );
+
+        $container->addShared(
+            UserEmailAddressRepository::class,
+            fn () => new InMemoryUserEmailAddressRepository($container->get(JsonWebToken::class))
         );
     }
 }
