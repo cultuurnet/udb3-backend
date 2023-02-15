@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Contributor;
 
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 
 final class ContributorServiceProvider extends AbstractServiceProvider
@@ -21,7 +22,10 @@ final class ContributorServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             ContributorRepository::class,
-            fn () => new DbalContributorRepository($container->get('dbal_connection'))
+            fn () => new BroadcastingContributorRepository(
+                new DbalContributorRepository($container->get('dbal_connection')),
+                $container->get(EventBus::class)
+            )
         );
     }
 }
