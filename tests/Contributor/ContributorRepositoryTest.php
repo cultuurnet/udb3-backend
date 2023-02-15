@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Contributor;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Offer\OfferType;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
@@ -29,6 +31,7 @@ final class ContributorRepositoryTest extends TestCase
 
         $table->addColumn('uuid', Type::GUID)->setLength(36)->setNotnull(true);
         $table->addColumn('email', Type::TEXT)->setNotnull(true);
+        $table->addColumn('type', Type::STRING)->setLength(255)->setNotnull(true);
 
         return $table;
     }
@@ -52,6 +55,7 @@ final class ContributorRepositoryTest extends TestCase
             [
                 'uuid' => $this->brusselsEvent->toString(),
                 'email' => 'an@brussel.be',
+                'type' => OfferType::event()->toString(),
             ]
         );
         $this->getConnection()->insert(
@@ -59,6 +63,7 @@ final class ContributorRepositoryTest extends TestCase
             [
                 'uuid' => $this->brusselsEvent->toString(),
                 'email' => 'piet@brussel.be',
+                'type' => OfferType::event()->toString(),
             ]
         );
         $this->getConnection()->insert(
@@ -66,6 +71,7 @@ final class ContributorRepositoryTest extends TestCase
             [
                 'uuid' => $this->brusselsEvent->toString(),
                 'email' => 'info@brussel.be',
+                'type' => OfferType::event()->toString(),
             ]
         );
         $this->getConnection()->insert(
@@ -73,6 +79,7 @@ final class ContributorRepositoryTest extends TestCase
             [
                 'uuid' => $this->ghentEvent->toString(),
                 'email' => 'info@gent.be',
+                'type' => OfferType::event()->toString(),
             ]
         );
 
@@ -118,8 +125,9 @@ final class ContributorRepositoryTest extends TestCase
 
     /**
      * @test
+     * @dataProvider itemProvider
      */
-    public function it_can_overwrite_contributor(): void
+    public function it_can_overwrite_contributor(ItemType $itemType): void
     {
         $this->contributorRepository->overwriteContributors(
             $this->ghentEvent,
@@ -128,7 +136,8 @@ final class ContributorRepositoryTest extends TestCase
                     new EmailAddress('pol@gent.be'),
                     new EmailAddress('mieke@gent.be'),
                 ]
-            )
+            ),
+            $itemType
         );
 
         $this->assertEquals(
@@ -138,5 +147,14 @@ final class ContributorRepositoryTest extends TestCase
             ]),
             $this->contributorRepository->getContributors($this->ghentEvent)
         );
+    }
+
+    public function itemProvider(): array
+    {
+        return [
+            [ItemType::event()],
+            //[ItemType::place()],
+            //[ItemType::organizer()],
+        ];
     }
 }
