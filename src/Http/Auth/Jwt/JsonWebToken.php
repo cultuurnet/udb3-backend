@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Auth\Jwt;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Exception;
@@ -111,6 +112,17 @@ final class JsonWebToken
         } catch (Exception $e) {
             return null;
         }
+    }
+
+    public function getEmailAddress(): ?EmailAddress
+    {
+        if ($this->token->hasClaim('email')) {
+            return new EmailAddress($this->token->getClaim('email'));
+        }
+        if ($this->token->hasClaim('https://publiq.be/email')) {
+            return new EmailAddress($this->token->getClaim('https://publiq.be/email'));
+        }
+        return null;
     }
 
     public function getClientId(): ?string

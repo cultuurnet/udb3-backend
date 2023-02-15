@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Auth\Jwt;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\TestCase;
@@ -183,6 +184,43 @@ class JsonWebTokenTest extends TestCase
         );
 
         $this->assertEquals($details, $v1Token->getUserIdentityDetails($userIdentityResolver));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_an_email_from_a_token(): void
+    {
+        $jwtToken = JsonWebTokenFactory::createWithClaims(
+            [
+                'email' => 'mock@example.com',
+            ]
+        );
+
+        $auth0Token = JsonWebTokenFactory::createWithClaims(
+            [
+                'https://publiq.be/email' => 'mock@example.com',
+            ]
+        );
+
+        $tokenWithoutEmail = JsonWebTokenFactory::createWithClaims(
+            [
+                'sub' => 'auth0|mock-user-id',
+                'azp' => 'mock-client',
+            ]
+        );
+
+        $this->assertEquals(
+            new EmailAddress('mock@example.com'),
+            $jwtToken->getEmailAddress()
+        );
+
+        $this->assertEquals(
+            new EmailAddress('mock@example.com'),
+            $auth0Token->getEmailAddress()
+        );
+
+        $this->assertNull($tokenWithoutEmail->getEmailAddress());
     }
 
     /**
