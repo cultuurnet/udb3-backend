@@ -1,5 +1,11 @@
 .PHONY: ci stan cs cs-fix test
 
+up:
+	docker-compose up -d
+
+down:
+	docker-compose down
+
 install:
 	docker exec -it php.uitdatabank composer install
 
