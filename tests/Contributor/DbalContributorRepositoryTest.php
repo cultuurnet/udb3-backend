@@ -14,9 +14,10 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\TestCase;
 
-final class ContributorRepositoryTest extends TestCase
+final class DbalContributorRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
+    public const TABLE_NAME = 'contributor_relations';
 
     private UUID $brusselsEvent;
 
@@ -26,7 +27,7 @@ final class ContributorRepositoryTest extends TestCase
 
     private static function getTableDefinition(Schema $schema): Table
     {
-        $table = $schema->createTable('contributor_relations');
+        $table = $schema->createTable(self::TABLE_NAME);
 
         $table->addColumn('uuid', Type::GUID)->setLength(36)->setNotnull(true);
         $table->addColumn('email', Type::TEXT)->setNotnull(true);
@@ -125,9 +126,9 @@ final class ContributorRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_overwrite_contributor(): void
+    public function it_can_update_contributor(): void
     {
-        $this->contributorRepository->overwriteContributors(
+        $this->contributorRepository->updateContributors(
             $this->ghentEvent,
             EmailAddresses::fromArray(
                 [
@@ -145,5 +146,51 @@ final class ContributorRepositoryTest extends TestCase
             ]),
             $this->contributorRepository->getContributors($this->ghentEvent)
         );
+    }
+
+    /**
+     * @test
+     * @dataProvider itemTypeDataProvider
+     */
+    public function it_saves_the_correct_itemType(ItemType $itemType): void
+    {
+        $newItem = new UUID('53dae0d5-c92f-4909-aa26-2be8dac23e69');
+        $this->contributorRepository->overwriteContributors(
+            $newItem,
+            EmailAddresses::fromArray(
+                [
+                    new EmailAddress('an@gent.be'),
+                ]
+            ),
+            $itemType
+        );
+
+        $this->assertEquals(
+            EmailAddresses::fromArray([
+                new EmailAddress('an@gent.be'),
+            ]),
+            $this->contributorRepository->getContributors($newItem)
+        );
+
+        $result = $this->getConnection()
+            ->executeQuery('SELECT type from ' . self::TABLE_NAME . ' WHERE uuid =\'' . $newItem->toString() . '\';')
+            ->fetchAll();
+
+        $this->assertEquals($itemType->toString(), $result[0]['type']);
+    }
+
+    public function itemTypeDataProvider(): array
+    {
+        return [
+            'event' => [
+                ItemType::event(),
+            ],
+            'place' => [
+                ItemType::place(),
+            ],
+            'organizer' => [
+                ItemType::organizer(),
+            ],
+        ];
     }
 }
