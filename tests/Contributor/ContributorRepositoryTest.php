@@ -125,41 +125,17 @@ final class ContributorRepositoryTest extends TestCase
 
     /**
      * @test
-     */
-    public function it_can_overwrite_contributor(): void
-    {
-        $this->contributorRepository->overwriteContributors(
-            $this->ghentEvent,
-            EmailAddresses::fromArray(
-                [
-                    new EmailAddress('pol@gent.be'),
-                    new EmailAddress('mieke@gent.be'),
-                ]
-            ),
-            ItemType::event()
-        );
-
-        $this->assertEquals(
-            EmailAddresses::fromArray([
-                new EmailAddress('pol@gent.be'),
-                new EmailAddress('mieke@gent.be'),
-            ]),
-            $this->contributorRepository->getContributors($this->ghentEvent)
-        );
-    }
-
-    /**
-     * @test
      * @dataProvider itemTypeDataProvider
      */
-    public function it_saves_the_correct_itemType(ItemType $itemType): void
+    public function it_can_overwrite_contributor(ItemType $itemType): void
     {
         $newItem = new UUID('53dae0d5-c92f-4909-aa26-2be8dac23e69');
         $this->contributorRepository->overwriteContributors(
             $newItem,
             EmailAddresses::fromArray(
                 [
-                    new EmailAddress('an@gent.be'),
+                    new EmailAddress('pol@gent.be'),
+                    new EmailAddress('mieke@gent.be'),
                 ]
             ),
             $itemType
@@ -167,7 +143,8 @@ final class ContributorRepositoryTest extends TestCase
 
         $this->assertEquals(
             EmailAddresses::fromArray([
-                new EmailAddress('an@gent.be'),
+                new EmailAddress('pol@gent.be'),
+                new EmailAddress('mieke@gent.be'),
             ]),
             $this->contributorRepository->getContributors($newItem)
         );
