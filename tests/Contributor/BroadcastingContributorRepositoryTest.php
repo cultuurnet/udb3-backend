@@ -46,9 +46,7 @@ final class BroadcastingContributorRepositoryTest extends TestCase
                     fn ($cdbid) =>  'https://io.uitdatabank.dev/places/' . $cdbid . '/contributors'
                 ),
                 new CallableIriGenerator(
-                    fn () => new CallableIriGenerator(
                         fn ($cdbid) => 'https://io.uitdatabank.dev/organizers/' . $cdbid . '/contributors'
-                    )
                 )
             )
         );

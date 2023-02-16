@@ -34,9 +34,7 @@ final class ContributorServiceProvider extends AbstractServiceProvider
                         fn ($cdbid) => $container->get('config')['url'] . '/places/' . $cdbid . '/contributors'
                     ),
                     new CallableIriGenerator(
-                        fn () => new CallableIriGenerator(
-                            fn ($cdbid) => $container->get('config')['url'] . '/organizers/' . $cdbid . '/contributors'
-                        )
+                        fn ($cdbid) => $container->get('config')['url'] . '/organizers/' . $cdbid . '/contributors'
                     )
                 )
             )
