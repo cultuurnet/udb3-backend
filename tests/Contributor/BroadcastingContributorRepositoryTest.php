@@ -60,7 +60,7 @@ final class BroadcastingContributorRepositoryTest extends TestCase
      * @test
      * @dataProvider contributorsUpdatedProvider
      */
-    public function test_todo(ItemType $itemType, ContributorsUpdated $contributorsUpdated): void
+    public function it_will_publish_when_contributors_are_updated(ItemType $itemType, ContributorsUpdated $contributorsUpdated): void
     {
         $validEmails = EmailAddresses::fromArray([new EmailAddress('foo@bar.com')]);
         $this->contributorRepository->updateContributors($this->itemId, $validEmails, $itemType);
