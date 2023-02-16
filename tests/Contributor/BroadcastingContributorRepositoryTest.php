@@ -60,6 +60,21 @@ final class BroadcastingContributorRepositoryTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_can_get_contributors(): void
+    {
+        $this->decoratee->expects($this->once())
+            ->method('getContributors')
+            ->with($this->itemId)
+            ->willReturn($this->emails);
+
+        $result = $this->contributorRepository->getContributors($this->itemId);
+
+        $this->assertEquals($this->emails, $result);
+    }
+
+    /**
+     * @test
      * @dataProvider contributorsUpdatedProvider
      */
     public function it_will_publish_when_contributors_are_updated(ItemType $itemType, ContributorsUpdated $contributorsUpdated): void
