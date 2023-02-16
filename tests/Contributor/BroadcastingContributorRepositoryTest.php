@@ -30,6 +30,8 @@ final class BroadcastingContributorRepositoryTest extends TestCase
 
     private UUID $itemId;
 
+    private EmailAddresses $emails;
+
     protected function setUp(): void
     {
         $this->itemId = new UUID('f28b47d1-4d06-4c46-94cc-d0ddbaad102f');
@@ -46,10 +48,12 @@ final class BroadcastingContributorRepositoryTest extends TestCase
                     fn ($cdbid) =>  'https://io.uitdatabank.dev/places/' . $cdbid . '/contributors'
                 ),
                 new CallableIriGenerator(
-                        fn ($cdbid) => 'https://io.uitdatabank.dev/organizers/' . $cdbid . '/contributors'
+                    fn ($cdbid) => 'https://io.uitdatabank.dev/organizers/' . $cdbid . '/contributors'
                 )
             )
         );
+
+        $this->emails = EmailAddresses::fromArray([new EmailAddress('foo@bar.com')]);
 
         $this->eventBus->trace();
     }
@@ -60,13 +64,11 @@ final class BroadcastingContributorRepositoryTest extends TestCase
      */
     public function it_will_publish_when_contributors_are_updated(ItemType $itemType, ContributorsUpdated $contributorsUpdated): void
     {
-        $validEmails = EmailAddresses::fromArray([new EmailAddress('foo@bar.com')]);
-
         $this->decoratee->expects($this->once())
             ->method('updateContributors')
-            ->with($this->itemId, $validEmails, $itemType);
+            ->with($this->itemId, $this->emails, $itemType);
 
-        $this->contributorRepository->updateContributors($this->itemId, $validEmails, $itemType);
+        $this->contributorRepository->updateContributors($this->itemId, $this->emails, $itemType);
 
         $expected = [$contributorsUpdated];
         $actual = $this->eventBus->getEvents();
