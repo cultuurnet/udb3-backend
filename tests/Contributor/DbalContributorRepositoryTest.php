@@ -14,7 +14,7 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\TestCase;
 
-final class ContributorRepositoryTest extends TestCase
+final class DbalContributorRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
