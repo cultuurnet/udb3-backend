@@ -30,6 +30,8 @@ final class BroadcastingContributorRepositoryTest extends TestCase
 
     private UUID $itemId;
 
+    private EmailAddress $email;
+
     private EmailAddresses $emails;
 
     protected function setUp(): void
@@ -53,7 +55,8 @@ final class BroadcastingContributorRepositoryTest extends TestCase
             )
         );
 
-        $this->emails = EmailAddresses::fromArray([new EmailAddress('foo@bar.com')]);
+        $this->email = new EmailAddress('foo@bar.com');
+        $this->emails = EmailAddresses::fromArray([$this->email]);
 
         $this->eventBus->trace();
     }
@@ -71,6 +74,19 @@ final class BroadcastingContributorRepositoryTest extends TestCase
         $result = $this->contributorRepository->getContributors($this->itemId);
 
         $this->assertEquals($this->emails, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_check_if_an_email_is_a_contributor(): void
+    {
+        $this->decoratee->expects($this->once())
+            ->method('isContributor')
+            ->with($this->itemId, $this->email)
+            ->willReturn(true);
+
+        $this->assertTrue($this->contributorRepository->isContributor($this->itemId, $this->email));
     }
 
     /**
