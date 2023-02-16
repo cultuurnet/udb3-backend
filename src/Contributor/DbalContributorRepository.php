@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Contributor;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -55,10 +56,10 @@ final class DbalContributorRepository implements ContributorRepository
         return count($results) > 0;
     }
 
-    public function overwriteContributors(UUID $id, EmailAddresses $emailAddresses): void
+    public function overwriteContributors(UUID $id, EmailAddresses $emailAddresses, ItemType $itemType): void
     {
         $this->connection->transactional(
-            function (Connection $connection) use ($id, $emailAddresses) {
+            function (Connection $connection) use ($id, $emailAddresses, $itemType) {
                 $connection
                     ->delete(
                         self::TABLE,
@@ -72,6 +73,7 @@ final class DbalContributorRepository implements ContributorRepository
                             [
                                 'uuid' => $id->toString(),
                                 'email' => $email->toString(),
+                                'type' => $itemType->toString(),
                             ]
                         );
                 }
