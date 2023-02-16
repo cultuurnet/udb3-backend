@@ -127,7 +127,7 @@ final class ContributorRepositoryTest extends TestCase
      * @test
      * @dataProvider itemTypeDataProvider
      */
-    public function it_can_overwrite_contributor(ItemType $itemType): void
+    public function it_can_overwrite_contributor_and_type(ItemType $itemType): void
     {
         $newItem = new UUID('53dae0d5-c92f-4909-aa26-2be8dac23e69');
         $this->contributorRepository->overwriteContributors(
