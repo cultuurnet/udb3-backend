@@ -40,9 +40,9 @@ final class BroadcastingContributorRepository implements ContributorRepository
         return $this->repository->isContributor($id, $emailAddress);
     }
 
-    public function overwriteContributors(UUID $id, EmailAddresses $emailAddresses, ItemType $itemType): void
+    public function updateContributors(UUID $id, EmailAddresses $emailAddresses, ItemType $itemType): void
     {
-        $this->repository->overwriteContributors($id, $emailAddresses, $itemType);
+        $this->repository->updateContributors($id, $emailAddresses, $itemType);
 
         if ($itemType->sameAs(ItemType::event())) {
             $contributorsUpdated = $this->contributorOverwrittenFactory->createEventContributorsUpdated($id->toString());
