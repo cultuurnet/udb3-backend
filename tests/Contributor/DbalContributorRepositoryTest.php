@@ -155,7 +155,7 @@ final class DbalContributorRepositoryTest extends TestCase
     public function it_saves_the_correct_itemType(ItemType $itemType): void
     {
         $newItem = new UUID('53dae0d5-c92f-4909-aa26-2be8dac23e69');
-        $this->contributorRepository->overwriteContributors(
+        $this->contributorRepository->updateContributors(
             $newItem,
             EmailAddresses::fromArray(
                 [
