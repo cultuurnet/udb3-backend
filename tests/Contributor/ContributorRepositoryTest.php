@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Contributor;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -29,6 +30,7 @@ final class ContributorRepositoryTest extends TestCase
 
         $table->addColumn('uuid', Type::GUID)->setLength(36)->setNotnull(true);
         $table->addColumn('email', Type::TEXT)->setNotnull(true);
+        $table->addColumn('type', Type::STRING)->setLength(255)->setNotnull(true);
 
         return $table;
     }
@@ -52,6 +54,7 @@ final class ContributorRepositoryTest extends TestCase
             [
                 'uuid' => $this->brusselsEvent->toString(),
                 'email' => 'an@brussel.be',
+                'type' => ItemType::event()->toString(),
             ]
         );
         $this->getConnection()->insert(
@@ -59,6 +62,7 @@ final class ContributorRepositoryTest extends TestCase
             [
                 'uuid' => $this->brusselsEvent->toString(),
                 'email' => 'piet@brussel.be',
+                'type' => ItemType::event()->toString(),
             ]
         );
         $this->getConnection()->insert(
@@ -66,6 +70,7 @@ final class ContributorRepositoryTest extends TestCase
             [
                 'uuid' => $this->brusselsEvent->toString(),
                 'email' => 'info@brussel.be',
+                'type' => ItemType::event()->toString(),
             ]
         );
         $this->getConnection()->insert(
@@ -73,6 +78,7 @@ final class ContributorRepositoryTest extends TestCase
             [
                 'uuid' => $this->ghentEvent->toString(),
                 'email' => 'info@gent.be',
+                'type' => ItemType::event()->toString(),
             ]
         );
 
@@ -128,7 +134,8 @@ final class ContributorRepositoryTest extends TestCase
                     new EmailAddress('pol@gent.be'),
                     new EmailAddress('mieke@gent.be'),
                 ]
-            )
+            ),
+            ItemType::event()
         );
 
         $this->assertEquals(
