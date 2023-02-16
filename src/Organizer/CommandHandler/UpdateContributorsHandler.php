@@ -32,7 +32,7 @@ final class UpdateContributorsHandler implements CommandHandler
         // Load the organizer to check that it actually exists
         $this->organizerRepository->load($command->getItemId());
 
-        $this->contributorRepository->overwriteContributors(
+        $this->contributorRepository->updateContributors(
             new UUID($command->getItemId()),
             $command->getEmailAddresses(),
             ItemType::organizer()

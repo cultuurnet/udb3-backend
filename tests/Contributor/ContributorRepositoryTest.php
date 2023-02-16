@@ -125,9 +125,9 @@ final class ContributorRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_overwrite_contributor(): void
+    public function it_can_update_contributor(): void
     {
-        $this->contributorRepository->overwriteContributors(
+        $this->contributorRepository->updateContributors(
             $this->ghentEvent,
             EmailAddresses::fromArray(
                 [

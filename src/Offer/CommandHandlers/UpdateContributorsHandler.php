@@ -33,7 +33,7 @@ final class UpdateContributorsHandler implements CommandHandler
         // Load the offer to check that it actually exists
         $this->offerRepository->load($command->getItemId());
 
-        $this->contributorRepository->overwriteContributors(
+        $this->contributorRepository->updateContributors(
             new UUID($command->getItemId()),
             $command->getEmailAddresses(),
             $command->getOfferType()->sameAs(OfferType::event()) ? ItemType::event() : ItemType::place()
