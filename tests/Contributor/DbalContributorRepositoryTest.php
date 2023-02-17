@@ -14,7 +14,7 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\TestCase;
 
-final class ContributorRepositoryTest extends TestCase
+final class DbalContributorRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
     public const TABLE_NAME = 'contributor_relations';
@@ -130,7 +130,7 @@ final class ContributorRepositoryTest extends TestCase
     public function it_can_overwrite_contributor_and_type(ItemType $itemType): void
     {
         $newItem = new UUID('53dae0d5-c92f-4909-aa26-2be8dac23e69');
-        $this->contributorRepository->overwriteContributors(
+        $this->contributorRepository->updateContributors(
             $newItem,
             EmailAddresses::fromArray(
                 [

@@ -56,7 +56,7 @@ final class DbalContributorRepository implements ContributorRepository
         return count($results) > 0;
     }
 
-    public function overwriteContributors(UUID $id, EmailAddresses $emailAddresses, ItemType $itemType): void
+    public function updateContributors(UUID $id, EmailAddresses $emailAddresses, ItemType $itemType): void
     {
         $this->connection->transactional(
             function (Connection $connection) use ($id, $emailAddresses, $itemType) {
