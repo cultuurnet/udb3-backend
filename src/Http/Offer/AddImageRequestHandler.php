@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\Commands\AddImage as EventAddImage;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use Broadway\Repository\Repository;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\Commands\AddImage as PlaceAddImage;
+use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
+use CultuurNet\UDB3\Offer\Serializers\AddImageDenormalizer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -21,35 +22,39 @@ final class AddImageRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
-    public function __construct(CommandBus $commandBus)
+    private Repository $mediaRepository;
+
+    public function __construct(CommandBus $commandBus, Repository $mediaRepository)
     {
         $this->commandBus = $commandBus;
+        $this->mediaRepository = $mediaRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
-        $bodyContent = Json::decode($request->getBody()->getContents());
+        $offerType = $routeParameters->getOfferType();
 
-        if (empty($bodyContent->mediaObjectId)) {
-            throw ApiProblem::bodyInvalidDataWithDetail('media object id required');
-        }
+        $requestBodyParser = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(
+                JsonSchemaLocator::getSchemaFileByOfferType(
+                    $offerType,
+                    JsonSchemaLocator::EVENT_IMAGE_POST,
+                    JsonSchemaLocator::PLACE_IMAGE_POST,
+                )
+            ),
+            new AddMediaObjectPropertiesRequestBodyParser($this->mediaRepository),
+            new DenormalizingRequestBodyParser(
+                new AddImageDenormalizer($offerType, $offerId),
+                AbstractAddImage::class
+            ),
+        );
 
-        // @todo Validate that this id exists and is in fact an image and not a different type of media object
-        $imageId = new UUID($bodyContent->mediaObjectId);
+        $request = $requestBodyParser->parse($request);
 
-        if ($routeParameters->getOfferType()->sameAs(OfferType::event())) {
-            $addImage = new EventAddImage(
-                $offerId,
-                $imageId
-            );
-        } else {
-            $addImage = new PlaceAddImage(
-                $offerId,
-                $imageId
-            );
-        }
+        /** @var AbstractAddImage $addImage */
+        $addImage = $requestBodyParser->parse($request)->getParsedBody();
 
         $this->commandBus->dispatch($addImage);
 

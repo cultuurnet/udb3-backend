@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
+use CultuurNet\UDB3\Offer\AgeRange;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -14,20 +15,14 @@ class AbstractUpdateTypicalAgeRangeTest extends TestCase
      */
     protected $updateTypicalAgeRange;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var string
-     */
-    protected $typicalAgeRange;
+    protected AgeRange $typicalAgeRange;
 
     public function setUp(): void
     {
         $this->itemId = 'Foo';
-        $this->typicalAgeRange = '3-12';
+        $this->typicalAgeRange = AgeRange::fromString('3-12');
 
         $this->updateTypicalAgeRange = $this->getMockForAbstractClass(
             AbstractUpdateTypicalAgeRange::class,
@@ -41,7 +36,7 @@ class AbstractUpdateTypicalAgeRangeTest extends TestCase
     public function it_can_return_its_properties()
     {
         $typicalAgeRange = $this->updateTypicalAgeRange->getTypicalAgeRange();
-        $expectedTypicalAgeRange = '3-12';
+        $expectedTypicalAgeRange = AgeRange::fromString('3-12');
 
         $this->assertEquals($expectedTypicalAgeRange, $typicalAgeRange);
 

@@ -14,8 +14,8 @@ use RuntimeException;
 final class JsonSchemaLocator
 {
     private static ?string $schemaDirectory;
-
     public const EVENT = 'event.json';
+
     public const EVENT_NAME_PUT = 'event-name-put.json';
     public const EVENT_ATTENDANCE_MODE_PUT = 'event-attendanceMode-put.json';
     public const EVENT_ONLINE_URL_PUT = 'event-onlineUrl-put.json';
@@ -24,24 +24,41 @@ final class JsonSchemaLocator
     public const EVENT_BOOKING_AVAILABILITY = 'event-bookingAvailability.json';
     public const EVENT_BOOKING_INFO = 'event-bookingInfo.json';
     public const EVENT_CALENDAR_PUT = 'event-calendar-put.json';
+    public const EVENT_CONTACT_POINT_PUT = 'event-contactPoint-put.json';
+    public const EVENT_DESCRIPTION_PUT = 'event-description-put.json';
     public const EVENT_FACILITIES_PUT = 'event-facilities-put.json';
+    public const EVENT_IMAGE_POST = 'event-image-post.json';
+    public const EVENT_IMAGE_PUT = 'event-image-put.json';
+    public const EVENT_MAIN_IMAGE_PUT = 'event-main-image-put.json';
     public const EVENT_PRICE_INFO_PUT = 'event-priceInfo.json';
     public const EVENT_STATUS = 'event-status.json';
     public const EVENT_SUB_EVENT_PATCH = 'event-subEvent-patch.json';
+    public const EVENT_TYPICAL_AGE_RANGE_PUT = 'event-typicalAgeRange-put.json';
     public const EVENT_VIDEOS_PATCH = 'event-videos-patch.json';
     public const EVENT_VIDEOS_POST = 'event-videos-post.json';
+    public const EVENT_WORKFLOW_STATUS_PUT = 'event-workflowStatus-put.json';
+    public const EVENT_CONTRIBUTORS_PUT = 'event-contributors-put.json';
 
     public const PLACE = 'place.json';
+    public const PLACE_ADDRESS_PUT = 'place-address-put.json';
     public const PLACE_NAME_PUT = 'place-name-put.json';
     public const PLACE_AVAILABLE_FROM_PUT = 'place-availableFrom-put.json';
     public const PLACE_BOOKING_AVAILABILITY = 'place-bookingAvailability.json';
     public const PLACE_BOOKING_INFO = 'place-bookingInfo.json';
     public const PLACE_CALENDAR_PUT = 'place-calendar-put.json';
+    public const PLACE_CONTACT_POINT_PUT = 'place-contactPoint-put.json';
+    public const PLACE_DESCRIPTION_PUT = 'place-description-put.json';
     public const PLACE_FACILITIES_PUT = 'place-facilities-put.json';
+    public const PLACE_IMAGE_POST = 'place-image-post.json';
+    public const PLACE_IMAGE_PUT = 'place-image-put.json';
+    public const PLACE_MAIN_IMAGE_PUT = 'place-main-image-put.json';
     public const PLACE_PRICE_INFO_PUT = 'place-priceInfo.json';
     public const PLACE_STATUS = 'place-status.json';
+    public const PLACE_TYPICAL_AGE_RANGE_PUT = 'place-typicalAgeRange-put.json';
     public const PLACE_VIDEOS_PATCH = 'place-videos-patch.json';
     public const PLACE_VIDEOS_POST = 'place-videos-post.json';
+    public const PLACE_WORKFLOW_STATUS_PUT = 'place-workflowStatus-put.json';
+    public const PLACE_CONTRIBUTORS_PUT = 'place-contributors-put.json';
 
     public const ORGANIZER = 'organizer.json';
     public const ORGANIZER_NAME_PUT = 'organizer-name-put.json';
@@ -52,6 +69,7 @@ final class JsonSchemaLocator
     public const ORGANIZER_IMAGE_POST = 'organizer-image-post.json';
     public const ORGANIZER_MAIN_IMAGE_PUT = 'organizer-main-image-put.json';
     public const ORGANIZER_IMAGES_PATCH = 'organizer-images-patch.json';
+    public const ORGANIZER_CONTRIBUTORS_PUT = 'organizer-contributors-put.json';
 
     public const NEWS_ARTICLE_POST = 'newsArticle-post.json';
 

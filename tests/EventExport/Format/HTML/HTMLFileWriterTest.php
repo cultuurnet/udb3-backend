@@ -6,12 +6,9 @@ namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
 use PHPUnit\Framework\TestCase;
 
-class HTMLFileWriterTest extends TestCase
+final class HTMLFileWriterTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    protected $filePath;
+    protected string $filePath;
 
     public function setUp(): void
     {
@@ -22,11 +19,11 @@ class HTMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_writes_a_file()
+    public function it_writes_a_file(): void
     {
         $events = [];
 
-        $this->assertFileNotExists($this->filePath);
+        $this->assertFileDoesNotExist($this->filePath);
 
         $fileWriter = $this->createHTMLFileWriter(
             [
@@ -48,7 +45,7 @@ class HTMLFileWriterTest extends TestCase
         $template,
         $variables,
         $fileWithExpectedContent
-    ) {
+    ): void {
         $events = [];
 
         $twig = new \Twig_Environment(
@@ -67,7 +64,7 @@ class HTMLFileWriterTest extends TestCase
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
-    public function twigCustomTemplateProvider()
+    public function twigCustomTemplateProvider(): array
     {
         return [
             [
@@ -104,7 +101,7 @@ class HTMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_inserts_variables()
+    public function it_inserts_variables(): void
     {
         $fileWriter = $this->createHTMLFileWriter(
             [
@@ -125,7 +122,7 @@ class HTMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_inserts_events()
+    public function it_inserts_events(): void
     {
         $events = [
             [
@@ -190,7 +187,7 @@ class HTMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_can_handle_events_without_an_image()
+    public function it_can_handle_events_without_an_image(): void
     {
         $events = [
             [
@@ -224,7 +221,7 @@ class HTMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_shows_taaliconen()
+    public function it_shows_taaliconen(): void
     {
         $events = [
             [
@@ -260,7 +257,7 @@ class HTMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_can_handle_four_taaliconen()
+    public function it_can_handle_four_taaliconen(): void
     {
         $events = [
             [
@@ -296,7 +293,7 @@ class HTMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_event_brands_to_activities()
+    public function it_adds_event_brands_to_activities(): void
     {
         $events = [
             [
@@ -336,7 +333,7 @@ class HTMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_shows_the_starting_age()
+    public function it_shows_the_starting_age(): void
     {
         $events = [
             [
@@ -373,7 +370,7 @@ class HTMLFileWriterTest extends TestCase
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
-    private function getEventsWithUiTPASInfo()
+    private function getEventsWithUiTPASInfo(): array
     {
         return [
             [
@@ -418,7 +415,7 @@ class HTMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_shows_uitpas_info()
+    public function it_shows_uitpas_info(): void
     {
         $events = $this->getEventsWithUiTPASInfo();
 
@@ -438,7 +435,7 @@ class HTMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_shows_paspartoe_branded_uitpas_info()
+    public function it_shows_paspartoe_branded_uitpas_info(): void
     {
         $events = $this->getEventsWithUiTPASInfo();
 
@@ -460,7 +457,7 @@ class HTMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_shows_a_custom_logo()
+    public function it_shows_a_custom_logo(): void
     {
         $events = [
             [
@@ -495,28 +492,20 @@ class HTMLFileWriterTest extends TestCase
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
-    /**
-     * @param array $variables
-     * @return HTMLFileWriter
-     */
-    protected function createHTMLFileWriter($variables)
+    protected function createHTMLFileWriter(array $variables): HTMLFileWriter
     {
         return new HTMLFileWriter('export.tips.html.twig', $variables);
     }
 
-    /**
-     * @return string
-     */
-    protected function getFilePath()
+    protected function getFilePath(): string
     {
         return tempnam(sys_get_temp_dir(), uniqid()) . '.html';
     }
 
     /**
-     * @param string $html
-     * @param string $filePath
+     * @test
      */
-    protected function assertHTMLFileContents($html, $filePath)
+    protected function assertHTMLFileContents(string $html, string $filePath): void
     {
         $this->assertEquals($html, file_get_contents($filePath));
     }

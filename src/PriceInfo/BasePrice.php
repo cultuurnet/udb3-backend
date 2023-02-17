@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\PriceInfo;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff as Udb3ModelTariff;
+use CultuurNet\UDB3\MoneyFactory;
 use Money\Currency;
 use Money\Money;
 
@@ -44,7 +45,7 @@ class BasePrice implements Serializable
     public static function deserialize(array $data): BasePrice
     {
         return new BasePrice(
-            new Money((int) $data['price'], new Currency($data['currency']))
+            MoneyFactory::createFromCents($data['price'], new Currency($data['currency']))
         );
     }
 

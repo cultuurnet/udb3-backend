@@ -116,6 +116,67 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
      * @test
      * @dataProvider offerTypeDataProvider
      */
+    public function it_does_not_have_rounding_issues(string $offerType): void
+    {
+        $body = [
+            [
+                'category' => 'base',
+                'name' => [
+                    'nl' => 'Basistarief',
+                ],
+                'price' => 2.3,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Early birds',
+                ],
+                'price' => 2.3,
+                'priceCurrency' => 'EUR',
+            ],
+        ];
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
+            ->withJsonBodyFromArray($body)
+            ->build('PUT');
+
+        $priceInfo = new PriceInfo(
+            new Tariff(
+                new TranslatedTariffName(
+                    new Language('nl'),
+                    new TariffName('Basistarief')
+                ),
+                new Money(230, new Currency('EUR'))
+            ),
+            new Tariffs(
+                new Tariff(
+                    new TranslatedTariffName(
+                        new Language('nl'),
+                        new TariffName('Early birds')
+                    ),
+                    new Money(230, new Currency('EUR'))
+                ),
+            )
+        );
+
+        $expected = new UpdatePriceInfo(
+            'a91bc028-c44a-4429-9784-8641c9858eed',
+            $priceInfo
+        );
+
+        $this->commandBus->expects($this->once())
+            ->method('dispatch')
+            ->with($expected);
+
+        $this->updatePriceInfoRequestHandler->handle($request);
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
     public function it_throws_an_api_problem_if_the_price_info_contains_duplicate_names(string $offerType): void
     {
         $body = [

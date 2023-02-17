@@ -18,7 +18,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class BulkLabelCommandHandlerTest extends TestCase
+final class BulkLabelCommandHandlerTest extends TestCase
 {
     /**
      * @var ResultsGeneratorInterface|MockObject
@@ -30,27 +30,21 @@ class BulkLabelCommandHandlerTest extends TestCase
      */
     private $logger;
 
-    /**
-     * @var BulkLabelCommandHandler
-     */
-    private $commandHandler;
+    private BulkLabelCommandHandler $commandHandler;
 
-    /**
-     * @var string
-     */
-    private $query;
+    private string $query;
 
     private Label $label;
 
     /**
      * @var IriOfferIdentifier[]
      */
-    private $offerIdentifiers;
+    private array $offerIdentifiers;
 
     /**
      * @var ItemIdentifier[]
      */
-    private $itemIdentifiers;
+    private array $itemIdentifiers;
 
     /**
      * @var CommandBus|MockObject
@@ -149,15 +143,16 @@ class BulkLabelCommandHandlerTest extends TestCase
         string $message
     ): void {
         // One label action should fail.
-        $this->commandBus->expects($this->at(0))
-            ->method('dispatch')
-            ->with(new AddLabel($this->offerIdentifiers[1]->getId(), $this->label))
-            ->willThrowException($exception);
-
         // Make sure the other offer is still labelled.
-        $this->commandBus->expects($this->at(1))
-            ->method('dispatch')
-            ->with(new AddLabel($this->offerIdentifiers[2]->getId(), $this->label));
+        $this->commandBus->method('dispatch')->withConsecutive(
+            [new AddLabel($this->offerIdentifiers[1]->getId(), $this->label)],
+            [new AddLabel($this->offerIdentifiers[2]->getId(), $this->label)]
+        )->will(
+            $this->onConsecutiveCalls(
+                $this->throwException($exception),
+                false
+            )
+        );
 
         // Make sure we log the occur.
         $this->logger->expects($this->once())

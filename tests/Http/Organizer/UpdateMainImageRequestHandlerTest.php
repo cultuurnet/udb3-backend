@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Organizer;
 
+use Broadway\CommandHandling\CommandBus;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Offer\ImageMustBeLinkedException;
 use CultuurNet\UDB3\Organizer\Commands\UpdateMainImage;
 use PHPUnit\Framework\TestCase;
 
@@ -74,6 +76,32 @@ final class UpdateMainImageRequestHandlerTest extends TestCase
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_image_is_not_linked_to_offer(): void
+    {
+        $commandBus = $this->createMock(CommandBus::class);
+        $commandBus->expects($this->once())
+            ->method('dispatch')
+            ->willThrowException(new ImageMustBeLinkedException());
+
+        $handler = new UpdateMainImageRequestHandler($commandBus);
+
+        $imageId = '03789a2f-5063-4062-b7cb-95a0a2280d92';
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
+            ->withJsonBodyFromArray([
+                'imageId' => $imageId,
+            ])
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::imageMustBeLinkedToResource($imageId),
+            fn () => $handler->handle($request)
+        );
     }
 
     /**

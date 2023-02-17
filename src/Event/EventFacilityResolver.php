@@ -12,14 +12,13 @@ class EventFacilityResolver extends OfferFacilityResolver
     /**
      * @inheritdoc
      */
-    final protected function getFacilities()
+    final protected function getFacilities(): array
     {
         return [
             '3.23.2.0.0' => new Facility('3.23.2.0.0', 'Assistentie'),
             '3.13.1.0.0' => new Facility('3.13.1.0.0', 'Voorzieningen voor assistentiehonden'),
             '3.13.2.0.0' => new Facility('3.13.2.0.0', 'Audiodescriptie'),
             '3.17.1.0.0' => new Facility('3.17.1.0.0', 'Ringleiding'),
-            '3.17.2.0.0' => new Facility('3.17.2.0.0', 'Voelstoelen'),
             '3.17.3.0.0' => new Facility('3.17.3.0.0', 'Boven- of ondertiteling'),
             '3.23.3.0.0' => new Facility('3.23.3.0.0', 'Rolstoel ter beschikking'),
             '3.25.0.0.0' => new Facility('3.25.0.0.0', 'Contactpunt voor personen met handicap'),
@@ -32,12 +31,13 @@ class EventFacilityResolver extends OfferFacilityResolver
             '3.31.0.0.0' => new Facility('3.31.0.0.0', 'Toegankelijk sanitair'),
             '3.33.0.0.0' => new Facility('3.33.0.0.0', 'Tolken Vlaamse Gebarentaal'),
             '3.34.0.0.0' => new Facility('3.34.0.0.0', 'Vereenvoudigde informatie'),
-            '3.35.0.0.0' => new Facility('3.35.0.0.0', '1 begeleider gratis'),
             '3.36.0.0.0' => new Facility('3.36.0.0.0', 'Verzorgingsruimte'),
             '3.37.0.0.0' => new Facility('3.37.0.0.0', 'Oplaadzone rolstoelen'),
             '3.38.0.0.0' => new Facility('3.38.0.0.0', 'Inter-assistentie'),
             '3.39.0.0.0' => new Facility('3.39.0.0.0', 'Begeleiderspas'),
             '3.40.0.0.0' => new Facility('3.40.0.0.0', 'Inter-events'),
+            'H28fcfRKFQAQs00K9NF9hh' => new Facility('H28fcfRKFQAQs00K9NF9hh', 'Prikkelarm aanbod'),
+            '4Vz9eZf0cnQmtfqcGGnNMF' => new Facility('4Vz9eZf0cnQmtfqcGGnNMF', 'Afspraken en voorspelbaarheid'),
         ];
     }
 }

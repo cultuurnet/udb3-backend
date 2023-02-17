@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange as EventUpdateTypicalAgeRange;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Http\Deserializer\Offer\UpdateTypicalAgeRangeDenormalizer;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Offer\AgeRange;
-use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange as PlaceUpdateTypicalAgeRange;
-use Fig\Http\Message\StatusCodeInterface;
+use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
+use CultuurNet\UDB3\Offer\InvalidAgeRangeException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -31,27 +33,28 @@ final class UpdateTypicalAgeRangeRequestHandler implements RequestHandlerInterfa
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
-        $bodyContent = Json::decode($request->getBody()->getContents());
+        $offerType = $routeParameters->getOfferType();
 
-        // @todo Use a data validator and change to an exception so it can be converted to an API problem
-        if (empty($bodyContent->typicalAgeRange)) {
-            return new JsonResponse(
-                ['error' => 'typicalAgeRange required'],
-                StatusCodeInterface::STATUS_BAD_REQUEST
+        try {
+            $requestBodyParser = RequestBodyParserFactory::createBaseParser(
+                new JsonSchemaValidatingRequestBodyParser(
+                    JsonSchemaLocator::getSchemaFileByOfferType(
+                        $offerType,
+                        JsonSchemaLocator::EVENT_TYPICAL_AGE_RANGE_PUT,
+                        JsonSchemaLocator::PLACE_TYPICAL_AGE_RANGE_PUT,
+                    )
+                ),
+                new DenormalizingRequestBodyParser(
+                    new UpdateTypicalAgeRangeDenormalizer($offerType, $offerId),
+                    AbstractUpdateTypicalAgeRange::class
+                )
             );
-        }
 
-        $ageRange = AgeRange::fromString($bodyContent->typicalAgeRange);
-
-        if ($routeParameters->getOfferType()->sameAs(OfferType::event())) {
-            $updateTypicalAgeRange = new EventUpdateTypicalAgeRange(
-                $offerId,
-                $ageRange
-            );
-        } else {
-            $updateTypicalAgeRange = new PlaceUpdateTypicalAgeRange(
-                $offerId,
-                $ageRange
+            /** @var AbstractUpdateTypicalAgeRange $updateTypicalAgeRange */
+            $updateTypicalAgeRange = $requestBodyParser->parse($request)->getParsedBody();
+        } catch (InvalidAgeRangeException $exception) {
+            throw ApiProblem::bodyInvalidData(
+                new SchemaError('/typicalAgeRange', $exception->getMessage())
             );
         }
 

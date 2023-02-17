@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
@@ -14,6 +15,7 @@ use CultuurNet\UDB3\Http\Organizer\DeleteDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
@@ -21,6 +23,7 @@ use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\LegacyOrganizerRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
@@ -52,7 +55,9 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             AddLabelRequestHandler::class,
             DeleteLabelRequestHandler::class,
             GetPermissionsForCurrentUserRequestHandler::class,
+            GetContributorsRequestHandler::class,
             GetPermissionsForGivenUserRequestHandler::class,
+            UpdateContributorsRequestHandler::class,
         ];
     }
 
@@ -199,12 +204,27 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
         );
 
         $container->addShared(
+            GetContributorsRequestHandler::class,
+            fn () => new GetContributorsRequestHandler(
+                $container->get('organizer_repository'),
+                $container->get(ContributorRepository::class),
+                $container->get('organizer_permission_voter'),
+                $container->get(CurrentUser::class)->getId()
+            )
+        );
+
+        $container->addShared(
             GetPermissionsForGivenUserRequestHandler::class,
             function () use ($container) {
                 return new GetPermissionsForGivenUserRequestHandler(
                     $container->get('organizer_permission_voter')
                 );
             }
+        );
+
+        $container->addShared(
+            UpdateContributorsRequestHandler::class,
+            fn () => new UpdateContributorsRequestHandler($container->get('event_command_bus'))
         );
     }
 }

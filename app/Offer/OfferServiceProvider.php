@@ -9,7 +9,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\DescriptionJSONDeserializer;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
@@ -35,6 +36,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
@@ -46,6 +48,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateWorkflowStatusRequestHandler;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
@@ -151,6 +154,9 @@ final class OfferServiceProvider extends AbstractServiceProvider
             AddVideoRequestHandler::class,
             UpdateVideosRequestHandler::class,
             DeleteVideoRequestHandler::class,
+            UpdateWorkflowStatusRequestHandler::class,
+            UpdateContributorsRequestHandler::class,
+            GetContributorsRequestHandler::class,
             PatchOfferRequestHandler::class,
         ];
     }
@@ -406,10 +412,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             UpdateDescriptionRequestHandler::class,
-            fn () => new UpdateDescriptionRequestHandler(
-                $container->get('event_command_bus'),
-                new DescriptionJSONDeserializer()
-            )
+            fn () => new UpdateDescriptionRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
@@ -514,7 +517,10 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             AddImageRequestHandler::class,
-            fn () => new AddImageRequestHandler($container->get('event_command_bus'))
+            fn () => new AddImageRequestHandler(
+                $container->get('event_command_bus'),
+                $container->get('media_object_repository'),
+            )
         );
 
         $container->addShared(
@@ -554,6 +560,26 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             DeleteVideoRequestHandler::class,
             fn () => new DeleteVideoRequestHandler($container->get('event_command_bus'))
+        );
+
+        $container->addShared(
+            UpdateWorkflowStatusRequestHandler::class,
+            fn () => new UpdateWorkflowStatusRequestHandler($container->get('event_command_bus'))
+        );
+
+        $container->addShared(
+            GetContributorsRequestHandler::class,
+            fn () => new GetContributorsRequestHandler(
+                $container->get(OfferRepository::class),
+                $container->get(ContributorRepository::class),
+                $container->get('offer_permission_voter'),
+                $container->get(CurrentUser::class)->getId()
+            )
+        );
+
+        $container->addShared(
+            UpdateContributorsRequestHandler::class,
+            fn () => new UpdateContributorsRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(

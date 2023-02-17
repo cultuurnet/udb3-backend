@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Place;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Place\UpdateAddressDenormalizer;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
-use CultuurNet\UDB3\StringLiteral;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -30,13 +32,19 @@ final class UpdateAddressRequestHandler implements RequestHandlerInterface
         $placeId = $routeParameters->getPlaceId();
         $language = $routeParameters->getLanguage();
 
-        $address = (new AddressJSONDeserializer())->deserialize(
-            new StringLiteral($request->getBody()->getContents())
+
+        $requestBodyParser = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::PLACE_ADDRESS_PUT),
+            new DenormalizingRequestBodyParser(
+                new UpdateAddressDenormalizer($placeId, $language),
+                UpdateAddress::class
+            )
         );
 
-        $this->commandBus->dispatch(
-            new UpdateAddress($placeId, $address, Language::fromUdb3ModelLanguage($language))
-        );
+        /** @var UpdateAddress $updateAddress */
+        $updateAddress = $requestBodyParser->parse($request)->getParsedBody();
+
+        $this->commandBus->dispatch($updateAddress);
 
         return new NoContentResponse();
     }

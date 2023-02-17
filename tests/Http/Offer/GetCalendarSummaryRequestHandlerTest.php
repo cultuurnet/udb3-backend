@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
+use CultuurNet\CalendarSummaryV3\CalendarSummaryTester;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\HtmlResponse;
@@ -27,6 +28,7 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
         $this->getCalendarSummaryRequestHandler = new GetCalendarSummaryRequestHandler(
             $this->repositoryMockFactory->create()
         );
+        CalendarSummaryTester::setTestNow(2022, 5, 3);
     }
 
     /**
@@ -54,7 +56,18 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
             ->withHeader('accept', 'text/html')
             ->build('GET');
 
-        $expectedContent = '<time itemprop="startDate" datetime="2021-01-01T00:00:00+01:00"><span class="cf-from cf-meta">Van</span> <span class="cf-weekday cf-meta">vrijdag</span> <span class="cf-date">1 januari 2021</span> <span class="cf-at cf-meta">om</span> <span class="cf-time">00:00</span></time> <span class="cf-to cf-meta">tot</span> <time itemprop="endDate" datetime="2021-01-10T00:00:00+01:00"><span class="cf-weekday cf-meta">zondag</span> <span class="cf-date">10 januari 2021</span> <span class="cf-at cf-meta">om</span> <span class="cf-time">00:00</span></time>';
+        $expectedContent = '<time itemprop="startDate" datetime="2021-01-01T00:00:00+01:00">' .
+            '<span class="cf-from cf-meta">Van</span> ' .
+            '<span class="cf-weekday cf-meta">vrijdag</span> ' .
+            '<span class="cf-date">1 januari 2021</span> ' .
+            '<span class="cf-at cf-meta">om</span> ' .
+            '<span class="cf-time">00:00</span></time> ' .
+            '<span class="cf-to cf-meta">tot en met</span> ' .
+            '<time itemprop="endDate" datetime="2021-01-10T00:00:00+01:00">' .
+            '<span class="cf-weekday cf-meta">zondag</span> ' .
+            '<span class="cf-date">10 januari 2021</span> ' .
+            '<span class="cf-at cf-meta">om</span> ' .
+            '<span class="cf-time">00:00</span></time>';
 
         $response = $this->getCalendarSummaryRequestHandler->handle($request);
 
@@ -87,7 +100,18 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
             ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?style=html')
             ->build('GET');
 
-        $expectedContent = '<time itemprop="startDate" datetime="2021-01-01T00:00:00+01:00"><span class="cf-from cf-meta">Van</span> <span class="cf-weekday cf-meta">vrijdag</span> <span class="cf-date">1 januari 2021</span> <span class="cf-at cf-meta">om</span> <span class="cf-time">00:00</span></time> <span class="cf-to cf-meta">tot</span> <time itemprop="endDate" datetime="2021-01-10T00:00:00+01:00"><span class="cf-weekday cf-meta">zondag</span> <span class="cf-date">10 januari 2021</span> <span class="cf-at cf-meta">om</span> <span class="cf-time">00:00</span></time>';
+        $expectedContent = '<time itemprop="startDate" datetime="2021-01-01T00:00:00+01:00">' .
+            '<span class="cf-from cf-meta">Van</span> ' .
+            '<span class="cf-weekday cf-meta">vrijdag</span> ' .
+            '<span class="cf-date">1 januari 2021</span> ' .
+            '<span class="cf-at cf-meta">om</span> ' .
+            '<span class="cf-time">00:00</span></time> ' .
+            '<span class="cf-to cf-meta">tot en met</span> ' .
+            '<time itemprop="endDate" datetime="2021-01-10T00:00:00+01:00">' .
+            '<span class="cf-weekday cf-meta">zondag</span> ' .
+            '<span class="cf-date">10 januari 2021</span> ' .
+            '<span class="cf-at cf-meta">om</span> ' .
+            '<span class="cf-time">00:00</span></time>';
 
         $response = $this->getCalendarSummaryRequestHandler->handle($request);
 
@@ -120,7 +144,7 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
             ->withHeader('accept', 'text/plain')
             ->build('GET');
 
-        $expectedContent = 'Van vrijdag 1 januari 2021 om 00:00 tot zondag 10 januari 2021 om 00:00';
+        $expectedContent = 'Van vrijdag 1 januari 2021 om 00:00 tot en met zondag 10 januari 2021 om 00:00';
 
         $response = $this->getCalendarSummaryRequestHandler->handle($request);
 
@@ -153,7 +177,7 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
             ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?style=text')
             ->build('GET');
 
-        $expectedContent = 'Van vrijdag 1 januari 2021 om 00:00 tot zondag 10 januari 2021 om 00:00';
+        $expectedContent = 'Van vrijdag 1 januari 2021 om 00:00 tot en met zondag 10 januari 2021 om 00:00';
 
         $response = $this->getCalendarSummaryRequestHandler->handle($request);
 
@@ -252,7 +276,40 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
             ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?format=xs')
             ->build('GET');
 
-        $expectedContent = 'Van 1 jan tot 10 jan';
+        $expectedContent = '1 jan 2021 - 10 jan 2021';
+
+        $response = $this->getCalendarSummaryRequestHandler->handle($request);
+
+        $this->assertInstanceOf(PlainTextResponse::class, $response);
+        $this->assertEquals($expectedContent, $response->getBody()->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function it_omits_the_current_year(): void
+    {
+        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
+        $eventJson = Json::encode(
+            [
+                '@context' => '/contexts/event',
+                'calendarType' => 'single',
+                'startDate' => '2022-01-01T00:00:00+01:00',
+                'endDate' => '2022-01-10T00:00:00+01:00',
+                'status' => ['type' => 'Available'],
+                'bookingAvailability' => ['type' => 'Available'],
+            ]
+        );
+        $eventDocument = new JsonDocument($eventId, $eventJson);
+        $this->repositoryMockFactory->expectEventDocument($eventDocument);
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', $eventId)
+            ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?format=xs')
+            ->build('GET');
+
+        $expectedContent = '1 jan - 10 jan';
 
         $response = $this->getCalendarSummaryRequestHandler->handle($request);
 
@@ -286,7 +343,7 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
             ->build('GET');
 
         // 2 hours later than the time info in the event JSON
-        $expectedContent = 'Van vrijdag 1 januari 2021 om 12:00 tot zondag 10 januari 2021 om 12:00';
+        $expectedContent = 'Van vrijdag 1 januari 2021 om 12:00 tot en met zondag 10 januari 2021 om 12:00';
 
         $response = $this->getCalendarSummaryRequestHandler->handle($request);
 
@@ -339,7 +396,7 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
             ->build('GET');
 
         // Only includes the dates from 2121 (100 years in the future), because the others are in the past.
-        $expectedContent = 'Van woensdag 1 januari 2121 om 10:00 tot vrijdag 10 januari 2121 om 10:00';
+        $expectedContent = 'Van woensdag 1 januari 2121 om 10:00 tot en met vrijdag 10 januari 2121 om 10:00';
 
         $response = $this->getCalendarSummaryRequestHandler->handle($request);
 

@@ -4,22 +4,26 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
+use Broadway\CommandHandling\CommandBus;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\SelectMainImage as EventSelectMainImage;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
+use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractSelectMainImage;
+use CultuurNet\UDB3\Offer\ImageMustBeLinkedException;
 use CultuurNet\UDB3\Place\Commands\SelectMainImage as PlaceSelectMainImage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -81,11 +85,7 @@ final class SelectMainImageRequestHandlerTest extends TestCase
         string $offerType,
         AbstractSelectMainImage $selectMainImage
     ): void {
-        $this->mediaManager
-            ->method('getImage')
-            ->with(new UUID(self::MEDIA_ID))
-            ->willReturn($this->image);
-
+        $this->givenThereIsAnImage();
 
         $selectMainImageRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
@@ -112,22 +112,79 @@ final class SelectMainImageRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider offerTypeDataProvider
+     * @dataProvider invalidRequestBodyProvider
      */
-    public function it_throws_on_missing_media_id(string $offerType): void
+    public function it_throws_on_missing_media_id(string $body, ApiProblem $expectedProblem): void
     {
         $selectMainImageRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerType', 'events')
             ->withRouteParameter('offerId', self::OFFER_ID)
-            ->withBodyFromString(
-                '{}'
-            )
+            ->withBodyFromString($body)
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidDataWithDetail('media object id required'),
+            $expectedProblem,
             fn () => $this->selectMainImageRequestHandler->handle($selectMainImageRequest)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_image_does_not_exist(): void
+    {
+        $this->mediaManager
+            ->method('getImage')
+            ->with(new UUID(self::MEDIA_ID))
+            ->willThrowException(new MediaObjectNotFoundException());
+
+        $selectMainImageRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', self::OFFER_ID)
+            ->withJsonBodyFromArray(['mediaObjectId' => self::MEDIA_ID])
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::imageNotFound(self::MEDIA_ID),
+            fn () => $this->selectMainImageRequestHandler->handle($selectMainImageRequest)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_image_is_not_linked_to_offer(): void
+    {
+        $this->givenThereIsAnImage();
+
+        $commandBus = $this->createMock(CommandBus::class);
+        $commandBus->expects($this->once())
+            ->method('dispatch')
+            ->willThrowException(new ImageMustBeLinkedException());
+
+        $handler = new SelectMainImageRequestHandler(
+            $commandBus,
+            $this->mediaManager
+        );
+
+        $selectMainImageRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', self::OFFER_ID)
+            ->withJsonBodyFromArray(['mediaObjectId' => self::MEDIA_ID])
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::imageMustBeLinkedToResource(self::MEDIA_ID),
+            fn () => $handler->handle($selectMainImageRequest)
+        );
+    }
+
+    private function givenThereIsAnImage(): void
+    {
+        $this->mediaManager
+            ->method('getImage')
+            ->with(new UUID(self::MEDIA_ID))
+            ->willReturn($this->image);
     }
 
     public function offerTypeDataProvider(): array
@@ -153,6 +210,24 @@ final class SelectMainImageRequestHandlerTest extends TestCase
                 'selectMainImage' => new PlaceSelectMainImage(
                     self::OFFER_ID,
                     $image
+                ),
+            ],
+        ];
+    }
+
+    public function invalidRequestBodyProvider(): array
+    {
+        return [
+            [
+                '{}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (mediaObjectId) are missing')
+                ),
+            ],
+            [
+                '{"mediaObjectId": "not-a-uuid"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/mediaObjectId', 'The data must match the \'uuid\' format')
                 ),
             ],
         ];

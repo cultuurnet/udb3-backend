@@ -6,8 +6,6 @@ namespace CultuurNet\UDB3\Http\Auth;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Adds the necessary headers to a response, after the request has been handled, to make it work with CORS.
@@ -21,12 +19,10 @@ use Psr\Http\Server\RequestHandlerInterface;
  *
  * The easiest approach is to just add the headers to every response.
  */
-final class CorsHeadersMiddleware implements MiddlewareInterface
+final class CorsHeadersResponseDecorator
 {
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function decorate(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $response = $handler->handle($request);
-
         // Allow any known method regardless of the URL.
         $methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
 
