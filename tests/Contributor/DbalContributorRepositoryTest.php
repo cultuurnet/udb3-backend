@@ -149,11 +149,17 @@ final class DbalContributorRepositoryTest extends TestCase
             $this->contributorRepository->getContributors($newItem)
         );
 
-        $result = $this->getConnection()
-            ->executeQuery('SELECT type from ' . self::TABLE_NAME . ' WHERE uuid =\'' . $newItem->toString() . '\';')
+        $result = $this->connection->createQueryBuilder()
+            ->select('*')
+            ->from(self::TABLE_NAME)
+            ->where('uuid = :uuid')
+            ->setParameter(':uuid', $newItem->toString())
+            ->andWhere('type = :type')
+            ->setParameter(':type', $itemType->toString())
+            ->execute()
             ->fetchAll();
 
-        $this->assertEquals($itemType->toString(), $result[0]['type']);
+        $this->assertEquals(2, count($result));
     }
 
     public function itemTypeDataProvider(): array
