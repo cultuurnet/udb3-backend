@@ -12,21 +12,21 @@ use CultuurNet\UDB3\Place\PlaceContributorsUpdated;
 
 final class ContributorsUpdatedFactory
 {
-    private IriGeneratorInterface $eventContributorsUpdatedIriGenerator;
+    private IriGeneratorInterface $eventGetContributorsIriGenerator;
 
-    private IriGeneratorInterface $placeContributorsUpdatedIriGenerator;
+    private IriGeneratorInterface $placeGetContributorsIriGenerator;
 
-    private IriGeneratorInterface $organizerContributorsUpdatedIriGenerator;
+    private IriGeneratorInterface $organizerGetContributorsIriGenerator;
 
 
     public function __construct(
-        IriGeneratorInterface $eventContributorsUpdatedIriGenerator,
-        IriGeneratorInterface $placeContributorsUpdatedIriGenerator,
-        IriGeneratorInterface $organizerContributorsUpdatedIriGenerator
+        IriGeneratorInterface $eventGetContributorsIriGenerator,
+        IriGeneratorInterface $placeGetContributorsIriGenerator,
+        IriGeneratorInterface $organizerGetContributorsIriGenerator
     ) {
-        $this->eventContributorsUpdatedIriGenerator = $eventContributorsUpdatedIriGenerator;
-        $this->placeContributorsUpdatedIriGenerator = $placeContributorsUpdatedIriGenerator;
-        $this->organizerContributorsUpdatedIriGenerator = $organizerContributorsUpdatedIriGenerator;
+        $this->eventGetContributorsIriGenerator = $eventGetContributorsIriGenerator;
+        $this->placeGetContributorsIriGenerator = $placeGetContributorsIriGenerator;
+        $this->organizerGetContributorsIriGenerator = $organizerGetContributorsIriGenerator;
     }
 
     public function createForItemType(string $id, ItemType $itemType): ContributorsUpdated
@@ -34,20 +34,20 @@ final class ContributorsUpdatedFactory
         if ($itemType->sameAs(ItemType::event())) {
             return new EventContributorsUpdated(
                 $id,
-                $this->eventContributorsUpdatedIriGenerator->iri($id)
+                $this->eventGetContributorsIriGenerator->iri($id)
             );
         }
 
         if ($itemType->sameAs(ItemType::place())) {
             return new PlaceContributorsUpdated(
                 $id,
-                $this->placeContributorsUpdatedIriGenerator->iri($id)
+                $this->placeGetContributorsIriGenerator->iri($id)
             );
         }
 
         return new OrganizerContributorsUpdated(
             $id,
-            $this->organizerContributorsUpdatedIriGenerator->iri($id)
+            $this->organizerGetContributorsIriGenerator->iri($id)
         );
     }
 }
