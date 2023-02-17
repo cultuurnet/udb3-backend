@@ -44,13 +44,7 @@ final class BroadcastingContributorRepository implements ContributorRepository
     {
         $this->repository->updateContributors($id, $emailAddresses, $itemType);
 
-        if ($itemType->sameAs(ItemType::event())) {
-            $contributorsUpdated = $this->contributorOverwrittenFactory->createEventContributorsUpdated($id->toString());
-        } elseif ($itemType->sameAs(ItemType::place())) {
-            $contributorsUpdated = $this->contributorOverwrittenFactory->createPlaceContributorsUpdated($id->toString());
-        } else {
-            $contributorsUpdated = $this->contributorOverwrittenFactory->createOrganizerContributorsUpdated($id->toString());
-        }
+        $contributorsUpdated = $this->contributorOverwrittenFactory->createForItemType($id->toString(), $itemType);
 
         $this->eventBus->publish(new DomainEventStream([(new DomainMessageBuilder())->create($contributorsUpdated)]));
     }
