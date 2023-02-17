@@ -8,11 +8,6 @@ use CultuurNet\UDB3\Contributor\ContributorsUpdated;
 
 final class PlaceContributorsUpdated extends ContributorsUpdated
 {
-    public function __construct(string $id, string $iri)
-    {
-        parent::__construct($id, $iri);
-    }
-
     public static function deserialize(array $data): PlaceContributorsUpdated
     {
         return new self($data['id'], $data['iri']);
