@@ -50,7 +50,7 @@ final class UpdateContributorsRequestHandler implements RequestHandlerInterface
         /** @var EmailAddresses $emails */
         $emails = $parser->parse($request)->getParsedBody();
         $this->commandBus->dispatch(
-            new UpdateContributors($offerId, $emails)
+            new UpdateContributors($offerId, $emails, $offerType)
         );
 
         return new NoContentResponse();

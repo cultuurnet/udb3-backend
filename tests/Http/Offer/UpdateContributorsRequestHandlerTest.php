@@ -11,6 +11,9 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Offer\Commands\UpdateContributors;
 use CultuurNet\UDB3\Offer\OfferType;
 use PHPUnit\Framework\TestCase;
 
@@ -21,14 +24,19 @@ final class UpdateContributorsRequestHandlerTest extends TestCase
 
     private UpdateContributorsRequestHandler $updateContributorsRequestHandler;
 
+    private TraceableCommandBus $commandBus;
+
     private Psr7RequestBuilder $psr7RequestBuilder;
 
 
     public function setUp(): void
     {
+        $this->commandBus = new TraceableCommandBus();
         $this->updateContributorsRequestHandler = new UpdateContributorsRequestHandler(
-            new TraceableCommandBus()
+            $this->commandBus
         );
+
+        $this->commandBus->record();
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
     }
@@ -42,19 +50,30 @@ final class UpdateContributorsRequestHandlerTest extends TestCase
         string $offerRouteParameter,
         string $offerId
     ): void {
+        $validEmails = [
+            'jan@gent.be',
+            'piet@gent.be',
+            'an@gent.be',
+        ];
+
         $updateContributorsRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerRouteParameter)
             ->withRouteParameter('offerId', $offerId)
-            ->withJsonBodyFromArray(
-                [
-                    'jan@gent.be',
-                    'piet@gent.be',
-                    'an@gent.be',
-                ]
-            )
+            ->withJsonBodyFromArray($validEmails)
             ->build('PUT');
 
         $response = $this->updateContributorsRequestHandler->handle($updateContributorsRequest);
+
+        $this->assertEquals(
+            [
+                new UpdateContributors(
+                    $offerId,
+                    EmailAddresses::fromArray(array_map(fn ($email) => new EmailAddress($email), $validEmails)),
+                    $offerType
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
 
         $this->assertJsonResponse(
             new NoContentResponse(),

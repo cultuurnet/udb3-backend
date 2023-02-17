@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Contributor;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -16,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 final class ContributorRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
+    public const TABLE_NAME = 'contributor_relations';
 
     private UUID $brusselsEvent;
 
@@ -25,10 +27,11 @@ final class ContributorRepositoryTest extends TestCase
 
     private static function getTableDefinition(Schema $schema): Table
     {
-        $table = $schema->createTable('contributor_relations');
+        $table = $schema->createTable(self::TABLE_NAME);
 
         $table->addColumn('uuid', Type::GUID)->setLength(36)->setNotnull(true);
         $table->addColumn('email', Type::TEXT)->setNotnull(true);
+        $table->addColumn('type', Type::STRING)->setLength(255)->setNotnull(true);
 
         return $table;
     }
@@ -52,6 +55,7 @@ final class ContributorRepositoryTest extends TestCase
             [
                 'uuid' => $this->brusselsEvent->toString(),
                 'email' => 'an@brussel.be',
+                'type' => ItemType::event()->toString(),
             ]
         );
         $this->getConnection()->insert(
@@ -59,6 +63,7 @@ final class ContributorRepositoryTest extends TestCase
             [
                 'uuid' => $this->brusselsEvent->toString(),
                 'email' => 'piet@brussel.be',
+                'type' => ItemType::event()->toString(),
             ]
         );
         $this->getConnection()->insert(
@@ -66,6 +71,7 @@ final class ContributorRepositoryTest extends TestCase
             [
                 'uuid' => $this->brusselsEvent->toString(),
                 'email' => 'info@brussel.be',
+                'type' => ItemType::event()->toString(),
             ]
         );
         $this->getConnection()->insert(
@@ -73,6 +79,7 @@ final class ContributorRepositoryTest extends TestCase
             [
                 'uuid' => $this->ghentEvent->toString(),
                 'email' => 'info@gent.be',
+                'type' => ItemType::event()->toString(),
             ]
         );
 
@@ -118,17 +125,20 @@ final class ContributorRepositoryTest extends TestCase
 
     /**
      * @test
+     * @dataProvider itemTypeDataProvider
      */
-    public function it_can_overwrite_contributor(): void
+    public function it_can_overwrite_contributor_and_type(ItemType $itemType): void
     {
+        $newItem = new UUID('53dae0d5-c92f-4909-aa26-2be8dac23e69');
         $this->contributorRepository->overwriteContributors(
-            $this->ghentEvent,
+            $newItem,
             EmailAddresses::fromArray(
                 [
                     new EmailAddress('pol@gent.be'),
                     new EmailAddress('mieke@gent.be'),
                 ]
-            )
+            ),
+            $itemType
         );
 
         $this->assertEquals(
@@ -136,7 +146,34 @@ final class ContributorRepositoryTest extends TestCase
                 new EmailAddress('pol@gent.be'),
                 new EmailAddress('mieke@gent.be'),
             ]),
-            $this->contributorRepository->getContributors($this->ghentEvent)
+            $this->contributorRepository->getContributors($newItem)
         );
+
+        $result = $this->connection->createQueryBuilder()
+            ->select('*')
+            ->from(self::TABLE_NAME)
+            ->where('uuid = :uuid')
+            ->setParameter(':uuid', $newItem->toString())
+            ->andWhere('type = :type')
+            ->setParameter(':type', $itemType->toString())
+            ->execute()
+            ->fetchAll();
+
+        $this->assertEquals(2, count($result));
+    }
+
+    public function itemTypeDataProvider(): array
+    {
+        return [
+            'event' => [
+                ItemType::event(),
+            ],
+            'place' => [
+                ItemType::place(),
+            ],
+            'organizer' => [
+                ItemType::organizer(),
+            ],
+        ];
     }
 }
