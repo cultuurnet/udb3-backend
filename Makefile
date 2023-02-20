@@ -26,3 +26,6 @@ test:
 
 migrate:
 	docker exec -it php.uitdatabank ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
+
+bash:
+	docker exec -it php.uitdatabank bash
