@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwnerInBulk;
+use CultuurNet\UDB3\Console\Command\ChangePlaceType;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
@@ -65,6 +66,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.label:update-unique',
         'console.organizer:update-unique',
         'console.place:facilities:remove',
+        'console.place:actortype:update',
         'console.offer:remove-label',
         'console.organizer:remove-label',
         'console.offer:import-auto-classification-labels',
@@ -344,6 +346,16 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.place:facilities:remove',
             function () use ($container) {
                 return new RemoveFacilitiesFromPlace(
+                    $container->get('event_command_bus'),
+                    $container->get('sapi3_search_service_places')
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.place:actortype:update',
+            function () use ($container) {
+                return new ChangePlaceType(
                     $container->get('event_command_bus'),
                     $container->get('sapi3_search_service_places')
                 );
