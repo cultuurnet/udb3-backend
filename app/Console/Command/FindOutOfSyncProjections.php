@@ -59,7 +59,8 @@ final class FindOutOfSyncProjections extends Command
                 'last-id',
                 InputArgument::REQUIRED,
                 'Id of the last row to process.',
-            );;
+            );
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
