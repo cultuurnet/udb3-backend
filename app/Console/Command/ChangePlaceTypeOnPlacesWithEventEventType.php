@@ -124,7 +124,7 @@ final class ChangePlaceTypeOnPlacesWithEventEventType extends AbstractCommand
                 $input,
                 $output,
                 new ConfirmationQuestion(
-                    "Should these places get the WorkflowStatus rejected? [y/N] ",
+                    'Should these places get the WorkflowStatus rejected? [y/N] ',
                     false
                 )
             );
