@@ -242,26 +242,20 @@ final class ReplayCommand extends AbstractCommand
         $message = 'Are you sure you want to replay all events? [y/N] ';
 
         if ($aggregateType || $startId || $cdbids) {
-            $options = '';
+            $options = [];
             if ($aggregateType) {
-                $options .= 'aggregate type: ' . $aggregateType->toString();
+                $options[] = 'aggregate type: ' . $aggregateType->toString();
             }
 
             if ($startId) {
-                if (!empty($options)) {
-                    $options .=', ';
-                }
-                $options .= 'start id: ' . $startId;
+                $options[] = 'start id: ' . $startId;
             }
 
             if ($cdbids) {
-                if (!empty($options)) {
-                    $options .=', ';
-                }
-                $options .= 'given cdbids';
+                $options[] = 'given cdbids';
             }
 
-            $message = 'Are you sure you want to replay events ( ' . $options . ' )? [y/N]';
+            $message = 'Are you sure you want to replay events ( ' . implode(', ', $options) . ' )? [y/N]';
         }
 
         return $this
