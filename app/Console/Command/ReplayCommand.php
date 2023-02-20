@@ -68,8 +68,7 @@ final class ReplayCommand extends AbstractCommand
             ->addArgument(
                 'aggregate',
                 InputArgument::OPTIONAL,
-                'Aggregate type to replay events from. One of: ' . $aggregateTypeEnumeration . '.',
-                null
+                'Aggregate type to replay events from. One of: ' . $aggregateTypeEnumeration . '.'
             )
             ->addOption(
                 self::OPTION_START_ID,
