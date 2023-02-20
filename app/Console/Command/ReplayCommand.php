@@ -248,7 +248,7 @@ final class ReplayCommand extends AbstractCommand
             $message = 'Are you sure you want to replay all events starting from id ' . $startId . '? [y/N] ';
         }
         if ($cdbids) {
-            $message = 'Are you sure you want to replay all events with giving cdbid? [y/N] ';
+            $message = 'Are you sure you want to replay all events with given cdbid? [y/N] ';
         }
 
         return $this
