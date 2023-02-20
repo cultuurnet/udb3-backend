@@ -68,8 +68,7 @@ final class ReplayCommand extends AbstractCommand
             ->addArgument(
                 'aggregate',
                 InputArgument::OPTIONAL,
-                'Aggregate type to replay events from. One of: ' . $aggregateTypeEnumeration . '.',
-                null
+                'Aggregate type to replay events from. One of: ' . $aggregateTypeEnumeration . '.'
             )
             ->addOption(
                 self::OPTION_START_ID,
@@ -241,14 +240,22 @@ final class ReplayCommand extends AbstractCommand
         $cdbids = $input->getOption(self::OPTION_CDBID);
 
         $message = 'Are you sure you want to replay all events? [y/N] ';
-        if ($aggregateType) {
-            $message = 'Are you sure you want to replay all events for aggregate type ' . $aggregateType->toString() . '? [y/N] ';
-        }
-        if ($startId) {
-            $message = 'Are you sure you want to replay all events starting from id ' . $startId . '? [y/N] ';
-        }
-        if ($cdbids) {
-            $message = 'Are you sure you want to replay all events with giving cdbid? [y/N] ';
+
+        if ($aggregateType || $startId || $cdbids) {
+            $options = [];
+            if ($aggregateType) {
+                $options[] = 'aggregate type: ' . $aggregateType->toString();
+            }
+
+            if ($startId) {
+                $options[] = 'start id: ' . $startId;
+            }
+
+            if ($cdbids) {
+                $options[] = 'given cdbids';
+            }
+
+            $message = 'Are you sure you want to replay events ( ' . implode(', ', $options) . ' )? [y/N]';
         }
 
         return $this
