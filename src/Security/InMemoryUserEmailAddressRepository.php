@@ -9,16 +9,16 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 final class InMemoryUserEmailAddressRepository implements UserEmailAddressRepository
 {
-    private JsonWebToken $token;
+    private ?JsonWebToken $token;
 
-    public function __construct(JsonWebToken $token)
+    public function __construct(?JsonWebToken $token)
     {
         $this->token = $token;
     }
 
     public function getEmailForUserId(string $userId): ?EmailAddress
     {
-        if ($this->token->getUserId() === $userId) {
+        if ($this->token !== null && $this->token->getUserId() === $userId) {
             return $this->token->getEmailAddress();
         }
 
