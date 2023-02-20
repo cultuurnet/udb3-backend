@@ -6,9 +6,6 @@ up:
 down:
 	docker-compose down
 
-ssh:
-	docker exec -it php.uitdatabank bash
-
 install:
 	docker exec -it php.uitdatabank composer install
 
