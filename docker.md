@@ -10,7 +10,7 @@ Copy `env.dist` to the root folder and rename it to `.env`
 
 ### config.php file
 
-Get the latest `config.php` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-backend
+Copy the latest `config.php` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-backend to the root
 
 In your `config.php` file, you have to change some of the hosts to work with Docker instead of Vagrant.
 
@@ -21,6 +21,10 @@ You'll need to change the following lines to work with docker hosts:
   - `mysql`
 - cache.redis.host
   - `redis`
+
+### pem files
+
+Copy `public.pem` and `public-auth0.pem` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/keys to the root
 
 ### RabbitMQ
 
@@ -36,8 +40,8 @@ You'll have to update your `config.php` file accordingly with the values of your
 
 ### Acceptance tests
 
-To make the acceptance tests work with Docker, you'll need to change the `base_url` inside `config.yml` of the acceptance test repository.
-
+To make the acceptance tests work with Docker, you'll need to change the `base_url` and `online_location_url` inside `config.yml` of the acceptance test repository.
+Give it the same value as the `url` from the modified `config.php` from `udb3-backend`, in this example `http://localhost:8000`
 
 ## Start
 
