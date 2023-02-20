@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Console\Command;
 
+use Broadway\Domain\DateTime;
 use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use DateTime;
+use CultuurNet\UDB3\RecordedOn;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -86,11 +87,10 @@ final class FindOutOfSyncProjections extends Command
             $modified = $this->getModified($uuid, $aggregateType, $output);
 
             if ($modified) {
-                $recordedDate = new DateTime($recorded);
-                $modified = new DateTime($modified);
+                $recordedDate = RecordedOn::fromBroadwayDateTime(DateTime::fromString($recorded));
+                $modifiedDate = RecordedOn::fromBroadwayDateTime(DateTime::fromString($modified));
 
-                $difference = $modified->diff($recordedDate);
-                if ($difference->s > 5) {
+                if ($recordedDate->toString() !== $modifiedDate->toString()) {
                     $output->writeln($uuid . ' projection of is out of sync');
                 }
             }
