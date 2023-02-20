@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class ChangePlaceType extends AbstractCommand
 {
@@ -50,6 +51,10 @@ final class ChangePlaceType extends AbstractCommand
         );
 
         $query = 'terms.id:' . $deprecatedTypeId;
+        if (!$this->askConfirmation($input, $output, $resultsGenerator->count($query))) {
+            return 0;
+        }
+
         $places = $resultsGenerator->search($query);
 
         $success = 0;
@@ -83,6 +88,20 @@ final class ChangePlaceType extends AbstractCommand
         }
 
         return $errors;
+    }
+
+    private function askConfirmation(InputInterface $input, OutputInterface $output, int $count): bool
+    {
+        return $this
+            ->getHelper('question')
+            ->ask(
+                $input,
+                $output,
+                new ConfirmationQuestion(
+                    "This action will process {$count} places, continue? [y/N] ",
+                    false
+                )
+            );
     }
 
     private function askDeprecatedType(InputInterface $input, OutputInterface $output): string
