@@ -18,13 +18,16 @@ use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\ContentTypePropertiesFactor
 use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\CorrelationIdPropertiesFactory;
 use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\DeliveryModePropertiesFactory;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
+use CultuurNet\UDB3\Event\EventContributorsUpdated;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
+use CultuurNet\UDB3\Organizer\OrganizerContributorsUpdated;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Place\PlaceContributorsUpdated;
 use PhpAmqpLib\Message\AMQPMessage;
 
 final class AMQPPublisherServiceProvider extends AbstractServiceProvider
@@ -48,6 +51,9 @@ final class AMQPPublisherServiceProvider extends AbstractServiceProvider
                     EventProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.event-projected-to-jsonld+json',
                     PlaceProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.place-projected-to-jsonld+json',
                     OrganizerProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.organizer-projected-to-jsonld+json',
+                    EventContributorsUpdated::class => 'application/vnd.cultuurnet.udb3-events.event-contributors-updated',
+                    PlaceContributorsUpdated::class => 'application/vnd.cultuurnet.udb3-events.place-contributors-updated',
+                    OrganizerContributorsUpdated::class => 'application/vnd.cultuurnet.udb3-events.organizer-contributors-updated',
                 ];
 
                 $specificationCollection = new SpecificationCollection();
