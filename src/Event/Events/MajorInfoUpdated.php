@@ -14,30 +14,11 @@ use CultuurNet\UDB3\Title;
 
 final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranularEvents
 {
-    /**
-     * @var Title
-     */
-    private $title;
-
-    /**
-     * @var EventType
-     */
-    private $eventType;
-
-    /**
-     * @var Theme|null
-     */
-    private $theme;
-
-    /**
-     * @var LocationId
-     */
-    private $location;
-
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Title $title;
+    private EventType $eventType;
+    private ?Theme $theme;
+    private LocationId $location;
+    private Calendar $calendar;
 
     public function __construct(
         string $eventId,
