@@ -2,16 +2,10 @@
 
 declare(strict_types=1);
 
-namespace test\Event\Events;
+namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
-use CultuurNet\UDB3\Event\Events\CalendarUpdated;
-use CultuurNet\UDB3\Event\Events\EventCreated;
-use CultuurNet\UDB3\Event\Events\LocationUpdated;
-use CultuurNet\UDB3\Event\Events\ThemeUpdated;
-use CultuurNet\UDB3\Event\Events\TitleUpdated;
-use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
