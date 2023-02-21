@@ -13,25 +13,10 @@ use CultuurNet\UDB3\Title;
 
 final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEvents
 {
-    /**
-     * @var Title
-     */
-    private $title;
-
-    /**
-     * @var EventType
-     */
-    private $eventType;
-
-    /**
-     * @var Address
-     */
-    private $address;
-
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Title $title;
+    private EventType $eventType;
+    private Address $address;
+    private Calendar $calendar;
 
     final public function __construct(
         string $placeId,
