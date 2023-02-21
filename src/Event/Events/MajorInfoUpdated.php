@@ -7,36 +7,18 @@ namespace CultuurNet\UDB3\Event\Events;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 
-final class MajorInfoUpdated extends AbstractEvent
+final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranularEvents
 {
-    /**
-     * @var Title
-     */
-    private $title;
-
-    /**
-     * @var EventType
-     */
-    private $eventType;
-
-    /**
-     * @var Theme|null
-     */
-    private $theme;
-
-    /**
-     * @var LocationId
-     */
-    private $location;
-
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Title $title;
+    private EventType $eventType;
+    private ?Theme $theme;
+    private LocationId $location;
+    private Calendar $calendar;
 
     public function __construct(
         string $eventId,
@@ -78,6 +60,21 @@ final class MajorInfoUpdated extends AbstractEvent
     public function getLocation(): LocationId
     {
         return $this->location;
+    }
+
+    public function toGranularEvents(): array
+    {
+        return array_values(
+            array_filter(
+                [
+                    new TitleUpdated($this->itemId, $this->title),
+                    new TypeUpdated($this->itemId, $this->eventType),
+                    $this->theme ? new ThemeUpdated($this->itemId, $this->theme) : null,
+                    new LocationUpdated($this->itemId, $this->location),
+                    new CalendarUpdated($this->itemId, $this->calendar),
+                ]
+            )
+        );
     }
 
     public function serialize(): array
