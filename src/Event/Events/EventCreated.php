@@ -17,40 +17,13 @@ use DateTimeInterface;
 
 final class EventCreated extends EventEvent implements ConvertsToGranularEvents
 {
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
-
-    /**
-     * @var Title
-     */
-    private $title;
-
-    /**
-     * @var EventType
-     */
-    private $eventType;
-
-    /**
-     * @var Theme|null
-     */
-    private $theme;
-
-    /**
-     * @var LocationId
-     */
-    private $location;
-
-    /**
-     * @var Calendar
-     */
-    private $calendar;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    private $publicationDate;
+    private Language $mainLanguage;
+    private Title $title;
+    private EventType $eventType;
+    private ?Theme $theme;
+    private LocationId $location;
+    private Calendar $calendar;
+    private ?DateTimeImmutable $publicationDate;
 
     public function __construct(
         string $eventId,
