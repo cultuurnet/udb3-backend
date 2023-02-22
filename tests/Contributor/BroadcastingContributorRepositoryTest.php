@@ -45,13 +45,13 @@ final class BroadcastingContributorRepositoryTest extends TestCase
             $this->eventBus,
             new ContributorsUpdatedFactory(
                 new CallableIriGenerator(
-                    fn ($cdbid) => 'https://io.uitdatabank.dev/events/' . $cdbid . '/contributors'
+                    fn ($cdbid) => 'https://io.uitdatabank.dev/events/' . $cdbid
                 ),
                 new CallableIriGenerator(
-                    fn ($cdbid) =>  'https://io.uitdatabank.dev/places/' . $cdbid . '/contributors'
+                    fn ($cdbid) =>  'https://io.uitdatabank.dev/places/' . $cdbid
                 ),
                 new CallableIriGenerator(
-                    fn ($cdbid) => 'https://io.uitdatabank.dev/organizers/' . $cdbid . '/contributors'
+                    fn ($cdbid) => 'https://io.uitdatabank.dev/organizers/' . $cdbid
                 )
             )
         );
@@ -115,21 +115,21 @@ final class BroadcastingContributorRepositoryTest extends TestCase
                 ItemType::event(),
                 new EventProjectedToJSONLD(
                     'f28b47d1-4d06-4c46-94cc-d0ddbaad102f',
-                    'https://io.uitdatabank.dev/events/f28b47d1-4d06-4c46-94cc-d0ddbaad102f/contributors'
+                    'https://io.uitdatabank.dev/events/f28b47d1-4d06-4c46-94cc-d0ddbaad102f'
                 ),
             ],
             'place' => [
                 ItemType::place(),
                 new PlaceProjectedToJSONLD(
                     'f28b47d1-4d06-4c46-94cc-d0ddbaad102f',
-                    'https://io.uitdatabank.dev/places/f28b47d1-4d06-4c46-94cc-d0ddbaad102f/contributors'
+                    'https://io.uitdatabank.dev/places/f28b47d1-4d06-4c46-94cc-d0ddbaad102f'
                 ),
             ],
             'organizer' => [
                 ItemType::organizer(),
                 new OrganizerProjectedToJSONLD(
                     'f28b47d1-4d06-4c46-94cc-d0ddbaad102f',
-                    'https://io.uitdatabank.dev/organizers/f28b47d1-4d06-4c46-94cc-d0ddbaad102f/contributors'
+                    'https://io.uitdatabank.dev/organizers/f28b47d1-4d06-4c46-94cc-d0ddbaad102f'
                 ),
             ],
         ];

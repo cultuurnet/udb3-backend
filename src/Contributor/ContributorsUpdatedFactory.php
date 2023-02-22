@@ -19,7 +19,6 @@ final class ContributorsUpdatedFactory
 
     private IriGeneratorInterface $organizerGetContributorsIriGenerator;
 
-
     public function __construct(
         IriGeneratorInterface $eventGetContributorsIriGenerator,
         IriGeneratorInterface $placeGetContributorsIriGenerator,
