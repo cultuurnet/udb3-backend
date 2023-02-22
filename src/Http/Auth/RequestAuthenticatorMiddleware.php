@@ -87,6 +87,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
             $this->authenticateToken($request);
         } catch (\Exception $exception) {
             if ($this->isCorsPreflightRequest($request) || $this->isPublicRoute($request)) {
+                $this->token = null;
                 return;
             }
             throw $exception;
