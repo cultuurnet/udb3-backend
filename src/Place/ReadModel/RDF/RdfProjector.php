@@ -9,6 +9,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 
 final class RdfProjector implements EventListener
@@ -28,6 +29,7 @@ final class RdfProjector implements EventListener
 
         $mapping = [
             MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $domainMessage),
+            TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $domainMessage),
         ];
 
         foreach ($events as $event) {
@@ -45,5 +47,9 @@ final class RdfProjector implements EventListener
             $domainMessage->getId(),
             new Language($event->getMainLanguage()->getCode())
         );
+    }
+
+    private function handleTitleUpdated(TitleUpdated $event, DomainMessage $domainMessage): void
+    {
     }
 }
