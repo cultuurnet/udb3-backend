@@ -16,41 +16,15 @@ use DateTimeInterface;
 
 final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents
 {
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
+    private Language $mainLanguage;
+    private Title $title;
+    private EventType $eventType;
+    private Address $address;
+    private Calendar $calendar;
+    private ?DateTimeImmutable $publicationDate;
 
-    /**
-     * @var Title
-     */
-    private $title;
-
-    /**
-     * @var EventType
-     */
-    private $eventType;
-
-    /**
-     * @var Address
-     */
-    private $address;
-
-    /**
-     * @var Calendar
-     */
-    private $calendar;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    private $publicationDate;
-
-    /**
-     * @param string $placeId
-     */
     public function __construct(
-        $placeId,
+        string $placeId,
         Language $mainLanguage,
         Title $title,
         EventType $eventType,

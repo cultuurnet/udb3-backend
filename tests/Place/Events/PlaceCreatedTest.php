@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace test\Place\Events;
+namespace CultuurNet\UDB3\Place\Events;
 
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
@@ -13,7 +13,6 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -21,20 +20,9 @@ use PHPUnit\Framework\TestCase;
 
 class PlaceCreatedTest extends TestCase
 {
-    /**
-     * @var Address
-     */
-    private $address;
-
-    /**
-     * @var DateTimeImmutable
-     */
-    private $publicationDate;
-
-    /**
-     * @var PlaceCreated
-     */
-    private $placeCreated;
+    private Address $address;
+    private DateTimeImmutable $publicationDate;
+    private PlaceCreated $placeCreated;
 
     protected function setUp(): void
     {
