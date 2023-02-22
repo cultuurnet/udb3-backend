@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
+use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeEventCommand;
@@ -43,6 +44,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
     private const COMMAND_SERVICES = [
         'console.amqp-listen-uitpas',
         'console.replay',
+        'console.find-out-of-sync-projections',
         'console.event:ancestors',
         'console.purge',
         'console.place:geocode',
@@ -126,6 +128,18 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('dbal_connection'),
                     $container->get('eventstore_payload_serializer'),
                     $container->get(EventBus::class)
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.find-out-of-sync-projections',
+            function () use ($container) {
+                return new FindOutOfSyncProjections(
+                    $container->get('dbal_connection'),
+                    $container->get('event_jsonld_repository'),
+                    $container->get('place_jsonld_repository'),
+                    $container->get('organizer_jsonld_repository')
                 );
             }
         );
