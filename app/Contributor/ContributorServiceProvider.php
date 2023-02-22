@@ -25,7 +25,7 @@ final class ContributorServiceProvider extends AbstractServiceProvider
             fn () => new BroadcastingContributorRepository(
                 new DbalContributorRepository($container->get('dbal_connection')),
                 $container->get(EventBus::class),
-                new ContributorsUpdatedFactory(
+                new ProjectedToJSONLDFactory(
                     $container->get('event_iri_generator'),
                     $container->get('place_iri_generator'),
                     $container->get('organizer_iri_generator')

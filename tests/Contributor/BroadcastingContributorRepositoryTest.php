@@ -43,7 +43,7 @@ final class BroadcastingContributorRepositoryTest extends TestCase
         $this->contributorRepository = new BroadcastingContributorRepository(
             $this->decoratee,
             $this->eventBus,
-            new ContributorsUpdatedFactory(
+            new ProjectedToJSONLDFactory(
                 new CallableIriGenerator(
                     fn ($cdbid) => 'https://io.uitdatabank.dev/events/' . $cdbid
                 ),

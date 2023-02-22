@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 
-final class ContributorsUpdatedFactory
+final class ProjectedToJSONLDFactory
 {
     private IriGeneratorInterface $eventIriGenerator;
 

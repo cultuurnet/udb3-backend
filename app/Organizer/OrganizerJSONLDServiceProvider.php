@@ -78,7 +78,7 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
                 $repository = new ContributorEnrichedRepository(
                     $container->get(ContributorRepository::class),
                     $repository,
-                    $container->get('offer_permission_voter'),
+                    $container->get('organizer_permission_voter'),
                     $container->get(CurrentUser::class)->getId()
                 );
 

@@ -18,12 +18,12 @@ final class BroadcastingContributorRepository implements ContributorRepository
 
     private EventBus $eventBus;
 
-    private ContributorsUpdatedFactory $contributorOverwrittenFactory;
+    private ProjectedToJSONLDFactory $contributorOverwrittenFactory;
 
     public function __construct(
         ContributorRepository $repository,
         EventBus $eventBus,
-        ContributorsUpdatedFactory $contributorOverwrittenFactory
+        ProjectedToJSONLDFactory $contributorOverwrittenFactory
     ) {
         $this->repository = $repository;
         $this->eventBus = $eventBus;
