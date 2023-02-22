@@ -13,20 +13,20 @@ use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 
 final class ContributorsUpdatedFactory
 {
-    private IriGeneratorInterface $eventGetContributorsIriGenerator;
+    private IriGeneratorInterface $eventIriGenerator;
 
-    private IriGeneratorInterface $placeGetContributorsIriGenerator;
+    private IriGeneratorInterface $placeIriGenerator;
 
-    private IriGeneratorInterface $organizerGetContributorsIriGenerator;
+    private IriGeneratorInterface $organizerIriGenerator;
 
     public function __construct(
-        IriGeneratorInterface $eventGetContributorsIriGenerator,
-        IriGeneratorInterface $placeGetContributorsIriGenerator,
-        IriGeneratorInterface $organizerGetContributorsIriGenerator
+        IriGeneratorInterface $eventIriGenerator,
+        IriGeneratorInterface $placeIriGenerator,
+        IriGeneratorInterface $organizerIriGenerator
     ) {
-        $this->eventGetContributorsIriGenerator = $eventGetContributorsIriGenerator;
-        $this->placeGetContributorsIriGenerator = $placeGetContributorsIriGenerator;
-        $this->organizerGetContributorsIriGenerator = $organizerGetContributorsIriGenerator;
+        $this->eventIriGenerator = $eventIriGenerator;
+        $this->placeIriGenerator = $placeIriGenerator;
+        $this->organizerIriGenerator = $organizerIriGenerator;
     }
 
     public function createForItemType(string $id, ItemType $itemType): Serializable
@@ -34,20 +34,20 @@ final class ContributorsUpdatedFactory
         if ($itemType->sameAs(ItemType::event())) {
             return new EventProjectedToJSONLD(
                 $id,
-                $this->eventGetContributorsIriGenerator->iri($id)
+                $this->eventIriGenerator->iri($id)
             );
         }
 
         if ($itemType->sameAs(ItemType::place())) {
             return new PlaceProjectedToJSONLD(
                 $id,
-                $this->placeGetContributorsIriGenerator->iri($id)
+                $this->placeIriGenerator->iri($id)
             );
         }
 
         return new OrganizerProjectedToJSONLD(
             $id,
-            $this->organizerGetContributorsIriGenerator->iri($id)
+            $this->organizerIriGenerator->iri($id)
         );
     }
 }
