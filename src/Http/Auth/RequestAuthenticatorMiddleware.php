@@ -83,13 +83,14 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     {
         // For requests to public routes, that provide extra information to Authenticated
         // Users. eg. show contributors
-        $this->checkToken($request);
-
-        if ($this->isCorsPreflightRequest($request) || $this->isPublicRoute($request)) {
-            return;
+        try {
+            $this->authenticateToken($request);
+        } catch (\Exception $exception) {
+            if ($this->isCorsPreflightRequest($request) || $this->isPublicRoute($request)) {
+                return;
+            }
+            throw $exception;
         }
-
-        $this->authenticateToken($request);
 
         // Requests that use a token from the JWT provider (v1 or v2) require an API key from UiTID v1.
         // Requests that use a token that they got directly from Auth0 do not require an API key.
@@ -116,37 +117,6 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     {
         $userId = $this->token ? $this->token->getUserId() : null;
         return new CurrentUser($userId);
-    }
-
-    private function checkToken(ServerRequestInterface $request): void
-    {
-        $authorizationHeader = $request->getHeader('authorization');
-        if (empty($authorizationHeader)) {
-            return;
-        }
-
-        $authorizationHeader = $authorizationHeader[0];
-        $startsWithBearer = strpos($authorizationHeader, self::BEARER) === 0;
-        if (!$startsWithBearer) {
-            return;
-        }
-
-        $tokenString = substr($authorizationHeader, strlen(self::BEARER));
-        try {
-            $this->token = new JsonWebToken($tokenString);
-        } catch (InvalidArgumentException $e) {
-            return;
-        }
-
-        try {
-            $isV1 = $this->token->getType() === JsonWebToken::UIT_ID_V1_JWT_PROVIDER_TOKEN;
-            $validator = $isV1 ? $this->uitIdV1JwtValidator : $this->uitIdV2JwtValidator;
-
-            $validator->verifySignature($this->token);
-            $validator->validateClaims($this->token);
-        } catch (ApiProblem $apiProblem) {
-            $this->token = null;
-        }
     }
 
     private function authenticateToken(ServerRequestInterface $request): void
