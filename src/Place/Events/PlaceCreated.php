@@ -7,49 +7,24 @@ namespace CultuurNet\UDB3\Place\Events;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Place\PlaceEvent;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 
-final class PlaceCreated extends PlaceEvent
+final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents
 {
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
+    private Language $mainLanguage;
+    private Title $title;
+    private EventType $eventType;
+    private Address $address;
+    private Calendar $calendar;
+    private ?DateTimeImmutable $publicationDate;
 
-    /**
-     * @var Title
-     */
-    private $title;
-
-    /**
-     * @var EventType
-     */
-    private $eventType;
-
-    /**
-     * @var Address
-     */
-    private $address;
-
-    /**
-     * @var Calendar
-     */
-    private $calendar;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    private $publicationDate;
-
-    /**
-     * @param string $placeId
-     */
     public function __construct(
-        $placeId,
+        string $placeId,
         Language $mainLanguage,
         Title $title,
         EventType $eventType,
@@ -95,6 +70,16 @@ final class PlaceCreated extends PlaceEvent
     public function getPublicationDate(): ?DateTimeImmutable
     {
         return $this->publicationDate;
+    }
+
+    public function toGranularEvents(): array
+    {
+        return [
+            new TitleUpdated($this->placeId, $this->title),
+            new TypeUpdated($this->placeId, $this->eventType),
+            new AddressUpdated($this->placeId, $this->address),
+            new CalendarUpdated($this->placeId, $this->calendar),
+        ];
     }
 
     public function serialize(): array
