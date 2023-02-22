@@ -8,24 +8,35 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\Permission\PermissionVoter;
+use CultuurNet\UDB3\StringLiteral;
 
 final class ContributorEnrichedRepository extends DocumentRepositoryDecorator
 {
     private ContributorRepository $contributorRepository;
 
-    public function __construct(ContributorRepository $contributorRepository, DocumentRepository $documentRepository)
-    {
+    private PermissionVoter $permissionVoter;
+
+    private ?string $currentUserId;
+
+    public function __construct(
+        ContributorRepository $contributorRepository,
+        DocumentRepository $documentRepository,
+        PermissionVoter $permissionVoter,
+        ?string $currentUserId
+    ) {
         parent::__construct($documentRepository);
         $this->contributorRepository = $contributorRepository;
+        $this->permissionVoter = $permissionVoter;
+        $this->currentUserId = $currentUserId;
     }
 
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
     {
         $jsonDocument = parent::fetch($id, $includeMetadata);
-        // TODO: Check permission
-        $hasCorrectPermission = true;
 
-        if ($hasCorrectPermission) {
+        if ($this->hasPermission($jsonDocument->getId())) {
             $jsonDocument = $this->enrich($jsonDocument);
         }
 
@@ -42,5 +53,15 @@ final class ContributorEnrichedRepository extends DocumentRepositoryDecorator
                 return $body;
             }
         );
+    }
+
+    private function hasPermission(string $id): bool
+    {
+        return $this->currentUserId !== null &&
+            $this->permissionVoter->isAllowed(
+                Permission::aanbodBewerken(),
+                new StringLiteral($id),
+                new StringLiteral($this->currentUserId)
+            );
     }
 }

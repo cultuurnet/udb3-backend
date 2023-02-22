@@ -37,6 +37,7 @@ use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Term\TermRepository;
+use CultuurNet\UDB3\User\CurrentUser;
 
 final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
 {
@@ -120,7 +121,9 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
 
                 $repository = new ContributorEnrichedRepository(
                     $container->get(ContributorRepository::class),
-                    $repository
+                    $repository,
+                    $container->get('offer_permission_voter'),
+                    $container->get(CurrentUser::class)->getId()
                 );
 
                 if (isset($container->get('config')['polyfill_duplicate_places']) && $container->get('config')['polyfill_duplicate_places']) {

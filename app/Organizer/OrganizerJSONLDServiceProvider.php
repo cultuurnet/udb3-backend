@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\PropertyPolyfillRepository;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
+use CultuurNet\UDB3\User\CurrentUser;
 
 final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
 {
@@ -76,7 +77,9 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
 
                 $repository = new ContributorEnrichedRepository(
                     $container->get(ContributorRepository::class),
-                    $repository
+                    $repository,
+                    $container->get('offer_permission_voter'),
+                    $container->get(CurrentUser::class)->getId()
                 );
 
                 return new BroadcastingDocumentRepositoryDecorator(
