@@ -144,7 +144,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 
             $validator->verifySignature($this->token);
             $validator->validateClaims($this->token);
-        } catch (ApiProblem $apiProblem){
+        } catch (ApiProblem $apiProblem) {
             $this->token = null;
         }
     }
