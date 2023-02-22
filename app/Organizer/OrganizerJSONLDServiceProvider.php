@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Organizer;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Contributor\ContributorEnrichedRepository;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
@@ -71,6 +73,11 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 $repository = new CacheDocumentRepository($container->get('organizer_jsonld_cache'));
                 $repository = new PropertyPolyfillRepository($repository, $container->get(LabelServiceProvider::JSON_READ_REPOSITORY));
+
+                $repository = new ContributorEnrichedRepository(
+                    $container->get(ContributorRepository::class),
+                    $repository
+                );
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,

@@ -12,6 +12,8 @@ use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Contributor\ContributorEnrichedRepository;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
@@ -113,6 +115,11 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
 
                 $repository = new PopularityEnrichedOfferRepository(
                     $container->get(PopularityRepository::class),
+                    $repository
+                );
+
+                $repository = new ContributorEnrichedRepository(
+                    $container->get(ContributorRepository::class),
                     $repository
                 );
 
