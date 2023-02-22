@@ -64,6 +64,21 @@ class PlaceCreatedTest extends TestCase
     /**
      * @test
      */
+    public function it_converts_to_granular_events(): void
+    {
+        $expected = [
+            new TitleUpdated('id', new Title('title')),
+            new TypeUpdated('id', new EventType('id', 'label')),
+            new AddressUpdated('id', $this->address),
+            new CalendarUpdated('id', new Calendar(CalendarType::PERMANENT())),
+        ];
+        $actual = $this->placeCreated->toGranularEvents();
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
     public function it_stores_a_place_id()
     {
         $this->assertEquals('id', $this->placeCreated->getPlaceId());
