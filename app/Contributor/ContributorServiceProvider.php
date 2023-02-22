@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Contributor;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\ProjectedToJSONLDFactory;
 
 final class ContributorServiceProvider extends AbstractServiceProvider
 {

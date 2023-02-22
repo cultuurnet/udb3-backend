@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\ProjectedToJSONLDFactory;
 
 final class BroadcastingContributorRepository implements ContributorRepository
 {

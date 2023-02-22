@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Contributor;
+namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
