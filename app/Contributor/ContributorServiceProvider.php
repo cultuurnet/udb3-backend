@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Contributor;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Iri\CallableIriGenerator;
 
 final class ContributorServiceProvider extends AbstractServiceProvider
 {
@@ -27,15 +26,9 @@ final class ContributorServiceProvider extends AbstractServiceProvider
                 new DbalContributorRepository($container->get('dbal_connection')),
                 $container->get(EventBus::class),
                 new ContributorsUpdatedFactory(
-                    new CallableIriGenerator(
-                        fn ($cdbid) => $container->get('config')['url'] . '/events/' . $cdbid . '/contributors'
-                    ),
-                    new CallableIriGenerator(
-                        fn ($cdbid) => $container->get('config')['url'] . '/places/' . $cdbid . '/contributors'
-                    ),
-                    new CallableIriGenerator(
-                        fn ($cdbid) => $container->get('config')['url'] . '/organizers/' . $cdbid . '/contributors'
-                    )
+                    $container->get('event_iri_generator'),
+                    $container->get('place_iri_generator'),
+                    $container->get('organizer_iri_generator')
                 )
             )
         );
