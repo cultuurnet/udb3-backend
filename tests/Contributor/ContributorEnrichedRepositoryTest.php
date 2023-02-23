@@ -59,7 +59,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
      * @test
      * @dataProvider itemTypeDataProvider
      */
-    public function it_add_contributors_if_user_has_permission(string $itemType): void
+    public function it_adds_contributors_if_user_has_permission_and_requests_metadata(string $itemType): void
     {
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
@@ -84,16 +84,18 @@ final class ContributorEnrichedRepositoryTest extends TestCase
         $jsonLd = new JsonDocument($this->offerId, json_encode(['@type' => $itemType]));
         $this->documentRepository->save($jsonLd);
 
-        $fetchJsonLd = $this->contributorEnrichedRepository->fetch($this->offerId, false);
+        $fetchJsonLd = $this->contributorEnrichedRepository->fetch($this->offerId, true);
 
         $this->assertEquals(
             new JsonDocument(
                 $this->offerId,
                 json_encode([
                     '@type' => $itemType,
-                    'contributors' => [
-                        'info@example.com',
-                        'contact@example.com',
+                    'metadata' => [
+                        'contributors' => [
+                            'info@example.com',
+                            'contact@example.com',
+                        ],
                     ],
                 ])
             ),
@@ -127,7 +129,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
         $jsonLd = new JsonDocument($this->offerId, json_encode(['@type' => $itemType]));
         $this->documentRepository->save($jsonLd);
 
-        $fetchJsonLd = $this->contributorEnrichedRepository->fetch($this->offerId, false);
+        $fetchJsonLd = $this->contributorEnrichedRepository->fetch($this->offerId, true);
 
         $this->assertEquals(
             new JsonDocument(
@@ -144,7 +146,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
      * @test
      * @dataProvider itemTypeDataProvider
      */
-    public function it_hides_contributors_if_user_has_no_permission(string $itemType): void
+    public function it_hides_contributors_if_user_has_no_permission_and_requests_metadata(string $itemType): void
     {
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
@@ -163,7 +165,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
         $jsonLd = new JsonDocument($this->offerId, json_encode(['@type' => $itemType]));
         $this->documentRepository->save($jsonLd);
 
-        $fetchJsonLd = $this->contributorEnrichedRepository->fetch($this->offerId);
+        $fetchJsonLd = $this->contributorEnrichedRepository->fetch($this->offerId, true);
 
         $this->assertEquals(
             new JsonDocument(
