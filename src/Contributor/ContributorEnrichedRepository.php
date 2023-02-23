@@ -52,11 +52,13 @@ final class ContributorEnrichedRepository extends DocumentRepositoryDecorator
 
     private function enrich(JsonDocument $jsonDocument): JsonDocument
     {
-        $contributors = $this->contributorRepository->getContributors(new UUID($jsonDocument->getId()));
+        $contributors = $this->contributorRepository->getContributors(new UUID($jsonDocument->getId()))->toStringArray();
 
         return $jsonDocument->applyAssoc(
             function (array $body) use ($contributors) {
-                $body['contributors'] = $contributors->toStringArray();
+                if (count($contributors) > 0) {
+                    $body['contributors'] = $contributors;
+                }
                 return $body;
             }
         );
