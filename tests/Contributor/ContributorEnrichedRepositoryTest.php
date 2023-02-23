@@ -176,6 +176,34 @@ final class ContributorEnrichedRepositoryTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     * @dataProvider itemTypeDataProvider
+     */
+    public function it_does_not_save_contributors(string $itemType): void
+    {
+        $this->contributorEnrichedRepository->save(
+            new JsonDocument(
+                $this->offerId,
+                json_encode([
+                    '@type' => $itemType,
+                    'contributors' => [
+                        'info@example.com',
+                        'contact@example.com',
+                    ],
+                ])
+            )
+        );
+
+        $this->assertEquals(
+            new JsonDocument(
+                $this->offerId,
+                json_encode(['@type' => $itemType])
+            ),
+            $this->contributorEnrichedRepository->fetch($this->offerId)
+        );
+    }
+
     public function itemTypeDataProvider(): array
     {
         return [
