@@ -57,8 +57,6 @@ final class ChangePlaceTypeOnPlacesWithEventEventType extends AbstractCommand
             return 0;
         }
 
-        $reject = $this->askToReject($input, $output);
-
         $places = $resultsGenerator->search($query);
 
         $success = 0;
@@ -68,14 +66,6 @@ final class ChangePlaceTypeOnPlacesWithEventEventType extends AbstractCommand
             $placeId = $place->getId();
             try {
                 $this->commandBus->dispatch(new UpdateType($placeId, $placeEventType));
-                if ($reject) {
-                    $this->commandBus->dispatch(
-                        new Reject(
-                            new StringLiteral($placeId),
-                            new StringLiteral('Place rejected because it used an eventType only valid for events')
-                        )
-                    );
-                }
                 $logger->info(
                     'Successfully changed type of place "' . $placeId . '" to  "' . $placeEventType . '"'
                 );
@@ -111,20 +101,6 @@ final class ChangePlaceTypeOnPlacesWithEventEventType extends AbstractCommand
                 $output,
                 new ConfirmationQuestion(
                     "This action will process {$count} places, continue? [y/N] ",
-                    false
-                )
-            );
-    }
-
-    private function askToReject(InputInterface $input, OutputInterface $output): bool
-    {
-        return $this
-            ->getHelper('question')
-            ->ask(
-                $input,
-                $output,
-                new ConfirmationQuestion(
-                    'Should these places get the WorkflowStatus rejected? [y/N] ',
                     false
                 )
             );
