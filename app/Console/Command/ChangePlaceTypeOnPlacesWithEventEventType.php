@@ -31,7 +31,7 @@ final class ChangePlaceTypeOnPlacesWithEventEventType extends AbstractCommand
 
     public function configure(): void
     {
-        $this->setName('place:eventtype:update:reject');
+        $this->setName('place:eventtype:update');
 
         $this->setDescription(
             'Updates all places with an Event eventType and optionally reject them'
