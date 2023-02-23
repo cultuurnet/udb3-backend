@@ -38,13 +38,6 @@ final class ContributorEnrichedRepository extends DocumentRepositoryDecorator
 
         if ($this->hasPermission($jsonDocument->getId())) {
             $jsonDocument = $this->enrich($jsonDocument);
-        } else {
-            $jsonDocument = $jsonDocument->applyAssoc(
-                function (array $json) {
-                    unset($json['contributors']);
-                    return $json;
-                }
-            );
         }
 
         return $jsonDocument;
