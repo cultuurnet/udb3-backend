@@ -36,7 +36,7 @@ final class ContributorEnrichedRepository extends DocumentRepositoryDecorator
     {
         $jsonDocument = parent::fetch($id, $includeMetadata);
 
-        if ($this->hasPermission($jsonDocument->getId())) {
+        if ($includeMetadata && $this->hasPermission($jsonDocument->getId())) {
             $jsonDocument = $this->enrich($jsonDocument);
         }
 
@@ -50,7 +50,7 @@ final class ContributorEnrichedRepository extends DocumentRepositoryDecorator
         return $jsonDocument->applyAssoc(
             function (array $body) use ($contributors) {
                 if (count($contributors) > 0) {
-                    $body['contributors'] = $contributors;
+                    $body['metadata']['contributors'] = $contributors;
                 }
                 return $body;
             }
