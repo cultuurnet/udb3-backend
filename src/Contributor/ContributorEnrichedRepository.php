@@ -43,6 +43,18 @@ final class ContributorEnrichedRepository extends DocumentRepositoryDecorator
         return $jsonDocument;
     }
 
+    public function save(JsonDocument $readModel): void
+    {
+        parent::save(
+            $readModel->applyAssoc(
+                function (array $json) {
+                    unset($json['contributors']);
+                    return $json;
+                }
+            )
+        );
+    }
+
     private function enrich(JsonDocument $jsonDocument): JsonDocument
     {
         $contributors = $this->contributorRepository->getContributors(new UUID($jsonDocument->getId()))->toStringArray();
