@@ -106,6 +106,37 @@ final class ChangePlaceTypeOnPlacesWithEventEventType extends AbstractCommand
             );
     }
 
+    private function getMapping(): array
+    {
+        return [
+            '0.50.4.0.0' => 'OyaPaf64AEmEAYXHeLMAtA',
+            '0.54.0.0.0' => '8.70.0.0.0',
+            '0.5.0.0.0' => '0.53.0.0.0',
+            '0.50.6.0.0' => 'BtVNd33sR0WntjALVbyp3w',
+            '0.3.2.0.0' => 'Yf4aZBfsUEu2NsQqsprngw',
+            '0.55.0.0.0' => '8.70.0.0.0',
+            '0.19.0.0.0' => 'eBwaUAAhw0ur0Z02i5ttnw',
+            '0.37.0.0.0' => '0.8.0.0.0',
+            '0.12.0.0.0' => '0.53.0.0.0',
+            '0.6.0.0.0' => 'OyaPaf64AEmEAYXHeLMAtA',
+            '0.0.0.0.0' => 'GnPFp9uvOUyqhOckIFMKmg',
+            '0.7.0.0.0' => 'GnPFp9uvOUyqhOckIFMKmg',
+            '0.3.1.0.0' => 'rJRFUqmd6EiqTD4c7HS90w',
+            '0.3.1.0.1' => 'rJRFUqmd6EiqTD4c7HS90w',
+            '0.57.0.0.0' => 'JCjA0i5COUmdjMwcyjNAFA',
+            '0.28.0.0.0' => 'OyaPaf64AEmEAYXHeLMAtA',
+            '0.17.0.0.0' => '0.8.0.0.0',
+            '0.49.0.0.0' => 'YVBc8KVdrU6XfTNvhMYUpg',
+            '1.50.0.0.0' => 'OyaPaf64AEmEAYXHeLMAtA',
+            '0.50.21.0.0' => 'Yf4aZBfsUEu2NsQqsprngw',
+            '0.59.0.0.0' => 'eBwaUAAhw0ur0Z02i5ttnw',
+            '0.100.0.0.0' => 'Yf4aZBfsUEu2NsQqsprngw',
+            '0.100.1.0.0' => '0.53.0.0.0',
+            '0.100.2.0.0' => '0.53.0.0.0',
+            '0.51.0.0.0' => 'Yf4aZBfsUEu2NsQqsprngw',
+        ];
+    }
+
     private function askEventEventType(InputInterface $input, OutputInterface $output): string
     {
         $eventTypeIdQuestion = new ChoiceQuestion(
