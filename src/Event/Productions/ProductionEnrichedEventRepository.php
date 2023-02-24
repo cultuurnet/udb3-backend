@@ -39,6 +39,18 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
         );
     }
 
+    public function save(JsonDocument $readModel): void
+    {
+        parent::save(
+            $readModel->applyAssoc(
+                function (array $json) {
+                    unset($json['production']);
+                    return $json;
+                }
+            )
+        );
+    }
+
     private function enrich(JsonDocument $document): JsonDocument
     {
         $jsonObject = $document->getBody();
