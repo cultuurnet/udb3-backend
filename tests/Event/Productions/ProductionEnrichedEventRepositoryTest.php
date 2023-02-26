@@ -12,12 +12,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class ProductionEnrichedEventRepositoryTest extends TestCase
+final class ProductionEnrichedEventRepositoryTest extends TestCase
 {
-    /**
-     * @var ProductionEnrichedEventRepository
-     */
-    private $productionEnrichedEventRepository;
+    private ProductionEnrichedEventRepository $productionEnrichedEventRepository;
 
     /**
      * @var ProductionRepository | MockObject
