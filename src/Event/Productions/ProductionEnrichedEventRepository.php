@@ -10,17 +10,11 @@ use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
-class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
+final class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
 {
-    /**
-     * @var ProductionRepository
-     */
-    private $productionRepository;
+    private ProductionRepository $productionRepository;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    private $iriGenerator;
+    private IriGeneratorInterface $iriGenerator;
 
     public function __construct(
         DocumentRepository $repository,
