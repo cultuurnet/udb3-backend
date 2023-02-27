@@ -22,7 +22,6 @@ use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
-use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\TestCase;
@@ -60,7 +59,7 @@ class RdfProjectorTest extends TestCase
         $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
         $this->projectPlaceCreated($placeId);
 
-        $titleUpdated = new TitleUpdated($placeId, new Title('Voorbeeld titel UPDATED'));
+        $titleUpdated = new TitleUpdated($placeId, new LegacyTitle('Voorbeeld titel UPDATED'));
         $this->handleEvent($placeId, $titleUpdated);
 
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/title-updated.ttl'));
