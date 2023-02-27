@@ -17,6 +17,8 @@ use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
+use CultuurNet\UDB3\RDF\GraphRepository;
+use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use CultuurNet\UDB3\Title as LegacyTitle;
@@ -25,12 +27,17 @@ use PHPUnit\Framework\TestCase;
 class RdfProjectorTest extends TestCase
 {
     private MainLanguageRepository $mainLanguageRepository;
+    private GraphRepository $graphRepository;
     private RdfProjector $rdfProjector;
 
     protected function setUp(): void
     {
         $this->mainLanguageRepository = new InMemoryMainLanguageRepository();
-        $this->rdfProjector = new RdfProjector($this->mainLanguageRepository);
+        $this->graphRepository = new InMemoryGraphRepository();
+        $this->rdfProjector = new RdfProjector(
+            $this->mainLanguageRepository,
+            $this->graphRepository
+        );
     }
 
     /**

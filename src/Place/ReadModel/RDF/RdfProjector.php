@@ -10,15 +10,20 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
+use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 
 final class RdfProjector implements EventListener
 {
     private MainLanguageRepository $mainLanguageRepository;
+    private GraphRepository $graphRepository;
 
-    public function __construct(MainLanguageRepository $mainLanguageRepository)
-    {
+    public function __construct(
+        MainLanguageRepository $mainLanguageRepository,
+        GraphRepository $graphRepository
+    ) {
         $this->mainLanguageRepository = $mainLanguageRepository;
+        $this->graphRepository = $graphRepository;
     }
 
     public function handle(DomainMessage $domainMessage): void
