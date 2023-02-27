@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
-use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\TestCase;
