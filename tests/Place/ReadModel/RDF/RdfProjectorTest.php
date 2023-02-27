@@ -70,12 +70,7 @@ class RdfProjectorTest extends TestCase
         $expectedMainLanguage = new Language('nl');
         $actualMainLanguage = $this->mainLanguageRepository->get($expectedUri);
 
-        $expectedTurtle = <<<TURTLE
-@prefix locn: <http://www.w3.org/ns/locn#> .
-
-<https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea> locn:geographicName "Voorbeeld titel"@nl .
-
-TURTLE;
+        $expectedTurtle = file_get_contents(__DIR__ . '/data/place-created.ttl');
         $actualTurtle = (new Turtle())->serialise($this->graphRepository->get($expectedUri), 'turtle');
 
         $this->assertEquals($expectedMainLanguage, $actualMainLanguage);
