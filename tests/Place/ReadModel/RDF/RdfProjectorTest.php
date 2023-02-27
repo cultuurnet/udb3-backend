@@ -18,10 +18,12 @@ use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
+use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
+use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\TestCase;
@@ -59,6 +61,26 @@ class RdfProjectorTest extends TestCase
         $actualTurtle = (new Turtle())->serialise($this->graphRepository->get($expectedUri), 'turtle');
 
         $this->assertEquals($expectedMainLanguage, $actualMainLanguage);
+        $this->assertEquals($expectedTurtle, $actualTurtle);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_title_updated(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->projectPlaceCreated($placeId);
+
+        $titleUpdated = new TitleUpdated($placeId, new Title('Voorbeeld titel UPDATED'));
+        $domainMessage = DomainMessage::recordNow($placeId, 1, new Metadata(), $titleUpdated);
+        $this->rdfProjector->handle($domainMessage);
+
+        $expectedUri = 'https://mock.data.publiq.be/locaties/' . $placeId;
+
+        $expectedTurtle = file_get_contents(__DIR__ . '/data/title-updated.ttl');
+        $actualTurtle = (new Turtle())->serialise($this->graphRepository->get($expectedUri), 'turtle');
+
         $this->assertEquals($expectedTurtle, $actualTurtle);
     }
 
