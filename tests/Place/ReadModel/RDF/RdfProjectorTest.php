@@ -29,16 +29,14 @@ use PHPUnit\Framework\TestCase;
 
 class RdfProjectorTest extends TestCase
 {
-    private MainLanguageRepository $mainLanguageRepository;
     private GraphRepository $graphRepository;
     private RdfProjector $rdfProjector;
 
     protected function setUp(): void
     {
-        $this->mainLanguageRepository = new InMemoryMainLanguageRepository();
         $this->graphRepository = new InMemoryGraphRepository();
         $this->rdfProjector = new RdfProjector(
-            $this->mainLanguageRepository,
+            new InMemoryMainLanguageRepository(),
             $this->graphRepository,
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/locaties/' . $item),
         );
