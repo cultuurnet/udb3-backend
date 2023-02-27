@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
+use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
@@ -63,6 +64,19 @@ class RdfProjectorTest extends TestCase
             new TitleUpdated($placeId, new LegacyTitle('Voorbeeld titel UPDATED')),
         ]);
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/title-updated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_title_translated(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new TitleTranslated($placeId, new LegacyLanguage('en'), new LegacyTitle('Example title')),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/title-translated.ttl'));
     }
 
     private function getPlaceCreated(string $placeId): PlaceCreated
