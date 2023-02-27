@@ -52,11 +52,7 @@ class RdfProjectorTest extends TestCase
     {
         $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
         $this->projectPlaceCreated($placeId);
-
-        $expectedTurtle = file_get_contents(__DIR__ . '/data/place-created.ttl');
-        $actualTurtle = $this->getTurtleData($placeId);
-
-        $this->assertEquals($expectedTurtle, $actualTurtle);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-created.ttl'));
     }
 
     /**
@@ -70,10 +66,7 @@ class RdfProjectorTest extends TestCase
         $titleUpdated = new TitleUpdated($placeId, new Title('Voorbeeld titel UPDATED'));
         $this->handleEvent($placeId, $titleUpdated);
 
-        $expectedTurtle = file_get_contents(__DIR__ . '/data/title-updated.ttl');
-        $actualTurtle = $this->getTurtleData($placeId);
-
-        $this->assertEquals($expectedTurtle, $actualTurtle);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/title-updated.ttl'));
     }
 
     private function projectPlaceCreated(string $placeId): void
@@ -100,9 +93,10 @@ class RdfProjectorTest extends TestCase
         $this->rdfProjector->handle($domainMessage);
     }
 
-    private function getTurtleData(string $placeId): string
+    private function assertTurtleData(string $placeId, string $expectedTurtleData): void
     {
         $uri = 'https://mock.data.publiq.be/locaties/' . $placeId;
-        return (new Turtle())->serialise($this->graphRepository->get($uri), 'turtle');
+        $actualTurtleData = (new Turtle())->serialise($this->graphRepository->get($uri), 'turtle');
+        $this->assertEquals($expectedTurtleData, $actualTurtleData);
     }
 }
