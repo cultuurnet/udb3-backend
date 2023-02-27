@@ -49,6 +49,21 @@ class RdfProjectorTest extends TestCase
     public function it_handles_place_created(): void
     {
         $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->projectPlaceCreated($placeId);
+
+        $expectedUri = 'https://mock.data.publiq.be/locaties/' . $placeId;
+        $expectedMainLanguage = new Language('nl');
+        $actualMainLanguage = $this->mainLanguageRepository->get($expectedUri);
+
+        $expectedTurtle = file_get_contents(__DIR__ . '/data/place-created.ttl');
+        $actualTurtle = (new Turtle())->serialise($this->graphRepository->get($expectedUri), 'turtle');
+
+        $this->assertEquals($expectedMainLanguage, $actualMainLanguage);
+        $this->assertEquals($expectedTurtle, $actualTurtle);
+    }
+
+    private function projectPlaceCreated(string $placeId): void
+    {
         $placeCreated = new PlaceCreated(
             $placeId,
             new LegacyLanguage('nl'),
@@ -63,17 +78,6 @@ class RdfProjectorTest extends TestCase
             new Calendar(LegacyCalendarType::PERMANENT())
         );
         $domainMessage = DomainMessage::recordNow($placeId, 0, new Metadata(), $placeCreated);
-
         $this->rdfProjector->handle($domainMessage);
-
-        $expectedUri = 'https://mock.data.publiq.be/locaties/' . $placeId;
-        $expectedMainLanguage = new Language('nl');
-        $actualMainLanguage = $this->mainLanguageRepository->get($expectedUri);
-
-        $expectedTurtle = file_get_contents(__DIR__ . '/data/place-created.ttl');
-        $actualTurtle = (new Turtle())->serialise($this->graphRepository->get($expectedUri), 'turtle');
-
-        $this->assertEquals($expectedMainLanguage, $actualMainLanguage);
-        $this->assertEquals($expectedTurtle, $actualTurtle);
     }
 }
