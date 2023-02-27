@@ -73,8 +73,7 @@ class RdfProjectorTest extends TestCase
         $this->projectPlaceCreated($placeId);
 
         $titleUpdated = new TitleUpdated($placeId, new Title('Voorbeeld titel UPDATED'));
-        $domainMessage = DomainMessage::recordNow($placeId, 1, new Metadata(), $titleUpdated);
-        $this->rdfProjector->handle($domainMessage);
+        $this->handleEvent($placeId, $titleUpdated);
 
         $expectedUri = 'https://mock.data.publiq.be/locaties/' . $placeId;
 
@@ -99,7 +98,12 @@ class RdfProjectorTest extends TestCase
             ),
             new Calendar(LegacyCalendarType::PERMANENT())
         );
-        $domainMessage = DomainMessage::recordNow($placeId, 0, new Metadata(), $placeCreated);
+        $this->handleEvent($placeId, $placeCreated);
+    }
+
+    private function handleEvent(string $placeId, $event): void
+    {
+        $domainMessage = DomainMessage::recordNow($placeId, 1, new Metadata(), $event);
         $this->rdfProjector->handle($domainMessage);
     }
 }
