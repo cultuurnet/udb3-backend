@@ -79,6 +79,22 @@ class RdfProjectorTest extends TestCase
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/title-translated.ttl'));
     }
 
+    /**
+     * @test
+     */
+    public function it_handles_multiple_title_translated_and_title_updated_events(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new TitleTranslated($placeId, new LegacyLanguage('en'), new LegacyTitle('Example title')),
+            new TitleUpdated($placeId, new LegacyTitle('Voorbeeld titel UPDATED')),
+            new TitleTranslated($placeId, new LegacyLanguage('en'), new LegacyTitle('Example title UPDATED')),
+            new TitleUpdated($placeId, new LegacyTitle('Voorbeeld titel UPDATED 2')),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/title-updated-and-translated.ttl'));
+    }
+
     private function getPlaceCreated(string $placeId): PlaceCreated
     {
         return new PlaceCreated(

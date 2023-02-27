@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
+use EasyRdf\Literal;
 
 final class RdfProjector implements EventListener
 {
@@ -21,7 +22,7 @@ final class RdfProjector implements EventListener
     private GraphRepository $graphRepository;
     private IriGeneratorInterface $iriGenerator;
 
-    private const PROPERTY_LOCATIE_NAAM = 'http://www.w3.org/ns/locn#geographicName';
+    private const PROPERTY_LOCATIE_NAAM = 'locn:geographicName';
 
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
@@ -67,7 +68,15 @@ final class RdfProjector implements EventListener
         $mainLanguage = $this->mainLanguageRepository->get($uri, new Language('nl'));
 
         $resource = $graph->resource($uri);
-        $resource->set(self::PROPERTY_LOCATIE_NAAM, [
+
+        /** @var Literal $literal */
+        foreach ($resource->allLiterals(self::PROPERTY_LOCATIE_NAAM) as $literal) {
+            if ($literal->getLang() === $mainLanguage->getCode()) {
+                $resource->delete(self::PROPERTY_LOCATIE_NAAM, $literal);
+            }
+        }
+
+        $resource->add(self::PROPERTY_LOCATIE_NAAM, [
             'type' => 'literal',
             'value' => $event->getTitle()->toNative(),
             'lang' => $mainLanguage->toString(),
@@ -81,6 +90,14 @@ final class RdfProjector implements EventListener
         $graph = $this->graphRepository->get($uri);
 
         $resource = $graph->resource($uri);
+
+        /** @var Literal $literal */
+        foreach ($resource->allLiterals(self::PROPERTY_LOCATIE_NAAM) as $literal) {
+            if ($literal->getLang() === $event->getLanguage()->getCode()) {
+                $resource->delete(self::PROPERTY_LOCATIE_NAAM, $literal);
+            }
+        }
+
         $resource->add(self::PROPERTY_LOCATIE_NAAM, [
             'type' => 'literal',
             'value' => $event->getTitle()->toNative(),
