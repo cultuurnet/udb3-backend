@@ -14,9 +14,14 @@ Copy the latest `config.php` from https://github.com/cultuurnet/udb3-vagrant/tre
 
 In your `config.php` file, you have to change some of the hosts to work with Docker instead of Vagrant.
 
+To use `udb3-backend` & `udb3-search-service` together, you'll have to add `127.0.0.1 host.docker.internal` to your `/etc/hosts` file.
+
 You'll need to change the following lines to work with docker hosts:
-- url
-  - `http://localhost:8000`
+- url (depending on stand-alone use or in combination with `udb3-search-service`)
+  - `http://localhost:8000` or
+  - `http://host.docker.internal:8000`
+- search.v3.base_url
+  - `http://host.docker.internal:9000`
 - database.host
   - `mysql`
 - cache.redis.host
@@ -36,7 +41,6 @@ You'll have to update your `config.php` file accordingly with the values of your
 - amqp.user
 - amqp.password
 - amqp.vhost
-
 
 ### Acceptance tests
 
