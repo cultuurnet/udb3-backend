@@ -8,6 +8,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
+use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -17,13 +18,16 @@ final class RdfProjector implements EventListener
 {
     private MainLanguageRepository $mainLanguageRepository;
     private GraphRepository $graphRepository;
+    private IriGeneratorInterface $iriGenerator;
 
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
-        GraphRepository $graphRepository
+        GraphRepository $graphRepository,
+        IriGeneratorInterface $iriGenerator
     ) {
         $this->mainLanguageRepository = $mainLanguageRepository;
         $this->graphRepository = $graphRepository;
+        $this->iriGenerator = $iriGenerator;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -31,6 +35,8 @@ final class RdfProjector implements EventListener
         $payload = $domainMessage->getPayload();
         $granularEvents = $payload instanceof ConvertsToGranularEvents ? $payload->toGranularEvents() : [];
         $events = [$payload, ...$granularEvents];
+
+        $uri = $this->iriGenerator->iri($domainMessage->getId());
 
         $mapping = [
             MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),

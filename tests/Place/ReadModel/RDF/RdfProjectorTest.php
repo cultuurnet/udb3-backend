@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType as LegacyCalendarType;
 use CultuurNet\UDB3\Event\EventType as LegacyEventType;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -36,7 +37,8 @@ class RdfProjectorTest extends TestCase
         $this->graphRepository = new InMemoryGraphRepository();
         $this->rdfProjector = new RdfProjector(
             $this->mainLanguageRepository,
-            $this->graphRepository
+            $this->graphRepository,
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/locaties/' . $item),
         );
     }
 
