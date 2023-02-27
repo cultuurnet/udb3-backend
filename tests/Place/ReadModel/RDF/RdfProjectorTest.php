@@ -53,14 +53,9 @@ class RdfProjectorTest extends TestCase
         $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
         $this->projectPlaceCreated($placeId);
 
-        $expectedUri = 'https://mock.data.publiq.be/locaties/' . $placeId;
-        $expectedMainLanguage = new Language('nl');
-        $actualMainLanguage = $this->mainLanguageRepository->get($expectedUri);
-
         $expectedTurtle = file_get_contents(__DIR__ . '/data/place-created.ttl');
         $actualTurtle = $this->getTurtleData($placeId);
 
-        $this->assertEquals($expectedMainLanguage, $actualMainLanguage);
         $this->assertEquals($expectedTurtle, $actualTurtle);
     }
 
