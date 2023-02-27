@@ -28,8 +28,8 @@ final class RdfProjector implements EventListener
         $events = [$payload, ...$granularEvents];
 
         $mapping = [
-            MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $domainMessage),
-            TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $domainMessage),
+            MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),
+            TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $uri),
         ];
 
         foreach ($events as $event) {
@@ -41,15 +41,12 @@ final class RdfProjector implements EventListener
         }
     }
 
-    private function handleMainLanguageDefined(MainLanguageDefined $event, DomainMessage $domainMessage): void
+    private function handleMainLanguageDefined(MainLanguageDefined $event, string $uri): void
     {
-        $this->mainLanguageRepository->save(
-            $domainMessage->getId(),
-            new Language($event->getMainLanguage()->getCode())
-        );
+        $this->mainLanguageRepository->save($uri, new Language($event->getMainLanguage()->getCode()));
     }
 
-    private function handleTitleUpdated(TitleUpdated $event, DomainMessage $domainMessage): void
+    private function handleTitleUpdated(TitleUpdated $event, string $uri): void
     {
     }
 }
