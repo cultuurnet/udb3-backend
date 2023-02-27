@@ -10,6 +10,7 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
@@ -43,6 +44,7 @@ final class RdfProjector implements EventListener
         $mapping = [
             MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),
             TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $uri),
+            TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $uri),
         ];
 
         foreach ($events as $event) {
@@ -69,6 +71,20 @@ final class RdfProjector implements EventListener
             'type' => 'literal',
             'value' => $event->getTitle()->toNative(),
             'lang' => $mainLanguage->toString(),
+        ]);
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleTitleTranslated(TitleTranslated $event, string $uri): void
+    {
+        $graph = $this->graphRepository->get($uri);
+
+        $resource = $graph->resource($uri);
+        $resource->add(self::PROPERTY_LOCATIE_NAAM, [
+            'type' => 'literal',
+            'value' => $event->getTitle()->toNative(),
+            'lang' => $event->getLanguage()->getCode(),
         ]);
 
         $this->graphRepository->save($uri, $graph);
