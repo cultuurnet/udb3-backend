@@ -42,6 +42,8 @@ You'll have to update your `config.php` file accordingly with the values of your
 - amqp.password
 - amqp.vhost
 
+Create an exchange `udb3.x.domain-events` in your RabbitMQ provider
+
 ### Acceptance tests
 
 To make the acceptance tests work with Docker, you'll need to change the `base_url` and `online_location_url` inside `config.yml` of the acceptance test repository.
