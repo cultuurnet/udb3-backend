@@ -20,6 +20,8 @@ final class RdfProjector implements EventListener
     private GraphRepository $graphRepository;
     private IriGeneratorInterface $iriGenerator;
 
+    private const PROPERTY_LOCATIE_NAAM = 'http://www.w3.org/ns/locn#geographicName';
+
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
         GraphRepository $graphRepository,
@@ -59,5 +61,16 @@ final class RdfProjector implements EventListener
 
     private function handleTitleUpdated(TitleUpdated $event, string $uri): void
     {
+        $graph = $this->graphRepository->get($uri);
+        $mainLanguage = $this->mainLanguageRepository->get($uri, new Language('nl'));
+
+        $resource = $graph->resource($uri);
+        $resource->set(self::PROPERTY_LOCATIE_NAAM, [
+            'type' => 'literal',
+            'value' => $event->getTitle()->toNative(),
+            'lang' => $mainLanguage->toString(),
+        ]);
+
+        $this->graphRepository->save($uri, $graph);
     }
 }

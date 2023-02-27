@@ -23,6 +23,7 @@ use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use CultuurNet\UDB3\Title as LegacyTitle;
+use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\TestCase;
 
 class RdfProjectorTest extends TestCase
@@ -65,9 +66,19 @@ class RdfProjectorTest extends TestCase
 
         $this->rdfProjector->handle($domainMessage);
 
-        $expected = new Language('nl');
-        $actual = $this->mainLanguageRepository->get($placeId);
+        $expectedUri = 'https://mock.data.publiq.be/locaties/' . $placeId;
+        $expectedMainLanguage = new Language('nl');
+        $actualMainLanguage = $this->mainLanguageRepository->get($expectedUri);
 
-        $this->assertEquals($expected, $actual);
+        $expectedTurtle = <<<TURTLE
+@prefix ns0: <http://www.w3.org/ns/locn#> .
+
+<https://data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea> ns0:geographicName "Voorbeeld titel"@nl .
+
+TURTLE;
+        $actualTurtle = (new Turtle())->serialise($this->graphRepository->get($expectedUri), 'turtle');
+
+        $this->assertEquals($expectedMainLanguage, $actualMainLanguage);
+        $this->assertEquals($expectedTurtle, $actualTurtle);
     }
 }
