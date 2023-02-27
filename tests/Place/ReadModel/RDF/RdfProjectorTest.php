@@ -46,7 +46,9 @@ class RdfProjectorTest extends TestCase
     public function it_handles_place_created(): void
     {
         $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
-        $this->projectPlaceCreated($placeId);
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+        ]);
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-created.ttl'));
     }
 
@@ -56,17 +58,16 @@ class RdfProjectorTest extends TestCase
     public function it_handles_title_updated(): void
     {
         $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
-        $this->projectPlaceCreated($placeId);
-
-        $titleUpdated = new TitleUpdated($placeId, new LegacyTitle('Voorbeeld titel UPDATED'));
-        $this->handleEvent($placeId, $titleUpdated);
-
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new TitleUpdated($placeId, new LegacyTitle('Voorbeeld titel UPDATED')),
+        ]);
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/title-updated.ttl'));
     }
 
-    private function projectPlaceCreated(string $placeId): void
+    private function getPlaceCreated(string $placeId): PlaceCreated
     {
-        $placeCreated = new PlaceCreated(
+        return new PlaceCreated(
             $placeId,
             new LegacyLanguage('nl'),
             new LegacyTitle('Voorbeeld titel'),
@@ -79,13 +80,16 @@ class RdfProjectorTest extends TestCase
             ),
             new Calendar(LegacyCalendarType::PERMANENT())
         );
-        $this->handleEvent($placeId, $placeCreated);
     }
 
-    private function handleEvent(string $placeId, $event): void
+    private function project(string $placeId, array $events): void
     {
-        $domainMessage = DomainMessage::recordNow($placeId, 1, new Metadata(), $event);
-        $this->rdfProjector->handle($domainMessage);
+        $playhead = -1;
+        foreach ($events as $event) {
+            $playhead++;
+            $domainMessage = DomainMessage::recordNow($placeId, $playhead, new Metadata(), $event);
+            $this->rdfProjector->handle($domainMessage);
+        }
     }
 
     private function assertTurtleData(string $placeId, string $expectedTurtleData): void
