@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use EasyRdf\Literal;
+use EasyRdf\Resource;
 
 final class RdfProjector implements EventListener
 {
@@ -69,18 +70,12 @@ final class RdfProjector implements EventListener
 
         $resource = $graph->resource($uri);
 
-        /** @var Literal $literal */
-        foreach ($resource->allLiterals(self::PROPERTY_LOCATIE_NAAM) as $literal) {
-            if ($literal->getLang() === $mainLanguage->getCode()) {
-                $resource->delete(self::PROPERTY_LOCATIE_NAAM, $literal);
-            }
-        }
-
-        $resource->add(self::PROPERTY_LOCATIE_NAAM, [
-            'type' => 'literal',
-            'value' => $event->getTitle()->toNative(),
-            'lang' => $mainLanguage->toString(),
-        ]);
+        $this->replaceLanguageValue(
+            $resource,
+            self::PROPERTY_LOCATIE_NAAM,
+            $event->getTitle()->toNative(),
+            $mainLanguage->toString(),
+        );
 
         $this->graphRepository->save($uri, $graph);
     }
@@ -91,19 +86,33 @@ final class RdfProjector implements EventListener
 
         $resource = $graph->resource($uri);
 
+        $this->replaceLanguageValue(
+            $resource,
+            self::PROPERTY_LOCATIE_NAAM,
+            $event->getTitle()->toNative(),
+            $event->getLanguage()->getCode()
+        );
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function replaceLanguageValue(
+        Resource $resource,
+        string $property,
+        string $value,
+        string $language
+    ): void {
         /** @var Literal $literal */
-        foreach ($resource->allLiterals(self::PROPERTY_LOCATIE_NAAM) as $literal) {
-            if ($literal->getLang() === $event->getLanguage()->getCode()) {
-                $resource->delete(self::PROPERTY_LOCATIE_NAAM, $literal);
+        foreach ($resource->allLiterals($property) as $literal) {
+            if ($literal->getLang() === $language) {
+                $resource->delete($property, $literal);
             }
         }
 
-        $resource->add(self::PROPERTY_LOCATIE_NAAM, [
+        $resource->add($property, [
             'type' => 'literal',
-            'value' => $event->getTitle()->toNative(),
-            'lang' => $event->getLanguage()->getCode(),
+            'value' => $value,
+            'lang' => $language,
         ]);
-
-        $this->graphRepository->save($uri, $graph);
     }
 }
