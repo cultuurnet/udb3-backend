@@ -38,11 +38,14 @@ final class RdfServiceProvider extends AbstractServiceProvider
             fn (string $item): string =>
                 implode(
                     '/',
-                    [
-                        $container->get('config')['rdfBaseUri'],
-                        $type,
-                        $item,
-                    ]
+                    array_map(
+                        fn (string $urlPart): string => trim($urlPart, '/'),
+                        [
+                            $container->get('config')['rdfBaseUri'],
+                            $type,
+                            $item,
+                        ]
+                    )
                 )
         );
     }
