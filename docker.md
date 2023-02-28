@@ -14,11 +14,8 @@ Copy the latest `config.php` from https://github.com/cultuurnet/udb3-vagrant/tre
 
 In your `config.php` file, you have to change some of the hosts to work with Docker instead of Vagrant.
 
-To use `udb3-backend` & `udb3-search-service` together, you'll have to add `127.0.0.1 host.docker.internal` to your `/etc/hosts` file.
-
 You'll need to change the following lines to work with docker hosts:
-- url (depending on stand-alone use or in combination with `udb3-search-service`)
-  - `http://localhost:8000` or
+- url
   - `http://host.docker.internal:8000`
 - search.v3.base_url
   - `http://host.docker.internal:9000`
@@ -44,10 +41,13 @@ You'll have to update your `config.php` file accordingly with the values of your
 
 Create an exchange `udb3.x.domain-events` in your RabbitMQ provider
 
+### Local host file
+To use `udb3-backend` & `udb3-search-service` together, you'll have to add `127.0.0.1 host.docker.internal` to your `/etc/hosts` file.
+
 ### Acceptance tests
 
 To make the acceptance tests work with Docker, you'll need to change the `base_url` and `online_location_url` inside `config.yml` of the acceptance test repository.
-Give it the same value as the `url` from the modified `config.php` from `udb3-backend`, in this example `http://localhost:8000`
+Give it the same value as the `url` from the modified `config.php` from `udb3-backend`, in this example `http://host.docker.internal:8000`
 
 ## Start
 
