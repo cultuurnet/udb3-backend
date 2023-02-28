@@ -46,8 +46,17 @@ To use `udb3-backend` & `udb3-search-service` together, you'll have to add `127.
 
 ### Acceptance tests
 
-To make the acceptance tests work with Docker, you'll need to change the `base_url` and `online_location_url` inside `config.yml` of the acceptance test repository.
-Give it the same value as the `url` from the modified `config.php` from `udb3-backend`, in this example `http://host.docker.internal:8000`
+To make the acceptance tests work with Docker, you'll need to change the `base_url`, `search_api_base_url` and `online_location_url` inside `config.yml` of the acceptance test repository.
+
+Give them the same value as the `url` from the modified `config.php` from `udb3-backend`, in this example `http://host.docker.internal:8000`
+
+For search we need to use port `9000`
+
+```
+base_url: 'http://host.docker.internal:8000'
+online_location_url: 'http://host.docker.internal:8000/place/00000000-0000-0000-0000-000000000000'
+search_api_base_url: 'http://host.docker.internal:9000'
+```
 
 ## Start
 
