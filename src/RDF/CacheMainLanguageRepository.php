@@ -11,7 +11,7 @@ final class CacheMainLanguageRepository implements MainLanguageRepository
 {
     private Cache $cache;
 
-    private function __construct(Cache $cache)
+    public function __construct(Cache $cache)
     {
         $this->cache = $cache;
     }
