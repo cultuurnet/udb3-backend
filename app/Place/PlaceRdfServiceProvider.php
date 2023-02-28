@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector;
 use CultuurNet\UDB3\RDF\GraphStoreRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
+use CultuurNet\UDB3\RDF\RdfServiceProvider;
 use EasyRdf\GraphStore;
 
 final class PlaceRdfServiceProvider extends AbstractServiceProvider
@@ -24,15 +25,8 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
             RdfProjector::class,
             fn (): RdfProjector => new RdfProjector(
                 $this->container->get(MainLanguageRepository::class),
-                new GraphStoreRepository(
-                    new GraphStore(
-                        rtrim($this->container->get('config')['placesGraphStoreUrl'], '/')
-                    )
-                ),
-                new CallableIriGenerator(
-                    fn (string $item): string =>
-                        rtrim($this->container->get('config')['rdfBaseUri'], '/') . '/locaties/' . $item
-                )
+                RdfServiceProvider::createGraphStoreRepository($this->container->get('config')['placesGraphStoreUrl']),
+                RdfServiceProvider::createIriGenerator($this->container, 'locaties'),
             )
         );
     }

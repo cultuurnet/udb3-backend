@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\RDF;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use EasyRdf\GraphStore;
+use Psr\Container\ContainerInterface;
 
 final class RdfServiceProvider extends AbstractServiceProvider
 {
@@ -20,6 +24,26 @@ final class RdfServiceProvider extends AbstractServiceProvider
             fn (): MainLanguageRepository => new CacheMainLanguageRepository(
                 $this->container->get('cache')('rdf_main_language')
             )
+        );
+    }
+
+    public static function createGraphStoreRepository(string $baseUri): GraphStoreRepository
+    {
+        return new GraphStoreRepository(new GraphStore(rtrim($baseUri, '/')));
+    }
+
+    public static function createIriGenerator(ContainerInterface $container, string $type): IriGeneratorInterface
+    {
+        return new CallableIriGenerator(
+            fn (string $item): string =>
+                implode(
+                    '/',
+                    [
+                        $container->get('config')['rdfBaseUri'],
+                        $type,
+                        $item,
+                    ]
+                )
         );
     }
 }
