@@ -10,7 +10,7 @@ Copy `env.dist` to the root folder and rename it to `.env`
 
 ### config.php file
 
-Copy the latest `config.php` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-backend to the root
+Copy the latest `config.php` and `config.allow_all.php` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-backend to the root
 
 In your `config.php` file, you have to change some of the hosts to work with Docker instead of Vagrant.
 
