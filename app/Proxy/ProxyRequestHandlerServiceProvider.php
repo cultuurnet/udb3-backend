@@ -25,7 +25,9 @@ final class ProxyRequestHandlerServiceProvider extends AbstractServiceProvider
             static function () use ($container) {
                 return new ProxyRequestHandler(
                     Uri::createFromString($container->get('config')['search']['v3']['base_url'])->getHost(),
-                    new Client()
+                    new Client(),
+                    $container->get('config')['search']['v3']['scheme'] ?? 'https',
+                    $container->get('config')['search']['v3']['port'] ?? null
                 );
             }
         );

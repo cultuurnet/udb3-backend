@@ -13,11 +13,19 @@ final class ProxyRequestHandler implements RequestHandlerInterface
 {
     private string $newDomain;
     private ClientInterface $httpClient;
+    private string $scheme;
+    private ?int $port;
 
-    public function __construct(string $newDomain, ClientInterface $httpClient)
-    {
+    public function __construct(
+        string $newDomain,
+        ClientInterface $httpClient,
+        string $scheme = 'https',
+        ?int $port = null
+    ) {
         $this->newDomain = $newDomain;
         $this->httpClient = $httpClient;
+        $this->scheme = $scheme;
+        $this->port = $port;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -27,8 +35,8 @@ final class ProxyRequestHandler implements RequestHandlerInterface
         // we want to proxy the request using HTTPS.
         $rewrittenUri = $request->getUri()
             ->withHost($this->newDomain)
-            ->withScheme('https')
-            ->withPort(null);
+            ->withScheme($this->scheme)
+            ->withPort($this->port);
 
         $rewrittenRequest = $request->withUri($rewrittenUri);
 
