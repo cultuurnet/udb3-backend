@@ -31,7 +31,7 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
                 ),
                 new CallableIriGenerator(
                     fn (string $item): string =>
-                        rtrim($this->container->get('config')['rdfBaseUri'], '/') . $item
+                        rtrim($this->container->get('config')['rdfBaseUri'], '/') . '/' . $item
                 )
             )
         );
