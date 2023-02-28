@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version202302151445402 extends AbstractMigration
+final class Version20230215144540 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
