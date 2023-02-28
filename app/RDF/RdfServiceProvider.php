@@ -32,18 +32,22 @@ final class RdfServiceProvider extends AbstractServiceProvider
         return new GraphStoreRepository(new GraphStore(rtrim($baseUri, '/')));
     }
 
-    public static function createIriGenerator(ContainerInterface $container, string $type): IriGeneratorInterface
+    public static function createIriGenerator(ContainerInterface $container, string $resourceType): IriGeneratorInterface
     {
+        // Glues the RDF base URI (e.g. https://data.publiq.be for production), the resource type (e.g. "locaties") and
+        // the resource id together. For example https://data.publiq.be/locaties/6bdd18f9-f09d-4380-9ee9-bcbd4c9f55ca
+        // Note that it makes sure that there are no double slashes by trimming every part of any leading or trailing
+        // slashes.
         return new CallableIriGenerator(
-            fn (string $item): string =>
+            fn (string $resourceId): string =>
                 implode(
                     '/',
                     array_map(
                         fn (string $urlPart): string => trim($urlPart, '/'),
                         [
                             $container->get('config')['rdfBaseUri'],
-                            $type,
-                            $item,
+                            $resourceType,
+                            $resourceId,
                         ]
                     )
                 )
