@@ -7,17 +7,15 @@ namespace CultuurNet\UDB3\Event\Productions;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class ProductionEnrichedEventRepositoryTest extends TestCase
+final class ProductionEnrichedEventRepositoryTest extends TestCase
 {
-    /**
-     * @var ProductionEnrichedEventRepository
-     */
-    private $productionEnrichedEventRepository;
+    private ProductionEnrichedEventRepository $productionEnrichedEventRepository;
 
     /**
      * @var ProductionRepository | MockObject
@@ -105,5 +103,46 @@ class ProductionEnrichedEventRepositoryTest extends TestCase
         $this->assertEquals($productionId->toNative(), $fetchActual->getBody()->production->id);
         $this->assertEquals($productionName, $fetchActual->getBody()->production->title);
         $this->assertEquals(['foo/' . $otherEventId], $fetchActual->getBody()->production->otherEvents);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_save_a_production_in_json_document(): void
+    {
+        $inMemoryDocumentRepository = new InMemoryDocumentRepository();
+        $newProductionEnrichedEventRepository = new ProductionEnrichedEventRepository(
+            $inMemoryDocumentRepository,
+            $this->productionRepository,
+            $this->iriGenerator
+        );
+
+        $eventId = Uuid::uuid4()->toString();
+
+        $newProductionEnrichedEventRepository->save(
+            new JsonDocument(
+                $eventId,
+                json_encode([
+                    '@type' => 'Event',
+                    'production' => [
+                        'id' => Uuid::uuid4()->toString(),
+                        'title' => 'Movie Night',
+                        'otherEvents' => [
+                            'https://io.uitdatabank.dev/event/' . Uuid::uuid4()->toString(),
+                            'https://io.uitdatabank.dev/event/' . Uuid::uuid4()->toString(),
+                            'https://io.uitdatabank.dev/event/' . Uuid::uuid4()->toString(),
+                        ],
+                    ],
+                ])
+            )
+        );
+
+        $this->assertEquals(
+            new JsonDocument(
+                $eventId,
+                json_encode(['@type' => 'Event'])
+            ),
+            $inMemoryDocumentRepository->fetch($eventId)
+        );
     }
 }

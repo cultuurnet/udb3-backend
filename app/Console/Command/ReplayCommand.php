@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class ReplayCommand extends AbstractCommand
 {
@@ -67,8 +68,7 @@ final class ReplayCommand extends AbstractCommand
             ->addArgument(
                 'aggregate',
                 InputArgument::OPTIONAL,
-                'Aggregate type to replay events from. One of: ' . $aggregateTypeEnumeration . '.',
-                null
+                'Aggregate type to replay events from. One of: ' . $aggregateTypeEnumeration . '.'
             )
             ->addOption(
                 self::OPTION_START_ID,
@@ -99,6 +99,10 @@ final class ReplayCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$this->askConfirmation($input, $output)) {
+            return 0;
+        }
+
         $delay = (int) $input->getOption(self::OPTION_DELAY);
 
         $aggregateType = $this->getAggregateType($input);
@@ -227,5 +231,39 @@ final class ReplayCommand extends AbstractCommand
         }
 
         return $aggregateType;
+    }
+
+    private function askConfirmation(InputInterface $input, OutputInterface $output): bool
+    {
+        $aggregateType = $this->getAggregateType($input);
+        $startId = $input->getOption(self::OPTION_START_ID);
+        $cdbids = $input->getOption(self::OPTION_CDBID);
+
+        $message = 'Are you sure you want to replay all events? [y/N] ';
+
+        if ($aggregateType || $startId || $cdbids) {
+            $options = [];
+            if ($aggregateType) {
+                $options[] = 'aggregate type: ' . $aggregateType->toString();
+            }
+
+            if ($startId) {
+                $options[] = 'start id: ' . $startId;
+            }
+
+            if ($cdbids) {
+                $options[] = 'given cdbids';
+            }
+
+            $message = 'Are you sure you want to replay events ( ' . implode(', ', $options) . ' )? [y/N]';
+        }
+
+        return $this
+            ->getHelper('question')
+            ->ask(
+                $input,
+                $output,
+                new ConfirmationQuestion($message, false)
+            );
     }
 }

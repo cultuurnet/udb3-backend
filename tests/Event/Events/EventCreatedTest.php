@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace test\Event\Events;
+namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
-use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -52,6 +51,51 @@ class EventCreatedTest extends TestCase
             new Theme('id', 'label'),
             $this->publicationDate
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_to_granular_events(): void
+    {
+        $eventId = '09994540-289f-4ab4-bf77-b83443d3d0fc';
+
+        $eventWithTheme = new EventCreated(
+            $eventId,
+            new Language('nl'),
+            new Title('Example title'),
+            new EventType('0.50.4.0.0', 'Concert'),
+            $this->location,
+            new Calendar(CalendarType::PERMANENT()),
+            new Theme('1.8.3.5.0', 'Amusementsmuziek')
+        );
+
+        $eventWithoutTheme = new EventCreated(
+            $eventId,
+            new Language('nl'),
+            new Title('Example title'),
+            new EventType('0.50.4.0.0', 'Concert'),
+            $this->location,
+            new Calendar(CalendarType::PERMANENT())
+        );
+
+        $expectedWithTheme = [
+            new TitleUpdated($eventId, new Title('Example title')),
+            new TypeUpdated($eventId, new EventType('0.50.4.0.0', 'Concert')),
+            new ThemeUpdated($eventId, new Theme('1.8.3.5.0', 'Amusementsmuziek')),
+            new LocationUpdated($eventId, $this->location),
+            new CalendarUpdated($eventId, new Calendar(CalendarType::PERMANENT())),
+        ];
+
+        $expectedWithoutTheme = [
+            new TitleUpdated($eventId, new Title('Example title')),
+            new TypeUpdated($eventId, new EventType('0.50.4.0.0', 'Concert')),
+            new LocationUpdated($eventId, $this->location),
+            new CalendarUpdated($eventId, new Calendar(CalendarType::PERMANENT())),
+        ];
+
+        $this->assertEquals($expectedWithTheme, $eventWithTheme->toGranularEvents());
+        $this->assertEquals($expectedWithoutTheme, $eventWithoutTheme->toGranularEvents());
     }
 
     /**

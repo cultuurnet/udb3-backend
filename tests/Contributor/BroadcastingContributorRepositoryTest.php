@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Contributor;
 
 use Broadway\EventHandling\EventBus;
-use CultuurNet\UDB3\Event\EventContributorsUpdated;
+use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\EventBus\TraceableEventBus;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
-use CultuurNet\UDB3\Organizer\OrganizerContributorsUpdated;
-use CultuurNet\UDB3\Place\PlaceContributorsUpdated;
+use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
+use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
+use CultuurNet\UDB3\ProjectedToJSONLDFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -42,15 +44,15 @@ final class BroadcastingContributorRepositoryTest extends TestCase
         $this->contributorRepository = new BroadcastingContributorRepository(
             $this->decoratee,
             $this->eventBus,
-            new ContributorsUpdatedFactory(
+            new ProjectedToJSONLDFactory(
                 new CallableIriGenerator(
-                    fn ($cdbid) => 'https://io.uitdatabank.dev/events/' . $cdbid . '/contributors'
+                    fn ($cdbid) => 'https://io.uitdatabank.dev/events/' . $cdbid
                 ),
                 new CallableIriGenerator(
-                    fn ($cdbid) =>  'https://io.uitdatabank.dev/places/' . $cdbid . '/contributors'
+                    fn ($cdbid) =>  'https://io.uitdatabank.dev/places/' . $cdbid
                 ),
                 new CallableIriGenerator(
-                    fn ($cdbid) => 'https://io.uitdatabank.dev/organizers/' . $cdbid . '/contributors'
+                    fn ($cdbid) => 'https://io.uitdatabank.dev/organizers/' . $cdbid
                 )
             )
         );
@@ -93,7 +95,7 @@ final class BroadcastingContributorRepositoryTest extends TestCase
      * @test
      * @dataProvider contributorsUpdatedProvider
      */
-    public function it_will_publish_when_contributors_are_updated(ItemType $itemType, ContributorsUpdated $contributorsUpdated): void
+    public function it_will_publish_when_contributors_are_updated(ItemType $itemType, Serializable $contributorsUpdated): void
     {
         $this->decoratee->expects($this->once())
             ->method('updateContributors')
@@ -112,23 +114,23 @@ final class BroadcastingContributorRepositoryTest extends TestCase
         return [
             'event' => [
                 ItemType::event(),
-                new EventContributorsUpdated(
+                new EventProjectedToJSONLD(
                     'f28b47d1-4d06-4c46-94cc-d0ddbaad102f',
-                    'https://io.uitdatabank.dev/events/f28b47d1-4d06-4c46-94cc-d0ddbaad102f/contributors'
+                    'https://io.uitdatabank.dev/events/f28b47d1-4d06-4c46-94cc-d0ddbaad102f'
                 ),
             ],
             'place' => [
                 ItemType::place(),
-                new PlaceContributorsUpdated(
+                new PlaceProjectedToJSONLD(
                     'f28b47d1-4d06-4c46-94cc-d0ddbaad102f',
-                    'https://io.uitdatabank.dev/places/f28b47d1-4d06-4c46-94cc-d0ddbaad102f/contributors'
+                    'https://io.uitdatabank.dev/places/f28b47d1-4d06-4c46-94cc-d0ddbaad102f'
                 ),
             ],
             'organizer' => [
                 ItemType::organizer(),
-                new OrganizerContributorsUpdated(
+                new OrganizerProjectedToJSONLD(
                     'f28b47d1-4d06-4c46-94cc-d0ddbaad102f',
-                    'https://io.uitdatabank.dev/organizers/f28b47d1-4d06-4c46-94cc-d0ddbaad102f/contributors'
+                    'https://io.uitdatabank.dev/organizers/f28b47d1-4d06-4c46-94cc-d0ddbaad102f'
                 ),
             ],
         ];

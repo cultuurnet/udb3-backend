@@ -5,25 +5,29 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class ChangePlaceType extends AbstractCommand
 {
     private SearchServiceInterface $searchService;
 
+    private int $errors;
+
+    private int $success;
+
     public function __construct(
         CommandBus $commandBus,
         SearchServiceInterface $searchService
     ) {
         $this->searchService = $searchService;
+        $this->errors = 0;
+        $this->success = 0;
         parent::__construct($commandBus);
     }
 
@@ -41,128 +45,95 @@ final class ChangePlaceType extends AbstractCommand
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
 
-        $deprecatedTypeId = $this->askDeprecatedType($input, $output);
-        $newTypeId = $this->askNewTypeId($input, $output);
+        $mapping = $this->getMapping();
+        /** @var string $actorType */
+        foreach ($mapping as $actorType => $eventType) {
+            $resultsGenerator = new ResultsGenerator(
+                $this->searchService,
+                ['created' => 'asc'],
+                100
+            );
 
-        $resultsGenerator = new ResultsGenerator(
-            $this->searchService,
-            ['created' => 'asc'],
-            100
-        );
+            $query = 'terms.id:' . $actorType;
+            if (!$this->askConfirmation($input, $output, $resultsGenerator->count($query), $actorType, $eventType)) {
+                return 0;
+            }
 
-        $query = 'terms.id:' . $deprecatedTypeId;
-        if (!$this->askConfirmation($input, $output, $resultsGenerator->count($query))) {
-            return 0;
-        }
+            $places = $resultsGenerator->search($query);
 
-        $places = $resultsGenerator->search($query);
+            foreach ($places as $place) {
+                $placeId = $place->getId();
+                try {
+                    $this->commandBus->dispatch(new UpdateType($placeId, $eventType));
+                    $logger->info(
+                        'Successfully changed type of place "' . $placeId . '" to  "' . $eventType . '"'
+                    );
+                    $this->success++;
+                } catch (\Throwable $t) {
+                    $logger->error(
+                        sprintf(
+                            'An error occurred while changing type of place "%s": %s with message %s',
+                            $placeId,
+                            get_class($t),
+                            $t->getMessage()
+                        )
+                    );
+                    $this->errors++;
+                }
+            }
 
-        $success = 0;
-        $errors = 0;
-        /* @var ItemIdentifier $place */
-        foreach ($places as $place) {
-            $placeId = $place->getId();
-            try {
-                $this->commandBus->dispatch(new UpdateType($placeId, $newTypeId));
-                $logger->info(
-                    'Successfully changed type of place "' . $placeId . '" to  "' . $newTypeId . '"'
-                );
-                $success++;
-            } catch (\Throwable $t) {
-                $logger->error(
-                    sprintf(
-                        'An error occurred while changing type of place "%s": %s with message %s',
-                        $placeId,
-                        get_class($t),
-                        $t->getMessage()
-                    )
-                );
-                $errors++;
+            $logger->info('Successfully changed the eventType of  ' . $this->success . ' places');
+
+            if ($this->errors) {
+                $logger->error('Failed to change type of ' . $this->errors . ' places');
             }
         }
-
-        $logger->info('Successfully changed ' . $success . ' places to type with id "' . $newTypeId . '"');
-
-        if ($errors) {
-            $logger->error('Failed to change type of ' . $errors . ' places');
-        }
-
-        return $errors;
+        return $this->errors;
     }
 
-    private function askConfirmation(InputInterface $input, OutputInterface $output, int $count): bool
-    {
+    private function askConfirmation(
+        InputInterface $input,
+        OutputInterface $output,
+        int $count,
+        string $faultyEventType,
+        string $correctEventType
+    ): bool {
         return $this
             ->getHelper('question')
             ->ask(
                 $input,
                 $output,
                 new ConfirmationQuestion(
-                    "This action will process {$count} places, continue? [y/N] ",
+                    "This action will change {$faultyEventType} to {$correctEventType} on {$count} places, continue? [y/N] ",
                     false
                 )
             );
     }
 
-    private function askDeprecatedType(InputInterface $input, OutputInterface $output): string
+    private function getMapping(): array
     {
-        $deprecatedTypeIdQuestion = new ChoiceQuestion(
-            'Provide deprecated actorType to be updated?',
-            [
-                '8.9.1.0.0',
-                '8.46.0.0.0',
-                '8.9.2.0.0',
-                '8.2.0.0.0',
-                '8.47.0.0.0',
-                '8.3.0.0.0',
-                '8.4.0.0.0',
-                '8.48.0.0.0',
-                '8.6.0.0.0',
-                '8.5.0.0.0',
-                '8.21.1.0.0',
-                '8.32.0.0.0',
-                '8.49.0.0.0',
-                '8.1.0.0.0',
-                '8.44.0.0.0',
-                '8.10.0.0.0',
-                '8.50.0.0.0',
-                '8.51.0.0.0',
-                '8.52.0.0.0',
-                '8.53.0.0.0',
-                '8.40.0.0.0',
-            ]
-        );
-        $deprecatedTypeIdQuestion->setErrorMessage('Invalid actorType: %s');
-        return $this->getHelper('question')->ask($input, $output, $deprecatedTypeIdQuestion);
-    }
-
-    private function askNewTypeId(InputInterface $input, OutputInterface $output): string
-    {
-        $newTypeIdQuestion =  new ChoiceQuestion(
-            'Provide new eventType to replace actorType?',
-            [
-                '0.14.0.0.0',
-                '0.15.0.0.0',
-                '3CuHvenJ+EGkcvhXLg9Ykg',
-                'GnPFp9uvOUyqhOckIFMKmg',
-                'kI7uAyn2uUu9VV6Z3uWZTA',
-                '0.53.0.0.0',
-                '0.41.0.0.0',
-                'rJRFUqmd6EiqTD4c7HS90w',
-                'eBwaUAAhw0ur0Z02i5ttnw',
-                'VRC6HX0Wa063sq98G5ciqw',
-                'JCjA0i5COUmdjMwcyjNAFA',
-                'Yf4aZBfsUEu2NsQqsprngw',
-                'YVBc8KVdrU6XfTNvhMYUpg',
-                'BtVNd33sR0WntjALVbyp3w',
-                'ekdc4ATGoUitCa0e6me6xA',
-                'OyaPaf64AEmEAYXHeLMAtA',
-                '0.8.0.0.0',
-                '8.70.0.0.0',
-                'wwjRVmExI0w6xfQwT1KWpx',
-            ]
-        );
-        $newTypeIdQuestion->setErrorMessage('Invalid eventType: %s');
-        return $this->getHelper('question')->ask($input, $output, $newTypeIdQuestion);
+        return [
+            '8.9.1.0.0' => 'BtVNd33sR0WntjALVbyp3w',
+            '8.46.0.0.0' => '0.14.0.0.0',
+            '8.9.2.0.0' => 'GnPFp9uvOUyqhOckIFMKmg',
+            '8.2.0.0.0' => 'kI7uAyn2uUu9VV6Z3uWZTA',
+            '8.47.0.0.0' => 'ekdc4ATGoUitCa0e6me6xA',
+            '8.3.0.0.0' => 'GnPFp9uvOUyqhOckIFMKmg',
+            '8.4.0.0.0' => 'GnPFp9uvOUyqhOckIFMKmg',
+            '8.48.0.0.0' => 'Yf4aZBfsUEu2NsQqsprngw',
+            '8.6.0.0.0' => 'Yf4aZBfsUEu2NsQqsprngw',
+            '8.5.0.0.0' => 'Yf4aZBfsUEu2NsQqsprngw',
+            '8.21.1.0.0' => 'JCjA0i5COUmdjMwcyjNAFA',
+            '8.32.0.0.0' => 'YVBc8KVdrU6XfTNvhMYUpg',
+            '8.49.0.0.0' => 'ekdc4ATGoUitCa0e6me6xA',
+            '8.1.0.0.0' => 'kI7uAyn2uUu9VV6Z3uWZTA',
+            '8.44.0.0.0' => 'ekdc4ATGoUitCa0e6me6xA',
+            '8.10.0.0.0' => 'rJRFUqmd6EiqTD4c7HS90w',
+            '8.50.0.0.0' => 'eBwaUAAhw0ur0Z02i5ttnw',
+            '8.51.0.0.0' => '0.53.0.0.0',
+            '8.52.0.0.0' => 'OyaPaf64AEmEAYXHeLMAtA',
+            '8.53.0.0.0' => '0.8.0.0.0',
+            '8.40.0.0.0' => 'VRC6HX0Wa063sq98G5ciqw',
+        ];
     }
 }
