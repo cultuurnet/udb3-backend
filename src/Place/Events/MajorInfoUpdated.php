@@ -7,30 +7,16 @@ namespace CultuurNet\UDB3\Place\Events;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\Place\PlaceEvent;
 use CultuurNet\UDB3\Title;
 
-final class MajorInfoUpdated extends PlaceEvent
+final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEvents
 {
-    /**
-     * @var Title
-     */
-    private $title;
-
-    /**
-     * @var EventType
-     */
-    private $eventType;
-
-    /**
-     * @var Address
-     */
-    private $address;
-
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Title $title;
+    private EventType $eventType;
+    private Address $address;
+    private Calendar $calendar;
 
     final public function __construct(
         string $placeId,
@@ -65,6 +51,20 @@ final class MajorInfoUpdated extends PlaceEvent
     public function getAddress(): Address
     {
         return $this->address;
+    }
+
+    public function toGranularEvents(): array
+    {
+        return array_values(
+            array_filter(
+                [
+                    new TitleUpdated($this->placeId, $this->title),
+                    new TypeUpdated($this->placeId, $this->eventType),
+                    new AddressUpdated($this->placeId, $this->address),
+                    new CalendarUpdated($this->placeId, $this->calendar),
+                ]
+            )
+        );
     }
 
     public function serialize(): array
