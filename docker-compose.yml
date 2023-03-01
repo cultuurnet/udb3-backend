@@ -40,7 +40,7 @@ services:
     volumes:
       - 'udb3-redis:/data'
     networks:
-      -   uitdatabank
+      - uitdatabank
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       retries: 3
