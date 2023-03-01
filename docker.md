@@ -43,16 +43,21 @@ Copy `public.pem` and `public-auth0.pem` from https://github.com/cultuurnet/udb3
 
 ### RabbitMQ
 
-A rabbitmq container is not yet available for the Apple M1 chip. A temporary solution is to use a cloud provider. For example https://www.cloudamqp.com/
+A RabbitMQ container is now available for Apple Silicon. For now al the default settings are used.
 
-You'll have to update your `config.php` file accordingly with the values of your provider:
-- amqp.host
-- amqp.port
-- amqp.user
-- amqp.password
-- amqp.vhost
+You'll have to update your `config.php` file accordingly with the default values:
+```
+'amqp' => [
+    'host' => 'rabbitmq',
+    'port' => 5672,
+    'user' => 'guest',
+    'password' => 'guest',
+    'vhost' => '/',
+```
 
-Create an exchange `udb3.x.domain-events` in your RabbitMQ provider
+Login to the management console on http://host.docker.internal:15672/ with username `guest` and password `guest` 
+
+Create an exchange `udb3.x.domain-events` in your RabbitMQ container. 
 
 ### Local host file
 To use `udb3-backend` & `udb3-search-service` together, you'll have to add `127.0.0.1 host.docker.internal` to your `/etc/hosts` file.
