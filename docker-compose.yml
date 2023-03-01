@@ -9,7 +9,7 @@ services:
       - .:/var/www/html:cached
     working_dir: /var/www/html
     ports:
-      - "8000:8000"
+      - "8000:80"
     networks:
       uitdatabank:
         aliases:
