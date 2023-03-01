@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\Events;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -95,6 +96,8 @@ class EventCreatedTest extends TestCase
             new CalendarUpdated($eventId, new Calendar(CalendarType::PERMANENT())),
         ];
 
+        $this->assertInstanceOf(ConvertsToGranularEvents::class, $eventWithTheme);
+        $this->assertInstanceOf(ConvertsToGranularEvents::class, $eventWithoutTheme);
         $this->assertEquals($expectedWithTheme, $eventWithTheme->toGranularEvents());
         $this->assertEquals($expectedWithoutTheme, $eventWithoutTheme->toGranularEvents());
     }

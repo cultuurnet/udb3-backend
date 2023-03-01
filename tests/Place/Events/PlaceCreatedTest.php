@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
@@ -62,6 +63,8 @@ class PlaceCreatedTest extends TestCase
             new CalendarUpdated('id', new Calendar(CalendarType::PERMANENT())),
         ];
         $actual = $this->placeCreated->toGranularEvents();
+
+        $this->assertInstanceOf(ConvertsToGranularEvents::class, $this->placeCreated);
         $this->assertEquals($expected, $actual);
     }
 
