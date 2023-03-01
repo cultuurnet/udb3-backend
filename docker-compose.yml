@@ -8,9 +8,8 @@ services:
     volumes:
       - .:/var/www/html:cached
     working_dir: /var/www/html
-    command: php -S 0.0.0.0:8000 -t web web/index.php
     ports:
-      - "8000:8000"
+      - "8000:80"
     networks:
       uitdatabank:
         aliases:
