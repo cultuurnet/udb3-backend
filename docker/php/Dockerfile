@@ -17,3 +17,5 @@ RUN pecl install -o -f redis &&  rm -rf /tmp/pear &&  docker-php-ext-enable redi
 RUN curl https://getcomposer.org/download/2.1.3/composer.phar -o /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
 RUN echo "memory_limit=4096M" > $PHP_INI_DIR/conf.d/memory-limit.ini
+
+RUN a2enmod rewrite
