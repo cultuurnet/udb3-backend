@@ -10,17 +10,32 @@ Copy `env.dist` to the root folder and rename it to `.env`
 
 ### config.php file
 
-Copy the latest `config.php` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-backend to the root
+Copy the latest `config.php` and `config.allow_all.php` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-backend to the root
 
 In your `config.php` file, you have to change some of the hosts to work with Docker instead of Vagrant.
 
 You'll need to change the following lines to work with docker hosts:
 - url
-  - `http://localhost:8000`
+  - `http://host.docker.internal:8000`
+- search.v3.base_url
+  - `http://host.docker.internal:9000`
 - database.host
   - `mysql`
 - cache.redis.host
   - `redis`
+
+To make the SAPI3 proxy work you will need to add a `scheme` and `port` to the search config
+
+```
+'search' => [
+    'v3' => [
+        'base_url' => 'http://host.docker.internal:9000',
+        'api_key' => 'deb306a6-6f46-4c98-89ce-b03ec4fd11e2',
+        'scheme' => 'http',
+        'port' => 9000,
+    ],
+],
+```
 
 ### pem files
 
@@ -37,11 +52,24 @@ You'll have to update your `config.php` file accordingly with the values of your
 - amqp.password
 - amqp.vhost
 
+Create an exchange `udb3.x.domain-events` in your RabbitMQ provider
+
+### Local host file
+To use `udb3-backend` & `udb3-search-service` together, you'll have to add `127.0.0.1 host.docker.internal` to your `/etc/hosts` file.
 
 ### Acceptance tests
 
-To make the acceptance tests work with Docker, you'll need to change the `base_url` and `online_location_url` inside `config.yml` of the acceptance test repository.
-Give it the same value as the `url` from the modified `config.php` from `udb3-backend`, in this example `http://localhost:8000`
+To make the acceptance tests work with Docker, you'll need to change the `base_url`, `search_api_base_url` and `online_location_url` inside `config.yml` of the acceptance test repository.
+
+Give them the same value as the `url` from the modified `config.php` from `udb3-backend`, in this example `http://host.docker.internal:8000`
+
+For search we need to use port `9000`
+
+```
+base_url: 'http://host.docker.internal:8000'
+online_location_url: 'http://host.docker.internal:8000/place/00000000-0000-0000-0000-000000000000'
+search_api_base_url: 'http://host.docker.internal:9000'
+```
 
 ## Start
 
