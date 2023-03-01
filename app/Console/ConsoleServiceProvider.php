@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
 use CultuurNet\UDB3\Console\Command\ReindexOffersWithPopularityScore;
+use CultuurNet\UDB3\Console\Command\RejectPlaceDeprecatedType;
 use CultuurNet\UDB3\Console\Command\RemoveFacilitiesFromPlace;
 use CultuurNet\UDB3\Console\Command\RemoveLabelOffer;
 use CultuurNet\UDB3\Console\Command\RemoveLabelOrganizer;
@@ -70,6 +71,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:update-unique',
         'console.place:facilities:remove',
         'console.place:actortype:update',
+        'console.place:actortype:reject',
         'console.place:faulty-eventtype:update',
         'console.offer:remove-label',
         'console.organizer:remove-label',
@@ -333,6 +335,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.place:faulty-eventtype:update',
             fn () => new ChangePlaceTypeOnPlacesWithEventEventType(
+                $container->get('event_command_bus'),
+                $container->get('sapi3_search_service_places')
+            )
+        );
+
+        $container->addShared(
+            'console.place:actortype:reject',
+            fn () => new RejectPlaceDeprecatedType(
                 $container->get('event_command_bus'),
                 $container->get('sapi3_search_service_places')
             )
