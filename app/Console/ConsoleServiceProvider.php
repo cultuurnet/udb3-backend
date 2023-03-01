@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangePlaceType;
+use CultuurNet\UDB3\Console\Command\ChangePlaceTypeOnPlacesWithEventEventType;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
@@ -69,6 +70,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:update-unique',
         'console.place:facilities:remove',
         'console.place:actortype:update',
+        'console.place:faulty-eventtype:update',
         'console.offer:remove-label',
         'console.organizer:remove-label',
         'console.offer:import-auto-classification-labels',
@@ -124,14 +126,12 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'console.replay',
-            function () use ($container) {
-                return new ReplayCommand(
-                    $container->get('event_command_bus'),
-                    $container->get('dbal_connection'),
-                    $container->get('eventstore_payload_serializer'),
-                    $container->get(EventBus::class)
-                );
-            }
+            fn () => new ReplayCommand(
+                $container->get('event_command_bus'),
+                $container->get('dbal_connection'),
+                $container->get('eventstore_payload_serializer'),
+                $container->get(EventBus::class)
+            )
         );
 
         $container->addShared(
@@ -148,266 +148,220 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'console.event:ancestors',
-            function () use ($container) {
-                return new EventAncestorsCommand($container->get('event_command_bus'), $container->get('event_store'));
-            }
+            fn () => new EventAncestorsCommand($container->get('event_command_bus'), $container->get('event_store'))
         );
 
         $container->addShared(
             'console.purge',
-            function () use ($container) {
-                return new PurgeModelCommand($container->get('dbal_connection'));
-            }
+            fn () => new PurgeModelCommand($container->get('dbal_connection'))
         );
 
         $container->addShared(
             'console.place:geocode',
-            function () use ($container) {
-                return new GeocodePlaceCommand(
-                    $container->get('event_command_bus'),
-                    $container->get('sapi3_search_service_places'),
-                    $container->get('place_jsonld_repository')
-                );
-            }
+            fn () =>  new GeocodePlaceCommand(
+                $container->get('event_command_bus'),
+                $container->get('sapi3_search_service_places'),
+                $container->get('place_jsonld_repository')
+            )
         );
 
         $container->addShared(
             'console.event:geocode',
-            function () use ($container) {
-                return new GeocodeEventCommand(
-                    $container->get('event_command_bus'),
-                    $container->get('sapi3_search_service_events'),
-                    $container->get('event_jsonld_repository')
-                );
-            }
+            fn () => new GeocodeEventCommand(
+                $container->get('event_command_bus'),
+                $container->get('sapi3_search_service_events'),
+                $container->get('event_jsonld_repository')
+            )
         );
 
         $container->addShared(
             'console.organizer:geocode',
-            function () use ($container) {
-                return new GeocodeOrganizerCommand(
-                    $container->get('event_command_bus'),
-                    $container->get('sapi3_search_service_organizers'),
-                    $container->get('organizer_jsonld_repository')
-                );
-            }
+            fn () => new GeocodeOrganizerCommand(
+                $container->get('event_command_bus'),
+                $container->get('sapi3_search_service_organizers'),
+                $container->get('organizer_jsonld_repository')
+            )
         );
 
         $container->addShared(
             'console.fire-projected-to-jsonld-for-relations',
-            function () use ($container) {
-                return new FireProjectedToJSONLDForRelationsCommand(
-                    $container->get(EventBus::class),
-                    $container->get('dbal_connection'),
-                    $container->get('organizer_jsonld_projected_event_factory'),
-                    $container->get('place_jsonld_projected_event_factory')
-                );
-            }
+            fn () => new FireProjectedToJSONLDForRelationsCommand(
+                $container->get(EventBus::class),
+                $container->get('dbal_connection'),
+                $container->get('organizer_jsonld_projected_event_factory'),
+                $container->get('place_jsonld_projected_event_factory')
+            )
         );
 
         $container->addShared(
             'console.fire-projected-to-jsonld',
-            function () use ($container) {
-                return new FireProjectedToJSONLDCommand(
-                    $container->get(EventBus::class),
-                    $container->get('organizer_jsonld_projected_event_factory'),
-                    $container->get('place_jsonld_projected_event_factory')
-                );
-            }
+            fn () => new FireProjectedToJSONLDCommand(
+                $container->get(EventBus::class),
+                $container->get('organizer_jsonld_projected_event_factory'),
+                $container->get('place_jsonld_projected_event_factory')
+            )
         );
 
         $container->addShared(
             'console.place:process-duplicates',
-            function () use ($container) {
-                return new ProcessDuplicatePlaces(
-                    $container->get('event_command_bus'),
-                    $container->get('duplicate_place_repository'),
-                    $container->get('canonical_service'),
-                    $container->get(EventBus::class),
-                    $container->get('place_jsonld_projected_event_factory'),
-                    $container->get(EventRelationsRepository::class),
-                    $container->get('dbal_connection')
-                );
-            }
+            fn () => new ProcessDuplicatePlaces(
+                $container->get('event_command_bus'),
+                $container->get('duplicate_place_repository'),
+                $container->get('canonical_service'),
+                $container->get(EventBus::class),
+                $container->get('place_jsonld_projected_event_factory'),
+                $container->get(EventRelationsRepository::class),
+                $container->get('dbal_connection')
+            )
         );
 
         $container->addShared(
             'console.event:reindex-offers-with-popularity',
-            function () use ($container) {
-                return new ReindexOffersWithPopularityScore(
-                    OfferType::event(),
-                    $container->get('dbal_connection'),
-                    $container->get(EventBus::class),
-                    $container->get('event_jsonld_projected_event_factory')
-                );
-            }
+            fn () => new ReindexOffersWithPopularityScore(
+                OfferType::event(),
+                $container->get('dbal_connection'),
+                $container->get(EventBus::class),
+                $container->get('event_jsonld_projected_event_factory')
+            )
         );
 
         $container->addShared(
             'console.place:reindex-offers-with-popularity',
-            function () use ($container) {
-                return new ReindexOffersWithPopularityScore(
-                    OfferType::place(),
-                    $container->get('dbal_connection'),
-                    $container->get(EventBus::class),
-                    $container->get('place_jsonld_projected_event_factory')
-                );
-            }
+            fn () => new ReindexOffersWithPopularityScore(
+                OfferType::place(),
+                $container->get('dbal_connection'),
+                $container->get(EventBus::class),
+                $container->get('place_jsonld_projected_event_factory')
+            )
         );
 
         $container->addShared(
             'console.event:reindex-events-with-recommendations',
-            function () use ($container) {
-                return new ReindexEventsWithRecommendations(
-                    $container->get('dbal_connection'),
-                    $container->get(EventBus::class),
-                    $container->get('event_jsonld_projected_event_factory')
-                );
-            }
+            fn () => new ReindexEventsWithRecommendations(
+                $container->get('dbal_connection'),
+                $container->get(EventBus::class),
+                $container->get('event_jsonld_projected_event_factory')
+            )
         );
 
         $container->addShared(
             'console.event:status:update',
-            function () use ($container) {
-                return new UpdateOfferStatusCommand(
-                    OfferType::event(),
-                    $container->get('event_command_bus'),
-                    $container->get('sapi3_search_service_events')
-                );
-            }
+            fn () => new UpdateOfferStatusCommand(
+                OfferType::event(),
+                $container->get('event_command_bus'),
+                $container->get('sapi3_search_service_events')
+            )
         );
 
         $container->addShared(
             'console.place:status:update',
-            function () use ($container) {
-                return new UpdateOfferStatusCommand(
-                    OfferType::place(),
-                    $container->get('event_command_bus'),
-                    $container->get('sapi3_search_service_places')
-                );
-            }
+            fn () => new UpdateOfferStatusCommand(
+                OfferType::place(),
+                $container->get('event_command_bus'),
+                $container->get('sapi3_search_service_places')
+            )
         );
 
         $container->addShared(
             'console.event:booking-availability:update',
-            function () use ($container) {
-                return new UpdateBookingAvailabilityCommand(
-                    $container->get('event_command_bus'),
-                    $container->get('sapi3_search_service_events')
-                );
-            }
+            fn () => new UpdateBookingAvailabilityCommand(
+                $container->get('event_command_bus'),
+                $container->get('sapi3_search_service_events')
+            )
         );
 
         $container->addShared(
             'console.event:attendanceMode:update',
-            function () use ($container) {
-                return new UpdateEventsAttendanceMode(
-                    $container->get('event_command_bus'),
-                    $container->get('sapi3_search_service_events')
-                );
-            }
+            fn () => new UpdateEventsAttendanceMode(
+                $container->get('event_command_bus'),
+                $container->get('sapi3_search_service_events')
+            )
         );
 
         $container->addShared(
             'console.offer:change-owner',
-            function () use ($container) {
-                return new ChangeOfferOwner($container->get('event_command_bus'));
-            }
+            fn () => new ChangeOfferOwner($container->get('event_command_bus'))
         );
 
         $container->addShared(
             'console.offer:change-owner-bulk',
-            function () use ($container) {
-                return new ChangeOfferOwnerInBulk(
-                    $container->get('event_command_bus'),
-                    $container->get('offer_owner_query')
-                );
-            }
+            fn () => new ChangeOfferOwnerInBulk(
+                $container->get('event_command_bus'),
+                $container->get('offer_owner_query')
+            )
         );
 
         $container->addShared(
             'console.organizer:change-owner',
-            function () use ($container) {
-                return new ChangeOrganizerOwner($container->get('event_command_bus'));
-            }
+            fn () => new ChangeOrganizerOwner($container->get('event_command_bus'))
         );
 
         $container->addShared(
             'console.organizer:change-owner-bulk',
-            function () use ($container) {
-                return new ChangeOrganizerOwnerInBulk(
-                    $container->get('event_command_bus'),
-                    $container->get('organizer_owner.repository')
-                );
-            }
+            fn () => new ChangeOrganizerOwnerInBulk(
+                $container->get('event_command_bus'),
+                $container->get('organizer_owner.repository')
+            )
         );
 
         $container->addShared(
             'console.label:update-unique',
-            function () use ($container) {
-                return new UpdateUniqueLabels($container->get('dbal_connection'));
-            }
+            fn () => new UpdateUniqueLabels($container->get('dbal_connection'))
         );
 
         $container->addShared(
             'console.organizer:update-unique',
-            function () use ($container) {
-                return new UpdateUniqueOrganizers($container->get('dbal_connection'), new WebsiteNormalizer());
-            }
+            fn () => new UpdateUniqueOrganizers($container->get('dbal_connection'), new WebsiteNormalizer())
         );
 
         $container->addShared(
             'console.place:facilities:remove',
-            function () use ($container) {
-                return new RemoveFacilitiesFromPlace(
-                    $container->get('event_command_bus'),
-                    $container->get('sapi3_search_service_places')
-                );
-            }
+            fn () => new RemoveFacilitiesFromPlace(
+                $container->get('event_command_bus'),
+                $container->get('sapi3_search_service_places')
+            )
         );
 
         $container->addShared(
             'console.place:actortype:update',
-            function () use ($container) {
-                return new ChangePlaceType(
-                    $container->get('event_command_bus'),
-                    $container->get('sapi3_search_service_places')
-                );
-            }
+            fn () => new ChangePlaceType(
+                $container->get('event_command_bus'),
+                $container->get('sapi3_search_service_places')
+            )
+        );
+
+        $container->addShared(
+            'console.place:faulty-eventtype:update',
+            fn () => new ChangePlaceTypeOnPlacesWithEventEventType(
+                $container->get('event_command_bus'),
+                $container->get('sapi3_search_service_places')
+            )
         );
 
         $container->addShared(
             'console.offer:remove-label',
-            function () use ($container) {
-                return new RemoveLabelOffer($container->get('dbal_connection'), $container->get('event_command_bus'));
-            }
+            fn () => new RemoveLabelOffer($container->get('dbal_connection'), $container->get('event_command_bus'))
         );
 
         $container->addShared(
             'console.organizer:remove-label',
-            function () use ($container) {
-                return new RemoveLabelOrganizer(
-                    $container->get('dbal_connection'),
-                    $container->get('event_command_bus')
-                );
-            }
+            fn () => new RemoveLabelOrganizer(
+                $container->get('dbal_connection'),
+                $container->get('event_command_bus')
+            )
         );
 
         $container->addShared(
             'console.offer:import-auto-classification-labels',
-            function () use ($container) {
-                return new ImportOfferAutoClassificationLabels(
-                    $container->get('dbal_connection'),
-                    $container->get('event_command_bus')
-                );
-            }
+            fn () => new ImportOfferAutoClassificationLabels(
+                $container->get('dbal_connection'),
+                $container->get('event_command_bus')
+            )
         );
 
         $container->addShared(
             'console.article:replace-publisher',
-            function () use ($container) {
-                return new ReplaceNewsArticlePublisher($container->get('dbal_connection'));
-            }
+            fn () => new ReplaceNewsArticlePublisher($container->get('dbal_connection'))
         );
     }
 }
