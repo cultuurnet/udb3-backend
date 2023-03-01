@@ -6,9 +6,11 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\Event\EventEvent;
+use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\HasCdbXmlTrait;
+use CultuurNet\UDB3\Language;
 
-class EventImportedFromUDB2 extends EventEvent implements EventCdbXMLInterface
+class EventImportedFromUDB2 extends EventEvent implements EventCdbXMLInterface, MainLanguageDefined
 {
     use HasCdbXmlTrait;
 
@@ -17,6 +19,12 @@ class EventImportedFromUDB2 extends EventEvent implements EventCdbXMLInterface
         parent::__construct($eventId);
         $this->setCdbXml($cdbXml);
         $this->setCdbXmlNamespaceUri($cdbXmlNamespaceUri);
+    }
+
+    public function getMainLanguage(): Language
+    {
+        // Events imported from UDB2 always have the main language NL.
+        return new Language('nl');
     }
 
     public function serialize(): array

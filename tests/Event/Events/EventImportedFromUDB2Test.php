@@ -5,12 +5,29 @@ declare(strict_types=1);
 namespace test\Event\Events;
 
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
+use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
+use CultuurNet\UDB3\Language;
 use PHPUnit\Framework\TestCase;
 
 class EventImportedFromUDB2Test extends TestCase
 {
     public const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
     public const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
+
+    /**
+     * @test
+     */
+    public function it_implements_main_language_defined()
+    {
+        $event = new EventImportedFromUDB2(
+            'test 456',
+            file_get_contents(__DIR__ . '/../samples/event_entryapi_valid_with_keywords.xml'),
+            self::NS_CDBXML_3_3
+        );
+
+        $this->assertInstanceOf(MainLanguageDefined::class, $event);
+        $this->assertEquals(new Language('nl'), $event->getMainLanguage());
+    }
 
     /**
      * @test
