@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventEvent;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
+use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
@@ -15,7 +16,7 @@ use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 
-final class EventCreated extends EventEvent implements ConvertsToGranularEvents
+final class EventCreated extends EventEvent implements ConvertsToGranularEvents, MainLanguageDefined
 {
     private Language $mainLanguage;
     private Title $title;

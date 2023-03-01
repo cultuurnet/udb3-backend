@@ -8,13 +8,14 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
+use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Place\PlaceEvent;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 
-final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents
+final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents, MainLanguageDefined
 {
     private Language $mainLanguage;
     private Title $title;
