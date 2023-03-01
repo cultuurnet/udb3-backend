@@ -46,6 +46,15 @@ services:
       retries: 3
       timeout: 5s
 
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    container_name: rabbitmq.uitdatabank
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - uitdatabank
+
 networks:
   uitdatabank:
     driver: bridge
