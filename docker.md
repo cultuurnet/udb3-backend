@@ -24,6 +24,19 @@ You'll need to change the following lines to work with docker hosts:
 - cache.redis.host
   - `redis`
 
+To make the SAPI3 proxy work you will need to add a `scheme` and `port` to the search config
+
+```
+'search' => [
+    'v3' => [
+        'base_url' => 'http://host.docker.internal:9000',
+        'api_key' => 'deb306a6-6f46-4c98-89ce-b03ec4fd11e2',
+        'scheme' => 'http',
+        'port' => 9000,
+    ],
+],
+```
+
 ### pem files
 
 Copy `public.pem` and `public-auth0.pem` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/keys to the root
