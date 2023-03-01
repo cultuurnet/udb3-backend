@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Title;
@@ -62,6 +63,15 @@ class PlaceCreatedTest extends TestCase
         ];
         $actual = $this->placeCreated->toGranularEvents();
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_implements_main_language_defined(): void
+    {
+        $this->assertInstanceOf(MainLanguageDefined::class, $this->placeCreated);
+        $this->assertEquals(new Language('es'), $this->placeCreated->getMainLanguage());
     }
 
     /**

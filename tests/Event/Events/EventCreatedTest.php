@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\Events;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
@@ -96,6 +97,25 @@ class EventCreatedTest extends TestCase
 
         $this->assertEquals($expectedWithTheme, $eventWithTheme->toGranularEvents());
         $this->assertEquals($expectedWithoutTheme, $eventWithoutTheme->toGranularEvents());
+    }
+
+    /**
+     * @test
+     */
+    public function it_implements_main_language_defined(): void
+    {
+        $event = new EventCreated(
+            '09994540-289f-4ab4-bf77-b83443d3d0fc',
+            new Language('fr'),
+            new Title('Example title'),
+            new EventType('0.50.4.0.0', 'Concert'),
+            $this->location,
+            new Calendar(CalendarType::PERMANENT()),
+            new Theme('1.8.3.5.0', 'Amusementsmuziek')
+        );
+
+        $this->assertInstanceOf(MainLanguageDefined::class, $event);
+        $this->assertEquals(new Language('fr'), $event->getMainLanguage());
     }
 
     /**
