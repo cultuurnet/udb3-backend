@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Place\Commands\Moderation\Reject;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
@@ -13,7 +12,6 @@ use CultuurNet\UDB3\StringLiteral;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class RejectPlaceDeprecatedType extends AbstractCommand
