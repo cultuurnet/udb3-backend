@@ -12,6 +12,8 @@ use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Contributor\ContributorEnrichedRepository;
+use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
@@ -35,6 +37,7 @@ use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Term\TermRepository;
+use CultuurNet\UDB3\User\CurrentUser;
 
 final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
 {
@@ -114,6 +117,13 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
                 $repository = new PopularityEnrichedOfferRepository(
                     $container->get(PopularityRepository::class),
                     $repository
+                );
+
+                $repository = new ContributorEnrichedRepository(
+                    $container->get(ContributorRepository::class),
+                    $repository,
+                    $container->get('offer_permission_voter'),
+                    $container->get(CurrentUser::class)->getId()
                 );
 
                 if (isset($container->get('config')['polyfill_duplicate_places']) && $container->get('config')['polyfill_duplicate_places']) {

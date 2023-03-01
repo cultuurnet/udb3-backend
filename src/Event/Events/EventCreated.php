@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\Events;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventEvent;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
@@ -14,42 +15,15 @@ use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 
-final class EventCreated extends EventEvent
+final class EventCreated extends EventEvent implements ConvertsToGranularEvents
 {
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
-
-    /**
-     * @var Title
-     */
-    private $title;
-
-    /**
-     * @var EventType
-     */
-    private $eventType;
-
-    /**
-     * @var Theme|null
-     */
-    private $theme;
-
-    /**
-     * @var LocationId
-     */
-    private $location;
-
-    /**
-     * @var Calendar
-     */
-    private $calendar;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    private $publicationDate;
+    private Language $mainLanguage;
+    private Title $title;
+    private EventType $eventType;
+    private ?Theme $theme;
+    private LocationId $location;
+    private Calendar $calendar;
+    private ?DateTimeImmutable $publicationDate;
 
     public function __construct(
         string $eventId,
@@ -105,6 +79,21 @@ final class EventCreated extends EventEvent
     public function getPublicationDate(): ?DateTimeImmutable
     {
         return $this->publicationDate;
+    }
+
+    public function toGranularEvents(): array
+    {
+        return array_values(
+            array_filter(
+                [
+                    new TitleUpdated($this->eventId, $this->title),
+                    new TypeUpdated($this->eventId, $this->eventType),
+                    $this->theme ? new ThemeUpdated($this->eventId, $this->theme) : null,
+                    new LocationUpdated($this->eventId, $this->location),
+                    new CalendarUpdated($this->eventId, $this->calendar),
+                ]
+            )
+        );
     }
 
     public function serialize(): array

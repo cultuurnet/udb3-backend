@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\ProjectedToJSONLDFactory;
 
 final class BroadcastingContributorRepository implements ContributorRepository
 {
@@ -18,16 +19,16 @@ final class BroadcastingContributorRepository implements ContributorRepository
 
     private EventBus $eventBus;
 
-    private ContributorsUpdatedFactory $contributorOverwrittenFactory;
+    private ProjectedToJSONLDFactory $projectedToJSONLDFactory;
 
     public function __construct(
         ContributorRepository $repository,
         EventBus $eventBus,
-        ContributorsUpdatedFactory $contributorOverwrittenFactory
+        ProjectedToJSONLDFactory $projectedToJSONLDFactory
     ) {
         $this->repository = $repository;
         $this->eventBus = $eventBus;
-        $this->contributorOverwrittenFactory = $contributorOverwrittenFactory;
+        $this->projectedToJSONLDFactory = $projectedToJSONLDFactory;
     }
 
     public function getContributors(UUID $id): EmailAddresses
@@ -44,8 +45,8 @@ final class BroadcastingContributorRepository implements ContributorRepository
     {
         $this->repository->updateContributors($id, $emailAddresses, $itemType);
 
-        $contributorsUpdated = $this->contributorOverwrittenFactory->createForItemType($id->toString(), $itemType);
+        $projectedToJSONLD = $this->projectedToJSONLDFactory->createForItemType($id->toString(), $itemType);
 
-        $this->eventBus->publish(new DomainEventStream([(new DomainMessageBuilder())->create($contributorsUpdated)]));
+        $this->eventBus->publish(new DomainEventStream([(new DomainMessageBuilder())->create($projectedToJSONLD)]));
     }
 }
