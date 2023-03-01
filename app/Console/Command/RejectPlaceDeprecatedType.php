@@ -20,11 +20,17 @@ final class RejectPlaceDeprecatedType extends AbstractCommand
 {
     private SearchServiceInterface $searchService;
 
+    private int $errors;
+
+    private int $success;
+
     public function __construct(
         CommandBus $commandBus,
         SearchServiceInterface $searchService
     ) {
         $this->searchService = $searchService;
+        $this->errors = 0;
+        $this->success = 0;
         parent::__construct($commandBus);
     }
 
@@ -42,81 +48,80 @@ final class RejectPlaceDeprecatedType extends AbstractCommand
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
 
-        $deprecatedTypeId = $this->askDeprecatedType($input, $output);
+        $typesToReject = $this->getTypesToReject();
+        /** @var string $typeToReject */
+        foreach ($typesToReject as $typeToReject) {
+            $resultsGenerator = new ResultsGenerator(
+                $this->searchService,
+                ['created' => 'asc'],
+                100
+            );
 
-        $resultsGenerator = new ResultsGenerator(
-            $this->searchService,
-            ['created' => 'asc'],
-            100
-        );
+            $query = 'terms.id:' . $typeToReject;
+            if (!$this->askConfirmation($input, $output, $resultsGenerator->count($query), $typeToReject)) {
+                return 0;
+            }
 
-        $query = 'terms.id:' . $deprecatedTypeId;
-        if (!$this->askConfirmation($input, $output, $resultsGenerator->count($query))) {
-            return 0;
-        }
+            $places = $resultsGenerator->search($query);
 
-        $places = $resultsGenerator->search($query);
+            foreach ($places as $place) {
+                $placeId = $place->getId();
+                try {
+                    $this->commandBus->dispatch(
+                        new Reject(
+                            $placeId,
+                            new StringLiteral('Place rejected because of a deprecated actorType')
+                        )
+                    );
+                    $logger->info(
+                        'Successfully rejected place "' . $placeId . '"'
+                    );
+                    $this->success++;
+                } catch (\Throwable $t) {
+                    $logger->error(
+                        sprintf(
+                            'An error occurred while changing type of place "%s": %s with message %s',
+                            $placeId,
+                            get_class($t),
+                            $t->getMessage()
+                        )
+                    );
+                    $this->errors++;
+                }
+            }
 
-        $success = 0;
-        $errors = 0;
-        /* @var ItemIdentifier $place */
-        foreach ($places as $place) {
-            $placeId = $place->getId();
-            try {
-                $this->commandBus->dispatch(new Reject(
-                    new StringLiteral($placeId),
-                    new StringLiteral('Place rejected because of a deprecated actorType')
-                ));
-                $logger->info(
-                    'Successfully rejected place "' . $placeId . '"'
-                );
-                $success++;
-            } catch (\Throwable $t) {
-                $logger->error(
-                    sprintf(
-                        'An error occurred while rejecting place "%s": %s with message %s',
-                        $placeId,
-                        get_class($t),
-                        $t->getMessage()
-                    )
-                );
-                $errors++;
+            $logger->info('Successfully rejected  ' . $this->success . ' places');
+
+            if ($this->errors) {
+                $logger->error('Failed to reject ' . $this->errors . ' places');
             }
         }
-
-        $logger->info('Successfully rejected ' . $success . ' places with id "' . $deprecatedTypeId . '"');
-
-        if ($errors) {
-            $logger->error('Failed to reject ' . $errors . ' places');
-        }
-
-        return $errors;
+        return $this->errors;
     }
 
-    private function askConfirmation(InputInterface $input, OutputInterface $output, int $count): bool
-    {
+    private function askConfirmation(
+        InputInterface $input,
+        OutputInterface $output,
+        int $count,
+        string $typeToReject
+    ): bool {
         return $this
             ->getHelper('question')
             ->ask(
                 $input,
                 $output,
                 new ConfirmationQuestion(
-                    "This action will process {$count} places, continue? [y/N] ",
+                    "This action will reject {$count} places with term {$typeToReject}, continue? [y/N] ",
                     false
                 )
             );
     }
 
-    private function askDeprecatedType(InputInterface $input, OutputInterface $output): string
+    private function getTypesToReject(): array
     {
-        $deprecatedTypeIdQuestion = new ChoiceQuestion(
-            'Provide deprecated actorType to be updated?',
-            [
-                '8.15.0.0.0',
-                '8.0.0.0.0',
-            ]
-        );
-        $deprecatedTypeIdQuestion->setErrorMessage('Invalid actorType: %s');
-        return $this->getHelper('question')->ask($input, $output, $deprecatedTypeIdQuestion);
+        return [
+            '8.15.0.0.0',
+            '8.0.0.0.0',
+        ];
     }
 }
