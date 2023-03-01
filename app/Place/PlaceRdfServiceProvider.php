@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector;
-use CultuurNet\UDB3\RDF\GraphStoreRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
-use EasyRdf\GraphStore;
 
 final class PlaceRdfServiceProvider extends AbstractServiceProvider
 {
@@ -30,5 +27,4 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
             )
         );
     }
-
 }
