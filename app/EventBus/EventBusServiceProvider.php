@@ -77,8 +77,11 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                             'uitpas_event_process_manager',
                             RelocateEventToCanonicalPlace::class,
                             AutoApproveForUiTIDv1ApiKeysProcessManager::class,
-                            PlaceRdfProjector::class,
                         ];
+
+                        if (($container->get('config')['rdf']['enabled'] ?? false) === true) {
+                            $subscribers[] = PlaceRdfProjector::class;
+                        }
 
                         $initialSubscribersCount = count($subscribers);
                         $subscribers = array_unique($subscribers);
