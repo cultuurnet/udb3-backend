@@ -48,7 +48,10 @@ services:
 
   rabbitmq:
     image: rabbitmq:3.9-management
+    hostname: 'udb3-rabbitmq'
     container_name: rabbitmq.uitdatabank
+    volumes:
+      - 'udb3-rabbitmq:/var/lib/rabbitmq'
     ports:
       - 5672:5672
       - 15672:15672
@@ -63,4 +66,6 @@ volumes:
   udb3-redis:
     driver: local
   udb3-mysql:
+    driver: local
+  udb3-rabbitmq:
     driver: local
