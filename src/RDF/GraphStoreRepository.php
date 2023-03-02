@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\RDF;
 
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
+use EasyRdf\Http\Exception;
 
 final class GraphStoreRepository implements GraphRepository
 {
@@ -24,7 +25,14 @@ final class GraphStoreRepository implements GraphRepository
 
     public function get(string $uri): Graph
     {
-        return $this->graphStore->get($this->appendSuffix($uri));
+        try {
+            return $this->graphStore->get($this->appendSuffix($uri));
+        } catch (Exception $e) {
+            if ($e->getCode() !== 404) {
+                throw $e;
+            }
+            return new Graph($uri);
+        }
     }
 
     private function appendSuffix(string $uri): string
