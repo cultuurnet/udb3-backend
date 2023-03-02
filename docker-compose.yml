@@ -9,7 +9,7 @@ services:
       - .:/var/www/html:cached
     working_dir: /var/www/html
     ports:
-      - "8000:80"
+      - '8000:80'
     networks:
       uitdatabank:
         aliases:
@@ -25,12 +25,12 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - 'udb3-mysql:/var/lib/mysql'
+    ports:
+      - '3306:3306'
     networks:
       uitdatabank:
         aliases:
           - mysql.uitdatabank.dev
-    ports:
-      - "3306:3306"
 
   redis:
     image: 'redis:alpine'
@@ -42,7 +42,7 @@ services:
     networks:
       - uitdatabank
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: [ 'CMD', 'redis-cli', 'ping' ]
       retries: 3
       timeout: 5s
 
