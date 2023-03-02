@@ -45,7 +45,7 @@ final class RdfServiceProvider extends AbstractServiceProvider
                     array_map(
                         fn (string $urlPart): string => trim($urlPart, '/'),
                         [
-                            $container->get('config')['rdf']['rdfBaseUri'],
+                            $container->get('config')['rdf']['resourceBaseUri'],
                             $resourceType,
                             $resourceId,
                         ]
