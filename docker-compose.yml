@@ -9,7 +9,7 @@ services:
       - .:/var/www/html:cached
     working_dir: /var/www/html
     ports:
-      - "8000:80"
+      - '8000:80'
     networks:
       uitdatabank:
         aliases:
@@ -25,12 +25,12 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - 'udb3-mysql:/var/lib/mysql'
+    ports:
+      - '3306:3306'
     networks:
       uitdatabank:
         aliases:
           - mysql.uitdatabank.dev
-    ports:
-      - "3306:3306"
 
   redis:
     image: 'redis:alpine'
@@ -40,11 +40,23 @@ services:
     volumes:
       - 'udb3-redis:/data'
     networks:
-      -   uitdatabank
+      - uitdatabank
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: [ 'CMD', 'redis-cli', 'ping' ]
       retries: 3
       timeout: 5s
+
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    hostname: 'udb3-rabbitmq'
+    container_name: rabbitmq.uitdatabank
+    volumes:
+      - 'udb3-rabbitmq:/var/lib/rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - uitdatabank
 
 networks:
   uitdatabank:
@@ -54,4 +66,6 @@ volumes:
   udb3-redis:
     driver: local
   udb3-mysql:
+    driver: local
+  udb3-rabbitmq:
     driver: local
