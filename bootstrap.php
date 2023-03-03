@@ -43,8 +43,10 @@ use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\Place\PlaceEditingServiceProvider;
 use CultuurNet\UDB3\Place\PlaceGeoCoordinatesServiceProvider;
 use CultuurNet\UDB3\Place\PlacePermissionServiceProvider;
+use CultuurNet\UDB3\Place\PlaceRdfServiceProvider;
 use CultuurNet\UDB3\Place\PlaceReadServiceProvider;
 use CultuurNet\UDB3\Place\PlaceServiceProvider;
+use CultuurNet\UDB3\RDF\RdfServiceProvider;
 use CultuurNet\UDB3\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Role\RoleServiceProvider;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
@@ -195,6 +197,10 @@ $container->addServiceProvider(new TermServiceProvider());
 
 /** Jobs */
 $container->addServiceProvider(new JobsServiceProvider());
+
+/** RDF */
+$container->addServiceProvider(new RdfServiceProvider());
+$container->addServiceProvider(new PlaceRdfServiceProvider());
 
 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);

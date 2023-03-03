@@ -1,0 +1,3 @@
+@prefix locn: <http://www.w3.org/ns/locn#> .
+
+<https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea> locn:geographicName "Voorbeeld titel UPDATED 2"@nl, "Example title UPDATED"@en .
