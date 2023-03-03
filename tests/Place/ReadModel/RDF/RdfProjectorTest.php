@@ -126,6 +126,6 @@ class RdfProjectorTest extends TestCase
     {
         $uri = 'https://mock.data.publiq.be/locaties/' . $placeId;
         $actualTurtleData = (new Turtle())->serialise($this->graphRepository->get($uri), 'turtle');
-        $this->assertEquals($expectedTurtleData, $actualTurtleData);
+        $this->assertEquals(trim($expectedTurtleData), trim($actualTurtleData));
     }
 }

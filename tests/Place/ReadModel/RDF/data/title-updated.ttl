@@ -1,3 +1,6 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix locn: <http://www.w3.org/ns/locn#> .
 
-<https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea> locn:geographicName "Voorbeeld titel UPDATED"@nl .
+<https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea>
+  a dcterms:Location ;
+  locn:geographicName "Voorbeeld titel UPDATED"@nl .

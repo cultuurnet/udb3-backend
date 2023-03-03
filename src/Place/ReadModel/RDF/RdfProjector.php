@@ -24,6 +24,7 @@ final class RdfProjector implements EventListener
     private GraphRepository $graphRepository;
     private IriGeneratorInterface $iriGenerator;
 
+    private const TYPE_LOCATIE = 'dcterms:Location';
     private const PROPERTY_LOCATIE_NAAM = 'locn:geographicName';
 
     public function __construct(
@@ -44,6 +45,7 @@ final class RdfProjector implements EventListener
 
         $uri = $this->iriGenerator->iri($domainMessage->getId());
         $graph = $this->graphRepository->get($uri);
+        $graph = $this->setGeneralProperties($graph, $uri);
 
         $eventClassToHandler = [
             MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),
@@ -58,6 +60,12 @@ final class RdfProjector implements EventListener
                 }
             }
         }
+    }
+
+    private function setGeneralProperties(Graph $graph, string $uri): Graph
+    {
+        $graph->setType($uri, self::TYPE_LOCATIE);
+        return $graph;
     }
 
     private function handleMainLanguageDefined(MainLanguageDefined $event, string $uri): void
