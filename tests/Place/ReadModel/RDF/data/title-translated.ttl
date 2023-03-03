@@ -5,5 +5,5 @@
 <https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a dcterms:Location ;
   dcterms:created "2023-01-01T12:30:15"^^xsd:dateTime ;
-  dcterms:modified "2023-01-02T12:30:15"^^xsd:dateTime ;\n
+  dcterms:modified "2023-01-02T12:30:15"^^xsd:dateTime ;
   locn:geographicName "Voorbeeld titel"@nl, "Example title"@en .
