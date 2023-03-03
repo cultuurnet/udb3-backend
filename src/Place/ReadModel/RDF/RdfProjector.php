@@ -109,10 +109,6 @@ final class RdfProjector implements EventListener
             }
         }
 
-        $resource->add($property, [
-            'type' => 'literal',
-            'value' => $value,
-            'lang' => $language,
-        ]);
+        $resource->add($property, new Literal($value, $language));
     }
 }
