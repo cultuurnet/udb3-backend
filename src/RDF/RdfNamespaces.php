@@ -14,6 +14,7 @@ final class RdfNamespaces
         RdfNamespace::delete('dc');
 
         // Set custom namespaces.
+        RdfNamespace::set('adms', 'http://www.w3.org/ns/adms#');
         RdfNamespace::set('locn', 'http://www.w3.org/ns/locn#');
     }
 }

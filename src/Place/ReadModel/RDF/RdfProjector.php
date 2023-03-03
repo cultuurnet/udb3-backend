@@ -25,9 +25,14 @@ final class RdfProjector implements EventListener
     private IriGeneratorInterface $iriGenerator;
 
     private const TYPE_LOCATIE = 'dcterms:Location';
+    private const TYPE_IDENTIFICATOR = 'adms:Identifier';
+
     private const PROPERTY_LOCATIE_AANGEMAAKT_OP = 'dcterms:created';
     private const PROPERTY_LOCATIE_LAATST_AANGEPAST = 'dcterms:modified';
+    private const PROPERTY_LOCATIE_IDENTIFICATOR = 'adms:identifier';
     private const PROPERTY_LOCATIE_NAAM = 'locn:geographicName';
+
+    private const PROPERTY_IDENTIFICATOR_NOTATION = 'skos:notation';
 
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
@@ -78,6 +83,13 @@ final class RdfProjector implements EventListener
             $resource->set(self::PROPERTY_LOCATIE_AANGEMAAKT_OP, $recordedOnLiteral);
         }
         $resource->set(self::PROPERTY_LOCATIE_LAATST_AANGEPAST, $recordedOnLiteral);
+
+        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_IDENTIFICATOR)) {
+            $identificator = $graph->newBNode();
+            $identificator->setType(self::TYPE_IDENTIFICATOR);
+            $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, $uri);
+            $resource->add(self::PROPERTY_LOCATIE_IDENTIFICATOR, $identificator);
+        }
 
         return $graph;
     }
