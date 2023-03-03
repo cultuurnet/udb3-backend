@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
+use EasyRdf\Graph;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
 
@@ -42,11 +43,12 @@ final class RdfProjector implements EventListener
         $events = [$payload, ...$granularEvents];
 
         $uri = $this->iriGenerator->iri($domainMessage->getId());
+        $graph = $this->graphRepository->get($uri);
 
         $eventClassToHandler = [
             MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),
-            TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $uri),
-            TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $uri),
+            TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $uri, $graph),
+            TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -63,9 +65,8 @@ final class RdfProjector implements EventListener
         $this->mainLanguageRepository->save($uri, new Language($event->getMainLanguage()->getCode()));
     }
 
-    private function handleTitleUpdated(TitleUpdated $event, string $uri): void
+    private function handleTitleUpdated(TitleUpdated $event, string $uri, Graph $graph): void
     {
-        $graph = $this->graphRepository->get($uri);
         $mainLanguage = $this->mainLanguageRepository->get($uri, new Language('nl'));
 
         $resource = $graph->resource($uri);
@@ -80,10 +81,8 @@ final class RdfProjector implements EventListener
         $this->graphRepository->save($uri, $graph);
     }
 
-    private function handleTitleTranslated(TitleTranslated $event, string $uri): void
+    private function handleTitleTranslated(TitleTranslated $event, string $uri, Graph $graph): void
     {
-        $graph = $this->graphRepository->get($uri);
-
         $resource = $graph->resource($uri);
 
         $this->replaceLanguageValue(
