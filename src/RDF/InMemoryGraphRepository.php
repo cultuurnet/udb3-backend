@@ -20,14 +20,4 @@ final class InMemoryGraphRepository implements GraphRepository
     {
         return $this->graphs[$uri] ?? new Graph($uri);
     }
-
-    /**
-     * Convenience method for tests
-     */
-    public function getAsTurtle(string $uri): string
-    {
-        $graph = $this->get($uri);
-        $serializer = new Turtle();
-        return $serializer->serialise($graph, 'turtle');
-    }
 }
