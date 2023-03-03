@@ -25,6 +25,8 @@ final class RdfProjector implements EventListener
     private IriGeneratorInterface $iriGenerator;
 
     private const TYPE_LOCATIE = 'dcterms:Location';
+    private const PROPERTY_LOCATIE_AANGEMAAKT_OP = 'dcterms:created';
+    private const PROPERTY_LOCATIE_LAATST_AANGEPAST = 'dcterms:modified';
     private const PROPERTY_LOCATIE_NAAM = 'locn:geographicName';
 
     public function __construct(
@@ -45,7 +47,7 @@ final class RdfProjector implements EventListener
 
         $uri = $this->iriGenerator->iri($domainMessage->getId());
         $graph = $this->graphRepository->get($uri);
-        $graph = $this->setGeneralProperties($graph, $uri);
+        $graph = $this->setGeneralProperties($graph, $uri, $domainMessage);
 
         $eventClassToHandler = [
             MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),
@@ -62,9 +64,21 @@ final class RdfProjector implements EventListener
         }
     }
 
-    private function setGeneralProperties(Graph $graph, string $uri): Graph
+    private function setGeneralProperties(Graph $graph, string $uri, DomainMessage $domainMessage): Graph
     {
-        $graph->setType($uri, self::TYPE_LOCATIE);
+        $resource = $graph->resource($uri);
+
+        if ($resource->type() !== self::TYPE_LOCATIE) {
+            $resource->setType(self::TYPE_LOCATIE);
+        }
+
+        $recordedOn = $domainMessage->getRecordedOn()->toNative();
+        $recordedOnLiteral = new Literal($recordedOn->format('Y-m-d\TH:i:s'), null, 'xsd:dateTime');
+        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_AANGEMAAKT_OP)) {
+            $resource->set(self::PROPERTY_LOCATIE_AANGEMAAKT_OP, $recordedOnLiteral);
+        }
+        $resource->set(self::PROPERTY_LOCATIE_LAATST_AANGEPAST, $recordedOnLiteral);
+
         return $graph;
     }
 
