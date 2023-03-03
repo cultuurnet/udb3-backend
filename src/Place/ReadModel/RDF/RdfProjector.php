@@ -43,14 +43,14 @@ final class RdfProjector implements EventListener
 
         $uri = $this->iriGenerator->iri($domainMessage->getId());
 
-        $mapping = [
+        $eventClassToHandler = [
             MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),
             TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $uri),
             TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $uri),
         ];
 
         foreach ($events as $event) {
-            foreach ($mapping as $class => $handler) {
+            foreach ($eventClassToHandler as $class => $handler) {
                 if ($event instanceof $class) {
                     $handler($event);
                 }
