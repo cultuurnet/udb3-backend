@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\RDF;
 
 use EasyRdf\Graph;
-use EasyRdf\Serialiser\Turtle;
 
 final class InMemoryGraphRepository implements GraphRepository
 {
