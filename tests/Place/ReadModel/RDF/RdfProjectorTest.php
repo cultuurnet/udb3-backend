@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 
+use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
@@ -23,6 +24,7 @@ use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
 use CultuurNet\UDB3\Title as LegacyTitle;
+use DateTime;
 use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\TestCase;
 
@@ -115,9 +117,17 @@ class RdfProjectorTest extends TestCase
     private function project(string $placeId, array $events): void
     {
         $playhead = -1;
+        $recordedOn = new DateTime('2022-12-31T12:30:15+01:00');
         foreach ($events as $event) {
             $playhead++;
-            $domainMessage = DomainMessage::recordNow($placeId, $playhead, new Metadata(), $event);
+            $recordedOn->modify('+1 day');
+            $domainMessage = new DomainMessage(
+                $placeId,
+                $playhead,
+                new Metadata(),
+                $event,
+                BroadwayDateTime::fromString($recordedOn->format(DateTime::ATOM))
+            );
             $this->rdfProjector->handle($domainMessage);
         }
     }
@@ -126,6 +136,6 @@ class RdfProjectorTest extends TestCase
     {
         $uri = 'https://mock.data.publiq.be/locaties/' . $placeId;
         $actualTurtleData = (new Turtle())->serialise($this->graphRepository->get($uri), 'turtle');
-        $this->assertEquals($expectedTurtleData, $actualTurtleData);
+        $this->assertEquals(trim($expectedTurtleData), trim($actualTurtleData));
     }
 }
