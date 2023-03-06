@@ -149,6 +149,16 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         $validator->validateClaims($this->token);
     }
 
+    private function authenticateTokenForPublicRoutes(ServerRequestInterface $request): void
+    {
+        try {
+            $this->authenticateToken($request);
+        } catch (\Exception $exception) {
+            $this->token = null;
+            return;
+        }
+    }
+
     private function authenticateApiKey(ServerRequestInterface $request): void
     {
         $apiKeyReader = new CompositeApiKeyReader(
