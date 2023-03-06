@@ -13,6 +13,7 @@
     a adms:Identifier ;
     skos:notation "https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea" ;
     dcterms:creator "https://fixme.com/example/dataprovider/publiq" ;
-    generiek:naamruimte "https://mock.data.publiq.be/locaties/"^^xsd:string
+    generiek:naamruimte "https://mock.data.publiq.be/locaties/"^^xsd:string ;
+    generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:string
   ] ;
   locn:geographicName "Voorbeeld titel"@nl .
