@@ -202,6 +202,79 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_should_remove_themes_from_places(): void
+    {
+        $this->repository = new PropertyPolyfillOfferRepository(
+            new InMemoryDocumentRepository(),
+            $this->labelReadRepository,
+            OfferType::place()
+        );
+
+        $this
+            ->given([
+                'terms' => [
+                    [
+                        'id' => '1.8.3.5.0',
+                        'label' => 'Amusementsmuziek',
+                        'domain' => 'theme',
+                    ],
+                    [
+                        'id' => 'OyaPaf64AEmEAYXHeLMAtA',
+                        'label' => 'Zaal of expohal',
+                        'domain' => 'eventtype',
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'terms' => [
+                    [
+                        'id' => 'OyaPaf64AEmEAYXHeLMAtA',
+                        'label' => 'Zaal of expohal',
+                        'domain' => 'eventtype',
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_remove_themes_from_events(): void
+    {
+        $this
+            ->given([
+                'terms' => [
+                    [
+                        'id' => '1.8.3.5.0',
+                        'label' => 'Amusementsmuziek',
+                        'domain' => 'theme',
+                    ],
+                    [
+                        'id' => 'OyaPaf64AEmEAYXHeLMAtA',
+                        'label' => 'Zaal of expohal',
+                        'domain' => 'eventtype',
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'terms' => [
+                    [
+                        'id' => '1.8.3.5.0',
+                        'label' => 'Amusementsmuziek',
+                        'domain' => 'theme',
+                    ],
+                    [
+                        'id' => 'OyaPaf64AEmEAYXHeLMAtA',
+                        'label' => 'Zaal of expohal',
+                        'domain' => 'eventtype',
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_not_change_existing_attendanceMode(): void
     {
         $this
