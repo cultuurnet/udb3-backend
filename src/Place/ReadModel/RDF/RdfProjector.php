@@ -37,6 +37,7 @@ final class RdfProjector implements EventListener
     private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT = 'https://fixme.com/example/dataprovider/publiq';
     private const PROPERTY_IDENTIFICATOR_NAAMRUIMTE = 'generiek:naamruimte';
     private const PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR = 'generiek:lokaleIdentificator';
+    private const PROPERTY_IDENTIFICATOR_VERSIE_ID = 'generiek:versieIdentificator';
 
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
@@ -97,6 +98,9 @@ final class RdfProjector implements EventListener
             $identificator->add(self::PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR, new Literal($domainMessage->getId(), null, 'xsd:string'));
             $resource->add(self::PROPERTY_LOCATIE_IDENTIFICATOR, $identificator);
         }
+
+        $identificator = $resource->getResource(self::PROPERTY_LOCATIE_IDENTIFICATOR);
+        $identificator->set(self::PROPERTY_IDENTIFICATOR_VERSIE_ID, $recordedOnLiteral);
 
         return $graph;
     }
