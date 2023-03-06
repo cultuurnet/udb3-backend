@@ -16,5 +16,6 @@ final class RdfNamespaces
         // Set custom namespaces.
         RdfNamespace::set('adms', 'http://www.w3.org/ns/adms#');
         RdfNamespace::set('locn', 'http://www.w3.org/ns/locn#');
+        RdfNamespace::set('generiek', 'https://data.vlaanderen.be/ns/generiek/#');
     }
 }

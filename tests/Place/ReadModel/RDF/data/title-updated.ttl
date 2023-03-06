@@ -2,6 +2,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek/#> .
 @prefix locn: <http://www.w3.org/ns/locn#> .
 
 <https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea>
@@ -10,7 +11,8 @@
   adms:identifier [
     a adms:Identifier ;
     skos:notation "https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea" ;
-    dcterms:creator "https://fixme.com/example/dataprovider/publiq"
+    dcterms:creator "https://fixme.com/example/dataprovider/publiq" ;
+    generiek:naamruimte "https://mock.data.publiq.be/locaties/"^^xsd:string
   ] ;
   dcterms:modified "2023-01-02T12:30:15"^^xsd:dateTime ;
   locn:geographicName "Voorbeeld titel UPDATED"@nl .
