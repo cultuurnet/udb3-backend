@@ -9,7 +9,8 @@
   dcterms:created "2023-01-01T12:30:15"^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
-    skos:notation "https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea"
+    skos:notation "https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea" ;
+    dcterms:creator "https://fixme.com/example/dataprovider/publiq"
   ] ;
   dcterms:modified "2023-01-02T12:30:15"^^xsd:dateTime ;
   locn:geographicName "Voorbeeld titel UPDATED"@nl .

@@ -33,6 +33,8 @@ final class RdfProjector implements EventListener
     private const PROPERTY_LOCATIE_NAAM = 'locn:geographicName';
 
     private const PROPERTY_IDENTIFICATOR_NOTATION = 'skos:notation';
+    private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR = 'dcterms:creator';
+    private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT = 'https://fixme.com/example/dataprovider/publiq';
 
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
@@ -88,6 +90,7 @@ final class RdfProjector implements EventListener
             $identificator = $graph->newBNode();
             $identificator->setType(self::TYPE_IDENTIFICATOR);
             $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, $uri);
+            $identificator->add(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR, self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT);
             $resource->add(self::PROPERTY_LOCATIE_IDENTIFICATOR, $identificator);
         }
 
