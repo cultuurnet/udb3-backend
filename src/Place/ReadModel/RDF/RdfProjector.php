@@ -78,17 +78,28 @@ final class RdfProjector implements EventListener
     {
         $resource = $graph->resource($uri);
 
+        // Set the rdf:type property, but only if it is not set before to avoid needlessly shifting it to the end of the
+        // list of properties in the serialized Turtle data, since set() and setType() actually do a delete() followed
+        // by add().
         if ($resource->type() !== self::TYPE_LOCATIE) {
             $resource->setType(self::TYPE_LOCATIE);
         }
 
+        // Create a literal value for the recorded_on datetime (used in multiple properties)
         $recordedOn = $domainMessage->getRecordedOn()->toNative();
         $recordedOnLiteral = new Literal($recordedOn->format('Y-m-d\TH:i:s'), null, 'xsd:dateTime');
+
+        // Set the dcterms:created property if not set yet.
+        // (Otherwise it would constantly update like dcterms:modified).
         if (!$resource->hasProperty(self::PROPERTY_LOCATIE_AANGEMAAKT_OP)) {
             $resource->set(self::PROPERTY_LOCATIE_AANGEMAAKT_OP, $recordedOnLiteral);
         }
+
+        // Always update the dcterms:modified property since it should change on every update to the resource.
         $resource->set(self::PROPERTY_LOCATIE_LAATST_AANGEPAST, $recordedOnLiteral);
 
+        // Add an adms:Indentifier if not set yet. Like rdf:type we only do this once to avoid needlessly shifting it
+        // to the end of the properties in the serialized Turtle data.
         if (!$resource->hasProperty(self::PROPERTY_LOCATIE_IDENTIFICATOR)) {
             $identificator = $graph->newBNode();
             $identificator->setType(self::TYPE_IDENTIFICATOR);
@@ -99,6 +110,7 @@ final class RdfProjector implements EventListener
             $resource->add(self::PROPERTY_LOCATIE_IDENTIFICATOR, $identificator);
         }
 
+        // Add/update the generiek:versieIdentificator inside the linked adms:Identifier on every change.
         $identificator = $resource->getResource(self::PROPERTY_LOCATIE_IDENTIFICATOR);
         $identificator->set(self::PROPERTY_IDENTIFICATOR_VERSIE_ID, $recordedOnLiteral);
 
