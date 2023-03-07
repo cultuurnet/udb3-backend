@@ -47,11 +47,9 @@ services:
       timeout: 5s
 
   rabbitmq:
-    image: rabbitmq:3.9-management
-    hostname: 'udb3-rabbitmq'
+    image: public.ecr.aws/y2o7k5u2/udb3/rabbitmq:latest
+    hostname: 'rabbitdocker'
     container_name: rabbitmq.uitdatabank
-    volumes:
-      - 'udb3-rabbitmq:/var/lib/rabbitmq'
     ports:
       - 5672:5672
       - 15672:15672
@@ -66,6 +64,4 @@ volumes:
   udb3-redis:
     driver: local
   udb3-mysql:
-    driver: local
-  udb3-rabbitmq:
     driver: local
