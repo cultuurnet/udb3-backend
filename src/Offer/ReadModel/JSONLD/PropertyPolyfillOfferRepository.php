@@ -37,8 +37,8 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = $this->polyfillNewProperties($document);
         $document = $this->removeObsoleteProperties($document);
         $document = $this->removeNullLabels($document);
-        $document = $this->fixDuplicateLabelVisibility($document);
-        return $document;
+        $document = $this->removeThemes($document);
+        return $this->fixDuplicateLabelVisibility($document);
     }
 
     private function polyfillNewProperties(JsonDocument $jsonDocument): JsonDocument
@@ -235,6 +235,29 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 
                 $json = $filterNullLabels($json, 'labels');
                 $json = $filterNullLabels($json, 'hiddenLabels');
+
+                return $json;
+            }
+        );
+    }
+
+    private function removeThemes(JsonDocument $jsonDocument): JsonDocument
+    {
+        if ($this->offerType->sameAs(OfferType::event())) {
+            return $jsonDocument;
+        }
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                if (!isset($json['terms']) || !is_array($json['terms'])) {
+                    return $json;
+                }
+
+                $json['terms'] = array_values(
+                    array_filter(
+                        $json['terms'],
+                        fn ($terms) => $terms['domain'] !== 'theme'
+                    )
+                );
 
                 return $json;
             }
