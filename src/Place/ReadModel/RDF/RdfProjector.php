@@ -164,9 +164,9 @@ final class RdfProjector implements EventListener
         $languages = array_map(fn (Literal $literal): string => $literal->getLang(), $literalValues);
         $literalValuePerLanguage = array_combine($languages, $literalValues);
 
-        // Override or add the value for the updated language.
-        // If the value was set before, it will keep its original position in the list. If the value was not set before
-        // it will be appended at the end of the list.
+        // Override or add the new or updated value for the language.
+        // If the language was set before, it will keep its original position in the list. If the language was not set
+        // before it will be appended at the end of the list.
         $literalValuePerLanguage[$language] = new Literal($value, $language);
 
         // Remove all existing values of the property, then (re)add them in the intended order.

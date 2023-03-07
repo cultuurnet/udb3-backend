@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\RDF;
 
 use EasyRdf\Graph;
-use EasyRdf\Serialiser\Turtle;
 
 final class InMemoryGraphRepository implements GraphRepository
 {
@@ -19,15 +18,5 @@ final class InMemoryGraphRepository implements GraphRepository
     public function get(string $uri): Graph
     {
         return $this->graphs[$uri] ?? new Graph($uri);
-    }
-
-    /**
-     * Convenience method for tests
-     */
-    public function getAsTurtle(string $uri): string
-    {
-        $graph = $this->get($uri);
-        $serializer = new Turtle();
-        return $serializer->serialise($graph, 'turtle');
     }
 }
