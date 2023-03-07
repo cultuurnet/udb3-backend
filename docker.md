@@ -26,6 +26,8 @@ You'll need to change the following lines to work with docker hosts:
   - `mysql`
 - cache.redis.host
   - `redis`
+- amqp.host
+  - `rabbitmq`
 
 To make the SAPI3 proxy work you will need to add a `scheme` and `port` to the search config
 
