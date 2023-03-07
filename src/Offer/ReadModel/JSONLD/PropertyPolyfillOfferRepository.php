@@ -38,8 +38,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = $this->removeObsoleteProperties($document);
         $document = $this->removeNullLabels($document);
         $document = $this->removeThemes($document);
-        $document = $this->fixDuplicateLabelVisibility($document);
-        return $document;
+        return $this->fixDuplicateLabelVisibility($document);
     }
 
     private function polyfillNewProperties(JsonDocument $jsonDocument): JsonDocument
