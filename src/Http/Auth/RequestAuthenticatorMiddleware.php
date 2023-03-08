@@ -123,6 +123,16 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         return new CurrentUser($userId);
     }
 
+    private function authenticateTokenForPublicRoutes(ServerRequestInterface $request): void
+    {
+        try {
+            $this->authenticateToken($request);
+        } catch (\Exception $exception) {
+            $this->token = null;
+            return;
+        }
+    }
+
     private function authenticateToken(ServerRequestInterface $request): void
     {
         $authorizationHeader = $request->getHeader('authorization');
