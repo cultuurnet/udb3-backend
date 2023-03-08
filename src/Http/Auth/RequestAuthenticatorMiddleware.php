@@ -43,6 +43,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
     private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
     private UserPermissionsReadRepository $userPermissionReadRepository;
+    private bool $authenticatePublicRoutes;
 
     public function __construct(
         JwtValidator $uitIdV1JwtValidator,
@@ -50,7 +51,8 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
         ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck,
-        UserPermissionsReadRepository $userPermissionsReadRepository
+        UserPermissionsReadRepository $userPermissionsReadRepository,
+        bool $authenticatePublicRoutes
     ) {
         $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
         $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
@@ -58,6 +60,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
         $this->apiKeyConsumerPermissionCheck = $apiKeyConsumerPermissionCheck;
         $this->userPermissionReadRepository = $userPermissionsReadRepository;
+        $this->authenticatePublicRoutes = $authenticatePublicRoutes;
     }
 
     public function addPublicRoute(string $pathPattern, array $methods = []): void
