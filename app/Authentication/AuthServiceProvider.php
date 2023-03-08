@@ -58,7 +58,8 @@ final class AuthServiceProvider extends AbstractServiceProvider
                     new CultureFeedApiKeyAuthenticator($container->get(ConsumerReadRepository::class)),
                     $container->get(ConsumerReadRepository::class),
                     new ConsumerIsInPermissionGroup((string) $container->get('config')['api_key']['group_id']),
-                    $container->get(UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY)
+                    $container->get(UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY),
+                    $container->get('config')['authenticate_public_routes'] ?? false
                 );
 
                 // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs,
