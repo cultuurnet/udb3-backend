@@ -88,21 +88,21 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
             return;
         }
 
-        $isPublicRoute = $this->isPublicRoute($request);
-
-        if ($isPublicRoute && $this->authenticatePublicRoutes) {
-            try {
-                $this->authenticateToken($request);
-            } catch (\Exception $exception) {
-                $this->token = null;
-            }
-        }
-
-        if ($isPublicRoute) {
+        if ($this->isPublicRoute($request) && !$this->authenticatePublicRoutes) {
             return;
         }
 
-        $this->authenticateToken($request);
+        // For requests to public routes, if authenticationToggle is enabled,
+        // that provide extra information to Authenticated Users. eg. show contributors
+        try {
+            $this->authenticateToken($request);
+        } catch (\Exception $exception) {
+            if ($this->isPublicRoute($request)) {
+                $this->token = null;
+                return;
+            }
+            throw $exception;
+        }
 
         // Requests that use a token from the JWT provider (v1 or v2) require an API key from UiTID v1.
         // Requests that use a token that they got directly from Auth0 do not require an API key.
