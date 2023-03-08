@@ -43,6 +43,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
     private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
     private UserPermissionsReadRepository $userPermissionReadRepository;
+    private bool $authenticatePublicRoutes;
 
     public function __construct(
         JwtValidator $uitIdV1JwtValidator,
@@ -50,7 +51,8 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
         ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck,
-        UserPermissionsReadRepository $userPermissionsReadRepository
+        UserPermissionsReadRepository $userPermissionsReadRepository,
+        bool $authenticatePublicRoutes
     ) {
         $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
         $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
@@ -58,6 +60,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
         $this->apiKeyConsumerPermissionCheck = $apiKeyConsumerPermissionCheck;
         $this->userPermissionReadRepository = $userPermissionsReadRepository;
+        $this->authenticatePublicRoutes = $authenticatePublicRoutes;
     }
 
     public function addPublicRoute(string $pathPattern, array $methods = []): void
@@ -81,17 +84,25 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
      */
     public function authenticate(ServerRequestInterface $request): void
     {
-        // For requests to public routes, that provide extra information to Authenticated
-        // Users. eg. show contributors
-        try {
-            $this->authenticateToken($request);
-        } catch (\Exception $exception) {
-            if ($this->isCorsPreflightRequest($request) || $this->isPublicRoute($request)) {
-                $this->token = null;
-                return;
-            }
-            throw $exception;
+        if ($this->isCorsPreflightRequest($request)) {
+            return;
         }
+
+        $isPublicRoute = $this->isPublicRoute($request);
+
+        if ($isPublicRoute && $this->authenticatePublicRoutes) {
+            try {
+                $this->authenticateToken($request);
+            } catch (\Exception $exception) {
+                $this->token = null;
+            }
+        }
+
+        if ($isPublicRoute) {
+            return;
+        }
+
+        $this->authenticateToken($request);
 
         // Requests that use a token from the JWT provider (v1 or v2) require an API key from UiTID v1.
         // Requests that use a token that they got directly from Auth0 do not require an API key.
