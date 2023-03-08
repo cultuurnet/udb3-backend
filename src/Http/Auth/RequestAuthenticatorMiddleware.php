@@ -84,17 +84,18 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
      */
     public function authenticate(ServerRequestInterface $request): void
     {
-        // For requests to public routes, that provide extra information to Authenticated
-        // Users. eg. show contributors
-        try {
-            $this->authenticateToken($request);
-        } catch (\Exception $exception) {
-            if ($this->isCorsPreflightRequest($request) || $this->isPublicRoute($request)) {
-                $this->token = null;
-                return;
-            }
-            throw $exception;
+        if ($this->isCorsPreflightRequest($request)) {
+            return;
         }
+
+        if ($this->isPublicRoute($request)) {
+            if ($this->authenticatePublicRoutes) {
+                $this->authenticateTokenForPublicRoutes($request);
+            }
+            return;
+        }
+
+        $this->authenticateToken($request);
 
         // Requests that use a token from the JWT provider (v1 or v2) require an API key from UiTID v1.
         // Requests that use a token that they got directly from Auth0 do not require an API key.
