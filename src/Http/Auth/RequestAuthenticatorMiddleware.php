@@ -94,7 +94,6 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
                     $this->authenticateToken($request);
                 } catch (\Exception $exception) {
                     $this->token = null;
-                    return;
                 }
             }
             return;
