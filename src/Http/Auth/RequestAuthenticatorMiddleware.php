@@ -90,7 +90,12 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 
         if ($this->isPublicRoute($request)) {
             if ($this->authenticatePublicRoutes) {
-                $this->authenticateTokenForPublicRoutes($request);
+                try {
+                    $this->authenticateToken($request);
+                } catch (\Exception $exception) {
+                    $this->token = null;
+                    return;
+                }
             }
             return;
         }
@@ -122,16 +127,6 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     {
         $userId = $this->token ? $this->token->getUserId() : null;
         return new CurrentUser($userId);
-    }
-
-    private function authenticateTokenForPublicRoutes(ServerRequestInterface $request): void
-    {
-        try {
-            $this->authenticateToken($request);
-        } catch (\Exception $exception) {
-            $this->token = null;
-            return;
-        }
     }
 
     private function authenticateToken(ServerRequestInterface $request): void
