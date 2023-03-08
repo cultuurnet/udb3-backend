@@ -17,6 +17,7 @@ use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
+use DateTime;
 
 final class RdfProjector implements EventListener
 {
@@ -87,7 +88,7 @@ final class RdfProjector implements EventListener
 
         // Create a literal value for the recorded_on datetime (used in multiple properties)
         $recordedOn = $domainMessage->getRecordedOn()->toNative();
-        $recordedOnLiteral = new Literal($recordedOn->format('Y-m-d\TH:i:s'), null, 'xsd:dateTime');
+        $recordedOnLiteral = new Literal($recordedOn->format(DateTime::ATOM), null, 'xsd:dateTime');
 
         // Set the dcterms:created property if not set yet.
         // (Otherwise it would constantly update like dcterms:modified).
