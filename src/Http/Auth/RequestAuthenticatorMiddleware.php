@@ -88,14 +88,17 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
             return;
         }
 
-        if ($this->isPublicRoute($request)) {
-            if ($this->authenticatePublicRoutes) {
-                try {
-                    $this->authenticateToken($request);
-                } catch (\Exception $exception) {
-                    $this->token = null;
-                }
+        $isPublicRoute = $this->isPublicRoute($request);
+
+        if ($isPublicRoute && $this->authenticatePublicRoutes) {
+            try {
+                $this->authenticateToken($request);
+            } catch (\Exception $exception) {
+                $this->token = null;
             }
+        }
+
+        if ($isPublicRoute) {
             return;
         }
 
