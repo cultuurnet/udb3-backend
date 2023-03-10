@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Curators;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Curators\NewsArticle;
+use CultuurNet\UDB3\Curators\NewsArticleImage;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Curators\NewsArticles;
 use CultuurNet\UDB3\Curators\NewsArticleSearch;
@@ -15,6 +16,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -104,6 +106,79 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
                 'publisher' => 'BILL',
                 'url' => 'https://www.publiq.be/blog/api-reward',
                 'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_news_article_with_an_image(): void
+    {
+        $createNewsArticleRequest = $this->psr7RequestBuilder
+            ->withJsonBodyFromArray([
+                'headline' => 'publiq wint API award',
+                'inLanguage' => 'nl',
+                'text' => 'Op 10 januari 2020 wint publiq de API award',
+                'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                'publisher' => 'BILL',
+                'url' => 'https://www.publiq.be/blog/api-reward',
+                'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+                'image' => [
+                    'url' => 'https://www.uitinvlaanderen.be/img.png',
+                    'copyrightHolder' => 'Publiq vzw',
+                ],
+            ])
+            ->build('POST');
+
+        $this->newsArticleRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new NewsArticleSearch(
+                    null,
+                    '17284745-7bcf-461a-aad0-d3ad54880e75',
+                    'https://www.publiq.be/blog/api-reward'
+                )
+            )
+            ->willReturn(new NewsArticles());
+
+        $this->newsArticleRepository->expects($this->once())
+            ->method('create')
+            ->with((new NewsArticle(
+                new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+                'publiq wint API award',
+                new Language('nl'),
+                'Op 10 januari 2020 wint publiq de API award',
+                '17284745-7bcf-461a-aad0-d3ad54880e75',
+                'BILL',
+                new Url('https://www.publiq.be/blog/api-reward'),
+                new Url('https://www.bill.be/img/favicon.png')
+            ))->withImage(
+                new NewsArticleImage(
+                    new Url('https://www.uitinvlaanderen.be/img.png'),
+                    new CopyrightHolder('Publiq vzw')
+                )
+            ));
+
+        $response = $this->createNewsArticleRequestHandler->handle($createNewsArticleRequest);
+
+        $this->assertEquals(
+            Json::encode([
+                '@context' => '/contexts/NewsArticle',
+                '@id' => '/news-articles/6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                '@type' => 'https://schema.org/NewsArticle',
+                'id' => '6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                'headline' => 'publiq wint API award',
+                'inLanguage' => 'nl',
+                'text' => 'Op 10 januari 2020 wint publiq de API award',
+                'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                'publisher' => 'BILL',
+                'url' => 'https://www.publiq.be/blog/api-reward',
+                'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+                'image' => [
+                    'url' => 'https://www.uitinvlaanderen.be/img.png',
+                ]
             ]),
             $response->getBody()->getContents()
         );
