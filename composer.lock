@@ -5638,12 +5638,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "48c4a982898887bd8e884a76525110133bb86c90"
+                "reference": "6991d6dff62a51bf0f14ce34b46849022714dbe5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/48c4a982898887bd8e884a76525110133bb86c90",
-                "reference": "48c4a982898887bd8e884a76525110133bb86c90",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/6991d6dff62a51bf0f14ce34b46849022714dbe5",
+                "reference": "6991d6dff62a51bf0f14ce34b46849022714dbe5",
                 "shasum": ""
             },
             "type": "library",
@@ -5662,7 +5662,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/uitdatabank/III-5166-add-image-to-newsarticle"
             },
-            "time": "2023-03-09T15:49:21+00:00"
+            "time": "2023-03-10T12:57:42+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
