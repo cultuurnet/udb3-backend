@@ -178,7 +178,7 @@ final class CreateNewsArticleRequestHandlerTest extends TestCase
                 'publisherLogo' => 'https://www.bill.be/img/favicon.png',
                 'image' => [
                     'url' => 'https://www.uitinvlaanderen.be/img.png',
-                ]
+                ],
             ]),
             $response->getBody()->getContents()
         );
