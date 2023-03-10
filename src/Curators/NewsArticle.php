@@ -26,7 +26,7 @@ final class NewsArticle
 
     private Url $publisherLogo;
 
-    private ?NewsArticleImage $image;
+    private ?NewsArticleImage $image = null;
 
     public function __construct(
         UUID $id,
