@@ -26,6 +26,8 @@ final class NewsArticle
 
     private Url $publisherLogo;
 
+    private ?NewsArticleImage $image;
+
     public function __construct(
         UUID $id,
         string $headline,
@@ -34,7 +36,8 @@ final class NewsArticle
         string $about,
         string $publisher,
         Url $url,
-        Url $publisherLogo
+        Url $publisherLogo,
+        NewsArticleImage $image = null
     ) {
         $this->id = $id;
         $this->headline = $headline;
@@ -44,6 +47,7 @@ final class NewsArticle
         $this->publisher = $publisher;
         $this->url = $url;
         $this->publisherLogo = $publisherLogo;
+        $this->image = $image;
     }
 
     public function getId(): UUID
@@ -84,5 +88,10 @@ final class NewsArticle
     public function getPublisherLogo(): Url
     {
         return $this->publisherLogo;
+    }
+
+    public function getImage(): ?NewsArticleImage
+    {
+        return $this->image;
     }
 }
