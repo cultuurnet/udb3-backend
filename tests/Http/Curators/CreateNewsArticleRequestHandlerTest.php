@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class CreateNewsArticleRequestHandlerTest extends TestCase
+final class CreateNewsArticleRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
