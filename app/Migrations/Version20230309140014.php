@@ -17,7 +17,7 @@ final class Version20230309140014 extends AbstractMigration
     {
         $table = $schema->getTable('news_article');
         $table->addColumn('image_url', Type::TEXT)->setDefault(null)->setNotnull(false);
-        $table->addColumn('copyrightHolder', Type::TEXT)
+        $table->addColumn('copyright_holder', Type::TEXT)
             ->setDefault(null)
             ->setNotnull(false)
             ->setLength(250);
@@ -27,6 +27,6 @@ final class Version20230309140014 extends AbstractMigration
     {
         $table = $schema->getTable('news_article');
         $table->dropColumn('image_url');
-        $table->dropColumn('copyrightHolder');
+        $table->dropColumn('copyright_holder');
     }
 }
