@@ -378,7 +378,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
      * @test
      * @dataProvider invalidNewsArticleProviders
      */
-    public function it_throws_on_missing_properties(array $body, ApiProblem $apiProblem): void
+    public function it_throws_on_missing_and_invalid_properties(array $body, ApiProblem $apiProblem): void
     {
         $createNewsArticleRequest = $this->psr7RequestBuilder
             ->withJsonBodyFromArray($body)
@@ -438,6 +438,47 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
                     new SchemaError(
                         '/',
                         'The required properties (headline, inLanguage, text, about, publisher, publisherLogo, url) are missing'
+                    )
+                ),
+            ],
+            'invalid image url' => [
+                [
+                    'headline' => 'publiq wint API award',
+                    'inLanguage' => 'nl',
+                    'text' => 'Op 10 januari 2020 wint publiq de API award',
+                    'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                    'publisher' => 'BILL',
+                    'url' => 'https://www.publiq.be/blog/api-reward',
+                    'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+                    'image' => [
+                        'url' => 'https://www.uitinvlaanderen.be/img/manual.pdf',
+                        'copyrightHolder' => 'Publiq vzw',
+                    ],
+                ],
+                ApiProblem::bodyInvalidData(
+                    new SchemaError(
+                        '/image/url',
+                        'The string should match pattern: ^http(s?):([/|.|\w|\s|-])*\.(?:jpeg|jpeg|gif|png)'
+                    )
+                ),
+            ],
+            'image without copyright' => [
+                [
+                    'headline' => 'publiq wint API award',
+                    'inLanguage' => 'nl',
+                    'text' => 'Op 10 januari 2020 wint publiq de API award',
+                    'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                    'publisher' => 'BILL',
+                    'url' => 'https://www.publiq.be/blog/api-reward',
+                    'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+                    'image' => [
+                        'url' => 'https://www.uitinvlaanderen.be/img/setting.png',
+                    ],
+                ],
+                ApiProblem::bodyInvalidData(
+                    new SchemaError(
+                        '/image',
+                        'The required properties (copyrightHolder) are missing'
                     )
                 ),
             ],
