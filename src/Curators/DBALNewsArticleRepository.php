@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Curators;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Doctrine\DBAL\Connection;
@@ -94,6 +95,8 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
                     'publisher' => ':publisher',
                     'url' => ':url',
                     'publisher_logo' => ':publisher_logo',
+                    'image_url' => ':image_url',
+                    'copyright_holder' => ':copyright_holder',
                 ]
             )
             ->setParameters(
@@ -106,6 +109,8 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
                     'publisher' => $newsArticle->getPublisher(),
                     'url' => $newsArticle->getUrl()->toString(),
                     'publisher_logo' => $newsArticle->getPublisherLogo()->toString(),
+                    'image_url' => $newsArticle->getImage() !== null ? $newsArticle->getImage()->getImageUrl()->toString() : null,
+                    'copyright_holder' => $newsArticle->getImage() !== null ? $newsArticle->getImage()->getCopyrightHolder()->toString() : null,
                 ]
             )
             ->execute();
@@ -125,6 +130,8 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
             ->set('publisher', ':publisher')
             ->set('url', ':url')
             ->set('publisher_logo', ':publisher_logo')
+            ->set('image_url', ':image_url')
+            ->set('copyright_holder', ':copyright_holder')
             ->setParameters(
                 [
                     ':id' => $newsArticle->getId()->toString(),
@@ -135,6 +142,8 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
                     'publisher' => $newsArticle->getPublisher(),
                     'url' => $newsArticle->getUrl()->toString(),
                     'publisher_logo' => $newsArticle->getPublisherLogo()->toString(),
+                    'image_url' => $newsArticle->getImage() !== null ? $newsArticle->getImage()->getImageUrl()->toString() : null,
+                    'copyright_holder' => $newsArticle->getImage() !== null ? $newsArticle->getImage()->getCopyrightHolder()->toString() : null,
                 ]
             )
             ->execute();
@@ -153,7 +162,7 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
 
     private function createNewsArticle(array $newsArticleRow): NewsArticle
     {
-        return new NewsArticle(
+        $newsArticle = new NewsArticle(
             new UUID($newsArticleRow['id']),
             $newsArticleRow['headline'],
             new Language($newsArticleRow['in_language']),
@@ -163,6 +172,15 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
             new Url($newsArticleRow['url']),
             new Url($newsArticleRow['publisher_logo']),
         );
+        if (isset($newsArticleRow['image_url'], $newsArticleRow['copyright_holder'])) {
+            $newsArticle = $newsArticle->withImage(
+                new NewsArticleImage(
+                    new Url($newsArticleRow['image_url']),
+                    new CopyrightHolder($newsArticleRow['copyright_holder'])
+                )
+            );
+        }
+        return $newsArticle;
     }
 
     private function createNewsArticles(array $newsArticleRows): NewsArticles
