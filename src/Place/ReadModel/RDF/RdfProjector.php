@@ -77,7 +77,7 @@ final class RdfProjector implements EventListener
 
     private function setGeneralProperties(Graph $graph, string $uri, DomainMessage $domainMessage): Graph
     {
-        $recordedOn = $domainMessage->getRecordedOn()->toNative();
+        $recordedOn = $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM);
         $resource = $graph->resource($uri);
 
         // Set the rdf:type property, but only if it is not set before to avoid needlessly shifting it to the end of the
@@ -92,14 +92,14 @@ final class RdfProjector implements EventListener
         if (!$resource->hasProperty(self::PROPERTY_LOCATIE_AANGEMAAKT_OP)) {
             $resource->set(
                 self::PROPERTY_LOCATIE_AANGEMAAKT_OP,
-                new Literal($recordedOn->format(DateTime::ATOM), null, 'xsd:dateTime')
+                new Literal($recordedOn, null, 'xsd:dateTime')
             );
         }
 
         // Always update the dcterms:modified property since it should change on every update to the resource.
         $resource->set(
             self::PROPERTY_LOCATIE_LAATST_AANGEPAST,
-            new Literal($recordedOn->format(DateTime::ATOM), null, 'xsd:dateTime')
+            new Literal($recordedOn, null, 'xsd:dateTime')
         );
 
         // Add an adms:Indentifier if not set yet. Like rdf:type we only do this once to avoid needlessly shifting it
@@ -118,7 +118,7 @@ final class RdfProjector implements EventListener
         $identificator = $resource->getResource(self::PROPERTY_LOCATIE_IDENTIFICATOR);
         $identificator->set(
             self::PROPERTY_IDENTIFICATOR_VERSIE_ID,
-            new Literal($recordedOn->format(DateTime::ATOM), null, 'xsd:string')
+            new Literal($recordedOn, null, 'xsd:string')
         );
 
         return $graph;
