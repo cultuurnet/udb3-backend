@@ -6,15 +6,9 @@ namespace CultuurNet\UDB3\Actor;
 
 class ActorImportedFromUDB2 extends ActorEvent
 {
-    /**
-     * @var string
-     */
-    protected $cdbXml;
+    protected string $cdbXml;
 
-    /**
-     * @var string
-     */
-    protected $cdbXmlNamespaceUri;
+    protected string $cdbXmlNamespaceUri;
 
     final public function __construct(string $actorId, string $cdbXml, string $cdbXmlNamespaceUri)
     {
