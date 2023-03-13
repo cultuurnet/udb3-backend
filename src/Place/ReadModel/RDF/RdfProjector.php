@@ -17,6 +17,7 @@ use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
+use DateTime;
 
 final class RdfProjector implements EventListener
 {
@@ -76,6 +77,7 @@ final class RdfProjector implements EventListener
 
     private function setGeneralProperties(Graph $graph, string $uri, DomainMessage $domainMessage): Graph
     {
+        $recordedOn = $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM);
         $resource = $graph->resource($uri);
 
         // Set the rdf:type property, but only if it is not set before to avoid needlessly shifting it to the end of the
@@ -85,18 +87,20 @@ final class RdfProjector implements EventListener
             $resource->setType(self::TYPE_LOCATIE);
         }
 
-        // Create a literal value for the recorded_on datetime (used in multiple properties)
-        $recordedOn = $domainMessage->getRecordedOn()->toNative();
-        $recordedOnLiteral = new Literal($recordedOn->format('Y-m-d\TH:i:s'), null, 'xsd:dateTime');
-
         // Set the dcterms:created property if not set yet.
         // (Otherwise it would constantly update like dcterms:modified).
         if (!$resource->hasProperty(self::PROPERTY_LOCATIE_AANGEMAAKT_OP)) {
-            $resource->set(self::PROPERTY_LOCATIE_AANGEMAAKT_OP, $recordedOnLiteral);
+            $resource->set(
+                self::PROPERTY_LOCATIE_AANGEMAAKT_OP,
+                new Literal($recordedOn, null, 'xsd:dateTime')
+            );
         }
 
         // Always update the dcterms:modified property since it should change on every update to the resource.
-        $resource->set(self::PROPERTY_LOCATIE_LAATST_AANGEPAST, $recordedOnLiteral);
+        $resource->set(
+            self::PROPERTY_LOCATIE_LAATST_AANGEPAST,
+            new Literal($recordedOn, null, 'xsd:dateTime')
+        );
 
         // Add an adms:Indentifier if not set yet. Like rdf:type we only do this once to avoid needlessly shifting it
         // to the end of the properties in the serialized Turtle data.
@@ -112,7 +116,10 @@ final class RdfProjector implements EventListener
 
         // Add/update the generiek:versieIdentificator inside the linked adms:Identifier on every change.
         $identificator = $resource->getResource(self::PROPERTY_LOCATIE_IDENTIFICATOR);
-        $identificator->set(self::PROPERTY_IDENTIFICATOR_VERSIE_ID, $recordedOnLiteral);
+        $identificator->set(
+            self::PROPERTY_IDENTIFICATOR_VERSIE_ID,
+            new Literal($recordedOn, null, 'xsd:string')
+        );
 
         return $graph;
     }
