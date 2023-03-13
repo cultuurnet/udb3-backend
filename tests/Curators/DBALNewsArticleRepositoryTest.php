@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Curators;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
@@ -215,6 +216,35 @@ final class DBALNewsArticleRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_can_create_a_news_article_with_an_image(): void
+    {
+        $newsArticle = (new NewsArticle(
+            new UUID('727cf17c-d81f-4ec6-ba39-ef0227b5eb40'),
+            'Creating news articles works',
+            new Language('en'),
+            'This test covers the creation of news articles',
+            '17284745-7bcf-461a-aad0-d3ad54880e75',
+            'TECH',
+            new Url('https://www.tech.com/blog/create'),
+            new Url('https://www.tech.com/img/favicon.png')
+        ))->withImage(
+            new NewsArticleImage(
+                new Url('https://www.tech.com/image.jpeg'),
+                new CopyrightHolder('tech vzw')
+            )
+        );
+
+        $this->dbalNewsArticleRepository->create($newsArticle);
+
+        $this->assertEquals(
+            $newsArticle,
+            $this->dbalNewsArticleRepository->getById(new UUID('727cf17c-d81f-4ec6-ba39-ef0227b5eb40'))
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_update_a_news_article(): void
     {
         $newsArticle = new NewsArticle(
@@ -226,6 +256,35 @@ final class DBALNewsArticleRepositoryTest extends TestCase
             'UPDATE',
             new Url('https://www.update.com/blog/create'),
             new Url('https://www.update.com/img/favicon.png')
+        );
+
+        $this->dbalNewsArticleRepository->update($newsArticle);
+
+        $this->assertEquals(
+            $newsArticle,
+            $this->dbalNewsArticleRepository->getById(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_a_news_article_with_an_image(): void
+    {
+        $newsArticle = (new NewsArticle(
+            new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'),
+            'Updating news articles works',
+            new Language('nl'),
+            'This test covers the update of news articles',
+            '17284745-7bcf-461a-aad0-d3ad54880e75',
+            'UPDATE',
+            new Url('https://www.update.com/blog/create'),
+            new Url('https://www.update.com/img/favicon.png')
+        ))->withImage(
+            new NewsArticleImage(
+                new Url('https://www.update.com/image.png'),
+                new CopyrightHolder('update vzw')
+            )
         );
 
         $this->dbalNewsArticleRepository->update($newsArticle);

@@ -26,6 +26,8 @@ final class NewsArticle
 
     private Url $publisherLogo;
 
+    private ?NewsArticleImage $image = null;
+
     public function __construct(
         UUID $id,
         string $headline,
@@ -84,5 +86,17 @@ final class NewsArticle
     public function getPublisherLogo(): Url
     {
         return $this->publisherLogo;
+    }
+
+    public function withImage(NewsArticleImage $image): NewsArticle
+    {
+        $clone = clone $this;
+        $clone->image = $image;
+        return $clone;
+    }
+
+    public function getImage(): ?NewsArticleImage
+    {
+        return $this->image;
     }
 }

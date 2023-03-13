@@ -22,6 +22,12 @@ final class NewsArticleSchemaConfigurator
         $table->addColumn('publisher', Type::TEXT)->setDefault(null)->setNotnull(false);
         $table->addColumn('url', Type::TEXT)->setDefault(null)->setNotnull(false);
         $table->addColumn('publisher_logo', Type::TEXT)->setDefault(null)->setNotnull(false);
+        $table->addColumn('image_url', Type::TEXT)->setDefault(null)->setNotnull(false);
+        $table->addColumn('copyright_holder', Type::TEXT)
+            ->setDefault(null)
+            ->setNotnull(false)
+            ->setLength(250);
+
 
         $table->setPrimaryKey(['id']);
 

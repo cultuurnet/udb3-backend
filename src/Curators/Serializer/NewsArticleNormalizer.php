@@ -42,6 +42,15 @@ final class NewsArticleNormalizer implements NormalizerInterface
             'publisherLogo' => $newsArticle->getPublisherLogo()->toString(),
         ];
 
+        if ($newsArticle->getImage() !== null) {
+            $data += [
+                'image' => [
+                    'url' => $newsArticle->getImage()->getImageUrl()->toString(),
+                    'copyrightHolder' => $newsArticle->getImage()->getCopyrightHolder()->toString(),
+                ],
+            ];
+        }
+
         return $data;
     }
 
