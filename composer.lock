@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7441d938a6e9ed9500993eb8e5b480e8",
+    "content-hash": "bd8d4a318e7bfd987fae39d54d2f5884",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5634,18 +5634,19 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-uitdatabank/III-5166-add-image-to-newsarticle",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "028706c72b59559ae949f1fbf108eeded33f325c"
+                "reference": "095ccb471322a79a2ab1a3312b3c4934aa315b84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/028706c72b59559ae949f1fbf108eeded33f325c",
-                "reference": "028706c72b59559ae949f1fbf108eeded33f325c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/095ccb471322a79a2ab1a3312b3c4934aa315b84",
+                "reference": "095ccb471322a79a2ab1a3312b3c4934aa315b84",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5660,9 +5661,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/uitdatabank/III-5166-add-image-to-newsarticle"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
-            "time": "2023-03-13T12:14:31+00:00"
+            "time": "2023-03-13T12:26:32+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
