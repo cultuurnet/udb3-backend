@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace test\Event\Events;
 
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
+use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
@@ -73,6 +74,28 @@ final class EventImportedFromUDB2Test extends TestCase
         $this->assertEquals(
             [
                 new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new Title('Blubblub')),
+            ],
+            $eventImportedFromUDB2->toGranularEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_convert_translated_events_to_granular_events(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventImportedFromUDB2 = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_translations.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($eventId, new Title('Het evenement!')),
+                new TitleTranslated($eventId, new Language('fr'), new Title('L\'événement!')),
+                new TitleTranslated($eventId, new Language('de'), new Title('Das Ereignis!')),
             ],
             $eventImportedFromUDB2->toGranularEvents()
         );
