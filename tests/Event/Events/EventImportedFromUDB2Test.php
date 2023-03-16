@@ -62,7 +62,7 @@ final class EventImportedFromUDB2Test extends TestCase
     /**
      * @test
      */
-    public function it_can_convert_to_granular_eventsxxx(): void
+    public function it_can_convert_to_granular_events(): void
     {
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
             '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
