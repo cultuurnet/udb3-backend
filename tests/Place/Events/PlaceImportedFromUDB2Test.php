@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Events;
 
+use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Address\Locality;
+use CultuurNet\UDB3\Address\PostalCode;
+use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
@@ -40,6 +45,15 @@ final class PlaceImportedFromUDB2Test extends TestCase
         $this->assertEquals(
             [
                 new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new Title('CC Palethe')),
+                new AddressUpdated(
+                    '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+                    new Address(
+                        new Street('Jeugdlaan 2'),
+                        new PostalCode('3900'),
+                        new Locality('Overpelt'),
+                        new CountryCode('BE')
+                    )
+                ),
             ],
             $placeImportedFromUDB2->toGranularEvents()
         );
@@ -62,6 +76,15 @@ final class PlaceImportedFromUDB2Test extends TestCase
                 new TitleUpdated($placeId, new Title('CC Palethe')),
                 new TitleTranslated($placeId, new Language('fr'), new Title('Centre culturel Palethe')),
                 new TitleTranslated($placeId, new Language('de'), new Title('Kulturzentrum Palethe')),
+                new AddressUpdated(
+                    '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+                    new Address(
+                        new Street('Jeugdlaan 2'),
+                        new PostalCode('3900'),
+                        new Locality('Overpelt'),
+                        new CountryCode('BE')
+                    )
+                ),
             ],
             $placeImportedFromUDB2->toGranularEvents()
         );
