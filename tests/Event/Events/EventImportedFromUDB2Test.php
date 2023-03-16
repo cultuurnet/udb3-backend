@@ -7,6 +7,8 @@ namespace test\Event\Events;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
+use CultuurNet\UDB3\Event\Events\TypeUpdated;
+use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Title;
@@ -74,6 +76,10 @@ final class EventImportedFromUDB2Test extends TestCase
         $this->assertEquals(
             [
                 new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new Title('Blubblub')),
+                new TypeUpdated(
+                    '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+                    new EventType('0.3.1.0.0', 'Cursus of workshop')
+                ),
             ],
             $eventImportedFromUDB2->toGranularEvents()
         );
@@ -96,6 +102,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new TitleUpdated($eventId, new Title('Het evenement!')),
                 new TitleTranslated($eventId, new Language('fr'), new Title('L\'événement!')),
                 new TitleTranslated($eventId, new Language('de'), new Title('Das Ereignis!')),
+                new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
             ],
             $eventImportedFromUDB2->toGranularEvents()
         );
