@@ -59,6 +59,8 @@ use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SluggerInterface;
 use DateTimeInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 abstract class OfferLDProjector implements OrganizerServiceInterface
 {
@@ -89,6 +91,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected VideoNormalizer $videoNormalizer;
 
+    protected LoggerInterface $logger;
+
     /**
      * @param string[] $basePriceTranslations
      */
@@ -99,7 +103,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         MediaObjectSerializer $mediaObjectSerializer,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         array $basePriceTranslations,
-        VideoNormalizer $videoNormalizer
+        VideoNormalizer $videoNormalizer,
+        LoggerInterface $logger = null
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
@@ -108,6 +113,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $this->mediaObjectSerializer = $mediaObjectSerializer;
         $this->basePriceTranslations = $basePriceTranslations;
         $this->videoNormalizer = $videoNormalizer;
+        $this->logger = $logger === null ? new NullLogger() : $logger;
 
         $this->slugger = new CulturefeedSlugger();
     }
@@ -141,6 +147,12 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             $jsonDocument = $this->updateModified($jsonDocument, $domainMessage);
 
             $this->repository->save($jsonDocument);
+
+            // Log error messages when the JSON is not saved as expected because modified is different.
+            $savedDocument = $this->repository->fetch($jsonDocument->getId());
+            if ($jsonDocument->getAssocBody()['modified'] !== $savedDocument->getAssocBody()['modified']) {
+                $this->logger->error('Saved document does not match projection for ' . $jsonDocument->getId());
+            }
         }
     }
 
