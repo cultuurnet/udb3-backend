@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
+use CultureFeed_Cdb_Data_EventDetail;
 use CultureFeed_Cdb_Item_Event;
+use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Title;
 
 trait EventFromUDB2
@@ -17,6 +19,18 @@ trait EventFromUDB2
         $firstDetail = $details->getFirst();
 
         $granularEvents[] = new TitleUpdated($this->eventId, new Title($firstDetail->getTitle()));
+
+        $details->next();
+        while ($details->valid()) {
+            /** @var CultureFeed_Cdb_Data_EventDetail $detail */
+            $detail = $details->current();
+            $granularEvents[] = new TitleTranslated(
+                $this->eventId,
+                new Language($detail->getLanguage()),
+                new Title($detail->getTitle())
+            );
+            $details->next();
+        }
 
         return $granularEvents;
     }
