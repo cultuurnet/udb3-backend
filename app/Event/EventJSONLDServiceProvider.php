@@ -159,6 +159,7 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
                     new EventTypeResolver(),
                     $container->get('config')['base_price_translations'],
                     new VideoNormalizer($container->get('config')['media']['video_default_copyright']),
+                    LoggerFactory::create($container, LoggerName::forWeb())
                 );
             }
         );
