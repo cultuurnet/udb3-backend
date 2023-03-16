@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Contributor\ContributorEnrichedRepository;
 use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
-use CultuurNet\UDB3\Error\ErrorLogger;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\Productions\ProductionEnrichedEventRepository;
