@@ -33,7 +33,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
     {
         $placeImportedFromUDB2 = new PlaceImportedFromUDB2(
             '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
-            file_get_contents(__DIR__ . '/../actor2.xml'),
+            file_get_contents(__DIR__ . '/../actor.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
