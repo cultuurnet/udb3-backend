@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace test\Event\Events;
 
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
+use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
 final class EventImportedFromUDB2Test extends TestCase
@@ -57,7 +59,26 @@ final class EventImportedFromUDB2Test extends TestCase
         );
     }
 
-    public function serializationDataProvider()
+    /**
+     * @test
+     */
+    public function it_can_convert_to_granular_eventsxxx(): void
+    {
+        $eventImportedFromUDB2 = new EventImportedFromUDB2(
+            '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+            file_get_contents(__DIR__ . '/../samples/event_with_udb3_place.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new Title('Blubblub')),
+            ],
+            $eventImportedFromUDB2->toGranularEvents()
+        );
+    }
+
+    public function serializationDataProvider(): array
     {
         $xml = file_get_contents(__DIR__ . '/../samples/event_entryapi_valid_with_keywords.xml');
 
