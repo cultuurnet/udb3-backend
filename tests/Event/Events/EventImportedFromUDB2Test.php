@@ -9,7 +9,7 @@ use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use PHPUnit\Framework\TestCase;
 
-class EventImportedFromUDB2Test extends TestCase
+final class EventImportedFromUDB2Test extends TestCase
 {
     public const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
     public const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
@@ -17,7 +17,7 @@ class EventImportedFromUDB2Test extends TestCase
     /**
      * @test
      */
-    public function it_implements_main_language_defined()
+    public function it_implements_main_language_defined(): void
     {
         $event = new EventImportedFromUDB2(
             'test 456',
@@ -36,7 +36,7 @@ class EventImportedFromUDB2Test extends TestCase
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
         EventImportedFromUDB2 $eventImportedFromUDB2
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $eventImportedFromUDB2->serialize()
