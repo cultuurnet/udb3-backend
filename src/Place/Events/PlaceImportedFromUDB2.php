@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Events;
 
+use CultureFeed_Cdb_Data_ActorDetail;
 use CultureFeed_Cdb_Item_Actor;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
@@ -27,6 +28,18 @@ final class PlaceImportedFromUDB2 extends ActorImportedFromUDB2 implements MainL
         $firstDetail = $details->getFirst();
 
         $granularEvents[] = new TitleUpdated($this->actorId, new Title($firstDetail->getTitle()));
+
+        $details->next();
+        while ($details->valid()) {
+            /** @var CultureFeed_Cdb_Data_ActorDetail $detail */
+            $detail = $details->current();
+            $granularEvents[] = new TitleTranslated(
+                $this->actorId,
+                new Language($detail->getLanguage()),
+                new Title($detail->getTitle())
+            );
+            $details->next();
+        }
 
         return $granularEvents;
     }
