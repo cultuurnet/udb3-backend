@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use CultureFeed_Cdb_Data_EventDetail;
 use CultureFeed_Cdb_Item_Event;
+use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Title;
 
@@ -30,6 +31,16 @@ trait EventFromUDB2
                 new Title($detail->getTitle())
             );
             $details->next();
+        }
+
+        /* @var \Culturefeed_Cdb_Data_Category $category */
+        foreach ($cultureFeedEvent->getCategories() as $category) {
+            if ($category->getType() === 'eventtype') {
+                $granularEvents[] = new TypeUpdated(
+                    $this->eventId,
+                    new EventType($category->getId(), $category->getName())
+                );
+            }
         }
 
         return $granularEvents;
