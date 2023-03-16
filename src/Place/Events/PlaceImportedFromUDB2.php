@@ -4,15 +4,42 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Events;
 
+use CultureFeed_Cdb_Item_Actor;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
+use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Title;
 
-final class PlaceImportedFromUDB2 extends ActorImportedFromUDB2 implements MainLanguageDefined
+final class PlaceImportedFromUDB2 extends ActorImportedFromUDB2 implements MainLanguageDefined, ConvertsToGranularEvents
 {
     public function getMainLanguage(): Language
     {
         // Places imported from UDB2 always have main language NL.
         return new Language('nl');
+    }
+
+    public function toGranularEvents(): array
+    {
+        $granularEvents = [];
+        $cultureFeedActor = $this->getCultureFeedActor();
+        $details = $cultureFeedActor->getDetails();
+        $firstDetail = $details->getFirst();
+
+        $granularEvents[] = new TitleUpdated($this->actorId, new Title($firstDetail->getTitle()));
+
+        return $granularEvents;
+    }
+
+    private function getCultureFeedActor(): CultureFeed_Cdb_Item_Actor
+    {
+        $cdbXml = new \SimpleXMLElement(
+            $this->cdbXml,
+            0,
+            false,
+            $this->cdbXmlNamespaceUri
+        );
+
+        return CultureFeed_Cdb_Item_Actor::parseFromCdbXml($cdbXml);
     }
 }
