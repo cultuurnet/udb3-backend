@@ -10,7 +10,7 @@ use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\HasCdbXmlTrait;
 use CultuurNet\UDB3\Language;
 
-class EventImportedFromUDB2 extends EventEvent implements EventCdbXMLInterface, MainLanguageDefined
+final class EventImportedFromUDB2 extends EventEvent implements EventCdbXMLInterface, MainLanguageDefined
 {
     use HasCdbXmlTrait;
 
