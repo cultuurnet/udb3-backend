@@ -85,7 +85,6 @@ use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\StringLiteral;
-use Psr\Log\LoggerInterface;
 
 /**
  * Projects state changes on Event entities to a JSON-LD read model in a
@@ -127,8 +126,7 @@ class EventLDProjector extends OfferLDProjector implements
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         EventTypeResolver $eventTypeResolver,
         array $basePriceTranslations,
-        VideoNormalizer $videoNormalizer,
-        LoggerInterface $logger = null
+        VideoNormalizer $videoNormalizer
     ) {
         parent::__construct(
             $repository,
@@ -137,8 +135,7 @@ class EventLDProjector extends OfferLDProjector implements
             $mediaObjectSerializer,
             $jsonDocumentMetaDataEnricher,
             $basePriceTranslations,
-            $videoNormalizer,
-            $logger
+            $videoNormalizer
         );
 
         $this->placeIriGenerator = $placeIriGenerator;
