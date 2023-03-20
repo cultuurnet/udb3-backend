@@ -90,7 +90,7 @@ final class FindOutOfSyncProjections extends Command
                 $recordedDate = RecordedOn::fromBroadwayDateTime(DateTime::fromString($recorded));
                 $modifiedDate = RecordedOn::fromBroadwayDateTime(DateTime::fromString($modified));
 
-                if ($recordedDate->toString() !== $modifiedDate->toString()) {
+                if ($recordedDate->toString() > $modifiedDate->toString()) {
                     $output->writeln($uuid . ' projection of is out of sync');
                 }
             }
