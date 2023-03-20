@@ -14,8 +14,9 @@ use RuntimeException;
 
 class CacheDocumentRepository implements DocumentRepository
 {
-    protected $cache;
     use LoggerAwareTrait;
+
+    protected Cache $cache;
 
     public function __construct(Cache $cache)
     {
