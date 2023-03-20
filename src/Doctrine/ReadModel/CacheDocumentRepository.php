@@ -9,6 +9,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Doctrine\Common\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use RuntimeException;
 
 class CacheDocumentRepository implements DocumentRepository
@@ -19,6 +20,7 @@ class CacheDocumentRepository implements DocumentRepository
     public function __construct(Cache $cache)
     {
         $this->cache = $cache;
+        $this->logger = new NullLogger();
     }
 
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
