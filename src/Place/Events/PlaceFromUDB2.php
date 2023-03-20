@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Events;
 
-use CultureFeed_Cdb_Data_ActorDetail;
-use CultureFeed_Cdb_Data_Address;
-use CultureFeed_Cdb_Item_Actor;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
@@ -14,55 +11,52 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\SerializableXML;
 
 trait PlaceFromUDB2
 {
     public function toGranularEvents(): array
     {
         $granularEvents = [];
-        $cultureFeedActor = $this->getCultureFeedActor();
-        $details = $cultureFeedActor->getDetails();
-        $firstDetail = $details->getFirst();
+        $placeAsArray = $this->getPlaceAsArray();
+        $details = $placeAsArray['actor']['actordetails'][0]['actordetail'];
 
-        $granularEvents[] = new TitleUpdated($this->actorId, new Title($firstDetail->getTitle()));
-
-        $details->next();
-        while ($details->valid()) {
-            /** @var CultureFeed_Cdb_Data_ActorDetail $detail */
-            $detail = $details->current();
-            $granularEvents[] = new TitleTranslated(
-                $this->actorId,
-                new Language($detail->getLanguage()),
-                new Title($detail->getTitle())
-            );
-            $details->next();
+        foreach ($details as $key => $detail) {
+            if ($key == 0) {
+                $granularEvents[] = new TitleUpdated($this->actorId, new Title($detail['title'][0]['_text']));
+            } else {
+                $granularEvents[] = new TitleTranslated(
+                    $this->actorId,
+                    new Language($detail['@attributes']['lang']),
+                    new Title($detail['title'][0]['_text'])
+                );
+            }
         }
-        /** @var CultureFeed_Cdb_Data_Address $address */
-        $address = $cultureFeedActor->getContactInfo()->getAddresses()[0];
-        $physicalAddress = $address->getPhysicalAddress();
+
+        $addressFromXml = $placeAsArray['actor']['contactinfo'][0]['address'][0]['physical'][0];
 
         $granularEvents[] = new AddressUpdated(
             $this->actorId,
             new Address(
-                new Street($physicalAddress->getStreet() . ' ' . $physicalAddress->getHouseNumber()),
-                new PostalCode($physicalAddress->getZip()),
-                new Locality($physicalAddress->getCity()),
-                new CountryCode($physicalAddress->getCountry())
+                new Street($addressFromXml['street'][0]['_text'] . ' ' . $addressFromXml['housenr'][0]['_text']),
+                new PostalCode($addressFromXml['zipcode'][0]['_text']),
+                new Locality($addressFromXml['city'][0]['_text']),
+                new CountryCode($addressFromXml['country'][0]['_text'])
             )
         );
 
         return $granularEvents;
     }
 
-    private function getCultureFeedActor(): CultureFeed_Cdb_Item_Actor
+    public function getPlaceAsArray(): array
     {
-        $cdbXml = new \SimpleXMLElement(
+        $cdbXml = new SerializableXML(
             $this->cdbXml,
             0,
             false,
             $this->cdbXmlNamespaceUri
         );
 
-        return CultureFeed_Cdb_Item_Actor::parseFromCdbXml($cdbXml);
+        return $cdbXml->serialize();
     }
 }
