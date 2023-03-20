@@ -48,7 +48,7 @@ trait PlaceFromUDB2
         return $granularEvents;
     }
 
-    public function getPlaceAsArray(): array
+    private function getPlaceAsArray(): array
     {
         $cdbXml = new SerializableXML(
             $this->cdbXml,
