@@ -8,11 +8,13 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Doctrine\Common\Cache\Cache;
+use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 
 class CacheDocumentRepository implements DocumentRepository
 {
     protected $cache;
+    use LoggerAwareTrait;
 
     public function __construct(Cache $cache)
     {
