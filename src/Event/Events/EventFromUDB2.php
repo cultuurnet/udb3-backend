@@ -43,7 +43,7 @@ trait EventFromUDB2
         return $granularEvents;
     }
 
-    public function getEventAsArray(): array
+    private function getEventAsArray(): array
     {
         $cdbXml = new SerializableXML(
             $this->cdbXml,
