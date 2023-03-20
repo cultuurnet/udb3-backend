@@ -29,8 +29,8 @@ final class SerializableXMLTest extends TestCase
                                 0 => [
                                     'calendarsummary' => [
                                         0 => [
-                                            '_text' => 'Bij voorstellingen is de balie van CC Palethe één uur voor' . PHP_EOL . '                aanvang geopend.'
-                                        ]
+                                            '_text' => 'Bij voorstellingen is de balie van CC Palethe één uur voor' . PHP_EOL . '                aanvang geopend.',
+                                        ],
                                     ],
                                     'media' => [
                                         0 => [
