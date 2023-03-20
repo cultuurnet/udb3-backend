@@ -42,6 +42,11 @@ class CacheDocumentRepository implements DocumentRepository
         if (!$saved) {
             throw new RuntimeException('Could not save document ' . $document->getId() . 'to cache.');
         }
+
+        $savedDocument = $this->fetch($document->getId());
+        if ($savedDocument->getRawBody() !== $document->getRawBody()) {
+            $this->logger->error('Saved document in cache does not match provided document ' . $document->getId());
+        }
     }
 
     public function remove($id): void
