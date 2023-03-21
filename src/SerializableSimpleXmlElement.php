@@ -38,11 +38,11 @@ final class SerializableSimpleXmlElement extends SimpleXmlElement
             }
         } else {
             // serialize attributes and text for a leaf-elements
-            $serialize = trim((string) $this);
+            $serialized = trim((string) $this);
 
             // if only contains empty string, it is actually an empty element
-            if ($serialize !== '') {
-                $array[self::CONTENT_NAME] = $serialize;
+            if ($serialized !== '') {
+                $array[self::CONTENT_NAME] = $serialized;
             }
         }
 
