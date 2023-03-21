@@ -6,14 +6,14 @@ namespace CultuurNet\UDB3;
 
 use PHPUnit\Framework\TestCase;
 
-final class SerializableXMLTest extends TestCase
+final class SerializableSerializableSimpleXmlElementTest extends TestCase
 {
     /**
      * @test
      */
     public function it_can_serialize_a_complex_xml(): void
     {
-        $cdbXml = new SerializableXML(
+        $cdbXml = new SerializableSimpleXmlElement(
             file_get_contents(__DIR__ . '/Place/actor.xml'),
             0,
             false,
