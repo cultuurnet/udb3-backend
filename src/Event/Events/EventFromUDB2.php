@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\SerializableXML;
+use CultuurNet\UDB3\SerializableSimpleXmlElement;
 use CultuurNet\UDB3\Title;
 
 trait EventFromUDB2
@@ -45,7 +45,7 @@ trait EventFromUDB2
 
     private function getEventAsArray(): array
     {
-        $cdbXml = new SerializableXML(
+        $cdbXml = new SerializableSimpleXmlElement(
             $this->cdbXml,
             0,
             false,
