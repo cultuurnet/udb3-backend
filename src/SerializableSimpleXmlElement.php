@@ -25,6 +25,7 @@ final class SerializableSimpleXmlElement extends SimpleXmlElement
                 $serializedChild = $child->serialize();
                 $attributes = [];
 
+                // Check if node has attributes and if so add them.
                 foreach ($child->attributes() as $name => $value) {
                     $attributes["$name"] = (string) $value;
                 }
@@ -32,6 +33,7 @@ final class SerializableSimpleXmlElement extends SimpleXmlElement
                     $serializedChild = array_merge($serializedChild, [self::ATTRIBUTE_INDEX => $attributes]);
                 }
 
+                // add the node to the array with the tagname as key
                 $array[$tag][] = $serializedChild;
             }
         } else {
