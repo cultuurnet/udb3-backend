@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\SerializableSimpleXmlElement;
 use CultuurNet\UDB3\Title;
@@ -38,6 +39,13 @@ trait EventFromUDB2
                     new EventType($category['@attributes']['catid'], $category['_text'])
                 );
             }
+        }
+
+        if (isset($eventAsArray['event']['location'][0]['label'][0]['@attributes']['cdbid'])) {
+            $granularEvents[] = new LocationUpdated(
+                $this->eventId,
+                new LocationId($eventAsArray['event']['location'][0]['label'][0]['@attributes']['cdbid'])
+            );
         }
 
         return $granularEvents;
