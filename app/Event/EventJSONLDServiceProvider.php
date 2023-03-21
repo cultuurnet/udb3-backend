@@ -69,6 +69,7 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
             'event_jsonld_repository',
             function () use ($container): BroadcastingDocumentRepositoryDecorator {
                 $repository = new CacheDocumentRepository($container->get('event_jsonld_cache'));
+                $repository->setLogger(LoggerFactory::create($container, LoggerName::forWeb()));
 
                 $repository = EmbeddingRelatedResourcesOfferRepository::createForEventRepository(
                     $repository,

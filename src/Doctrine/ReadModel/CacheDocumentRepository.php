@@ -8,15 +8,20 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Doctrine\Common\Cache\Cache;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use RuntimeException;
 
 class CacheDocumentRepository implements DocumentRepository
 {
-    protected $cache;
+    use LoggerAwareTrait;
+
+    protected Cache $cache;
 
     public function __construct(Cache $cache)
     {
         $this->cache = $cache;
+        $this->logger = new NullLogger();
     }
 
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
@@ -36,6 +41,11 @@ class CacheDocumentRepository implements DocumentRepository
 
         if (!$saved) {
             throw new RuntimeException('Could not save document ' . $document->getId() . 'to cache.');
+        }
+
+        $savedDocument = $this->fetch($document->getId());
+        if ($savedDocument->getRawBody() !== $document->getRawBody()) {
+            $this->logger->error('Saved document in cache does not match provided document ' . $document->getId());
         }
     }
 
