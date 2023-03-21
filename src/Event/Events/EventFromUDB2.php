@@ -41,6 +41,7 @@ trait EventFromUDB2
             }
         }
 
+        // Todo: decide how to handle dummy locations & externalIds
         if (isset($eventAsArray['event']['location'][0]['label'][0]['@attributes']['cdbid'])) {
             $granularEvents[] = new LocationUpdated(
                 $this->eventId,
