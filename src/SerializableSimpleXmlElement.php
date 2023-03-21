@@ -22,25 +22,25 @@ final class SerializableSimpleXmlElement extends SimpleXmlElement
              * @var SerializableSimpleXmlElement $child
              */
             foreach ($this as $tag => $child) {
-                $temp = $child->serialize();
+                $serializedChild = $child->serialize();
                 $attributes = [];
 
                 foreach ($child->attributes() as $name => $value) {
                     $attributes["$name"] = (string) $value;
                 }
                 if (count($attributes) > 0) {
-                    $temp = array_merge($temp, [self::ATTRIBUTE_INDEX => $attributes]);
+                    $serializedChild = array_merge($serializedChild, [self::ATTRIBUTE_INDEX => $attributes]);
                 }
 
-                $array[$tag][] = $temp;
+                $array[$tag][] = $serializedChild;
             }
         } else {
             // serialize attributes and text for a leaf-elements
-            $temp = trim((string) $this);
+            $serialize = trim((string) $this);
 
             // if only contains empty string, it is actually an empty element
-            if ($temp !== '') {
-                $array[self::CONTENT_NAME] = $temp;
+            if ($serialize !== '') {
+                $array[self::CONTENT_NAME] = $serialize;
             }
         }
 
