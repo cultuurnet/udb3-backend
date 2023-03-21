@@ -10,8 +10,8 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\SerializableSimpleXmlElement;
 use CultuurNet\UDB3\Title;
-use CultuurNet\UDB3\SerializableXML;
 
 trait PlaceFromUDB2
 {
@@ -50,7 +50,7 @@ trait PlaceFromUDB2
 
     private function getPlaceAsArray(): array
     {
-        $cdbXml = new SerializableXML(
+        $cdbXml = new SerializableSimpleXmlElement(
             $this->cdbXml,
             0,
             false,

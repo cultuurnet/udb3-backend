@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3;
 
 use SimpleXMLElement;
 
-final class SerializableXML extends SimpleXmlElement
+final class SerializableSimpleXmlElement extends SimpleXmlElement
 {
     public const ATTRIBUTE_INDEX = '@attributes';
     public const CONTENT_NAME = '_text';
@@ -19,7 +19,7 @@ final class SerializableXML extends SimpleXmlElement
             // serialize children if there are children
             /**
              * @var string $tag
-             * @var SerializableXML $child
+             * @var SerializableSimpleXmlElement $child
              */
             foreach ($this as $tag => $child) {
                 $temp = $child->serialize();
