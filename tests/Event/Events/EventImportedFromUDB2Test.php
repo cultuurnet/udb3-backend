@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace test\Event\Events;
 
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
+use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Title;
@@ -103,6 +105,31 @@ final class EventImportedFromUDB2Test extends TestCase
                 new TitleTranslated($eventId, new Language('fr'), new Title('L\'événement!')),
                 new TitleTranslated($eventId, new Language('de'), new Title('Das Ereignis!')),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+            ],
+            $eventImportedFromUDB2->toGranularEvents()
+        );
+    }
+
+
+    /**
+     * @test
+     */
+    public function it_can_convert_events_with_location_id_to_granular_events(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventImportedFromUDB2 = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($eventId, new Title('Het evenement!')),
+                new TitleTranslated($eventId, new Language('fr'), new Title('L\'événement!')),
+                new TitleTranslated($eventId, new Language('de'), new Title('Das Ereignis!')),
+                new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+                new LocationUpdated($eventId, new LocationId('28d2900d-f784-4d04-8d66-5b93900c6f9c')),
             ],
             $eventImportedFromUDB2->toGranularEvents()
         );
