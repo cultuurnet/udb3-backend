@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\Address;
 
 final class FullAddressFormatter implements AddressFormatter
 {
-    /**
-     * @return string
-     */
-    public function format(Address $address)
+    public function format(Address $address): string
     {
         return $address->getStreetAddress() . ', ' .
             $address->getPostalCode() . ' ' .
