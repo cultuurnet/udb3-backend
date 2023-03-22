@@ -5,6 +5,12 @@ declare(strict_types=1);
 namespace test\Event\Events;
 
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
+use CultuurNet\UDB3\Event\Events\TitleTranslated;
+use CultuurNet\UDB3\Event\Events\TitleUpdated;
+use CultuurNet\UDB3\Event\Events\TypeUpdated;
+use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
 class EventUpdatedFromUDB2Test extends TestCase
@@ -37,6 +43,28 @@ class EventUpdatedFromUDB2Test extends TestCase
         $this->assertEquals(
             $expectedEventUpdatedFromUDB2,
             EventUpdatedFromUDB2::deserialize($serializedValue)
+        );
+    }
+
+    public function it_can_be_converted_to_granular_events(
+        $serializedValue,
+        EventUpdatedFromUDB2 $expectedEventUpdatedFromUDB2
+    ) {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventImportedFromUDB2 = new EventUpdatedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_translations.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($eventId, new Title('Het evenement!')),
+                new TitleTranslated($eventId, new Language('fr'), new Title('L\'événement!')),
+                new TitleTranslated($eventId, new Language('de'), new Title('Das Ereignis!')),
+                new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+            ],
+            $eventImportedFromUDB2->toGranularEvents()
         );
     }
 
