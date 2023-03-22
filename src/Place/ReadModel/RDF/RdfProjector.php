@@ -8,7 +8,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\AddressFormatter;
-use CultuurNet\UDB3\Address\DefaultAddressFormatter;
+use CultuurNet\UDB3\Address\FullAddressFormatter;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -62,7 +62,7 @@ final class RdfProjector implements EventListener
         $this->mainLanguageRepository = $mainLanguageRepository;
         $this->graphRepository = $graphRepository;
         $this->iriGenerator = $iriGenerator;
-        $this->addressFormatter = $addressFormatter ?? new DefaultAddressFormatter();
+        $this->addressFormatter = $addressFormatter ?? new FullAddressFormatter();
     }
 
     public function handle(DomainMessage $domainMessage): void

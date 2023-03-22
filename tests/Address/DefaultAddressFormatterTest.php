@@ -14,7 +14,7 @@ class DefaultAddressFormatterTest extends TestCase
      */
     public function it_formats_addresses()
     {
-        $formatter = new DefaultAddressFormatter();
+        $formatter = new FullAddressFormatter();
 
         $address = new Address(
             new Street('Martelarenlaan 1'),

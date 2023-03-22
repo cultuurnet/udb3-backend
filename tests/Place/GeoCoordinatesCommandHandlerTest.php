@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\AddressFormatter;
-use CultuurNet\UDB3\Address\DefaultAddressFormatter;
+use CultuurNet\UDB3\Address\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Address\PostalCode;
@@ -53,7 +53,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             $eventBus
         );
 
-        $this->defaultAddressFormatter = new DefaultAddressFormatter();
+        $this->defaultAddressFormatter = new FullAddressFormatter();
         $this->localityAddressFormatter = new LocalityAddressFormatter();
 
         $this->geocodingService = $this->createMock(GeocodingService::class);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
-use CultuurNet\UDB3\Address\DefaultAddressFormatter;
+use CultuurNet\UDB3\Address\FullAddressFormatter;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
@@ -33,7 +33,7 @@ final class EventGeoCoordinatesServiceProvider extends AbstractServiceProvider
             function () use ($container): GeoCoordinatesCommandHandler {
                 $handler = new GeoCoordinatesCommandHandler(
                     $container->get('event_repository'),
-                    new DefaultAddressFormatter(),
+                    new FullAddressFormatter(),
                     new LocalityAddressFormatter(),
                     $container->get(GeocodingService::class),
                 );
