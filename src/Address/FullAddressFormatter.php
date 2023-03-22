@@ -8,9 +8,10 @@ final class FullAddressFormatter implements AddressFormatter
 {
     public function format(Address $address): string
     {
-        return $address->getStreetAddress() . ', ' .
-            $address->getPostalCode() . ' ' .
-            $address->getLocality() . ', ' .
-            $address->getCountryCode()->toString();
+        return implode(', ', [
+            $address->getStreetAddress()->toNative(),
+            $address->getPostalCode()->toNative() . ' ' . $address->getLocality()->toNative(),
+            $address->getCountryCode()->toString(),
+        ]);
     }
 }
