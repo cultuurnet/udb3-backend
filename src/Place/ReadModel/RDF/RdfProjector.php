@@ -56,13 +56,12 @@ final class RdfProjector implements EventListener
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
         GraphRepository $graphRepository,
-        IriGeneratorInterface $iriGenerator,
-        ?AddressFormatter $addressFormatter = null
+        IriGeneratorInterface $iriGenerator
     ) {
         $this->mainLanguageRepository = $mainLanguageRepository;
         $this->graphRepository = $graphRepository;
         $this->iriGenerator = $iriGenerator;
-        $this->addressFormatter = $addressFormatter ?? new FullAddressFormatter();
+        $this->addressFormatter = new FullAddressFormatter();
     }
 
     public function handle(DomainMessage $domainMessage): void
