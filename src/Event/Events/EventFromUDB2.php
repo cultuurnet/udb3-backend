@@ -16,7 +16,7 @@ trait EventFromUDB2
     {
         $granularEvents = [];
         $eventAsArray = $this->getEventAsArray();
-        $details = $eventAsArray['event']['eventdetails'][0]['eventdetail'];
+        $details = $eventAsArray['eventdetails'][0]['eventdetail'];
 
         foreach ($details as $key => $detail) {
             if ($key == 0) {
@@ -30,7 +30,7 @@ trait EventFromUDB2
             }
         }
 
-        $categories = $eventAsArray['event']['categories'][0]['category'];
+        $categories = $eventAsArray['categories'][0]['category'];
 
         foreach ($categories as $category) {
             if ($category['@attributes']['type'] === 'eventtype') {
@@ -42,10 +42,10 @@ trait EventFromUDB2
         }
 
         // Todo: decide how to handle dummy locations & externalIds
-        if (isset($eventAsArray['event']['location'][0]['label'][0]['@attributes']['cdbid'])) {
+        if (isset($eventAsArray['location'][0]['label'][0]['@attributes']['cdbid'])) {
             $granularEvents[] = new LocationUpdated(
                 $this->eventId,
-                new LocationId($eventAsArray['event']['location'][0]['label'][0]['@attributes']['cdbid'])
+                new LocationId($eventAsArray['location'][0]['label'][0]['@attributes']['cdbid'])
             );
         }
 
@@ -60,7 +60,9 @@ trait EventFromUDB2
             false,
             $this->cdbXmlNamespaceUri
         );
-
-        return $cdbXml->serialize();
+        if ($this->getCdbXmlNamespaceUri() === 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL') {
+            return $cdbXml->serialize()['event'];
+        }
+        return $cdbXml->serialize()['cdbxml']['event'][0];
     }
 }
