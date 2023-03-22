@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address;
 
-class LocalityAddressFormatter implements AddressFormatter
+final class LocalityAddressFormatter implements AddressFormatter
 {
     /**
      * @inheritdoc

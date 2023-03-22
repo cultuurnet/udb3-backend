@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address;
 
-class FullAddressFormatter implements AddressFormatter
+final class FullAddressFormatter implements AddressFormatter
 {
     /**
      * @return string
