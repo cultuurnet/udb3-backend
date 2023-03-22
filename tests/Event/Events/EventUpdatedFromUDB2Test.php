@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
-class EventUpdatedFromUDB2Test extends TestCase
+final class EventUpdatedFromUDB2Test extends TestCase
 {
     public const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
     public const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
@@ -25,7 +25,7 @@ class EventUpdatedFromUDB2Test extends TestCase
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
         EventUpdatedFromUDB2 $eventUpdatedFromUDB2
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $eventUpdatedFromUDB2->serialize()
@@ -39,7 +39,7 @@ class EventUpdatedFromUDB2Test extends TestCase
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,
         EventUpdatedFromUDB2 $expectedEventUpdatedFromUDB2
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedEventUpdatedFromUDB2,
             EventUpdatedFromUDB2::deserialize($serializedValue)
@@ -49,7 +49,7 @@ class EventUpdatedFromUDB2Test extends TestCase
     public function it_can_be_converted_to_granular_events(
         $serializedValue,
         EventUpdatedFromUDB2 $expectedEventUpdatedFromUDB2
-    ) {
+    ): void {
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventImportedFromUDB2 = new EventUpdatedFromUDB2(
             $eventId,
@@ -68,7 +68,7 @@ class EventUpdatedFromUDB2Test extends TestCase
         );
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         $xml = file_get_contents(__DIR__ . '/../samples/event_entryapi_valid_with_keywords.xml');
 
