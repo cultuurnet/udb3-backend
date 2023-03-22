@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\AddressFormatterInterface;
+use CultuurNet\UDB3\Address\AddressFormatter;
 use CultuurNet\UDB3\Address\DefaultAddressFormatter;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
@@ -29,7 +29,7 @@ final class RdfProjector implements EventListener
     private MainLanguageRepository $mainLanguageRepository;
     private GraphRepository $graphRepository;
     private IriGeneratorInterface $iriGenerator;
-    private AddressFormatterInterface $addressFormatter;
+    private AddressFormatter $addressFormatter;
 
     private const TYPE_LOCATIE = 'dcterms:Location';
     private const TYPE_IDENTIFICATOR = 'adms:Identifier';
@@ -57,7 +57,7 @@ final class RdfProjector implements EventListener
         MainLanguageRepository $mainLanguageRepository,
         GraphRepository $graphRepository,
         IriGeneratorInterface $iriGenerator,
-        ?AddressFormatterInterface $addressFormatter = null
+        ?AddressFormatter $addressFormatter = null
     ) {
         $this->mainLanguageRepository = $mainLanguageRepository;
         $this->graphRepository = $graphRepository;

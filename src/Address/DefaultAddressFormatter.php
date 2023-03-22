@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address;
 
-class DefaultAddressFormatter implements AddressFormatterInterface
+class DefaultAddressFormatter implements AddressFormatter
 {
     /**
      * @return string
