@@ -8,7 +8,7 @@ use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\Event\EventEvent;
 use CultuurNet\UDB3\HasCdbXmlTrait;
 
-class EventUpdatedFromUDB2 extends EventEvent implements EventCdbXMLInterface
+final class EventUpdatedFromUDB2 extends EventEvent implements EventCdbXMLInterface
 {
     use HasCdbXmlTrait;
 
