@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Address\AddressFormatterInterface;
+use CultuurNet\UDB3\Address\DefaultAddressFormatter;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -27,6 +29,7 @@ final class RdfProjector implements EventListener
     private MainLanguageRepository $mainLanguageRepository;
     private GraphRepository $graphRepository;
     private IriGeneratorInterface $iriGenerator;
+    private AddressFormatterInterface $addressFormatter;
 
     private const TYPE_LOCATIE = 'dcterms:Location';
     private const TYPE_IDENTIFICATOR = 'adms:Identifier';
@@ -53,11 +56,13 @@ final class RdfProjector implements EventListener
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
         GraphRepository $graphRepository,
-        IriGeneratorInterface $iriGenerator
+        IriGeneratorInterface $iriGenerator,
+        ?AddressFormatterInterface $addressFormatter = null
     ) {
         $this->mainLanguageRepository = $mainLanguageRepository;
         $this->graphRepository = $graphRepository;
         $this->iriGenerator = $iriGenerator;
+        $this->addressFormatter = $addressFormatter ?? new DefaultAddressFormatter();
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -208,11 +213,7 @@ final class RdfProjector implements EventListener
         $locality = $address->getLocality()->toNative();
         $this->replaceLanguageValue($addressResource, self::PROPERTY_ADRES_GEMEENTENAAM, $locality, $language);
 
-        $formattedAddress = implode(", ", [
-            $address->getStreetAddress()->toNative(),
-            $address->getPostalCode()->toNative() . ' ' . $address->getLocality()->toNative(),
-            $address->getCountryCode()->toString()
-        ]);
+        $formattedAddress = $this->addressFormatter->format($address);
         $this->replaceLanguageValue($addressResource, self::PROPERTY_ADRES_VOLLEDIG_ADRES, $formattedAddress, $language);
     }
 
