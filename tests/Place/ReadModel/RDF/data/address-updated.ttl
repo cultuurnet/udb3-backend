@@ -21,6 +21,7 @@
     a locn:Address ;
     locn:adminUnitL1 "NL" ;
     locn:postcode "3002" ;
-    locn:postName "Amsterdam"@nl
+    locn:postName "Amsterdam"@nl ;
+    locn:fullAddress "Martelarenlaan 2, 3002 Amsterdam, NL"@nl
   ] ;
   dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime .

@@ -48,6 +48,7 @@ final class RdfProjector implements EventListener
     private const PROPERTY_ADRES_POSTCODE = 'locn:postcode';
     private const PROPERTY_ADRES_GEMEENTENAAM = 'locn:postName';
     private const PROPERTY_ADRES_LAND = 'locn:adminUnitL1';
+    private const PROPERTY_ADRES_VOLLEDIG_ADRES = 'locn:fullAddress';
 
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
@@ -206,6 +207,13 @@ final class RdfProjector implements EventListener
 
         $locality = $address->getLocality()->toNative();
         $this->replaceLanguageValue($addressResource, self::PROPERTY_ADRES_GEMEENTENAAM, $locality, $language);
+
+        $formattedAddress = implode(", ", [
+            $address->getStreetAddress()->toNative(),
+            $address->getPostalCode()->toNative() . ' ' . $address->getLocality()->toNative(),
+            $address->getCountryCode()->toString()
+        ]);
+        $this->replaceLanguageValue($addressResource, self::PROPERTY_ADRES_VOLLEDIG_ADRES, $formattedAddress, $language);
     }
 
     private function replaceLanguageValue(
