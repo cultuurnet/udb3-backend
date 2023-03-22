@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Event\EventType as LegacyEventType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
@@ -117,6 +118,28 @@ class RdfProjectorTest extends TestCase
             ),
         ]);
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/address-updated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_address_translated(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new AddressTranslated(
+                $placeId,
+                new LegacyAddress(
+                    new LegacyStreet('Martelarenlaan 1'),
+                    new LegacyPostalCode('3000'),
+                    new LegacyLocality('Louvain'),
+                    new CountryCode('BE')
+                ),
+                new LegacyLanguage('fr')
+            ),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/address-translated.ttl'));
     }
 
     private function getPlaceCreated(string $placeId): PlaceCreated
