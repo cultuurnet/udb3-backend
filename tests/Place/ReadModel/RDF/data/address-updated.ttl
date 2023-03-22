@@ -16,11 +16,11 @@
     generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:string ;
     generiek:versieIdentificator "2023-01-02T12:30:15+01:00"^^xsd:string
   ] ;
+  locn:geographicName "Voorbeeld titel"@nl ;
   locn:address [
     a locn:Address ;
-    locn:adminUnitL1 "BE" ;
-    locn:postcode "3000" ;
-    locn:postName "Leuven"@nl
+    locn:adminUnitL1 "NL" ;
+    locn:postcode "3002" ;
+    locn:postName "Amsterdam"@nl
   ] ;
-  dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
-  locn:geographicName "Voorbeeld titel"@nl, "Example title"@en .
+  dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime .

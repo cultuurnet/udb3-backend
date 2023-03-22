@@ -6,10 +6,12 @@ namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -27,11 +29,13 @@ final class RdfProjector implements EventListener
 
     private const TYPE_LOCATIE = 'dcterms:Location';
     private const TYPE_IDENTIFICATOR = 'adms:Identifier';
+    private const TYPE_ADRES = 'locn:Address';
 
     private const PROPERTY_LOCATIE_AANGEMAAKT_OP = 'dcterms:created';
     private const PROPERTY_LOCATIE_LAATST_AANGEPAST = 'dcterms:modified';
     private const PROPERTY_LOCATIE_IDENTIFICATOR = 'adms:identifier';
     private const PROPERTY_LOCATIE_NAAM = 'locn:geographicName';
+    private const PROPERTY_LOCATIE_ADRES = 'locn:address';
 
     private const PROPERTY_IDENTIFICATOR_NOTATION = 'skos:notation';
     private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR = 'dcterms:creator';
@@ -39,6 +43,10 @@ final class RdfProjector implements EventListener
     private const PROPERTY_IDENTIFICATOR_NAAMRUIMTE = 'generiek:naamruimte';
     private const PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR = 'generiek:lokaleIdentificator';
     private const PROPERTY_IDENTIFICATOR_VERSIE_ID = 'generiek:versieIdentificator';
+
+    private const PROPERTY_ADRES_POSTCODE = 'locn:postcode';
+    private const PROPERTY_ADRES_GEMEENTENAAM = 'locn:postName';
+    private const PROPERTY_ADRES_LAND = 'locn:adminUnitL1';
 
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
@@ -64,6 +72,7 @@ final class RdfProjector implements EventListener
             MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),
             TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $uri, $graph),
             TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $uri, $graph),
+            AddressUpdated::class => fn ($e) => $this->handleAddressUpdated($e, $uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -157,6 +166,38 @@ final class RdfProjector implements EventListener
         );
 
         $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleAddressUpdated(AddressUpdated $event, string $uri, Graph $graph): void
+    {
+        $mainLanguage = $this->mainLanguageRepository->get($uri, new Language('nl'))->toString();
+        $this->updateAddress($graph->resource($uri), $event->getAddress(), $mainLanguage);
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function updateAddress(Resource $resource, Address $address, string $language): void
+    {
+        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_ADRES)) {
+            $resource->add(self::PROPERTY_LOCATIE_ADRES, $resource->getGraph()->newBNode());
+        }
+
+        $addressResource = $resource->getResource(self::PROPERTY_LOCATIE_ADRES);
+        if ($addressResource->type() !== self::TYPE_ADRES) {
+            $addressResource->setType(self::TYPE_ADRES);
+        }
+
+        $countryCode = $address->getCountryCode()->toString();
+        if ($addressResource->get(self::PROPERTY_ADRES_LAND) !== $countryCode) {
+            $addressResource->set(self::PROPERTY_ADRES_LAND, $countryCode);
+        }
+
+        $postalCode = $address->getPostalCode()->toNative();
+        if ($addressResource->get(self::PROPERTY_ADRES_POSTCODE) !== $postalCode) {
+            $addressResource->set(self::PROPERTY_ADRES_POSTCODE, $postalCode);
+        }
+
+        $locality = $address->getLocality()->toNative();
+        $this->replaceLanguageValue($addressResource, self::PROPERTY_ADRES_GEMEENTENAAM, $locality, $language);
     }
 
     private function replaceLanguageValue(
