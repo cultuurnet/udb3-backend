@@ -46,6 +46,7 @@ use CultuurNet\UDB3\Place\PlacePermissionServiceProvider;
 use CultuurNet\UDB3\Place\PlaceRdfServiceProvider;
 use CultuurNet\UDB3\Place\PlaceReadServiceProvider;
 use CultuurNet\UDB3\Place\PlaceServiceProvider;
+use CultuurNet\UDB3\RDF\RdfNamespaces;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
 use CultuurNet\UDB3\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Role\RoleServiceProvider;
@@ -199,6 +200,7 @@ $container->addServiceProvider(new TermServiceProvider());
 $container->addServiceProvider(new JobsServiceProvider());
 
 /** RDF */
+RdfNamespaces::register();
 $container->addServiceProvider(new RdfServiceProvider());
 $container->addServiceProvider(new PlaceRdfServiceProvider());
 
