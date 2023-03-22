@@ -8,35 +8,19 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
-final class PlaceImportedFromUDB2Test extends TestCase
+final class PlaceUpdatedFromUDB2Test extends TestCase
 {
-    /**
-     * @test
-     */
-    public function it_implements_main_language_defined(): void
-    {
-        $event = new PlaceImportedFromUDB2(
-            '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
-            file_get_contents(__DIR__ . '/../actor.xml'),
-            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
-        );
-
-        $this->assertInstanceOf(MainLanguageDefined::class, $event);
-        $this->assertEquals(new Language('nl'), $event->getMainLanguage());
-    }
-
     /**
      * @test
      */
     public function it_can_be_converted_to_modern_granular_events(): void
     {
-        $placeImportedFromUDB2 = new PlaceImportedFromUDB2(
+        $placeUpdatedFromUDB2 = new PlaceUpdatedFromUDB2(
             '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
             file_get_contents(__DIR__ . '/../actor.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
@@ -55,7 +39,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
                     )
                 ),
             ],
-            $placeImportedFromUDB2->toGranularEvents()
+            $placeUpdatedFromUDB2->toGranularEvents()
         );
     }
 
@@ -65,7 +49,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
     public function it_can_convert_translated_places_to_modern_granular_events(): void
     {
         $placeId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
-        $placeImportedFromUDB2 = new PlaceImportedFromUDB2(
+        $placeUpdatedFromUDB2 = new PlaceUpdatedFromUDB2(
             $placeId,
             file_get_contents(__DIR__ . '/../actor_with_translations.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
@@ -86,7 +70,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
                     )
                 ),
             ],
-            $placeImportedFromUDB2->toGranularEvents()
+            $placeUpdatedFromUDB2->toGranularEvents()
         );
     }
 }
