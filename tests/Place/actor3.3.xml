@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<cdb:actor xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" asset="true" availablefrom="2010-12-06T14:54:31" availableto="2100-01-01T00:00:00" createdby="importbrugge" creationdate="2010-01-06T15:15:37" cdbid="CB4F4319-BD54-A672-873137D8ECD3EFCB" externalid="Brugge Cultuurcentrum Invoerders:Lokatie_1384" externalurl="https://io.uitdatabank.be/place/CB4F4319-BD54-A672-873137D8ECD3EFCB" lastupdated="2010-12-06T14:54:31" lastupdatedby="contentbeheer@cultuurnet.be" owner="Invoerders Algemeen ">
+    <cdb:actordetails>
+        <cdb:actordetail lang="nl">
+            <cdb:media>
+                <cdb:file creationdate="6/12/2010 14:53:05" main="true">
+                    <cdb:copyright>Cultuurcentrum Brugge</cdb:copyright>
+                    <cdb:filename>3a4dd88b-5c61-4a7f-b441-80ff17403e0c.jpg</cdb:filename>
+                    <cdb:filetype>jpeg</cdb:filetype>
+                    <cdb:hlink>//media.uitdatabank.be/20100106/3a4dd88b-5c61-4a7f-b441-80ff17403e0c.jpg</cdb:hlink>
+                </cdb:file>
+            </cdb:media>
+            <cdb:shortdescription>De Bogardenkapel is de voormalige kapel van de Bogardenschool, een 17de eeuwse wezenschool voor jongens. De locatie wordt momenteel gebruikt door de Stedelijke Academie voor Schone Kunsten en Cultuurcentrum Brugge als tentoonstellingsruimte voor actuele beeldende kunst.</cdb:shortdescription>
+            <cdb:title>Bogardenkapel</cdb:title>
+        </cdb:actordetail>
+    </cdb:actordetails>
+    <cdb:categories>
+        <cdb:category catid="8.15.0.0.0" type="actortype">Locatie</cdb:category>
+        <cdb:category catid="6.0.0.0.0" type="publicscope">Wijk of buurt</cdb:category>
+        <cdb:category catid="reg.999" type="flandersregion">8000 Brugge</cdb:category>
+        <cdb:category catid="8.46.0.0.0" type="actortype">Historisch waardevol gebouw</cdb:category>
+    </cdb:categories>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Brugge</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>3.227070</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.201746</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>86</cdb:housenr>
+                <cdb:street>Katelijnestraat</cdb:street>
+                <cdb:zipcode>8000</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:mail>cultuurcentrum@brugge.be</cdb:mail>
+        <cdb:phone type="phone">+32 50 443040</cdb:phone>
+        <cdb:url main="true">http://www.cultuurcentrumbrugge.be/</cdb:url>
+    </cdb:contactinfo>
+</cdb:actor>
