@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\TestLogger;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Http\Message\Builder\ResponseBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
