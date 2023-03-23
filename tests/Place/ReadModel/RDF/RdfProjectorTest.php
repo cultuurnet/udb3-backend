@@ -19,7 +19,6 @@ use CultuurNet\UDB3\CalendarType as LegacyCalendarType;
 use CultuurNet\UDB3\Event\EventType as LegacyEventType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Language as LegacyLanguage;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
@@ -41,7 +40,7 @@ class RdfProjectorTest extends TestCase
     /** @var AddressParser&MockObject */
     private AddressParser $addressParser;
     private RdfProjector $rdfProjector;
-    /** @var ParsedAddress[] $expectedParsedAddresses */
+    /** @var ParsedAddress[] */
     private array $expectedParsedAddresses;
 
     private LegacyAddress $defaultAddress;
