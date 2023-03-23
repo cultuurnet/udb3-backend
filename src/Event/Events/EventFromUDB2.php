@@ -4,9 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
+use CultuurNet\UDB3\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\SerializableSimpleXmlElement;
 use CultuurNet\UDB3\Title;
 
@@ -49,6 +61,12 @@ trait EventFromUDB2
             );
         }
 
+        $calendarEvent = $this->getCalendar($eventAsArray['calendar'][0]);
+
+        if ($calendarEvent !== null) {
+            $granularEvents[] = new CalendarUpdated($this->eventId, LegacyCalendar::fromUdb3ModelCalendar($calendarEvent));
+        }
+
         return $granularEvents;
     }
 
@@ -60,9 +78,49 @@ trait EventFromUDB2
             false,
             $this->cdbXmlNamespaceUri
         );
-        if ($this->getCdbXmlNamespaceUri() === 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL') {
-            return $cdbXml->serialize()['event'];
+        $eventAsArray = $cdbXml->serialize();
+        // Some cdbxml have a root node 'cdbxml'
+        if (array_key_first($eventAsArray) === 'cdbxml') {
+            return $eventAsArray['cdbxml']['event'][0];
         }
-        return $cdbXml->serialize()['cdbxml']['event'][0];
+        return $eventAsArray['event'];
+    }
+
+    private function getCalendar(array $calendarAsArray): ?Calendar
+    {
+        $calendarType = array_key_first($calendarAsArray);
+
+        if ($calendarType === 'permanentevent') {
+            return  new PermanentCalendar(new OpeningHours());
+        }
+
+        if ($calendarType === 'periods') {
+            $dateRange = new DateRange(
+                \DateTimeImmutable::createFromFormat('Y-m-d', $calendarAsArray['periods'][0]['period'][0]['datefrom'][0]['_text']),
+                \DateTimeImmutable::createFromFormat('Y-m-d', $calendarAsArray['periods'][0]['period'][0]['dateto'][0]['_text'])
+            );
+
+            $openingHours = [];
+            foreach ($calendarAsArray['periods'][0]['period'][0]['weekscheme'][0] as $dayOfWeek => $hours) {
+                $from = explode($hours[0]['openingtime'][0]['@attributes']['from'], ':');
+                $to = explode($hours[0]['openingtime'][0]['@attributes']['to'], ':');
+
+                $openingHours[] = new OpeningHour(
+                    new Days(new Day($dayOfWeek)),
+                    new Time(
+                       new Hour((int) $from[0]),
+                       new Minute((int) $from[1])
+                   ),
+                    new Time(
+                       new Hour((int) $to[0]),
+                       new Minute((int) $to[1])
+                   ),
+                );
+            }
+
+            new PeriodicCalendar($dateRange, new OpeningHours(...$openingHours));
+        }
+
+        return null;
     }
 }
