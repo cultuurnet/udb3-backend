@@ -19,7 +19,7 @@ trait PlaceFromUDB2
     {
         $granularEvents = [];
         $placeAsArray = $this->getPlaceAsArray();
-        $details = $placeAsArray['actor']['actordetails'][0]['actordetail'];
+        $details = $placeAsArray['actordetails'][0]['actordetail'];
 
         foreach ($details as $key => $detail) {
             if ($key == 0) {
@@ -33,7 +33,7 @@ trait PlaceFromUDB2
             }
         }
 
-        $addressFromXml = $placeAsArray['actor']['contactinfo'][0]['address'][0]['physical'][0];
+        $addressFromXml = $placeAsArray['contactinfo'][0]['address'][0]['physical'][0];
 
         $granularEvents[] = new AddressUpdated(
             $this->actorId,
@@ -56,7 +56,11 @@ trait PlaceFromUDB2
             false,
             $this->cdbXmlNamespaceUri
         );
-
-        return $cdbXml->serialize();
+        $actorAsArray = $cdbXml->serialize();
+        // Some cdbxml have a root node 'cdbxml'
+        if (array_key_first($actorAsArray) === 'cdbxml') {
+            return $actorAsArray['cdbxml']['actor'][0];
+        }
+        return $actorAsArray['actor'];
     }
 }
