@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\SerializableSimpleXmlElement;
 use CultuurNet\UDB3\Title;
 
@@ -90,10 +89,6 @@ trait EventFromUDB2
     {
         $calendarType = array_key_first($calendarAsArray);
 
-        if ($calendarType === 'permanentevent') {
-            return  new PermanentCalendar(new OpeningHours());
-        }
-
         if ($calendarType === 'periods') {
             $dateRange = new DateRange(
                 \DateTimeImmutable::createFromFormat('Y-m-d', $calendarAsArray['periods'][0]['period'][0]['datefrom'][0]['_text']),
@@ -102,23 +97,23 @@ trait EventFromUDB2
 
             $openingHours = [];
             foreach ($calendarAsArray['periods'][0]['period'][0]['weekscheme'][0] as $dayOfWeek => $hours) {
-                $from = explode($hours[0]['openingtime'][0]['@attributes']['from'], ':');
-                $to = explode($hours[0]['openingtime'][0]['@attributes']['to'], ':');
+                $from = explode(':', $hours[0]['openingtime'][0]['@attributes']['from']);
+                $to = explode(':', $hours[0]['openingtime'][0]['@attributes']['to']);
 
                 $openingHours[] = new OpeningHour(
                     new Days(new Day($dayOfWeek)),
                     new Time(
-                       new Hour((int) $from[0]),
-                       new Minute((int) $from[1])
-                   ),
+                        new Hour((int) $from[0]),
+                        new Minute((int) $from[1])
+                    ),
                     new Time(
-                       new Hour((int) $to[0]),
-                       new Minute((int) $to[1])
-                   ),
+                        new Hour((int) $to[0]),
+                        new Minute((int) $to[1])
+                    ),
                 );
             }
 
-            new PeriodicCalendar($dateRange, new OpeningHours(...$openingHours));
+            return new PeriodicCalendar($dateRange, new OpeningHours(...$openingHours));
         }
 
         return null;
