@@ -89,4 +89,65 @@ final class PlaceImportedFromUDB2Test extends TestCase
             $placeImportedFromUDB2->toGranularEvents()
         );
     }
+
+    /**
+     * @test
+     * @dataProvider variousCdbxmlFormatsDataProvider
+     */
+    public function it_can_convert_various_cdbxml_formats(
+        string $placeId,
+        array $expected,
+        PlaceImportedFromUDB2 $placeImportedFromUDB2
+    ): void {
+        $this->assertEquals(
+            $expected,
+            $placeImportedFromUDB2->toGranularEvents()
+        );
+    }
+
+    public function variousCdbxmlFormatsDataProvider(): array
+    {
+        return [
+            '3.3' => [
+                '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+                [
+                    new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new Title('Bogardenkapel')),
+                    new AddressUpdated(
+                        '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+                        new Address(
+                            new Street('Katelijnestraat 86'),
+                            new PostalCode('8000'),
+                            new Locality('Brugge'),
+                            new CountryCode('BE')
+                        )
+                    ),
+                ],
+                new PlaceImportedFromUDB2(
+                    '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+                    file_get_contents(__DIR__ . '/../actor3.3.xml'),
+                    'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
+                ),
+            ],
+            'root_node' => [
+                '782c9792-6067-438d-a246-064bb448f086',
+                [
+                    new TitleUpdated('782c9792-6067-438d-a246-064bb448f086', new Title('Bogardenkapel')),
+                    new AddressUpdated(
+                        '782c9792-6067-438d-a246-064bb448f086',
+                        new Address(
+                            new Street('Katelijnestraat 86'),
+                            new PostalCode('8000'),
+                            new Locality('Brugge'),
+                            new CountryCode('BE')
+                        )
+                    ),
+                ],
+                new PlaceImportedFromUDB2(
+                    '782c9792-6067-438d-a246-064bb448f086',
+                    file_get_contents(__DIR__ . '/../actor_with_root_node.xml'),
+                    'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
+                ),
+            ],
+        ];
+    }
 }
