@@ -100,7 +100,7 @@ final class ReplayCommand extends AbstractCommand
                 self::OPTION_FORCED,
                 null,
                 InputOption::VALUE_NONE,
-                'Do not ask for confirmation, before the replay'
+                'Do not ask for confirmation, immediately start the replay.'
             );
     }
 
