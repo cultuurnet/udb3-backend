@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace test\Event\Events;
 
+use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
@@ -13,6 +16,8 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
@@ -130,6 +135,75 @@ final class EventImportedFromUDB2Test extends TestCase
                 new TitleTranslated($eventId, new Language('de'), new Title('Das Ereignis!')),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
                 new LocationUpdated($eventId, new LocationId('28d2900d-f784-4d04-8d66-5b93900c6f9c')),
+            ],
+            $eventImportedFromUDB2->toGranularEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_convert_a_periodic_event_to_granular_events(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventImportedFromUDB2 = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/calendar/event_with_periodic_calendar_and_week_schema.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($eventId, new Title('Oscar et la Dame Rose')),
+                new TitleTranslated($eventId, new Language('fr'), new Title('Oscar et la Dame Rose')),
+                new TitleTranslated($eventId, new Language('en'), new Title('Oscar et la Dame Rose')),
+                new TypeUpdated($eventId, new EventType('0.55.0.0.0', 'Theatervoorstelling')),
+                new CalendarUpdated(
+                    $eventId,
+                    new Calendar(
+                        CalendarType::PERIODIC(),
+                        \DateTimeImmutable::createFromFormat('Y-m-d', '2017-06-13'),
+                        \DateTimeImmutable::createFromFormat('Y-m-d', '2018-01-08'),
+                        [],
+                        [
+                            0 => new Calendar\OpeningHour(
+                                new Calendar\OpeningTime(new Hour(10), new Minute(0)),
+                                new Calendar\OpeningTime(new Hour(18), new Minute(0)),
+                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::MONDAY())
+                            ),
+                            1 => new Calendar\OpeningHour(
+                                new Calendar\OpeningTime(new Hour(10), new Minute(0)),
+                                new Calendar\OpeningTime(new Hour(18), new Minute(0)),
+                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::TUESDAY())
+                            ),
+                            2 => new Calendar\OpeningHour(
+                                new Calendar\OpeningTime(new Hour(10), new Minute(0)),
+                                new Calendar\OpeningTime(new Hour(18), new Minute(0)),
+                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::WEDNESDAY())
+                            ),
+                            3 => new Calendar\OpeningHour(
+                                new Calendar\OpeningTime(new Hour(10), new Minute(0)),
+                                new Calendar\OpeningTime(new Hour(18), new Minute(0)),
+                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::THURSDAY())
+                            ),
+                            4 => new Calendar\OpeningHour(
+                                new Calendar\OpeningTime(new Hour(10), new Minute(0)),
+                                new Calendar\OpeningTime(new Hour(18), new Minute(0)),
+                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::FRIDAY())
+                            ),
+                            5 => new Calendar\OpeningHour(
+                                new Calendar\OpeningTime(new Hour(10), new Minute(0)),
+                                new Calendar\OpeningTime(new Hour(18), new Minute(0)),
+                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::SATURDAY())
+                            ),
+                            6 => new Calendar\OpeningHour(
+                                new Calendar\OpeningTime(new Hour(8), new Minute(0)),
+                                new Calendar\OpeningTime(new Hour(12), new Minute(0)),
+                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::SUNDAY())
+                            ),
+                        ]
+                    )
+                ),
             ],
             $eventImportedFromUDB2->toGranularEvents()
         );
