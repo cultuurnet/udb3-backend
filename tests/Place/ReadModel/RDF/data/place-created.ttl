@@ -22,6 +22,8 @@
     a locn:Address ;
     locn:adminUnitL1 "BE" ;
     locn:postcode "3000" ;
+    locn:locatorDesignator "1" ;
+    locn:fullAddress "Martelarenlaan 1, 3000 Leuven, BE"@nl ;
     locn:postName "Leuven"@nl ;
-    locn:fullAddress "Martelarenlaan 1, 3000 Leuven, BE"@nl
+    locn:thoroughfare "Martelarenlaan"@nl
   ] .

@@ -8,7 +8,9 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\AddressFormatter;
+use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Address\FullAddressFormatter;
+use CultuurNet\UDB3\Address\ParsedAddress;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -29,6 +31,7 @@ final class RdfProjector implements EventListener
     private MainLanguageRepository $mainLanguageRepository;
     private GraphRepository $graphRepository;
     private IriGeneratorInterface $iriGenerator;
+    private AddressParser $addressParser;
     private AddressFormatter $addressFormatter;
 
     private const TYPE_LOCATIE = 'dcterms:Location';
@@ -48,6 +51,8 @@ final class RdfProjector implements EventListener
     private const PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR = 'generiek:lokaleIdentificator';
     private const PROPERTY_IDENTIFICATOR_VERSIE_ID = 'generiek:versieIdentificator';
 
+    private const PROPERTY_ADRES_STRAATNAAM = 'locn:thoroughfare';
+    private const PROPERTY_ADRES_HUISNUMMER = 'locn:locatorDesignator';
     private const PROPERTY_ADRES_POSTCODE = 'locn:postcode';
     private const PROPERTY_ADRES_GEMEENTENAAM = 'locn:postName';
     private const PROPERTY_ADRES_LAND = 'locn:adminUnitL1';
@@ -56,11 +61,13 @@ final class RdfProjector implements EventListener
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
         GraphRepository $graphRepository,
-        IriGeneratorInterface $iriGenerator
+        IriGeneratorInterface $iriGenerator,
+        AddressParser $addressParser
     ) {
         $this->mainLanguageRepository = $mainLanguageRepository;
         $this->graphRepository = $graphRepository;
         $this->iriGenerator = $iriGenerator;
+        $this->addressParser = $addressParser;
         $this->addressFormatter = new FullAddressFormatter();
     }
 
@@ -177,19 +184,9 @@ final class RdfProjector implements EventListener
 
     private function handleAddressUpdated(AddressUpdated $event, string $uri, Graph $graph): void
     {
-        $mainLanguage = $this->mainLanguageRepository->get($uri, new Language('nl'))->toString();
-        $this->updateAddress($graph->resource($uri), $event->getAddress(), $mainLanguage);
-        $this->graphRepository->save($uri, $graph);
-    }
+        $resource = $graph->resource($uri);
+        $address = $event->getAddress();
 
-    private function handleAddressTranslated(AddressTranslated $event, string $uri, Graph $graph): void
-    {
-        $this->updateAddress($graph->resource($uri), $event->getAddress(), $event->getLanguage()->getCode());
-        $this->graphRepository->save($uri, $graph);
-    }
-
-    private function updateAddress(Resource $resource, Address $address, string $language): void
-    {
         if (!$resource->hasProperty(self::PROPERTY_LOCATIE_ADRES)) {
             $resource->add(self::PROPERTY_LOCATIE_ADRES, $resource->getGraph()->newBNode());
         }
@@ -209,11 +206,93 @@ final class RdfProjector implements EventListener
             $addressResource->set(self::PROPERTY_ADRES_POSTCODE, $postalCode);
         }
 
+        $parsedAddress = $this->addressParser->parse($this->addressFormatter->format($address));
+        $houseNumber = $parsedAddress ? $parsedAddress->getHouseNumber() : null;
+        if ($houseNumber !== null) {
+            $addressResource->set(self::PROPERTY_ADRES_HUISNUMMER, $houseNumber);
+        }
+
+        $mainLanguage = $this->mainLanguageRepository->get($uri, new Language('nl'))->toString();
+        $this->updateTranslatableAddressProperties($resource, $address, $parsedAddress, $mainLanguage);
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleAddressTranslated(AddressTranslated $event, string $uri, Graph $graph): void
+    {
+        $address = $event->getAddress();
+
+        // Only update the translatable address properties. We do not update other properties that are not translatable
+        // in locn like postcode, locatorDesignator or adminUnitL1 here because we assume that the values from the main
+        // language (set by handleAddressUpdated) are the source of truth, and any deviation in those propeties in
+        // AddressTranslated is a mistake since those properties are not translatable in reality, but they are in UDB3
+        // because of a historical design flaw.
+        $this->updateTranslatableAddressProperties(
+            $graph->resource($uri),
+            $address,
+            $this->addressParser->parse($this->addressFormatter->format($address)),
+            $event->getLanguage()->getCode()
+        );
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function updateTranslatableAddressProperties(
+        Resource $resource,
+        Address $address,
+        ?ParsedAddress $parsedAddress,
+        string $language
+    ): void {
+        /** @var Resource|null $addressResource */
+        $addressResource = $resource->getResource(self::PROPERTY_LOCATIE_ADRES);
+        if ($addressResource === null) {
+            // This is a case that should not happen in reality, since every new place should get a locn:Address via
+            // handleAddressUpdated().
+            return;
+        }
+
+        // The locn:fullAddress predicate is set per language since it contains language-specific info like the street
+        // name and municipality name. It is included because not all addresses can be parsed into the expected
+        // thoroughfare and house number, so in those cases at least the full address is completed and consumers can
+        // always try to parse it themselves if wanted.
+        $formatted = $this->addressFormatter->format($address);
+        $this->replaceLanguageValue($addressResource, self::PROPERTY_ADRES_VOLLEDIG_ADRES, $formatted, $language);
+
+        // Always set the locn:postName predicate based on the Address, not the ParsedAddress, because in some cases an
+        // address cannot be parsed (e.g. it's outside of Belgium, or the street address could not be parsed/found), but
+        // the original address always contains the right municipality in any case.
         $locality = $address->getLocality()->toNative();
         $this->replaceLanguageValue($addressResource, self::PROPERTY_ADRES_GEMEENTENAAM, $locality, $language);
 
-        $formattedAddress = $this->addressFormatter->format($address);
-        $this->replaceLanguageValue($addressResource, self::PROPERTY_ADRES_VOLLEDIG_ADRES, $formattedAddress, $language);
+        // Only set the locn:thoroughfare predicate based on the ParsedAddress (if given), not the street in the
+        // original Address, because locn:thoroughfare MUST NOT contain a house number. If there is no ParsedAddress
+        // remove the value for the given language instead since it will probably be outdated (if set previously).
+        // Keep in mind that locn:thoroughfare is optional.
+        if ($parsedAddress) {
+            $thoroughfare = $parsedAddress->getThoroughfare();
+            $this->replaceLanguageValue($addressResource, self::PROPERTY_ADRES_STRAATNAAM, $thoroughfare, $language);
+        } else {
+            $this->deleteLanguageValue($addressResource, self::PROPERTY_ADRES_STRAATNAAM, $language);
+        }
+    }
+
+    private function deleteLanguageValue(
+        Resource $resource,
+        string $property,
+        string $language
+    ): void {
+        // Get all literal values for the property, and key them by their language tag.
+        // This will be an empty list if no value(s) are set for this property.
+        $literalValues = $resource->allLiterals($property);
+        $languages = array_map(fn (Literal $literal): string => $literal->getLang(), $literalValues);
+        $literalValuePerLanguage = array_combine($languages, $literalValues);
+
+        // Remove the value for the given language.
+        unset($literalValuePerLanguage[$language]);
+
+        // Remove all existing values of the property, then (re)add them in the intended order.
+        $resource->delete($property);
+        $resource->addLiteral($property, array_values($literalValuePerLanguage));
     }
 
     private function replaceLanguageValue(

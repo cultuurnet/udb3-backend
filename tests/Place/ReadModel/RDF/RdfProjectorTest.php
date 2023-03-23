@@ -8,7 +8,10 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
+use CultuurNet\UDB3\Address\AddressParser;
+use CultuurNet\UDB3\Address\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Locality as LegacyLocality;
+use CultuurNet\UDB3\Address\ParsedAddress;
 use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
 use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Calendar;
@@ -16,6 +19,7 @@ use CultuurNet\UDB3\CalendarType as LegacyCalendarType;
 use CultuurNet\UDB3\Event\EventType as LegacyEventType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
@@ -28,20 +32,53 @@ use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTime;
 use EasyRdf\Serialiser\Turtle;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class RdfProjectorTest extends TestCase
 {
     private GraphRepository $graphRepository;
+    /** @var AddressParser&MockObject */
+    private AddressParser $addressParser;
     private RdfProjector $rdfProjector;
+    /** @var ParsedAddress[] $expectedParsedAddresses */
+    private array $expectedParsedAddresses;
+
+    private LegacyAddress $defaultAddress;
 
     protected function setUp(): void
     {
         $this->graphRepository = new InMemoryGraphRepository();
+        $this->addressParser = $this->createMock(AddressParser::class);
         $this->rdfProjector = new RdfProjector(
             new InMemoryMainLanguageRepository(),
             $this->graphRepository,
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/locaties/' . $item),
+            $this->addressParser
+        );
+
+        $this->expectedParsedAddresses = [];
+        $this->addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturnCallback(
+                fn (string $formatted): ?ParsedAddress => $this->expectedParsedAddresses[$formatted] ?? null
+            );
+
+        $this->defaultAddress = new LegacyAddress(
+            new LegacyStreet('Martelarenlaan 1'),
+            new LegacyPostalCode('3000'),
+            new LegacyLocality('Leuven'),
+            new CountryCode('BE')
+        );
+
+        $this->expectParsedAddress(
+            $this->defaultAddress,
+            new ParsedAddress(
+                'Martelarenlaan',
+                '1',
+                '3000',
+                'Leuven'
+            )
         );
     }
 
@@ -126,16 +163,25 @@ class RdfProjectorTest extends TestCase
     public function it_handles_address_translated(): void
     {
         $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $translatedAddress = new LegacyAddress(
+            new LegacyStreet('Martelarenlaan 1'),
+            new LegacyPostalCode('3000'),
+            new LegacyLocality('Louvain'),
+            new CountryCode('BE')
+        );
+        $parsedTranslatedAddress = new ParsedAddress(
+            'Martelarenlaan',
+            '1',
+            '3000',
+            'Louvain'
+        );
+        $this->expectParsedAddress($translatedAddress, $parsedTranslatedAddress);
+
         $this->project($placeId, [
             $this->getPlaceCreated($placeId),
             new AddressTranslated(
                 $placeId,
-                new LegacyAddress(
-                    new LegacyStreet('Martelarenlaan 1'),
-                    new LegacyPostalCode('3000'),
-                    new LegacyLocality('Louvain'),
-                    new CountryCode('BE')
-                ),
+                $translatedAddress,
                 new LegacyLanguage('fr')
             ),
         ]);
@@ -157,6 +203,12 @@ class RdfProjectorTest extends TestCase
             ),
             new Calendar(LegacyCalendarType::PERMANENT())
         );
+    }
+
+    private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void
+    {
+        $formatted = (new FullAddressFormatter())->format($address);
+        $this->expectedParsedAddresses[$formatted] = $parsedAddress;
     }
 
     private function project(string $placeId, array $events): void

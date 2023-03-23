@@ -19,9 +19,10 @@
   locn:geographicName "Voorbeeld titel"@nl ;
   locn:address [
     a locn:Address ;
+    locn:locatorDesignator "1" ;
     locn:adminUnitL1 "NL" ;
     locn:postcode "3002" ;
-    locn:postName "Amsterdam"@nl ;
-    locn:fullAddress "Martelarenlaan 2, 3002 Amsterdam, NL"@nl
+    locn:fullAddress "Martelarenlaan 2, 3002 Amsterdam, NL"@nl ;
+    locn:postName "Amsterdam"@nl
   ] ;
   dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime .
