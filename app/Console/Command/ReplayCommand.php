@@ -32,6 +32,7 @@ final class ReplayCommand extends AbstractCommand
     public const OPTION_DELAY = 'delay';
     public const OPTION_CDBID = 'cdbid';
     public const OPTION_NO_AMQP_MESSAGES_AFTER_REPLAY = 'no-amqp-messages-after-replay';
+    public const OPTION_FORCED = 'force';
 
     private Connection $connection;
 
@@ -94,6 +95,12 @@ final class ReplayCommand extends AbstractCommand
                 null,
                 InputOption::VALUE_NONE,
                 'Disables the publication of EventProjectedToJSONLD, PlaceProjectedToJSONLD and OrganizerProjectedToJSONLD messages to the AMQP exchange that normally happens at the end of the replay.'
+            )
+            ->addOption(
+                self::OPTION_FORCED,
+                null,
+                InputOption::VALUE_NONE,
+                'Do not ask for confirmation, before the replay'
             );
     }
 
@@ -235,6 +242,10 @@ final class ReplayCommand extends AbstractCommand
 
     private function askConfirmation(InputInterface $input, OutputInterface $output): bool
     {
+        if ($input->getOption(self::OPTION_FORCED) === true) {
+            return true;
+        }
+
         $aggregateType = $this->getAggregateType($input);
         $startId = $input->getOption(self::OPTION_START_ID);
         $cdbids = $input->getOption(self::OPTION_CDBID);
