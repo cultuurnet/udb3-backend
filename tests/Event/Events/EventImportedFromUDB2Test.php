@@ -209,6 +209,53 @@ final class EventImportedFromUDB2Test extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_can_convert_a_permanent_event_to_granular_events(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventImportedFromUDB2 = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/calendar/event_with_permanent_calendar_and_opening_hours.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($eventId, new Title('Werken met de \'nailliner\'')),
+                new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+                new CalendarUpdated(
+                    $eventId,
+                    new Calendar(
+                        CalendarType::PERMANENT(),
+                        null,
+                        null,
+                        [],
+                        [
+                            0 => new Calendar\OpeningHour(
+                                new Calendar\OpeningTime(new Hour(9), new Minute(30)),
+                                new Calendar\OpeningTime(new Hour(11), new Minute(30)),
+                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::WEDNESDAY())
+                            ),
+                            1 => new Calendar\OpeningHour(
+                                new Calendar\OpeningTime(new Hour(9), new Minute(0)),
+                                new Calendar\OpeningTime(new Hour(17), new Minute(0)),
+                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::THURSDAY())
+                            ),
+                            2 => new Calendar\OpeningHour(
+                                new Calendar\OpeningTime(new Hour(9), new Minute(30)),
+                                new Calendar\OpeningTime(new Hour(11), new Minute(30)),
+                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::SATURDAY())
+                            ),
+                        ]
+                    )
+                ),
+            ],
+            $eventImportedFromUDB2->toGranularEvents()
+        );
+    }
+
     public function serializationDataProvider(): array
     {
         $xml = file_get_contents(__DIR__ . '/../samples/event_entryapi_valid_with_keywords.xml');
