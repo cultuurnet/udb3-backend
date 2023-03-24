@@ -95,27 +95,39 @@ trait EventFromUDB2
                 \DateTimeImmutable::createFromFormat('Y-m-d', $calendarAsArray['periods'][0]['period'][0]['dateto'][0]['_text'])
             );
 
-            $openingHours = [];
-            foreach ($calendarAsArray['periods'][0]['period'][0]['weekscheme'][0] as $dayOfWeek => $hours) {
+            $openingHours = $this->getOpeningHours($calendarAsArray['periods'][0]['period'][0]);
+
+            return new PeriodicCalendar($dateRange, new OpeningHours(...$openingHours));
+        }
+
+        return null;
+    }
+
+    /**
+     * @return OpeningHour[]
+     */
+    private function getOpeningHours(array $openingHoursAsArray): array
+    {
+        $openingHours = [];
+        if (isset($openingHoursAsArray['weekscheme'])) {
+            var_dump('sdf');
+            foreach ($openingHoursAsArray['weekscheme'][0] as $dayOfWeek => $hours) {
                 $from = explode(':', $hours[0]['openingtime'][0]['@attributes']['from']);
                 $to = explode(':', $hours[0]['openingtime'][0]['@attributes']['to']);
 
                 $openingHours[] = new OpeningHour(
                     new Days(new Day($dayOfWeek)),
                     new Time(
-                        new Hour((int) $from[0]),
-                        new Minute((int) $from[1])
+                        new Hour((int)$from[0]),
+                        new Minute((int)$from[1])
                     ),
                     new Time(
-                        new Hour((int) $to[0]),
-                        new Minute((int) $to[1])
+                        new Hour((int)$to[0]),
+                        new Minute((int)$to[1])
                     ),
                 );
             }
-
-            return new PeriodicCalendar($dateRange, new OpeningHours(...$openingHours));
         }
-
-        return null;
+        return $openingHours;
     }
 }
