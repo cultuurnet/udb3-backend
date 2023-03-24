@@ -121,7 +121,6 @@ trait EventFromUDB2
         if (isset($openingHoursAsArray['weekscheme'])) {
             foreach ($openingHoursAsArray['weekscheme'][0] as $dayOfWeek => $hours) {
                 if (isset($hours[0]['openingtime'])) {
-                    var_dump($dayOfWeek);
                     $from = explode(':', $hours[0]['openingtime'][0]['@attributes']['from']);
                     $to = explode(':', $hours[0]['openingtime'][0]['@attributes']['to']);
 
