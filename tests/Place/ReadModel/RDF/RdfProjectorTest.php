@@ -40,7 +40,7 @@ class RdfProjectorTest extends TestCase
     /** @var AddressParser&MockObject */
     private AddressParser $addressParser;
     private RdfProjector $rdfProjector;
-    private array $expectedParsedAddresses = [];
+    private array $expectedParsedAddresses;
 
     private LegacyAddress $defaultAddress;
 
@@ -55,12 +55,12 @@ class RdfProjectorTest extends TestCase
             $this->addressParser
         );
 
-        $this->expectedParsedAddresses = [];
         $this->addressParser->expects($this->any())
             ->method('parse')
             ->willReturnCallback(
                 fn (string $formatted): ?ParsedAddress => $this->expectedParsedAddresses[$formatted] ?? null
             );
+        $this->expectedParsedAddresses = [];
 
         $this->defaultAddress = new LegacyAddress(
             new LegacyStreet('Martelarenlaan 1'),
