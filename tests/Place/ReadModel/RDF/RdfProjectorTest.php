@@ -40,8 +40,7 @@ class RdfProjectorTest extends TestCase
     /** @var AddressParser&MockObject */
     private AddressParser $addressParser;
     private RdfProjector $rdfProjector;
-    /** @var array<string,ParsedAddress> */
-    private array $expectedParsedAddresses;
+    private array $expectedParsedAddresses = [];
 
     private LegacyAddress $defaultAddress;
 
