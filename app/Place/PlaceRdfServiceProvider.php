@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Address\GeopuntAddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
@@ -29,8 +30,8 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
             fn (): RdfProjector => new RdfProjector(
                 $this->container->get(MainLanguageRepository::class),
                 RdfServiceProvider::createGraphStoreRepository($this->container->get('config')['rdf']['placesGraphStoreUrl']),
-                RdfServiceProvider::createIriGenerator($this->container, 'locaties'),
-                $this->container->get(GeopuntAddressParser::class),
+                RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['placesRdfBaseUri']),
+                $this->container->get(GeopuntAddressParser::class)
             )
         );
 
