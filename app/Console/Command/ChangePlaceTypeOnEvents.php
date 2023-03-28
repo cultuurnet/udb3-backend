@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
@@ -24,8 +25,7 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
     public function __construct(
         CommandBus             $commandBus,
         SearchServiceInterface $searchService
-    )
-    {
+    ) {
         $this->searchService = $searchService;
         $this->errors = 0;
         $this->success = 0;
@@ -66,8 +66,9 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
                 $eventId = $event->getId();
                 try {
                     $this->commandBus->dispatch(new UpdateType($eventId, $correctEventType));
+                    $this->commandBus->dispatch(new AvailableFromUpdated($eventId, \DateTimeImmutable::createFromFormat('Y-m-d', '2100-01-01')));
                     $logger->info(
-                        'Successfully changed type of event "' . $eventId . '" to  "' . $correctEventType . '"'
+                        'Successfully changed type and availableFrom of event "' . $eventId . '" to  "' . $correctEventType . '"'
                     );
                     $this->success++;
                 } catch (\Throwable $t) {
@@ -98,8 +99,7 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
         int             $count,
         string          $faultyEventType,
         string          $correctEventType
-    ): bool
-    {
+    ): bool {
         return $this
             ->getHelper('question')
             ->ask(
