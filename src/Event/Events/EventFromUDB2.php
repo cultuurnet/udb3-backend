@@ -71,10 +71,7 @@ trait EventFromUDB2
         }
 
         $calendarEvent = $this->getCalendar($eventAsArray['calendar'][0]);
-
-        if ($calendarEvent !== null) {
-            $granularEvents[] = new CalendarUpdated($this->eventId, LegacyCalendar::fromUdb3ModelCalendar($calendarEvent));
-        }
+        $granularEvents[] = new CalendarUpdated($this->eventId, LegacyCalendar::fromUdb3ModelCalendar($calendarEvent));
 
         return $granularEvents;
     }
