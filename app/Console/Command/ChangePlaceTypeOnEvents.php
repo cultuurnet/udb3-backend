@@ -96,9 +96,9 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
     private function askConfirmation(
         InputInterface  $input,
         OutputInterface $output,
-        int             $count,
-        string          $faultyEventType,
-        string          $correctEventType
+        int $count,
+        string $faultyEventType,
+        string $correctEventType
     ): bool {
         return $this
             ->getHelper('question')
