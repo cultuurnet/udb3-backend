@@ -51,7 +51,7 @@ class RdfProjectorTest extends TestCase
         $this->rdfProjector = new RdfProjector(
             new InMemoryMainLanguageRepository(),
             $this->graphRepository,
-            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/locaties/' . $item),
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
             $this->addressParser
         );
 
@@ -229,7 +229,7 @@ class RdfProjectorTest extends TestCase
 
     private function assertTurtleData(string $placeId, string $expectedTurtleData): void
     {
-        $uri = 'https://mock.data.publiq.be/locaties/' . $placeId;
+        $uri = 'https://mock.data.publiq.be/places/' . $placeId;
         $actualTurtleData = (new Turtle())->serialise($this->graphRepository->get($uri), 'turtle');
         $this->assertEquals(trim($expectedTurtleData), trim($actualTurtleData));
     }
