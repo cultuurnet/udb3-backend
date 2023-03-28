@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace test\Event\Events;
 
+use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
@@ -12,6 +15,7 @@ use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
@@ -87,6 +91,20 @@ final class EventUpdatedFromUDB2Test extends TestCase
                 new TitleTranslated($eventId, new Language('de'), new Title('Das Ereignis!')),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
                 new LocationUpdated($eventId, new LocationId('28d2900d-f784-4d04-8d66-5b93900c6f9c')),
+                new CalendarUpdated(
+                    $eventId,
+                    new Calendar(
+                        CalendarType::SINGLE(),
+                        null,
+                        null,
+                        [
+                            new Timestamp(
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            ),
+                        ]
+                    )
+                ),
             ],
             $eventUpdatedFromUdb2->toGranularEvents()
         );

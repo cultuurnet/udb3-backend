@@ -18,6 +18,7 @@ use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
@@ -87,6 +88,20 @@ final class EventImportedFromUDB2Test extends TestCase
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new EventType('0.3.1.0.0', 'Cursus of workshop')
                 ),
+                new CalendarUpdated(
+                    '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+                    new Calendar(
+                        CalendarType::SINGLE(),
+                        null,
+                        null,
+                        [
+                            new Timestamp(
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            ),
+                        ]
+                    )
+                ),
             ],
             $eventImportedFromUDB2->toGranularEvents()
         );
@@ -110,6 +125,20 @@ final class EventImportedFromUDB2Test extends TestCase
                 new TitleTranslated($eventId, new Language('fr'), new Title('L\'événement!')),
                 new TitleTranslated($eventId, new Language('de'), new Title('Das Ereignis!')),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+                new CalendarUpdated(
+                    $eventId,
+                    new Calendar(
+                        CalendarType::SINGLE(),
+                        null,
+                        null,
+                        [
+                            new Timestamp(
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            ),
+                        ]
+                    )
+                ),
             ],
             $eventImportedFromUDB2->toGranularEvents()
         );
@@ -135,6 +164,20 @@ final class EventImportedFromUDB2Test extends TestCase
                 new TitleTranslated($eventId, new Language('de'), new Title('Das Ereignis!')),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
                 new LocationUpdated($eventId, new LocationId('28d2900d-f784-4d04-8d66-5b93900c6f9c')),
+                new CalendarUpdated(
+                    $eventId,
+                    new Calendar(
+                        CalendarType::SINGLE(),
+                        null,
+                        null,
+                        [
+                            new Timestamp(
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            ),
+                        ]
+                    )
+                ),
             ],
             $eventImportedFromUDB2->toGranularEvents()
         );
@@ -247,6 +290,88 @@ final class EventImportedFromUDB2Test extends TestCase
                                 new Calendar\OpeningTime(new Hour(9), new Minute(30)),
                                 new Calendar\OpeningTime(new Hour(11), new Minute(30)),
                                 new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::SATURDAY())
+                            ),
+                        ]
+                    )
+                ),
+            ],
+            $eventImportedFromUDB2->toGranularEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_convert_event_with_timestamps_to_granular_events(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventImportedFromUDB2 = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/calendar/event_with_multiple_timestamps_and_start_times.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($eventId, new Title('Juwelen maken VOORJAAR 2017')),
+                new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+                new CalendarUpdated(
+                    $eventId,
+                    new Calendar(
+                        CalendarType::MULTIPLE(),
+                        null,
+                        null,
+                        [
+                            new Timestamp(
+                                new \DateTimeImmutable('2017-02-06T13:00:00.000000+0100'),
+                                new \DateTimeImmutable('2017-02-06T13:00:00.000000+0100')
+                            ),
+                            new Timestamp(
+                                new \DateTimeImmutable('2017-02-20T13:00:00.000000+0100'),
+                                new \DateTimeImmutable('2017-02-20T13:00:00.000000+0100')
+                            ),
+                            new Timestamp(
+                                new \DateTimeImmutable('2017-03-06T13:00:00.000000+0100'),
+                                new \DateTimeImmutable('2017-03-06T13:00:00.000000+0100')
+                            ),
+                            new Timestamp(
+                                new \DateTimeImmutable('2017-03-20T13:00:00.000000+0100'),
+                                new \DateTimeImmutable('2017-03-20T13:00:00.000000+0100')
+                            ),
+                        ]
+                    )
+                ),
+            ],
+            $eventImportedFromUDB2->toGranularEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_convert_event_with_a_single_timestamps_to_granular_events(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventImportedFromUDB2 = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/calendar/event_with_timestamp_and_start_time.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($eventId, new Title('De Smoestuinier | Low Impact man')),
+                new TypeUpdated($eventId, new EventType('0.55.0.0.0', 'Theatervoorstelling')),
+                new CalendarUpdated(
+                    $eventId,
+                    new Calendar(
+                        CalendarType::SINGLE(),
+                        null,
+                        null,
+                        [
+                            new Timestamp(
+                                new \DateTimeImmutable('2017-04-27T20:15:00.000000+0200'),
+                                new \DateTimeImmutable('2017-04-27T20:15:00.000000+0200')
                             ),
                         ]
                     )
