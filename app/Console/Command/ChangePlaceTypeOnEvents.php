@@ -23,7 +23,7 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
     private int $success;
 
     public function __construct(
-        CommandBus             $commandBus,
+        CommandBus $commandBus,
         SearchServiceInterface $searchService
     ) {
         $this->searchService = $searchService;
