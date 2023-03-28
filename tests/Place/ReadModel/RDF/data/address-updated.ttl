@@ -8,22 +8,21 @@
 <https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a dcterms:Location ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
-  dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
     skos:notation "https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea" ;
     dcterms:creator "https://fixme.com/example/dataprovider/publiq" ;
     generiek:naamruimte "https://mock.data.publiq.be/locaties/"^^xsd:string ;
     generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:string ;
-    generiek:versieIdentificator "2023-01-01T12:30:15+01:00"^^xsd:string
+    generiek:versieIdentificator "2023-01-02T12:30:15+01:00"^^xsd:string
   ] ;
   locn:geographicName "Voorbeeld titel"@nl ;
   locn:address [
     a locn:Address ;
-    locn:adminUnitL1 "BE" ;
-    locn:postcode "3000" ;
     locn:locatorDesignator "1" ;
-    locn:fullAddress "Martelarenlaan 1, 3000 Leuven, BE"@nl ;
-    locn:postName "Leuven"@nl ;
-    locn:thoroughfare "Martelarenlaan"@nl
-  ] .
+    locn:adminUnitL1 "NL" ;
+    locn:postcode "3002" ;
+    locn:fullAddress "Martelarenlaan 2, 3002 Amsterdam, NL"@nl ;
+    locn:postName "Amsterdam"@nl
+  ] ;
+  dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime .

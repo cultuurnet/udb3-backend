@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address;
 
-class LocalityAddressFormatter implements AddressFormatterInterface
+final class LocalityAddressFormatter implements AddressFormatter
 {
-    /**
-     * @inheritdoc
-     */
-    public function format(Address $address)
+    public function format(Address $address): string
     {
         return $address->getPostalCode() . ' ' .
             $address->getLocality() . ', ' .

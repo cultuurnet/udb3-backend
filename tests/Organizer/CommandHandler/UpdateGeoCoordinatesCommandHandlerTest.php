@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\DefaultAddressFormatter;
+use CultuurNet\UDB3\Address\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Address\PostalCode;
@@ -37,7 +37,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
 
         return new UpdateGeoCoordinatesFromAddressCommandHandler(
             new OrganizerRepository($eventStore, $eventBus),
-            new DefaultAddressFormatter(),
+            new FullAddressFormatter(),
             new LocalityAddressFormatter(),
             $this->geocodingService
         );

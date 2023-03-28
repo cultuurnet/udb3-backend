@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
-use CultuurNet\UDB3\Address\AddressFormatterInterface;
+use CultuurNet\UDB3\Address\AddressFormatter;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateGeoCoordinatesFromAddress;
 use Psr\Log\LoggerAwareInterface;
@@ -23,12 +23,12 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
     private $offerRepository;
 
     /**
-     * @var AddressFormatterInterface
+     * @var AddressFormatter
      */
     private $defaultAddressFormatter;
 
     /**
-     * @var AddressFormatterInterface
+     * @var AddressFormatter
      */
     private $fallbackAddressFormatter;
 
@@ -39,8 +39,8 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
 
     public function __construct(
         Repository $placeRepository,
-        AddressFormatterInterface $defaultAddressFormatter,
-        AddressFormatterInterface $fallbackAddressFormatter,
+        AddressFormatter $defaultAddressFormatter,
+        AddressFormatter $fallbackAddressFormatter,
         GeocodingService $geocodingService
     ) {
         $this->offerRepository = $placeRepository;

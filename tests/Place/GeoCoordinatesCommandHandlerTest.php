@@ -12,8 +12,8 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\AddressFormatterInterface;
-use CultuurNet\UDB3\Address\DefaultAddressFormatter;
+use CultuurNet\UDB3\Address\AddressFormatter;
+use CultuurNet\UDB3\Address\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Address\PostalCode;
@@ -32,12 +32,12 @@ use PHPUnit\Framework\MockObject\MockObject;
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     /**
-     * @var AddressFormatterInterface
+     * @var AddressFormatter
      */
     private $defaultAddressFormatter;
 
     /**
-     * @var AddressFormatterInterface
+     * @var AddressFormatter
      */
     private $localityAddressFormatter;
 
@@ -53,7 +53,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             $eventBus
         );
 
-        $this->defaultAddressFormatter = new DefaultAddressFormatter();
+        $this->defaultAddressFormatter = new FullAddressFormatter();
         $this->localityAddressFormatter = new LocalityAddressFormatter();
 
         $this->geocodingService = $this->createMock(GeocodingService::class);

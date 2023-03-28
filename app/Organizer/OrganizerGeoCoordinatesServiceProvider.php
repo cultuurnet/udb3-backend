@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Organizer;
 
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
-use CultuurNet\UDB3\Address\DefaultAddressFormatter;
+use CultuurNet\UDB3\Address\FullAddressFormatter;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
@@ -34,7 +34,7 @@ final class OrganizerGeoCoordinatesServiceProvider extends AbstractServiceProvid
             function () use ($container) {
                 return new UpdateGeoCoordinatesFromAddressCommandHandler(
                     $container->get('organizer_repository'),
-                    new DefaultAddressFormatter(),
+                    new FullAddressFormatter(),
                     new LocalityAddressFormatter(),
                     $container->get(GeocodingService::class)
                 );
