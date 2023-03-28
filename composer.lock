@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd8d4a318e7bfd987fae39d54d2f5884",
+    "content-hash": "807df28acd2a3c54717ae0c966287e73",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5634,19 +5634,18 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-main",
+            "version": "dev-uitdatabank/III-5428-youtube-embed-urls",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "095ccb471322a79a2ab1a3312b3c4934aa315b84"
+                "reference": "a2fe031adf545dfb7b39987d2e4c6a1a00c00268"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/095ccb471322a79a2ab1a3312b3c4934aa315b84",
-                "reference": "095ccb471322a79a2ab1a3312b3c4934aa315b84",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/a2fe031adf545dfb7b39987d2e4c6a1a00c00268",
+                "reference": "a2fe031adf545dfb7b39987d2e4c6a1a00c00268",
                 "shasum": ""
             },
-            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5661,9 +5660,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/uitdatabank/III-5428-youtube-embed-urls"
             },
-            "time": "2023-03-13T12:26:32+00:00"
+            "time": "2023-03-28T11:04:32+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
