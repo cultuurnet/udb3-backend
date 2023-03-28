@@ -8,8 +8,11 @@ use CultuurNet\UDB3\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -19,8 +22,14 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\SerializableSimpleXmlElement;
 use CultuurNet\UDB3\Title;
+use DateTimeZone;
 
 trait EventFromUDB2
 {
@@ -86,14 +95,11 @@ trait EventFromUDB2
         return $eventAsArray['event'];
     }
 
-    private function getCalendar(array $calendarAsArray): ?Calendar
+    private function getCalendar(array $calendarAsArray): Calendar
     {
         $calendarType = array_key_first($calendarAsArray);
 
-        print_r($calendarType);
-
         if ($calendarType === 'permanentopeningtimes') {
-            print_r($calendarAsArray);
             $openingHours = $this->getOpeningHours($calendarAsArray['permanentopeningtimes'][0]['permanent'][0]);
             return new PermanentCalendar(new OpeningHours(...$openingHours));
         }
@@ -109,7 +115,33 @@ trait EventFromUDB2
             return new PeriodicCalendar($dateRange, new OpeningHours(...$openingHours));
         }
 
-        return null;
+        $subEvents = [];
+
+        foreach ($calendarAsArray['timestamps'][0]['timestamp'] as $timeStampAsArray) {
+            $timeStart = $timeStampAsArray['timestart'][0]['_text'] ?? '0:00:00';
+            $startTime = $timeStampAsArray['date'][0]['_text'] . 'T' . $timeStart;
+            $endTime = isset($timeStampAsArray['timeend']) ?
+                    $timeStampAsArray['date'][0]['_text'] . 'T' . $timeStampAsArray['timeend'][0]['_text'] :
+                    $startTime;
+            $subEvents[] = new SubEvent(
+                new DateRange(
+                    \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s', $startTime, new DateTimeZone('Europe/Brussels')),
+                    \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s', $endTime, new DateTimeZone('Europe/Brussels'))
+                ),
+                new Status(
+                    StatusType::Available()
+                ),
+                new BookingAvailability(
+                    BookingAvailabilityType::Available()
+                )
+            );
+        }
+
+        if (count($subEvents) === 1) {
+            return new SingleSubEventCalendar($subEvents[0]);
+        }
+
+        return new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
     }
 
     /**
