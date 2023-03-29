@@ -18,7 +18,7 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
 {
     private SearchServiceInterface $searchService;
 
-    private int $errors;
+    private int $errorCount;
 
     private int $successCount;
 
@@ -27,7 +27,7 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
         SearchServiceInterface $searchService
     ) {
         $this->searchService = $searchService;
-        $this->errors = 0;
+        $this->errorCount = 0;
         $this->successCount = 0;
         parent::__construct($commandBus);
     }
@@ -80,17 +80,17 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
                             $t->getMessage()
                         )
                     );
-                    $this->errors++;
+                    $this->errorCount++;
                 }
             }
 
             $logger->info('Successfully changed the eventType of  ' . $this->successCount . ' events');
 
-            if ($this->errors) {
-                $logger->error('Failed to change type of ' . $this->errors . ' events');
+            if ($this->errorCount) {
+                $logger->error('Failed to change type of ' . $this->errorCount . ' events');
             }
         }
-        return $this->errors;
+        return $this->errorCount;
     }
 
     private function askConfirmation(
