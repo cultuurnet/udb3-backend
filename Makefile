@@ -1,4 +1,4 @@
-.PHONY: up down install ci stan cs cs-fix test migrate
+.PHONY: up down install ci stan cs cs-fix test migrate config
 
 up:
 	docker-compose up -d
@@ -29,3 +29,6 @@ migrate:
 
 bash:
 	docker exec -it php.uitdatabank bash
+
+config:
+	sh ./docker/setup_config.sh
