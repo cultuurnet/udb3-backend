@@ -16,7 +16,6 @@ array=(
   https://raw.githubusercontent.com/cultuurnet/udb3-vagrant/main/config/udb3-backend/config.excluded_labels.php
   https://raw.githubusercontent.com/cultuurnet/udb3-vagrant/main/config/udb3-backend/config.external_id_mapping_organizer.php
   https://raw.githubusercontent.com/cultuurnet/udb3-vagrant/main/config/udb3-backend/config.external_id_mapping_place.php
-  https://raw.githubusercontent.com/cultuurnet/udb3-vagrant/main/config/udb3-backend/config.php
   https://raw.githubusercontent.com/cultuurnet/udb3-vagrant/main/config/udb3-backend/config.term_mapping_facilities.php
   https://raw.githubusercontent.com/cultuurnet/udb3-vagrant/main/config/udb3-backend/config.term_mapping_themes.php
   https://raw.githubusercontent.com/cultuurnet/udb3-vagrant/main/config/udb3-backend/config.term_mapping_types.php
