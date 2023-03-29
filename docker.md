@@ -72,6 +72,11 @@ Start the docker containers with the following command. Make sure to execute thi
 ```
 $ make up
 ```
+### Configuration install
+To get the configuration files (You will need an access token from https://github.com/settings/tokens):
+```
+$ make config
+```
 
 ### Composer install
 
