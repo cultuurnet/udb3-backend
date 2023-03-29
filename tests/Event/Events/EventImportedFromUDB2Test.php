@@ -194,7 +194,7 @@ final class EventImportedFromUDB2Test extends TestCase
     /**
      * @test
      */
-    public function it_does_not_give_a_dummy_location_if_a_location_id_is_present(): void
+    public function it_does_not_return_a_dummy_location_if_location_id_is_present(): void
     {
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventWithLocationId = new EventImportedFromUDB2(
@@ -235,7 +235,7 @@ final class EventImportedFromUDB2Test extends TestCase
     /**
      * @test
      */
-    public function it_can_return_an_external_id_if_present(): void
+    public function it_returns_an_external_id_if_present(): void
     {
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventWithExternalIdLocation = new EventImportedFromUDB2(
@@ -253,7 +253,7 @@ final class EventImportedFromUDB2Test extends TestCase
     /**
      * @test
      */
-    public function it_can_returns_null_if_no_external_id_is_present(): void
+    public function it_returns_null_if_no_external_id_is_present(): void
     {
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventWithExternalIdLocation = new EventImportedFromUDB2(
