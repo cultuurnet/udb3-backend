@@ -20,7 +20,7 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
 
     private int $errors;
 
-    private int $success;
+    private int $successCount;
 
     public function __construct(
         CommandBus $commandBus,
@@ -28,7 +28,7 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
     ) {
         $this->searchService = $searchService;
         $this->errors = 0;
-        $this->success = 0;
+        $this->successCount = 0;
         parent::__construct($commandBus);
     }
 
@@ -70,7 +70,7 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
                     $logger->info(
                         'Successfully changed type and availableFrom of event "' . $eventId . '" to  "' . $correctEventType . '"'
                     );
-                    $this->success++;
+                    $this->successCount++;
                 } catch (\Throwable $t) {
                     $logger->error(
                         sprintf(
@@ -84,7 +84,7 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
                 }
             }
 
-            $logger->info('Successfully changed the eventType of  ' . $this->success . ' events');
+            $logger->info('Successfully changed the eventType of  ' . $this->successCount . ' events');
 
             if ($this->errors) {
                 $logger->error('Failed to change type of ' . $this->errors . ' events');
