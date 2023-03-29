@@ -46,7 +46,7 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
 
-        $mapping = $this->getMapping();
+        $mapping = $this->getCorrectPlaceTypeMapping();
 
         foreach ($mapping as $placeType => $correctEventType) {
             $resultsGenerator = new ResultsGenerator(
@@ -112,7 +112,7 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
             );
     }
 
-    private function getMapping(): array
+    private function getCorrectPlaceTypeMapping(): array
     {
         return [
             'kI7uAyn2uUu9VV6Z3uWZTA' => '0.3.1.0.0',
