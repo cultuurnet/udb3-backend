@@ -26,10 +26,10 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
         CommandBus $commandBus,
         SearchServiceInterface $searchService
     ) {
+        parent::__construct($commandBus);
         $this->searchService = $searchService;
         $this->errorCount = 0;
         $this->successCount = 0;
-        parent::__construct($commandBus);
     }
 
     public function configure(): void
