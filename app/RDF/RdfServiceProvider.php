@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use EasyRdf\GraphStore;
-use Psr\Container\ContainerInterface;
 
 final class RdfServiceProvider extends AbstractServiceProvider
 {
