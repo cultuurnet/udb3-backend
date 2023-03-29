@@ -203,10 +203,7 @@ final class EventImportedFromUDB2Test extends TestCase
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
-        $this->assertEquals(
-            null,
-            $eventWithLocationId->getDummyLocation()
-        );
+        $this->assertNull($eventWithLocationId->getDummyLocation());
     }
 
     /**
@@ -215,7 +212,7 @@ final class EventImportedFromUDB2Test extends TestCase
     public function it_returns_a_dummy_location_(): void
     {
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
-        $eventWithLocationId = new EventImportedFromUDB2(
+        $eventWithDummyLocation = new EventImportedFromUDB2(
             $eventId,
             file_get_contents(__DIR__ . '/../samples/event_with_photo.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
@@ -231,8 +228,41 @@ final class EventImportedFromUDB2Test extends TestCase
                     new CountryCode('BE')
                 )
             ),
-            $eventWithLocationId->getDummyLocation()
+            $eventWithDummyLocation->getDummyLocation()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_return_an_external_id_if_present(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithExternalIdLocation = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_externalid_location.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            'SKB:9ccbf9c1-a5c5-4689-9687-9a7dd3c51aee',
+            $eventWithExternalIdLocation->getExternalId()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_returns_null_if_no_external_id_is_present(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithExternalIdLocation = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertNull($eventWithExternalIdLocation->getExternalId());
     }
 
     /**
