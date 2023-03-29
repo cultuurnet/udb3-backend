@@ -29,4 +29,3 @@ do
     -O \
     -L "$file"
 done
-
