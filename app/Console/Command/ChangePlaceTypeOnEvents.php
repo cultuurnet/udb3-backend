@@ -46,9 +46,9 @@ final class ChangePlaceTypeOnEvents extends AbstractCommand
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
 
-        $mapping = $this->getCorrectPlaceTypeMapping();
+        $correctPlaceTypeMapping = $this->getCorrectPlaceTypeMapping();
 
-        foreach ($mapping as $placeType => $correctEventType) {
+        foreach ($correctPlaceTypeMapping as $placeType => $correctEventType) {
             $resultsGenerator = new ResultsGenerator(
                 $this->searchService,
                 ['created' => 'asc'],
