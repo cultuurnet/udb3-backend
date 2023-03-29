@@ -11,6 +11,10 @@ To use `udb3-backend` & `udb3-search-service` together, you'll have to add `127.
 ### .env file
 Copy `env.dist` to the root folder and rename it to `.env`
 
+### config.php file
+
+Copy `docker-config.php` to the root folder and rename it to `config.php`
+
 ### RabbitMQ
 
 Login to the management console on http://host.docker.internal:15672/ with username `vagrant` and password `vagrant` 
