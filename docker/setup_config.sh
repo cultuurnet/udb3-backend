@@ -26,12 +26,3 @@ do
     -L "$file"
 done
 
-# These values have to be changed because of docker
-sed -i'' -e '7s/https:\/\/io.uitdatabank.dev/http:\/\/host.docker.internal:8000/' config.php # url
-sed -i'' -e '18s/http:\/\/search.uitdatabank.dev/http:\/\/host.docker.internal:9000/' config.php # search.v3.base_url
-sed -i'' -e '27s/127.0.0.1/mysql/' config.php # database.host
-sed -i'' -e '51s/127.0.0.1/redis/' config.php # cache.redis.host
-sed -i'' -e '59s/127.0.0.1/rabbitmq/' config.php # amqp.host
-# These values have to be added because of docker
-sed -i'' -e "19s/,/,\n            'scheme' => 'http',/" config.php # search.v3.scheme
-sed -i'' -e "20s/,/,\n            'port' => 9000,/" config.php # search.v3.port
