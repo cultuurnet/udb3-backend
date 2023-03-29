@@ -3,6 +3,7 @@
 echo Please provide a classic Github access token from https://github.com/settings/tokens
 read token
 
+# retrieve necessary files from udb3-vagrant
 array=(
   https://raw.githubusercontent.com/cultuurnet/udb3-vagrant/main/config/keys/public.pem
   https://raw.githubusercontent.com/cultuurnet/udb3-vagrant/main/config/keys/public-auth0.pem
@@ -25,10 +26,12 @@ do
     -L "$file"
 done
 
+# These values have to be changed because of docker
 sed -i'' -e '7s/https:\/\/io.uitdatabank.dev/http:\/\/host.docker.internal:8000/' config.php
 sed -i'' -e '18s/http:\/\/search.uitdatabank.dev/http:\/\/host.docker.internal:9000/' config.php
 sed -i'' -e '27s/127.0.0.1/mysql/' config.php
 sed -i'' -e '51s/127.0.0.1/redis/' config.php
 sed -i'' -e '59s/127.0.0.1/rabbitmq/' config.php
+# These values have to be added because of docker
 sed -i'' -e "19s/,/,\n            'scheme' => 'http',/" config.php
 sed -i'' -e "20s/,/,\n            'port' => 9000,/" config.php
