@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangePlaceType;
+use CultuurNet\UDB3\Console\Command\ChangePlaceTypeOnEvents;
 use CultuurNet\UDB3\Console\Command\ChangePlaceTypeOnPlacesWithEventEventType;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
@@ -73,6 +74,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.place:actortype:update',
         'console.place:actortype:reject',
         'console.place:faulty-eventtype:update',
+        'console.event:place-eventtype:update',
         'console.offer:remove-label',
         'console.organizer:remove-label',
         'console.offer:import-auto-classification-labels',
@@ -337,6 +339,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new ChangePlaceTypeOnPlacesWithEventEventType(
                 $container->get('event_command_bus'),
                 $container->get('sapi3_search_service_places')
+            )
+        );
+
+        $container->addShared(
+            'console.event:place-eventtype:update',
+            fn () => new ChangePlaceTypeOnEvents(
+                $container->get('event_command_bus'),
+                $container->get('sapi3_search_service_events')
             )
         );
 
