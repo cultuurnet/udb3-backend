@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
+use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -37,12 +38,17 @@ final class RdfProjector implements EventListener
     private const TYPE_LOCATIE = 'dcterms:Location';
     private const TYPE_IDENTIFICATOR = 'adms:Identifier';
     private const TYPE_ADRES = 'locn:Address';
+    private const TYPE_GEOMETRIE = 'locn:Geometry';
 
     private const PROPERTY_LOCATIE_AANGEMAAKT_OP = 'dcterms:created';
     private const PROPERTY_LOCATIE_LAATST_AANGEPAST = 'dcterms:modified';
     private const PROPERTY_LOCATIE_IDENTIFICATOR = 'adms:identifier';
     private const PROPERTY_LOCATIE_NAAM = 'locn:geographicName';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
+    private const PROPERTY_LOCATIE_GEOMETRIE = 'locn:geometry';
+
+    private const PROPERTY_GEOMETRIE_GML = 'geosparql:asGML';
+    private const PROPERTY_GEOMETRIE_WKT = 'geosparql:asWKT';
 
     private const PROPERTY_IDENTIFICATOR_NOTATION = 'skos:notation';
     private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR = 'dcterms:creator';
@@ -87,6 +93,7 @@ final class RdfProjector implements EventListener
             TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $uri, $graph),
             AddressUpdated::class => fn ($e) => $this->handleAddressUpdated($e, $uri, $graph),
             AddressTranslated::class => fn ($e) => $this->handleAddressTranslated($e, $uri, $graph),
+            GeoCoordinatesUpdated::class => fn ($e) => $this->handleGeoCoordinatesUpdated($e, $uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -233,6 +240,32 @@ final class RdfProjector implements EventListener
             $this->addressParser->parse($this->addressFormatter->format($address)),
             $event->getLanguage()->getCode()
         );
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleGeoCoordinatesUpdated(GeoCoordinatesUpdated $event, string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+        $coordinates = $event->getCoordinates();
+
+        $gmlTemplate = '<gml:Point srsName=\'http://www.opengis.net/def/crs/OGC/1.3/CRS84\'><gml:coordinates>%s, %s</gml:coordinates></gml:Point>';
+        $gmlCoordinate = sprintf($gmlTemplate, $coordinates->getLongitude()->toDouble(), $coordinates->getLatitude()->toDouble());
+
+        $wktTemplate = '<http://www.opengis.net/def/crs/OGC/1.3/CRS84> Point(%s %s)';
+        $wktCoordinate = sprintf($wktTemplate, $coordinates->getLongitude()->toDouble(), $coordinates->getLatitude()->toDouble());
+
+        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_GEOMETRIE)) {
+            $resource->add(self::PROPERTY_LOCATIE_GEOMETRIE, $resource->getGraph()->newBNode());
+        }
+
+        $geometryResource = $resource->getResource(self::PROPERTY_LOCATIE_GEOMETRIE);
+        if ($geometryResource->type() !== self::TYPE_GEOMETRIE) {
+            $geometryResource->setType(self::TYPE_GEOMETRIE);
+        }
+
+        $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
+        $geometryResource->set(self::PROPERTY_GEOMETRIE_WKT, new Literal($wktCoordinate, null, 'geosparql:wktLiteral'));
 
         $this->graphRepository->save($uri, $graph);
     }
