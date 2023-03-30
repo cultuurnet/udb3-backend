@@ -5,14 +5,14 @@
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek/#> .
 @prefix locn: <http://www.w3.org/ns/locn#> .
 
-<https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea>
+<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a dcterms:Location ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
-    skos:notation "https://mock.data.publiq.be/locaties/d4b46fba-6433-4f86-bcb5-edeef6689fea" ;
+    skos:notation "https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea" ;
     dcterms:creator "https://fixme.com/example/dataprovider/publiq" ;
-    generiek:naamruimte "https://mock.data.publiq.be/locaties/"^^xsd:string ;
+    generiek:naamruimte "https://mock.data.publiq.be/places/"^^xsd:string ;
     generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:string ;
     generiek:versieIdentificator "2023-01-02T12:30:15+01:00"^^xsd:string
   ] ;
