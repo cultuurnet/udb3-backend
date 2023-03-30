@@ -21,6 +21,9 @@ return array_replace_recursive(
         ],
         'amqp' => [
             'host' => 'rabbitmq',
+        ],
+        'rdf' => [
+            'enabled' => false,
         ]
     ]
 );
