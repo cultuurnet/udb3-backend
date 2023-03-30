@@ -42,6 +42,16 @@ To make the SAPI3 proxy work you will need to add a `scheme` and `port` to the s
 ],
 ```
 
+To make the fuseki store work you will need modify the `rdf` config
+
+```
+'rdf' => [
+    'enabled' => true,
+    'placesRdfBaseUri' => 'http://host.docker.internal:8080/places/',
+    'placesGraphStoreUrl' => 'http://fuseki:80/places/',
+],
+```
+
 ### pem files
 
 Copy `public.pem` and `public-auth0.pem` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/keys to the root
