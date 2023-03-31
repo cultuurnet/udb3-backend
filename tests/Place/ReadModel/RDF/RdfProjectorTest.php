@@ -17,11 +17,15 @@ use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType as LegacyCalendarType;
 use CultuurNet\UDB3\Event\EventType as LegacyEventType;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
+use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
+use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
@@ -184,6 +188,25 @@ class RdfProjectorTest extends TestCase
             ),
         ]);
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/address-translated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_geo_coordinates_updated(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new GeoCoordinatesUpdated(
+                $placeId,
+                new Coordinates(
+                    new Latitude(50.879),
+                    new Longitude(4.6997)
+                )
+            ),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/geo-coordinates-updated.ttl'));
     }
 
     private function getPlaceCreated(string $placeId): PlaceCreated
