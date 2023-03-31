@@ -5638,12 +5638,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "a2fe031adf545dfb7b39987d2e4c6a1a00c00268"
+                "reference": "e32275e18b5b0019a7fa7670a6c7030aa76a9713"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/a2fe031adf545dfb7b39987d2e4c6a1a00c00268",
-                "reference": "a2fe031adf545dfb7b39987d2e4c6a1a00c00268",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/e32275e18b5b0019a7fa7670a6c7030aa76a9713",
+                "reference": "e32275e18b5b0019a7fa7670a6c7030aa76a9713",
                 "shasum": ""
             },
             "type": "library",
@@ -5662,7 +5662,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/uitdatabank/III-5428-youtube-embed-urls"
             },
-            "time": "2023-03-28T11:04:32+00:00"
+            "time": "2023-03-31T09:39:49+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
