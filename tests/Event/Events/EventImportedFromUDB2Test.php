@@ -7,6 +7,7 @@ namespace test\Event\Events;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
+use CultuurNet\UDB3\Event\Events\DummyLocation;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
@@ -18,8 +19,14 @@ use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Timestamp;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\TestCase;
 
 final class EventImportedFromUDB2Test extends TestCase
@@ -83,7 +90,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new Title('Blubblub')),
+                new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new LegacyTitle('Blubblub')),
                 new TypeUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new EventType('0.3.1.0.0', 'Cursus of workshop')
@@ -121,9 +128,9 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new Title('Het evenement!')),
-                new TitleTranslated($eventId, new Language('fr'), new Title('L\'événement!')),
-                new TitleTranslated($eventId, new Language('de'), new Title('Das Ereignis!')),
+                new TitleUpdated($eventId, new LegacyTitle('Het evenement!')),
+                new TitleTranslated($eventId, new Language('fr'), new LegacyTitle('L\'événement!')),
+                new TitleTranslated($eventId, new Language('de'), new LegacyTitle('Das Ereignis!')),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
                 new CalendarUpdated(
                     $eventId,
@@ -159,9 +166,9 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new Title('Het evenement!')),
-                new TitleTranslated($eventId, new Language('fr'), new Title('L\'événement!')),
-                new TitleTranslated($eventId, new Language('de'), new Title('Das Ereignis!')),
+                new TitleUpdated($eventId, new LegacyTitle('Het evenement!')),
+                new TitleTranslated($eventId, new Language('fr'), new LegacyTitle('L\'événement!')),
+                new TitleTranslated($eventId, new Language('de'), new LegacyTitle('Das Ereignis!')),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
                 new LocationUpdated($eventId, new LocationId('28d2900d-f784-4d04-8d66-5b93900c6f9c')),
                 new CalendarUpdated(
@@ -183,6 +190,81 @@ final class EventImportedFromUDB2Test extends TestCase
         );
     }
 
+
+    /**
+     * @test
+     */
+    public function it_does_not_return_a_dummy_location_if_location_id_is_present(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithLocationId = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertNull($eventWithLocationId->getDummyLocation());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_dummy_location_(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithDummyLocation = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_photo.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            new DummyLocation(
+                new Title('Liberaal Archief'),
+                new Address(
+                    new Street('Kramersplein 23'),
+                    new PostalCode('9000'),
+                    new Locality('Gent'),
+                    new CountryCode('BE')
+                )
+            ),
+            $eventWithDummyLocation->getDummyLocation()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_external_id_if_present(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithExternalIdLocation = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_externalid_location.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            'SKB:9ccbf9c1-a5c5-4689-9687-9a7dd3c51aee',
+            $eventWithExternalIdLocation->getExternalId()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_null_if_no_external_id_is_present(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithExternalIdLocation = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertNull($eventWithExternalIdLocation->getExternalId());
+    }
+
     /**
      * @test
      */
@@ -197,9 +279,9 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new Title('Oscar et la Dame Rose')),
-                new TitleTranslated($eventId, new Language('fr'), new Title('Oscar et la Dame Rose')),
-                new TitleTranslated($eventId, new Language('en'), new Title('Oscar et la Dame Rose')),
+                new TitleUpdated($eventId, new LegacyTitle('Oscar et la Dame Rose')),
+                new TitleTranslated($eventId, new Language('fr'), new LegacyTitle('Oscar et la Dame Rose')),
+                new TitleTranslated($eventId, new Language('en'), new LegacyTitle('Oscar et la Dame Rose')),
                 new TypeUpdated($eventId, new EventType('0.55.0.0.0', 'Theatervoorstelling')),
                 new CalendarUpdated(
                     $eventId,
@@ -266,7 +348,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new Title('Werken met de \'nailliner\'')),
+                new TitleUpdated($eventId, new LegacyTitle('Werken met de \'nailliner\'')),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
                 new CalendarUpdated(
                     $eventId,
@@ -313,7 +395,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new Title('Juwelen maken VOORJAAR 2017')),
+                new TitleUpdated($eventId, new LegacyTitle('Juwelen maken VOORJAAR 2017')),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
                 new CalendarUpdated(
                     $eventId,
@@ -360,7 +442,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new Title('De Smoestuinier | Low Impact man')),
+                new TitleUpdated($eventId, new LegacyTitle('De Smoestuinier | Low Impact man')),
                 new TypeUpdated($eventId, new EventType('0.55.0.0.0', 'Theatervoorstelling')),
                 new CalendarUpdated(
                     $eventId,

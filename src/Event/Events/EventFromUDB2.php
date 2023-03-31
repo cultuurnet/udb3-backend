@@ -27,8 +27,14 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\SerializableSimpleXmlElement;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeZone;
 
 trait EventFromUDB2
@@ -41,12 +47,12 @@ trait EventFromUDB2
 
         foreach ($details as $key => $detail) {
             if ($key == 0) {
-                $granularEvents[] = new TitleUpdated($this->eventId, new Title($detail['title'][0]['_text']));
+                $granularEvents[] = new TitleUpdated($this->eventId, new LegacyTitle($detail['title'][0]['_text']));
             } else {
                 $granularEvents[] = new TitleTranslated(
                     $this->eventId,
                     new Language($detail['@attributes']['lang']),
-                    new Title($detail['title'][0]['_text'])
+                    new LegacyTitle($detail['title'][0]['_text'])
                 );
             }
         }
@@ -168,5 +174,31 @@ trait EventFromUDB2
             }
         }
         return $openingHours;
+    }
+
+    public function getDummyLocation(): ?DummyLocation
+    {
+        $eventAsArray = $this->getEventAsArray();
+        if (isset($eventAsArray['location'][0]['label'][0]['@attributes']['cdbid'])) {
+            return null;
+        }
+
+        $addressAsArray = $eventAsArray['location'][0]['address'][0]['physical'][0];
+
+        return new DummyLocation(
+            new Title($eventAsArray['location'][0]['label'][0]['_text']),
+            new Address(
+                new Street($addressAsArray['street'][0]['_text'] . ' ' . $addressAsArray['housenr'][0]['_text']),
+                new PostalCode($addressAsArray['zipcode'][0]['_text']),
+                new Locality($addressAsArray['city'][0]['_text']),
+                new CountryCode($addressAsArray['country'][0]['_text'])
+            )
+        );
+    }
+
+    public function getExternalId(): ?string
+    {
+        $eventAsArray = $this->getEventAsArray();
+        return $eventAsArray['location'][0]['label'][0]['@attributes']['externalid'] ?? null;
     }
 }
