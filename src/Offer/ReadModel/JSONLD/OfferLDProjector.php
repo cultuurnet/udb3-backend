@@ -418,9 +418,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         );
 
         // Unset the main image if it matches the removed image
-        // @see https://jira.uitdatabank.be/browse/III-4684
-        // some historic ImageRemoved Events have http instead of https in the eventStore
-        if (isset($offerLd->image) && stristr($offerLd->{'image'}, ':') === stristr($imageUrl, ':')) {
+        if (isset($offerLd->image) && $offerLd->{'image'} === $imageUrl) {
             unset($offerLd->{'image'});
         }
 
@@ -428,9 +426,11 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             $offerLd->image = array_values($filteredMediaObjects)[0]->contentUrl;
         }
 
-        // If no media objects are left remove the attribute.
+        // If no media objects are left remove the attribute and the imageUrl.
+        // @see III-4684
         if (empty($filteredMediaObjects)) {
             unset($offerLd->{'mediaObject'});
+            unset($offerLd->{'image'});
         } else {
             $offerLd->mediaObject = array_values($filteredMediaObjects);
         }
