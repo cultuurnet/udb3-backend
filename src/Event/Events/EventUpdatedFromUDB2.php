@@ -6,11 +6,13 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\Event\EventEvent;
+use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\HasCdbXmlTrait;
 
-class EventUpdatedFromUDB2 extends EventEvent implements EventCdbXMLInterface
+final class EventUpdatedFromUDB2 extends EventEvent implements EventCdbXMLInterface, ConvertsToGranularEvents, DummyLocationUpdated, ExternalIdLocationUpdated
 {
     use HasCdbXmlTrait;
+    use EventFromUDB2;
 
     public function __construct(string $eventId, string $cdbXml, string $cdbXmlNamespaceUri)
     {

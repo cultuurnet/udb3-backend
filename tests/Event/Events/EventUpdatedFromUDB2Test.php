@@ -4,10 +4,29 @@ declare(strict_types=1);
 
 namespace test\Event\Events;
 
+use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Event\Events\CalendarUpdated;
+use CultuurNet\UDB3\Event\Events\DummyLocation;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
+use CultuurNet\UDB3\Event\Events\LocationUpdated;
+use CultuurNet\UDB3\Event\Events\TitleTranslated;
+use CultuurNet\UDB3\Event\Events\TitleUpdated;
+use CultuurNet\UDB3\Event\Events\TypeUpdated;
+use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Timestamp;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\TestCase;
 
-class EventUpdatedFromUDB2Test extends TestCase
+final class EventUpdatedFromUDB2Test extends TestCase
 {
     public const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
     public const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
@@ -19,7 +38,7 @@ class EventUpdatedFromUDB2Test extends TestCase
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
         EventUpdatedFromUDB2 $eventUpdatedFromUDB2
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $eventUpdatedFromUDB2->serialize()
@@ -33,14 +52,146 @@ class EventUpdatedFromUDB2Test extends TestCase
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,
         EventUpdatedFromUDB2 $expectedEventUpdatedFromUDB2
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedEventUpdatedFromUDB2,
             EventUpdatedFromUDB2::deserialize($serializedValue)
         );
     }
 
-    public function serializationDataProvider()
+    public function it_can_be_converted_to_granular_events(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventUpdatedFromUdb2 = new EventUpdatedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_translations.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($eventId, new LegacyTitle('Het evenement!')),
+                new TitleTranslated($eventId, new Language('fr'), new LegacyTitle('L\'événement!')),
+                new TitleTranslated($eventId, new Language('de'), new LegacyTitle('Das Ereignis!')),
+                new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+            ],
+            $eventUpdatedFromUdb2->toGranularEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_convert_events_with_location_id_to_granular_events(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventUpdatedFromUdb2 = new EventUpdatedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($eventId, new LegacyTitle('Het evenement!')),
+                new TitleTranslated($eventId, new Language('fr'), new LegacyTitle('L\'événement!')),
+                new TitleTranslated($eventId, new Language('de'), new LegacyTitle('Das Ereignis!')),
+                new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+                new LocationUpdated($eventId, new LocationId('28d2900d-f784-4d04-8d66-5b93900c6f9c')),
+                new CalendarUpdated(
+                    $eventId,
+                    new Calendar(
+                        CalendarType::SINGLE(),
+                        null,
+                        null,
+                        [
+                            new Timestamp(
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            ),
+                        ]
+                    )
+                ),
+            ],
+            $eventUpdatedFromUdb2->toGranularEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_return_a_dummy_location_if_location_id_is_present(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithLocationId = new EventUpdatedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertNull($eventWithLocationId->getDummyLocation());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_dummy_location_(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithDummyLocation = new EventUpdatedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_photo.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            new DummyLocation(
+                new Title('Liberaal Archief'),
+                new Address(
+                    new Street('Kramersplein 23'),
+                    new PostalCode('9000'),
+                    new Locality('Gent'),
+                    new CountryCode('BE')
+                )
+            ),
+            $eventWithDummyLocation->getDummyLocation()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_external_id_if_present(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithExternalIdLocation = new EventUpdatedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_externalid_location.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            'SKB:9ccbf9c1-a5c5-4689-9687-9a7dd3c51aee',
+            $eventWithExternalIdLocation->getExternalId()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_null_if_no_external_id_is_present(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithExternalIdLocation = new EventUpdatedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertNull($eventWithExternalIdLocation->getExternalId());
+    }
+
+    public function serializationDataProvider(): array
     {
         $xml = file_get_contents(__DIR__ . '/../samples/event_entryapi_valid_with_keywords.xml');
 
