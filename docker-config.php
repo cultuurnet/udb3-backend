@@ -23,7 +23,8 @@ return array_replace_recursive(
             'host' => 'rabbitmq',
         ],
         'rdf' => [
-            'enabled' => false,
+            'placesRdfBaseUri' => 'http://host.docker.internal:8080/places/',
+            'placesGraphStoreUrl' => 'http://fuseki:80/places/',
         ]
     ]
 );
