@@ -729,6 +729,46 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_should_unset_the_main_image_if_the_old_image_removed_event_has_a_http_source(): void
+    {
+        $eventId = 'event-1';
+        $image = new Image(
+            new UUID('aa39128e-b2ca-5629-a275-b380381df0f3'),
+            new MIMEType('image/jpeg'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
+            new Url('http://images.uitdatabank.be/edcea9f6-756b-4935-9c8b-d7d9c262d041.jpeg'),
+            new LegacyLanguage('en')
+        );
+        $initialDocument = new JsonDocument(
+            $eventId,
+            Json::encode([
+                'mediaObject' => [
+                    [
+                        '@id' => 'https://io.uitdatabank.be/images/aa39128e-b2ca-5629-a275-b380381df0f3',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'https://images.uitdatabank.be/edcea9f6-756b-4935-9c8b-d7d9c262d041.jpeg',
+                        'thumbnailUrl' => 'https://images.uitdatabank.be/edcea9f6-756b-4935-9c8b-d7d9c262d041.jpeg',
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
+                        'inLanguage' => 'en',
+                    ],
+                ],
+                'image' => 'https://images.uitdatabank.be/edcea9f6-756b-4935-9c8b-d7d9c262d041.jpeg',
+            ])
+        );
+
+        $this->documentRepository->save($initialDocument);
+        $imageRemovedEvent = new ImageRemoved($eventId, $image);
+        $eventBody = $this->project($imageRemovedEvent, $eventId);
+
+        $this->assertObjectNotHasAttribute('mediaObject', $eventBody);
+        $this->assertObjectNotHasAttribute('image', $eventBody);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_unset_the_main_image_when_its_media_object_is_removed(): void
     {
         $eventId = 'event-1';
