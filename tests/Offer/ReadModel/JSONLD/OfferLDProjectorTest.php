@@ -729,7 +729,7 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_unset_the_main_image_if_the_old_image_removed_event_has_a_http_source(): void
+    public function it_unsets_the_main_images_url_if_no_media_objects_remain(): void
     {
         $eventId = 'event-1';
         $image = new Image(
