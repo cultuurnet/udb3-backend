@@ -3,6 +3,10 @@
 echo Please provide a classic Github access token from https://github.com/settings/tokens
 read token
 
+# copy config files
+cp .env.dist .env
+cp docker-config.php config.php
+
 # retrieve config.php as config.vagrant.php from udb3-vagrant
 curl -H 'Authorization: token '"$token" \
   -H 'Accept: application/vnd.github.v3.raw' \
