@@ -29,8 +29,8 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
             fn (): RdfProjector => new RdfProjector(
                 $this->container->get(MainLanguageRepository::class),
                 RdfServiceProvider::createGraphStoreRepository($this->container->get('config')['rdf']['placesGraphStoreUrl']),
-                RdfServiceProvider::createIriGenerator($this->container, 'locaties'),
-                $this->container->get(GeopuntAddressParser::class),
+                RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['placesRdfBaseUri']),
+                $this->container->get(GeopuntAddressParser::class)
             )
         );
 
