@@ -157,6 +157,40 @@ class AddVideoRequestHandlerTest extends TestCase
      * @test
      * @dataProvider offerTypeDataProvider
      */
+    public function it_allows_adding_an_embedded_youtube_url(string $offerType): void
+    {
+        $addVideoRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', '91c75325-3830-4000-b580-5778b2de4548')
+            ->withBodyFromString('{"url":"https://www.youtube.com/embed/yi_XlQetN28", "language":"nl"}')
+            ->build('POST');
+
+        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $this->uuidFactory->expects($this->once())
+            ->method('uuid4')
+            ->willReturn($videoId);
+
+        $this->addVideoRequestHandler->handle($addVideoRequest);
+
+        $this->assertEquals(
+            [
+                new AddVideo(
+                    '91c75325-3830-4000-b580-5778b2de4548',
+                    new Video(
+                        $videoId->toString(),
+                        new Url('https://www.youtube.com/embed/yi_XlQetN28'),
+                        new Language('nl')
+                    )
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
     public function it_requires_a_url(string $offerType): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
@@ -249,7 +283,7 @@ class AddVideoRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/url',
-                    'The string should match pattern: ^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*))|(youtu\.be\/([^\/#&?]*)))'
+                    'The string should match pattern: ^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*))|(youtu\.be\/([^\/#&?]*))|(youtube.com/embed/([^\/#&?]*)))'
                 )
             ),
             fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
