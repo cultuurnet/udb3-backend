@@ -34,6 +34,10 @@ final class VideoNormalizer implements NormalizerInterface
             'embed' => self::YOUTUBE_EMBED,
             'name' => self::YOUTUBE_NAME,
         ],
+        11 => [
+            'embed' => self::YOUTUBE_EMBED,
+            'name' => self::YOUTUBE_NAME,
+        ],
     ];
 
     private array $defaultCopyrightHolders;
