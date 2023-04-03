@@ -93,6 +93,20 @@ final class VideoNormalizerTest extends TestCase
                     'copyrightHolder' => 'Copyright afgehandeld door YouTube',
                 ],
             ],
+            'embedded_youtube_video' => [
+                new Video(
+                    '910585da-2cbe-441e-97e4-c9308b5a6c1a',
+                    new Url('https://www.youtube.com/embed/yi_XlQetN28'),
+                    new Language('nl')
+                ),
+                [
+                    'id' => '910585da-2cbe-441e-97e4-c9308b5a6c1a',
+                    'url' => 'https://www.youtube.com/embed/yi_XlQetN28',
+                    'embedUrl' => 'https://www.youtube.com/embed/yi_XlQetN28',
+                    'language' => 'nl',
+                    'copyrightHolder' => 'Copyright afgehandeld door YouTube',
+                ],
+            ],
         ];
     }
 }
