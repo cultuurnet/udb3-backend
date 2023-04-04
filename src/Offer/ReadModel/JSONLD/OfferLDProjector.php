@@ -418,7 +418,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         );
 
         // Unset the main image if it matches the removed image
-        if (isset($offerLd->image) && $offerLd->{'image'} === $imageUrl) {
+        // stristr() comparison is done for edge cases where an offer has multiple images
+        // @see III-4684
+        if (isset($offerLd->image) && stristr($offerLd->{'image'}, ':') === stristr($imageUrl, ':')) {
             unset($offerLd->{'image'});
         }
 
