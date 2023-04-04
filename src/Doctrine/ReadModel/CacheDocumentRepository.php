@@ -12,15 +12,18 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use RuntimeException;
 
-class CacheDocumentRepository implements DocumentRepository
+final class CacheDocumentRepository implements DocumentRepository
 {
     use LoggerAwareTrait;
 
-    protected Cache $cache;
+    private Cache $cache;
 
-    public function __construct(Cache $cache)
+    private int $millisecondsBetweenRetry;
+
+    public function __construct(Cache $cache, int $millisecondsBetweenRetry = 0)
     {
         $this->cache = $cache;
+        $this->millisecondsBetweenRetry = $millisecondsBetweenRetry;
         $this->logger = new NullLogger();
     }
 
@@ -35,17 +38,24 @@ class CacheDocumentRepository implements DocumentRepository
         return new JsonDocument($id, $value);
     }
 
-    public function save(JsonDocument $document): void
+    public function save(JsonDocument $document, int $attempts = 3): void
     {
         $saved = $this->cache->save($document->getId(), $document->getRawBody(), 0);
 
         if (!$saved) {
-            throw new RuntimeException('Could not save document ' . $document->getId() . 'to cache.');
+            throw new RuntimeException('Could not save document ' . $document->getId() . ' to cache.');
         }
 
         $savedDocument = $this->fetch($document->getId());
         if ($savedDocument->getRawBody() !== $document->getRawBody()) {
-            $this->logger->error('Saved document in cache does not match provided document ' . $document->getId());
+            $this->logger->error(
+                'Saved document in cache does not match provided document ' . $document->getId() . '. Retry attempts left: ' . $attempts
+            );
+
+            if ($attempts > 0) {
+                usleep($this->millisecondsBetweenRetry * 1000);
+                $this->save($document, $attempts - 1);
+            }
         }
     }
 
