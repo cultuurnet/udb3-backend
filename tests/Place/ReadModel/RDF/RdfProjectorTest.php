@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
+use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -250,6 +251,19 @@ class RdfProjectorTest extends TestCase
             new Rejected($placeId, new StringLiteral('Not good enough!')),
         ]);
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-rejected.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_deleted(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new PlaceDeleted($placeId),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-deleted.ttl'));
     }
 
     private function getPlaceCreated(string $placeId): PlaceCreated
