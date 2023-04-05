@@ -48,7 +48,8 @@ final class CacheDocumentRepository implements DocumentRepository
 
         $savedDocument = $this->fetch($document->getId());
         if ($savedDocument->getRawBody() !== $document->getRawBody()) {
-            $this->logger->error(
+            $this->logger->log(
+                $attempts > 1 ? 'warning' : 'error',
                 'Saved document in cache does not match provided document ' . $document->getId() . '. Retry attempts left: ' . $attempts
             );
 
