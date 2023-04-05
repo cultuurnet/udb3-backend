@@ -28,12 +28,14 @@ use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
+use CultuurNet\UDB3\Place\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTime;
 use EasyRdf\Serialiser\Turtle;
@@ -235,6 +237,19 @@ class RdfProjectorTest extends TestCase
             new Approved($placeId),
         ]);
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-approved.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_rejected(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new Rejected($placeId, new StringLiteral('Not good enough!')),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-rejected.ttl'));
     }
 
     private function getPlaceCreated(string $placeId): PlaceCreated

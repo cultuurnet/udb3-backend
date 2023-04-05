@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
+use CultuurNet\UDB3\Place\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -104,6 +105,7 @@ final class RdfProjector implements EventListener
             GeoCoordinatesUpdated::class => fn ($e) => $this->handleGeoCoordinatesUpdated($e, $uri, $graph),
             Published::class => fn ($e) => $this->handlePublished($e, $uri, $graph),
             Approved::class => fn ($e) => $this->handleApproved($e, $uri, $graph),
+            Rejected::class => fn ($e) => $this->handleRejected($e, $uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -330,6 +332,12 @@ final class RdfProjector implements EventListener
     {
         $resource = $graph->resource($uri);
         $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, self::PROPERTY_LOCATIE_WORKFLOW_STATUS_APPROVED);
+    }
+
+    private function handleRejected(Rejected $event, string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, self::PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED);
     }
 
     private function deleteLanguageValue(
