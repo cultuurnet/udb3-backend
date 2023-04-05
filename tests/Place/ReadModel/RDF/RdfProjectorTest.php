@@ -27,6 +27,8 @@ use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
+use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
+use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -249,6 +251,32 @@ class RdfProjectorTest extends TestCase
         $this->project($placeId, [
             $this->getPlaceCreated($placeId),
             new Rejected($placeId, new StringLiteral('Not good enough!')),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-rejected.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_flagged_as_duplicate(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new FlaggedAsDuplicate($placeId),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-rejected.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_flagged_as_inappropriate(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new FlaggedAsInappropriate($placeId),
         ]);
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-rejected.ttl'));
     }

@@ -19,6 +19,8 @@ use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
+use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
+use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
@@ -106,7 +108,9 @@ final class RdfProjector implements EventListener
             GeoCoordinatesUpdated::class => fn ($e) => $this->handleGeoCoordinatesUpdated($e, $uri, $graph),
             Published::class => fn ($e) => $this->handlePublished($e, $uri, $graph),
             Approved::class => fn ($e) => $this->handleApproved($e, $uri, $graph),
-            Rejected::class => fn ($e) => $this->handleRejected($e, $uri, $graph),
+            Rejected::class => fn ($e) => $this->handleRejected($uri, $graph),
+            FlaggedAsDuplicate::class => fn ($e) => $this->handleRejected($uri, $graph),
+            FlaggedAsInappropriate::class => fn ($e) => $this->handleRejected($uri, $graph),
             PlaceDeleted::class => fn ($e) => $this->handleDeleted($e, $uri, $graph),
         ];
 
@@ -336,7 +340,7 @@ final class RdfProjector implements EventListener
         $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_APPROVED));
     }
 
-    private function handleRejected(Rejected $event, string $uri, Graph $graph): void
+    private function handleRejected(string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
         $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED));
