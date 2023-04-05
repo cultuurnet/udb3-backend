@@ -106,12 +106,12 @@ final class RdfProjector implements EventListener
             AddressUpdated::class => fn ($e) => $this->handleAddressUpdated($e, $uri, $graph),
             AddressTranslated::class => fn ($e) => $this->handleAddressTranslated($e, $uri, $graph),
             GeoCoordinatesUpdated::class => fn ($e) => $this->handleGeoCoordinatesUpdated($e, $uri, $graph),
-            Published::class => fn ($e) => $this->handlePublished($e, $uri, $graph),
-            Approved::class => fn ($e) => $this->handleApproved($e, $uri, $graph),
+            Published::class => fn ($e) => $this->handlePublished($uri, $graph),
+            Approved::class => fn ($e) => $this->handleApproved($uri, $graph),
             Rejected::class => fn ($e) => $this->handleRejected($uri, $graph),
             FlaggedAsDuplicate::class => fn ($e) => $this->handleRejected($uri, $graph),
             FlaggedAsInappropriate::class => fn ($e) => $this->handleRejected($uri, $graph),
-            PlaceDeleted::class => fn ($e) => $this->handleDeleted($e, $uri, $graph),
+            PlaceDeleted::class => fn ($e) => $this->handleDeleted($uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -328,13 +328,13 @@ final class RdfProjector implements EventListener
         $this->graphRepository->save($uri, $graph);
     }
 
-    private function handlePublished(Published $event, string $uri, Graph $graph): void
+    private function handlePublished(string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
         $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_READY_FOR_VALIDATION));
     }
 
-    private function handleApproved(Approved $event, string $uri, Graph $graph): void
+    private function handleApproved(string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
         $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_APPROVED));
@@ -346,7 +346,7 @@ final class RdfProjector implements EventListener
         $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED));
     }
 
-    private function handleDeleted(PlaceDeleted $event, string $uri, Graph $graph): void
+    private function handleDeleted(string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
         $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_DELETED));
