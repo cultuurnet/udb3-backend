@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -100,6 +101,7 @@ final class RdfProjector implements EventListener
             AddressUpdated::class => fn ($e) => $this->handleAddressUpdated($e, $uri, $graph),
             AddressTranslated::class => fn ($e) => $this->handleAddressTranslated($e, $uri, $graph),
             GeoCoordinatesUpdated::class => fn ($e) => $this->handleGeoCoordinatesUpdated($e, $uri, $graph),
+            Published::class => fn ($e) => $this->handlePublished($e, $uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -314,6 +316,12 @@ final class RdfProjector implements EventListener
         $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
 
         $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handlePublished(Published $event, string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, self::PROPERTY_LOCATIE_WORKFLOW_STATUS_READY_FOR_VALIDATION);
     }
 
     private function deleteLanguageValue(
