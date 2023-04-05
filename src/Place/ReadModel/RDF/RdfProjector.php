@@ -138,7 +138,7 @@ final class RdfProjector implements EventListener
             $identificator = $graph->newBNode();
             $identificator->setType(self::TYPE_IDENTIFICATOR);
             $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, $uri);
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR, self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT);
+            $identificator->add(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR, new Resource(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT));
             $identificator->add(self::PROPERTY_IDENTIFICATOR_NAAMRUIMTE, new Literal($this->iriGenerator->iri(''), null, 'xsd:string'));
             $identificator->add(self::PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR, new Literal($domainMessage->getId(), null, 'xsd:string'));
             $resource->add(self::PROPERTY_LOCATIE_IDENTIFICATOR, $identificator);
