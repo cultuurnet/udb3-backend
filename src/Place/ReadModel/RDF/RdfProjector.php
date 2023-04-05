@@ -40,6 +40,13 @@ final class RdfProjector implements EventListener
     private const TYPE_ADRES = 'locn:Address';
     private const TYPE_GEOMETRIE = 'locn:Geometry';
 
+    private const PROPERTY_LOCATIE_WORKFLOW_STATUS = 'udb:workflowStatus';
+    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_DRAFT = 'https://data.publiq.be/concepts/workflowStatus/draft';
+    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_READY_FOR_VALIDATION = 'https://data.publiq.be/concepts/workflowStatus/ready-for-validation';
+    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_APPROVED = 'https://data.publiq.be/concepts/workflowStatus/approved';
+    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED = 'https://data.publiq.be/concepts/workflowStatus/rejected';
+    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_DELETED = 'https://data.publiq.be/concepts/workflowStatus/deleted';
+
     private const PROPERTY_LOCATIE_AANGEMAAKT_OP = 'dcterms:created';
     private const PROPERTY_LOCATIE_LAATST_AANGEPAST = 'dcterms:modified';
     private const PROPERTY_LOCATIE_IDENTIFICATOR = 'adms:identifier';
@@ -114,6 +121,11 @@ final class RdfProjector implements EventListener
         // by add().
         if ($resource->type() !== self::TYPE_LOCATIE) {
             $resource->setType(self::TYPE_LOCATIE);
+        }
+
+        // Set the udb:workflowStatus property to draft if not set yet.
+        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_WORKFLOW_STATUS)) {
+            $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, self::PROPERTY_LOCATIE_WORKFLOW_STATUS_DRAFT);
         }
 
         // Set the dcterms:created property if not set yet.
