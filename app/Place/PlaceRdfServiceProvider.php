@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
+use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Address\GeopuntAddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -18,7 +19,7 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
     {
         return [
             RdfProjector::class,
-            GeopuntAddressParser::class,
+            AddressParser::class,
         ];
     }
 
@@ -30,13 +31,13 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
                 $this->container->get(MainLanguageRepository::class),
                 RdfServiceProvider::createGraphStoreRepository($this->container->get('config')['rdf']['placesGraphStoreUrl']),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['placesRdfBaseUri']),
-                $this->container->get(GeopuntAddressParser::class)
+                $this->container->get(AddressParser::class)
             )
         );
 
         $this->container->addShared(
-            GeopuntAddressParser::class,
-            function (): GeopuntAddressParser {
+            AddressParser::class,
+            function (): AddressParser {
                 $logger = LoggerFactory::create($this->getContainer(), LoggerName::forService('geopunt'));
 
                 $parser = new GeopuntAddressParser();
