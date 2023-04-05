@@ -131,7 +131,7 @@ final class RdfProjector implements EventListener
 
         // Set the udb:workflowStatus property to draft if not set yet.
         if (!$resource->hasProperty(self::PROPERTY_LOCATIE_WORKFLOW_STATUS)) {
-            $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, self::PROPERTY_LOCATIE_WORKFLOW_STATUS_DRAFT);
+            $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_DRAFT));
         }
 
         // Set the dcterms:created property if not set yet.
@@ -325,19 +325,19 @@ final class RdfProjector implements EventListener
     private function handlePublished(Published $event, string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
-        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, self::PROPERTY_LOCATIE_WORKFLOW_STATUS_READY_FOR_VALIDATION);
+        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_READY_FOR_VALIDATION));
     }
 
     private function handleApproved(Approved $event, string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
-        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, self::PROPERTY_LOCATIE_WORKFLOW_STATUS_APPROVED);
+        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_APPROVED));
     }
 
     private function handleRejected(Rejected $event, string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
-        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, self::PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED);
+        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED));
     }
 
     private function deleteLanguageValue(

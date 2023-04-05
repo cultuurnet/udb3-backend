@@ -8,7 +8,7 @@
 
 <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a dcterms:Location ;
-  udb:workflowStatus "https://data.publiq.be/concepts/workflowStatus/draft" ;
+  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   adms:identifier [
