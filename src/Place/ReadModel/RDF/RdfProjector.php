@@ -255,28 +255,6 @@ final class RdfProjector implements EventListener
         $this->graphRepository->save($uri, $graph);
     }
 
-    private function handleGeoCoordinatesUpdated(GeoCoordinatesUpdated $event, string $uri, Graph $graph): void
-    {
-        $resource = $graph->resource($uri);
-        $coordinates = $event->getCoordinates();
-
-        $gmlTemplate = '<gml:Point srsName=\'http://www.opengis.net/def/crs/OGC/1.3/CRS84\'><gml:coordinates>%s, %s</gml:coordinates></gml:Point>';
-        $gmlCoordinate = sprintf($gmlTemplate, $coordinates->getLongitude()->toDouble(), $coordinates->getLatitude()->toDouble());
-
-        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_GEOMETRIE)) {
-            $resource->add(self::PROPERTY_LOCATIE_GEOMETRIE, $resource->getGraph()->newBNode());
-        }
-
-        $geometryResource = $resource->getResource(self::PROPERTY_LOCATIE_GEOMETRIE);
-        if ($geometryResource->type() !== self::TYPE_GEOMETRIE) {
-            $geometryResource->setType(self::TYPE_GEOMETRIE);
-        }
-
-        $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
-
-        $this->graphRepository->save($uri, $graph);
-    }
-
     private function updateTranslatableAddressProperties(
         Resource $resource,
         Address $address,
@@ -314,6 +292,28 @@ final class RdfProjector implements EventListener
         } else {
             $this->deleteLanguageValue($addressResource, self::PROPERTY_ADRES_STRAATNAAM, $language);
         }
+    }
+
+    private function handleGeoCoordinatesUpdated(GeoCoordinatesUpdated $event, string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+        $coordinates = $event->getCoordinates();
+
+        $gmlTemplate = '<gml:Point srsName=\'http://www.opengis.net/def/crs/OGC/1.3/CRS84\'><gml:coordinates>%s, %s</gml:coordinates></gml:Point>';
+        $gmlCoordinate = sprintf($gmlTemplate, $coordinates->getLongitude()->toDouble(), $coordinates->getLatitude()->toDouble());
+
+        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_GEOMETRIE)) {
+            $resource->add(self::PROPERTY_LOCATIE_GEOMETRIE, $resource->getGraph()->newBNode());
+        }
+
+        $geometryResource = $resource->getResource(self::PROPERTY_LOCATIE_GEOMETRIE);
+        if ($geometryResource->type() !== self::TYPE_GEOMETRIE) {
+            $geometryResource->setType(self::TYPE_GEOMETRIE);
+        }
+
+        $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
+
+        $this->graphRepository->save($uri, $graph);
     }
 
     private function deleteLanguageValue(
