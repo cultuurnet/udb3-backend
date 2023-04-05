@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
@@ -221,6 +222,19 @@ class RdfProjectorTest extends TestCase
             new Published($placeId, new DateTime('2023-04-23T12:30:15+02:00')),
         ]);
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-published.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_approved(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new Approved($placeId),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-approved.ttl'));
     }
 
     private function getPlaceCreated(string $placeId): PlaceCreated
