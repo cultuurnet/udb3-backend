@@ -52,6 +52,7 @@ final class RdfProjector implements EventListener
     private const PROPERTY_LOCATIE_WORKFLOW_STATUS_APPROVED = 'https://data.publiq.be/concepts/workflowStatus/approved';
     private const PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED = 'https://data.publiq.be/concepts/workflowStatus/rejected';
     private const PROPERTY_LOCATIE_WORKFLOW_STATUS_DELETED = 'https://data.publiq.be/concepts/workflowStatus/deleted';
+    private const PROPERTY_LOCATIE_AVAILABLE_FROM = 'udb:availableFrom';
 
     private const PROPERTY_LOCATIE_AANGEMAAKT_OP = 'dcterms:created';
     private const PROPERTY_LOCATIE_LAATST_AANGEPAST = 'dcterms:modified';
@@ -106,7 +107,7 @@ final class RdfProjector implements EventListener
             AddressUpdated::class => fn ($e) => $this->handleAddressUpdated($e, $uri, $graph),
             AddressTranslated::class => fn ($e) => $this->handleAddressTranslated($e, $uri, $graph),
             GeoCoordinatesUpdated::class => fn ($e) => $this->handleGeoCoordinatesUpdated($e, $uri, $graph),
-            Published::class => fn ($e) => $this->handlePublished($uri, $graph),
+            Published::class => fn ($e) => $this->handlePublished($e, $uri, $graph),
             Approved::class => fn ($e) => $this->handleApproved($uri, $graph),
             Rejected::class => fn ($e) => $this->handleRejected($uri, $graph),
             FlaggedAsDuplicate::class => fn ($e) => $this->handleRejected($uri, $graph),
@@ -328,10 +329,15 @@ final class RdfProjector implements EventListener
         $this->graphRepository->save($uri, $graph);
     }
 
-    private function handlePublished(string $uri, Graph $graph): void
+    private function handlePublished(Published $event, string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
         $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_READY_FOR_VALIDATION));
+
+        $resource->set(
+            self::PROPERTY_LOCATIE_AVAILABLE_FROM,
+            new Literal($event->getPublicationDate()->format(DateTime::ATOM), null, 'xsd:dateTime')
+        );
     }
 
     private function handleApproved(string $uri, Graph $graph): void

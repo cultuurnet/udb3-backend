@@ -28,4 +28,5 @@
     locn:postName "Leuven"@nl ;
     locn:thoroughfare "Martelarenlaan"@nl
   ] ;
-  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/ready-for-validation> .
+  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/ready-for-validation> ;
+  udb:availableFrom "2022-12-31T12:30:15+01:00"^^xsd:dateTime .
