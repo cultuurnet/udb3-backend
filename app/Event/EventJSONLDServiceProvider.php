@@ -70,6 +70,7 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
             function () use ($container): BroadcastingDocumentRepositoryDecorator {
                 $repository = new CacheDocumentRepository(
                     $container->get('event_jsonld_cache'),
+                    $container->get('config')['cache']['allowed_retries'] ?? 3,
                     $container->get('config')['cache']['milliseconds_between_retry'] ?? 0
                 );
                 $repository->setLogger(LoggerFactory::create($container, LoggerName::forWeb()));

@@ -18,11 +18,13 @@ final class CacheDocumentRepository implements DocumentRepository
 
     private Cache $cache;
 
+    private int $allowedRetries;
     private int $millisecondsBetweenRetry;
 
-    public function __construct(Cache $cache, int $millisecondsBetweenRetry = 0)
+    public function __construct(Cache $cache, int $allowedRetries = 3, int $millisecondsBetweenRetry = 0)
     {
         $this->cache = $cache;
+        $this->allowedRetries = $allowedRetries;
         $this->millisecondsBetweenRetry = $millisecondsBetweenRetry;
         $this->logger = new NullLogger();
     }
@@ -38,8 +40,12 @@ final class CacheDocumentRepository implements DocumentRepository
         return new JsonDocument($id, $value);
     }
 
-    public function save(JsonDocument $document, int $attempts = 3): void
+    public function save(JsonDocument $document, int $attempts = null): void
     {
+        if ($attempts === null) {
+            $attempts = $this->allowedRetries;
+        }
+
         $saved = $this->cache->save($document->getId(), $document->getRawBody(), 0);
 
         if (!$saved) {
