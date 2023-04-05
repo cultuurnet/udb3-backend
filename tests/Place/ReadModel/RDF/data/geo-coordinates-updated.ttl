@@ -30,6 +30,5 @@
   dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
   locn:geometry [
     a locn:Geometry ;
-    geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>4.6997, 50.879</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral ;
-    geosparql:asWKT "<http://www.opengis.net/def/crs/OGC/1.3/CRS84> Point(4.6997 50.879)"^^geosparql:wktLiteral
+    geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>4.6997, 50.879</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral
   ] .
