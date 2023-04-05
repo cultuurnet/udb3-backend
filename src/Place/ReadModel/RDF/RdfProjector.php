@@ -338,24 +338,29 @@ final class RdfProjector implements EventListener
             self::PROPERTY_LOCATIE_AVAILABLE_FROM,
             new Literal($event->getPublicationDate()->format(DateTime::ATOM), null, 'xsd:dateTime')
         );
+
+        $this->graphRepository->save($uri, $graph);
     }
 
     private function handleApproved(string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
         $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_APPROVED));
+        $this->graphRepository->save($uri, $graph);
     }
 
     private function handleRejected(string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
         $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED));
+        $this->graphRepository->save($uri, $graph);
     }
 
     private function handleDeleted(string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
         $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_DELETED));
+        $this->graphRepository->save($uri, $graph);
     }
 
     private function deleteLanguageValue(
