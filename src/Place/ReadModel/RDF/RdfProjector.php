@@ -47,9 +47,6 @@ final class RdfProjector implements EventListener
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_LOCATIE_GEOMETRIE = 'locn:geometry';
 
-    private const PROPERTY_GEOMETRIE_GML = 'geosparql:asGML';
-    private const PROPERTY_GEOMETRIE_WKT = 'geosparql:asWKT';
-
     private const PROPERTY_IDENTIFICATOR_NOTATION = 'skos:notation';
     private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR = 'dcterms:creator';
     private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT = 'https://fixme.com/example/dataprovider/publiq';
@@ -63,6 +60,8 @@ final class RdfProjector implements EventListener
     private const PROPERTY_ADRES_GEMEENTENAAM = 'locn:postName';
     private const PROPERTY_ADRES_LAND = 'locn:adminUnitL1';
     private const PROPERTY_ADRES_VOLLEDIG_ADRES = 'locn:fullAddress';
+
+    private const PROPERTY_GEOMETRIE_GML = 'geosparql:asGML';
 
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
@@ -137,8 +136,8 @@ final class RdfProjector implements EventListener
         if (!$resource->hasProperty(self::PROPERTY_LOCATIE_IDENTIFICATOR)) {
             $identificator = $graph->newBNode();
             $identificator->setType(self::TYPE_IDENTIFICATOR);
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, $uri);
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR, self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT);
+            $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($uri, null, 'xsd:anyUri'));
+            $identificator->add(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR, new Resource(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT));
             $identificator->add(self::PROPERTY_IDENTIFICATOR_NAAMRUIMTE, new Literal($this->iriGenerator->iri(''), null, 'xsd:string'));
             $identificator->add(self::PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR, new Literal($domainMessage->getId(), null, 'xsd:string'));
             $resource->add(self::PROPERTY_LOCATIE_IDENTIFICATOR, $identificator);
@@ -252,9 +251,6 @@ final class RdfProjector implements EventListener
         $gmlTemplate = '<gml:Point srsName=\'http://www.opengis.net/def/crs/OGC/1.3/CRS84\'><gml:coordinates>%s, %s</gml:coordinates></gml:Point>';
         $gmlCoordinate = sprintf($gmlTemplate, $coordinates->getLongitude()->toDouble(), $coordinates->getLatitude()->toDouble());
 
-        $wktTemplate = '<http://www.opengis.net/def/crs/OGC/1.3/CRS84> Point(%s %s)';
-        $wktCoordinate = sprintf($wktTemplate, $coordinates->getLongitude()->toDouble(), $coordinates->getLatitude()->toDouble());
-
         if (!$resource->hasProperty(self::PROPERTY_LOCATIE_GEOMETRIE)) {
             $resource->add(self::PROPERTY_LOCATIE_GEOMETRIE, $resource->getGraph()->newBNode());
         }
@@ -265,7 +261,6 @@ final class RdfProjector implements EventListener
         }
 
         $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
-        $geometryResource->set(self::PROPERTY_GEOMETRIE_WKT, new Literal($wktCoordinate, null, 'geosparql:wktLiteral'));
 
         $this->graphRepository->save($uri, $graph);
     }
