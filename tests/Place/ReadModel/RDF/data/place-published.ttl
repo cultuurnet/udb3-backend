@@ -28,4 +28,5 @@
     locn:thoroughfare "Martelarenlaan"@nl
   ] ;
   dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
-  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/ready-for-validation> .
+  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/ready-for-validation> ;
+  udb:availableFrom "2023-04-23T12:30:15+02:00"^^xsd:dateTime .
