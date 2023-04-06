@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Address\AddressParser;
+use CultuurNet\UDB3\Address\CachingAddressParser;
 use CultuurNet\UDB3\Address\GeopuntAddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -42,6 +43,10 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
 
                 $parser = new GeopuntAddressParser();
                 $parser->setLogger($logger);
+
+                $parser = new CachingAddressParser($parser, $this->container->get('cache')('geopunt_addresses'));
+                $parser->setLogger($logger);
+
                 return $parser;
             }
         );
