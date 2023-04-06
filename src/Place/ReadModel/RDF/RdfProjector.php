@@ -57,7 +57,7 @@ final class RdfProjector implements EventListener
     private const PROPERTY_LOCATIE_AANGEMAAKT_OP = 'dcterms:created';
     private const PROPERTY_LOCATIE_LAATST_AANGEPAST = 'dcterms:modified';
     private const PROPERTY_LOCATIE_IDENTIFICATOR = 'adms:identifier';
-    private const PROPERTY_LOCATIE_NAAM = 'locn:geographicName';
+    private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_LOCATIE_GEOMETRIE = 'locn:geometry';
 

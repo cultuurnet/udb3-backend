@@ -28,4 +28,4 @@
     locn:thoroughfare "Martelarenlaan"@nl
   ] ;
   dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
-  locn:geographicName "Voorbeeld titel UPDATED"@nl .
+  locn:locatorName "Voorbeeld titel UPDATED"@nl .
