@@ -26,14 +26,22 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Place\Events\Moderation\Approved;
+use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
+use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
+use CultuurNet\UDB3\Place\Events\Moderation\Published;
+use CultuurNet\UDB3\Place\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
+use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTime;
+use DateTimeImmutable;
 use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -94,6 +102,31 @@ class RdfProjectorTest extends TestCase
             $this->getPlaceCreated($placeId),
         ]);
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-created.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_place_created_with_publication_date(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            new PlaceCreated(
+                $placeId,
+                new LegacyLanguage('nl'),
+                new LegacyTitle('Voorbeeld titel'),
+                new LegacyEventType('0.14.0.0.0', 'Monument'),
+                new LegacyAddress(
+                    new LegacyStreet('Martelarenlaan 1'),
+                    new LegacyPostalCode('3000'),
+                    new LegacyLocality('Leuven'),
+                    new CountryCode('BE')
+                ),
+                new Calendar(LegacyCalendarType::PERMANENT()),
+                new DateTimeImmutable('2022-12-31T12:30:15+01:00')
+            ),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-created-with-publication-date.ttl'));
     }
 
     /**
@@ -207,6 +240,84 @@ class RdfProjectorTest extends TestCase
             ),
         ]);
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/geo-coordinates-updated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_published(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new Published($placeId, new DateTime('2023-04-23T12:30:15+02:00')),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-published.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_approved(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new Approved($placeId),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-approved.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_rejected(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new Rejected($placeId, new StringLiteral('Not good enough!')),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-rejected.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_flagged_as_duplicate(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new FlaggedAsDuplicate($placeId),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-rejected.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_flagged_as_inappropriate(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new FlaggedAsInappropriate($placeId),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-rejected.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_deleted(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->project($placeId, [
+            $this->getPlaceCreated($placeId),
+            new PlaceDeleted($placeId),
+        ]);
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-deleted.ttl'));
     }
 
     private function getPlaceCreated(string $placeId): PlaceCreated

@@ -14,6 +14,7 @@ final class RdfNamespaces
         RdfNamespace::delete('dc');
 
         // Set custom namespaces.
+        RdfNamespace::set('udb', 'https://data.publiq.be/ns/uitdatabank#');
         RdfNamespace::set('adms', 'http://www.w3.org/ns/adms#');
         RdfNamespace::set('locn', 'http://www.w3.org/ns/locn#');
         RdfNamespace::set('generiek', 'https://data.vlaanderen.be/ns/generiek/#');
