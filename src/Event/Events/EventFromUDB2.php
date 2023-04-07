@@ -223,7 +223,7 @@ trait EventFromUDB2
         }
 
         if ($wfstatus === 'rejected') {
-            return new Rejected($this->eventId, new StringLiteral(''));
+            return new Rejected($this->eventId, new StringLiteral('Reason unknown (imported from UiTdatabank v2)'));
         }
 
         if ($wfstatus === 'deleted') {
