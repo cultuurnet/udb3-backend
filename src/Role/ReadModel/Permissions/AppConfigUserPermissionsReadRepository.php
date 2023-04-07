@@ -12,7 +12,7 @@ final class AppConfigUserPermissionsReadRepository implements UserPermissionsRea
     /**
      * @var array<string, Permission[]>
      */
-    private array $clientIdToPermissionsConfig;
+    private array $clientIdToPermissions;
 
     private UserPermissionsReadRepositoryInterface $userPermissionsReadRepository;
 
@@ -20,13 +20,13 @@ final class AppConfigUserPermissionsReadRepository implements UserPermissionsRea
     public function __construct(UserPermissionsReadRepositoryInterface $userPermissionsReadRepository, array $clientIdToPermissionsConfig)
     {
         $this->userPermissionsReadRepository = $userPermissionsReadRepository;
-        $this->clientIdToPermissionsConfig = $clientIdToPermissionsConfig;
+        $this->clientIdToPermissions = $clientIdToPermissionsConfig;
     }
 
 
     public function getPermissions(string $userId): array
     {
-        return $this->clientIdToPermissionsConfig[$userId] ??
+        return $this->clientIdToPermissions[$userId] ??
             $this->userPermissionsReadRepository->getPermissions($userId);
     }
 
