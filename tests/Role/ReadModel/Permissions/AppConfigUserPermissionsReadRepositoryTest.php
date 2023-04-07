@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Permissions;
 
+use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsReadRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
 
@@ -14,12 +15,12 @@ final class AppConfigUserPermissionsReadRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-
+        $userPermissionsReadRepository = $this->createMock(UserPermissionsReadRepository::class);
         $config = [
             'jkfhsjkfsdhjk@clients' => [Permission::aanbodBewerken(), Permission::productiesAanmaken()]
         ];
 
-        $this->repository = new AppConfigUserPermissionsReadRepository($config);
+        $this->repository = new AppConfigUserPermissionsReadRepository($userPermissionsReadRepository, $config);
     }
 
     /**
