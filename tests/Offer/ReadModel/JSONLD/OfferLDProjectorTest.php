@@ -729,6 +729,97 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_unsets_the_main_images_url_if_no_media_objects_remain(): void
+    {
+        $eventId = 'event-1';
+        $image = new Image(
+            new UUID('aa39128e-b2ca-5629-a275-b380381df0f3'),
+            new MIMEType('image/jpeg'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
+            new Url('http://images.uitdatabank.be/edcea9f6-756b-4935-9c8b-d7d9c262d041.jpeg'),
+            new LegacyLanguage('en')
+        );
+        $initialDocument = new JsonDocument(
+            $eventId,
+            Json::encode([
+                'mediaObject' => [
+                    [
+                        '@id' => 'https://io.uitdatabank.be/images/aa39128e-b2ca-5629-a275-b380381df0f3',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'https://images.uitdatabank.be/edcea9f6-756b-4935-9c8b-d7d9c262d041.jpeg',
+                        'thumbnailUrl' => 'https://images.uitdatabank.be/edcea9f6-756b-4935-9c8b-d7d9c262d041.jpeg',
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
+                        'inLanguage' => 'en',
+                    ],
+                ],
+                'image' => 'https://images.uitdatabank.be/edcea9f6-756b-4935-9c8b-d7d9c262d041.jpeg',
+            ])
+        );
+
+        $this->documentRepository->save($initialDocument);
+        $imageRemovedEvent = new ImageRemoved($eventId, $image);
+        $eventBody = $this->project($imageRemovedEvent, $eventId);
+
+        $this->assertObjectNotHasAttribute('mediaObject', $eventBody);
+        $this->assertObjectNotHasAttribute('image', $eventBody);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_unset_a_main_image_regardless_of_protocol(): void
+    {
+        $eventId = 'event-1';
+        $image = new Image(
+            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/png'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new LegacyLanguage('en')
+        );
+        $initialDocument = new JsonDocument(
+            $eventId,
+            Json::encode([
+                'image' => 'https://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                'mediaObject' => [
+                    [
+                        '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                        'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
+                        'inLanguage' => 'en',
+                    ],
+                    [
+                        '@id' => 'https://example.com/entity/bef60647-0e56-4d33-87f7-110811092c4a',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'https://foo.bar/media/bef60647-0e56-4d33-87f7-110811092c4a.png',
+                        'thumbnailUrl' => 'https://foo.bar/media/bef60647-0e56-4d33-87f7-110811092c4a.png',
+                        'description' => 'Des glaneuses',
+                        'copyrightHolder' => 'Jean-François Millet',
+                        'inLanguage' => 'fr',
+                    ],
+                ],
+            ])
+        );
+
+        $this->documentRepository->save($initialDocument);
+        $imageRemovedEvent = new ImageRemoved($eventId, $image);
+        $eventBody = $this->project($imageRemovedEvent, $eventId);
+
+        $this->assertEquals(
+            'https://foo.bar/media/bef60647-0e56-4d33-87f7-110811092c4a.png',
+            $eventBody->image
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_unset_the_main_image_when_its_media_object_is_removed(): void
     {
         $eventId = 'event-1';
@@ -743,7 +834,7 @@ class OfferLDProjectorTest extends TestCase
         $initialDocument = new JsonDocument(
             $eventId,
             Json::encode([
-                'image' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                'image' => 'https://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 'mediaObject' => [
                     [
                         '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',

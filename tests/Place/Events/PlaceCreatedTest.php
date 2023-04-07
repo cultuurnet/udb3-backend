@@ -15,6 +15,7 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -25,6 +26,7 @@ class PlaceCreatedTest extends TestCase
     private Address $address;
     private DateTimeImmutable $publicationDate;
     private PlaceCreated $placeCreated;
+    private PlaceCreated $placeCreatedWithoutPublicationDate;
 
     protected function setUp(): void
     {
@@ -35,7 +37,7 @@ class PlaceCreatedTest extends TestCase
             new CountryCode('BE')
         );
 
-        $this->publicationDate = \DateTimeImmutable::createFromFormat(
+        $this->publicationDate = DateTimeImmutable::createFromFormat(
             \DateTime::ISO8601,
             '2016-08-01T00:00:00+0200'
         );
@@ -49,6 +51,15 @@ class PlaceCreatedTest extends TestCase
             new Calendar(CalendarType::PERMANENT()),
             $this->publicationDate
         );
+
+        $this->placeCreatedWithoutPublicationDate = new PlaceCreated(
+            'id',
+            new Language('es'),
+            new Title('title'),
+            new EventType('id', 'label'),
+            $this->address,
+            new Calendar(CalendarType::PERMANENT())
+        );
     }
 
     /**
@@ -61,11 +72,21 @@ class PlaceCreatedTest extends TestCase
             new TypeUpdated('id', new EventType('id', 'label')),
             new AddressUpdated('id', $this->address),
             new CalendarUpdated('id', new Calendar(CalendarType::PERMANENT())),
+            new Published('id', DateTimeImmutable::createFromFormat(DateTimeImmutable::ISO8601, '2016-08-01T00:00:00+0200')),
         ];
+        $expectedWithoutPublicationDate = [
+            new TitleUpdated('id', new Title('title')),
+            new TypeUpdated('id', new EventType('id', 'label')),
+            new AddressUpdated('id', $this->address),
+            new CalendarUpdated('id', new Calendar(CalendarType::PERMANENT())),
+        ];
+
         $actual = $this->placeCreated->toGranularEvents();
+        $actualWithoutPublicationDate = $this->placeCreatedWithoutPublicationDate->toGranularEvents();
 
         $this->assertInstanceOf(ConvertsToGranularEvents::class, $this->placeCreated);
         $this->assertEquals($expected, $actual);
+        $this->assertEquals($expectedWithoutPublicationDate, $actualWithoutPublicationDate);
     }
 
     /**
@@ -281,7 +302,7 @@ class PlaceCreatedTest extends TestCase
                     new Calendar(
                         CalendarType::PERMANENT()
                     ),
-                    \DateTimeImmutable::createFromFormat(
+                    DateTimeImmutable::createFromFormat(
                         DateTimeInterface::ATOM,
                         '2016-08-01T00:00:00+02:00'
                     )

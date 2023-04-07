@@ -1,23 +1,21 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek/#> .
 @prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 
 <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a dcterms:Location ;
-  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
-  dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
     skos:notation "https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri ;
     dcterms:creator <https://fixme.com/example/dataprovider/publiq> ;
     generiek:naamruimte "https://mock.data.publiq.be/places/"^^xsd:string ;
     generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:string ;
-    generiek:versieIdentificator "2023-01-01T12:30:15+01:00"^^xsd:string
+    generiek:versieIdentificator "2023-01-02T12:30:15+01:00"^^xsd:string
   ] ;
   locn:locatorName "Voorbeeld titel"@nl ;
   locn:address [
@@ -28,4 +26,7 @@
     locn:fullAddress "Martelarenlaan 1, 3000 Leuven, BE"@nl ;
     locn:postName "Leuven"@nl ;
     locn:thoroughfare "Martelarenlaan"@nl
-  ] .
+  ] ;
+  dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
+  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/ready-for-validation> ;
+  udb:availableFrom "2023-04-23T12:30:15+02:00"^^xsd:dateTime .
