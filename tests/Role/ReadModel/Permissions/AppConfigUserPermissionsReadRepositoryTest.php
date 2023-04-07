@@ -25,7 +25,7 @@ final class AppConfigUserPermissionsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_all_enabled_permissions_for_client_id() {
+    public function it_returns_all_enabled_permissions_for_client_id_when_executing_get_permissions() {
         $permissions = $this->repository->getPermissions('jkfhsjkfsdhjk@clients');
         $expected = [Permission::aanbodBewerken(), Permission::productiesAanmaken()];
 
@@ -35,7 +35,7 @@ final class AppConfigUserPermissionsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_no_permissions_for_unknown_client_id() {
+    public function it_returns_no_permissions_for_unknown_client_id_when_executing_get_permissions() {
         $permissions = $this->repository->getPermissions('nobody@clients');
         $expected = [];
 
@@ -45,7 +45,7 @@ final class AppConfigUserPermissionsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_true_for_client_id_that_has_permission() {
+    public function it_returns_true_for_client_id_with_permission_when_executing_has_permission() {
         $hasPermission = $this->repository->hasPermission('jkfhsjkfsdhjk@clients', Permission::aanbodBewerken());
 
         $this->assertTrue($hasPermission);
@@ -54,7 +54,7 @@ final class AppConfigUserPermissionsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_false_for_client_id_that_does_not_have_permission() {
+    public function it_returns_false_for_client_id_without_permission_when_executing_has_permission() {
         $hasPermission = $this->repository->hasPermission('jkfhsjkfsdhjk@clients', Permission::filmsAanmaken());
 
         $this->assertFalse($hasPermission);
@@ -63,7 +63,7 @@ final class AppConfigUserPermissionsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_false_for_unknown_client_id_while_checking_has_permission() {
+    public function it_returns_false_for_unknown_client_id_when_executing_has_permission() {
         $hasPermission = $this->repository->hasPermission('nobody@clients', Permission::aanbodBewerken());
 
         $this->assertFalse($hasPermission);
