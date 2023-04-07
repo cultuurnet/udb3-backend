@@ -14,9 +14,12 @@ final class AppConfigUserPermissionsReadRepository implements UserPermissionsRea
      */
     private array $clientIdToPermissionsConfig;
 
+    private UserPermissionsReadRepositoryInterface $userPermissionsReadRepository;
 
-    public function __construct(array $clientIdToPermissionsConfig)
+
+    public function __construct(UserPermissionsReadRepositoryInterface $userPermissionsReadRepository, array $clientIdToPermissionsConfig)
     {
+        $this->userPermissionsReadRepository = $userPermissionsReadRepository;
         $this->clientIdToPermissionsConfig = $clientIdToPermissionsConfig;
     }
 
