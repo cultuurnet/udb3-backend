@@ -26,7 +26,8 @@ final class AppConfigUserPermissionsReadRepository implements UserPermissionsRea
 
     public function getPermissions(string $userId): array
     {
-        return $this->clientIdToPermissionsConfig[$userId] ?? [];
+        return $this->clientIdToPermissionsConfig[$userId] ??
+            $this->userPermissionsReadRepository->getPermissions($userId);
     }
 
     public function hasPermission(string $userId, Permission $permission): bool
