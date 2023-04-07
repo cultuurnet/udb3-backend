@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Auth\Jwt\JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsReadRepository;
+use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\User\CurrentUser;
 use InvalidArgumentException;
@@ -42,7 +43,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ApiKeyAuthenticator $apiKeyAuthenticator;
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
     private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
-    private UserPermissionsReadRepository $userPermissionReadRepository;
+    private UserPermissionsReadRepositoryInterface $userPermissionReadRepository;
     private bool $authenticatePublicRoutes;
 
     public function __construct(
@@ -51,7 +52,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
         ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck,
-        UserPermissionsReadRepository $userPermissionsReadRepository,
+        UserPermissionsReadRepositoryInterface $userPermissionsReadRepository,
         bool $authenticatePublicRoutes
     ) {
         $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
