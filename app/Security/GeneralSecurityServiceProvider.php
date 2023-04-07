@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Role\ReadModel\Constraints\AppConfigUserConstraintsReadRepository;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\Role\RoleServiceProvider;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
@@ -34,11 +35,14 @@ final class GeneralSecurityServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'user_constraints_read_repository',
-            fn () => new UserConstraintsReadRepository(
-                $container->get('dbal_connection'),
-                UserPermissionsServiceProvider::USER_ROLES_TABLE,
-                UserPermissionsServiceProvider::ROLE_PERMISSIONS_TABLE,
-                RoleServiceProvider::ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME,
+            fn () => new AppConfigUserConstraintsReadRepository(
+                new UserConstraintsReadRepository(
+                    $container->get('dbal_connection'),
+                    UserPermissionsServiceProvider::USER_ROLES_TABLE,
+                    UserPermissionsServiceProvider::ROLE_PERMISSIONS_TABLE,
+                    RoleServiceProvider::ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME,
+                ),
+                $container->get('config')['client_permissions']
             )
         );
     }
