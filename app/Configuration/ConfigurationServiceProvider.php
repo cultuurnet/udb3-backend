@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Configuration;
 
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use League\Container\Argument\Literal\StringArgument;
 
 final class ConfigurationServiceProvider extends AbstractServiceProvider
@@ -48,6 +49,26 @@ final class ConfigurationServiceProvider extends AbstractServiceProvider
     private function getConfiguration($container): array
     {
         $config = file_exists(__DIR__ . '/../../config.php') ? require __DIR__ . '/../../config.php' : [];
+
+
+
+        $clientPermissions = [];
+        foreach ($config['client_permissions'] ?? [] as $clientId => $clientPermissionsConfig) {
+            // Add @clients suffix to client id if missing in the config
+            // @todo change to str_ends_with() in PHP 8.x
+            if (strpos($clientId, '@clients') === false) {
+                $clientId .= '@clients';
+            }
+
+            // Convert all permissions for the client id to Permission objects
+            $clientPermissionsConfig['permissions'] = array_map(
+                fn (string $permission) => new Permission($permission),
+                $clientPermissionsConfig['permissions'] ?? []
+            );
+
+            $clientPermissions[$clientId] = $clientPermissionsConfig;
+        }
+        $config['client_permissions'] = $clientPermissions;
 
         // Add the system user to the list of god users.
         return array_merge_recursive(
