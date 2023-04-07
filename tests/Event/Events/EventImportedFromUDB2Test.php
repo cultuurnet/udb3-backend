@@ -8,10 +8,12 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DummyLocation;
+use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
+use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
@@ -27,6 +29,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
@@ -474,6 +477,73 @@ final class EventImportedFromUDB2Test extends TestCase
                 new Published(
                     $eventId,
                     DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s', '2016-11-18T07:44:11', new DateTimeZone('Europe/Brussels'))
+                ),
+            ],
+            $eventImportedFromUDB2->toGranularEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_convert_a_deleted_event_to_granular_events(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventImportedFromUDB2 = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_workflow_deleted.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($eventId, new LegacyTitle('Punt sparen')),
+                new TypeUpdated($eventId, new EventType('0.0.0.0.0', 'Tentoonstelling')),
+                new LocationUpdated($eventId, new LocationId('66b69120-45d2-4b3d-a34c-aca115ebc2f0')),
+                new CalendarUpdated(
+                    $eventId,
+                    new Calendar(
+                        CalendarType::PERMANENT(),
+                        null,
+                        null,
+                        []
+                    )
+                ),
+                new EventDeleted($eventId),
+            ],
+            $eventImportedFromUDB2->toGranularEvents()
+        );
+    }
+
+    /**
+    * @test
+    */
+    public function it_can_convert_a_rejected_event_to_granular_events(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventImportedFromUDB2 = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_workflow_rejected.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($eventId, new LegacyTitle('Punt sparen')),
+                new TypeUpdated($eventId, new EventType('0.0.0.0.0', 'Tentoonstelling')),
+                new LocationUpdated($eventId, new LocationId('66b69120-45d2-4b3d-a34c-aca115ebc2f0')),
+                new CalendarUpdated(
+                    $eventId,
+                    new Calendar(
+                        CalendarType::PERMANENT(),
+                        null,
+                        null,
+                        []
+                    )
+                ),
+                new Rejected(
+                    $eventId,
+                    new StringLiteral('Reason unknown (imported from UiTdatabank v2)')
                 ),
             ],
             $eventImportedFromUDB2->toGranularEvents()
