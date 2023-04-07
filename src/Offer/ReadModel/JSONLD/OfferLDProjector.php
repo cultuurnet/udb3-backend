@@ -418,7 +418,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         );
 
         // Unset the main image if it matches the removed image
-        if (isset($offerLd->image) && $offerLd->{'image'} === $imageUrl) {
+        // stripping the protocol before comparison is done for edge cases where an offer has multiple images
+        // @see https://jira.uitdatabank.be/browse/III-4684
+        if (isset($offerLd->image) && stristr($offerLd->{'image'}, ':') === stristr($imageUrl, ':')) {
             unset($offerLd->{'image'});
         }
 
@@ -426,9 +428,11 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             $offerLd->image = array_values($filteredMediaObjects)[0]->contentUrl;
         }
 
-        // If no media objects are left remove the attribute.
+        // If no media objects are left remove the attribute and the imageUrl.
+        // @see https://jira.uitdatabank.be/browse/III-4684
         if (empty($filteredMediaObjects)) {
             unset($offerLd->{'mediaObject'});
+            unset($offerLd->{'image'});
         } else {
             $offerLd->mediaObject = array_values($filteredMediaObjects);
         }
