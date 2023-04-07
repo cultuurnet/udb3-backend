@@ -32,6 +32,6 @@ final class AppConfigUserPermissionsReadRepository implements UserPermissionsRea
 
     public function hasPermission(string $userId, Permission $permission): bool
     {
-        return in_array($permission, $this->getPermissions($userId), false);
+        return in_array($permission, $this->getPermissions($userId));
     }
 }
