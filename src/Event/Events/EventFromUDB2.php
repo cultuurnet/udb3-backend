@@ -83,7 +83,10 @@ trait EventFromUDB2
         $calendarEvent = $this->getCalendar($eventAsArray['calendar'][0]);
         $granularEvents[] = new CalendarUpdated($this->eventId, LegacyCalendar::fromUdb3ModelCalendar($calendarEvent));
 
-        $moderation = $this->getModeration($eventAsArray['@attributes']['wfstatus']);
+        $moderation = $this->getModeration(
+            $eventAsArray['@attributes']['wfstatus'],
+            $eventAsArray['@attributes']['lastupdated']
+        );
         if ($moderation !== null) {
             $granularEvents[] = $moderation;
         }
@@ -211,10 +214,13 @@ trait EventFromUDB2
         return $eventAsArray['location'][0]['label'][0]['@attributes']['externalid'] ?? null;
     }
 
-    private function getModeration(?string $wfstatus): ?AbstractEvent
+    private function getModeration(?string $wfstatus, ?string $lastUpdated): ?AbstractEvent
     {
         if ($wfstatus === 'readyforvalidation') {
-            return new Published($this->eventId, new \DateTimeImmutable());
+            return new Published(
+                $this->eventId,
+                \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s', $lastUpdated, new DateTimeZone('Europe/Brussels')),
+            );
         }
 
         if ($wfstatus === 'approved') {
