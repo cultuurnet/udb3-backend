@@ -202,6 +202,42 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_should_remove_actor_types(): void
+    {
+        $this
+            ->given([
+                'terms' => [
+                    [
+                        'id' => '8.15.0.0.0',
+                        'label' => 'Locatie',
+                        'domain' => 'actortype',
+                    ],
+                    [
+                        'id' => '8.9.1.0.0',
+                        'label' => 'Bioscoop',
+                        'domain' => 'actortype',
+                    ],
+                    [
+                        'id' => 'BtVNd33sR0WntjALVbyp3w',
+                        'label' => 'Bioscoop',
+                        'domain' => 'eventtype',
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'terms' => [
+                    [
+                        'id' => 'BtVNd33sR0WntjALVbyp3w',
+                        'label' => 'Bioscoop',
+                        'domain' => 'eventtype',
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_remove_themes_from_places(): void
     {
         $this->repository = new PropertyPolyfillOfferRepository(
