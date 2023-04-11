@@ -38,6 +38,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = $this->removeObsoleteProperties($document);
         $document = $this->removeNullLabels($document);
         $document = $this->removeThemes($document);
+        $document = $this->removeActorType($document);
         return $this->fixDuplicateLabelVisibility($document);
     }
 
@@ -256,6 +257,26 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                     array_filter(
                         $json['terms'],
                         fn ($terms) => $terms['domain'] !== 'theme'
+                    )
+                );
+
+                return $json;
+            }
+        );
+    }
+
+    private function removeActorType(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                if (!isset($json['terms']) || !is_array($json['terms'])) {
+                    return $json;
+                }
+
+                $json['terms'] = array_values(
+                    array_filter(
+                        $json['terms'],
+                        fn ($terms) => $terms['domain'] !== 'actortype'
                     )
                 );
 
