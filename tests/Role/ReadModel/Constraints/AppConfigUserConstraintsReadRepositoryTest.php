@@ -43,6 +43,50 @@ final class AppConfigUserConstraintsReadRepositoryTest extends TestCase
         $expected = ['creator:8033457c-e13e-43eb-9c24-5d03e4741f82'];
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function it_calls_database_repository_when_no_permission_matches() {
+        $config = [
+            'jkfhsjkfsdhjk@clients' => [
+                'permissions' => [Permission::aanbodBewerken(), Permission::productiesAanmaken()],
+                'sapi3_constraint' => 'creator:8033457c-e13e-43eb-9c24-5d03e4741f95',
+                'labels' => ['UiTinLeuven'],
+            ]
+        ];
+        $repository = new AppConfigUserConstraintsReadRepository($this->databaseRepository, $config);
+
+        $this->databaseRepository->expects($this->once())
+            ->method('getByUserAndPermission')
+            ->willReturn(['creator:8033457c-e13e-43eb-9c24-5d03e4741f82']);
+
+        $result = $repository->getByUserAndPermission(new StringLiteral('jkfhsjkfsdhjk@clients'), Permission::aanbodVerwijderen());
+
+        $expected = ['creator:8033457c-e13e-43eb-9c24-5d03e4741f82'];
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_the_correct_constraints_when_it_has_permission_matches_and_has_sapi3_constraint() {
+        $config = [
+            'jkfhsjkfsdhjk@clients' => [
+                'permissions' => [Permission::aanbodBewerken(), Permission::productiesAanmaken()],
+                'sapi3_constraint' => 'creator:8033457c-e13e-43eb-9c24-5d03e4741f95',
+                'labels' => ['UiTinLeuven'],
+            ]
+        ];
+        $repository = new AppConfigUserConstraintsReadRepository($this->databaseRepository, $config);
+
+        $this->databaseRepository->expects($this->never())
+            ->method('getByUserAndPermission');
+
+        $result = $repository->getByUserAndPermission(new StringLiteral('jkfhsjkfsdhjk@clients'), Permission::aanbodBewerken());
+
+        $expected = ['creator:8033457c-e13e-43eb-9c24-5d03e4741f95'];
+        $this->assertEquals($expected, $result);
     }
 
 }
