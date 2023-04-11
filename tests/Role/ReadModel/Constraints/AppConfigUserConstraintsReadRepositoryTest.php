@@ -13,9 +13,9 @@ use PHPUnit\Framework\TestCase;
 final class AppConfigUserConstraintsReadRepositoryTest extends TestCase
 {
     /**
-     * @var UserConstraintsReadRepository|MockObject
+     * @var UserConstraintsReadRepository&MockObject
      */
-    private $databaseRepository;
+    private UserConstraintsReadRepository $databaseRepository;
 
     protected function setUp(): void
     {
