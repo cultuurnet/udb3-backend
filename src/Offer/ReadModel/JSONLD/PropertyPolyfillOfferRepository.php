@@ -38,6 +38,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = $this->removeObsoleteProperties($document);
         $document = $this->removeNullLabels($document);
         $document = $this->removeThemes($document);
+        $document = $this->fixMainImage($document);
         return $this->fixDuplicateLabelVisibility($document);
     }
 
@@ -259,6 +260,20 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                     )
                 );
 
+                return $json;
+            }
+        );
+    }
+
+    private function fixMainImage(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                if (isset($json['mediaObject']) && is_array($json['mediaObject'])) {
+                    return $json;
+                }
+
+                unset($json['image']);
                 return $json;
             }
         );
