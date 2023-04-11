@@ -34,9 +34,15 @@ final class AppConfigUserConstraintsReadRepositoryTest extends TestCase
         ];
         $repository = new AppConfigUserConstraintsReadRepository($this->databaseRepository, $config);
 
-        $this->databaseRepository->expects($this->once())->method('getByUserAndPermission');
+        $this->databaseRepository->expects($this->once())
+            ->method('getByUserAndPermission')
+            ->willReturn(['creator:8033457c-e13e-43eb-9c24-5d03e4741f82']);
 
-        $repository->getByUserAndPermission(new StringLiteral('jkfhsjkfsdhjk@clients'), Permission::aanbodBewerken());
+        $result = $repository->getByUserAndPermission(new StringLiteral('jkfhsjkfsdhjk@clients'), Permission::aanbodBewerken());
+
+        $expected = ['creator:8033457c-e13e-43eb-9c24-5d03e4741f82'];
+        $this->assertEquals($expected, $result);
+    }
     }
 
 }
