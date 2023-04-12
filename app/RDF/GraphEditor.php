@@ -118,4 +118,24 @@ final class GraphEditor
 
         return $this;
     }
+
+    public function deleteLanguageValue(string $uri, string $property, string $language): self
+    {
+        $resource = $this->graph->resource($uri);
+
+        // Get all literal values for the property, and key them by their language tag.
+        // This will be an empty list if no value(s) are set for this property.
+        $literalValues = $resource->allLiterals($property);
+        $languages = array_map(fn (Literal $literal): string => $literal->getLang(), $literalValues);
+        $literalValuePerLanguage = array_combine($languages, $literalValues);
+
+        // Remove the value for the given language.
+        unset($literalValuePerLanguage[$language]);
+
+        // Remove all existing values of the property, then (re)add them in the intended order.
+        $resource->delete($property);
+        $resource->addLiteral($property, array_values($literalValuePerLanguage));
+
+        return $this;
+    }
 }
