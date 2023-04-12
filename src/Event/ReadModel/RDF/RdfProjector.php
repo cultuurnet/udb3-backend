@@ -12,6 +12,7 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\RDF\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use DateTime;
@@ -144,10 +145,8 @@ final class RdfProjector implements EventListener
     {
         $mainLanguage = $this->mainLanguageRepository->get($uri, new Language('nl'));
 
-        $resource = $graph->resource($uri);
-
-        $this->replaceLanguageValue(
-            $resource,
+        GraphEditor::for($graph)->replaceLanguageValue(
+            $uri,
             self::PROPERTY_ACTIVITEIT_NAAM,
             $event->getTitle()->toNative(),
             $mainLanguage->toString(),
@@ -158,37 +157,13 @@ final class RdfProjector implements EventListener
 
     private function handleTitleTranslated(TitleTranslated $event, string $uri, Graph $graph): void
     {
-        $resource = $graph->resource($uri);
-
-        $this->replaceLanguageValue(
-            $resource,
+        GraphEditor::for($graph)->replaceLanguageValue(
+            $uri,
             self::PROPERTY_ACTIVITEIT_NAAM,
             $event->getTitle()->toNative(),
             $event->getLanguage()->getCode()
         );
 
         $this->graphRepository->save($uri, $graph);
-    }
-
-    private function replaceLanguageValue(
-        Resource $resource,
-        string $property,
-        string $value,
-        string $language
-    ): void {
-        // Get all literal values for the property, and key them by their language tag.
-        // This will be an empty list if no value(s) were set before for this property.
-        $literalValues = $resource->allLiterals($property);
-        $languages = array_map(fn (Literal $literal): string => $literal->getLang(), $literalValues);
-        $literalValuePerLanguage = array_combine($languages, $literalValues);
-
-        // Override or add the new or updated value for the language.
-        // If the language was set before, it will keep its original position in the list. If the language was not set
-        // before it will be appended at the end of the list.
-        $literalValuePerLanguage[$language] = new Literal($value, $language);
-
-        // Remove all existing values of the property, then (re)add them in the intended order.
-        $resource->delete($property);
-        $resource->addLiteral($property, array_values($literalValuePerLanguage));
     }
 }
