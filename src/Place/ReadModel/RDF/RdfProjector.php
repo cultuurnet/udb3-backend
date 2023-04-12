@@ -259,7 +259,11 @@ final class RdfProjector implements EventListener
                 $language
             );
         } else {
-            $this->deleteLanguageValue($addressResource, self::PROPERTY_ADRES_STRAATNAAM, $language);
+            $graphEditor->deleteLanguageValue(
+                $addressResource->getUri(),
+                self::PROPERTY_ADRES_STRAATNAAM,
+                $language
+            );
         }
     }
 
@@ -317,24 +321,5 @@ final class RdfProjector implements EventListener
         $resource = $graph->resource($uri);
         $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_DELETED));
         $this->graphRepository->save($uri, $graph);
-    }
-
-    private function deleteLanguageValue(
-        Resource $resource,
-        string $property,
-        string $language
-    ): void {
-        // Get all literal values for the property, and key them by their language tag.
-        // This will be an empty list if no value(s) are set for this property.
-        $literalValues = $resource->allLiterals($property);
-        $languages = array_map(fn (Literal $literal): string => $literal->getLang(), $literalValues);
-        $literalValuePerLanguage = array_combine($languages, $literalValues);
-
-        // Remove the value for the given language.
-        unset($literalValuePerLanguage[$language]);
-
-        // Remove all existing values of the property, then (re)add them in the intended order.
-        $resource->delete($property);
-        $resource->addLiteral($property, array_values($literalValuePerLanguage));
     }
 }
