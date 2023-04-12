@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\PlaceEvent;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
