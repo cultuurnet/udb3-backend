@@ -10,6 +10,7 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -54,6 +55,39 @@ class RdfProjectorTest extends TestCase
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/title-updated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_title_translated(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new TitleTranslated($eventId, new Language('de'), new Title('Faith no more im Konzert')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/title-translated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_multiple_title_translated_and_title_updated_events(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new TitleTranslated($eventId, new Language('de'), new Title('Faith no more im Konzert')),
+            new TitleUpdated($eventId, new Title('Faith no more im concert')),
+            new TitleTranslated($eventId, new Language('de'), new Title('Faith no more im Konzert [UPDATED]')),
+            new TitleUpdated($eventId, new Title('Faith no more in concert [UPDATED]')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/title-updated-and-translated.ttl'));
     }
 
     private function getEventCreated(string $eventId): EventCreated
