@@ -17,8 +17,6 @@ use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use DateTime;
 use EasyRdf\Graph;
-use EasyRdf\Literal;
-use EasyRdf\Resource;
 
 final class RdfProjector implements EventListener
 {
@@ -27,22 +25,8 @@ final class RdfProjector implements EventListener
     private IriGeneratorInterface $iriGenerator;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
-    private const TYPE_IDENTIFICATOR = 'adms:Identifier';
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
-    private const PROPERTY_ACTIVITEIT_AANGEMAAKT_OP = 'dcterms:created';
-    private const PROPERTY_ACTIVITEIT_LAATST_AANGEPAST = 'dcterms:modified';
-    private const PROPERTY_ACTIVITEIT_IDENTIFICATOR = 'adms:identifier';
-
-    private const PROPERTY_ACTIVITEIT_WORKFLOW_STATUS = 'udb:workflowStatus';
-    private const PROPERTY_ACTIVITEIT_WORKFLOW_STATUS_DRAFT = 'https://data.publiq.be/concepts/workflowStatus/draft';
-
-    private const PROPERTY_IDENTIFICATOR_NOTATION = 'skos:notation';
-    private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR = 'dcterms:creator';
-    private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT = 'https://fixme.com/example/dataprovider/publiq';
-    private const PROPERTY_IDENTIFICATOR_NAAMRUIMTE = 'generiek:naamruimte';
-    private const PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR = 'generiek:lokaleIdentificator';
-    private const PROPERTY_IDENTIFICATOR_VERSIE_ID = 'generiek:versieIdentificator';
 
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
@@ -81,56 +65,12 @@ final class RdfProjector implements EventListener
 
     private function setGeneralProperties(Graph $graph, string $uri, DomainMessage $domainMessage): Graph
     {
-        $recordedOn = $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM);
-        $resource = $graph->resource($uri);
-
-        // Set the rdf:type property, but only if it is not set before to avoid needlessly shifting it to the end of the
-        // list of properties in the serialized Turtle data, since set() and setType() actually do a delete() followed
-        // by add().
-        if ($resource->type() !== self::TYPE_ACTIVITEIT) {
-            $resource->setType(self::TYPE_ACTIVITEIT);
-        }
-
-        // Set the udb:workflowStatus property to draft if not set yet.
-        if (!$resource->hasProperty(self::PROPERTY_ACTIVITEIT_WORKFLOW_STATUS)) {
-            $resource->set(
-                self::PROPERTY_ACTIVITEIT_WORKFLOW_STATUS,
-                new Resource(self::PROPERTY_ACTIVITEIT_WORKFLOW_STATUS_DRAFT)
-            );
-        }
-
-        // Set the dcterms:created property if not set yet.
-        // (Otherwise it would constantly update like dcterms:modified).
-        if (!$resource->hasProperty(self::PROPERTY_ACTIVITEIT_AANGEMAAKT_OP)) {
-            $resource->set(
-                self::PROPERTY_ACTIVITEIT_AANGEMAAKT_OP,
-                new Literal($recordedOn, null, 'xsd:dateTime')
-            );
-        }
-
-        // Always update the dcterms:modified property since it should change on every update to the resource.
-        $resource->set(
-            self::PROPERTY_ACTIVITEIT_LAATST_AANGEPAST,
-            new Literal($recordedOn, null, 'xsd:dateTime')
-        );
-
-        // Add an adms:Indentifier if not set yet. Like rdf:type we only do this once to avoid needlessly shifting it
-        // to the end of the properties in the serialized Turtle data.
-        if (!$resource->hasProperty(self::PROPERTY_ACTIVITEIT_IDENTIFICATOR)) {
-            $identificator = $graph->newBNode();
-            $identificator->setType(self::TYPE_IDENTIFICATOR);
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($uri, null, 'xsd:anyUri'));
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR, new Resource(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT));
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_NAAMRUIMTE, new Literal($this->iriGenerator->iri(''), null, 'xsd:string'));
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR, new Literal($domainMessage->getId(), null, 'xsd:string'));
-            $resource->add(self::PROPERTY_ACTIVITEIT_IDENTIFICATOR, $identificator);
-        }
-
-        // Add/update the generiek:versieIdentificator inside the linked adms:Identifier on every change.
-        $identificator = $resource->getResource(self::PROPERTY_ACTIVITEIT_IDENTIFICATOR);
-        $identificator->set(
-            self::PROPERTY_IDENTIFICATOR_VERSIE_ID,
-            new Literal($recordedOn, null, 'xsd:string')
+        GraphEditor::for($graph)->setGeneralProperties(
+            $uri,
+            self::TYPE_ACTIVITEIT,
+            $this->iriGenerator->iri(''),
+            $domainMessage->getId(),
+            $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
         );
 
         return $graph;
