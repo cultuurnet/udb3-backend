@@ -265,6 +265,20 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         );
     }
 
+    private function removeMainImageWhenMediaObjectIsEmpty(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                if (isset($json['mediaObject']) && is_array($json['mediaObject'])) {
+                    return $json;
+                }
+
+                unset($json['image']);
+                return $json;
+            }
+        );
+    }
+
     private function removeActorType(JsonDocument $jsonDocument): JsonDocument
     {
         return $jsonDocument->applyAssoc(

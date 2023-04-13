@@ -774,6 +774,32 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
             ->assertReturnedDocumentDoesNotContainKey('hiddenLabels');
     }
 
+    public function it_should_keep_main_image_if_media_objects_are_present(): void
+    {
+        $this->given(
+            [
+                'mediaObject' => [
+                    [
+                        '@id' => 'https://io.uitdatabank.dev/images/0fd31560-4af1-4f60-9e10-cd0a5e4ee081',
+                        'id' => '0fd31560-4af1-4f60-9e10-cd0a5e4ee081',
+                    ],
+                ],
+                'image' => 'https://images.uitdatabank.be/0fd31560-4af1-4f60-9e10-cd0a5e4ee081.png',
+            ]
+        )
+            ->assertReturnedDocumentContains(['image' => 'https://images.uitdatabank.be/0fd31560-4af1-4f60-9e10-cd0a5e4ee081.png']);
+    }
+
+    public function it_should_remove_main_image_if_no_media_objects_are_present(): void
+    {
+        $this->given(
+            [
+                'image' => 'https://images.uitdatabank.be/0fd31560-4af1-4f60-9e10-cd0a5e4ee081.png',
+            ]
+        )
+        ->assertReturnedDocumentDoesNotContainKey('image');
+    }
+
     private function given(array $given): self
     {
         $this->repository->save(
