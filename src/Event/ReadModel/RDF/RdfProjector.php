@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
@@ -62,6 +63,7 @@ final class RdfProjector implements EventListener
             TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $uri, $graph),
             TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $uri, $graph),
             Published::class => fn ($e) => $this->handlePublished($e, $uri, $graph),
+            Approved::class => fn ($e) => $this->handleApproved($uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -107,6 +109,13 @@ final class RdfProjector implements EventListener
     private function handlePublished(Published $event, string $uri, Graph $graph): void
     {
         WorkflowEditor::for($graph)->publish($uri, $event->getPublicationDate()->format(DateTime::ATOM));
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleApproved(string $uri, Graph $graph): void
+    {
+        WorkflowEditor::for($graph)->approve($uri);
 
         $this->graphRepository->save($uri, $graph);
     }

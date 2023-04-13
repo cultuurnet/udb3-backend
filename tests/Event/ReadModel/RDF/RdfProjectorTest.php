@@ -10,6 +10,7 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
@@ -104,6 +105,21 @@ class RdfProjectorTest extends TestCase
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/published.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_approved(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new Approved($eventId),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/approved.ttl'));
     }
 
     private function getEventCreated(string $eventId): EventCreated
