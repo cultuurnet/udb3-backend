@@ -8,6 +8,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
+use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
@@ -64,6 +65,7 @@ final class RdfProjector implements EventListener
             TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $uri, $graph),
             Published::class => fn ($e) => $this->handlePublished($e, $uri, $graph),
             Approved::class => fn ($e) => $this->handleApproved($uri, $graph),
+            Rejected::class => fn ($e) => $this->handleRejected($uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -116,6 +118,13 @@ final class RdfProjector implements EventListener
     private function handleApproved(string $uri, Graph $graph): void
     {
         WorkflowEditor::for($graph)->approve($uri);
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleRejected(string $uri, Graph $graph): void
+    {
+        WorkflowEditor::for($graph)->reject($uri);
 
         $this->graphRepository->save($uri, $graph);
     }
