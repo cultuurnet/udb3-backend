@@ -126,7 +126,11 @@ class RdfProjectorTest extends TestCase
                 new DateTimeImmutable('2022-12-31T12:30:15+01:00')
             ),
         ]);
-        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-created-with-publication-date.ttl'));
+        // A publication date in PlaceCreated should NOT be taken into account in the RDF projector, as it's also not
+        // taken into account in the JSON projector. These days, all places get a default publication date in
+        // PlaceCreated when they are created (even if they are not yet published), so if we would mark these places as
+        // published in the RDF we would essentially publish every new place by default.
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-created.ttl'));
     }
 
     /**
