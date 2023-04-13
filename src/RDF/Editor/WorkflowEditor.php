@@ -16,6 +16,7 @@ final class WorkflowEditor
     private const PROPERTY_WORKFLOW_STATUS_DRAFT = 'https://data.publiq.be/concepts/workflowStatus/draft';
     private const PROPERTY_WORKFLOW_STATUS_READY_FOR_VALIDATION = 'https://data.publiq.be/concepts/workflowStatus/ready-for-validation';
     private const PROPERTY_WORKFLOW_STATUS_APPROVED = 'https://data.publiq.be/concepts/workflowStatus/approved';
+    private const PROPERTY_WORKFLOW_STATUS_REJECTED = 'https://data.publiq.be/concepts/workflowStatus/rejected';
     private const PROPERTY_AVAILABLE_FROM = 'udb:availableFrom';
 
     private function __construct(Graph $graph)
@@ -62,6 +63,16 @@ final class WorkflowEditor
         $resource->set(
             self::PROPERTY_WORKFLOW_STATUS,
             new Resource(self::PROPERTY_WORKFLOW_STATUS_APPROVED)
+        );
+    }
+
+    public function reject(string $resourceUri): void
+    {
+        $resource = $this->graph->resource($resourceUri);
+
+        $resource->set(
+            self::PROPERTY_WORKFLOW_STATUS,
+            new Resource(self::PROPERTY_WORKFLOW_STATUS_REJECTED)
         );
     }
 }
