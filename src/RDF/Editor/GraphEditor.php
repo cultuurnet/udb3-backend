@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\RDF;
+namespace CultuurNet\UDB3\RDF\Editor;
 
 use EasyRdf\Graph;
 use EasyRdf\Literal;

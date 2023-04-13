@@ -13,10 +13,10 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\RDF\GraphEditor;
+use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
-use CultuurNet\UDB3\RDF\WorkflowEditor;
+use CultuurNet\UDB3\RDF\Editor\WorkflowEditor;
 use DateTime;
 use EasyRdf\Graph;
 
