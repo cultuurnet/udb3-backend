@@ -22,9 +22,6 @@ final class GraphEditor
     private const PROPERTY_IDENTIFICATOR_NOTATION = 'skos:notation';
     private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR = 'dcterms:creator';
     private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT = 'https://fixme.com/example/dataprovider/publiq';
-    private const PROPERTY_IDENTIFICATOR_NAAMRUIMTE = 'generiek:naamruimte';
-    private const PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR = 'generiek:lokaleIdentificator';
-    private const PROPERTY_IDENTIFICATOR_VERSIE_ID = 'generiek:versieIdentificator';
 
     private function __construct(Graph $graph)
     {
@@ -39,8 +36,6 @@ final class GraphEditor
     public function setGeneralProperties(
         string $resourceUri,
         string $type,
-        string $namespace,
-        string $id,
         string $recordedOn
     ): self {
         $resource = $this->graph->resource($resourceUri);
@@ -77,14 +72,8 @@ final class GraphEditor
             $identificator->setType(self::TYPE_IDENTIFICATOR);
             $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($resourceUri, null, 'xsd:anyUri'));
             $identificator->add(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR, new Resource(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT));
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_NAAMRUIMTE, new Literal($namespace, null, 'xsd:string'));
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR, new Literal($id, null, 'xsd:string'));
             $resource->add(self::PROPERTY_IDENTIFICATOR, $identificator);
         }
-
-        // Add/update the generiek:versieIdentificator inside the linked adms:Identifier on every change.
-        $identificator = $resource->getResource(self::PROPERTY_IDENTIFICATOR);
-        $identificator->set(self::PROPERTY_IDENTIFICATOR_VERSIE_ID, new Literal($recordedOn, null, 'xsd:string'));
 
         return $this;
     }
