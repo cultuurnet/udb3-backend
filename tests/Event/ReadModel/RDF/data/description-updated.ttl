@@ -16,4 +16,4 @@
   ] ;
   dcterms:title "Faith no more"@nl ;
   dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
-  dcterms:description "This will be the last concert of Faith no more"@nl .
+  dcterms:description "Dit is het laatste concert van Faith no more"@nl .

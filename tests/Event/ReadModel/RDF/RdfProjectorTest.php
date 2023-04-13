@@ -212,7 +212,7 @@ class RdfProjectorTest extends TestCase
 
         $this->project($eventId, [
             $this->getEventCreated($eventId),
-            new DescriptionUpdated($eventId, new Description('This will be the last concert of Faith no more')),
+            new DescriptionUpdated($eventId, new Description('Dit is het laatste concert van Faith no more')),
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/description-updated.ttl'));
