@@ -48,7 +48,6 @@ final class RdfProjector implements EventListener
     private const TYPE_GEOMETRIE = 'locn:Geometry';
 
     private const PROPERTY_LOCATIE_WORKFLOW_STATUS = 'udb:workflowStatus';
-    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED = 'https://data.publiq.be/concepts/workflowStatus/rejected';
     private const PROPERTY_LOCATIE_WORKFLOW_STATUS_DELETED = 'https://data.publiq.be/concepts/workflowStatus/deleted';
 
     private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
@@ -297,8 +296,8 @@ final class RdfProjector implements EventListener
 
     private function handleRejected(string $uri, Graph $graph): void
     {
-        $resource = $graph->resource($uri);
-        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED));
+        WorkflowEditor::for($graph)->reject($uri);
+
         $this->graphRepository->save($uri, $graph);
     }
 
