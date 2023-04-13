@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
@@ -34,6 +35,7 @@ final class RdfProjector implements EventListener
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
+    private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
 
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
@@ -70,6 +72,7 @@ final class RdfProjector implements EventListener
             FlaggedAsDuplicate::class => fn ($e) => $this->handleRejected($uri, $graph),
             FlaggedAsInappropriate::class => fn ($e) => $this->handleRejected($uri, $graph),
             EventDeleted::class => fn ($e) => $this->handleDeleted($uri, $graph),
+            DescriptionUpdated::class => fn ($e) => $this->handleDescriptionUpdated($e, $uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -136,6 +139,20 @@ final class RdfProjector implements EventListener
     private function handleDeleted(string $uri, Graph $graph): void
     {
         WorkflowEditor::for($graph)->delete($uri);
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleDescriptionUpdated(DescriptionUpdated $event, string $uri, Graph $graph): void
+    {
+        $mainLanguage = $this->mainLanguageRepository->get($uri, new Language('nl'));
+
+        GraphEditor::for($graph)->replaceLanguageValue(
+            $uri,
+            self::PROPERTY_ACTIVITEIT_DESCRIPTION,
+            $event->getDescription()->toNative(),
+            $mainLanguage->toString(),
+        );
 
         $this->graphRepository->save($uri, $graph);
     }
