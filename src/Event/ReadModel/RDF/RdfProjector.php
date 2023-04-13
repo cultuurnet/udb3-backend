@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
@@ -70,6 +71,7 @@ final class RdfProjector implements EventListener
             Rejected::class => fn ($e) => $this->handleRejected($uri, $graph),
             FlaggedAsDuplicate::class => fn ($e) => $this->handleRejected($uri, $graph),
             FlaggedAsInappropriate::class => fn ($e) => $this->handleRejected($uri, $graph),
+            EventDeleted::class => fn ($e) => $this->handleDeleted($uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -129,6 +131,13 @@ final class RdfProjector implements EventListener
     private function handleRejected(string $uri, Graph $graph): void
     {
         WorkflowEditor::for($graph)->reject($uri);
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleDeleted(string $uri, Graph $graph): void
+    {
+        WorkflowEditor::for($graph)->delete($uri);
 
         $this->graphRepository->save($uri, $graph);
     }
