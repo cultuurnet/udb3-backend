@@ -52,6 +52,20 @@ class RdfProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_event_created(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/created.ttl'));
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_title_updated(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
