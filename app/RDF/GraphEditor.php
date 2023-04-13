@@ -40,13 +40,13 @@ final class GraphEditor
     }
 
     public function setGeneralProperties(
-        string $uri,
+        string $resourceUri,
         string $type,
         string $namespace,
         string $id,
         string $recordedOn
     ): self {
-        $resource = $this->graph->resource($uri);
+        $resource = $this->graph->resource($resourceUri);
 
         // Set the rdf:type property, but only if it is not set before to avoid needlessly shifting it to the end of the
         // list of properties in the serialized Turtle data, since set() and setType() actually do a delete() followed
@@ -83,7 +83,7 @@ final class GraphEditor
         if (!$resource->hasProperty(self::PROPERTY_IDENTIFICATOR)) {
             $identificator = $this->graph->newBNode();
             $identificator->setType(self::TYPE_IDENTIFICATOR);
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($uri, null, 'xsd:anyUri'));
+            $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($resourceUri, null, 'xsd:anyUri'));
             $identificator->add(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR, new Resource(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT));
             $identificator->add(self::PROPERTY_IDENTIFICATOR_NAAMRUIMTE, new Literal($namespace, null, 'xsd:string'));
             $identificator->add(self::PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR, new Literal($id, null, 'xsd:string'));
@@ -97,9 +97,9 @@ final class GraphEditor
         return $this;
     }
 
-    public function replaceLanguageValue(string $uri, string $property, string $value, string $language): self
+    public function replaceLanguageValue(string $resourceUri, string $property, string $value, string $language): self
     {
-        $resource = $this->graph->resource($uri);
+        $resource = $this->graph->resource($resourceUri);
 
         // Get all literal values for the property, and key them by their language tag.
         // This will be an empty list if no value(s) were set before for this property.
@@ -119,9 +119,9 @@ final class GraphEditor
         return $this;
     }
 
-    public function deleteLanguageValue(string $uri, string $property, string $language): self
+    public function deleteLanguageValue(string $resourceUri, string $property, string $language): self
     {
-        $resource = $this->graph->resource($uri);
+        $resource = $this->graph->resource($resourceUri);
 
         // Get all literal values for the property, and key them by their language tag.
         // This will be an empty list if no value(s) are set for this property.
