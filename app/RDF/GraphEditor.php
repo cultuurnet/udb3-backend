@@ -26,9 +26,6 @@ final class GraphEditor
     private const PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR = 'generiek:lokaleIdentificator';
     private const PROPERTY_IDENTIFICATOR_VERSIE_ID = 'generiek:versieIdentificator';
 
-    private const PROPERTY_WORKFLOW_STATUS = 'udb:workflowStatus';
-    private const PROPERTY_WORKFLOW_STATUS_DRAFT = 'https://data.publiq.be/concepts/workflowStatus/draft';
-
     private function __construct(Graph $graph)
     {
         $this->graph = $graph;
@@ -56,12 +53,7 @@ final class GraphEditor
         }
 
         // Set the udb:workflowStatus property to draft if not set yet.
-        if (!$resource->hasProperty(self::PROPERTY_WORKFLOW_STATUS)) {
-            $resource->set(
-                self::PROPERTY_WORKFLOW_STATUS,
-                new Resource(self::PROPERTY_WORKFLOW_STATUS_DRAFT)
-            );
-        }
+        WorkflowEditor::for($this->graph)->draft($resourceUri);
 
         // Set the dcterms:created property if not set yet.
         // (Otherwise it would constantly update like dcterms:modified).
