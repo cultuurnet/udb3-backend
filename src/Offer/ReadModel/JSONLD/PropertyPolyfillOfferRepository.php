@@ -38,7 +38,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = $this->removeObsoleteProperties($document);
         $document = $this->removeNullLabels($document);
         $document = $this->removeThemes($document);
-        $document = $this->fixMainImage($document);
+        $document = $this->removeMainImageWhenMediaObjectIsEmpty($document);
         return $this->fixDuplicateLabelVisibility($document);
     }
 
@@ -265,7 +265,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         );
     }
 
-    private function fixMainImage(JsonDocument $jsonDocument): JsonDocument
+    private function removeMainImageWhenMediaObjectIsEmpty(JsonDocument $jsonDocument): JsonDocument
     {
         return $jsonDocument->applyAssoc(
             function (array $json) {
