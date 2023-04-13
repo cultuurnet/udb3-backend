@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
+use CultuurNet\UDB3\RDF\WorkflowEditor;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
@@ -47,11 +48,9 @@ final class RdfProjector implements EventListener
     private const TYPE_GEOMETRIE = 'locn:Geometry';
 
     private const PROPERTY_LOCATIE_WORKFLOW_STATUS = 'udb:workflowStatus';
-    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_READY_FOR_VALIDATION = 'https://data.publiq.be/concepts/workflowStatus/ready-for-validation';
     private const PROPERTY_LOCATIE_WORKFLOW_STATUS_APPROVED = 'https://data.publiq.be/concepts/workflowStatus/approved';
     private const PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED = 'https://data.publiq.be/concepts/workflowStatus/rejected';
     private const PROPERTY_LOCATIE_WORKFLOW_STATUS_DELETED = 'https://data.publiq.be/concepts/workflowStatus/deleted';
-    private const PROPERTY_LOCATIE_AVAILABLE_FROM = 'udb:availableFrom';
 
     private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
@@ -285,13 +284,7 @@ final class RdfProjector implements EventListener
 
     private function handlePublished(Published $event, string $uri, Graph $graph): void
     {
-        $resource = $graph->resource($uri);
-        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_READY_FOR_VALIDATION));
-
-        $resource->set(
-            self::PROPERTY_LOCATIE_AVAILABLE_FROM,
-            new Literal($event->getPublicationDate()->format(DateTime::ATOM), null, 'xsd:dateTime')
-        );
+        WorkflowEditor::for($graph)->publish($uri, $event->getPublicationDate()->format(DateTime::ATOM));
 
         $this->graphRepository->save($uri, $graph);
     }
