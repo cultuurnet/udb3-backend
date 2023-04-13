@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
@@ -65,6 +66,7 @@ final class RdfProjector implements EventListener
         $eventClassToHandler = [
             MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),
             TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $uri, $graph),
+            TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -149,6 +151,20 @@ final class RdfProjector implements EventListener
             self::PROPERTY_ACTIVITEIT_NAAM,
             $event->getTitle()->toNative(),
             $mainLanguage->toString(),
+        );
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleTitleTranslated(TitleTranslated $event, string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+
+        $this->replaceLanguageValue(
+            $resource,
+            self::PROPERTY_ACTIVITEIT_NAAM,
+            $event->getTitle()->toNative(),
+            $event->getLanguage()->getCode()
         );
 
         $this->graphRepository->save($uri, $graph);
