@@ -47,9 +47,6 @@ final class RdfProjector implements EventListener
     private const TYPE_ADRES = 'locn:Address';
     private const TYPE_GEOMETRIE = 'locn:Geometry';
 
-    private const PROPERTY_LOCATIE_WORKFLOW_STATUS = 'udb:workflowStatus';
-    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_DELETED = 'https://data.publiq.be/concepts/workflowStatus/deleted';
-
     private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_LOCATIE_GEOMETRIE = 'locn:geometry';
@@ -303,8 +300,8 @@ final class RdfProjector implements EventListener
 
     private function handleDeleted(string $uri, Graph $graph): void
     {
-        $resource = $graph->resource($uri);
-        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_DELETED));
+        WorkflowEditor::for($graph)->delete($uri);
+
         $this->graphRepository->save($uri, $graph);
     }
 }
