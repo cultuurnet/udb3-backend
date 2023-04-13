@@ -18,6 +18,12 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Place\Events\Moderation\Approved;
+use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
+use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
+use CultuurNet\UDB3\Place\Events\Moderation\Published;
+use CultuurNet\UDB3\Place\Events\Moderation\Rejected;
+use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -40,10 +46,18 @@ final class RdfProjector implements EventListener
     private const TYPE_ADRES = 'locn:Address';
     private const TYPE_GEOMETRIE = 'locn:Geometry';
 
+    private const PROPERTY_LOCATIE_WORKFLOW_STATUS = 'udb:workflowStatus';
+    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_DRAFT = 'https://data.publiq.be/concepts/workflowStatus/draft';
+    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_READY_FOR_VALIDATION = 'https://data.publiq.be/concepts/workflowStatus/ready-for-validation';
+    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_APPROVED = 'https://data.publiq.be/concepts/workflowStatus/approved';
+    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED = 'https://data.publiq.be/concepts/workflowStatus/rejected';
+    private const PROPERTY_LOCATIE_WORKFLOW_STATUS_DELETED = 'https://data.publiq.be/concepts/workflowStatus/deleted';
+    private const PROPERTY_LOCATIE_AVAILABLE_FROM = 'udb:availableFrom';
+
     private const PROPERTY_LOCATIE_AANGEMAAKT_OP = 'dcterms:created';
     private const PROPERTY_LOCATIE_LAATST_AANGEPAST = 'dcterms:modified';
     private const PROPERTY_LOCATIE_IDENTIFICATOR = 'adms:identifier';
-    private const PROPERTY_LOCATIE_NAAM = 'locn:geographicName';
+    private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_LOCATIE_GEOMETRIE = 'locn:geometry';
 
@@ -93,6 +107,12 @@ final class RdfProjector implements EventListener
             AddressUpdated::class => fn ($e) => $this->handleAddressUpdated($e, $uri, $graph),
             AddressTranslated::class => fn ($e) => $this->handleAddressTranslated($e, $uri, $graph),
             GeoCoordinatesUpdated::class => fn ($e) => $this->handleGeoCoordinatesUpdated($e, $uri, $graph),
+            Published::class => fn ($e) => $this->handlePublished($e, $uri, $graph),
+            Approved::class => fn ($e) => $this->handleApproved($uri, $graph),
+            Rejected::class => fn ($e) => $this->handleRejected($uri, $graph),
+            FlaggedAsDuplicate::class => fn ($e) => $this->handleRejected($uri, $graph),
+            FlaggedAsInappropriate::class => fn ($e) => $this->handleRejected($uri, $graph),
+            PlaceDeleted::class => fn ($e) => $this->handleDeleted($uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -114,6 +134,11 @@ final class RdfProjector implements EventListener
         // by add().
         if ($resource->type() !== self::TYPE_LOCATIE) {
             $resource->setType(self::TYPE_LOCATIE);
+        }
+
+        // Set the udb:workflowStatus property to draft if not set yet.
+        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_WORKFLOW_STATUS)) {
+            $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_DRAFT));
         }
 
         // Set the dcterms:created property if not set yet.
@@ -243,28 +268,6 @@ final class RdfProjector implements EventListener
         $this->graphRepository->save($uri, $graph);
     }
 
-    private function handleGeoCoordinatesUpdated(GeoCoordinatesUpdated $event, string $uri, Graph $graph): void
-    {
-        $resource = $graph->resource($uri);
-        $coordinates = $event->getCoordinates();
-
-        $gmlTemplate = '<gml:Point srsName=\'http://www.opengis.net/def/crs/OGC/1.3/CRS84\'><gml:coordinates>%s, %s</gml:coordinates></gml:Point>';
-        $gmlCoordinate = sprintf($gmlTemplate, $coordinates->getLongitude()->toDouble(), $coordinates->getLatitude()->toDouble());
-
-        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_GEOMETRIE)) {
-            $resource->add(self::PROPERTY_LOCATIE_GEOMETRIE, $resource->getGraph()->newBNode());
-        }
-
-        $geometryResource = $resource->getResource(self::PROPERTY_LOCATIE_GEOMETRIE);
-        if ($geometryResource->type() !== self::TYPE_GEOMETRIE) {
-            $geometryResource->setType(self::TYPE_GEOMETRIE);
-        }
-
-        $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
-
-        $this->graphRepository->save($uri, $graph);
-    }
-
     private function updateTranslatableAddressProperties(
         Resource $resource,
         Address $address,
@@ -302,6 +305,62 @@ final class RdfProjector implements EventListener
         } else {
             $this->deleteLanguageValue($addressResource, self::PROPERTY_ADRES_STRAATNAAM, $language);
         }
+    }
+
+    private function handleGeoCoordinatesUpdated(GeoCoordinatesUpdated $event, string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+        $coordinates = $event->getCoordinates();
+
+        $gmlTemplate = '<gml:Point srsName=\'http://www.opengis.net/def/crs/OGC/1.3/CRS84\'><gml:coordinates>%s, %s</gml:coordinates></gml:Point>';
+        $gmlCoordinate = sprintf($gmlTemplate, $coordinates->getLongitude()->toDouble(), $coordinates->getLatitude()->toDouble());
+
+        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_GEOMETRIE)) {
+            $resource->add(self::PROPERTY_LOCATIE_GEOMETRIE, $resource->getGraph()->newBNode());
+        }
+
+        $geometryResource = $resource->getResource(self::PROPERTY_LOCATIE_GEOMETRIE);
+        if ($geometryResource->type() !== self::TYPE_GEOMETRIE) {
+            $geometryResource->setType(self::TYPE_GEOMETRIE);
+        }
+
+        $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handlePublished(Published $event, string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_READY_FOR_VALIDATION));
+
+        $resource->set(
+            self::PROPERTY_LOCATIE_AVAILABLE_FROM,
+            new Literal($event->getPublicationDate()->format(DateTime::ATOM), null, 'xsd:dateTime')
+        );
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleApproved(string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_APPROVED));
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleRejected(string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_REJECTED));
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleDeleted(string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+        $resource->set(self::PROPERTY_LOCATIE_WORKFLOW_STATUS, new Resource(self::PROPERTY_LOCATIE_WORKFLOW_STATUS_DELETED));
+        $this->graphRepository->save($uri, $graph);
     }
 
     private function deleteLanguageValue(
