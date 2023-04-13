@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
+use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
@@ -66,6 +67,7 @@ final class RdfProjector implements EventListener
             Published::class => fn ($e) => $this->handlePublished($e, $uri, $graph),
             Approved::class => fn ($e) => $this->handleApproved($uri, $graph),
             Rejected::class => fn ($e) => $this->handleRejected($uri, $graph),
+            FlaggedAsDuplicate::class => fn ($e) => $this->handleRejected($uri, $graph),
         ];
 
         foreach ($events as $event) {

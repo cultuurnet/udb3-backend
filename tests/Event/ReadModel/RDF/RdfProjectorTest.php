@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
+use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
@@ -134,6 +135,21 @@ class RdfProjectorTest extends TestCase
         $this->project($eventId, [
             $this->getEventCreated($eventId),
             new Rejected($eventId, new StringLiteral('This is not a valid event')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/rejected.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_flagged_as_duplicate(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new FlaggedAsDuplicate($eventId),
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/rejected.ttl'));
