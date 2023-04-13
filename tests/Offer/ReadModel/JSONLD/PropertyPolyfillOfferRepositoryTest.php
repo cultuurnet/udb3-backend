@@ -204,6 +204,8 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
      */
     public function it_should_remove_actor_types(): void
     {
+        $this->markTestSkipped('This function cannot be tested before III-5410 has run on production');
+        /** @phpstan-ignore-next-line */
         $this
             ->given([
                 'terms' => [
