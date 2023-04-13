@@ -279,6 +279,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         );
     }
 
+    /** @phpstan-ignore-next-line */
     private function removeActorType(JsonDocument $jsonDocument): JsonDocument
     {
         return $jsonDocument->applyAssoc(
