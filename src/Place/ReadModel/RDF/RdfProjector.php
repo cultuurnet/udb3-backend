@@ -87,7 +87,14 @@ final class RdfProjector implements EventListener
 
         $uri = $this->iriGenerator->iri($domainMessage->getId());
         $graph = $this->graphRepository->get($uri);
-        $graph = $this->setGeneralProperties($graph, $uri, $domainMessage);
+
+        GraphEditor::for($graph)->setGeneralProperties(
+            $uri,
+            self::TYPE_LOCATIE,
+            $this->iriGenerator->iri(''),
+            $domainMessage->getId(),
+            $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
+        );
 
         $eventClassToHandler = [
             MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),
@@ -111,19 +118,6 @@ final class RdfProjector implements EventListener
                 }
             }
         }
-    }
-
-    private function setGeneralProperties(Graph $graph, string $uri, DomainMessage $domainMessage): Graph
-    {
-        GraphEditor::for($graph)->setGeneralProperties(
-            $uri,
-            self::TYPE_LOCATIE,
-            $this->iriGenerator->iri(''),
-            $domainMessage->getId(),
-            $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
-        );
-
-        return $graph;
     }
 
     private function handleMainLanguageDefined(MainLanguageDefined $event, string $uri): void
