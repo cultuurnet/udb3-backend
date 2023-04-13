@@ -83,12 +83,14 @@ trait EventFromUDB2
         $calendarEvent = $this->getCalendar($eventAsArray['calendar'][0]);
         $granularEvents[] = new CalendarUpdated($this->eventId, LegacyCalendar::fromUdb3ModelCalendar($calendarEvent));
 
-        $moderation = $this->getModeration(
-            $eventAsArray['@attributes']['wfstatus'],
-            $eventAsArray['@attributes']['lastupdated']
-        );
-        if ($moderation !== null) {
-            $granularEvents[] = $moderation;
+        if (isset($eventAsArray['@attributes']['wfstatus'], $eventAsArray['@attributes']['lastupdated'])) {
+            $moderation = $this->getModeration(
+                $eventAsArray['@attributes']['wfstatus'],
+                $eventAsArray['@attributes']['lastupdated']
+            );
+            if ($moderation !== null) {
+                $granularEvents[] = $moderation;
+            }
         }
 
         return $granularEvents;
