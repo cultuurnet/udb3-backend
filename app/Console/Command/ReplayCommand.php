@@ -121,7 +121,7 @@ final class ReplayCommand extends AbstractCommand
 
         $cdbids = $input->getOption(self::OPTION_CDBID);
 
-        $stream = $this->getEventStream(($startId, $aggregateType, $cdbids);
+        $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
 
         ReplayFlaggingMiddleware::startReplayMode();
         InterceptingMiddleware::startIntercepting(
