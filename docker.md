@@ -8,13 +8,6 @@
 ### Local host file
 To use `udb3-backend` & `udb3-search-service` together, you'll have to add `127.0.0.1 host.docker.internal` to your `/etc/hosts` file.
 
-### .env file
-Copy `env.dist` to the root folder and rename it to `.env`
-
-### config.php file
-
-Copy `docker-config.php` to the root folder and rename it to `config.php`
-
 ### RabbitMQ
 
 Login to the management console on http://host.docker.internal:15672/ with username `vagrant` and password `vagrant` 
@@ -35,30 +28,24 @@ search_api_base_url: 'http://host.docker.internal:9000'
 
 ## Start
 
+### Configuration setup
+To get or update the configuration files, run the following command in the root of the project
+```
+$ make config
+```
+
 ### Docker
 
 Start the docker containers with the following command. Make sure to execute this inside the root of the project so the `.env` can be used.
 ```
 $ make up
 ```
-### Configuration install
-To get the configuration files (You will need an access token from https://github.com/settings/tokens):
-```
-$ make config
-```
 
-### Composer install
+### Migrations & Composer packages
 
-To install all composer packages, run the:
+To install all composer packages & migrate the database, run the following command:
 ```
-$ make install
-```
-
-### Migrations
-
-To migrate the database, run the following command:
-```
-$ make migrate
+$ make init
 ```
 
 ### CI
