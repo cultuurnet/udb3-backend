@@ -279,6 +279,27 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         );
     }
 
+    /** @phpstan-ignore-next-line */
+    private function removeActorType(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                if (!isset($json['terms']) || !is_array($json['terms'])) {
+                    return $json;
+                }
+
+                $json['terms'] = array_values(
+                    array_filter(
+                        $json['terms'],
+                        fn ($terms) => $terms['domain'] !== 'actortype'
+                    )
+                );
+
+                return $json;
+            }
+        );
+    }
+
     /**
      * Checks for labels that are both in "labels" and "hiddenLabels" and filters them out of the wrong property
      * depending on the label's visibility in the read repository.
