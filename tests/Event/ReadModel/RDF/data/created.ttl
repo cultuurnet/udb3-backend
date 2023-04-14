@@ -10,11 +10,11 @@
   a cidoc:E7_Activity ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
+  dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
     skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri ;
     dcterms:creator <https://fixme.com/example/dataprovider/publiq>
   ] ;
-  cpa:locatie <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-  dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
-  dcterms:title "Faith no more"@nl, "Faith no more im Konzert"@de .
+  dcterms:title "Faith no more"@nl ;
+  cpa:locatie <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> .

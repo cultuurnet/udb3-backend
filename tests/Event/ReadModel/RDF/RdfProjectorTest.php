@@ -9,7 +9,17 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Description;
+use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
+use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\EventDeleted;
+use CultuurNet\UDB3\Event\Events\LocationUpdated;
+use CultuurNet\UDB3\Event\Events\Moderation\Approved;
+use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
+use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
+use CultuurNet\UDB3\Event\Events\Moderation\Published;
+use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\EventType;
@@ -19,6 +29,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTime;
@@ -39,7 +50,22 @@ class RdfProjectorTest extends TestCase
             new InMemoryMainLanguageRepository(),
             $this->graphRepository,
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_event_created(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/created.ttl'));
     }
 
     /**
@@ -88,6 +114,142 @@ class RdfProjectorTest extends TestCase
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/title-updated-and-translated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_published(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new Published($eventId, new DateTime('2023-04-23T12:30:15+02:00')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/published.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_approved(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new Approved($eventId),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/approved.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_rejected(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new Rejected($eventId, new StringLiteral('This is not a valid event')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/rejected.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_flagged_as_duplicate(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new FlaggedAsDuplicate($eventId),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/rejected.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_flagged_as_inappropriate(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new FlaggedAsInappropriate($eventId),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/rejected.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_deleted(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new EventDeleted($eventId),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/deleted.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_description_updated(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new DescriptionUpdated($eventId, new Description('Dit is het laatste concert van Faith no more')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/description-updated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_description_translated(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new DescriptionUpdated($eventId, new Description('Dit is het laatste concert van Faith no more')),
+            new DescriptionTranslated($eventId, new Language('en'), new Description('This will be the last concert of Faith no more')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/description-translated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_location_updated(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new LocationUpdated($eventId, new LocationId('ee4300a6-82a0-4489-ada0-1a6be1fca442')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/location-updated.ttl'));
     }
 
     private function getEventCreated(string $eventId): EventCreated

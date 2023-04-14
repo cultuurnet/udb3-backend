@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\RDF;
+namespace CultuurNet\UDB3\RDF\Editor;
 
 use EasyRdf\Graph;
 use EasyRdf\Literal;
@@ -22,12 +22,6 @@ final class GraphEditor
     private const PROPERTY_IDENTIFICATOR_NOTATION = 'skos:notation';
     private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR = 'dcterms:creator';
     private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT = 'https://fixme.com/example/dataprovider/publiq';
-    private const PROPERTY_IDENTIFICATOR_NAAMRUIMTE = 'generiek:naamruimte';
-    private const PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR = 'generiek:lokaleIdentificator';
-    private const PROPERTY_IDENTIFICATOR_VERSIE_ID = 'generiek:versieIdentificator';
-
-    private const PROPERTY_WORKFLOW_STATUS = 'udb:workflowStatus';
-    private const PROPERTY_WORKFLOW_STATUS_DRAFT = 'https://data.publiq.be/concepts/workflowStatus/draft';
 
     private function __construct(Graph $graph)
     {
@@ -42,8 +36,6 @@ final class GraphEditor
     public function setGeneralProperties(
         string $resourceUri,
         string $type,
-        string $namespace,
-        string $id,
         string $recordedOn
     ): self {
         $resource = $this->graph->resource($resourceUri);
@@ -56,12 +48,7 @@ final class GraphEditor
         }
 
         // Set the udb:workflowStatus property to draft if not set yet.
-        if (!$resource->hasProperty(self::PROPERTY_WORKFLOW_STATUS)) {
-            $resource->set(
-                self::PROPERTY_WORKFLOW_STATUS,
-                new Resource(self::PROPERTY_WORKFLOW_STATUS_DRAFT)
-            );
-        }
+        WorkflowStatusEditor::for($this->graph)->draft($resourceUri);
 
         // Set the dcterms:created property if not set yet.
         // (Otherwise it would constantly update like dcterms:modified).
@@ -85,14 +72,8 @@ final class GraphEditor
             $identificator->setType(self::TYPE_IDENTIFICATOR);
             $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($resourceUri, null, 'xsd:anyUri'));
             $identificator->add(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR, new Resource(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT));
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_NAAMRUIMTE, new Literal($namespace, null, 'xsd:string'));
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_LOKALE_IDENTIFICATOR, new Literal($id, null, 'xsd:string'));
             $resource->add(self::PROPERTY_IDENTIFICATOR, $identificator);
         }
-
-        // Add/update the generiek:versieIdentificator inside the linked adms:Identifier on every change.
-        $identificator = $resource->getResource(self::PROPERTY_IDENTIFICATOR);
-        $identificator->set(self::PROPERTY_IDENTIFICATOR_VERSIE_ID, new Literal($recordedOn, null, 'xsd:string'));
 
         return $this;
     }
