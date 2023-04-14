@@ -11,6 +11,7 @@
 # Ignore configuration files
 config.php
 config.*.php
+udb3-docker-config
 
 phpunit.xml
 external_id_mapping_organizer.yml
