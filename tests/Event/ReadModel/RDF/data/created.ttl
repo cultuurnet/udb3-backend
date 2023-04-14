@@ -4,6 +4,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a cidoc:E7_Activity ;
@@ -15,4 +16,5 @@
     skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri ;
     dcterms:creator <https://fixme.com/example/dataprovider/publiq>
   ] ;
-  dcterms:title "Faith no more"@nl .
+  dcterms:title "Faith no more"@nl ;
+  cpa:locatie <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> .
