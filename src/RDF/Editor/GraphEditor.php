@@ -48,7 +48,7 @@ final class GraphEditor
         }
 
         // Set the udb:workflowStatus property to draft if not set yet.
-        WorkflowEditor::for($this->graph)->draft($resourceUri);
+        WorkflowStatusEditor::for($this->graph)->draft($resourceUri);
 
         // Set the dcterms:created property if not set yet.
         // (Otherwise it would constantly update like dcterms:modified).
