@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar as LegacyCalendar;
+use CultuurNet\UDB3\Event\Events\Moderation\Approved;
+use CultuurNet\UDB3\Event\Events\Moderation\Published;
+use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
@@ -33,7 +36,9 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\SerializableSimpleXmlElement;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeZone;
 
@@ -68,7 +73,6 @@ trait EventFromUDB2
             }
         }
 
-        // Todo: decide how to handle dummy locations & externalIds
         if (isset($eventAsArray['location'][0]['label'][0]['@attributes']['cdbid'])) {
             $granularEvents[] = new LocationUpdated(
                 $this->eventId,
@@ -78,6 +82,16 @@ trait EventFromUDB2
 
         $calendarEvent = $this->getCalendar($eventAsArray['calendar'][0]);
         $granularEvents[] = new CalendarUpdated($this->eventId, LegacyCalendar::fromUdb3ModelCalendar($calendarEvent));
+
+        if (isset($eventAsArray['@attributes']['wfstatus'], $eventAsArray['@attributes']['lastupdated'])) {
+            $moderation = $this->getModeration(
+                $eventAsArray['@attributes']['wfstatus'],
+                $eventAsArray['@attributes']['lastupdated']
+            );
+            if ($moderation !== null) {
+                $granularEvents[] = $moderation;
+            }
+        }
 
         return $granularEvents;
     }
@@ -200,5 +214,30 @@ trait EventFromUDB2
     {
         $eventAsArray = $this->getEventAsArray();
         return $eventAsArray['location'][0]['label'][0]['@attributes']['externalid'] ?? null;
+    }
+
+    private function getModeration(string $wfstatus, string $lastUpdated): ?AbstractEvent
+    {
+        if ($wfstatus === 'readyforvalidation') {
+            return new Published(
+                $this->eventId,
+                \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s', $lastUpdated, new DateTimeZone('Europe/Brussels')),
+            );
+        }
+
+        if ($wfstatus === 'approved') {
+            return new Approved($this->eventId);
+        }
+
+        if ($wfstatus === 'rejected') {
+            return new Rejected($this->eventId, new StringLiteral('Reason unknown (imported from UiTdatabank v2)'));
+        }
+
+        if ($wfstatus === 'deleted') {
+            return new EventDeleted($this->eventId);
+        }
+
+        // Do no create a moderation event for CdbXml-wfstatus DRAFT
+        return null;
     }
 }
