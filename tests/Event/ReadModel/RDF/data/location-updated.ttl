@@ -4,7 +4,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix ns0: <cp:Activiteit.> .
+@prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a cidoc:E7_Activity ;
@@ -17,4 +17,4 @@
   ] ;
   dcterms:title "Faith no more"@nl ;
   dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
-  ns0:locatie <https://mock.data.publiq.be/places/ee4300a6-82a0-4489-ada0-1a6be1fca442> .
+  cpa:locatie <https://mock.data.publiq.be/places/ee4300a6-82a0-4489-ada0-1a6be1fca442> .
