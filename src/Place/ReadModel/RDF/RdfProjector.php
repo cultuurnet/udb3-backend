@@ -29,7 +29,7 @@ use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
-use CultuurNet\UDB3\RDF\Editor\WorkflowEditor;
+use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
@@ -277,28 +277,28 @@ final class RdfProjector implements EventListener
 
     private function handlePublished(Published $event, string $uri, Graph $graph): void
     {
-        WorkflowEditor::for($graph)->publish($uri, $event->getPublicationDate()->format(DateTime::ATOM));
+        WorkflowStatusEditor::for($graph)->publish($uri, $event->getPublicationDate()->format(DateTime::ATOM));
 
         $this->graphRepository->save($uri, $graph);
     }
 
     private function handleApproved(string $uri, Graph $graph): void
     {
-        WorkflowEditor::for($graph)->approve($uri);
+        WorkflowStatusEditor::for($graph)->approve($uri);
 
         $this->graphRepository->save($uri, $graph);
     }
 
     private function handleRejected(string $uri, Graph $graph): void
     {
-        WorkflowEditor::for($graph)->reject($uri);
+        WorkflowStatusEditor::for($graph)->reject($uri);
 
         $this->graphRepository->save($uri, $graph);
     }
 
     private function handleDeleted(string $uri, Graph $graph): void
     {
-        WorkflowEditor::for($graph)->delete($uri);
+        WorkflowStatusEditor::for($graph)->delete($uri);
 
         $this->graphRepository->save($uri, $graph);
     }

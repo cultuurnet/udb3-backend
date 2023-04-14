@@ -8,7 +8,7 @@ use EasyRdf\Graph;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
 
-final class WorkflowEditor
+final class WorkflowStatusEditor
 {
     private Graph $graph;
 
