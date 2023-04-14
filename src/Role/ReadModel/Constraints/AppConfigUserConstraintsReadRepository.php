@@ -9,7 +9,6 @@ use CultuurNet\UDB3\StringLiteral;
 
 final class AppConfigUserConstraintsReadRepository implements UserConstraintsReadRepositoryInterface
 {
-
     /**
      * @var array<string, array>
      */

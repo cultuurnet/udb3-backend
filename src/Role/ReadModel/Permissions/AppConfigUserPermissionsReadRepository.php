@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 final class AppConfigUserPermissionsReadRepository implements UserPermissionsReadRepositoryInterface
 {
-
     /**
      * @var array<string, Permission[]>
      */
