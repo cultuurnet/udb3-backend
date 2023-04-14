@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
@@ -27,6 +29,7 @@ use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use DateTime;
 use EasyRdf\Graph;
+use EasyRdf\Literal;
 use EasyRdf\Resource;
 
 final class RdfProjector implements EventListener
@@ -37,10 +40,16 @@ final class RdfProjector implements EventListener
     private IriGeneratorInterface $placesIriGenerator;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
+    private const TYPE_PERIOD = 'm8g:PeriodOfTime';
+    private const TYPE_DATE_TIME = 'xsd:dateTime';
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
     private const PROPERTY_ACTVITEIT_LOCATIE = 'cpa:locatie';
+    private const PROPERTY_ACTIVITEIT_TIJD = 'cidoc:P4_has_time-span';
+
+    private const PROPERTY_PERIOD_START = 'm8g:startTime';
+    private const PROPERTY_PERIOD_END = 'm8g:endTime';
 
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
@@ -82,6 +91,7 @@ final class RdfProjector implements EventListener
             DescriptionUpdated::class => fn ($e) => $this->handleDescriptionUpdated($e, $uri, $graph),
             DescriptionTranslated::class => fn ($e) => $this->handleDescriptionTranslated($e, $uri, $graph),
             LocationUpdated::class => fn ($e) => $this->handleLocationUpdated($e, $uri, $graph),
+            CalendarUpdated::class => fn ($e) => $this->handleCalendarUpdated($e, $uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -184,6 +194,30 @@ final class RdfProjector implements EventListener
 
         $locationUri = $this->placesIriGenerator->iri($event->getLocationId()->toString());
         $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleCalendarUpdated(CalendarUpdated $event, string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+
+        if ($event->getCalendar()->getType()->sameAs(CalendarType::SINGLE())) {
+            if (!$resource->hasProperty(self::PROPERTY_ACTIVITEIT_TIJD)) {
+                $resource->add(self::PROPERTY_ACTIVITEIT_TIJD, $resource->getGraph()->newBNode());
+            }
+
+            $periodResource = $resource->getResource(self::PROPERTY_ACTIVITEIT_TIJD);
+            if ($periodResource->type() !== self::TYPE_PERIOD) {
+                $periodResource->setType(self::TYPE_PERIOD);
+            }
+
+            $start = $event->getCalendar()->getStartDate()->format(DateTime::ATOM);
+            $end = $event->getCalendar()->getEndDate()->format(DateTime::ATOM);
+
+            $periodResource->set(self::PROPERTY_PERIOD_START, new Literal($start, null, self::TYPE_DATE_TIME));
+            $periodResource->set(self::PROPERTY_PERIOD_END, new Literal($end, null, self::TYPE_DATE_TIME));
+        }
 
         $this->graphRepository->save($uri, $graph);
     }
