@@ -1,4 +1,4 @@
-.PHONY: up down install ci stan cs cs-fix test migrate config init-project
+.PHONY: up down install ci stan cs cs-fix test migrate config init
 
 up:
 	docker-compose up -d
@@ -33,4 +33,4 @@ bash:
 config:
 	sh ./docker/setup_config.sh
 
-init-project: config up install migrate
+init: install migrate
