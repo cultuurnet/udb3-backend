@@ -21,5 +21,6 @@ final class RdfNamespaces
         RdfNamespace::set('geosparql', 'http://www.opengis.net/ont/geosparql#');
         RdfNamespace::set('cidoc', 'http://www.cidoc-crm.org/cidoc-crm/');
         RdfNamespace::set('cpa', 'https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.');
+        RdfNamespace::set('m8g', 'http://data.europa.eu/m8g/');
     }
 }
