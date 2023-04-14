@@ -57,8 +57,6 @@ final class RdfProjector implements EventListener
         GraphEditor::for($graph)->setGeneralProperties(
             $uri,
             self::TYPE_ACTIVITEIT,
-            $this->iriGenerator->iri(''),
-            $domainMessage->getId(),
             $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
         );
 
