@@ -1,18 +1,18 @@
 @prefix cidoc: <http://www.cidoc-crm.org/cidoc-crm/> .
-@prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a cidoc:E7_Activity ;
-  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
     skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri ;
     dcterms:creator <https://fixme.com/example/dataprovider/publiq>
   ] ;
-  dcterms:modified "2023-01-05T12:30:15+01:00"^^xsd:dateTime ;
-  dcterms:title "Faith no more in concert [UPDATED]"@nl, "Faith no more im Konzert [UPDATED]"@de .
+  dcterms:title "Faith no more"@nl ;
+  dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
+  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/rejected> .

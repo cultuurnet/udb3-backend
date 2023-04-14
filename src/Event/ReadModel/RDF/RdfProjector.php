@@ -6,15 +6,22 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Event\Events\EventDeleted;
+use CultuurNet\UDB3\Event\Events\Moderation\Approved;
+use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
+use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
+use CultuurNet\UDB3\Event\Events\Moderation\Published;
+use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\RDF\GraphEditor;
+use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
+use CultuurNet\UDB3\RDF\Editor\WorkflowEditor;
 use DateTime;
 use EasyRdf\Graph;
 
@@ -50,8 +57,6 @@ final class RdfProjector implements EventListener
         GraphEditor::for($graph)->setGeneralProperties(
             $uri,
             self::TYPE_ACTIVITEIT,
-            $this->iriGenerator->iri(''),
-            $domainMessage->getId(),
             $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
         );
 
@@ -59,6 +64,12 @@ final class RdfProjector implements EventListener
             MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),
             TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $uri, $graph),
             TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $uri, $graph),
+            Published::class => fn ($e) => $this->handlePublished($e, $uri, $graph),
+            Approved::class => fn ($e) => $this->handleApproved($uri, $graph),
+            Rejected::class => fn ($e) => $this->handleRejected($uri, $graph),
+            FlaggedAsDuplicate::class => fn ($e) => $this->handleRejected($uri, $graph),
+            FlaggedAsInappropriate::class => fn ($e) => $this->handleRejected($uri, $graph),
+            EventDeleted::class => fn ($e) => $this->handleDeleted($uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -97,6 +108,34 @@ final class RdfProjector implements EventListener
             $event->getTitle()->toNative(),
             $event->getLanguage()->getCode()
         );
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handlePublished(Published $event, string $uri, Graph $graph): void
+    {
+        WorkflowEditor::for($graph)->publish($uri, $event->getPublicationDate()->format(DateTime::ATOM));
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleApproved(string $uri, Graph $graph): void
+    {
+        WorkflowEditor::for($graph)->approve($uri);
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleRejected(string $uri, Graph $graph): void
+    {
+        WorkflowEditor::for($graph)->reject($uri);
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleDeleted(string $uri, Graph $graph): void
+    {
+        WorkflowEditor::for($graph)->delete($uri);
 
         $this->graphRepository->save($uri, $graph);
     }
