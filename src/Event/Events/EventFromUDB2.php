@@ -216,7 +216,7 @@ trait EventFromUDB2
         return $eventAsArray['location'][0]['label'][0]['@attributes']['externalid'] ?? null;
     }
 
-    private function getModeration(?string $wfstatus, ?string $lastUpdated): ?AbstractEvent
+    private function getModeration(string $wfstatus, string $lastUpdated): ?AbstractEvent
     {
         if ($wfstatus === 'readyforvalidation') {
             return new Published(
