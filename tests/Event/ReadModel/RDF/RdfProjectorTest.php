@@ -10,6 +10,7 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
+use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -31,8 +32,10 @@ use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Theme;
+use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
 use DateTime;
+use DateTimeImmutable;
 use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\TestCase;
 
@@ -250,6 +253,34 @@ class RdfProjectorTest extends TestCase
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/location-updated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_calendar_updated_to_single(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new CalendarUpdated(
+                $eventId,
+                new Calendar(
+                    CalendarType::SINGLE(),
+                    $startDate,
+                    $endDate,
+                    [
+                        new Timestamp($startDate, $endDate),
+                    ]
+                ),
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/calendar-updated-single.ttl'));
     }
 
     private function getEventCreated(string $eventId): EventCreated
