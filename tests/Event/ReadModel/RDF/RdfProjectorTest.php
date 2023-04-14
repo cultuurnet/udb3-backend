@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
+use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
@@ -49,6 +50,7 @@ class RdfProjectorTest extends TestCase
             new InMemoryMainLanguageRepository(),
             $this->graphRepository,
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
         );
     }
 
@@ -233,6 +235,21 @@ class RdfProjectorTest extends TestCase
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/description-translated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_location_updated(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new LocationUpdated($eventId, new LocationId('ee4300a6-82a0-4489-ada0-1a6be1fca442')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/location-updated.ttl'));
     }
 
     private function getEventCreated(string $eventId): EventCreated

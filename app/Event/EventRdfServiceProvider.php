@@ -26,6 +26,7 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
                 $this->container->get(MainLanguageRepository::class),
                 RdfServiceProvider::createGraphStoreRepository($this->container->get('config')['rdf']['eventsGraphStoreUrl']),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['eventsRdfBaseUri']),
+                RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['placesRdfBaseUri']),
             )
         );
     }
