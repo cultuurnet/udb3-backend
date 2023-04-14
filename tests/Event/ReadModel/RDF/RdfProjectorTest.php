@@ -49,6 +49,7 @@ class RdfProjectorTest extends TestCase
             new InMemoryMainLanguageRepository(),
             $this->graphRepository,
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
         );
     }
 
