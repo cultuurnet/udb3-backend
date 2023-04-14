@@ -237,6 +237,7 @@ trait EventFromUDB2
             return new EventDeleted($this->eventId);
         }
 
+        // Do no create a moderation event for CdbXml-wfstatus DRAFT
         return null;
     }
 }
