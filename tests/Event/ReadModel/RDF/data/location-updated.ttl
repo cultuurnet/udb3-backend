@@ -4,7 +4,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit> .
+@prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a cidoc:E7_Activity ;
