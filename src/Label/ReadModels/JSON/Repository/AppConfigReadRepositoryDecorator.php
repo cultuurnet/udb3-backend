@@ -33,14 +33,21 @@ final class AppConfigReadRepositoryDecorator implements ReadRepositoryInterface
 
     public function canUseLabel(string $userId, string $name): bool
     {
-        $config = $this->clientIdToPermissionsConfig[$userId] ?? null;
+        // First check if the decoratee allows use of the label. This way we don't need to check ourselves if the label
+        // is maybe public, in which case it is always allowed to be used.
+        $canUseLabel = $this->repository->canUseLabel($userId, $name);
+        if ($canUseLabel) {
+            return true;
+        }
 
+        // If the decoratee does not allow the label to be used, check if we allow it in the application config for the
+        // given "user" id (i.e. client id)
+        $config = $this->clientIdToPermissionsConfig[$userId] ?? null;
         if ($config === null) {
-            return $this->repository->canUseLabel($userId, $name);
+            return false;
         }
 
         $labels = $config['labels'] ?? [];
-
         return in_array($name, $labels);
     }
 
