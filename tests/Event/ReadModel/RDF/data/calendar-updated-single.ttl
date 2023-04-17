@@ -5,6 +5,7 @@
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
+@prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix m8g: <http://data.europa.eu/m8g/> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
@@ -19,8 +20,12 @@
   dcterms:title "Faith no more"@nl ;
   cpa:locatie <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
   dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
-  cidoc:P4_has_time-span [
-    a m8g:PeriodOfTime ;
-    m8g:startTime "2018-01-01T12:00:00+01:00"^^xsd:dateTime ;
-    m8g:endTime "2020-01-01T12:00:00+01:00"^^xsd:dateTime
+  cp:ruimtetijd [
+    a cidoc:E92 ;
+    cidoc:P161 <https://mock.data.publiq.be/places/TODO> ;
+    cidoc:P160 [
+      a m8g:PeriodOfTime ;
+      m8g:startTime "2018-01-01T12:00:00+01:00"^^xsd:dateTime ;
+      m8g:endTime "2020-01-01T12:00:00+01:00"^^xsd:dateTime
+    ]
   ] .

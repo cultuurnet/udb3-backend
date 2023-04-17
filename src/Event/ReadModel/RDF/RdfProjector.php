@@ -41,12 +41,15 @@ final class RdfProjector implements EventListener
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
     private const TYPE_PERIOD = 'm8g:PeriodOfTime';
+    private const TYPE_SPACE_TIME = 'cidoc:E92';
     private const TYPE_DATE_TIME = 'xsd:dateTime';
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
     private const PROPERTY_ACTVITEIT_LOCATIE = 'cpa:locatie';
-    private const PROPERTY_ACTIVITEIT_TIJD = 'cidoc:P4_has_time-span';
+    private const PROPERTY_ACTIVITEIT_RUIMTE_TIJD = 'cp:ruimtetijd';
+    private const PROPERTY_ACTIVITEIT_TYPE_LOCATION = 'cidoc:P161';
+    private const PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE = 'cidoc:P160';
 
     private const PROPERTY_PERIOD_START = 'm8g:startTime';
     private const PROPERTY_PERIOD_END = 'm8g:endTime';
@@ -200,25 +203,54 @@ final class RdfProjector implements EventListener
 
     private function handleCalendarUpdated(CalendarUpdated $event, string $uri, Graph $graph): void
     {
-        $resource = $graph->resource($uri);
-
         if ($event->getCalendar()->getType()->sameAs(CalendarType::SINGLE())) {
-            if (!$resource->hasProperty(self::PROPERTY_ACTIVITEIT_TIJD)) {
-                $resource->add(self::PROPERTY_ACTIVITEIT_TIJD, $resource->getGraph()->newBNode());
-            }
+            $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
 
-            $periodResource = $resource->getResource(self::PROPERTY_ACTIVITEIT_TIJD);
-            if ($periodResource->type() !== self::TYPE_PERIOD) {
-                $periodResource->setType(self::TYPE_PERIOD);
-            }
+            $this->addLocation($spaceTimeResource);
 
-            $start = $event->getCalendar()->getStartDate()->format(DateTime::ATOM);
-            $end = $event->getCalendar()->getEndDate()->format(DateTime::ATOM);
-
-            $periodResource->set(self::PROPERTY_PERIOD_START, new Literal($start, null, self::TYPE_DATE_TIME));
-            $periodResource->set(self::PROPERTY_PERIOD_END, new Literal($end, null, self::TYPE_DATE_TIME));
+            $this->addCalendarType($spaceTimeResource, $event);
         }
 
         $this->graphRepository->save($uri, $graph);
+    }
+
+    private function createSpaceTimeResource(string $uri, Graph $graph): Resource
+    {
+        $resource = $graph->resource($uri);
+
+        if (!$resource->hasProperty(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD)) {
+            $resource->add(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD, $resource->getGraph()->newBNode());
+        }
+
+        $spaceTimeResource = $resource->getResource(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD);
+        if ($spaceTimeResource->type() !== self::TYPE_SPACE_TIME) {
+            $spaceTimeResource->setType(self::TYPE_SPACE_TIME);
+        }
+
+        return $spaceTimeResource;
+    }
+
+    private function addLocation(Resource $spaceTimeResource): void
+    {
+        $locationUri = $this->placesIriGenerator->iri('TODO');
+        $spaceTimeResource->set(self::PROPERTY_ACTIVITEIT_TYPE_LOCATION, new Resource($locationUri));
+    }
+
+    private function addCalendarType(Resource $spaceTimeResource, CalendarUpdated $event): void
+    {
+        if (!$spaceTimeResource->hasProperty(self::PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE)) {
+            $spaceTimeResource->add(self::PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE, $spaceTimeResource->getGraph()->newBNode());
+        }
+
+        $calendarTypeResource = $spaceTimeResource->getResource(self::PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE);
+        if ($calendarTypeResource->type() !== self::TYPE_PERIOD) {
+            $calendarTypeResource->setType(self::TYPE_PERIOD);
+        }
+
+        $start = $event->getCalendar()->getStartDate()->format(DateTime::ATOM);
+        $end = $event->getCalendar()->getEndDate()->format(DateTime::ATOM);
+
+        $calendarTypeResource->set(self::PROPERTY_PERIOD_START, new Literal($start, null, self::TYPE_DATE_TIME));
+        $calendarTypeResource->set(self::PROPERTY_PERIOD_END, new Literal($end, null, self::TYPE_DATE_TIME));
     }
 }
