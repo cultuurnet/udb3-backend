@@ -25,7 +25,7 @@ final class AppConfigUserConstraintsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_database_repository_when_it_has_no_sapi3_constraint()
+    public function it_calls_database_repository_when_it_has_no_sapi3_constraint(): void
     {
         $config = [
             'jkfhsjkfsdhjk@clients' => [
@@ -48,7 +48,7 @@ final class AppConfigUserConstraintsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_database_repository_when_no_permission_matches()
+    public function it_calls_database_repository_when_no_permission_matches(): void
     {
         $config = [
             'jkfhsjkfsdhjk@clients' => [
@@ -72,7 +72,7 @@ final class AppConfigUserConstraintsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_correct_constraints_when_it_has_permission_matches_and_has_sapi3_constraint()
+    public function it_returns_the_correct_constraints_when_it_has_permission_matches_and_has_sapi3_constraint(): void
     {
         $config = [
             'jkfhsjkfsdhjk@clients' => [
