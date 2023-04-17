@@ -206,7 +206,7 @@ final class RdfProjector implements EventListener
     {
         if ($event->getCalendar()->getType()->sameAs(CalendarType::SINGLE()) ||
             $event->getCalendar()->getType()->sameAs(CalendarType::MULTIPLE())) {
-            $this->deleteAllSpaceTimeResource($uri, $graph);
+            $this->deleteAllSpaceTimeResources($uri, $graph);
 
             foreach ($event->getCalendar()->getTimestamps() as $timestamp) {
                 $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
@@ -220,11 +220,24 @@ final class RdfProjector implements EventListener
         $this->graphRepository->save($uri, $graph);
     }
 
-    private function deleteAllSpaceTimeResource(string $uri, Graph $graph): void
+    private function deleteAllSpaceTimeResources(string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
 
-        $resource->delete(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD);
+        /** @var Resource[] $spaceTimeResources */
+        $spaceTimeResources = $resource->allResources(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD);
+        foreach ($spaceTimeResources as $spaceTimeResource) {
+            $spaceTimeResource->delete('rdf:type');
+            $spaceTimeResource->set(self::PROPERTY_ACTIVITEIT_TYPE_LOCATION, null);
+
+            $calendarTypeResource = $spaceTimeResource->getResource(self::PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE);
+            $calendarTypeResource->delete('rdf:type');
+            $calendarTypeResource->set(self::PROPERTY_PERIOD_START, null);
+            $calendarTypeResource->set(self::PROPERTY_PERIOD_END, null);
+            $spaceTimeResource->set(self::PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE, null);
+
+            $resource->delete(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD);
+        }
     }
 
     private function createSpaceTimeResource(string $uri, Graph $graph): Resource
