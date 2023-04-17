@@ -204,11 +204,20 @@ final class RdfProjector implements EventListener
 
     private function handleCalendarUpdated(CalendarUpdated $event, string $uri, Graph $graph): void
     {
-        if ($event->getCalendar()->getType()->sameAs(CalendarType::SINGLE()) ||
-            $event->getCalendar()->getType()->sameAs(CalendarType::MULTIPLE())) {
+        $calendar = $event->getCalendar();
+
+        $timestamps = $event->getCalendar()->getTimestamps();
+        if ($calendar->getType()->sameAs(CalendarType::PERIODIC())) {
+            $timestamps[] = new Timestamp(
+                $calendar->getStartDate(),
+                $calendar->getEndDate()
+            );
+        }
+
+        if (!empty($timestamps)) {
             $this->deleteAllSpaceTimeResources($uri, $graph);
 
-            foreach ($event->getCalendar()->getTimestamps() as $timestamp) {
+            foreach ($timestamps as $timestamp) {
                 $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
 
                 $this->addLocation($spaceTimeResource);
