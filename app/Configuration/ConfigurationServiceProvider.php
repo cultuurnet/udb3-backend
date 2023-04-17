@@ -50,8 +50,6 @@ final class ConfigurationServiceProvider extends AbstractServiceProvider
     {
         $config = file_exists(__DIR__ . '/../../config.php') ? require __DIR__ . '/../../config.php' : [];
 
-
-
         $clientPermissions = [];
         foreach ($config['client_permissions'] ?? [] as $clientId => $clientPermissionsConfig) {
             // Add @clients suffix to client id if missing in the config
