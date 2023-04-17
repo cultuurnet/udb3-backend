@@ -258,6 +258,33 @@ class RdfProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_event_created_with_single_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00');
+
+        $this->project($eventId, [
+            $this->getEventCreated(
+                $eventId,
+                new Calendar(
+                    CalendarType::SINGLE(),
+                    $startDate,
+                    $endDate,
+                    [
+                        new Timestamp($startDate, $endDate),
+                    ]
+                ),
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/created-with-calendar-single.ttl'));
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_calendar_updated_to_single(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
@@ -361,7 +388,7 @@ class RdfProjectorTest extends TestCase
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/various-calendar-updated.ttl'));
     }
 
-    private function getEventCreated(string $eventId): EventCreated
+    private function getEventCreated(string $eventId, ?Calendar $calendar = null): EventCreated
     {
         return new EventCreated(
             $eventId,
@@ -369,7 +396,7 @@ class RdfProjectorTest extends TestCase
             new Title('Faith no more'),
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('bfc60a14-6208-4372-942e-86e63744769a'),
-            new Calendar(CalendarType::PERMANENT()),
+            $calendar ?: new Calendar(CalendarType::PERMANENT()),
             new Theme('1.8.1.0.0', 'Rock')
         );
     }
