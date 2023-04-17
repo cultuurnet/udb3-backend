@@ -27,6 +27,7 @@ use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
+use CultuurNet\UDB3\Timestamp;
 use DateTime;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
@@ -203,26 +204,36 @@ final class RdfProjector implements EventListener
 
     private function handleCalendarUpdated(CalendarUpdated $event, string $uri, Graph $graph): void
     {
-        if ($event->getCalendar()->getType()->sameAs(CalendarType::SINGLE())) {
-            $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
+        if ($event->getCalendar()->getType()->sameAs(CalendarType::SINGLE()) ||
+            $event->getCalendar()->getType()->sameAs(CalendarType::MULTIPLE())) {
+            $this->deleteAllSpaceTimeResource($uri, $graph);
 
-            $this->addLocation($spaceTimeResource);
+            foreach ($event->getCalendar()->getTimestamps() as $timestamp) {
+                $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
 
-            $this->addCalendarType($spaceTimeResource, $event);
+                $this->addLocation($spaceTimeResource);
+
+                $this->addCalendarType($spaceTimeResource, $timestamp);
+            }
         }
 
         $this->graphRepository->save($uri, $graph);
+    }
+
+    private function deleteAllSpaceTimeResource(string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+
+        $resource->delete(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD);
     }
 
     private function createSpaceTimeResource(string $uri, Graph $graph): Resource
     {
         $resource = $graph->resource($uri);
 
-        if (!$resource->hasProperty(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD)) {
-            $resource->add(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD, $resource->getGraph()->newBNode());
-        }
+        $spaceTimeResource = $resource->getGraph()->newBNode();
+        $resource->add(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD, $spaceTimeResource);
 
-        $spaceTimeResource = $resource->getResource(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD);
         if ($spaceTimeResource->type() !== self::TYPE_SPACE_TIME) {
             $spaceTimeResource->setType(self::TYPE_SPACE_TIME);
         }
@@ -236,7 +247,7 @@ final class RdfProjector implements EventListener
         $spaceTimeResource->set(self::PROPERTY_ACTIVITEIT_TYPE_LOCATION, new Resource($locationUri));
     }
 
-    private function addCalendarType(Resource $spaceTimeResource, CalendarUpdated $event): void
+    private function addCalendarType(Resource $spaceTimeResource, Timestamp $timestamp): void
     {
         if (!$spaceTimeResource->hasProperty(self::PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE)) {
             $spaceTimeResource->add(self::PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE, $spaceTimeResource->getGraph()->newBNode());
@@ -247,8 +258,8 @@ final class RdfProjector implements EventListener
             $calendarTypeResource->setType(self::TYPE_PERIOD);
         }
 
-        $start = $event->getCalendar()->getStartDate()->format(DateTime::ATOM);
-        $end = $event->getCalendar()->getEndDate()->format(DateTime::ATOM);
+        $start = $timestamp->getStartDate()->format(DateTime::ATOM);
+        $end = $timestamp->getEndDate()->format(DateTime::ATOM);
 
         $calendarTypeResource->set(self::PROPERTY_PERIOD_START, new Literal($start, null, self::TYPE_DATE_TIME));
         $calendarTypeResource->set(self::PROPERTY_PERIOD_END, new Literal($end, null, self::TYPE_DATE_TIME));
