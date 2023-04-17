@@ -37,6 +37,7 @@ final class RdfProjector implements EventListener
 {
     private MainLanguageRepository $mainLanguageRepository;
     private GraphRepository $graphRepository;
+    private LocationIdRepository $locationIdRepository;
     private IriGeneratorInterface $iriGenerator;
     private IriGeneratorInterface $placesIriGenerator;
 
@@ -58,11 +59,13 @@ final class RdfProjector implements EventListener
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
         GraphRepository $graphRepository,
+        LocationIdRepository $locationIdRepository,
         IriGeneratorInterface $iriGenerator,
         IriGeneratorInterface $placesIriGenerator
     ) {
         $this->mainLanguageRepository = $mainLanguageRepository;
         $this->graphRepository = $graphRepository;
+        $this->locationIdRepository = $locationIdRepository;
         $this->iriGenerator = $iriGenerator;
         $this->placesIriGenerator = $placesIriGenerator;
     }
@@ -194,6 +197,8 @@ final class RdfProjector implements EventListener
 
     private function handleLocationUpdated(LocationUpdated $event, string $uri, Graph $graph): void
     {
+        $this->locationIdRepository->save($uri, $event->getLocationId());
+
         $resource = $graph->resource($uri);
 
         $locationUri = $this->placesIriGenerator->iri($event->getLocationId()->toString());
@@ -220,7 +225,7 @@ final class RdfProjector implements EventListener
             foreach ($timestamps as $timestamp) {
                 $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
 
-                $this->addLocation($spaceTimeResource);
+                $this->addLocation($uri, $spaceTimeResource);
 
                 $this->addCalendarType($spaceTimeResource, $timestamp);
             }
@@ -263,9 +268,10 @@ final class RdfProjector implements EventListener
         return $spaceTimeResource;
     }
 
-    private function addLocation(Resource $spaceTimeResource): void
+    private function addLocation(string $uri, Resource $spaceTimeResource): void
     {
-        $locationUri = $this->placesIriGenerator->iri('TODO');
+        $locationId = $this->locationIdRepository->get($uri);
+        $locationUri = $this->placesIriGenerator->iri($locationId->toString());
         $spaceTimeResource->set(self::PROPERTY_ACTIVITEIT_TYPE_LOCATION, new Resource($locationUri));
     }
 
