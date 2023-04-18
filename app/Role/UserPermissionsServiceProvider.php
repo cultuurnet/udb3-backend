@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Role\ReadModel\Permissions\AppConfigUserPermissionsReadRepository;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsReadRepository;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsWriteRepository;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsProjector;
@@ -34,10 +35,16 @@ final class UserPermissionsServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             self::USER_PERMISSIONS_READ_REPOSITORY,
-            fn () => new UserPermissionsReadRepository(
-                $container->get('dbal_connection'),
-                self::USER_ROLES_TABLE,
-                self::ROLE_PERMISSIONS_TABLE,
+            fn () => new AppConfigUserPermissionsReadRepository(
+                new UserPermissionsReadRepository(
+                    $container->get('dbal_connection'),
+                    self::USER_ROLES_TABLE,
+                    self::ROLE_PERMISSIONS_TABLE,
+                ),
+                array_map(
+                    fn (array $clientPermissionsConfig) => $clientPermissionsConfig['permissions'] ?? [],
+                    $container->get('config')['client_permissions']
+                )
             )
         );
 
