@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Label\LabelRepository;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Projector as JsonProjector;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\AppConfigReadRepositoryDecorator;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepositoryDecorator;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository as JsonReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALWriteRepository as JsonWriteRepository;
@@ -157,15 +158,18 @@ final class LabelServiceProvider extends AbstractServiceProvider
             function () use ($container): ReadRepositoryInterface {
                 $labels = file_exists(__DIR__ . '/../../config.excluded_labels.php') ? require __DIR__ . '/../../config.excluded_labels.php' : [];
 
-                return new GodUserReadRepositoryDecorator(
-                    new JsonReadRepository(
-                        $container->get('dbal_connection'),
-                        new StringLiteral(self::JSON_TABLE),
-                        new StringLiteral(self::LABEL_ROLES_TABLE),
-                        new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
-                        new InMemoryExcludedLabelsRepository($labels ?? [])
+                return new AppConfigReadRepositoryDecorator(
+                    new GodUserReadRepositoryDecorator(
+                        new JsonReadRepository(
+                            $container->get('dbal_connection'),
+                            new StringLiteral(self::JSON_TABLE),
+                            new StringLiteral(self::LABEL_ROLES_TABLE),
+                            new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
+                            new InMemoryExcludedLabelsRepository($labels ?? [])
+                        ),
+                        $container->get('config')['user_permissions']['allow_all']
                     ),
-                    $container->get('config')['user_permissions']['allow_all']
+                    $container->get('config')['client_permissions']
                 );
             }
         );
