@@ -31,6 +31,6 @@ bash:
 	docker exec -it php.uitdatabank bash
 
 config:
-	sh ./docker/setup_config.sh
+	sh ./docker/config.sh
 
 init: install migrate
