@@ -2,6 +2,7 @@
 
 ## Prerequisite
 - Install Docker Desktop
+- appconfig: you'll have to clone [appconfig](https://github.com/cultuurnet/appconfig) in the same folder as where you will clone [udb3-backend](https://github.com/cultuurnet/udb3-backend)
 
 ## Configure
 
