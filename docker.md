@@ -6,6 +6,12 @@
 
 ## Configure
 
+### Configuration setup
+To get or update the configuration files, run the following command in the root of the project
+```
+$ make config
+```
+
 ### Local host file
 To use `udb3-backend` & `udb3-search-service` together, you'll have to add `127.0.0.1 host.docker.internal` to your `/etc/hosts` file.
 
@@ -28,12 +34,6 @@ search_api_base_url: 'http://host.docker.internal:9000'
 ```
 
 ## Start
-
-### Configuration setup
-To get or update the configuration files, run the following command in the root of the project
-```
-$ make config
-```
 
 ### Docker
 
