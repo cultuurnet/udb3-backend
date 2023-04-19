@@ -8,6 +8,6 @@ DIR="../appconfig/files/udb3/docker/udb3-backend/"
 if [ -d "$DIR" ]; then
   cp "$DIR"/* .
 else
-  echo "Error: see docker.md to setup config"
+  echo "Error: see docker.md prerequisites to setup config"
   exit 1
 fi
