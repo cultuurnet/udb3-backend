@@ -24,7 +24,7 @@
   cp:ruimtetijd [
     a cidoc:E92_Spacetime_Volume ;
     cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-    cidoc:P160 [
+    cidoc:P160_has_temporal_projection [
       a m8g:PeriodOfTime ;
       m8g:startTime "2018-01-01T12:00:00+01:00"^^xsd:dateTime ;
       m8g:endTime "2018-01-01T17:00:00+01:00"^^xsd:dateTime
