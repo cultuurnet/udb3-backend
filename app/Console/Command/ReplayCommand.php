@@ -115,6 +115,10 @@ final class ReplayCommand extends AbstractCommand
         $aggregateType = $this->getAggregateType($input);
 
         $startId = $input->getOption(self::OPTION_START_ID);
+        if ($startId !== null) {
+            $startId = (int) $startId;
+        }
+
         $cdbids = $input->getOption(self::OPTION_CDBID);
 
         $stream = $this->getEventStream($startId, $aggregateType, $cdbids);

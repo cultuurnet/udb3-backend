@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
@@ -25,31 +27,45 @@ use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
+use CultuurNet\UDB3\Timestamp;
 use DateTime;
 use EasyRdf\Graph;
+use EasyRdf\Literal;
 use EasyRdf\Resource;
 
 final class RdfProjector implements EventListener
 {
     private MainLanguageRepository $mainLanguageRepository;
     private GraphRepository $graphRepository;
+    private LocationIdRepository $locationIdRepository;
     private IriGeneratorInterface $iriGenerator;
     private IriGeneratorInterface $placesIriGenerator;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
+    private const TYPE_PERIOD = 'm8g:PeriodOfTime';
+    private const TYPE_SPACE_TIME = 'cidoc:E92';
+    private const TYPE_DATE_TIME = 'xsd:dateTime';
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
     private const PROPERTY_ACTVITEIT_LOCATIE = 'cpa:locatie';
+    private const PROPERTY_ACTIVITEIT_RUIMTE_TIJD = 'cp:ruimtetijd';
+    private const PROPERTY_ACTIVITEIT_TYPE_LOCATION = 'cidoc:P161';
+    private const PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE = 'cidoc:P160';
+
+    private const PROPERTY_PERIOD_START = 'm8g:startTime';
+    private const PROPERTY_PERIOD_END = 'm8g:endTime';
 
     public function __construct(
         MainLanguageRepository $mainLanguageRepository,
         GraphRepository $graphRepository,
+        LocationIdRepository $locationIdRepository,
         IriGeneratorInterface $iriGenerator,
         IriGeneratorInterface $placesIriGenerator
     ) {
         $this->mainLanguageRepository = $mainLanguageRepository;
         $this->graphRepository = $graphRepository;
+        $this->locationIdRepository = $locationIdRepository;
         $this->iriGenerator = $iriGenerator;
         $this->placesIriGenerator = $placesIriGenerator;
     }
@@ -82,6 +98,7 @@ final class RdfProjector implements EventListener
             DescriptionUpdated::class => fn ($e) => $this->handleDescriptionUpdated($e, $uri, $graph),
             DescriptionTranslated::class => fn ($e) => $this->handleDescriptionTranslated($e, $uri, $graph),
             LocationUpdated::class => fn ($e) => $this->handleLocationUpdated($e, $uri, $graph),
+            CalendarUpdated::class => fn ($e) => $this->handleCalendarUpdated($e, $uri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -180,11 +197,99 @@ final class RdfProjector implements EventListener
 
     private function handleLocationUpdated(LocationUpdated $event, string $uri, Graph $graph): void
     {
+        $this->locationIdRepository->save($uri, $event->getLocationId());
+
         $resource = $graph->resource($uri);
 
         $locationUri = $this->placesIriGenerator->iri($event->getLocationId()->toString());
         $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
 
         $this->graphRepository->save($uri, $graph);
+    }
+
+    private function handleCalendarUpdated(CalendarUpdated $event, string $uri, Graph $graph): void
+    {
+        $calendar = $event->getCalendar();
+
+        $timestamps = $event->getCalendar()->getTimestamps();
+        if ($calendar->getType()->sameAs(CalendarType::PERIODIC())) {
+            $timestamps[] = new Timestamp(
+                $calendar->getStartDate(),
+                $calendar->getEndDate()
+            );
+        }
+
+        if (!empty($timestamps)) {
+            $this->deleteAllSpaceTimeResources($uri, $graph);
+
+            foreach ($timestamps as $timestamp) {
+                $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
+
+                $this->addLocation($uri, $spaceTimeResource);
+
+                $this->addCalendarType($spaceTimeResource, $timestamp);
+            }
+        }
+
+        $this->graphRepository->save($uri, $graph);
+    }
+
+    private function deleteAllSpaceTimeResources(string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+
+        /** @var Resource[] $spaceTimeResources */
+        $spaceTimeResources = $resource->allResources(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD);
+        foreach ($spaceTimeResources as $spaceTimeResource) {
+            $spaceTimeResource->delete('rdf:type');
+            $spaceTimeResource->set(self::PROPERTY_ACTIVITEIT_TYPE_LOCATION, null);
+
+            $calendarTypeResource = $spaceTimeResource->getResource(self::PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE);
+            $calendarTypeResource->delete('rdf:type');
+            $calendarTypeResource->set(self::PROPERTY_PERIOD_START, null);
+            $calendarTypeResource->set(self::PROPERTY_PERIOD_END, null);
+            $spaceTimeResource->set(self::PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE, null);
+
+            $resource->delete(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD);
+        }
+    }
+
+    private function createSpaceTimeResource(string $uri, Graph $graph): Resource
+    {
+        $resource = $graph->resource($uri);
+
+        $spaceTimeResource = $resource->getGraph()->newBNode();
+        $resource->add(self::PROPERTY_ACTIVITEIT_RUIMTE_TIJD, $spaceTimeResource);
+
+        if ($spaceTimeResource->type() !== self::TYPE_SPACE_TIME) {
+            $spaceTimeResource->setType(self::TYPE_SPACE_TIME);
+        }
+
+        return $spaceTimeResource;
+    }
+
+    private function addLocation(string $uri, Resource $spaceTimeResource): void
+    {
+        $locationId = $this->locationIdRepository->get($uri);
+        $locationUri = $this->placesIriGenerator->iri($locationId->toString());
+        $spaceTimeResource->set(self::PROPERTY_ACTIVITEIT_TYPE_LOCATION, new Resource($locationUri));
+    }
+
+    private function addCalendarType(Resource $spaceTimeResource, Timestamp $timestamp): void
+    {
+        if (!$spaceTimeResource->hasProperty(self::PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE)) {
+            $spaceTimeResource->add(self::PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE, $spaceTimeResource->getGraph()->newBNode());
+        }
+
+        $calendarTypeResource = $spaceTimeResource->getResource(self::PROPERTY_ACTIVITEIT_TYPE_CALENDAR_TYPE);
+        if ($calendarTypeResource->type() !== self::TYPE_PERIOD) {
+            $calendarTypeResource->setType(self::TYPE_PERIOD);
+        }
+
+        $start = $timestamp->getStartDate()->format(DateTime::ATOM);
+        $end = $timestamp->getEndDate()->format(DateTime::ATOM);
+
+        $calendarTypeResource->set(self::PROPERTY_PERIOD_START, new Literal($start, null, self::TYPE_DATE_TIME));
+        $calendarTypeResource->set(self::PROPERTY_PERIOD_END, new Literal($end, null, self::TYPE_DATE_TIME));
     }
 }
