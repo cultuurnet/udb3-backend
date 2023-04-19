@@ -22,7 +22,7 @@
   cpa:locatie <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
   dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
   cp:ruimtetijd [
-    a cidoc:E92 ;
+    a cidoc:E92_Spacetime_Volume ;
     cidoc:P161 <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
     cidoc:P160 [
       a m8g:PeriodOfTime ;

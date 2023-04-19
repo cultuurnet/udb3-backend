@@ -45,7 +45,7 @@ final class RdfProjector implements EventListener
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
     private const TYPE_PERIOD = 'm8g:PeriodOfTime';
-    private const TYPE_SPACE_TIME = 'cidoc:E92';
+    private const TYPE_SPACE_TIME = 'cidoc:E92_Spacetime_Volume';
     private const TYPE_DATE_TIME = 'xsd:dateTime';
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';

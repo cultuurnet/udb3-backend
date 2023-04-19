@@ -22,7 +22,7 @@
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
   cpa:locatie <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
   cp:ruimtetijd [
-    a cidoc:E92 ;
+    a cidoc:E92_Spacetime_Volume ;
     cidoc:P161 <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
     cidoc:P160 [
       a m8g:PeriodOfTime ;
