@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
+use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -462,6 +463,21 @@ class RdfProjectorTest extends TestCase
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/various-calendar-updated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_type_updated(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new TypeUpdated($eventId, new EventType('1.8.3.1.0', 'Pop en rock')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/type-updated.ttl'));
     }
 
     private function getEventCreated(string $eventId, ?Calendar $calendar = null): EventCreated
