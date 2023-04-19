@@ -16,6 +16,7 @@
     dcterms:creator <https://fixme.com/example/dataprovider/publiq>
   ] ;
   dcterms:title "Faith no more"@nl ;
+  dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
   cpa:locatie <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
   dcterms:modified "2023-01-03T12:30:15+01:00"^^xsd:dateTime ;
   dcterms:description "Dit is het laatste concert van Faith no more"@nl, "This will be the last concert of Faith no more"@en .

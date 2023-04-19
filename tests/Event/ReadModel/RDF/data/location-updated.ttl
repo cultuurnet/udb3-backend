@@ -16,5 +16,6 @@
     dcterms:creator <https://fixme.com/example/dataprovider/publiq>
   ] ;
   dcterms:title "Faith no more"@nl ;
+  dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
   dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
   cpa:locatie <https://mock.data.publiq.be/places/ee4300a6-82a0-4489-ada0-1a6be1fca442> .
