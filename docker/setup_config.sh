@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# copy env files
-cp .env.dist .env
-
 # setup config & key files
 DIR="../appconfig/files/udb3/docker/udb3-backend/"
 if [ -d "$DIR" ]; then
