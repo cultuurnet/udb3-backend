@@ -50,7 +50,7 @@ final class RdfProjector implements EventListener
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
-    private const PROPERTY_ACTVITEIT_LOCATIE = 'cpa:locatie';
+    private const PROPERTY_ACTVITEIT_LOCATIE = 'prov:atLocation';
     private const PROPERTY_ACTIVITEIT_TYPE = 'dcterms:type';
 
     private const PROPERTY_RUIMTE_TIJD = 'cp:ruimtetijd';
