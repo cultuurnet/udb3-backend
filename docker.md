@@ -2,59 +2,18 @@
 
 ## Prerequisite
 - Install Docker Desktop
+- appconfig: you'll have to clone [appconfig](https://github.com/cultuurnet/appconfig) in the same folder as where you will clone [udb3-backend](https://github.com/cultuurnet/udb3-backend)
 
 ## Configure
 
+### Configuration setup
+To get or update the configuration files, run the following command in the root of the project
+```
+$ make config
+```
+
 ### Local host file
 To use `udb3-backend` & `udb3-search-service` together, you'll have to add `127.0.0.1 host.docker.internal` to your `/etc/hosts` file.
-
-### .env file
-Copy `env.dist` to the root folder and rename it to `.env`
-
-### config.php file
-
-Copy the latest `config.php` and `config.allow_all.php` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-backend to the root
-
-In your `config.php` file, you have to change some of the hosts to work with Docker instead of Vagrant.
-
-You'll need to change the following lines to work with docker hosts:
-- url
-  - `http://host.docker.internal:8000`
-- search.v3.base_url
-  - `http://host.docker.internal:9000`
-- database.host
-  - `mysql`
-- cache.redis.host
-  - `redis`
-- amqp.host
-  - `rabbitmq`
-
-To make the SAPI3 proxy work you will need to add a `scheme` and `port` to the search config
-
-```
-'search' => [
-    'v3' => [
-        'base_url' => 'http://host.docker.internal:9000',
-        'api_key' => 'deb306a6-6f46-4c98-89ce-b03ec4fd11e2',
-        'scheme' => 'http',
-        'port' => 9000,
-    ],
-],
-```
-
-To make the fuseki store work you will need modify the `rdf` config
-
-```
-'rdf' => [
-    'enabled' => true,
-    'placesRdfBaseUri' => 'http://host.docker.internal:8080/places/',
-    'placesGraphStoreUrl' => 'http://fuseki:80/places/',
-],
-```
-
-### pem files
-
-Copy `public.pem` and `public-auth0.pem` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/keys to the root
 
 ### RabbitMQ
 
@@ -83,18 +42,11 @@ Start the docker containers with the following command. Make sure to execute thi
 $ make up
 ```
 
-### Composer install
+### Migrations & Composer packages
 
-To install all composer packages, run the:
+To install all composer packages & migrate the database, run the following command:
 ```
-$ make install
-```
-
-### Migrations
-
-To migrate the database, run the following command:
-```
-$ make migrate
+$ make init
 ```
 
 ### CI
