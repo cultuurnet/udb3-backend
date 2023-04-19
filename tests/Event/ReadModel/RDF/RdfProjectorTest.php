@@ -10,6 +10,7 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
+use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -31,8 +32,10 @@ use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Theme;
+use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
 use DateTime;
+use DateTimeImmutable;
 use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\TestCase;
 
@@ -49,6 +52,7 @@ class RdfProjectorTest extends TestCase
         $this->rdfProjector = new RdfProjector(
             new InMemoryMainLanguageRepository(),
             $this->graphRepository,
+            new InMemoryLocationIdRepository(),
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
         );
@@ -252,7 +256,214 @@ class RdfProjectorTest extends TestCase
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/location-updated.ttl'));
     }
 
-    private function getEventCreated(string $eventId): EventCreated
+    /**
+     * @test
+     */
+    public function it_handles_event_created_with_periodic_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated(
+                $eventId,
+                new Calendar(
+                    CalendarType::PERIODIC(),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2022-01-01T17:00:00+01:00'),
+                ),
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/created-with-calendar-periodic.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_event_created_with_single_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00');
+
+        $this->project($eventId, [
+            $this->getEventCreated(
+                $eventId,
+                new Calendar(
+                    CalendarType::SINGLE(),
+                    $startDate,
+                    $endDate,
+                    [
+                        new Timestamp($startDate, $endDate),
+                    ]
+                ),
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/created-with-calendar-single.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_event_created_with_multiple_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated(
+                $eventId,
+                new Calendar(
+                    CalendarType::MULTIPLE(),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-02T17:00:00+01:00'),
+                    [
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        ),
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T17:00:00+01:00')
+                        ),
+                    ]
+                ),
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/created-with-calendar-multiple.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_calendar_updated_to_periodic(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new CalendarUpdated(
+                $eventId,
+                new Calendar(
+                    CalendarType::PERIODIC(),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2022-01-01T17:00:00+01:00'),
+                ),
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/calendar-updated-periodic.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_calendar_updated_to_single(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00');
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new CalendarUpdated(
+                $eventId,
+                new Calendar(
+                    CalendarType::SINGLE(),
+                    $startDate,
+                    $endDate,
+                    [
+                        new Timestamp($startDate, $endDate),
+                    ]
+                ),
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/calendar-updated-single.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_calendar_updated_to_multiple(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new CalendarUpdated(
+                $eventId,
+                new Calendar(
+                    CalendarType::MULTIPLE(),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-02T17:00:00+01:00'),
+                    [
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        ),
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T17:00:00+01:00')
+                        ),
+                    ]
+                ),
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/calendar-updated-multiple.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_various_calendar_updated(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new CalendarUpdated(
+                $eventId,
+                new Calendar(
+                    CalendarType::MULTIPLE(),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T12:00:00+01:00'),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-03T17:00:00+01:00'),
+                    [
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T17:00:00+01:00')
+                        ),
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00')
+                        ),
+                    ]
+                ),
+            ),
+            new CalendarUpdated(
+                $eventId,
+                new Calendar(
+                    CalendarType::SINGLE(),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+                    [
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        ),
+                    ]
+                ),
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/various-calendar-updated.ttl'));
+    }
+
+    private function getEventCreated(string $eventId, ?Calendar $calendar = null): EventCreated
     {
         return new EventCreated(
             $eventId,
@@ -260,7 +471,7 @@ class RdfProjectorTest extends TestCase
             new Title('Faith no more'),
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('bfc60a14-6208-4372-942e-86e63744769a'),
-            new Calendar(CalendarType::PERMANENT()),
+            $calendar ?: new Calendar(CalendarType::PERMANENT()),
             new Theme('1.8.1.0.0', 'Rock')
         );
     }
