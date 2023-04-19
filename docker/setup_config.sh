@@ -1,19 +1,13 @@
 #!/bin/sh
 
-# copy config files
+# copy env files
 cp .env.dist .env
-cp docker-config.php config.php
 
-# retrieve necessary files
-if [ ! -d udb3-docker-config ]; then
-  git clone git@github.com:cultuurnet/udb3-docker-config.git;
-  cd udb3-docker-config;
+# setup config & key files
+DIR="../appconfig/files/udb3/docker/udb3-backend/"
+if [ -d "$DIR" ]; then
+  cp "$DIR"/* .
 else
-  cd udb3-docker-config;
-  git stash push --include-untracked;
-  git checkout main;
-  git pull;
+  echo "Error: see docker.md to setup config"
+  exit 1
 fi
-
-cp *.pem ../
-cp *.php ../
