@@ -55,8 +55,3 @@ To execute all CI tasks, run the following command:
 ```
 $ make ci
 ```
-
-## Config changes
-To avoid duplicate out-of-sync development config files, 
-all changes/additions of the config files should be put in the udb3-vagrant repo.
-Only settings that need a different value for the docker setup should be put in docker-config.php!
