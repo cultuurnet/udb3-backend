@@ -29,6 +29,7 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
                 new CacheLocationIdRepository($this->container->get('cache')('rdf_location_id')),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['eventsRdfBaseUri']),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['placesRdfBaseUri']),
+                RdfServiceProvider::createIriGenerator($this->container->get('config')['taxonomy']['terms']),
             )
         );
     }
