@@ -258,6 +258,20 @@ final class RdfProjector implements EventListener
         $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, null);
     }
 
+    private function addLocation(string $uri, Graph $graph): void
+    {
+        $locationId = $this->locationIdRepository->get($uri);
+
+        if ($locationId === null) {
+            return;
+        }
+
+        $resource = $graph->resource($uri);
+
+        $locationUri = $this->placesIriGenerator->iri($locationId->toString());
+        $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
+    }
+
     private function deleteAllSpaceTimeResources(string $uri, Graph $graph): void
     {
         $resource = $graph->resource($uri);
