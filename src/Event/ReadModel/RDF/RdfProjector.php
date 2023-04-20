@@ -233,16 +233,13 @@ final class RdfProjector implements EventListener
             );
         }
 
-        if (!empty($timestamps)) {
-            $this->deleteAllSpaceTimeResources($uri, $graph);
+        $this->deleteLocation($uri, $graph);
+        $this->deleteAllSpaceTimeResources($uri, $graph);
 
-            foreach ($timestamps as $timestamp) {
-                $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
-
-                $this->addLocation($uri, $spaceTimeResource);
-
-                $this->addCalendarType($spaceTimeResource, $timestamp);
-            }
+        foreach ($timestamps as $timestamp) {
+            $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
+            $this->addLocationOnSpaceTimeResource($uri, $spaceTimeResource);
+            $this->addCalendarTypeOnSpaceTimeResource($spaceTimeResource, $timestamp);
         }
 
         $this->graphRepository->save($uri, $graph);
