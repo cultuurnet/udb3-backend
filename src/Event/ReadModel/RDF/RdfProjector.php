@@ -218,6 +218,13 @@ final class RdfProjector implements EventListener
     {
         $calendar = $event->getCalendar();
 
+        if ($calendar->getType()->sameAs(CalendarType::PERMANENT())) {
+            $this->deleteAllSpaceTimeResources($uri, $graph);
+            $this->addLocation($uri, $graph);
+            $this->graphRepository->save($uri, $graph);
+            return;
+        }
+
         $timestamps = $event->getCalendar()->getTimestamps();
         if ($calendar->getType()->sameAs(CalendarType::PERIODIC())) {
             $timestamps[] = new Timestamp(
