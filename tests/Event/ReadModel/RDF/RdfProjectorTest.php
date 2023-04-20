@@ -340,6 +340,34 @@ class RdfProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_calendar_updated_to_permanent(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00');
+
+        $this->project($eventId, [
+            $this->getEventCreated(
+                $eventId,
+                new Calendar(
+                    CalendarType::SINGLE(),
+                    $startDate,
+                    $endDate,
+                    [
+                        new Timestamp($startDate, $endDate),
+                    ]
+                ),
+            ),
+            new CalendarUpdated($eventId, new Calendar(CalendarType::PERMANENT())),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/calendar-updated-permanent.ttl'));
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_calendar_updated_to_periodic(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
