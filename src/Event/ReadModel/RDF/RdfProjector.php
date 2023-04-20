@@ -285,14 +285,14 @@ final class RdfProjector implements EventListener
         return $spaceTimeResource;
     }
 
-    private function addLocation(string $uri, Resource $spaceTimeResource): void
+    private function addLocationOnSpaceTimeResource(string $uri, Resource $spaceTimeResource): void
     {
         $locationId = $this->locationIdRepository->get($uri);
         $locationUri = $this->placesIriGenerator->iri($locationId->toString());
         $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, new Resource($locationUri));
     }
 
-    private function addCalendarType(Resource $spaceTimeResource, Timestamp $timestamp): void
+    private function addCalendarTypeOnSpaceTimeResource(Resource $spaceTimeResource, Timestamp $timestamp): void
     {
         if (!$spaceTimeResource->hasProperty(self::PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE)) {
             $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE, $spaceTimeResource->getGraph()->newBNode());
