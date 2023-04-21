@@ -264,14 +264,9 @@ final class RdfProjector implements EventListener
 
     private function addLocation(string $uri, Graph $graph): void
     {
-        $locationId = $this->locationIdRepository->get($uri);
-
-        if ($locationId === null) {
-            return;
-        }
-
         $resource = $graph->resource($uri);
 
+        $locationId = $this->locationIdRepository->get($uri);
         $locationUri = $this->placesIriGenerator->iri($locationId->toString());
         $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
     }
