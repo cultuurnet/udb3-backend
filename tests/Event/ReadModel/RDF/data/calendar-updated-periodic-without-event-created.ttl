@@ -1,0 +1,27 @@
+@prefix cidoc: <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
+@prefix m8g: <http://data.europa.eu/m8g/> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
+  a cidoc:E7_Activity ;
+  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
+  dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
+  dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
+  adms:identifier [
+    a adms:Identifier ;
+    skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri ;
+    dcterms:creator <https://fixme.com/example/dataprovider/publiq>
+  ] ;
+  cp:ruimtetijd [
+    a cidoc:E92_Spacetime_Volume ;
+    cidoc:P160_has_temporal_projection [
+      a m8g:PeriodOfTime ;
+      m8g:startTime "2018-01-01T12:00:00+01:00"^^xsd:dateTime ;
+      m8g:endTime "2022-01-01T17:00:00+01:00"^^xsd:dateTime
+    ]
+  ] .
