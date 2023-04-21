@@ -17,6 +17,6 @@ final class InMemoryLocationIdRepository implements LocationIdRepository
 
     public function get(string $resourceId): ?LocationId
     {
-        return $this->locations[$resourceId] ? new LocationId($this->locations[$resourceId]) : null;
+        return isset($this->locations[$resourceId]) ? new LocationId($this->locations[$resourceId]) : null;
     }
 }
