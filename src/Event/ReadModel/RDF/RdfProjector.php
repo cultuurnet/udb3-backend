@@ -205,11 +205,18 @@ final class RdfProjector implements EventListener
     private function handleLocationUpdated(LocationUpdated $event, string $uri, Graph $graph): void
     {
         $this->locationIdRepository->save($uri, $event->getLocationId());
+        $locationUri = $this->placesIriGenerator->iri($event->getLocationId()->toString());
 
         $resource = $graph->resource($uri);
 
-        $locationUri = $this->placesIriGenerator->iri($event->getLocationId()->toString());
-        $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
+        if ($resource->hasProperty(self::PROPERTY_RUIMTE_TIJD)) {
+            $spaceTimeResources = $resource->allResources(self::PROPERTY_RUIMTE_TIJD);
+            foreach ($spaceTimeResources as $spaceTimeResource) {
+                $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, new Resource($locationUri));
+            }
+        } else {
+            $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
+        }
 
         $this->graphRepository->save($uri, $graph);
     }
