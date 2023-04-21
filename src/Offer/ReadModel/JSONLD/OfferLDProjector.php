@@ -59,9 +59,13 @@ use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SluggerInterface;
 use DateTimeInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 abstract class OfferLDProjector implements OrganizerServiceInterface
 {
+    use LoggerAwareTrait;
+
     use MultilingualJsonLDProjectorTrait;
     use DelegateEventHandlingToSpecificMethodTrait {
         DelegateEventHandlingToSpecificMethodTrait::handle as handleUnknownEvents;
@@ -110,6 +114,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $this->videoNormalizer = $videoNormalizer;
 
         $this->slugger = new CulturefeedSlugger();
+
+        $this->logger = new NullLogger();
     }
 
     public function handle(DomainMessage $domainMessage): void
