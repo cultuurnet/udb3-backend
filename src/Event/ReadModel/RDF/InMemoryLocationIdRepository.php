@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 
 final class InMemoryLocationIdRepository implements LocationIdRepository
 {
-    private array $locations;
+    private array $locations = [];
 
     public function save(string $resourceId, LocationId $locationId): void
     {
