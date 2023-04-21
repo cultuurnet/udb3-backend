@@ -271,9 +271,12 @@ final class RdfProjector implements EventListener
 
     private function addLocation(string $uri, Graph $graph): void
     {
-        $resource = $graph->resource($uri);
-
         $locationId = $this->locationIdRepository->get($uri);
+        if ($locationId === null) {
+            return;
+        }
+
+        $resource = $graph->resource($uri);
         $locationUri = $this->placesIriGenerator->iri($locationId->toString());
         $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
     }
@@ -315,6 +318,10 @@ final class RdfProjector implements EventListener
     private function addLocationOnSpaceTimeResource(string $uri, Resource $spaceTimeResource): void
     {
         $locationId = $this->locationIdRepository->get($uri);
+        if ($locationId === null) {
+            return;
+        }
+
         $locationUri = $this->placesIriGenerator->iri($locationId->toString());
         $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, new Resource($locationUri));
     }
