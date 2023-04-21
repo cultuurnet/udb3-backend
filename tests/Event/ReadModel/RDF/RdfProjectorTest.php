@@ -261,6 +261,34 @@ class RdfProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_location_updated_on_event_created_with_single_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated(
+                $eventId,
+                new Calendar(
+                    CalendarType::SINGLE(),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+                    [
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        ),
+                    ]
+                )
+            ),
+            new LocationUpdated($eventId, new LocationId('ee4300a6-82a0-4489-ada0-1a6be1fca442')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/location-updated-on-calendar-single.ttl'));
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_event_created_with_periodic_calendar(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
