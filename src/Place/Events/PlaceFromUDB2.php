@@ -38,7 +38,7 @@ trait PlaceFromUDB2
         $granularEvents[] = new AddressUpdated(
             $this->actorId,
             new Address(
-                new Street($addressFromXml['street'][0]['_text'] . ' ' . $addressFromXml['housenr'][0]['_text']),
+                new Street($this->getStreet($addressFromXml)),
                 new PostalCode($addressFromXml['zipcode'][0]['_text']),
                 new Locality($addressFromXml['city'][0]['_text']),
                 new CountryCode($addressFromXml['country'][0]['_text'])
