@@ -27,4 +27,23 @@ final class DefaultAddressFormatterTest extends TestCase
 
         $this->assertEquals($expectedString, $formatter->format($address));
     }
+
+    /**
+     * @test
+     */
+    public function it_formats_addresses_with_empty_street()
+    {
+        $formatter = new FullAddressFormatter();
+
+        $address = new Address(
+            new Street(''),
+            new PostalCode('3000'),
+            new Locality('Leuven'),
+            new CountryCode('BE')
+        );
+
+        $expectedString = '3000 Leuven, BE';
+
+        $this->assertEquals($expectedString, $formatter->format($address));
+    }
 }
