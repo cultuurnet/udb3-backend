@@ -151,7 +151,7 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
         $container->addShared(
             self::PROJECTOR,
             function () use ($container): EventLDProjector {
-                return new EventLDProjector(
+                $eventLDProjector = new EventLDProjector(
                     $container->get('event_jsonld_repository'),
                     $container->get('event_iri_generator'),
                     $container->get('place_iri_generator'),
@@ -165,6 +165,10 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
                     $container->get('config')['base_price_translations'],
                     new VideoNormalizer($container->get('config')['media']['video_default_copyright']),
                 );
+
+                $eventLDProjector->setLogger(LoggerFactory::create($container, LoggerName::forWeb()));
+
+                return $eventLDProjector;
             }
         );
 
