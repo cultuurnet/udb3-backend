@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use PHPUnit\Framework\TestCase;
 
-class DefaultAddressFormatterTest extends TestCase
+final class DefaultAddressFormatterTest extends TestCase
 {
     /**
      * @test
