@@ -50,7 +50,7 @@ final class RdfProjector implements EventListener
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
-    private const PROPERTY_ACTVITEIT_LOCATIE = 'cpa:locatie';
+    private const PROPERTY_ACTVITEIT_LOCATIE = 'prov:atLocation';
     private const PROPERTY_ACTIVITEIT_TYPE = 'dcterms:type';
 
     private const PROPERTY_RUIMTE_TIJD = 'cp:ruimtetijd';
@@ -205,11 +205,18 @@ final class RdfProjector implements EventListener
     private function handleLocationUpdated(LocationUpdated $event, string $uri, Graph $graph): void
     {
         $this->locationIdRepository->save($uri, $event->getLocationId());
+        $locationUri = $this->placesIriGenerator->iri($event->getLocationId()->toString());
 
         $resource = $graph->resource($uri);
 
-        $locationUri = $this->placesIriGenerator->iri($event->getLocationId()->toString());
-        $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
+        if ($resource->hasProperty(self::PROPERTY_RUIMTE_TIJD)) {
+            $spaceTimeResources = $resource->allResources(self::PROPERTY_RUIMTE_TIJD);
+            foreach ($spaceTimeResources as $spaceTimeResource) {
+                $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, new Resource($locationUri));
+            }
+        } else {
+            $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
+        }
 
         $this->graphRepository->save($uri, $graph);
     }
@@ -217,6 +224,13 @@ final class RdfProjector implements EventListener
     private function handleCalendarUpdated(CalendarUpdated $event, string $uri, Graph $graph): void
     {
         $calendar = $event->getCalendar();
+
+        if ($calendar->getType()->sameAs(CalendarType::PERMANENT())) {
+            $this->deleteAllSpaceTimeResources($uri, $graph);
+            $this->addLocation($uri, $graph);
+            $this->graphRepository->save($uri, $graph);
+            return;
+        }
 
         $timestamps = $event->getCalendar()->getTimestamps();
         if ($calendar->getType()->sameAs(CalendarType::PERIODIC())) {
@@ -226,16 +240,13 @@ final class RdfProjector implements EventListener
             );
         }
 
-        if (!empty($timestamps)) {
-            $this->deleteAllSpaceTimeResources($uri, $graph);
+        $this->deleteLocation($uri, $graph);
+        $this->deleteAllSpaceTimeResources($uri, $graph);
 
-            foreach ($timestamps as $timestamp) {
-                $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
-
-                $this->addLocation($uri, $spaceTimeResource);
-
-                $this->addCalendarType($spaceTimeResource, $timestamp);
-            }
+        foreach ($timestamps as $timestamp) {
+            $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
+            $this->addLocationOnSpaceTimeResource($uri, $spaceTimeResource);
+            $this->addCalendarTypeOnSpaceTimeResource($spaceTimeResource, $timestamp);
         }
 
         $this->graphRepository->save($uri, $graph);
@@ -249,6 +260,25 @@ final class RdfProjector implements EventListener
         $resource->set(self::PROPERTY_ACTIVITEIT_TYPE, new Resource($terms));
 
         $this->graphRepository->save($uri, $graph);
+    }
+
+    private function deleteLocation(string $uri, Graph $graph): void
+    {
+        $resource = $graph->resource($uri);
+
+        $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, null);
+    }
+
+    private function addLocation(string $uri, Graph $graph): void
+    {
+        $locationId = $this->locationIdRepository->get($uri);
+        if ($locationId === null) {
+            return;
+        }
+
+        $resource = $graph->resource($uri);
+        $locationUri = $this->placesIriGenerator->iri($locationId->toString());
+        $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
     }
 
     private function deleteAllSpaceTimeResources(string $uri, Graph $graph): void
@@ -285,14 +315,18 @@ final class RdfProjector implements EventListener
         return $spaceTimeResource;
     }
 
-    private function addLocation(string $uri, Resource $spaceTimeResource): void
+    private function addLocationOnSpaceTimeResource(string $uri, Resource $spaceTimeResource): void
     {
         $locationId = $this->locationIdRepository->get($uri);
+        if ($locationId === null) {
+            return;
+        }
+
         $locationUri = $this->placesIriGenerator->iri($locationId->toString());
         $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, new Resource($locationUri));
     }
 
-    private function addCalendarType(Resource $spaceTimeResource, Timestamp $timestamp): void
+    private function addCalendarTypeOnSpaceTimeResource(Resource $spaceTimeResource, Timestamp $timestamp): void
     {
         if (!$spaceTimeResource->hasProperty(self::PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE)) {
             $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE, $spaceTimeResource->getGraph()->newBNode());

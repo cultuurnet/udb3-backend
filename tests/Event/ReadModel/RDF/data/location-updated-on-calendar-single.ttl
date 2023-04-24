@@ -4,7 +4,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
+@prefix m8g: <http://data.europa.eu/m8g/> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a cidoc:E7_Activity ;
@@ -16,6 +17,14 @@
     dcterms:creator <https://fixme.com/example/dataprovider/publiq>
   ] ;
   dcterms:title "Faith no more"@nl ;
-  prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-  dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime ;
-  dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> .
+  dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
+  cp:ruimtetijd [
+    a cidoc:E92_Spacetime_Volume ;
+    cidoc:P160_has_temporal_projection [
+      a m8g:PeriodOfTime ;
+      m8g:startTime "2018-01-01T12:00:00+01:00"^^xsd:dateTime ;
+      m8g:endTime "2018-01-01T17:00:00+01:00"^^xsd:dateTime
+    ] ;
+    cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/ee4300a6-82a0-4489-ada0-1a6be1fca442>
+  ] ;
+  dcterms:modified "2023-01-02T12:30:15+01:00"^^xsd:dateTime .
