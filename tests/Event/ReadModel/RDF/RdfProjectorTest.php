@@ -261,6 +261,34 @@ class RdfProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_location_updated_on_event_created_with_single_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated(
+                $eventId,
+                new Calendar(
+                    CalendarType::SINGLE(),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+                    [
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        ),
+                    ]
+                )
+            ),
+            new LocationUpdated($eventId, new LocationId('ee4300a6-82a0-4489-ada0-1a6be1fca442')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/location-updated-on-calendar-single.ttl'));
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_event_created_with_periodic_calendar(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
@@ -340,6 +368,34 @@ class RdfProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_calendar_updated_to_permanent(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00');
+
+        $this->project($eventId, [
+            $this->getEventCreated(
+                $eventId,
+                new Calendar(
+                    CalendarType::SINGLE(),
+                    $startDate,
+                    $endDate,
+                    [
+                        new Timestamp($startDate, $endDate),
+                    ]
+                ),
+            ),
+            new CalendarUpdated($eventId, new Calendar(CalendarType::PERMANENT())),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/calendar-updated-permanent.ttl'));
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_calendar_updated_to_periodic(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
@@ -357,6 +413,27 @@ class RdfProjectorTest extends TestCase
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/calendar-updated-periodic.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_calendar_updated_to_periodic_without_event_created(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            new CalendarUpdated(
+                $eventId,
+                new Calendar(
+                    CalendarType::PERIODIC(),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2022-01-01T17:00:00+01:00'),
+                ),
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/calendar-updated-periodic-without-event-created.ttl'));
     }
 
     /**
