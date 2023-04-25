@@ -241,7 +241,7 @@ class RdfProjectorTest extends TestCase
             new DescriptionUpdated($eventId, new Description('Ze geven nog een extra concert')),
         ]);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/description-updated.ttl'));
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/description-updated-with-empty-string.ttl'));
     }
 
     /**
