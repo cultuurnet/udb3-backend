@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<actor xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" asset="true" availablefrom="2016-12-27T15:32:06" availableto="2016-12-27T15:32:06" createdby="adelforg" creationdate="2010-01-06T14:21:33" cdbid="f6dfcd9d-e43a-4e94-a87e-70253ee77689" lastupdated="2016-12-27T15:32:06" lastupdatedby="karen.schilders@cultuurnet.be" owner="Invoerders Algemeen ">
+    <actordetails>
+        <actordetail lang="nl">
+            <title>cultuurcentrum Tessenderlo/Vismarkt</title>
+        </actordetail>
+    </actordetails>
+    <categories>
+        <category catid="8.15.0.0.0" type="actortype">Locatie</category>
+        <category catid="reg.31" type="flandersregion">Provincie Vlaams-Brabant</category>
+    </categories>
+    <keywords>
+        <keyword>Aanvaarden van SABAM-cultuurch&#xE8;ques</keyword>
+        <keyword visible="false">Toevlalocatie</keyword>
+    </keywords>
+</actor>
