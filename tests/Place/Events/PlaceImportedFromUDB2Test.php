@@ -150,6 +150,26 @@ final class PlaceImportedFromUDB2Test extends TestCase
 
     /**
      * @test
+     */
+    public function it_can_convert_places_without_an_address_to_granular_events(): void
+    {
+        $placeId = 'f6dfcd9d-e43a-4e94-a87e-70253ee77689';
+        $placeImportedFromUDB2 = new PlaceImportedFromUDB2(
+            $placeId,
+            file_get_contents(__DIR__ . '/../actor_without_address.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($placeId, new Title('cultuurcentrum Tessenderlo/Vismarkt')),
+            ],
+            $placeImportedFromUDB2->toGranularEvents()
+        );
+    }
+
+    /**
+     * @test
      * @dataProvider variousCdbxmlFormatsDataProvider
      */
     public function it_can_convert_various_cdbxml_formats(
