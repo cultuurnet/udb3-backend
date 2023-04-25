@@ -33,17 +33,18 @@ trait PlaceFromUDB2
             }
         }
 
-        $addressFromXml = $placeAsArray['contactinfo'][0]['address'][0]['physical'][0];
-
-        $granularEvents[] = new AddressUpdated(
-            $this->actorId,
-            new Address(
-                new Street($this->getStreet($addressFromXml)),
-                new PostalCode($addressFromXml['zipcode'][0]['_text']),
-                new Locality($addressFromXml['city'][0]['_text']),
-                new CountryCode($addressFromXml['country'][0]['_text'])
-            )
-        );
+        if (isset($placeAsArray['contactinfo'][0]['address'][0]['physical'][0])) {
+            $addressFromXml = $placeAsArray['contactinfo'][0]['address'][0]['physical'][0];
+            $granularEvents[] = new AddressUpdated(
+                $this->actorId,
+                new Address(
+                    new Street($this->getStreet($addressFromXml)),
+                    new PostalCode($addressFromXml['zipcode'][0]['_text']),
+                    new Locality($addressFromXml['city'][0]['_text']),
+                    new CountryCode($addressFromXml['country'][0]['_text'])
+                )
+            );
+        }
 
         return $granularEvents;
     }
