@@ -10,10 +10,15 @@ final class FullAddressFormatter implements AddressFormatter
 
     public function format(Address $address): string
     {
-        return implode(self::LINE_SEPARATOR, [
-            $address->getStreetAddress()->toNative(),
-            $address->getPostalCode()->toNative() . ' ' . $address->getLocality()->toNative(),
-            $address->getCountryCode()->toString(),
-        ]);
+        return implode(
+            self::LINE_SEPARATOR,
+            array_filter(
+                [
+                    $address->getStreetAddress()->toNative(),
+                    $address->getPostalCode()->toNative() . ' ' . $address->getLocality()->toNative(),
+                    $address->getCountryCode()->toString(),
+                ]
+            )
+        );
     }
 }
