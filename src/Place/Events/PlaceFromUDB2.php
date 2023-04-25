@@ -38,7 +38,7 @@ trait PlaceFromUDB2
         $granularEvents[] = new AddressUpdated(
             $this->actorId,
             new Address(
-                new Street($addressFromXml['street'][0]['_text'] . ' ' . $addressFromXml['housenr'][0]['_text']),
+                new Street($this->getStreet($addressFromXml)),
                 new PostalCode($addressFromXml['zipcode'][0]['_text']),
                 new Locality($addressFromXml['city'][0]['_text']),
                 new CountryCode($addressFromXml['country'][0]['_text'])
@@ -62,5 +62,16 @@ trait PlaceFromUDB2
             return $actorAsArray['cdbxml']['actor'][0];
         }
         return $actorAsArray['actor'];
+    }
+
+    private function getStreet(array $addressFromXml): string
+    {
+        if (!isset($addressFromXml['street'][0]['_text'])) {
+            return '';
+        }
+        if (!isset($addressFromXml['housenr'][0]['_text'])) {
+            return $addressFromXml['street'][0]['_text'];
+        }
+        return $addressFromXml['street'][0]['_text'] . ' ' . $addressFromXml['housenr'][0]['_text'];
     }
 }
