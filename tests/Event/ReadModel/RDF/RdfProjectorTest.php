@@ -230,6 +230,23 @@ class RdfProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_description_updated_with_empty_string(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new DescriptionUpdated($eventId, new Description('Dit is het laatste concert van Faith no more')),
+            new DescriptionUpdated($eventId, new Description('')),
+            new DescriptionUpdated($eventId, new Description('Ze geven nog een extra concert')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/description-updated-with-empty-string.ttl'));
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_description_translated(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';

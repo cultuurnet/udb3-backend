@@ -85,6 +85,7 @@ final class GraphEditor
         // Get all literal values for the property, and key them by their language tag.
         // This will be an empty list if no value(s) were set before for this property.
         $literalValues = $resource->allLiterals($property);
+        $literalValues = array_filter($literalValues, fn (Literal $literal): bool => $literal->getLang() !== null);
         $languages = array_map(fn (Literal $literal): string => $literal->getLang(), $literalValues);
         $literalValuePerLanguage = array_combine($languages, $literalValues);
 
