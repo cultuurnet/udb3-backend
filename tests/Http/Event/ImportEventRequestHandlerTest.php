@@ -3028,7 +3028,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/onlineUrl',
-                'The string should match pattern: ^http[s]?:\/\/'
+                'The string should match pattern: ^http[s]?:\/\/\w'
             ),
         ];
 
