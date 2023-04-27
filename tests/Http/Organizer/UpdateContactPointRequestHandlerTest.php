@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use PHPUnit\Framework\TestCase;
 
-class UpdateContactPointRequestHandlerTest extends TestCase
+final class UpdateContactPointRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
