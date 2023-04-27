@@ -166,5 +166,22 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
                 ),
             ],
         ];
+
+        yield 'url with triple slashes' => [
+            'input' => [
+                'url' => 'https:///www.publiq.be/',
+                'urlLabel' => ['nl' => 'Publiq vzw'],
+                'phone' => '02/1232323',
+                'email' => 'info@publiq.be',
+                'availabilityStarts' => '2028-01-01T00:00:00+01:00',
+                'availabilityEnds' => '2023-01-31T23:59:59+01:00',
+            ],
+            'schemaErrors' => [
+                new SchemaError(
+                    '/url',
+                    'The string should match pattern: ^http[s]?:\/\/\w'
+                ),
+            ],
+        ];
     }
 }
