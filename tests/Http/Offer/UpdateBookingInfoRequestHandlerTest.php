@@ -173,8 +173,8 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
                 'urlLabel' => ['nl' => 'Publiq vzw'],
                 'phone' => '02/1232323',
                 'email' => 'info@publiq.be',
-                'availabilityStarts' => '2028-01-01T00:00:00+01:00',
-                'availabilityEnds' => '2023-01-31T23:59:59+01:00',
+                'availabilityStarts' => '2023-01-01T00:00:00+01:00',
+                'availabilityEnds' => '2028-01-31T23:59:59+01:00',
             ],
             'schemaErrors' => [
                 new SchemaError(
