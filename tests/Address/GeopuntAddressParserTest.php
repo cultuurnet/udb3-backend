@@ -314,6 +314,91 @@ class GeopuntAddressParserTest extends TestCase
         $this->assertLogs();
     }
 
+    /**
+     * @test
+     */
+    public function it_can_handle_an_empty_zipcode(): void
+    {
+        $address = 'Marguerite Durassquare, 1000 Brussel, BE';
+
+        $expectedRequest = new Request(
+            'GET',
+            'https://loc.geopunt.be/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE'
+        );
+
+        $mockResponseData = [
+            'LocationResult' => [
+                [
+                    'Municipality' => 'Bruxelles',
+                    'Zipcode' => null,
+                    'Thoroughfarename' => 'Marguerite Durassquare',
+                    'Housenumber' => null,
+                ],
+            ],
+        ];
+
+        $mockResponse = new Response(200, [], Json::encode($mockResponseData));
+
+        $this->httpClient->expects($this->once())
+            ->method('sendRequest')
+            ->with($expectedRequest)
+            ->willReturn($mockResponse);
+
+        $this->expectedLogs->info('GET https://loc.geopunt.be/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Bruxelles","Zipcode":null,"Thoroughfarename":"Marguerite Durassquare","Housenumber":null}]}');
+        $this->expectedLogs->info('Successfully parsed response body.');
+
+        $expectedParsedAddress = new ParsedAddress(
+            'Marguerite Durassquare',
+            null,
+            null,
+            'Bruxelles'
+        );
+
+        $actualParsedAddress = $this->geopuntAddressParser->parse($address);
+
+        $this->assertEquals($expectedParsedAddress, $actualParsedAddress);
+        $this->assertLogs();
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_handle_an_empty_thoroughfare(): void
+    {
+        $address = 'Marguerite Durassquare, 1000 Brussel, BE';
+
+        $expectedRequest = new Request(
+            'GET',
+            'https://loc.geopunt.be/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE'
+        );
+
+        $mockResponseData = [
+            'LocationResult' => [
+                [
+                    'Municipality' => 'Bruxelles',
+                    'Zipcode' => null,
+                    'Thoroughfarename' => null,
+                    'Housenumber' => null,
+                ],
+            ],
+        ];
+
+        $mockResponse = new Response(200, [], Json::encode($mockResponseData));
+
+        $this->httpClient->expects($this->once())
+            ->method('sendRequest')
+            ->with($expectedRequest)
+            ->willReturn($mockResponse);
+
+        $this->expectedLogs->info('GET https://loc.geopunt.be/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Bruxelles","Zipcode":null,"Thoroughfarename":null,"Housenumber":null}]}');
+        $this->expectedLogs->info('Response body did not contain a thoroughfarename inside "LocationResult" property. The address is not precise enough.');
+
+        $actualParsedAddress = $this->geopuntAddressParser->parse($address);
+
+        $this->assertNull($actualParsedAddress);
+        $this->assertLogs();
+    }
+
     private function assertLogs(): void
     {
         $this->assertEquals($this->expectedLogs->getLogs(), $this->logger->getLogs());
