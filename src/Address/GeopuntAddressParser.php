@@ -75,7 +75,12 @@ final class GeopuntAddressParser implements AddressParser, LoggerAwareInterface
                                     ['type' => 'null'],
                                 ],
                             ],
-                            'Thoroughfarename' => ['type' => 'string'],
+                            'Thoroughfarename' => [
+                                'anyOf' => [
+                                    ['type' => 'string'],
+                                    ['type' => 'null'],
+                                ],
+                            ],
                             'Housenumber' => [
                                 'anyOf' => [
                                     ['type' => 'string'],
