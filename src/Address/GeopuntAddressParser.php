@@ -69,7 +69,12 @@ final class GeopuntAddressParser implements AddressParser, LoggerAwareInterface
                         'type' => 'object',
                         'properties' => [
                             'Municipality' => ['type' => 'string'],
-                            'Zipcode' => ['type' => 'string'],
+                            'Zipcode' => [
+                                'anyOf' => [
+                                    ['type' => 'string'],
+                                    ['type' => 'null'],
+                                ],
+                            ],
                             'Thoroughfarename' => ['type' => 'string'],
                             'Housenumber' => [
                                 'anyOf' => [
