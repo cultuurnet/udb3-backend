@@ -265,11 +265,9 @@ class GeopuntAddressParserTest extends TestCase
                     '/LocationResult/0/Municipality' => [
                         0 => 'The data (integer) must match the type: string',
                     ],
-                    '/LocationResult/0/Zipcode' => [
-                        0 => 'The data (null) must match the type: string',
-                    ],
                     '/LocationResult/0/Thoroughfarename' => [
                         0 => 'The data (boolean) must match the type: string',
+                        1 => 'The data (boolean) must match the type: null',
                     ],
                     '/LocationResult/0/Housenumber' => [
                         0 => 'The data (array) must match the type: string',
