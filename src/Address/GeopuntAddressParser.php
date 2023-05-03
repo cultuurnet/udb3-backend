@@ -112,11 +112,6 @@ final class GeopuntAddressParser implements AddressParser, LoggerAwareInterface
         }
         $result = $data->LocationResult[0];
 
-        if ($result->Thoroughfarename === null) {
-            $this->logger->info('Response body did not contain a thoroughfarename inside "LocationResult" property. The address is not precise enough.');
-            return null;
-        }
-
         $this->logger->info('Successfully parsed response body.');
         return new ParsedAddress(
             $result->Thoroughfarename,
