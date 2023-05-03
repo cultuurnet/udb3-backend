@@ -237,7 +237,7 @@ final class RdfProjector implements EventListener
         // original Address, because locn:thoroughfare MUST NOT contain a house number. If there is no ParsedAddress
         // remove the value for the given language instead since it will probably be outdated (if set previously).
         // Keep in mind that locn:thoroughfare is optional.
-        if ($parsedAddress) {
+        if ($parsedAddress && $parsedAddress->getThoroughfare() !== null) {
             $graphEditor->replaceLanguageValue(
                 $addressResource->getUri(),
                 self::PROPERTY_ADRES_STRAATNAAM,

@@ -6,12 +6,12 @@ namespace CultuurNet\UDB3\Address;
 
 final class ParsedAddress
 {
-    private string $thoroughfare;
+    private ?string $thoroughfare;
     private ?string $houseNumber;
-    private string $postalCode;
+    private ?string $postalCode;
     private string $municipality;
 
-    public function __construct(string $thoroughfare, ?string $houseNumber, string $postalCode, string $municipality)
+    public function __construct(?string $thoroughfare, ?string $houseNumber, ?string $postalCode, string $municipality)
     {
         $this->thoroughfare = $thoroughfare;
         $this->houseNumber = $houseNumber;
@@ -19,7 +19,7 @@ final class ParsedAddress
         $this->municipality = $municipality;
     }
 
-    public function getThoroughfare(): string
+    public function getThoroughfare(): ?string
     {
         return $this->thoroughfare;
     }
@@ -29,7 +29,7 @@ final class ParsedAddress
         return $this->houseNumber;
     }
 
-    public function getPostalCode(): string
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }

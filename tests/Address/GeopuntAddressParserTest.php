@@ -265,11 +265,9 @@ class GeopuntAddressParserTest extends TestCase
                     '/LocationResult/0/Municipality' => [
                         0 => 'The data (integer) must match the type: string',
                     ],
-                    '/LocationResult/0/Zipcode' => [
-                        0 => 'The data (null) must match the type: string',
-                    ],
                     '/LocationResult/0/Thoroughfarename' => [
                         0 => 'The data (boolean) must match the type: string',
+                        1 => 'The data (boolean) must match the type: null',
                     ],
                     '/LocationResult/0/Housenumber' => [
                         0 => 'The data (array) must match the type: string',
@@ -313,6 +311,98 @@ class GeopuntAddressParserTest extends TestCase
         $actualParsedAddress = $this->geopuntAddressParser->parse($address);
 
         $this->assertNull($actualParsedAddress);
+        $this->assertLogs();
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_handle_an_empty_zipcode(): void
+    {
+        $address = 'Marguerite Durassquare, 1000 Brussel, BE';
+
+        $expectedRequest = new Request(
+            'GET',
+            'https://loc.geopunt.be/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE'
+        );
+
+        $mockResponseData = [
+            'LocationResult' => [
+                [
+                    'Municipality' => 'Bruxelles',
+                    'Zipcode' => null,
+                    'Thoroughfarename' => 'Marguerite Durassquare',
+                    'Housenumber' => null,
+                ],
+            ],
+        ];
+
+        $mockResponse = new Response(200, [], Json::encode($mockResponseData));
+
+        $this->httpClient->expects($this->once())
+            ->method('sendRequest')
+            ->with($expectedRequest)
+            ->willReturn($mockResponse);
+
+        $this->expectedLogs->info('GET https://loc.geopunt.be/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Bruxelles","Zipcode":null,"Thoroughfarename":"Marguerite Durassquare","Housenumber":null}]}');
+        $this->expectedLogs->info('Successfully parsed response body.');
+
+        $expectedParsedAddress = new ParsedAddress(
+            'Marguerite Durassquare',
+            null,
+            null,
+            'Bruxelles'
+        );
+
+        $actualParsedAddress = $this->geopuntAddressParser->parse($address);
+
+        $this->assertEquals($expectedParsedAddress, $actualParsedAddress);
+        $this->assertLogs();
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_handle_an_empty_thoroughfare(): void
+    {
+        $address = 'Marguerite Durassquare, 1000 Brussel, BE';
+
+        $expectedRequest = new Request(
+            'GET',
+            'https://loc.geopunt.be/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE'
+        );
+
+        $mockResponseData = [
+            'LocationResult' => [
+                [
+                    'Municipality' => 'Bruxelles',
+                    'Zipcode' => '1000',
+                    'Thoroughfarename' => null,
+                    'Housenumber' => null,
+                ],
+            ],
+        ];
+
+        $mockResponse = new Response(200, [], Json::encode($mockResponseData));
+
+        $this->httpClient->expects($this->once())
+            ->method('sendRequest')
+            ->with($expectedRequest)
+            ->willReturn($mockResponse);
+
+        $this->expectedLogs->info('GET https://loc.geopunt.be/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Bruxelles","Zipcode":"1000","Thoroughfarename":null,"Housenumber":null}]}');
+        $this->expectedLogs->info('Successfully parsed response body.');
+
+        $expectedParsedAddress = new ParsedAddress(
+            null,
+            null,
+            '1000',
+            'Bruxelles'
+        );
+
+        $actualParsedAddress = $this->geopuntAddressParser->parse($address);
+
+        $this->assertEquals($expectedParsedAddress, $actualParsedAddress);
         $this->assertLogs();
     }
 
