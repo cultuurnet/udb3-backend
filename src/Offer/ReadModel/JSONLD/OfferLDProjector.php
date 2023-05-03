@@ -93,6 +93,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected VideoNormalizer $videoNormalizer;
 
+    private ?int $playhead = null;
+
     /**
      * @param string[] $basePriceTranslations
      */
@@ -120,6 +122,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     public function handle(DomainMessage $domainMessage): void
     {
+        $this->playhead = $domainMessage->getPlayhead();
+
         $event = $domainMessage->getPayload();
 
         $eventName = get_class($event);
