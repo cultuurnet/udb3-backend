@@ -825,6 +825,13 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         try {
             $document = $this->repository->fetch($itemId);
+
+            $body = $document->getBody();
+            if ($this->playhead !== null && $this->playhead > 0 && isset($body->playhead) && $body->playhead !== $this->playhead - 1) {
+                $this->logger->error(
+                    'Playhead mismatch for document ' . $itemId . '. Expected ' . ($this->playhead - 1) . ' but found ' . $body->playhead
+                );
+            }
         } catch (DocumentDoesNotExist $e) {
             return $this->newDocument($itemId);
         }
