@@ -376,7 +376,7 @@ class GeopuntAddressParserTest extends TestCase
             'LocationResult' => [
                 [
                     'Municipality' => 'Bruxelles',
-                    'Zipcode' => null,
+                    'Zipcode' => '1000',
                     'Thoroughfarename' => null,
                     'Housenumber' => null,
                 ],
@@ -390,12 +390,19 @@ class GeopuntAddressParserTest extends TestCase
             ->with($expectedRequest)
             ->willReturn($mockResponse);
 
-        $this->expectedLogs->info('GET https://loc.geopunt.be/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Bruxelles","Zipcode":null,"Thoroughfarename":null,"Housenumber":null}]}');
-        $this->expectedLogs->info('Response body did not contain a thoroughfarename inside "LocationResult" property. The address is not precise enough.');
+        $this->expectedLogs->info('GET https://loc.geopunt.be/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Bruxelles","Zipcode":"1000","Thoroughfarename":null,"Housenumber":null}]}');
+        $this->expectedLogs->info('Successfully parsed response body.');
+
+        $expectedParsedAddress = new ParsedAddress(
+            null,
+            null,
+            '1000',
+            'Bruxelles'
+        );
 
         $actualParsedAddress = $this->geopuntAddressParser->parse($address);
 
-        $this->assertNull($actualParsedAddress);
+        $this->assertEquals($expectedParsedAddress, $actualParsedAddress);
         $this->assertLogs();
     }
 
