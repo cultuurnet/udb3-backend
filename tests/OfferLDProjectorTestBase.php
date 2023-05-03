@@ -127,6 +127,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'languages' => ['nl'],
+            'playhead' => 1,
         ];
 
         $body = $this->project($bookingInfoUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -159,6 +160,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
                 'url' => $urls,
             ],
             'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
         ];
 
         $this->assertEquals(
@@ -200,6 +202,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             'languages' => ['nl'],
             'completedLanguages' => ['nl'],
             'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
         ];
 
         $body = $this->project($descriptionUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -242,6 +245,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
                 ],
             ],
             'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
         ];
 
         $body = $this->project($imageAdded, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -292,6 +296,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
                 ],
             ],
             'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
         ];
 
         $body = $this->project($imageUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -319,6 +324,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
         $expectedBody = (object)[
             'typicalAgeRange' => '0-18',
             'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
         ];
 
         $body = $this->project($typicalAgeRangeUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -346,6 +352,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
         $expectedBody = (object)[
             'typicalAgeRange' => '-',
             'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
         ];
 
         $body = $this->project($typicalAgeRangeDeleted, $id, null, $this->recordedOn->toBroadwayDateTime());
