@@ -24,6 +24,9 @@ cs-fix:
 test:
 	docker exec -it php.uitdatabank composer test
 
+test-filter:
+	docker exec -it php.uitdatabank composer test -- --filter=$(filter)
+
 migrate:
 	docker exec -it php.uitdatabank ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
 

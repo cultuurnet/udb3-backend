@@ -1,0 +1,7 @@
+@prefix cidoc: <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<https://mock.data.publiq.be/events/612e0661-4bb3-42d4-a392-aa5825ca5427>
+  a cidoc:E7_Activity ;
+  dcterms:title "My beautiful event" .
+

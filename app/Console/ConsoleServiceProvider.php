@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Console\Command\ChangePlaceType;
 use CultuurNet\UDB3\Console\Command\ChangePlaceTypeOnEvents;
 use CultuurNet\UDB3\Console\Command\ChangePlaceTypeOnPlacesWithEventEventType;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
+use CultuurNet\UDB3\Console\Command\CopyToFuseki;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
@@ -40,6 +41,8 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
+use CultuurNet\UDB3\RDF\CacheGraphRepository;
+use CultuurNet\UDB3\RDF\RdfServiceProvider;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
@@ -79,6 +82,8 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:remove-label',
         'console.offer:import-auto-classification-labels',
         'console.article:replace-publisher',
+        'console.event:copy-to-fuseki',
+        'console.place:copy-to-fuseki',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -382,6 +387,26 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.article:replace-publisher',
             fn () => new ReplaceNewsArticlePublisher($container->get('dbal_connection'))
+        );
+
+        $container->addShared(
+            'console.event:copy-to-fuseki',
+            fn () => new CopyToFuseki(
+                'event:copy-to-fuseki',
+                new CacheGraphRepository($this->container->get('cache')('rdf_event')),
+                RdfServiceProvider::createGraphStoreRepository($this->container->get('config')['rdf']['eventsGraphStoreUrl']),
+                RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['eventsRdfBaseUri']),
+            )
+        );
+
+        $container->addShared(
+            'console.place:copy-to-fuseki',
+            fn () => new CopyToFuseki(
+                'place:copy-to-fuseki',
+                new CacheGraphRepository($this->container->get('cache')('rdf_place')),
+                RdfServiceProvider::createGraphStoreRepository($this->container->get('config')['rdf']['placesGraphStoreUrl']),
+                RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['placesRdfBaseUri']),
+            )
         );
     }
 }
