@@ -67,7 +67,8 @@ abstract class OfferLDProjectorTestBase extends TestCase
         object $event,
         string $entityId,
         Metadata $metadata = null,
-        DateTime $dateTime = null
+        DateTime $dateTime = null,
+        int $playhead = 1
     ): stdClass {
         if (null === $metadata) {
             $metadata = new Metadata();
@@ -80,7 +81,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
         $this->projector->handle(
             new DomainMessage(
                 $entityId,
-                1,
+                $playhead,
                 $metadata,
                 $event,
                 $dateTime
@@ -127,10 +128,10 @@ abstract class OfferLDProjectorTestBase extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'languages' => ['nl'],
-            'playhead' => 1,
+            'playhead' => 3,
         ];
 
-        $body = $this->project($bookingInfoUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
+        $body = $this->project($bookingInfoUpdated, $id, null, $this->recordedOn->toBroadwayDateTime(), 3);
 
         $this->assertEquals($expectedBody, $body);
     }
