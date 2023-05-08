@@ -173,6 +173,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->bookingAvailability = (object) [
             'type' => 'Available',
         ];
+        $jsonLD->playhead = 1;
 
         $body = $this->project(
             $placeCreated,
@@ -238,6 +239,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->bookingAvailability = (object)[
             'type' => 'Available',
         ];
+        $jsonLD->playhead = 1;
 
         $metadata = new Metadata(
             [
@@ -336,6 +338,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->languages = ['nl'];
         $expectedJsonLD->completedLanguages = ['nl'];
         $expectedJsonLD->modified = $this->recordedOn->toString();
+        $expectedJsonLD->playhead = 1;
 
         $addressUpdated = new AddressUpdated(
             '66f30742-dee9-4794-ac92-fa44634692b8',
@@ -419,6 +422,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->languages = ['nl', 'fr'];
         $expectedJsonLD->completedLanguages = ['nl'];
         $expectedJsonLD->modified = $this->recordedOn->toString();
+        $expectedJsonLD->playhead = 1;
 
         $addressTranslated = new AddressTranslated(
             '66f30742-dee9-4794-ac92-fa44634692b8',
@@ -709,6 +713,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->bookingAvailability = (object)[
             'type' => 'Available',
         ];
+        $expectedJsonLD->playhead = 1;
 
         $body = $this->project(
             $majorInfoUpdated,
@@ -763,6 +768,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 'longitude' => -0.34567,
             ],
             'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
         ];
 
         $body = $this->project($coordinatesUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -785,6 +791,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             '@context' => '/contexts/place',
             'workflowStatus' => 'DELETED',
             'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
         ];
 
         $this->assertEquals($expectedJson, $body);
@@ -869,6 +876,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedBody->bar = 'stool';
         $expectedBody->labels = ['label B'];
         $expectedBody->modified = $this->recordedOn->toString();
+        $expectedBody->playhead = 1;
 
         $this->assertEquals(
             $expectedBody,

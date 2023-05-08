@@ -93,6 +93,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected VideoNormalizer $videoNormalizer;
 
+    private ?int $playhead = null;
+
     /**
      * @param string[] $basePriceTranslations
      */
@@ -120,6 +122,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     public function handle(DomainMessage $domainMessage): void
     {
+        $this->playhead = $domainMessage->getPlayhead();
+
         $event = $domainMessage->getPayload();
 
         $eventName = get_class($event);
@@ -145,6 +149,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         foreach ($jsonDocuments as $jsonDocument) {
             $jsonDocument = $this->jsonDocumentMetaDataEnricher->enrich($jsonDocument, $domainMessage->getMetadata());
             $jsonDocument = $this->updateModified($jsonDocument, $domainMessage);
+            $jsonDocument = $this->updatePlayhead($jsonDocument, $domainMessage);
 
             $this->repository->save($jsonDocument);
         }
@@ -820,6 +825,13 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         try {
             $document = $this->repository->fetch($itemId);
+
+            $body = $document->getBody();
+            if (isset($this->playhead) && $this->playhead > 0 && isset($body->playhead) && $body->playhead !== $this->playhead - 1) {
+                $this->logger->error(
+                    'Playhead mismatch for document ' . $itemId . '. Expected ' . ($this->playhead - 1) . ' but found ' . $body->playhead
+                );
+            }
         } catch (DocumentDoesNotExist $e) {
             return $this->newDocument($itemId);
         }
@@ -849,6 +861,15 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $recordedDateTime = RecordedOn::fromDomainMessage($domainMessage);
         $body->modified = $recordedDateTime->toString();
+
+        return $jsonDocument->withBody($body);
+    }
+
+    private function updatePlayhead(JsonDocument $jsonDocument, DomainMessage $domainMessage): JsonDocument
+    {
+        $body = $jsonDocument->getBody();
+
+        $body->playhead = $domainMessage->getPlayhead();
 
         return $jsonDocument->withBody($body);
     }

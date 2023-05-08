@@ -35,5 +35,6 @@
   },
   "bookingAvailability": {
     "type": "Available"
-  }
+  },
+  "playhead": 1
 }
