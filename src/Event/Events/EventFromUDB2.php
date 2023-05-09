@@ -79,6 +79,11 @@ trait EventFromUDB2
                 $this->eventId,
                 new LocationId($eventAsArray['location'][0]['label'][0]['@attributes']['cdbid'])
             );
+        } elseif (isset($eventAsArray['location'][0]['address'][0]['physical'][0])) {
+            $granularEvents[] = new DummyLocationUpdated(
+                $this->eventId,
+                $this->getDummyLocation()
+            );
         }
 
         $calendarEvent = $this->getCalendar($eventAsArray['calendar'][0]);
@@ -191,13 +196,9 @@ trait EventFromUDB2
         return $openingHours;
     }
 
-    public function getDummyLocation(): ?DummyLocation
+    public function getDummyLocation(): DummyLocation
     {
         $eventAsArray = $this->getEventAsArray();
-        if (isset($eventAsArray['location'][0]['label'][0]['@attributes']['cdbid'])) {
-            return null;
-        }
-
         $addressAsArray = $eventAsArray['location'][0]['address'][0]['physical'][0];
 
         return new DummyLocation(

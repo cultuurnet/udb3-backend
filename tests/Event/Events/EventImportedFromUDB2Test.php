@@ -7,6 +7,7 @@ namespace test\Event\Events;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
+use CultuurNet\UDB3\Event\Events\DummyLocationUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
@@ -102,6 +103,18 @@ final class EventImportedFromUDB2Test extends TestCase
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new EventType('0.3.1.0.0', 'Cursus of workshop')
                 ),
+                new DummyLocationUpdated(
+                    '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+                    new DummyLocation(
+                        new Title('Test locatie 2099'),
+                        new Address(
+                            new Street('teststraat 44'),
+                            new PostalCode('3000'),
+                            new Locality('Leuven'),
+                            new CountryCode('BE')
+                        )
+                    )
+                ),
                 new CalendarUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Calendar(
@@ -139,6 +152,18 @@ final class EventImportedFromUDB2Test extends TestCase
                 new TitleTranslated($eventId, new Language('fr'), new LegacyTitle('L\'événement!')),
                 new TitleTranslated($eventId, new Language('de'), new LegacyTitle('Das Ereignis!')),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+                new DummyLocationUpdated(
+                    '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+                    new DummyLocation(
+                        new Title('Test locatie 2099'),
+                        new Address(
+                            new Street('teststraat 44'),
+                            new PostalCode('3000'),
+                            new Locality('Leuven'),
+                            new CountryCode('BE')
+                        )
+                    )
+                ),
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
@@ -197,48 +222,6 @@ final class EventImportedFromUDB2Test extends TestCase
         );
     }
 
-
-    /**
-     * @test
-     */
-    public function it_does_not_return_a_dummy_location_if_location_id_is_present(): void
-    {
-        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
-        $eventWithLocationId = new EventImportedFromUDB2(
-            $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
-            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
-        );
-
-        $this->assertNull($eventWithLocationId->getDummyLocation());
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_a_dummy_location_(): void
-    {
-        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
-        $eventWithDummyLocation = new EventImportedFromUDB2(
-            $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_photo.cdbxml.xml'),
-            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
-        );
-
-        $this->assertEquals(
-            new DummyLocation(
-                new Title('Liberaal Archief'),
-                new Address(
-                    new Street('Kramersplein 23'),
-                    new PostalCode('9000'),
-                    new Locality('Gent'),
-                    new CountryCode('BE')
-                )
-            ),
-            $eventWithDummyLocation->getDummyLocation()
-        );
-    }
-
     /**
      * @test
      */
@@ -290,6 +273,18 @@ final class EventImportedFromUDB2Test extends TestCase
                 new TitleTranslated($eventId, new Language('fr'), new LegacyTitle('Oscar et la Dame Rose')),
                 new TitleTranslated($eventId, new Language('en'), new LegacyTitle('Oscar et la Dame Rose')),
                 new TypeUpdated($eventId, new EventType('0.55.0.0.0', 'Theatervoorstelling')),
+                new DummyLocationUpdated(
+                    '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+                    new DummyLocation(
+                        new Title('La Flûte Enchantée'),
+                        new Address(
+                            new Street('rue du Printemps 18'),
+                            new PostalCode('1050'),
+                            new Locality('Elsene'),
+                            new CountryCode('BE')
+                        )
+                    )
+                ),
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
@@ -361,6 +356,18 @@ final class EventImportedFromUDB2Test extends TestCase
             [
                 new TitleUpdated($eventId, new LegacyTitle('Werken met de \'nailliner\'')),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+                new DummyLocationUpdated(
+                    '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+                    new DummyLocation(
+                        new Title('Nagelstudio Vanderbeken'),
+                        new Address(
+                            new Street('Frère-Orbanstraat 159'),
+                            new PostalCode('8400'),
+                            new Locality('Oostende'),
+                            new CountryCode('BE')
+                        )
+                    )
+                ),
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
@@ -409,6 +416,18 @@ final class EventImportedFromUDB2Test extends TestCase
             [
                 new TitleUpdated($eventId, new LegacyTitle('Juwelen maken VOORJAAR 2017')),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+                new DummyLocationUpdated(
+                    '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
+                    new DummyLocation(
+                        new Title('Wijkcentrum Condé'),
+                        new Address(
+                            new Street('Condédreef(Kor) 16'),
+                            new PostalCode('8500'),
+                            new Locality('Kortrijk'),
+                            new CountryCode('BE')
+                        )
+                    )
+                ),
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
