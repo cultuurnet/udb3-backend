@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
@@ -77,6 +78,11 @@ trait EventFromUDB2
             $granularEvents[] = new LocationUpdated(
                 $this->eventId,
                 new LocationId($eventAsArray['location'][0]['label'][0]['@attributes']['cdbid'])
+            );
+        } elseif (isset($eventAsArray['location'][0]['address'][0]['physical'][0])) {
+            $granularEvents[] = new DummyLocationUpdated(
+                $this->eventId,
+                $this->getDummyLocation()
             );
         }
 
@@ -190,13 +196,9 @@ trait EventFromUDB2
         return $openingHours;
     }
 
-    public function getDummyLocation(): ?DummyLocation
+    public function getDummyLocation(): DummyLocation
     {
         $eventAsArray = $this->getEventAsArray();
-        if (isset($eventAsArray['location'][0]['label'][0]['@attributes']['cdbid'])) {
-            return null;
-        }
-
         $addressAsArray = $eventAsArray['location'][0]['address'][0]['physical'][0];
 
         return new DummyLocation(

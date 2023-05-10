@@ -7,7 +7,7 @@ namespace test\Event\Events;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
-use CultuurNet\UDB3\Event\Events\DummyLocation;
+use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
@@ -115,21 +115,6 @@ final class EventUpdatedFromUDB2Test extends TestCase
             ],
             $eventUpdatedFromUdb2->toGranularEvents()
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_return_a_dummy_location_if_location_id_is_present(): void
-    {
-        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
-        $eventWithLocationId = new EventUpdatedFromUDB2(
-            $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
-            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
-        );
-
-        $this->assertNull($eventWithLocationId->getDummyLocation());
     }
 
     /**
