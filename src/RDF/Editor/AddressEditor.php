@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\AddressFormatter;
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Address\FullAddressFormatter;
-use CultuurNet\UDB3\Address\ParsedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
@@ -21,8 +20,6 @@ use EasyRdf\Resource;
 final class AddressEditor
 {
     private const TYPE_ADRES = 'locn:Address';
-
-    private const PROPERTY_LOCATIE_ADRES = 'locn:address';
 
     private const PROPERTY_ADRES_STRAATNAAM = 'locn:thoroughfare';
     private const PROPERTY_ADRES_HUISNUMMER = 'locn:locatorDesignator';
@@ -55,15 +52,18 @@ final class AddressEditor
         return new self($graph, $mainLanguageRepository, $addressParser);
     }
 
-    public function addAddress(string $resourceUri, Address $address): void
-    {
+    public function addAddress(
+        string $resourceUri,
+        Address $address,
+        string $property
+    ): void {
         $resource = $this->graph->resource($resourceUri);
 
-        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_ADRES)) {
-            $resource->add(self::PROPERTY_LOCATIE_ADRES, $resource->getGraph()->newBNode());
+        if (!$resource->hasProperty($property)) {
+            $resource->add($property, $resource->getGraph()->newBNode());
         }
 
-        $addressResource = $resource->getResource(self::PROPERTY_LOCATIE_ADRES);
+        $addressResource = $resource->getResource($property);
         if ($addressResource->type() !== self::TYPE_ADRES) {
             $addressResource->setType(self::TYPE_ADRES);
         }
@@ -87,15 +87,19 @@ final class AddressEditor
         }
 
         $mainLanguage = $this->mainLanguageRepository->get($resourceUri, new Language('nl'))->toString();
-        $this->updateTranslatableAddress($resourceUri, $address, $mainLanguage);
+        $this->updateTranslatableAddress($resourceUri, $address, $mainLanguage, $property);
     }
 
-    public function updateTranslatableAddress(string $resourceUri, Address $address, string $language): void
-    {
+    public function updateTranslatableAddress(
+        string $resourceUri,
+        Address $address,
+        string $language,
+        string $property
+    ): void {
         $resource = $this->graph->resource($resourceUri);
 
         /** @var Resource|null $addressResource */
-        $addressResource = $resource->getResource(self::PROPERTY_LOCATIE_ADRES);
+        $addressResource = $resource->getResource($property);
         if ($addressResource === null) {
             // This is a case that should not happen in reality, since every new place should get a locn:Address via
             // handleAddressUpdated().

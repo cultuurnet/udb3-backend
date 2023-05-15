@@ -4,6 +4,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix locn: <http://www.w3.org/ns/locn#> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
@@ -16,7 +17,7 @@
     skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri ;
     dcterms:creator <https://fixme.com/example/dataprovider/publiq>
   ] ;
-  locn:address [
+  prov:atLocation [
     a locn:Address ;
     locn:adminUnitL1 "BE" ;
     locn:postcode "3000" ;

@@ -211,6 +211,7 @@ final class RdfProjector implements EventListener
 
     private function handleLocationUpdated(LocationUpdated $event, string $uri, Graph $graph): void
     {
+        // TODO: Take into account a dummy location that should be removed
         $this->locationIdRepository->save($uri, $event->getLocationId());
         $locationUri = $this->placesIriGenerator->iri($event->getLocationId()->toString());
 
@@ -230,8 +231,9 @@ final class RdfProjector implements EventListener
 
     private function handleDummyLocationUpdated(DummyLocationUpdated $event, string $uri, Graph $graph): void
     {
+        // TODO: Take into account the calendar type
         AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
-            ->addAddress($uri, $event->getDummyLocation()->getAddress());
+            ->addAddress($uri, $event->getDummyLocation()->getAddress(), self::PROPERTY_ACTVITEIT_LOCATIE);
 
         $this->graphRepository->save($uri, $graph);
     }

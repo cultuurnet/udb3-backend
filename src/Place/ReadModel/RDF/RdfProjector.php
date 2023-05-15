@@ -42,6 +42,7 @@ final class RdfProjector implements EventListener
     private const TYPE_LOCATIE = 'dcterms:Location';
     private const TYPE_GEOMETRIE = 'locn:Geometry';
 
+    private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
     private const PROPERTY_LOCATIE_GEOMETRIE = 'locn:geometry';
 
@@ -132,7 +133,7 @@ final class RdfProjector implements EventListener
     private function handleAddressUpdated(AddressUpdated $event, string $uri, Graph $graph): void
     {
         AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
-            ->addAddress($uri, AddressEditor::fromLegacyAddress($event->getAddress()));
+            ->addAddress($uri, AddressEditor::fromLegacyAddress($event->getAddress()), self::PROPERTY_LOCATIE_ADRES);
 
         $this->graphRepository->save($uri, $graph);
     }
@@ -148,7 +149,8 @@ final class RdfProjector implements EventListener
             ->updateTranslatableAddress(
                 $uri,
                 AddressEditor::fromLegacyAddress($event->getAddress()),
-                $event->getLanguage()->getCode()
+                $event->getLanguage()->getCode(),
+                self::PROPERTY_LOCATIE_ADRES
             );
 
         $this->graphRepository->save($uri, $graph);
