@@ -211,9 +211,11 @@ final class RdfProjector implements EventListener
 
     private function handleLocationUpdated(LocationUpdated $event, string $uri, Graph $graph): void
     {
-        // TODO: Take into account a dummy location that should be removed
         $this->locationIdRepository->save($uri, $event->getLocationId());
         $locationUri = $this->placesIriGenerator->iri($event->getLocationId()->toString());
+
+        AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
+            ->removeAddresses();
 
         $resource = $graph->resource($uri);
 
@@ -231,7 +233,6 @@ final class RdfProjector implements EventListener
 
     private function handleDummyLocationUpdated(DummyLocationUpdated $event, string $uri, Graph $graph): void
     {
-        // TODO: Take into account the calendar type
         AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
             ->addAddress($uri, $event->getDummyLocation()->getAddress(), self::PROPERTY_ACTVITEIT_LOCATIE);
 
@@ -242,9 +243,12 @@ final class RdfProjector implements EventListener
     {
         $calendar = $event->getCalendar();
 
+        $address = AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
+            ->getAddress();
+
         if ($calendar->getType()->sameAs(CalendarType::PERMANENT())) {
             $this->deleteAllSpaceTimeResources($uri, $graph);
-            $this->addLocation($uri, $graph);
+            $this->addLocation($uri, $graph, $address);
             $this->graphRepository->save($uri, $graph);
             return;
         }
@@ -262,7 +266,7 @@ final class RdfProjector implements EventListener
 
         foreach ($timestamps as $timestamp) {
             $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
-            $this->addLocationOnSpaceTimeResource($uri, $spaceTimeResource);
+            $this->addLocationOnSpaceTimeResource($uri, $spaceTimeResource, $address);
             $this->addCalendarTypeOnSpaceTimeResource($spaceTimeResource, $timestamp);
         }
 
@@ -286,16 +290,20 @@ final class RdfProjector implements EventListener
         $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, null);
     }
 
-    private function addLocation(string $uri, Graph $graph): void
+    private function addLocation(string $uri, Graph $graph, ?Resource $address): void
     {
+        $resource = $graph->resource($uri);
+
         $locationId = $this->locationIdRepository->get($uri);
-        if ($locationId === null) {
+        if ($locationId !== null) {
+            $locationUri = $this->placesIriGenerator->iri($locationId->toString());
+            $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
             return;
         }
 
-        $resource = $graph->resource($uri);
-        $locationUri = $this->placesIriGenerator->iri($locationId->toString());
-        $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
+        if ($address !== null) {
+            $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, $address);
+        }
     }
 
     private function deleteAllSpaceTimeResources(string $uri, Graph $graph): void
@@ -332,15 +340,18 @@ final class RdfProjector implements EventListener
         return $spaceTimeResource;
     }
 
-    private function addLocationOnSpaceTimeResource(string $uri, Resource $spaceTimeResource): void
+    private function addLocationOnSpaceTimeResource(string $uri, Resource $spaceTimeResource, ?Resource $address): void
     {
         $locationId = $this->locationIdRepository->get($uri);
-        if ($locationId === null) {
+        if ($locationId !== null) {
+            $locationUri = $this->placesIriGenerator->iri($locationId->toString());
+            $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, new Resource($locationUri));
             return;
         }
 
-        $locationUri = $this->placesIriGenerator->iri($locationId->toString());
-        $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, new Resource($locationUri));
+        if ($address !== null) {
+            $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, $address);
+        }
     }
 
     private function addCalendarTypeOnSpaceTimeResource(Resource $spaceTimeResource, Timestamp $timestamp): void

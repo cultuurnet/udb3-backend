@@ -90,6 +90,32 @@ final class AddressEditor
         $this->updateTranslatableAddress($resourceUri, $address, $mainLanguage, $property);
     }
 
+    public function removeAddresses(): void
+    {
+        $resources = $this->graph->allOfType(self::TYPE_ADRES);
+        foreach ($resources as $resource) {
+            $resource->delete('rdf:type');
+
+            $resource->set(self::PROPERTY_ADRES_LAND, null);
+            $resource->set(self::PROPERTY_ADRES_POSTCODE, null);
+            $resource->set(self::PROPERTY_ADRES_STRAATNAAM, null);
+            $resource->set(self::PROPERTY_ADRES_HUISNUMMER, null);
+            $resource->set(self::PROPERTY_ADRES_VOLLEDIG_ADRES, null);
+            $resource->set(self::PROPERTY_ADRES_GEMEENTENAAM, null);
+        }
+    }
+
+    public function getAddress(): ?Resource
+    {
+        $resources = $this->graph->allOfType(self::TYPE_ADRES);
+
+        if (count($resources) === 0) {
+            return null;
+        }
+
+        return $resources[0];
+    }
+
     public function updateTranslatableAddress(
         string $resourceUri,
         Address $address,

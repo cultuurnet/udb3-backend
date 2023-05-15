@@ -390,6 +390,98 @@ class RdfProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_location_updated_after_dummy_location_updated(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturn(
+                new ParsedAddress(
+                    'Martelarenlaan',
+                    '1',
+                    '3000',
+                    'Leuven'
+                )
+            );
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new DummyLocationUpdated(
+                $eventId,
+                new DummyLocation(
+                    new Title('Het Depot Leuven'),
+                    new Address(
+                        new Street('Martelarenplein 1'),
+                        new PostalCode('3000'),
+                        new Locality('Leuven'),
+                        new CountryCode('BE')
+                    )
+                )
+            ),
+            new LocationUpdated($eventId, new LocationId('ee4300a6-82a0-4489-ada0-1a6be1fca442')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/location-updated-after-dummy-location-updated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_calendar_updated_after_dummy_location_updated(): void
+    {
+        $eventId = '253f6304-13e8-4fda-897f-955df3bbecd2';
+
+        $this->addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturn(
+                new ParsedAddress(
+                    'Martelarenlaan',
+                    '1',
+                    '3000',
+                    'Leuven'
+                )
+            );
+
+        $this->project($eventId, [
+            new DummyLocationUpdated(
+                $eventId,
+                new DummyLocation(
+                    new Title('Het Depot Leuven'),
+                    new Address(
+                        new Street('Martelarenplein 1'),
+                        new PostalCode('3000'),
+                        new Locality('Leuven'),
+                        new CountryCode('BE')
+                    )
+                ),
+            ),
+            new CalendarUpdated(
+                $eventId,
+                new Calendar(
+                    CalendarType::MULTIPLE(),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-02T17:00:00+01:00'),
+                    [
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        ),
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T17:00:00+01:00')
+                        ),
+                    ]
+                ),
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/calendar-updated-multiple-after-dummy-location-updated.ttl'));
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_event_created_with_periodic_calendar(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
