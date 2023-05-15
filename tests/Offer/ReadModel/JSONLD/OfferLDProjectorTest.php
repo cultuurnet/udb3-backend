@@ -55,6 +55,7 @@ use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentNullEnricher;
@@ -67,6 +68,7 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use stdClass;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -157,6 +159,154 @@ class OfferLDProjectorTest extends TestCase
     {
         $document = $this->documentRepository->fetch($id);
         return $document->getBody();
+    }
+
+    /**
+     * @test
+     */
+    public function it_retries_on_playhead_mismatch(): void
+    {
+        $documentRepository = $this->createMock(DocumentRepository::class);
+
+        $projector = new ItemLDProjector(
+            $documentRepository,
+            new CallableIriGenerator(fn ($id) => 'http://example.com/entity/' . $id),
+            $this->createMock(OrganizerService::class),
+            $this->createMock(MediaObjectSerializer::class),
+            new JsonDocumentNullEnricher(),
+            [],
+            new VideoNormalizer([])
+        );
+
+        $documentRepository->expects($this->exactly(4))
+            ->method('fetch')
+            ->willReturn(
+                new JsonDocument(
+                    'foo',
+                    Json::encode([
+                        'labels' => ['label A'],
+                        'playhead' => 1,
+                    ])
+                )
+            );
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->exactly(3))
+            ->method('warning');
+        $logger->expects($this->once())
+            ->method('error');
+        $projector->setLogger($logger);
+
+        $projector->handle(
+            new DomainMessage(
+                'foo',
+                3,
+                new Metadata(),
+                new LabelAdded('foo', 'label B'),
+                DateTime::now()
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_retry_on_playhead_match(): void
+    {
+        $documentRepository = $this->createMock(DocumentRepository::class);
+
+        $projector = new ItemLDProjector(
+            $documentRepository,
+            new CallableIriGenerator(fn ($id) => 'http://example.com/entity/' . $id),
+            $this->createMock(OrganizerService::class),
+            $this->createMock(MediaObjectSerializer::class),
+            new JsonDocumentNullEnricher(),
+            [],
+            new VideoNormalizer([])
+        );
+
+        $documentRepository->expects($this->once())
+            ->method('fetch')
+            ->willReturn(
+                new JsonDocument(
+                    'foo',
+                    Json::encode([
+                        'labels' => ['label A'],
+                        'playhead' => 1,
+                    ])
+                )
+            );
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->never())
+            ->method('warning');
+        $logger->expects($this->never())
+            ->method('error');
+        $projector->setLogger($logger);
+
+        $projector->handle(
+            new DomainMessage(
+                'foo',
+                2,
+                new Metadata(),
+                new LabelAdded('foo', 'label B'),
+                DateTime::now()
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_stops_retry_on_playhead_match(): void
+    {
+        $documentRepository = $this->createMock(DocumentRepository::class);
+
+        $projector = new ItemLDProjector(
+            $documentRepository,
+            new CallableIriGenerator(fn ($id) => 'http://example.com/entity/' . $id),
+            $this->createMock(OrganizerService::class),
+            $this->createMock(MediaObjectSerializer::class),
+            new JsonDocumentNullEnricher(),
+            [],
+            new VideoNormalizer([])
+        );
+
+        $documentRepository->expects($this->exactly(2))
+            ->method('fetch')
+            ->willReturnOnConsecutiveCalls(
+                new JsonDocument(
+                    'foo',
+                    Json::encode([
+                        'labels' => ['label A'],
+                        'playhead' => 1,
+                    ])
+                ),
+                new JsonDocument(
+                    'foo',
+                    Json::encode([
+                        'labels' => ['label A', 'label B'],
+                        'playhead' => 2,
+                    ])
+                )
+            );
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('warning');
+        $logger->expects($this->never())
+            ->method('error');
+        $projector->setLogger($logger);
+
+        $projector->handle(
+            new DomainMessage(
+                'foo',
+                3,
+                new Metadata(),
+                new LabelAdded('foo', 'label B'),
+                DateTime::now()
+            )
+        );
     }
 
     /**
