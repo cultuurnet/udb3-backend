@@ -834,18 +834,31 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         try {
             $document = $this->repository->fetch($itemId);
+            $nrOfRetries = 3;
 
-            $body = $document->getBody();
-            if (isset($this->playhead) && $this->playhead > 0 && isset($body->playhead) && $body->playhead !== $this->playhead - 1) {
-                $this->logger->error(
-                    'Playhead mismatch for document ' . $itemId . '. Expected ' . ($this->playhead - 1) . ' but found ' . $body->playhead
+            while ($this->playheadMismatch($document->getBody()) && $nrOfRetries > 0) {
+                $nrOfRetries--;
+                $this->logger->warning(
+                    'Playhead mismatch for document ' . $itemId . ' retries left ' . $nrOfRetries . '. Expected ' . ($this->playhead - 1) . ' but found ' . $document->getBody()->playhead
                 );
+                $document = $this->repository->fetch($itemId);
+
+                if ($nrOfRetries === 0) {
+                    $this->logger->error(
+                        'Playhead mismatch for document ' . $itemId . '. Expected ' . ($this->playhead - 1) . ' but found ' . $document->getBody()->playhead
+                    );
+                }
             }
         } catch (DocumentDoesNotExist $e) {
             return $this->newDocument($itemId);
         }
 
         return $document;
+    }
+
+    private function playheadMismatch(\stdClass $body): bool
+    {
+        return isset($this->playhead) && $this->playhead > 0 && isset($body->playhead) && $body->playhead !== $this->playhead - 1;
     }
 
     public function organizerJSONLD(string $organizerId): array
