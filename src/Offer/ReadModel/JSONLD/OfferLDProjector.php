@@ -183,6 +183,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     abstract protected function getLabelRemovedClassName(): string;
 
+    abstract protected function getLabelsImportedClassName(): string;
+
     abstract protected function getImageAddedClassName(): string;
 
     abstract protected function getImageRemovedClassName(): string;

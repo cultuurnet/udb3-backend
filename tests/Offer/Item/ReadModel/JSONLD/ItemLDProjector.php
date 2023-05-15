@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Offer\Item\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Offer\Item\Events\Image\ImagesUpdatedFromUDB2;
 use CultuurNet\UDB3\Offer\Item\Events\LabelAdded;
 use CultuurNet\UDB3\Offer\Item\Events\LabelRemoved;
+use CultuurNet\UDB3\Offer\Item\Events\LabelsImported;
 use CultuurNet\UDB3\Offer\Item\Events\MainImageSelected;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\Approved;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\FlaggedAsDuplicate;
@@ -52,6 +53,11 @@ class ItemLDProjector extends OfferLDProjector
     protected function getImageAddedClassName(): string
     {
         return ImageAdded::class;
+    }
+
+    protected function getLabelsImportedClassName(): string
+    {
+        return LabelsImported::class;
     }
 
     protected function getImageRemovedClassName(): string
