@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Offer\Events\AbstractFacilitiesUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
+use CultuurNet\UDB3\Offer\Events\AbstractLabelsImported;
 use CultuurNet\UDB3\Offer\Events\AbstractOrganizerDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractOrganizerUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractPriceInfoUpdated;
@@ -182,6 +183,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     abstract protected function getLabelAddedClassName(): string;
 
     abstract protected function getLabelRemovedClassName(): string;
+
+    abstract protected function getLabelsImportedClassName(): string;
 
     abstract protected function getImageAddedClassName(): string;
 
@@ -342,6 +345,12 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         }
 
         return $document->withBody($offerLd);
+    }
+
+    protected function applyLabelsImported(AbstractLabelsImported $labelsImported): JsonDocument
+    {
+        // Just return the JSON body without any changes, but this triggers a playhead update.
+        return $this->loadDocumentFromRepository($labelsImported);
     }
 
     protected function applyImageAdded(AbstractImageAdded $imageAdded): JsonDocument

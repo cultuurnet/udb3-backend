@@ -19,11 +19,11 @@ abstract class AbstractLabelsImported extends AbstractEvent implements LabelsImp
     private array $hiddenLabels;
 
     final public function __construct(
-        string $organizerId,
+        string $itemId,
         array $visibleLabels,
         array $hiddenLabels
     ) {
-        parent::__construct($organizerId);
+        parent::__construct($itemId);
         $this->visibleLabels = $visibleLabels;
         $this->hiddenLabels = $hiddenLabels;
     }
