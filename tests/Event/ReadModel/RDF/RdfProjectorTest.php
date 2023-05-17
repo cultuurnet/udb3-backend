@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Address\ParsedAddress;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Cdb\ExternalId\MappingServiceInterface;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
@@ -62,11 +63,18 @@ class RdfProjectorTest extends TestCase
      */
     private $addressParser;
 
+    /**
+     * @var MappingServiceInterface|MockObject
+     */
+    private $mappingService;
+
     protected function setUp(): void
     {
         $this->graphRepository = new InMemoryGraphRepository();
 
         $this->addressParser = $this->createMock(AddressParser::class);
+
+        $this->mappingService = $this->createMock(MappingServiceInterface::class);
 
         $this->rdfProjector = new RdfProjector(
             new InMemoryMainLanguageRepository(),
@@ -75,7 +83,8 @@ class RdfProjectorTest extends TestCase
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
             new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
-            $this->addressParser
+            $this->addressParser,
+            $this->mappingService
         );
     }
 
