@@ -6,10 +6,12 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
+use CultuurNet\UDB3\Event\Events\DummyLocationUpdated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
@@ -24,6 +26,7 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
@@ -42,6 +45,7 @@ final class RdfProjector implements EventListener
     private IriGeneratorInterface $iriGenerator;
     private IriGeneratorInterface $placesIriGenerator;
     private IriGeneratorInterface $termsIriGenerator;
+    private AddressParser $addressParser;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
     private const TYPE_PERIOD = 'm8g:PeriodOfTime';
@@ -66,7 +70,8 @@ final class RdfProjector implements EventListener
         LocationIdRepository $locationIdRepository,
         IriGeneratorInterface $iriGenerator,
         IriGeneratorInterface $placesIriGenerator,
-        IriGeneratorInterface $termsIriGenerator
+        IriGeneratorInterface $termsIriGenerator,
+        AddressParser $addressParser
     ) {
         $this->mainLanguageRepository = $mainLanguageRepository;
         $this->graphRepository = $graphRepository;
@@ -74,6 +79,7 @@ final class RdfProjector implements EventListener
         $this->iriGenerator = $iriGenerator;
         $this->placesIriGenerator = $placesIriGenerator;
         $this->termsIriGenerator = $termsIriGenerator;
+        $this->addressParser = $addressParser;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -82,30 +88,31 @@ final class RdfProjector implements EventListener
         $granularEvents = $payload instanceof ConvertsToGranularEvents ? $payload->toGranularEvents() : [];
         $events = [$payload, ...$granularEvents];
 
-        $uri = $this->iriGenerator->iri($domainMessage->getId());
-        $graph = $this->graphRepository->get($uri);
+        $iri = $this->iriGenerator->iri($domainMessage->getId());
+        $graph = $this->graphRepository->get($iri);
 
         GraphEditor::for($graph)->setGeneralProperties(
-            $uri,
+            $iri,
             self::TYPE_ACTIVITEIT,
             $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
         );
 
         $eventClassToHandler = [
-            MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),
-            TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $uri, $graph),
-            TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $uri, $graph),
-            Published::class => fn ($e) => $this->handlePublished($e, $uri, $graph),
-            Approved::class => fn ($e) => $this->handleApproved($uri, $graph),
-            Rejected::class => fn ($e) => $this->handleRejected($uri, $graph),
-            FlaggedAsDuplicate::class => fn ($e) => $this->handleRejected($uri, $graph),
-            FlaggedAsInappropriate::class => fn ($e) => $this->handleRejected($uri, $graph),
-            EventDeleted::class => fn ($e) => $this->handleDeleted($uri, $graph),
-            DescriptionUpdated::class => fn ($e) => $this->handleDescriptionUpdated($e, $uri, $graph),
-            DescriptionTranslated::class => fn ($e) => $this->handleDescriptionTranslated($e, $uri, $graph),
-            LocationUpdated::class => fn ($e) => $this->handleLocationUpdated($e, $uri, $graph),
-            CalendarUpdated::class => fn ($e) => $this->handleCalendarUpdated($e, $uri, $graph),
-            TypeUpdated::class => fn ($e) => $this->handleTypeUpdated($e, $uri, $graph),
+            MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $iri),
+            TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $iri, $graph),
+            TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $iri, $graph),
+            Published::class => fn ($e) => $this->handlePublished($e, $iri, $graph),
+            Approved::class => fn ($e) => $this->handleApproved($iri, $graph),
+            Rejected::class => fn ($e) => $this->handleRejected($iri, $graph),
+            FlaggedAsDuplicate::class => fn ($e) => $this->handleRejected($iri, $graph),
+            FlaggedAsInappropriate::class => fn ($e) => $this->handleRejected($iri, $graph),
+            EventDeleted::class => fn ($e) => $this->handleDeleted($iri, $graph),
+            DescriptionUpdated::class => fn ($e) => $this->handleDescriptionUpdated($e, $iri, $graph),
+            DescriptionTranslated::class => fn ($e) => $this->handleDescriptionTranslated($e, $iri, $graph),
+            LocationUpdated::class => fn ($e) => $this->handleLocationUpdated($e, $iri, $graph),
+            DummyLocationUpdated::class => fn ($e) => $this->handleDummyLocationUpdated($e, $iri, $graph),
+            CalendarUpdated::class => fn ($e) => $this->handleCalendarUpdated($e, $iri, $graph),
+            TypeUpdated::class => fn ($e) => $this->handleTypeUpdated($e, $iri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -117,118 +124,132 @@ final class RdfProjector implements EventListener
         }
     }
 
-    private function handleMainLanguageDefined(MainLanguageDefined $event, string $uri): void
+    private function handleMainLanguageDefined(MainLanguageDefined $event, string $iri): void
     {
-        $this->mainLanguageRepository->save($uri, new Language($event->getMainLanguage()->getCode()));
+        $this->mainLanguageRepository->save($iri, new Language($event->getMainLanguage()->getCode()));
     }
 
-    private function handleTitleUpdated(TitleUpdated $event, string $uri, Graph $graph): void
+    private function handleTitleUpdated(TitleUpdated $event, string $iri, Graph $graph): void
     {
-        $mainLanguage = $this->mainLanguageRepository->get($uri, new Language('nl'));
+        $mainLanguage = $this->mainLanguageRepository->get($iri, new Language('nl'));
 
         GraphEditor::for($graph)->replaceLanguageValue(
-            $uri,
+            $iri,
             self::PROPERTY_ACTIVITEIT_NAAM,
             $event->getTitle()->toNative(),
             $mainLanguage->toString(),
         );
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleTitleTranslated(TitleTranslated $event, string $uri, Graph $graph): void
+    private function handleTitleTranslated(TitleTranslated $event, string $iri, Graph $graph): void
     {
         GraphEditor::for($graph)->replaceLanguageValue(
-            $uri,
+            $iri,
             self::PROPERTY_ACTIVITEIT_NAAM,
             $event->getTitle()->toNative(),
             $event->getLanguage()->getCode()
         );
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handlePublished(Published $event, string $uri, Graph $graph): void
+    private function handlePublished(Published $event, string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->publish($uri, $event->getPublicationDate()->format(DateTime::ATOM));
+        WorkflowStatusEditor::for($graph)->publish($iri, $event->getPublicationDate()->format(DateTime::ATOM));
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleApproved(string $uri, Graph $graph): void
+    private function handleApproved(string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->approve($uri);
+        WorkflowStatusEditor::for($graph)->approve($iri);
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleRejected(string $uri, Graph $graph): void
+    private function handleRejected(string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->reject($uri);
+        WorkflowStatusEditor::for($graph)->reject($iri);
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleDeleted(string $uri, Graph $graph): void
+    private function handleDeleted(string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->delete($uri);
+        WorkflowStatusEditor::for($graph)->delete($iri);
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleDescriptionUpdated(DescriptionUpdated $event, string $uri, Graph $graph): void
+    private function handleDescriptionUpdated(DescriptionUpdated $event, string $iri, Graph $graph): void
     {
-        $mainLanguage = $this->mainLanguageRepository->get($uri, new Language('nl'));
+        $mainLanguage = $this->mainLanguageRepository->get($iri, new Language('nl'));
 
         GraphEditor::for($graph)->replaceLanguageValue(
-            $uri,
+            $iri,
             self::PROPERTY_ACTIVITEIT_DESCRIPTION,
             $event->getDescription()->toNative(),
             $mainLanguage->toString(),
         );
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleDescriptionTranslated(DescriptionTranslated $event, string $uri, Graph $graph): void
+    private function handleDescriptionTranslated(DescriptionTranslated $event, string $iri, Graph $graph): void
     {
         GraphEditor::for($graph)->replaceLanguageValue(
-            $uri,
+            $iri,
             self::PROPERTY_ACTIVITEIT_DESCRIPTION,
             $event->getDescription()->toNative(),
             $event->getLanguage()->getCode()
         );
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleLocationUpdated(LocationUpdated $event, string $uri, Graph $graph): void
+    private function handleLocationUpdated(LocationUpdated $event, string $iri, Graph $graph): void
     {
-        $this->locationIdRepository->save($uri, $event->getLocationId());
-        $locationUri = $this->placesIriGenerator->iri($event->getLocationId()->toString());
+        $this->locationIdRepository->save($iri, $event->getLocationId());
+        $locationIri = $this->placesIriGenerator->iri($event->getLocationId()->toString());
 
-        $resource = $graph->resource($uri);
+        AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
+            ->removeAddresses();
+
+        $resource = $graph->resource($iri);
 
         if ($resource->hasProperty(self::PROPERTY_RUIMTE_TIJD)) {
             $spaceTimeResources = $resource->allResources(self::PROPERTY_RUIMTE_TIJD);
             foreach ($spaceTimeResources as $spaceTimeResource) {
-                $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, new Resource($locationUri));
+                $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, new Resource($locationIri));
             }
         } else {
-            $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
+            $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationIri));
         }
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleCalendarUpdated(CalendarUpdated $event, string $uri, Graph $graph): void
+    private function handleDummyLocationUpdated(DummyLocationUpdated $event, string $iri, Graph $graph): void
+    {
+        AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
+            ->addAddress($iri, $event->getDummyLocation()->getAddress(), self::PROPERTY_ACTVITEIT_LOCATIE);
+
+        $this->graphRepository->save($iri, $graph);
+    }
+
+    private function handleCalendarUpdated(CalendarUpdated $event, string $iri, Graph $graph): void
     {
         $calendar = $event->getCalendar();
 
+        $address = AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
+            ->getAddress();
+
         if ($calendar->getType()->sameAs(CalendarType::PERMANENT())) {
-            $this->deleteAllSpaceTimeResources($uri, $graph);
-            $this->addLocation($uri, $graph);
-            $this->graphRepository->save($uri, $graph);
+            $this->deleteAllSpaceTimeResources($iri, $graph);
+            $this->addLocation($iri, $graph, $address);
+            $this->graphRepository->save($iri, $graph);
             return;
         }
 
@@ -240,50 +261,54 @@ final class RdfProjector implements EventListener
             );
         }
 
-        $this->deleteLocation($uri, $graph);
-        $this->deleteAllSpaceTimeResources($uri, $graph);
+        $this->deleteLocation($iri, $graph);
+        $this->deleteAllSpaceTimeResources($iri, $graph);
 
         foreach ($timestamps as $timestamp) {
-            $spaceTimeResource = $this->createSpaceTimeResource($uri, $graph);
-            $this->addLocationOnSpaceTimeResource($uri, $spaceTimeResource);
+            $spaceTimeResource = $this->createSpaceTimeResource($iri, $graph);
+            $this->addLocationOnSpaceTimeResource($iri, $spaceTimeResource, $address);
             $this->addCalendarTypeOnSpaceTimeResource($spaceTimeResource, $timestamp);
         }
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleTypeUpdated(TypeUpdated $event, string $uri, Graph $graph): void
+    private function handleTypeUpdated(TypeUpdated $event, string $iri, Graph $graph): void
     {
-        $resource = $graph->resource($uri);
+        $resource = $graph->resource($iri);
 
         $terms = $this->termsIriGenerator->iri($event->getType()->getId());
         $resource->set(self::PROPERTY_ACTIVITEIT_TYPE, new Resource($terms));
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function deleteLocation(string $uri, Graph $graph): void
+    private function deleteLocation(string $iri, Graph $graph): void
     {
-        $resource = $graph->resource($uri);
+        $resource = $graph->resource($iri);
 
         $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, null);
     }
 
-    private function addLocation(string $uri, Graph $graph): void
+    private function addLocation(string $iri, Graph $graph, ?Resource $address): void
     {
-        $locationId = $this->locationIdRepository->get($uri);
-        if ($locationId === null) {
+        $resource = $graph->resource($iri);
+
+        $locationId = $this->locationIdRepository->get($iri);
+        if ($locationId !== null) {
+            $locationUri = $this->placesIriGenerator->iri($locationId->toString());
+            $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
             return;
         }
 
-        $resource = $graph->resource($uri);
-        $locationUri = $this->placesIriGenerator->iri($locationId->toString());
-        $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationUri));
+        if ($address !== null) {
+            $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, $address);
+        }
     }
 
-    private function deleteAllSpaceTimeResources(string $uri, Graph $graph): void
+    private function deleteAllSpaceTimeResources(string $iri, Graph $graph): void
     {
-        $resource = $graph->resource($uri);
+        $resource = $graph->resource($iri);
 
         /** @var Resource[] $spaceTimeResources */
         $spaceTimeResources = $resource->allResources(self::PROPERTY_RUIMTE_TIJD);
@@ -301,9 +326,9 @@ final class RdfProjector implements EventListener
         }
     }
 
-    private function createSpaceTimeResource(string $uri, Graph $graph): Resource
+    private function createSpaceTimeResource(string $iri, Graph $graph): Resource
     {
-        $resource = $graph->resource($uri);
+        $resource = $graph->resource($iri);
 
         $spaceTimeResource = $resource->getGraph()->newBNode();
         $resource->add(self::PROPERTY_RUIMTE_TIJD, $spaceTimeResource);
@@ -315,15 +340,18 @@ final class RdfProjector implements EventListener
         return $spaceTimeResource;
     }
 
-    private function addLocationOnSpaceTimeResource(string $uri, Resource $spaceTimeResource): void
+    private function addLocationOnSpaceTimeResource(string $iri, Resource $spaceTimeResource, ?Resource $address): void
     {
-        $locationId = $this->locationIdRepository->get($uri);
-        if ($locationId === null) {
+        $locationId = $this->locationIdRepository->get($iri);
+        if ($locationId !== null) {
+            $locationUri = $this->placesIriGenerator->iri($locationId->toString());
+            $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, new Resource($locationUri));
             return;
         }
 
-        $locationUri = $this->placesIriGenerator->iri($locationId->toString());
-        $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, new Resource($locationUri));
+        if ($address !== null) {
+            $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, $address);
+        }
     }
 
     private function addCalendarTypeOnSpaceTimeResource(Resource $spaceTimeResource, Timestamp $timestamp): void

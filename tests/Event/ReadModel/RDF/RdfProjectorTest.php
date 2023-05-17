@@ -7,12 +7,15 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Address\AddressParser;
+use CultuurNet\UDB3\Address\ParsedAddress;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
+use CultuurNet\UDB3\Event\Events\DummyLocationUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
@@ -25,19 +28,27 @@ use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryMainLanguageRepository;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTime;
 use DateTimeImmutable;
 use EasyRdf\Serialiser\Turtle;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class RdfProjectorTest extends TestCase
@@ -46,9 +57,16 @@ class RdfProjectorTest extends TestCase
 
     private GraphRepository $graphRepository;
 
+    /**
+     * @var AddressParser|MockObject
+     */
+    private $addressParser;
+
     protected function setUp(): void
     {
         $this->graphRepository = new InMemoryGraphRepository();
+
+        $this->addressParser = $this->createMock(AddressParser::class);
 
         $this->rdfProjector = new RdfProjector(
             new InMemoryMainLanguageRepository(),
@@ -57,6 +75,7 @@ class RdfProjectorTest extends TestCase
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
             new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
+            $this->addressParser
         );
     }
 
@@ -83,7 +102,7 @@ class RdfProjectorTest extends TestCase
 
         $this->project($eventId, [
             $this->getEventCreated($eventId),
-            new TitleUpdated($eventId, new Title('Faith no more in concert')),
+            new TitleUpdated($eventId, new LegacyTitle('Faith no more in concert')),
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/title-updated.ttl'));
@@ -98,7 +117,7 @@ class RdfProjectorTest extends TestCase
 
         $this->project($eventId, [
             $this->getEventCreated($eventId),
-            new TitleTranslated($eventId, new Language('de'), new Title('Faith no more im Konzert')),
+            new TitleTranslated($eventId, new Language('de'), new LegacyTitle('Faith no more im Konzert')),
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/title-translated.ttl'));
@@ -113,10 +132,10 @@ class RdfProjectorTest extends TestCase
 
         $this->project($eventId, [
             $this->getEventCreated($eventId),
-            new TitleTranslated($eventId, new Language('de'), new Title('Faith no more im Konzert')),
-            new TitleUpdated($eventId, new Title('Faith no more im concert')),
-            new TitleTranslated($eventId, new Language('de'), new Title('Faith no more im Konzert [UPDATED]')),
-            new TitleUpdated($eventId, new Title('Faith no more in concert [UPDATED]')),
+            new TitleTranslated($eventId, new Language('de'), new LegacyTitle('Faith no more im Konzert')),
+            new TitleUpdated($eventId, new LegacyTitle('Faith no more im concert')),
+            new TitleTranslated($eventId, new Language('de'), new LegacyTitle('Faith no more im Konzert [UPDATED]')),
+            new TitleUpdated($eventId, new LegacyTitle('Faith no more in concert [UPDATED]')),
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/title-updated-and-translated.ttl'));
@@ -301,6 +320,218 @@ class RdfProjectorTest extends TestCase
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/location-updated-on-calendar-single.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_dummy_location_updated(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturn(
+                new ParsedAddress(
+                    'Martelarenlaan',
+                    '1',
+                    '3000',
+                    'Leuven'
+                )
+            );
+
+        $this->project($eventId, [
+            new DummyLocationUpdated(
+                $eventId,
+                new DummyLocation(
+                    new Title('Het Depot Leuven'),
+                    new Address(
+                        new Street('Martelarenplein 1'),
+                        new PostalCode('3000'),
+                        new Locality('Leuven'),
+                        new CountryCode('BE')
+                    )
+                )
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/dummy-location-updated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_dummy_location_updated_with_no_parsed_address(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturn(null);
+
+        $this->project($eventId, [
+            new DummyLocationUpdated(
+                $eventId,
+                new DummyLocation(
+                    new Title('Het Depot Leuven'),
+                    new Address(
+                        new Street('Martelarenplein 1'),
+                        new PostalCode('3000'),
+                        new Locality('Leuven'),
+                        new CountryCode('BE')
+                    )
+                )
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/dummy-location-updated-no-parsed-address.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_location_updated_after_dummy_location_updated(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturn(
+                new ParsedAddress(
+                    'Martelarenlaan',
+                    '1',
+                    '3000',
+                    'Leuven'
+                )
+            );
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new DummyLocationUpdated(
+                $eventId,
+                new DummyLocation(
+                    new Title('Het Depot Leuven'),
+                    new Address(
+                        new Street('Martelarenplein 1'),
+                        new PostalCode('3000'),
+                        new Locality('Leuven'),
+                        new CountryCode('BE')
+                    )
+                )
+            ),
+            new LocationUpdated($eventId, new LocationId('ee4300a6-82a0-4489-ada0-1a6be1fca442')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/location-updated-after-dummy-location-updated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_calendar_updated_after_dummy_location_updated(): void
+    {
+        $eventId = '253f6304-13e8-4fda-897f-955df3bbecd2';
+
+        $this->addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturn(
+                new ParsedAddress(
+                    'Martelarenlaan',
+                    '1',
+                    '3000',
+                    'Leuven'
+                )
+            );
+
+        $this->project($eventId, [
+            new DummyLocationUpdated(
+                $eventId,
+                new DummyLocation(
+                    new Title('Het Depot Leuven'),
+                    new Address(
+                        new Street('Martelarenplein 1'),
+                        new PostalCode('3000'),
+                        new Locality('Leuven'),
+                        new CountryCode('BE')
+                    )
+                ),
+            ),
+            new CalendarUpdated(
+                $eventId,
+                new Calendar(
+                    CalendarType::MULTIPLE(),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-02T17:00:00+01:00'),
+                    [
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        ),
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T17:00:00+01:00')
+                        ),
+                    ]
+                ),
+            ),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/calendar-updated-multiple-after-dummy-location-updated.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_location_updated_after_calendar_updated_after_dummy_location_updated(): void
+    {
+        $eventId = '253f6304-13e8-4fda-897f-955df3bbecd2';
+
+        $this->addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturn(
+                new ParsedAddress(
+                    'Martelarenlaan',
+                    '1',
+                    '3000',
+                    'Leuven'
+                )
+            );
+
+        $this->project($eventId, [
+            new DummyLocationUpdated(
+                $eventId,
+                new DummyLocation(
+                    new Title('Het Depot Leuven'),
+                    new Address(
+                        new Street('Martelarenplein 1'),
+                        new PostalCode('3000'),
+                        new Locality('Leuven'),
+                        new CountryCode('BE')
+                    )
+                ),
+            ),
+            new CalendarUpdated(
+                $eventId,
+                new Calendar(
+                    CalendarType::MULTIPLE(),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                    DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-02T17:00:00+01:00'),
+                    [
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        ),
+                        new Timestamp(
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T12:00:00+01:00'),
+                            DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-02T17:00:00+01:00')
+                        ),
+                    ]
+                ),
+            ),
+            new LocationUpdated($eventId, new LocationId('ee4300a6-82a0-4489-ada0-1a6be1fca442')),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/location-updated-after-calendar-updated-multiple-after-dummy-location-updated.ttl'));
     }
 
     /**
@@ -579,7 +810,7 @@ class RdfProjectorTest extends TestCase
         return new EventCreated(
             $eventId,
             new Language('nl'),
-            new Title('Faith no more'),
+            new LegacyTitle('Faith no more'),
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('bfc60a14-6208-4372-942e-86e63744769a'),
             $calendar ?: new Calendar(CalendarType::PERMANENT()),
