@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\DummyLocationUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
+use CultuurNet\UDB3\Event\Events\ExternalIdLocationUpdated;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
@@ -329,6 +330,26 @@ class RdfProjectorTest extends TestCase
         ]);
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/location-updated-on-calendar-single.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_external_id_location_updated(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->mappingService->expects($this->once())
+            ->method('getCdbId')
+            ->with('external_id')
+            ->willReturn('498dab67-236e-4bdb-9a70-7c26ad75301f');
+
+        $this->project($eventId, [
+            $this->getEventCreated($eventId),
+            new ExternalIdLocationUpdated($eventId, 'external_id'),
+        ]);
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/data/external-id-location-updated.ttl'));
     }
 
     /**
