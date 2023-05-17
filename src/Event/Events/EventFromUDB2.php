@@ -84,6 +84,11 @@ trait EventFromUDB2
                 $this->eventId,
                 $this->getDummyLocation()
             );
+        } elseif (isset($eventAsArray['location'][0]['label'][0]['@attributes']['externalid'])) {
+            $granularEvents[] = new ExternalIdLocationUpdated(
+                $this->eventId,
+                $this->getExternalId()
+            );
         }
 
         $calendarEvent = $this->getCalendar($eventAsArray['calendar'][0]);
