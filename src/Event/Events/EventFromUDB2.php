@@ -216,10 +216,10 @@ trait EventFromUDB2
         );
     }
 
-    public function getExternalId(): ?string
+    public function getExternalId(): string
     {
         $eventAsArray = $this->getEventAsArray();
-        return $eventAsArray['location'][0]['label'][0]['@attributes']['externalid'] ?? null;
+        return $eventAsArray['location'][0]['label'][0]['@attributes']['externalid'];
     }
 
     private function getModeration(string $wfstatus, string $lastUpdated): ?AbstractEvent

@@ -243,21 +243,6 @@ final class EventImportedFromUDB2Test extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_if_no_external_id_is_present(): void
-    {
-        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
-        $eventWithExternalIdLocation = new EventImportedFromUDB2(
-            $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
-            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
-        );
-
-        $this->assertNull($eventWithExternalIdLocation->getExternalId());
-    }
-
-    /**
-     * @test
-     */
     public function it_can_convert_a_periodic_event_to_granular_events(): void
     {
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
