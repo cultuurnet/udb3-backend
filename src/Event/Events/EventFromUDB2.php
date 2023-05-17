@@ -204,7 +204,7 @@ trait EventFromUDB2
         return new DummyLocation(
             new Title($eventAsArray['location'][0]['label'][0]['_text']),
             new Address(
-                new Street($addressAsArray['street'][0]['_text'] . ' ' . $addressAsArray['housenr'][0]['_text']),
+                new Street(trim($addressAsArray['street'][0]['_text'] . ' ' . $addressAsArray['housenr'][0]['_text'])),
                 new PostalCode($addressAsArray['zipcode'][0]['_text']),
                 new Locality($addressAsArray['city'][0]['_text']),
                 new CountryCode($addressAsArray['country'][0]['_text'])

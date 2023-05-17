@@ -120,12 +120,12 @@ final class EventUpdatedFromUDB2Test extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_dummy_location_(): void
+    public function it_returns_a_dummy_location(): void
     {
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventWithDummyLocation = new EventUpdatedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_photo.cdbxml.xml'),
+            file_get_contents(__DIR__ . '/../samples/event_with_dummy_location.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -134,6 +134,84 @@ final class EventUpdatedFromUDB2Test extends TestCase
                 new Title('Liberaal Archief'),
                 new Address(
                     new Street('Kramersplein 23'),
+                    new PostalCode('9000'),
+                    new Locality('Gent'),
+                    new CountryCode('BE')
+                )
+            ),
+            $eventWithDummyLocation->getDummyLocation()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_dummy_location_without_street(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithDummyLocation = new EventUpdatedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_dummy_location_without_street.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            new DummyLocation(
+                new Title('Liberaal Archief'),
+                new Address(
+                    new Street('23'),
+                    new PostalCode('9000'),
+                    new Locality('Gent'),
+                    new CountryCode('BE')
+                )
+            ),
+            $eventWithDummyLocation->getDummyLocation()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_dummy_location_without_number(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithDummyLocation = new EventUpdatedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_dummy_location_without_number.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            new DummyLocation(
+                new Title('Liberaal Archief'),
+                new Address(
+                    new Street('Kramersplein'),
+                    new PostalCode('9000'),
+                    new Locality('Gent'),
+                    new CountryCode('BE')
+                )
+            ),
+            $eventWithDummyLocation->getDummyLocation()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_dummy_location_without_street_and_number(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventWithDummyLocation = new EventUpdatedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_dummy_location_without_street_and_number.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            new DummyLocation(
+                new Title('Liberaal Archief'),
+                new Address(
+                    new Street(''),
                     new PostalCode('9000'),
                     new Locality('Gent'),
                     new CountryCode('BE')
