@@ -34,11 +34,11 @@ final class GraphEditor
     }
 
     public function setGeneralProperties(
-        string $resourceUri,
+        string $resourceIri,
         string $type,
         string $recordedOn
     ): self {
-        $resource = $this->graph->resource($resourceUri);
+        $resource = $this->graph->resource($resourceIri);
 
         // Set the rdf:type property, but only if it is not set before to avoid needlessly shifting it to the end of the
         // list of properties in the serialized Turtle data, since set() and setType() actually do a delete() followed
@@ -48,7 +48,7 @@ final class GraphEditor
         }
 
         // Set the udb:workflowStatus property to draft if not set yet.
-        WorkflowStatusEditor::for($this->graph)->draft($resourceUri);
+        WorkflowStatusEditor::for($this->graph)->draft($resourceIri);
 
         // Set the dcterms:created property if not set yet.
         // (Otherwise it would constantly update like dcterms:modified).
@@ -70,7 +70,7 @@ final class GraphEditor
         if (!$resource->hasProperty(self::PROPERTY_IDENTIFICATOR)) {
             $identificator = $this->graph->newBNode();
             $identificator->setType(self::TYPE_IDENTIFICATOR);
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($resourceUri, null, 'xsd:anyUri'));
+            $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($resourceIri, null, 'xsd:anyUri'));
             $identificator->add(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR, new Resource(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT));
             $resource->add(self::PROPERTY_IDENTIFICATOR, $identificator);
         }
@@ -78,9 +78,9 @@ final class GraphEditor
         return $this;
     }
 
-    public function replaceLanguageValue(string $resourceUri, string $property, string $value, string $language): self
+    public function replaceLanguageValue(string $resourceIri, string $property, string $value, string $language): self
     {
-        $resource = $this->graph->resource($resourceUri);
+        $resource = $this->graph->resource($resourceIri);
 
         // Get all literal values for the property, and key them by their language tag.
         // This will be an empty list if no value(s) were set before for this property.
@@ -101,9 +101,9 @@ final class GraphEditor
         return $this;
     }
 
-    public function deleteLanguageValue(string $resourceUri, string $property, string $language): self
+    public function deleteLanguageValue(string $resourceIri, string $property, string $language): self
     {
-        $resource = $this->graph->resource($resourceUri);
+        $resource = $this->graph->resource($resourceIri);
 
         // Get all literal values for the property, and key them by their language tag.
         // This will be an empty list if no value(s) are set for this property.

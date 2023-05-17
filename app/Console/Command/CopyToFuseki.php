@@ -41,10 +41,10 @@ final class CopyToFuseki extends Command
     {
         $id = $input->getArgument('id');
 
-        $uri = $this->iriGenerator->iri($id);
+        $iri = $this->iriGenerator->iri($id);
 
-        $graph = $this->cacheGraphRepository->get($uri);
-        $this->graphStoreRepository->save($uri, $graph);
+        $graph = $this->cacheGraphRepository->get($iri);
+        $this->graphStoreRepository->save($iri, $graph);
 
         return 0;
     }

@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
@@ -66,28 +65,28 @@ final class RdfProjector implements EventListener
         $granularEvents = $payload instanceof ConvertsToGranularEvents ? $payload->toGranularEvents() : [];
         $events = [$payload, ...$granularEvents];
 
-        $uri = $this->iriGenerator->iri($domainMessage->getId());
-        $graph = $this->graphRepository->get($uri);
+        $iri = $this->iriGenerator->iri($domainMessage->getId());
+        $graph = $this->graphRepository->get($iri);
 
         GraphEditor::for($graph)->setGeneralProperties(
-            $uri,
+            $iri,
             self::TYPE_LOCATIE,
             $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
         );
 
         $eventClassToHandler = [
-            MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $uri),
-            TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $uri, $graph),
-            TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $uri, $graph),
-            AddressUpdated::class => fn ($e) => $this->handleAddressUpdated($e, $uri, $graph),
-            AddressTranslated::class => fn ($e) => $this->handleAddressTranslated($e, $uri, $graph),
-            GeoCoordinatesUpdated::class => fn ($e) => $this->handleGeoCoordinatesUpdated($e, $uri, $graph),
-            Published::class => fn ($e) => $this->handlePublished($e, $uri, $graph),
-            Approved::class => fn ($e) => $this->handleApproved($uri, $graph),
-            Rejected::class => fn ($e) => $this->handleRejected($uri, $graph),
-            FlaggedAsDuplicate::class => fn ($e) => $this->handleRejected($uri, $graph),
-            FlaggedAsInappropriate::class => fn ($e) => $this->handleRejected($uri, $graph),
-            PlaceDeleted::class => fn ($e) => $this->handleDeleted($uri, $graph),
+            MainLanguageDefined::class => fn ($e) => $this->handleMainLanguageDefined($e, $iri),
+            TitleUpdated::class => fn ($e) => $this->handleTitleUpdated($e, $iri, $graph),
+            TitleTranslated::class => fn ($e) => $this->handleTitleTranslated($e, $iri, $graph),
+            AddressUpdated::class => fn ($e) => $this->handleAddressUpdated($e, $iri, $graph),
+            AddressTranslated::class => fn ($e) => $this->handleAddressTranslated($e, $iri, $graph),
+            GeoCoordinatesUpdated::class => fn ($e) => $this->handleGeoCoordinatesUpdated($e, $iri, $graph),
+            Published::class => fn ($e) => $this->handlePublished($e, $iri, $graph),
+            Approved::class => fn ($e) => $this->handleApproved($iri, $graph),
+            Rejected::class => fn ($e) => $this->handleRejected($iri, $graph),
+            FlaggedAsDuplicate::class => fn ($e) => $this->handleRejected($iri, $graph),
+            FlaggedAsInappropriate::class => fn ($e) => $this->handleRejected($iri, $graph),
+            PlaceDeleted::class => fn ($e) => $this->handleDeleted($iri, $graph),
         ];
 
         foreach ($events as $event) {
@@ -99,46 +98,46 @@ final class RdfProjector implements EventListener
         }
     }
 
-    private function handleMainLanguageDefined(MainLanguageDefined $event, string $uri): void
+    private function handleMainLanguageDefined(MainLanguageDefined $event, string $iri): void
     {
-        $this->mainLanguageRepository->save($uri, new Language($event->getMainLanguage()->getCode()));
+        $this->mainLanguageRepository->save($iri, new Language($event->getMainLanguage()->getCode()));
     }
 
-    private function handleTitleUpdated(TitleUpdated $event, string $uri, Graph $graph): void
+    private function handleTitleUpdated(TitleUpdated $event, string $iri, Graph $graph): void
     {
-        $mainLanguage = $this->mainLanguageRepository->get($uri, new Language('nl'));
+        $mainLanguage = $this->mainLanguageRepository->get($iri, new Language('nl'));
 
         GraphEditor::for($graph)->replaceLanguageValue(
-            $uri,
+            $iri,
             self::PROPERTY_LOCATIE_NAAM,
             $event->getTitle()->toNative(),
             $mainLanguage->getCode()
         );
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleTitleTranslated(TitleTranslated $event, string $uri, Graph $graph): void
+    private function handleTitleTranslated(TitleTranslated $event, string $iri, Graph $graph): void
     {
         GraphEditor::for($graph)->replaceLanguageValue(
-            $uri,
+            $iri,
             self::PROPERTY_LOCATIE_NAAM,
             $event->getTitle()->toNative(),
             $event->getLanguage()->getCode()
         );
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleAddressUpdated(AddressUpdated $event, string $uri, Graph $graph): void
+    private function handleAddressUpdated(AddressUpdated $event, string $iri, Graph $graph): void
     {
         AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
-            ->addAddress($uri, AddressEditor::fromLegacyAddress($event->getAddress()), self::PROPERTY_LOCATIE_ADRES);
+            ->addAddress($iri, AddressEditor::fromLegacyAddress($event->getAddress()), self::PROPERTY_LOCATIE_ADRES);
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleAddressTranslated(AddressTranslated $event, string $uri, Graph $graph): void
+    private function handleAddressTranslated(AddressTranslated $event, string $iri, Graph $graph): void
     {
         // Only update the translatable address properties. We do not update other properties that are not translatable
         // in locn like postcode, locatorDesignator or adminUnitL1 here because we assume that the values from the main
@@ -147,18 +146,18 @@ final class RdfProjector implements EventListener
         // because of a historical design flaw.
         AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
             ->updateTranslatableAddress(
-                $uri,
+                $iri,
                 AddressEditor::fromLegacyAddress($event->getAddress()),
                 $event->getLanguage()->getCode(),
                 self::PROPERTY_LOCATIE_ADRES
             );
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleGeoCoordinatesUpdated(GeoCoordinatesUpdated $event, string $uri, Graph $graph): void
+    private function handleGeoCoordinatesUpdated(GeoCoordinatesUpdated $event, string $iri, Graph $graph): void
     {
-        $resource = $graph->resource($uri);
+        $resource = $graph->resource($iri);
         $coordinates = $event->getCoordinates();
 
         $gmlTemplate = '<gml:Point srsName=\'http://www.opengis.net/def/crs/OGC/1.3/CRS84\'><gml:coordinates>%s, %s</gml:coordinates></gml:Point>';
@@ -175,34 +174,34 @@ final class RdfProjector implements EventListener
 
         $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handlePublished(Published $event, string $uri, Graph $graph): void
+    private function handlePublished(Published $event, string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->publish($uri, $event->getPublicationDate()->format(DateTime::ATOM));
+        WorkflowStatusEditor::for($graph)->publish($iri, $event->getPublicationDate()->format(DateTime::ATOM));
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleApproved(string $uri, Graph $graph): void
+    private function handleApproved(string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->approve($uri);
+        WorkflowStatusEditor::for($graph)->approve($iri);
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleRejected(string $uri, Graph $graph): void
+    private function handleRejected(string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->reject($uri);
+        WorkflowStatusEditor::for($graph)->reject($iri);
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 
-    private function handleDeleted(string $uri, Graph $graph): void
+    private function handleDeleted(string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->delete($uri);
+        WorkflowStatusEditor::for($graph)->delete($iri);
 
-        $this->graphRepository->save($uri, $graph);
+        $this->graphRepository->save($iri, $graph);
     }
 }

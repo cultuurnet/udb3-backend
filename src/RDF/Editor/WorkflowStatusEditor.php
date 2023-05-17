@@ -30,9 +30,9 @@ final class WorkflowStatusEditor
         return new self($graph);
     }
 
-    public function draft(string $resourceUri): void
+    public function draft(string $resourceIri): void
     {
-        $resource = $this->graph->resource($resourceUri);
+        $resource = $this->graph->resource($resourceIri);
 
         if (!$resource->hasProperty(self::PROPERTY_WORKFLOW_STATUS)) {
             $resource->set(
@@ -42,9 +42,9 @@ final class WorkflowStatusEditor
         }
     }
 
-    public function publish(string $resourceUri, string $publicationDate): void
+    public function publish(string $resourceIri, string $publicationDate): void
     {
-        $resource = $this->graph->resource($resourceUri);
+        $resource = $this->graph->resource($resourceIri);
 
         $resource->set(
             self::PROPERTY_WORKFLOW_STATUS,
@@ -57,9 +57,9 @@ final class WorkflowStatusEditor
         );
     }
 
-    public function approve(string $resourceUri): void
+    public function approve(string $resourceIri): void
     {
-        $resource = $this->graph->resource($resourceUri);
+        $resource = $this->graph->resource($resourceIri);
 
         $resource->set(
             self::PROPERTY_WORKFLOW_STATUS,
@@ -67,9 +67,9 @@ final class WorkflowStatusEditor
         );
     }
 
-    public function reject(string $resourceUri): void
+    public function reject(string $resourceIri): void
     {
-        $resource = $this->graph->resource($resourceUri);
+        $resource = $this->graph->resource($resourceIri);
 
         $resource->set(
             self::PROPERTY_WORKFLOW_STATUS,
@@ -77,9 +77,9 @@ final class WorkflowStatusEditor
         );
     }
 
-    public function delete(string $resourceUri): void
+    public function delete(string $resourceIri): void
     {
-        $resource = $this->graph->resource($resourceUri);
+        $resource = $this->graph->resource($resourceIri);
 
         $resource->set(
             self::PROPERTY_WORKFLOW_STATUS,

@@ -53,11 +53,11 @@ final class AddressEditor
     }
 
     public function addAddress(
-        string $resourceUri,
+        string $resourceIri,
         Address $address,
         string $property
     ): void {
-        $resource = $this->graph->resource($resourceUri);
+        $resource = $this->graph->resource($resourceIri);
 
         if (!$resource->hasProperty($property)) {
             $resource->add($property, $resource->getGraph()->newBNode());
@@ -86,8 +86,8 @@ final class AddressEditor
             $addressResource->set(self::PROPERTY_ADRES_HUISNUMMER, $houseNumber);
         }
 
-        $mainLanguage = $this->mainLanguageRepository->get($resourceUri, new Language('nl'))->toString();
-        $this->updateTranslatableAddress($resourceUri, $address, $mainLanguage, $property);
+        $mainLanguage = $this->mainLanguageRepository->get($resourceIri, new Language('nl'))->toString();
+        $this->updateTranslatableAddress($resourceIri, $address, $mainLanguage, $property);
     }
 
     public function removeAddresses(): void
@@ -117,12 +117,12 @@ final class AddressEditor
     }
 
     public function updateTranslatableAddress(
-        string $resourceUri,
+        string $resourceIri,
         Address $address,
         string $language,
         string $property
     ): void {
-        $resource = $this->graph->resource($resourceUri);
+        $resource = $this->graph->resource($resourceIri);
 
         /** @var Resource|null $addressResource */
         $addressResource = $resource->getResource($property);
