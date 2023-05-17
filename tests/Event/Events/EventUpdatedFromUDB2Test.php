@@ -211,7 +211,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
             new DummyLocation(
                 new Title('Liberaal Archief'),
                 new Address(
-                    new Street(''),
+                    new Street('-'),
                     new PostalCode('9000'),
                     new Locality('Gent'),
                     new CountryCode('BE')

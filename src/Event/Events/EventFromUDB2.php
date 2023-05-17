@@ -200,11 +200,12 @@ trait EventFromUDB2
     {
         $eventAsArray = $this->getEventAsArray();
         $addressAsArray = $eventAsArray['location'][0]['address'][0]['physical'][0];
+        $streetAsAddress = trim($addressAsArray['street'][0]['_text'] . ' ' . $addressAsArray['housenr'][0]['_text']);
 
         return new DummyLocation(
             new Title($eventAsArray['location'][0]['label'][0]['_text']),
             new Address(
-                new Street(trim($addressAsArray['street'][0]['_text'] . ' ' . $addressAsArray['housenr'][0]['_text'])),
+                empty($streetAsAddress) ? new Street('-') : new Street($streetAsAddress),
                 new PostalCode($addressAsArray['zipcode'][0]['_text']),
                 new Locality($addressAsArray['city'][0]['_text']),
                 new CountryCode($addressAsArray['country'][0]['_text'])
