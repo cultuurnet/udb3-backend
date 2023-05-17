@@ -8,11 +8,13 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Cdb\ExternalId\MappingServiceInterface;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\DummyLocationUpdated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
+use CultuurNet\UDB3\Event\Events\ExternalIdLocationUpdated;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
@@ -22,6 +24,7 @@ use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -46,6 +49,7 @@ final class RdfProjector implements EventListener
     private IriGeneratorInterface $placesIriGenerator;
     private IriGeneratorInterface $termsIriGenerator;
     private AddressParser $addressParser;
+    private MappingServiceInterface $mappingService;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
     private const TYPE_PERIOD = 'm8g:PeriodOfTime';
@@ -71,7 +75,8 @@ final class RdfProjector implements EventListener
         IriGeneratorInterface $iriGenerator,
         IriGeneratorInterface $placesIriGenerator,
         IriGeneratorInterface $termsIriGenerator,
-        AddressParser $addressParser
+        AddressParser $addressParser,
+        MappingServiceInterface $mappingService
     ) {
         $this->mainLanguageRepository = $mainLanguageRepository;
         $this->graphRepository = $graphRepository;
@@ -80,6 +85,7 @@ final class RdfProjector implements EventListener
         $this->placesIriGenerator = $placesIriGenerator;
         $this->termsIriGenerator = $termsIriGenerator;
         $this->addressParser = $addressParser;
+        $this->mappingService = $mappingService;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -110,6 +116,7 @@ final class RdfProjector implements EventListener
             DescriptionUpdated::class => fn ($e) => $this->handleDescriptionUpdated($e, $iri, $graph),
             DescriptionTranslated::class => fn ($e) => $this->handleDescriptionTranslated($e, $iri, $graph),
             LocationUpdated::class => fn ($e) => $this->handleLocationUpdated($e, $iri, $graph),
+            ExternalIdLocationUpdated::class => fn ($e) => $this->handleExternalIdLocationUpdated($e, $iri, $graph),
             DummyLocationUpdated::class => fn ($e) => $this->handleDummyLocationUpdated($e, $iri, $graph),
             CalendarUpdated::class => fn ($e) => $this->handleCalendarUpdated($e, $iri, $graph),
             TypeUpdated::class => fn ($e) => $this->handleTypeUpdated($e, $iri, $graph),
@@ -229,6 +236,19 @@ final class RdfProjector implements EventListener
         }
 
         $this->graphRepository->save($iri, $graph);
+    }
+
+    private function handleExternalIdLocationUpdated(ExternalIdLocationUpdated $event, string $iri, Graph $graph): void
+    {
+        $cdbid = $this->mappingService->getCdbId($event->getExternalId());
+
+        if ($cdbid) {
+            $this->handleLocationUpdated(
+                new LocationUpdated($event->getEventId(), new LocationId($cdbid)),
+                $iri,
+                $graph
+            );
+        }
     }
 
     private function handleDummyLocationUpdated(DummyLocationUpdated $event, string $iri, Graph $graph): void
