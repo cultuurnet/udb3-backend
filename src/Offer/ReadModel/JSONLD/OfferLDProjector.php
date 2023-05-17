@@ -837,6 +837,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             $nrOfRetries = 3;
 
             while ($this->playheadMismatch($document->getBody()) && $nrOfRetries > 0) {
+                usleep(500);
                 $nrOfRetries--;
                 $this->logger->warning(
                     'Playhead mismatch for document ' . $itemId . ' retries left ' . $nrOfRetries . '. Expected ' . ($this->playhead - 1) . ' but found ' . $document->getBody()->playhead
