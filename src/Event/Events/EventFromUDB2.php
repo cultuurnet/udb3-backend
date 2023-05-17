@@ -79,15 +79,15 @@ trait EventFromUDB2
                 $this->eventId,
                 new LocationId($eventAsArray['location'][0]['label'][0]['@attributes']['cdbid'])
             );
-        } elseif (isset($eventAsArray['location'][0]['address'][0]['physical'][0])) {
-            $granularEvents[] = new DummyLocationUpdated(
-                $this->eventId,
-                $this->getDummyLocation()
-            );
         } elseif (isset($eventAsArray['location'][0]['label'][0]['@attributes']['externalid'])) {
             $granularEvents[] = new ExternalIdLocationUpdated(
                 $this->eventId,
                 $this->getExternalId()
+            );
+        } elseif (isset($eventAsArray['location'][0]['address'][0]['physical'][0])) {
+            $granularEvents[] = new DummyLocationUpdated(
+                $this->eventId,
+                $this->getDummyLocation()
             );
         }
 
