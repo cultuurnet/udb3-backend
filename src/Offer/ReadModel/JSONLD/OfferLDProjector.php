@@ -859,7 +859,23 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     private function playheadMismatch(\stdClass $body): bool
     {
-        return isset($this->playhead) && $this->playhead > 0 && isset($body->playhead) && $body->playhead !== $this->playhead - 1;
+        if (!isset($this->playhead)) {
+            return false;
+        }
+
+        if ($this->playhead <= 0) {
+            return false;
+        }
+
+        if (!isset($body->playhead)) {
+            return false;
+        }
+
+        if ($body->playhead === $this->playhead - 1) {
+            return false;
+        }
+
+        return true;
     }
 
     public function organizerJSONLD(string $organizerId): array
