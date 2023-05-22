@@ -110,9 +110,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         MediaObjectSerializer $mediaObjectSerializer,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         array $basePriceTranslations,
-        VideoNormalizer $videoNormalizer,
-        int $nrOfRetries = 3,
-        int $timeBetweenRetries = 500
+        VideoNormalizer $videoNormalizer
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
@@ -121,12 +119,23 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $this->mediaObjectSerializer = $mediaObjectSerializer;
         $this->basePriceTranslations = $basePriceTranslations;
         $this->videoNormalizer = $videoNormalizer;
-        $this->nrOfRetries = $nrOfRetries;
-        $this->timeBetweenRetries = $timeBetweenRetries;
 
         $this->slugger = new CulturefeedSlugger();
 
         $this->logger = new NullLogger();
+
+        $this->nrOfRetries = 3;
+        $this->timeBetweenRetries = 500;
+    }
+
+    public function setNrOfRetries(int $nrOfRetries): void
+    {
+        $this->nrOfRetries = $nrOfRetries;
+    }
+
+    public function setTimeBetweenRetries(int $timeBetweenRetries): void
+    {
+        $this->timeBetweenRetries = $timeBetweenRetries;
     }
 
     public function handle(DomainMessage $domainMessage): void

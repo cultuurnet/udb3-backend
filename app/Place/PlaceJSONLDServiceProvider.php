@@ -61,7 +61,7 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
         $container->addShared(
             self::PROJECTOR,
             function () use ($container) {
-                return new PlaceLDProjector(
+                $placeLDProjector = new PlaceLDProjector(
                     $container->get('place_jsonld_repository'),
                     $container->get('place_iri_generator'),
                     $container->get('organizer_service'),
@@ -73,6 +73,15 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
                     $container->get('config')['base_price_translations'],
                     new VideoNormalizer($container->get('config')['media']['video_default_copyright'])
                 );
+
+                $placeLDProjector->setNrOfRetries(
+                    $container->get('config')['place_ld_projector']['nr_of_retries'] ?? 3
+                );
+                $placeLDProjector->setTimeBetweenRetries(
+                    $container->get('config')['place_ld_projector']['time_between_retries'] ?? 500
+                );
+
+                return $placeLDProjector;
             }
         );
 
