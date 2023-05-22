@@ -167,6 +167,12 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
                 );
 
                 $eventLDProjector->setLogger(LoggerFactory::create($container, LoggerName::forWeb()));
+                $eventLDProjector->setNrOfRetries(
+                    $container->get('config')['event_ld_projector']['nr_of_retries'] ?? 3
+                );
+                $eventLDProjector->setTimeBetweenRetries(
+                    $container->get('config')['event_ld_projector']['time_between_retries'] ?? 500
+                );
 
                 return $eventLDProjector;
             }

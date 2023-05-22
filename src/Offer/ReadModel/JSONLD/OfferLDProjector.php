@@ -82,6 +82,10 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected MediaObjectSerializer $mediaObjectSerializer;
 
+    private int $nrOfRetries;
+
+    private int $timeBetweenRetries;
+
     /**
      * Associative array of bases prices.
      * Key is the language, value is the translated string.
@@ -119,6 +123,19 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $this->slugger = new CulturefeedSlugger();
 
         $this->logger = new NullLogger();
+
+        $this->nrOfRetries = 3;
+        $this->timeBetweenRetries = 500;
+    }
+
+    public function setNrOfRetries(int $nrOfRetries): void
+    {
+        $this->nrOfRetries = $nrOfRetries;
+    }
+
+    public function setTimeBetweenRetries(int $timeBetweenRetries): void
+    {
+        $this->timeBetweenRetries = $timeBetweenRetries;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -834,9 +851,10 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         try {
             $document = $this->repository->fetch($itemId);
-            $nrOfRetries = 3;
+            $nrOfRetries = $this->nrOfRetries;
 
             while ($this->playheadMismatch($document->getBody()) && $nrOfRetries > 0) {
+                usleep($this->timeBetweenRetries);
                 $nrOfRetries--;
                 $this->logger->warning(
                     'Playhead mismatch for document ' . $itemId . ' retries left ' . $nrOfRetries . '. Expected ' . ($this->playhead - 1) . ' but found ' . $document->getBody()->playhead
@@ -858,7 +876,23 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     private function playheadMismatch(\stdClass $body): bool
     {
-        return isset($this->playhead) && $this->playhead > 0 && isset($body->playhead) && $body->playhead !== $this->playhead - 1;
+        if (!isset($this->playhead)) {
+            return false;
+        }
+
+        if ($this->playhead <= 0) {
+            return false;
+        }
+
+        if (!isset($body->playhead)) {
+            return false;
+        }
+
+        if ($body->playhead === $this->playhead - 1) {
+            return false;
+        }
+
+        return true;
     }
 
     public function organizerJSONLD(string $organizerId): array
