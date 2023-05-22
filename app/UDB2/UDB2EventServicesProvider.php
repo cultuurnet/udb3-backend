@@ -24,13 +24,13 @@ final class UDB2EventServicesProvider extends AbstractServiceProvider
         $container->addShared(
             'udb2_event_cdbid_extractor',
             fn () => new EventCdbIdExtractor(
-                $this->buildMappingServiceForLocation(__DIR__ . '../../config.external_id_mapping_place.php'),
-                $this->buildMappingServiceForLocation(__DIR__ . '../../config.external_id_mapping_organizer.php'),
+                $this->buildMappingServiceForPlaces(),
+                $this->buildMappingServiceForOrganizers(),
             ),
         );
     }
 
-    private function buildMappingServiceForLocation(string $mappingFileLocation): ArrayMappingService
+    private static function buildMappingService(string $mappingFileLocation): ArrayMappingService
     {
         $map = [];
 
@@ -43,5 +43,15 @@ final class UDB2EventServicesProvider extends AbstractServiceProvider
         }
 
         return new ArrayMappingService($map);
+    }
+
+    public static function buildMappingServiceForPlaces(): ArrayMappingService
+    {
+        return self::buildMappingService(__DIR__ . '../../config.external_id_mapping_place.php');
+    }
+
+    public static function buildMappingServiceForOrganizers(): ArrayMappingService
+    {
+        return self::buildMappingService(__DIR__ . '../../config.external_id_mapping_organizer.php');
     }
 }

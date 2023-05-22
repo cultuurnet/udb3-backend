@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector;
 use CultuurNet\UDB3\RDF\CacheGraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
+use CultuurNet\UDB3\UDB2\UDB2EventServicesProvider;
 
 final class EventRdfServiceProvider extends AbstractServiceProvider
 {
@@ -40,7 +41,8 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['eventsRdfBaseUri']),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['placesRdfBaseUri']),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['taxonomy']['terms']),
-                $this->container->get(AddressParser::class)
+                $this->container->get(AddressParser::class),
+                UDB2EventServicesProvider::buildMappingServiceForPlaces(),
             )
         );
     }
