@@ -22,55 +22,13 @@
         <cdb:category catid="reg.1258" type="flandersregion">9000 Gent</cdb:category>
     </cdb:categories>
     <cdb:comments/>
-    <cdb:contactinfo>
-        <cdb:address>
-            <cdb:physical>
-                <cdb:city>Gent</cdb:city>
-                <cdb:country>BE</cdb:country>
-                <cdb:gis>
-                    <cdb:xcoordinate>3.725970</cdb:xcoordinate>
-                    <cdb:ycoordinate>51.040984</cdb:ycoordinate>
-                </cdb:gis>
-                <cdb:housenr>23</cdb:housenr>
-                <cdb:street>Kramersplein</cdb:street>
-                <cdb:zipcode>9000</cdb:zipcode>
-            </cdb:physical>
-        </cdb:address>
-        <cdb:mail>gentonfiles@gmail.com</cdb:mail>
-        <cdb:url>http://gentonfiles.be/</cdb:url>
-    </cdb:contactinfo>
     <cdb:eventdetails>
         <cdb:eventdetail lang="nl">
             <cdb:calendarsummary>vrij 21/11/14 om 20:00 </cdb:calendarsummary>
-            <cdb:media>
-                <cdb:file>
-                    <cdb:hlink>http://gentonfiles.be/</cdb:hlink>
-                    <cdb:mediatype>webresource</cdb:mediatype>
-                </cdb:file>
-                <cdb:file creationdate="5/11/2014 13:26:54" main="true">
-                    <cdb:copyright>'Bekend met Gent' - quiz</cdb:copyright>
-                    <cdb:filename>ed466c72-451f-4079-94d3-4ab2e0be7b15.jpg</cdb:filename>
-                    <cdb:filetype>jpeg</cdb:filetype>
-                    <cdb:hlink>//media.uitdatabank.be/20141105/ed466c72-451f-4079-94d3-4ab2e0be7b15.jpg</cdb:hlink>
-                    <cdb:mediatype>photo</cdb:mediatype>
-                </cdb:file>
-            </cdb:media>
-            <cdb:price>
-                <cdb:pricevalue>10.0</cdb:pricevalue>
-            </cdb:price>
-            <cdb:shortdescription>Test uw kennis over Gent tijdens de eerste quiz van de vriendenkring van het Gentse Stadsarchief!
-
-                Wie is de grootste Gent-kenner en wint een mooie Gentse prijs?
-                Iedereen kan deelnemen per ploeg van 4 of 5 personen.
-                Deelnamebijdrage: &#x20AC;10 per team (ter plaatse te betalen).
-                Inschrijven of meer informatie: gentonfiles@gmail.com.
-                Bij inschrijving graag ook uw ploegnaam doorgeven!
-
-                Tot 21/11?</cdb:shortdescription>
+            <cdb:shortdescription>Korte beschrijving</cdb:shortdescription>
             <cdb:title>'Bekend met Gent' - quiz</cdb:title>
         </cdb:eventdetail>
     </cdb:eventdetails>
-    <cdb:keywords>gent;Quiz;Gent on Files</cdb:keywords>
     <cdb:location>
         <cdb:address>
             <cdb:physical>
@@ -80,7 +38,6 @@
                     <cdb:xcoordinate>3.725970</cdb:xcoordinate>
                     <cdb:ycoordinate>51.040984</cdb:ycoordinate>
                 </cdb:gis>
-                <cdb:housenr>23</cdb:housenr>
                 <cdb:street>Kramersplein</cdb:street>
                 <cdb:zipcode>9000</cdb:zipcode>
             </cdb:physical>
