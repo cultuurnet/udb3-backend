@@ -82,6 +82,10 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected MediaObjectSerializer $mediaObjectSerializer;
 
+    private int $nrOfRetries;
+
+    private int $timeBetweenRetries;
+
     /**
      * Associative array of bases prices.
      * Key is the language, value is the translated string.
@@ -106,7 +110,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         MediaObjectSerializer $mediaObjectSerializer,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         array $basePriceTranslations,
-        VideoNormalizer $videoNormalizer
+        VideoNormalizer $videoNormalizer,
+        int $nrOfRetries = 3,
+        int $timeBetweenRetries = 500
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
@@ -115,6 +121,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $this->mediaObjectSerializer = $mediaObjectSerializer;
         $this->basePriceTranslations = $basePriceTranslations;
         $this->videoNormalizer = $videoNormalizer;
+        $this->nrOfRetries = $nrOfRetries;
+        $this->timeBetweenRetries = $timeBetweenRetries;
 
         $this->slugger = new CulturefeedSlugger();
 
@@ -834,10 +842,10 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         try {
             $document = $this->repository->fetch($itemId);
-            $nrOfRetries = 3;
+            $nrOfRetries = $this->nrOfRetries;
 
             while ($this->playheadMismatch($document->getBody()) && $nrOfRetries > 0) {
-                usleep(500);
+                usleep($this->timeBetweenRetries);
                 $nrOfRetries--;
                 $this->logger->warning(
                     'Playhead mismatch for document ' . $itemId . ' retries left ' . $nrOfRetries . '. Expected ' . ($this->playhead - 1) . ' but found ' . $document->getBody()->playhead
