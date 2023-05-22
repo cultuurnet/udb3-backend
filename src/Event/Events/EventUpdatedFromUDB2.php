@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\EventEvent;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\HasCdbXmlTrait;
 
-final class EventUpdatedFromUDB2 extends EventEvent implements EventCdbXMLInterface, ConvertsToGranularEvents, ExternalIdLocationUpdated
+final class EventUpdatedFromUDB2 extends EventEvent implements EventCdbXMLInterface, ConvertsToGranularEvents
 {
     use HasCdbXmlTrait;
     use EventFromUDB2;

@@ -79,6 +79,11 @@ trait EventFromUDB2
                 $this->eventId,
                 new LocationId($eventAsArray['location'][0]['label'][0]['@attributes']['cdbid'])
             );
+        } elseif (isset($eventAsArray['location'][0]['label'][0]['@attributes']['externalid'])) {
+            $granularEvents[] = new ExternalIdLocationUpdated(
+                $this->eventId,
+                $this->getExternalId()
+            );
         } elseif (isset($eventAsArray['location'][0]['address'][0]['physical'][0])) {
             $granularEvents[] = new DummyLocationUpdated(
                 $this->eventId,
@@ -216,10 +221,10 @@ trait EventFromUDB2
         );
     }
 
-    public function getExternalId(): ?string
+    public function getExternalId(): string
     {
         $eventAsArray = $this->getEventAsArray();
-        return $eventAsArray['location'][0]['label'][0]['@attributes']['externalid'] ?? null;
+        return $eventAsArray['location'][0]['label'][0]['@attributes']['externalid'];
     }
 
     private function getModeration(string $wfstatus, string $lastUpdated): ?AbstractEvent

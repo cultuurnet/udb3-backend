@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DummyLocationUpdated;
+use CultuurNet\UDB3\Event\Events\ExternalIdLocationUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
@@ -225,6 +226,44 @@ final class EventImportedFromUDB2Test extends TestCase
     /**
      * @test
      */
+    public function it_can_convert_events_with_external_id_to_granular_events(): void
+    {
+        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
+        $eventImportedFromUDB2 = new EventImportedFromUDB2(
+            $eventId,
+            file_get_contents(__DIR__ . '/../samples/event_with_externalid_location.cdbxml.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+
+        $this->assertEquals(
+            [
+                new TitleUpdated($eventId, new LegacyTitle('Het evenement!')),
+                new TitleTranslated($eventId, new Language('fr'), new LegacyTitle('L\'événement!')),
+                new TitleTranslated($eventId, new Language('de'), new LegacyTitle('Das Ereignis!')),
+                new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+                new ExternalIdLocationUpdated($eventId, 'SKB:9ccbf9c1-a5c5-4689-9687-9a7dd3c51aee'),
+                new CalendarUpdated(
+                    $eventId,
+                    new Calendar(
+                        CalendarType::SINGLE(),
+                        null,
+                        null,
+                        [
+                            new Timestamp(
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            ),
+                        ]
+                    )
+                ),
+            ],
+            $eventImportedFromUDB2->toGranularEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_an_external_id_if_present(): void
     {
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
@@ -238,21 +277,6 @@ final class EventImportedFromUDB2Test extends TestCase
             'SKB:9ccbf9c1-a5c5-4689-9687-9a7dd3c51aee',
             $eventWithExternalIdLocation->getExternalId()
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_null_if_no_external_id_is_present(): void
-    {
-        $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
-        $eventWithExternalIdLocation = new EventImportedFromUDB2(
-            $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
-            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
-        );
-
-        $this->assertNull($eventWithExternalIdLocation->getExternalId());
     }
 
     /**
