@@ -21,7 +21,12 @@ final class JobsServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             GetJobStatusRequestHandler::class,
-            fn () => new GetJobStatusRequestHandler(new ResqueJobStatusFactory())
+            fn () => new GetJobStatusRequestHandler(
+                new ResqueJobStatusFactory(
+                    $container->get('config')['resque']['host'] ?? '127.0.0.1',
+                    $container->get('config')['resque']['port'] ?? 6379
+                )
+            )
         );
     }
 }

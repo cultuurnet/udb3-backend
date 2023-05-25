@@ -37,7 +37,9 @@ class ResqueCommandBusTest extends TestCase
         $this->commandBus = new ResqueCommandBus(
             $this->decoratedCommandBus,
             $queueName,
-            $this->dispatcher
+            $this->dispatcher,
+            '127.0.0.1',
+            6379
         );
     }
 
@@ -75,7 +77,9 @@ class ResqueCommandBusTest extends TestCase
         $commandBus = new ResqueCommandBus(
             $decoratee,
             $queueName,
-            $this->dispatcher
+            $this->dispatcher,
+            '127.0.0.1',
+            6379
         );
 
         $command = $this->createMock(AuthorizableCommand::class);

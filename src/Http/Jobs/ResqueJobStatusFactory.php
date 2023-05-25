@@ -8,6 +8,11 @@ use Resque_Job_Status;
 
 class ResqueJobStatusFactory implements JobsStatusFactory
 {
+    public function __construct(string $host, int $port)
+    {
+        \Resque::setBackend($host . ':' . $port);
+    }
+
     public function createFromJobId(string $jobId): ?JobStatus
     {
         $resqueJobStatus = new Resque_Job_Status($jobId);

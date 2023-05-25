@@ -46,8 +46,12 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
     public function __construct(
         CommandBus $decoratee,
         string $queueName,
-        EventDispatcher $dispatcher
+        EventDispatcher $dispatcher,
+        string $host,
+        int $port
     ) {
+        \Resque::setBackend($host . ':' . $port);
+
         parent::__construct($decoratee);
         $this->queueName = $queueName;
         $this->eventDispatcher = $dispatcher;

@@ -262,8 +262,8 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             new \League\Container\Argument\Literal\CallableArgument(
                 function ($queueName) use ($container) {
                     $redisConfig = [
-                        'host' => '127.0.0.1',
-                        'port' => 6379,
+                        'host' => $container->get('config')['resque']['host'] ?? '127.0.0.1',
+                        'port' => $container->get('config')['resque']['port'] ?? 6379,
                     ];
                     if (extension_loaded('redis')) {
                         $redis = new Redis();
@@ -293,7 +293,9 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
         $commandBus = new ResqueCommandBus(
             $container->get('authorized_command_bus'),
             $queueName,
-            $container->get('command_bus_event_dispatcher')
+            $container->get('command_bus_event_dispatcher'),
+            $container->get('config')['resque']['host'] ?? '127.0.0.1',
+            $container->get('config')['resque']['port'] ?? 6379
         );
         $commandBus->setLogger($container->get('logger_factory.resque_worker')($queueName));
         return $commandBus;
