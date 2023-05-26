@@ -233,6 +233,7 @@ final class QueryFactoryTest extends TestCase
             null,
             self::START_VALUE,
             self::LIMIT_VALUE,
+            $suggestion,
             $suggestion
         );
 

@@ -138,6 +138,7 @@ final class QueryTest extends TestCase
     {
         $query = new Query(self::NAME);
 
-        $this->assertFalse($query->isSuggestion());
+        $this->assertFalse($query->isInvalidExcluded());
+        $this->assertFalse($query->isExcludedExcluded());
     }
 }
