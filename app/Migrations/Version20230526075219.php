@@ -19,6 +19,7 @@ final class Version20230526075219 extends AbstractMigration
         $table->addColumn('excluded', Type::BOOLEAN)
             ->setDefault(false)
             ->setNotnull(true);
+        $table->addUniqueIndex(['excluded']);
     }
 
     public function down(Schema $schema): void
