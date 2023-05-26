@@ -11,7 +11,7 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
 use CultuurNet\UDB3\StringLiteral;
 
-class SchemaConfigurator implements SchemaConfiguratorInterface
+final class SchemaConfigurator implements SchemaConfiguratorInterface
 {
     public const UUID_COLUMN = 'uuid_col';
     public const NAME_COLUMN = 'name';
