@@ -144,11 +144,11 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
         if ($query->isSuggestion()) {
             $queryBuilder->andWhere('name REGEXP \'^[a-zA-Z\d_\-]{2,50}$\'')
-                ->andWhere(SchemaConfigurator::EXCLUDED_COLUMN . ' = :excluded')
-                ->setParameters(
-                    [
-                        ':excluded' => false,
-                    ]
+                ->andWhere(
+                    $queryBuilder->expr()->eq(
+                        SchemaConfigurator::EXCLUDED_COLUMN,
+                        0
+                    )
                 );
         }
 
