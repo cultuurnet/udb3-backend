@@ -340,6 +340,25 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
+    public function it_can_omit_excluded_labels(): void
+    {
+        $search = new Query(
+            'excluded',
+            null,
+            null,
+            null,
+            true,
+            false,
+        );
+
+        $totalLabels = $this->dbalReadRepository->searchTotalLabels($search);
+
+        $this->assertEquals(0, $totalLabels);
+    }
+
+    /**
+     * @test
+     */
     public function a_new_label_can_be_used(): void
     {
         $this->assertTrue($this->dbalReadRepository->canUseLabel(
