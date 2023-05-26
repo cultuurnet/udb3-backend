@@ -148,20 +148,13 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             );
 
         if ($query->isSuggestion()) {
-            $queryBuilder->andWhere('name REGEXP \'^[a-zA-Z\d_\-]{2,50}$\'');
-
-            $excludedLabels = $this->excludedLabelsRepository->getAll();
-            if (!empty($excludedLabels)) {
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->notIn(
-                        SchemaConfigurator::UUID_COLUMN,
-                        array_map(
-                            fn (string $label) => '"' . $label . '"',
-                            $excludedLabels
-                        )
-                    )
+            $queryBuilder->andWhere('name REGEXP \'^[a-zA-Z\d_\-]{2,50}$\'')
+                ->andWhere(SchemaConfigurator::EXCLUDED_COLUMN . ' = :excluded')
+                ->setParameters(
+                    [
+                        ':excluded' => false,
+                    ]
                 );
-            }
         }
 
         if ($query->getUserId()) {
@@ -219,6 +212,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             SchemaConfigurator::PRIVATE_COLUMN,
             SchemaConfigurator::PARENT_UUID_COLUMN,
             SchemaConfigurator::COUNT_COLUMN,
+            SchemaConfigurator::EXCLUDED_COLUMN,
         ];
     }
 
