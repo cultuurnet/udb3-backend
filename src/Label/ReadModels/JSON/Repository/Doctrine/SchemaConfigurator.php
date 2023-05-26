@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine;
 use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -21,10 +22,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
 
     public const EXCLUDED_COLUMN = 'excluded';
 
-    /**
-     * @var StringLiteral
-     */
-    private $tableName;
+    private StringLiteral $tableName;
 
 
     public function __construct(StringLiteral $tableName)
@@ -32,10 +30,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
         $this->tableName = $tableName;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function configure(AbstractSchemaManager $schemaManager)
+    public function configure(AbstractSchemaManager $schemaManager): void
     {
         $schema = $schemaManager->createSchema();
 
@@ -46,10 +41,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
         }
     }
 
-    /**
-     * @return \Doctrine\DBAL\Schema\Table
-     */
-    private function createTable(Schema $schema, StringLiteral $tableName)
+    private function createTable(Schema $schema, StringLiteral $tableName): Table
     {
         $table = $schema->createTable($tableName->toNative());
 
