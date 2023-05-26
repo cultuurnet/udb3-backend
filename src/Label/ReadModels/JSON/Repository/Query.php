@@ -62,11 +62,6 @@ final class Query
         return $this->limit;
     }
 
-    public function isSuggestion(): bool
-    {
-        return $this->excludeExcludedLabels && $this->excludeInvalidLabels;
-    }
-
     public function isExcludedExcluded(): bool
     {
         return $this->excludeExcludedLabels;
