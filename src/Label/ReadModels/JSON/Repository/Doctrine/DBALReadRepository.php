@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ExcludedLabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
@@ -24,20 +23,16 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
     private StringLiteral $userRolesTableName;
 
-    private ExcludedLabelsRepository $excludedLabelsRepository;
-
     public function __construct(
         Connection $connection,
         StringLiteral $tableName,
         StringLiteral $labelRolesTableName,
-        StringLiteral $userRolesTableName,
-        ExcludedLabelsRepository $excludedLabelsRepository
+        StringLiteral $userRolesTableName
     ) {
         parent::__construct($connection, $tableName);
 
         $this->labelRolesTableName = $labelRolesTableName;
         $this->userRolesTableName = $userRolesTableName;
-        $this->excludedLabelsRepository = $excludedLabelsRepository;
     }
 
     public function getByUuid(UUID $uuid): ?Entity
