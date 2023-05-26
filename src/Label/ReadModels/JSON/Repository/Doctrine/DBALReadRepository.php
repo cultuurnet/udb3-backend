@@ -276,7 +276,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
         $count = (int) $row[SchemaConfigurator::COUNT_COLUMN];
 
-        $excluded = $row[SchemaConfigurator::EXCLUDED_COLUMN] ?? false;
+        $excluded = (bool) $row[SchemaConfigurator::EXCLUDED_COLUMN];
 
         return new Entity(
             $uuid,
