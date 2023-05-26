@@ -42,6 +42,7 @@ class QueryFactory implements QueryFactoryInterface
             $userId,
             $offset,
             $limit,
+            $suggestion,
             $suggestion
         );
     }

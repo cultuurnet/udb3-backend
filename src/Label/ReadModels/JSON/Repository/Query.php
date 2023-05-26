@@ -14,14 +14,17 @@ final class Query
 
     private ?int $limit;
 
-    private bool $suggestion;
+    private bool $excludeExcludedLabels;
+
+    private bool $excludeInvalidLabels;
 
     public function __construct(
         string $value,
         ?string $userId = null,
         ?int $offset = null,
         ?int $limit = null,
-        bool $suggestion = false
+        bool $excludeExcludedLabels = false,
+        bool $excludeInvalidLabels = false
     ) {
         if ($offset < 0) {
             throw new \InvalidArgumentException('Offset should be zero or higher');
@@ -35,7 +38,8 @@ final class Query
         $this->userId = $userId;
         $this->offset = $offset;
         $this->limit = $limit;
-        $this->suggestion = $suggestion;
+        $this->excludeExcludedLabels = $excludeExcludedLabels;
+        $this->excludeInvalidLabels = $excludeInvalidLabels;
     }
 
     public function getValue(): string
@@ -60,6 +64,16 @@ final class Query
 
     public function isSuggestion(): bool
     {
-        return $this->suggestion;
+        return $this->excludeExcludedLabels && $this->excludeInvalidLabels;
+    }
+
+    public function isExcludedExcluded(): bool
+    {
+        return $this->excludeExcludedLabels;
+    }
+
+    public function isInvalidExcluded(): bool
+    {
+        return $this->excludeInvalidLabels;
     }
 }
