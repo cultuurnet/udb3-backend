@@ -15,6 +15,8 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Contributor\ContributorEnrichedRepository;
 use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -62,7 +64,11 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
             self::PROJECTOR,
             function () use ($container) {
                 $placeLDProjector = new PlaceLDProjector(
-                    $container->get('place_jsonld_repository'),
+                    new BroadcastingDocumentRepositoryDecorator(
+                        $container->get('place_jsonld_cache'),
+                        $container->get(EventBus::class),
+                        $container->get(self::JSONLD_PROJECTED_EVENT_FACTORY)
+                    ),
                     $container->get('place_iri_generator'),
                     $container->get('organizer_service'),
                     $container->get('media_object_serializer'),
@@ -102,9 +108,7 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
                     $dummyPlaceIds = $container->get('config')['bookable_event']['dummy_place_ids'];
                 }
                 $repository = new DummyPlaceProjectionEnricher(
-                    new CacheDocumentRepository(
-                        $container->get('place_jsonld_cache')
-                    ),
+                    $container->get('place_jsonld_cache'),
                     $dummyPlaceIds
                 );
 
@@ -164,7 +168,13 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'place_jsonld_cache',
             function () use ($container) {
-                return $container->get('cache')('place_jsonld');
+                $repository = new CacheDocumentRepository(
+                    $container->get('cache')('place_jsonld')
+                );
+
+                $repository->setLogger(LoggerFactory::create($container, LoggerName::forWeb()));
+
+                return $repository;
             }
         );
 
