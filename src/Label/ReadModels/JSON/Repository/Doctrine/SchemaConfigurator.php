@@ -19,6 +19,8 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     public const PARENT_UUID_COLUMN = 'parentUuid';
     public const COUNT_COLUMN = 'count_col';
 
+    public const EXCLUDED_COLUMN = 'excluded';
+
     /**
      * @var StringLiteral
      */
@@ -74,6 +76,10 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
         $table->addColumn(self::COUNT_COLUMN, Type::BIGINT)
             ->setNotnull(true)
             ->setDefault(0);
+
+        $table->addColumn(self::EXCLUDED_COLUMN, Type::BOOLEAN)
+            ->setNotnull(true)
+            ->setDefault(false);
 
         $table->setPrimaryKey([self::UUID_COLUMN]);
         $table->addUniqueIndex([self::UUID_COLUMN]);
