@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider;
 use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
-use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector as PlaceRdfProjector;
+use CultuurNet\UDB3\Place\ReadModel\RDF\GranularRdfProjector as GranularPlaceRdfProjector;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 
@@ -81,7 +81,7 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                         ];
 
                         if (($container->get('config')['rdf']['enabled'] ?? false) === true) {
-                            $subscribers[] = PlaceRdfProjector::class;
+                            $subscribers[] = GranularPlaceRdfProjector::class;
                             $subscribers[] = EventRdfProjector::class;
                         }
 

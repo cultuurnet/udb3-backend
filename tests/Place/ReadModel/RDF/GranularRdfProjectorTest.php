@@ -46,12 +46,12 @@ use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class RdfProjectorTest extends TestCase
+class GranularRdfProjectorTest extends TestCase
 {
     private GraphRepository $graphRepository;
     /** @var AddressParser&MockObject */
     private AddressParser $addressParser;
-    private RdfProjector $rdfProjector;
+    private GranularRdfProjector $rdfProjector;
     private array $expectedParsedAddresses;
 
     private LegacyAddress $defaultAddress;
@@ -60,7 +60,7 @@ class RdfProjectorTest extends TestCase
     {
         $this->graphRepository = new InMemoryGraphRepository();
         $this->addressParser = $this->createMock(AddressParser::class);
-        $this->rdfProjector = new RdfProjector(
+        $this->rdfProjector = new GranularRdfProjector(
             new InMemoryMainLanguageRepository(),
             $this->graphRepository,
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),

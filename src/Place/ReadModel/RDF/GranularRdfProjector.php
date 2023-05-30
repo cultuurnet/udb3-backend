@@ -31,7 +31,7 @@ use EasyRdf\Graph;
 use EasyRdf\Literal;
 use DateTime;
 
-final class RdfProjector implements EventListener
+final class GranularRdfProjector implements EventListener
 {
     private MainLanguageRepository $mainLanguageRepository;
     private GraphRepository $graphRepository;
