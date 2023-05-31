@@ -68,12 +68,7 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'event_jsonld_repository',
             function () use ($container): BroadcastingDocumentRepositoryDecorator {
-                $repository = new CacheDocumentRepository(
-                    $container->get('event_jsonld_cache'),
-                    $container->get('config')['cache']['allowed_retries'] ?? 3,
-                    $container->get('config')['cache']['milliseconds_between_retry'] ?? 0
-                );
-                $repository->setLogger(LoggerFactory::create($container, LoggerName::forWeb()));
+                $repository = $container->get('event_jsonld_cache');
 
                 $repository = EmbeddingRelatedResourcesOfferRepository::createForEventRepository(
                     $repository,
@@ -144,7 +139,15 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'event_jsonld_cache',
             function () use ($container) {
-                return $container->get('cache')('event_jsonld');
+                $repository = new CacheDocumentRepository(
+                    $container->get('cache')('event_jsonld'),
+                    $container->get('config')['cache']['allowed_retries'] ?? 3,
+                    $container->get('config')['cache']['milliseconds_between_retry'] ?? 0
+                );
+
+                $repository->setLogger(LoggerFactory::create($container, LoggerName::forWeb()));
+
+                return $repository;
             }
         );
 
@@ -152,7 +155,11 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
             self::PROJECTOR,
             function () use ($container): EventLDProjector {
                 $eventLDProjector = new EventLDProjector(
-                    $container->get('event_jsonld_repository'),
+                    new BroadcastingDocumentRepositoryDecorator(
+                        $container->get('event_jsonld_cache'),
+                        $container->get(EventBus::class),
+                        new EventFactory($container->get('event_iri_generator')),
+                    ),
                     $container->get('event_iri_generator'),
                     $container->get('place_iri_generator'),
                     $container->get('place_service'),
