@@ -83,6 +83,7 @@ class RdfProjectorTest extends TestCase
         $place = [
             '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
             'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
             'terms' => [
                 [
                     'id' => '8.48.0.0.0',
