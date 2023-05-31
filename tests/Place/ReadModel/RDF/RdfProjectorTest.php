@@ -176,6 +176,50 @@ class RdfProjectorTest extends TestCase
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-with-translations.ttl'));
     }
 
+    /**
+     * @test
+     */
+    public function it_converts_a_place_with_coordinates_to_rdf(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $place = [
+            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '8.48.0.0.0',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Voorbeeld titel',
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Martelarenlaan 1',
+                    'postalCode' => '3000',
+                    'addressLocality' => 'Leuven',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'geo' => [
+                'latitude' => 50.879,
+                'longitude' => 4.6997,
+            ],
+        ];
+
+        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+
+        $this->project(
+            $placeId,
+            [
+                new PlaceProjectedToJSONLD($placeId, 'https://mock.io.uitdatabank.be/places/' . $placeId),
+            ]
+        );
+
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-with-coordinates.ttl'));
+    }
+
     private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void
     {
         $formatted = (new FullAddressFormatter())->format($address);
