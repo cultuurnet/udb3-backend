@@ -58,6 +58,8 @@ final class RdfProjector implements EventListener
     private const PROPERTY_WORKFLOW_STATUS_REJECTED = 'https://data.publiq.be/concepts/workflowStatus/rejected';
     private const PROPERTY_WORKFLOW_STATUS_DELETED = 'https://data.publiq.be/concepts/workflowStatus/deleted';
 
+    private const PROPERTY_AVAILABLE_FROM = 'udb:availableFrom';
+
     public function __construct(
         GraphRepository $graphRepository,
         IriGeneratorInterface $iriGenerator,
@@ -91,6 +93,9 @@ final class RdfProjector implements EventListener
         $place = $this->getPlace($domainMessage);
 
         $this->setWorkflowStatus($resource, $place->getWorkflowStatus());
+        if ($place->getAvailableFrom()) {
+            $this->setAvailableFrom($resource, $place->getAvailableFrom());
+        }
 
         $this->setTitle($resource, $place->getTitle());
 
@@ -198,6 +203,14 @@ final class RdfProjector implements EventListener
         $resource->set(
             self::PROPERTY_WORKFLOW_STATUS,
             new Resource($workflowStatusMapping[$workflowStatus->toString()])
+        );
+    }
+
+    private function setAvailableFrom(Resource $resource, \DateTimeImmutable $publicationDate): void
+    {
+        $resource->set(
+            self::PROPERTY_AVAILABLE_FROM,
+            new Literal($publicationDate->format(DateTime::ATOM), null, 'xsd:dateTime')
         );
     }
 }

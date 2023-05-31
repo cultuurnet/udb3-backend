@@ -289,6 +289,48 @@ class RdfProjectorTest extends TestCase
         ];
     }
 
+    /**
+     * @test
+     */
+    public function it_converts_a_published_place(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $place = [
+            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'workflowStatus' => WorkflowStatus::APPROVED()->toString(),
+            'availableFrom' => '2023-04-23T12:30:15+02:00',
+            'terms' => [
+                [
+                    'id' => '8.48.0.0.0',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Voorbeeld titel',
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Martelarenlaan 1',
+                    'postalCode' => '3000',
+                    'addressLocality' => 'Leuven',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+
+        $this->project(
+            $placeId,
+            [
+                new PlaceProjectedToJSONLD($placeId, 'https://mock.io.uitdatabank.be/places/' . $placeId),
+            ]
+        );
+
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/ttl/place-with-publication-date.ttl'));
+    }
+
     private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void
     {
         $formatted = (new FullAddressFormatter())->format($address);
