@@ -114,6 +114,68 @@ class RdfProjectorTest extends TestCase
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place.ttl'));
     }
 
+    /**
+     * @test
+     */
+    public function it_converts_a_place_with_translations(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $place = [
+            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '8.48.0.0.0',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Voorbeeld titel',
+                'en' => 'Example title',
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Martelarenlaan 1',
+                    'postalCode' => '3000',
+                    'addressLocality' => 'Leuven',
+                    'addressCountry' => 'BE',
+                ],
+                'fr' => [
+                    'streetAddress' => 'Martelarenlaan 1',
+                    'postalCode' => '3000',
+                    'addressLocality' => 'Louvain',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+
+        $this->expectParsedAddress(
+            new LegacyAddress(
+                new LegacyStreet('Martelarenlaan 1'),
+                new LegacyPostalCode('3000'),
+                new LegacyLocality('Louvain'),
+                new CountryCode('BE')
+            ),
+            new ParsedAddress(
+                'Martelarenlaan',
+                '1',
+                '3000',
+                'Louvain'
+            )
+        );
+
+        $this->project(
+            $placeId,
+            [
+                new PlaceProjectedToJSONLD($placeId, 'https://mock.io.uitdatabank.be/places/' . $placeId),
+            ]
+        );
+
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-with-translations.ttl'));
+    }
+
     private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void
     {
         $formatted = (new FullAddressFormatter())->format($address);
