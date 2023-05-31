@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Label;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
+use CultuurNet\UDB3\Label\Events\Excluded;
+use CultuurNet\UDB3\Label\Events\Included;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadePrivate;
 use CultuurNet\UDB3\Label\Events\MadePublic;
@@ -29,6 +31,8 @@ class LabelTest extends AggregateRootScenarioTestCase
 
     private Created $created;
 
+    private bool $excluded;
+
     private CopyCreated $copyCreated;
 
     public function setUp(): void
@@ -40,12 +44,14 @@ class LabelTest extends AggregateRootScenarioTestCase
         $this->visibility = Visibility::INVISIBLE();
         $this->privacy = Privacy::PRIVACY_PRIVATE();
         $this->parentUuid = new UUID('efaddd1d-837c-49ea-81d0-f4882fdf4123');
+        $this->excluded = false;
 
         $this->created = new Created(
             $this->uuid,
             $this->name,
             $this->visibility,
-            $this->privacy
+            $this->privacy,
+            $this->excluded
         );
 
         $this->copyCreated = new CopyCreated(
@@ -253,5 +259,107 @@ class LabelTest extends AggregateRootScenarioTestCase
                 $label->makePrivate();
             })
             ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_exclude_an_included_label(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created])
+            ->when(function ($label) {
+                /** @var Label $label */
+                $label->exclude();
+            })
+            ->then([new Excluded($this->uuid, $this->name)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_exclude_an_already_excluded_label(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created, new Excluded($this->uuid, $this->name)])
+            ->when(function ($label) {
+                /** @var Label $label */
+                $label->exclude();
+            })
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_exclude_after_including_it(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created, new Excluded($this->uuid, $this->name)])
+            ->when(function ($label) {
+                /** @var Label $label */
+                $label->include();
+                $label->exclude();
+            })
+            ->then(
+                [
+                    new Included($this->uuid, $this->name),
+                    new Excluded($this->uuid, $this->name),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_include_an_excluded_label(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created, new Excluded($this->uuid, $this->name)])
+            ->when(function ($label) {
+                /** @var Label $label */
+                $label->include();
+            })
+            ->then([new Included($this->uuid, $this->name)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_include_an_already_included_label(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created])
+            ->when(function ($label) {
+                /** @var Label $label */
+                $label->include();
+            })
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_include_after_excluding_it(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created])
+            ->when(function ($label) {
+                /** @var Label $label */
+                $label->exclude();
+                $label->include();
+            })
+            ->then(
+                [
+                    new Excluded($this->uuid, $this->name),
+                    new Included($this->uuid, $this->name),
+                ]
+            );
     }
 }
