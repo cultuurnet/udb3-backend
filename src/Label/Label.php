@@ -149,4 +149,14 @@ class Label extends EventSourcedAggregateRoot
     {
         $this->privacy = Privacy::PRIVACY_PRIVATE();
     }
+
+    public function applyIncluded(): void
+    {
+        $this->excluded = false;
+    }
+
+    public function applyExcluded(): void
+    {
+        $this->excluded = true;
+    }
 }
