@@ -101,7 +101,7 @@ class GranularRdfProjectorTest extends TestCase
         $this->project($placeId, [
             $this->getPlaceCreated($placeId),
         ]);
-        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-created.ttl'));
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place.ttl'));
     }
 
     /**
@@ -130,7 +130,7 @@ class GranularRdfProjectorTest extends TestCase
         // taken into account in the JSON projector. These days, all places get a default publication date in
         // PlaceCreated when they are created (even if they are not yet published), so if we would mark these places as
         // published in the RDF we would essentially publish every new place by default.
-        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-created.ttl'));
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place.ttl'));
     }
 
     /**
