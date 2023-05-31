@@ -219,6 +219,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             SchemaConfigurator::PRIVATE_COLUMN,
             SchemaConfigurator::PARENT_UUID_COLUMN,
             SchemaConfigurator::COUNT_COLUMN,
+            SchemaConfigurator::EXCLUDED_COLUMN,
         ];
     }
 
@@ -282,6 +283,8 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
         $count = (int) $row[SchemaConfigurator::COUNT_COLUMN];
 
+        $excluded =  (bool) $row[SchemaConfigurator::EXCLUDED_COLUMN];
+
         return new Entity(
             $uuid,
             $name,
@@ -289,7 +292,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             $privacy,
             $parentUuid,
             $count,
-            $this->isExcluded($uuid)
+            $excluded
         );
     }
 
