@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Label;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
+use CultuurNet\UDB3\Label\Events\Excluded;
+use CultuurNet\UDB3\Label\Events\Included;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadePrivate;
 use CultuurNet\UDB3\Label\Events\MadePublic;
@@ -97,6 +99,20 @@ class Label extends EventSourcedAggregateRoot
     {
         if (!$this->privacy->sameAs(Privacy::PRIVACY_PRIVATE())) {
             $this->apply(new MadePrivate($this->uuid, $this->name));
+        }
+    }
+
+    public function include(): void
+    {
+        if ($this->excluded) {
+            $this->apply(new Included($this->uuid, $this->name));
+        }
+    }
+
+    public function exclude(): void
+    {
+        if ($this->excluded === false) {
+            $this->apply(new Excluded($this->uuid, $this->name));
         }
     }
 
