@@ -19,9 +19,10 @@ final class CopyCreated extends Created
         string $name,
         Visibility $visibility,
         Privacy $privacy,
-        UUID $parentUuid
+        UUID $parentUuid,
+        bool $excluded = false
     ) {
-        parent::__construct($uuid, $name, $visibility, $privacy);
+        parent::__construct($uuid, $name, $visibility, $privacy, $excluded);
 
         $this->parentUuid = $parentUuid;
     }
