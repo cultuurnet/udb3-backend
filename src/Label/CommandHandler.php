@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Label\Commands\MakePublic;
 use CultuurNet\UDB3\Label\Commands\MakeVisible;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
-class CommandHandler extends AbstractCommandHandler
+final class CommandHandler extends AbstractCommandHandler
 {
     private Repository $repository;
 

@@ -16,10 +16,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var StringLiteral
-     */
-    private $tableName;
+    private StringLiteral $tableName;
 
     protected function setUp(): void
     {
@@ -32,16 +29,13 @@ abstract class BaseDBALRepositoryTest extends TestCase
         $schemaConfigurator->configure($schemaManager);
     }
 
-    /**
-     * @return StringLiteral
-     */
-    protected function getTableName()
+    protected function getTableName(): StringLiteral
     {
         return $this->tableName;
     }
 
 
-    protected function saveEntity(Entity $entity)
+    protected function saveEntity(Entity $entity): void
     {
         $values = $this->entityToValues($entity);
 
@@ -50,10 +44,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
         $this->connection->executeQuery($sql, $values);
     }
 
-    /**
-     * @return array
-     */
-    protected function entityToValues(Entity $entity)
+    protected function entityToValues(Entity $entity): array
     {
         return [
             $entity->getUuid()->toString(),
@@ -66,10 +57,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
         ];
     }
 
-    /**
-     * @return Entity
-     */
-    protected function getEntity()
+    protected function getEntity(): Entity
     {
         $sql = 'SELECT * FROM ' . $this->tableName;
 
@@ -79,10 +67,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
         return $this->rowToEntity($row);
     }
 
-    /**
-     * @return Entity
-     */
-    protected function rowToEntity(array $row)
+    protected function rowToEntity(array $row): Entity
     {
         return new Entity(
             new UUID($row[SchemaConfigurator::UUID_COLUMN]),
