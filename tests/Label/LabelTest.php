@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
-class LabelTest extends AggregateRootScenarioTestCase
+final class LabelTest extends AggregateRootScenarioTestCase
 {
     private UUID $uuid;
 
