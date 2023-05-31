@@ -12,6 +12,7 @@ class Created extends AbstractEvent
 {
     public const VISIBILITY = 'visibility';
     public const PRIVACY = 'privacy';
+    public const EXCLUDED = 'excluded';
 
     private Visibility $visibility;
 
@@ -54,7 +55,8 @@ class Created extends AbstractEvent
             new UUID($data[self::UUID]),
             $data[self::NAME],
             new Visibility($data[self::VISIBILITY]),
-            new Privacy($data[self::PRIVACY])
+            new Privacy($data[self::PRIVACY]),
+            (bool) $data[self::EXCLUDED],
         );
     }
 
@@ -63,6 +65,7 @@ class Created extends AbstractEvent
         return parent::serialize() + [
             self::VISIBILITY => $this->getVisibility()->toString(),
             self::PRIVACY => $this->getPrivacy()->toString(),
+            self::EXCLUDED => $this->isExcluded(),
         ];
     }
 }
