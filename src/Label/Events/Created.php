@@ -17,16 +17,20 @@ class Created extends AbstractEvent
 
     private Privacy $privacy;
 
+    private bool $excluded;
+
     public function __construct(
         UUID $uuid,
         string $name,
         Visibility $visibility,
-        Privacy $privacy
+        Privacy $privacy,
+        bool $excluded = false
     ) {
         parent::__construct($uuid, $name);
 
         $this->visibility = $visibility;
         $this->privacy = $privacy;
+        $this->excluded = $excluded;
     }
 
     public function getVisibility(): Visibility
@@ -37,6 +41,11 @@ class Created extends AbstractEvent
     public function getPrivacy(): Privacy
     {
         return $this->privacy;
+    }
+
+    public function isExcluded(): bool
+    {
+        return $this->excluded;
     }
 
     public static function deserialize(array $data): Created
