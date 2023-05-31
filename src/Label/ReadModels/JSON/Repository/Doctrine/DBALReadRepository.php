@@ -295,9 +295,4 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             $excluded
         );
     }
-
-    private function isExcluded(UUID $uuid): bool
-    {
-        return \in_array($uuid->toString(), $this->excludedLabelsRepository->getAll(), true);
-    }
 }
