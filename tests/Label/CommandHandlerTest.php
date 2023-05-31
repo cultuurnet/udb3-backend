@@ -10,12 +10,14 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Label\Commands\Create;
 use CultuurNet\UDB3\Label\Commands\CreateCopy;
+use CultuurNet\UDB3\Label\Commands\ExcludeLabel;
 use CultuurNet\UDB3\Label\Commands\MakeInvisible;
 use CultuurNet\UDB3\Label\Commands\MakePrivate;
 use CultuurNet\UDB3\Label\Commands\MakePublic;
 use CultuurNet\UDB3\Label\Commands\MakeVisible;
 use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
+use CultuurNet\UDB3\Label\Events\Excluded;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadePrivate;
 use CultuurNet\UDB3\Label\Events\MadePublic;
@@ -208,6 +210,30 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(new MakePrivate($this->uuid))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_excluding_when_included(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created])
+            ->when(new ExcludeLabel($this->uuid))
+            ->then([new Excluded($this->uuid, $this->name)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_handle_excluding_when_already_excluded(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created, new Excluded($this->uuid, $this->name)])
+            ->when(new ExcludeLabel($this->uuid))
             ->then([]);
     }
 }
