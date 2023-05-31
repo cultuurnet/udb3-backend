@@ -45,7 +45,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
     {
         $values = $this->entityToValues($entity);
 
-        $sql = 'INSERT INTO ' . $this->tableName . ' VALUES (?, ?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO ' . $this->tableName . ' VALUES (?, ?, ?, ?, ?, ?, ?)';
 
         $this->connection->executeQuery($sql, $values);
     }
@@ -62,6 +62,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
             $entity->getPrivacy()->sameAs(Privacy::PRIVACY_PRIVATE()),
             $entity->getParentUuid() ? $entity->getParentUuid()->toString() : null,
             $entity->getCount(),
+            $entity->isExcluded(),
         ];
     }
 
