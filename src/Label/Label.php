@@ -25,6 +25,8 @@ class Label extends EventSourcedAggregateRoot
 
     private Privacy $privacy;
 
+    private bool $excluded;
+
     public function getAggregateRootId(): string
     {
         return $this->uuid->toString();
@@ -34,7 +36,8 @@ class Label extends EventSourcedAggregateRoot
         UUID $uuid,
         string $name,
         Visibility $visibility,
-        Privacy $privacy
+        Privacy $privacy,
+        bool $excluded = false
     ): Label {
         $label = new Label();
 
@@ -42,7 +45,8 @@ class Label extends EventSourcedAggregateRoot
             $uuid,
             $name,
             $visibility,
-            $privacy
+            $privacy,
+            $excluded
         ));
 
         return $label;
@@ -102,6 +106,7 @@ class Label extends EventSourcedAggregateRoot
         $this->name = $created->getName();
         $this->visibility = $created->getVisibility();
         $this->privacy = $created->getPrivacy();
+        $this->excluded = $created->isExcluded();
     }
 
     public function applyCopyCreated(CopyCreated $copyCreated): void
