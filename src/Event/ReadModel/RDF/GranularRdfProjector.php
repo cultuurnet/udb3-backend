@@ -40,7 +40,7 @@ use EasyRdf\Graph;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
 
-final class RdfProjector implements EventListener
+final class GranularRdfProjector implements EventListener
 {
     private MainLanguageRepository $mainLanguageRepository;
     private GraphRepository $graphRepository;

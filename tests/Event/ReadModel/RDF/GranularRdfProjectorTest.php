@@ -53,9 +53,9 @@ use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class RdfProjectorTest extends TestCase
+class GranularRdfProjectorTest extends TestCase
 {
-    private RdfProjector $rdfProjector;
+    private GranularRdfProjector $rdfProjector;
 
     private GraphRepository $graphRepository;
 
@@ -77,7 +77,7 @@ class RdfProjectorTest extends TestCase
 
         $this->mappingService = $this->createMock(MappingServiceInterface::class);
 
-        $this->rdfProjector = new RdfProjector(
+        $this->rdfProjector = new GranularRdfProjector(
             new InMemoryMainLanguageRepository(),
             $this->graphRepository,
             new InMemoryLocationIdRepository(),
