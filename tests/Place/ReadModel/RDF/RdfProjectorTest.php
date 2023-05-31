@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
@@ -77,7 +78,7 @@ class RdfProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_converts_a_simple_place_to_rdf(): void
+    public function it_converts_a_simple_place(): void
     {
         $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
         $place = [
@@ -111,7 +112,7 @@ class RdfProjectorTest extends TestCase
             ]
         );
 
-        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place.ttl'));
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/ttl/place.ttl'));
     }
 
     /**
@@ -173,13 +174,13 @@ class RdfProjectorTest extends TestCase
             ]
         );
 
-        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-with-translations.ttl'));
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/ttl/place-with-translations.ttl'));
     }
 
     /**
      * @test
      */
-    public function it_converts_a_place_with_coordinates_to_rdf(): void
+    public function it_converts_a_place_with_coordinates(): void
     {
         $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
         $place = [
@@ -217,7 +218,75 @@ class RdfProjectorTest extends TestCase
             ]
         );
 
-        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/data/place-with-coordinates.ttl'));
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/ttl/place-with-coordinates.ttl'));
+    }
+
+    /**
+     * @test
+     * @dataProvider workflowStatusDataProvider
+     */
+    public function it_converts_a_place_workflow_status(WorkflowStatus $workflowStatus, string $file): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $place = [
+            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'workflowStatus' => $workflowStatus->toString(),
+            'terms' => [
+                [
+                    'id' => '8.48.0.0.0',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Voorbeeld titel',
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Martelarenlaan 1',
+                    'postalCode' => '3000',
+                    'addressLocality' => 'Leuven',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+
+        $this->project(
+            $placeId,
+            [
+                new PlaceProjectedToJSONLD($placeId, 'https://mock.io.uitdatabank.be/places/' . $placeId),
+            ]
+        );
+
+        $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/ttl/' . $file));
+    }
+
+    public function workflowStatusDataProvider(): array
+    {
+        return [
+            'draft' => [
+                'workflowStatus' => WorkflowStatus::DRAFT(),
+                'file' => 'place.ttl',
+            ],
+            'ready for validation' => [
+                'workflowStatus' => WorkflowStatus::READY_FOR_VALIDATION(),
+                'file' => 'place-with-status-ready-for-validation.ttl',
+            ],
+            'approved' => [
+                'workflowStatus' => WorkflowStatus::APPROVED(),
+                'file' => 'place-with-status-approved.ttl',
+            ],
+            'rejected' => [
+                'workflowStatus' => WorkflowStatus::REJECTED(),
+                'file' => 'place-with-status-rejected.ttl',
+            ],
+            'deleted' => [
+                'workflowStatus' => WorkflowStatus::DELETED(),
+                'file' => 'place-with-status-deleted.ttl',
+            ],
+        ];
     }
 
     private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void

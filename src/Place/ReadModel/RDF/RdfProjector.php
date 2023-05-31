@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
@@ -50,6 +51,13 @@ final class RdfProjector implements EventListener
 
     private const PROPERTY_GEOMETRIE_GML = 'geosparql:asGML';
 
+    private const PROPERTY_WORKFLOW_STATUS = 'udb:workflowStatus';
+    private const PROPERTY_WORKFLOW_STATUS_DRAFT = 'https://data.publiq.be/concepts/workflowStatus/draft';
+    private const PROPERTY_WORKFLOW_STATUS_READY_FOR_VALIDATION = 'https://data.publiq.be/concepts/workflowStatus/ready-for-validation';
+    private const PROPERTY_WORKFLOW_STATUS_APPROVED = 'https://data.publiq.be/concepts/workflowStatus/approved';
+    private const PROPERTY_WORKFLOW_STATUS_REJECTED = 'https://data.publiq.be/concepts/workflowStatus/rejected';
+    private const PROPERTY_WORKFLOW_STATUS_DELETED = 'https://data.publiq.be/concepts/workflowStatus/deleted';
+
     public function __construct(
         GraphRepository $graphRepository,
         IriGeneratorInterface $iriGenerator,
@@ -81,6 +89,8 @@ final class RdfProjector implements EventListener
         );
 
         $place = $this->getPlace($domainMessage);
+
+        $this->setWorkflowStatus($resource, $place->getWorkflowStatus());
 
         $this->setTitle($resource, $place->getTitle());
 
@@ -173,5 +183,21 @@ final class RdfProjector implements EventListener
         $geometryResource = $resource->getResource(self::PROPERTY_LOCATIE_GEOMETRIE);
 
         $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
+    }
+
+    private function setWorkflowStatus(Resource $resource, WorkflowStatus $workflowStatus): void
+    {
+        $workflowStatusMapping = [
+            WorkflowStatus::DRAFT()->toString() => self::PROPERTY_WORKFLOW_STATUS_DRAFT,
+            WorkflowStatus::READY_FOR_VALIDATION()->toString() => self::PROPERTY_WORKFLOW_STATUS_READY_FOR_VALIDATION,
+            WorkflowStatus::APPROVED()->toString() => self::PROPERTY_WORKFLOW_STATUS_APPROVED,
+            WorkflowStatus::REJECTED()->toString() => self::PROPERTY_WORKFLOW_STATUS_REJECTED,
+            WorkflowStatus::DELETED()->toString() => self::PROPERTY_WORKFLOW_STATUS_DELETED,
+        ];
+
+        $resource->set(
+            self::PROPERTY_WORKFLOW_STATUS,
+            new Resource($workflowStatusMapping[$workflowStatus->toString()])
+        );
     }
 }
