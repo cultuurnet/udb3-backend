@@ -110,6 +110,7 @@ class CreatedTest extends TestCase
             Created::NAME => $this->created->getName(),
             Created::VISIBILITY => $this->created->getVisibility()->toString(),
             Created::PRIVACY => $this->created->getPrivacy()->toString(),
+            Created::EXCLUDED => $this->created->isExcluded(),
         ];
     }
 }
