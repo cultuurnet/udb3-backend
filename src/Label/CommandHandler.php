@@ -8,6 +8,8 @@ use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler as AbstractCommandHandler;
 use CultuurNet\UDB3\Label\Commands\Create;
 use CultuurNet\UDB3\Label\Commands\CreateCopy;
+use CultuurNet\UDB3\Label\Commands\ExcludeLabel;
+use CultuurNet\UDB3\Label\Commands\IncludeLabel;
 use CultuurNet\UDB3\Label\Commands\MakeInvisible;
 use CultuurNet\UDB3\Label\Commands\MakePrivate;
 use CultuurNet\UDB3\Label\Commands\MakePublic;
@@ -81,6 +83,24 @@ class CommandHandler extends AbstractCommandHandler
         $label = $this->load($makePrivate->getUuid());
 
         $label->makePrivate();
+
+        $this->save($label);
+    }
+
+    public function handleIncludeLabel(IncludeLabel $includeLabel): void
+    {
+        $label = $this->load($includeLabel->getUuid());
+
+        $label->include();
+
+        $this->save($label);
+    }
+
+    public function handleExcludeLabel(ExcludeLabel $excludeLabel): void
+    {
+        $label = $this->load($excludeLabel->getUuid());
+
+        $label->exclude();
 
         $this->save($label);
     }
