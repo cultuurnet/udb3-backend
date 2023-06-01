@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
+use CultuurNet\UDB3\Label\Events\Excluded;
+use CultuurNet\UDB3\Label\Events\Included;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadePrivate;
 use CultuurNet\UDB3\Label\Events\MadePublic;
@@ -45,7 +47,8 @@ class Projector extends AbstractProjector
             $created->getUuid(),
             new StringLiteral($created->getName()),
             $created->getVisibility(),
-            $created->getPrivacy()
+            $created->getPrivacy(),
+            $created->isExcluded()
         );
     }
 
@@ -63,6 +66,7 @@ class Projector extends AbstractProjector
             new StringLiteral($copyCreated->getName()),
             $copyCreated->getVisibility(),
             $copyCreated->getPrivacy(),
+            $copyCreated->isExcluded(),
             $copyCreated->getParentUuid()
         );
     }
@@ -85,6 +89,16 @@ class Projector extends AbstractProjector
     public function applyMadePrivate(MadePrivate $madePrivate): void
     {
         $this->writeRepository->updatePrivate($madePrivate->getUuid());
+    }
+
+    public function applyLabelIncluded(Included $included): void
+    {
+        $this->writeRepository->updateIncluded($included->getUuid());
+    }
+
+    public function applyLabelExcluded(Excluded $excluded): void
+    {
+        $this->writeRepository->updateCountDecrement($excluded->getUuid());
     }
 
     public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata): void
