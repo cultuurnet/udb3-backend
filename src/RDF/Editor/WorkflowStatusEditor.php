@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\RDF\Editor;
 
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
@@ -11,6 +12,8 @@ use EasyRdf\Resource;
 final class WorkflowStatusEditor
 {
     private Graph $graph;
+
+    private array $workflowStatusMapping;
 
     private const PROPERTY_WORKFLOW_STATUS = 'udb:workflowStatus';
     private const PROPERTY_WORKFLOW_STATUS_DRAFT = 'https://data.publiq.be/concepts/workflowStatus/draft';
@@ -23,6 +26,14 @@ final class WorkflowStatusEditor
     private function __construct(Graph $graph)
     {
         $this->graph = $graph;
+
+        $this->workflowStatusMapping = [
+            WorkflowStatus::DRAFT()->toString() => self::PROPERTY_WORKFLOW_STATUS_DRAFT,
+            WorkflowStatus::READY_FOR_VALIDATION()->toString() => self::PROPERTY_WORKFLOW_STATUS_READY_FOR_VALIDATION,
+            WorkflowStatus::APPROVED()->toString() => self::PROPERTY_WORKFLOW_STATUS_APPROVED,
+            WorkflowStatus::REJECTED()->toString() => self::PROPERTY_WORKFLOW_STATUS_REJECTED,
+            WorkflowStatus::DELETED()->toString() => self::PROPERTY_WORKFLOW_STATUS_DELETED,
+        ];
     }
 
     public static function for(Graph $graph): self
@@ -84,6 +95,14 @@ final class WorkflowStatusEditor
         $resource->set(
             self::PROPERTY_WORKFLOW_STATUS,
             new Resource(self::PROPERTY_WORKFLOW_STATUS_DELETED)
+        );
+    }
+
+    public function setWorkflowStatus(Resource $resource, WorkflowStatus $workflowStatus): void
+    {
+        $resource->set(
+            self::PROPERTY_WORKFLOW_STATUS,
+            new Resource($this->workflowStatusMapping[$workflowStatus->toString()])
         );
     }
 }
