@@ -59,7 +59,8 @@ final class Label extends EventSourcedAggregateRoot
         string $name,
         Visibility $visibility,
         Privacy $privacy,
-        UUID $parentUuid
+        UUID $parentUuid,
+        bool $excluded = false
     ): Label {
         $label = new Label();
 
@@ -68,7 +69,8 @@ final class Label extends EventSourcedAggregateRoot
             $name,
             $visibility,
             $privacy,
-            $parentUuid
+            $parentUuid,
+            $excluded
         ));
 
         return $label;
