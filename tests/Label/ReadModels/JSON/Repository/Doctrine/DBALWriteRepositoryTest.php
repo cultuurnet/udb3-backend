@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use CultuurNet\UDB3\StringLiteral;
 
-class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
+final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 {
     private DBALWriteRepository $dbalWriteRepository;
 

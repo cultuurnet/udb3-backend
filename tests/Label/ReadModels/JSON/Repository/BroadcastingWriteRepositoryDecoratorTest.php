@@ -12,12 +12,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 
-class BroadcastingWriteRepositoryDecoratorTest extends TestCase
+final class BroadcastingWriteRepositoryDecoratorTest extends TestCase
 {
-    /**
-     * @var BroadcastingWriteRepositoryDecorator
-     */
-    private $broadcastingWriteRepositoryDecorator;
+    private BroadcastingWriteRepositoryDecorator $broadcastingWriteRepositoryDecorator;
 
     /**
      * @var EventBus|MockObject
@@ -43,7 +40,7 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_broadcast_on_save()
+    public function it_does_not_broadcast_on_save(): void
     {
         $uuid = new UUID('eea246d1-4f50-4879-8f52-42867ed51670');
         $name = new StringLiteral('labelName');
@@ -77,7 +74,7 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_broadcast_on_update_count_increment()
+    public function it_does_not_broadcast_on_update_count_increment(): void
     {
         $uuid = new UUID('963d50b4-62f5-43cc-a028-fdfdc0280bdd');
 
@@ -100,7 +97,7 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_broadcast_on_update_count_decrement()
+    public function it_does_not_broadcast_on_update_count_decrement(): void
     {
         $uuid = new UUID('34198f6d-e782-4e94-9593-8e31e2e2913a');
 
@@ -123,7 +120,7 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_broadcast_on_update_private()
+    public function it_does_broadcast_on_update_private(): void
     {
         $uuid = new UUID('17bcae0c-ac05-4da9-9883-421b5a8fc666');
 
@@ -146,7 +143,7 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_broadcast_on_update_public()
+    public function it_does_broadcast_on_update_public(): void
     {
         $uuid = new UUID('bae99c42-7a71-4c3e-8532-e2f879092c7a');
 
@@ -192,7 +189,7 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_broadcast_on_update_invisible()
+    public function it_does_broadcast_on_update_invisible(): void
     {
         $uuid = new UUID('df94b58d-ed66-4d86-a9ad-4945b77f3d1e');
 

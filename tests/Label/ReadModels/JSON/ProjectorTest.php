@@ -31,7 +31,7 @@ use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class ProjectorTest extends TestCase
+final class ProjectorTest extends TestCase
 {
     private UUID $uuid;
 
