@@ -57,7 +57,8 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
                 $uuid,
                 $name,
                 $visibility,
-                $privacy
+                $privacy,
+                false
             );
 
         $this->eventBus
@@ -68,7 +69,8 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
             $uuid,
             $name,
             $visibility,
-            $privacy
+            $privacy,
+            false
         );
     }
 
