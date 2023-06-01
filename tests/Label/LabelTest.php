@@ -59,7 +59,8 @@ final class LabelTest extends AggregateRootScenarioTestCase
             $this->name,
             $this->visibility,
             $this->privacy,
-            $this->parentUuid
+            $this->parentUuid,
+            $this->excluded
         );
     }
 
