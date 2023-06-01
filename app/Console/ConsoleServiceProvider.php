@@ -319,12 +319,12 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'console.label:exclude',
-            fn () => new ExcludeLabel($container->get('event_command_bus'),)
+            fn () => new ExcludeLabel($container->get('event_command_bus'))
         );
 
         $container->addShared(
             'console.label:include',
-            fn () => new IncludeLabel($container->get('event_command_bus'),)
+            fn () => new IncludeLabel($container->get('event_command_bus'))
         );
 
         $container->addShared(
