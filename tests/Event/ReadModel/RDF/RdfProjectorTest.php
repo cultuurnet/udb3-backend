@@ -442,6 +442,45 @@ class RdfProjectorTest extends TestCase
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-status-rejected.ttl'));
     }
 
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_publication_date(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'workflowStatus' => WorkflowStatus::APPROVED()->toString(),
+            'availableFrom' => '2023-04-23T12:30:15+02:00',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-publication-date.ttl'));
+    }
+
     private function project(string $eventId, array $events): void
     {
         $playhead = -1;
