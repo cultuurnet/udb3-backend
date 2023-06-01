@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
@@ -158,7 +159,7 @@ final class RdfProjector implements EventListener
             );
         }
 
-        if ($calendar instanceof SingleSubEventCalendar) {
+        if ($calendar instanceof SingleSubEventCalendar || $calendar instanceof MultipleSubEventsCalendar) {
             $subEvents = $calendar->getSubEvents();
         }
 
