@@ -10,6 +10,7 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -300,7 +301,7 @@ class RdfProjectorTest extends TestCase
             '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
             'mainLanguage' => 'nl',
             'calendarType' => 'permanent',
-            'workflowStatus' => 'APPROVED',
+            'workflowStatus' => WorkflowStatus::APPROVED()->toString(),
             'terms' => [
                 [
                     'id' => '0.50.4.0.0',
@@ -338,7 +339,7 @@ class RdfProjectorTest extends TestCase
             '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
             'mainLanguage' => 'nl',
             'calendarType' => 'permanent',
-            'workflowStatus' => 'DELETED',
+            'workflowStatus' => WorkflowStatus::DELETED()->toString(),
             'terms' => [
                 [
                     'id' => '0.50.4.0.0',
@@ -376,7 +377,7 @@ class RdfProjectorTest extends TestCase
             '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
             'mainLanguage' => 'nl',
             'calendarType' => 'permanent',
-            'workflowStatus' => 'READY_FOR_VALIDATION',
+            'workflowStatus' => WorkflowStatus::READY_FOR_VALIDATION()->toString(),
             'terms' => [
                 [
                     'id' => '0.50.4.0.0',
@@ -414,7 +415,7 @@ class RdfProjectorTest extends TestCase
             '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
             'mainLanguage' => 'nl',
             'calendarType' => 'permanent',
-            'workflowStatus' => 'REJECTED',
+            'workflowStatus' => WorkflowStatus::REJECTED()->toString(),
             'terms' => [
                 [
                     'id' => '0.50.4.0.0',
