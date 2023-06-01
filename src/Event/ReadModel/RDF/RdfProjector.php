@@ -81,7 +81,7 @@ final class RdfProjector implements EventListener
             return;
         }
 
-        $iri = $this->eventsIriGenerator->iri($domainMessage->getId());
+        $iri = $this->eventsIriGenerator->iri($domainMessage->getPayload()->getItemId());
         $graph = new Graph($iri);
         $resource = $graph->resource($iri);
 
