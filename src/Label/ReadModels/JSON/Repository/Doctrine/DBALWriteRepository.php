@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\StringLiteral;
 
-class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
+final class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
 {
     public function save(
         UUID $uuid,
@@ -20,7 +20,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         Privacy $privacy,
         bool $excluded,
         UUID $parentUuid = null
-    ) {
+    ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->insert($this->getTableName()->toNative())
             ->values([
@@ -43,8 +43,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $queryBuilder->execute();
     }
 
-
-    public function updateVisible(UUID $uuid)
+    public function updateVisible(UUID $uuid): void
     {
         $this->executeUpdate(
             SchemaConfigurator::VISIBLE_COLUMN,
@@ -53,8 +52,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         );
     }
 
-
-    public function updateInvisible(UUID $uuid)
+    public function updateInvisible(UUID $uuid): void
     {
         $this->executeUpdate(
             SchemaConfigurator::VISIBLE_COLUMN,
@@ -63,8 +61,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         );
     }
 
-
-    public function updatePublic(UUID $uuid)
+    public function updatePublic(UUID $uuid): void
     {
         $this->executeUpdate(
             SchemaConfigurator::PRIVATE_COLUMN,
@@ -73,8 +70,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         );
     }
 
-
-    public function updatePrivate(UUID $uuid)
+    public function updatePrivate(UUID $uuid): void
     {
         $this->executeUpdate(
             SchemaConfigurator::PRIVATE_COLUMN,
@@ -100,7 +96,8 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
             $uuid
         );
     }
-    public function updateCountIncrement(UUID $uuid)
+
+    public function updateCountIncrement(UUID $uuid): void
     {
         $this->executeCountUpdate(
             1,
@@ -108,7 +105,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         );
     }
 
-    public function updateCountDecrement(UUID $uuid)
+    public function updateCountDecrement(UUID $uuid): void
     {
         $this->executeCountUpdate(
             -1,
@@ -116,15 +113,11 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         );
     }
 
-    /**
-     * @param string $column
-     * @param bool $value
-     */
     private function executeUpdate(
-        $column,
-        $value,
+        string $column,
+        bool $value,
         UUID $uuid
-    ) {
+    ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->update($this->getTableName()->toNative())
             ->set($column, '?')
@@ -141,7 +134,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
     private function executeCountUpdate(
         int $value,
         UUID $uuid
-    ) {
+    ): void {
         $currentCount = $this->getCurrentCount($uuid);
         $newCount = $currentCount + $value;
 

@@ -15,17 +15,11 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\StringLiteral;
 
-class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInterface
+final class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInterface
 {
-    /**
-     * @var EventBus
-     */
-    private $eventBus;
+    private EventBus $eventBus;
 
-    /**
-     * @var WriteRepositoryInterface
-     */
-    private $writeRepository;
+    private WriteRepositoryInterface $writeRepository;
 
     public function __construct(WriteRepositoryInterface $writeRepository, EventBus $eventBus)
     {
@@ -33,9 +27,6 @@ class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInterface
         $this->eventBus = $eventBus;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function save(
         UUID $uuid,
         StringLiteral $name,
@@ -43,7 +34,7 @@ class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInterface
         Privacy $privacy,
         bool $excluded,
         UUID $parentUuid = null
-    ) {
+    ): void {
         $this->writeRepository->save(
             $uuid,
             $name,
@@ -54,53 +45,35 @@ class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInterface
         );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function updateCountIncrement(UUID $uuid)
+    public function updateCountIncrement(UUID $uuid): void
     {
         $this->writeRepository->updateCountIncrement($uuid);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function updateCountDecrement(UUID $uuid)
+    public function updateCountDecrement(UUID $uuid): void
     {
         $this->writeRepository->updateCountDecrement($uuid);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function updatePrivate(UUID $uuid)
+    public function updatePrivate(UUID $uuid): void
     {
         $this->writeRepository->updatePrivate($uuid);
         $this->broadcastDocumentUpdated($uuid);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function updatePublic(UUID $uuid)
+    public function updatePublic(UUID $uuid): void
     {
         $this->writeRepository->updatePublic($uuid);
         $this->broadcastDocumentUpdated($uuid);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function updateVisible(UUID $uuid)
+    public function updateVisible(UUID $uuid): void
     {
         $this->writeRepository->updateVisible($uuid);
         $this->broadcastDocumentUpdated($uuid);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function updateInvisible(UUID $uuid)
+    public function updateInvisible(UUID $uuid): void
     {
         $this->writeRepository->updateInvisible($uuid);
         $this->broadcastDocumentUpdated($uuid);
@@ -118,8 +91,7 @@ class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInterface
         $this->broadcastDocumentUpdated($uuid);
     }
 
-
-    protected function broadcastDocumentUpdated(UUID $uuid)
+    private function broadcastDocumentUpdated(UUID $uuid): void
     {
         $event = new LabelDetailsProjectedToJSONLD($uuid);
 
