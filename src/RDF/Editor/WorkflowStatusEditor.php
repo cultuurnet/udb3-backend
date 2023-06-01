@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\RDF\Editor;
 
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use DateTime;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
@@ -103,6 +104,14 @@ final class WorkflowStatusEditor
         $resource->set(
             self::PROPERTY_WORKFLOW_STATUS,
             new Resource($this->workflowStatusMapping[$workflowStatus->toString()])
+        );
+    }
+
+    public function setAvailableFrom(Resource $resource, \DateTimeImmutable $publicationDate): void
+    {
+        $resource->set(
+            self::PROPERTY_AVAILABLE_FROM,
+            new Literal($publicationDate->format(DateTime::ATOM), null, 'xsd:dateTime')
         );
     }
 }

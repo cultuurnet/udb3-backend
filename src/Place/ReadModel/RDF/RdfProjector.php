@@ -51,8 +51,6 @@ final class RdfProjector implements EventListener
 
     private const PROPERTY_GEOMETRIE_GML = 'geosparql:asGML';
 
-    private const PROPERTY_AVAILABLE_FROM = 'udb:availableFrom';
-
     public function __construct(
         GraphRepository $graphRepository,
         IriGeneratorInterface $iriGenerator,
@@ -87,7 +85,7 @@ final class RdfProjector implements EventListener
 
         WorkflowStatusEditor::for($graph)->setWorkflowStatus($resource, $place->getWorkflowStatus());
         if ($place->getAvailableFrom()) {
-            $this->setAvailableFrom($resource, $place->getAvailableFrom());
+            WorkflowStatusEditor::for($graph)->setAvailableFrom($resource, $place->getAvailableFrom());
         }
 
         $this->setTitle($resource, $place->getTitle());
@@ -181,13 +179,5 @@ final class RdfProjector implements EventListener
         $geometryResource = $resource->getResource(self::PROPERTY_LOCATIE_GEOMETRIE);
 
         $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
-    }
-
-    private function setAvailableFrom(Resource $resource, \DateTimeImmutable $publicationDate): void
-    {
-        $resource->set(
-            self::PROPERTY_AVAILABLE_FROM,
-            new Literal($publicationDate->format(DateTime::ATOM), null, 'xsd:dateTime')
-        );
     }
 }
