@@ -80,7 +80,23 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         );
     }
 
+    public function updateIncluded(UUID $uuid): void
+    {
+        $this->executeUpdate(
+            SchemaConfigurator::EXCLUDED_COLUMN,
+            false,
+            $uuid
+        );
+    }
 
+    public function updateExcluded(UUID $uuid): void
+    {
+        $this->executeUpdate(
+            SchemaConfigurator::EXCLUDED_COLUMN,
+            true,
+            $uuid
+        );
+    }
     public function updateCountIncrement(UUID $uuid)
     {
         $this->executeCountUpdate(

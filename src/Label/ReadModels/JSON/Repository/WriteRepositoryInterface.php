@@ -31,6 +31,9 @@ interface WriteRepositoryInterface
 
     public function updatePrivate(UUID $uuid);
 
+    public function updateExcluded(UUID $uuid): void;
+
+    public function updateIncluded(UUID $uuid): void;
 
     public function updateCountIncrement(UUID $uuid);
 
