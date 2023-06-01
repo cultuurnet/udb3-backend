@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -155,6 +156,10 @@ final class RdfProjector implements EventListener
                 $calendar->getStatus(),
                 $calendar->getBookingAvailability(),
             );
+        }
+
+        if ($calendar instanceof SingleSubEventCalendar) {
+            $subEvents = $calendar->getSubEvents();
         }
 
         foreach ($subEvents as $subEvent) {
