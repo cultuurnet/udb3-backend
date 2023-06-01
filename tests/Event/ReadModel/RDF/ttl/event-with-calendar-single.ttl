@@ -1,15 +1,14 @@
 @prefix cidoc: <http://www.cidoc-crm.org/cidoc-crm/> .
-@prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix m8g: <http://data.europa.eu/m8g/> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a cidoc:E7_Activity ;
-  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   adms:identifier [
@@ -19,6 +18,7 @@
   ] ;
   dcterms:title "Faith no more"@nl ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
+  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cp:ruimtetijd [
     a cidoc:E92_Spacetime_Volume ;
     cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
