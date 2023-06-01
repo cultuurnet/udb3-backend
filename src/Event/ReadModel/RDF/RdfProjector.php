@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -38,6 +39,7 @@ final class RdfProjector implements EventListener
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_TYPE = 'dcterms:type';
     private const PROPERTY_ACTVITEIT_LOCATIE = 'prov:atLocation';
+    private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
 
     public function __construct(
         GraphRepository $graphRepository,
@@ -79,6 +81,10 @@ final class RdfProjector implements EventListener
 
         $this->setLocation($resource, $event->getPlaceReference());
 
+        if ($event->getDescription()) {
+            $this->setDescription($resource, $event->getDescription());
+        }
+
         $this->graphRepository->save($iri, $graph);
     }
 
@@ -118,5 +124,15 @@ final class RdfProjector implements EventListener
     {
         $locationIri = $this->placesIriGenerator->iri($placeReference->getPlaceId()->toString());
         $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationIri));
+    }
+
+    private function setDescription(Resource $resource, TranslatedDescription $translatedDescription): void
+    {
+        foreach ($translatedDescription->getLanguages() as $language) {
+            $resource->addLiteral(
+                self::PROPERTY_ACTIVITEIT_DESCRIPTION,
+                new Literal($translatedDescription->getTranslation($language)->toString(), $language->toString())
+            );
+        }
     }
 }
