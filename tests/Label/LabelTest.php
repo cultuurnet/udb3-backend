@@ -47,7 +47,7 @@ final class LabelTest extends AggregateRootScenarioTestCase
             $this->uuid,
             $this->name,
             $this->visibility,
-            $this->privacy,
+            $this->privacy
         );
 
         $this->copyCreated = new CopyCreated(
