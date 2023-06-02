@@ -15,6 +15,8 @@ class CommandType extends Enum
             'MakeInvisible',
             'MakePublic',
             'MakePrivate',
+            'Include',
+            'Exclude',
         ];
     }
 
@@ -36,5 +38,15 @@ class CommandType extends Enum
     public static function makePrivate(): self
     {
         return new CommandType('MakePrivate');
+    }
+
+    public static function include(): self
+    {
+        return new CommandType('Include');
+    }
+
+    public static function exclude(): self
+    {
+        return new CommandType('Exclude');
     }
 }
