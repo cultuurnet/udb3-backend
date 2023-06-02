@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Address\AddressParser;
+use CultuurNet\UDB3\Address\ParsedAddress;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
@@ -18,6 +20,7 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTime;
 use EasyRdf\Serialiser\Turtle;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class RdfProjectorTest extends TestCase
@@ -28,10 +31,17 @@ class RdfProjectorTest extends TestCase
 
     private RdfProjector $rdfProjector;
 
+    /**
+     * @var AddressParser|MockObject
+     */
+    private $addressParser;
+
     protected function setUp(): void
     {
         $this->graphRepository = new InMemoryGraphRepository();
         $this->documentRepository = new InMemoryDocumentRepository();
+
+        $this->addressParser = $this->createMock(AddressParser::class);
 
         $this->rdfProjector = new RdfProjector(
             $this->graphRepository,
@@ -39,7 +49,8 @@ class RdfProjectorTest extends TestCase
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
             new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
             $this->documentRepository,
-            new EventDenormalizer()
+            new EventDenormalizer(),
+            $this->addressParser
         );
     }
 
@@ -479,6 +490,185 @@ class RdfProjectorTest extends TestCase
         );
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-publication-date.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_dummy_location(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturn(
+                new ParsedAddress(
+                    'Martelarenlaan',
+                    '1',
+                    '3000',
+                    'Leuven'
+                )
+            );
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+            ],
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-dummy-location.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_dummy_location_and_multiple_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturn(
+                new ParsedAddress(
+                    'Martelarenlaan',
+                    '1',
+                    '3000',
+                    'Leuven'
+                )
+            );
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'multiple',
+            'startDate' => '2023-05-06T20:00:00+01:00',
+            'endDate' => '2023-05-07T23:00:00+01:00',
+            'subEvent' => [
+                [
+                    'startDate' => '2023-05-06T20:00:00+01:00',
+                    'endDate' => '2023-05-06T23:00:00+01:00',
+                ],
+                [
+                    'startDate' => '2023-05-07T20:00:00+01:00',
+                    'endDate' => '2023-05-07T23:00:00+01:00',
+                ],
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+            ],
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-multiple-calendar.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_dummy_location_and_single_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $this->addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturn(
+                new ParsedAddress(
+                    'Martelarenlaan',
+                    '1',
+                    '3000',
+                    'Leuven'
+                )
+            );
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'single',
+            'startDate' => '2023-05-06T20:00:00+01:00',
+            'endDate' => '2023-05-06T23:00:00+01:00',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+            ],
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-single-calendar.ttl'));
     }
 
     private function project(string $eventId, array $events): void

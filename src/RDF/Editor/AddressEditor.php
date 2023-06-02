@@ -17,7 +17,6 @@ final class AddressEditor
 
     private const TYPE_ADRES = 'locn:Address';
 
-    private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_ADRES_STRAATNAAM = 'locn:thoroughfare';
     private const PROPERTY_ADRES_HUISNUMMER = 'locn:locatorDesignator';
     private const PROPERTY_ADRES_POSTCODE = 'locn:postcode';
@@ -30,15 +29,13 @@ final class AddressEditor
         $this->addressParser = $addressParser;
     }
 
-    public function setAddress(Resource $resource, TranslatedAddress $translatedAddress): void
+    public function setAddress(Resource $resource, string $property, TranslatedAddress $translatedAddress): Resource
     {
+        $addressResource = $resource->getGraph()->newBNode([self::TYPE_ADRES]);
+        $resource->add($property, $addressResource);
+
         foreach ($translatedAddress->getLanguages() as $language) {
             $address = $translatedAddress->getTranslation($language);
-
-            if (!$resource->hasProperty(self::PROPERTY_LOCATIE_ADRES)) {
-                $resource->add(self::PROPERTY_LOCATIE_ADRES, $resource->getGraph()->newBNode([self::TYPE_ADRES]));
-            }
-            $addressResource = $resource->getResource(self::PROPERTY_LOCATIE_ADRES);
 
             $countryCode = $address->getCountryCode()->toString();
             if ($addressResource->get(self::PROPERTY_ADRES_LAND) !== $countryCode) {
@@ -76,6 +73,7 @@ final class AddressEditor
                 );
             }
         }
-    }
 
+        return $addressResource;
+    }
 }

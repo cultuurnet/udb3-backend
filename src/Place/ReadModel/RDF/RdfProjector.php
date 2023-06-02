@@ -36,8 +36,8 @@ final class RdfProjector implements EventListener
     private const TYPE_GEOMETRIE = 'locn:Geometry';
 
     private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
+    private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_LOCATIE_GEOMETRIE = 'locn:geometry';
-
     private const PROPERTY_GEOMETRIE_GML = 'geosparql:asGML';
 
     public function __construct(
@@ -79,7 +79,7 @@ final class RdfProjector implements EventListener
 
         $this->setTitle($resource, $place->getTitle());
 
-        (new AddressEditor($this->addressParser))->setAddress($resource, $place->getAddress());
+        (new AddressEditor($this->addressParser))->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $place->getAddress());
 
         if ($place->getGeoCoordinates()) {
             $this->setCoordinates($resource, $place->getGeoCoordinates());
@@ -114,10 +114,8 @@ final class RdfProjector implements EventListener
         $gmlTemplate = '<gml:Point srsName=\'http://www.opengis.net/def/crs/OGC/1.3/CRS84\'><gml:coordinates>%s, %s</gml:coordinates></gml:Point>';
         $gmlCoordinate = sprintf($gmlTemplate, $coordinates->getLongitude()->toDouble(), $coordinates->getLatitude()->toDouble());
 
-        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_GEOMETRIE)) {
-            $resource->add(self::PROPERTY_LOCATIE_GEOMETRIE, $resource->getGraph()->newBNode([self::TYPE_GEOMETRIE]));
-        }
-        $geometryResource = $resource->getResource(self::PROPERTY_LOCATIE_GEOMETRIE);
+        $geometryResource = $resource->getGraph()->newBNode([self::TYPE_GEOMETRIE]);
+        $resource->add(self::PROPERTY_LOCATIE_GEOMETRIE, $geometryResource);
 
         $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
     }

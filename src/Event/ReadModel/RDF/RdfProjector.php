@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Event\Event;
@@ -23,6 +24,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
+use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -41,6 +43,7 @@ final class RdfProjector implements EventListener
     private IriGeneratorInterface $termsIriGenerator;
     private DocumentRepository $documentRepository;
     private DenormalizerInterface $eventDenormalizer;
+    private AddressParser $addressParser;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
     private const TYPE_SPACE_TIME = 'cidoc:E92_Spacetime_Volume';
@@ -65,7 +68,8 @@ final class RdfProjector implements EventListener
         IriGeneratorInterface $placesIriGenerator,
         IriGeneratorInterface $termsIriGenerator,
         DocumentRepository $documentRepository,
-        DenormalizerInterface $eventDenormalizer
+        DenormalizerInterface $eventDenormalizer,
+        AddressParser $addressParser
     ) {
         $this->graphRepository = $graphRepository;
         $this->eventsIriGenerator = $eventsIriGenerator;
@@ -73,6 +77,7 @@ final class RdfProjector implements EventListener
         $this->termsIriGenerator = $termsIriGenerator;
         $this->documentRepository = $documentRepository;
         $this->eventDenormalizer = $eventDenormalizer;
+        $this->addressParser = $addressParser;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -145,10 +150,8 @@ final class RdfProjector implements EventListener
 
     private function setCalendarWithLocation(Resource $resource, Calendar $calendar, PlaceReference $placeReference): void
     {
-        $locationIri = $this->placesIriGenerator->iri($placeReference->getPlaceId()->toString());
-
         if ($calendar->getType()->sameAs(CalendarType::permanent())) {
-            $resource->set(self::PROPERTY_ACTVITEIT_LOCATIE, new Resource($locationIri));
+            $this->setLocation($resource, self::PROPERTY_ACTVITEIT_LOCATIE, $placeReference);
             return;
         }
 
@@ -169,11 +172,17 @@ final class RdfProjector implements EventListener
             $subEvents = $calendar->getSubEvents();
         }
 
+        $addressResource = null;
+
         foreach ($subEvents as $subEvent) {
             $spaceTimeResource = $resource->getGraph()->newBNode([self::TYPE_SPACE_TIME]);
             $resource->add(self::PROPERTY_RUIMTE_TIJD, $spaceTimeResource);
 
-            $spaceTimeResource->set(self::PROPERTY_RUIMTE_TIJD_LOCATION, new Resource($locationIri));
+            if ($addressResource === null) {
+                $addressResource = $this->setLocation($spaceTimeResource, self::PROPERTY_RUIMTE_TIJD_LOCATION, $placeReference);
+            } else {
+                $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_LOCATION, $addressResource);
+            }
 
             $calendarTypeResource = $spaceTimeResource->getGraph()->newBNode([self::TYPE_PERIOD]);
             $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE, $calendarTypeResource);
@@ -187,6 +196,24 @@ final class RdfProjector implements EventListener
                 new Literal($subEvent->getDateRange()->getTo()->format(DateTime::ATOM), null, self::TYPE_DATE_TIME)
             );
         }
+    }
+
+    private function setLocation(Resource $resource, string $property, PlaceReference $placeReference): ?Resource
+    {
+        if ($placeReference->getPlaceId()) {
+            $locationIri = $this->placesIriGenerator->iri($placeReference->getPlaceId()->toString());
+            $resource->set($property, new Resource($locationIri));
+        }
+
+        if ($placeReference->getAddress()) {
+            return (new AddressEditor($this->addressParser))->setAddress(
+                $resource,
+                $property,
+                $placeReference->getAddress()
+            );
+        }
+
+        return null;
     }
 
     private function setDescription(Resource $resource, TranslatedDescription $translatedDescription): void
