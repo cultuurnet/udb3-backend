@@ -45,7 +45,7 @@ class Created extends AbstractEvent
             new UUID($data[self::UUID]),
             $data[self::NAME],
             new Visibility($data[self::VISIBILITY]),
-            new Privacy($data[self::PRIVACY]),
+            new Privacy($data[self::PRIVACY])
         );
     }
 
