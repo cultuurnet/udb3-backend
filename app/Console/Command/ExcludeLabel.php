@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Console\Command;
 
+use CultuurNet\UDB3\Label\Commands\ExcludeLabel as ExcludeLabelCommand;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +24,7 @@ final class ExcludeLabel extends AbstractCommand
         $labelId = $input->getArgument('labelId');
 
         $this->commandBus->dispatch(
-            new \CultuurNet\UDB3\Label\Commands\ExcludeLabel(new UUID($labelId))
+            new ExcludeLabelCommand(new UUID($labelId))
         );
 
         return 0;
