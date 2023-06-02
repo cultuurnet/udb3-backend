@@ -192,7 +192,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
 
     protected function denormalizeDescription(array $data, ImmutableOffer $offer): ImmutableOffer
     {
-        if (isset($data['description'])) {
+        if (isset($data['description']) && !empty(array_filter($data['description']))) {
             /* @var TranslatedDescription $description */
             $description = $this->descriptionDenormalizer->denormalize(
                 array_filter($data['description']),
