@@ -8,7 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
-use CultuurNet\UDB3\Event\ReadModel\RDF\GranularRdfProjector as EventRdfProjector;
+use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector as EventRdfProjector;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsProjector;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;
@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider;
 use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
-use CultuurNet\UDB3\Place\ReadModel\RDF\GranularRdfProjector as GranularPlaceRdfProjector;
+use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector as PlaceRdfProjector;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 
@@ -81,7 +81,7 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                         ];
 
                         if (($container->get('config')['rdf']['enabled'] ?? false) === true) {
-                            $subscribers[] = GranularPlaceRdfProjector::class;
+                            $subscribers[] = PlaceRdfProjector::class;
                             $subscribers[] = EventRdfProjector::class;
                         }
 
