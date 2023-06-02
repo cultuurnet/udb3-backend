@@ -19,7 +19,12 @@ final class BulkExcludeLabel extends AbstractCommand
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $labelIds = file_exists(__DIR__ . '/../../../config.excluded_labels.php') ? require __DIR__ . '/../../../config.excluded_labels.php' : [];
+        if (!file_exists(__DIR__ . '/../../../config.excluded_labels.php')) {
+            $output->writeln('Warning: file config.excluded_labels.php is missing.');
+            return 0;
+        }
+
+        $labelIds = require __DIR__ . '/../../../config.excluded_labels.php';
 
         if (!$this->askConfirmation($input, $output, count($labelIds))) {
             return 0;
