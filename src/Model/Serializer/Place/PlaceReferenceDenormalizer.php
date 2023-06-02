@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Model\Serializer\Place;
 
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -13,10 +15,17 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class PlaceReferenceDenormalizer implements DenormalizerInterface
 {
     private PlaceIDParser $placeIDParser;
+    private TranslatedAddressDenormalizer $addressDenormalizer;
 
-    public function __construct(PlaceIDParser $placeIDParser)
-    {
+    public function __construct(
+        PlaceIDParser $placeIDParser,
+        TranslatedAddressDenormalizer $addressDenormalizer = null
+    ) {
         $this->placeIDParser = $placeIDParser;
+
+        if (!$addressDenormalizer) {
+            $this->addressDenormalizer = new TranslatedAddressDenormalizer();
+        }
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -29,7 +38,17 @@ class PlaceReferenceDenormalizer implements DenormalizerInterface
             throw new UnsupportedException('Location data should be an associative array.');
         }
 
-        // @todo Support dummy locations.
+        if (!isset($data['@id'])) {
+            /** @var TranslatedAddress $translatedAddress */
+            $translatedAddress = $this->addressDenormalizer->denormalize(
+                $data['address'],
+                TranslatedAddress::class,
+                $format,
+                $context
+            );
+            return PlaceReference::createWithAddress($translatedAddress);
+        }
+
         $placeIdUrl = new Url($data['@id']);
         $placeId = $this->placeIDParser->fromUrl($placeIdUrl);
 
