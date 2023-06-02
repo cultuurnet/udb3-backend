@@ -77,7 +77,8 @@ abstract class BaseDBALRepositoryTest extends TestCase
             $row[SchemaConfigurator::PRIVATE_COLUMN]
                 ? Privacy::PRIVACY_PRIVATE() : Privacy::PRIVACY_PUBLIC(),
             new UUID($row[SchemaConfigurator::PARENT_UUID_COLUMN]),
-            (int) $row[SchemaConfigurator::COUNT_COLUMN]
+            (int) $row[SchemaConfigurator::COUNT_COLUMN],
+            (bool) $row[SchemaConfigurator::EXCLUDED_COLUMN]
         );
     }
 }
