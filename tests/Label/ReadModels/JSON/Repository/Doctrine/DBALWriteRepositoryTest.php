@@ -257,8 +257,6 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         );
 
         $this->saveEntity($entity);
-        $temp = $this->getEntity();
-        var_dump($temp->isExcluded());
 
         $this->dbalWriteRepository->updateIncluded($entity->getUuid());
 
