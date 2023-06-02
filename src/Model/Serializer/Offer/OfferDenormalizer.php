@@ -195,7 +195,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         if (isset($data['description'])) {
             /* @var TranslatedDescription $description */
             $description = $this->descriptionDenormalizer->denormalize(
-                $data['description'],
+                array_filter($data['description']),
                 TranslatedDescription::class,
                 null,
                 ['originalLanguage' => $data['mainLanguage']]
