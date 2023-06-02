@@ -222,6 +222,54 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
+    public function it_can_update_to_excluded(): void
+    {
+        $entity = new Entity(
+            new UUID('608f3b20-0ecc-41f6-a2fb-e59410750b37'),
+            new StringLiteral('labelName'),
+            Visibility::VISIBLE(),
+            Privacy::PRIVACY_PUBLIC(),
+            new UUID('d7eb2b24-8910-4578-a644-2c81b55f03b4'),
+        );
+
+        $this->saveEntity($entity);
+
+        $this->dbalWriteRepository->updateExcluded($entity->getUuid());
+
+        $actualEntity = $this->getEntity();
+
+        $this->assertTrue($actualEntity->isExcluded());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_to_included(): void
+    {
+        $entity = new Entity(
+            new UUID('608f3b20-0ecc-41f6-a2fb-e59410750b37'),
+            new StringLiteral('labelName'),
+            Visibility::VISIBLE(),
+            Privacy::PRIVACY_PUBLIC(),
+            new UUID('d7eb2b24-8910-4578-a644-2c81b55f03b4'),
+            0,
+            true
+        );
+
+        $this->saveEntity($entity);
+        $temp = $this->getEntity();
+        var_dump($temp->isExcluded());
+
+        $this->dbalWriteRepository->updateIncluded($entity->getUuid());
+
+        $actualEntity = $this->getEntity();
+
+        $this->assertFalse($actualEntity->isExcluded());
+    }
+
+    /**
+     * @test
+     */
     public function it_can_increment(): void
     {
         $expectedEntity = new Entity(
