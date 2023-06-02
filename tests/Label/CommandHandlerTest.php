@@ -224,7 +224,7 @@ final class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(new ExcludeLabel($this->uuid))
-            ->then([new Excluded($this->uuid, $this->name)]);
+            ->then([new Excluded($this->uuid)]);
     }
 
     /**
@@ -234,7 +234,7 @@ final class CommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new Excluded($this->uuid, $this->name)])
+            ->given([$this->created, new Excluded($this->uuid)])
             ->when(new ExcludeLabel($this->uuid))
             ->then([]);
     }
@@ -246,9 +246,9 @@ final class CommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new Excluded($this->uuid, $this->name)])
+            ->given([$this->created, new Excluded($this->uuid)])
             ->when(new IncludeLabel($this->uuid))
-            ->then([new Included($this->uuid, $this->name)]);
+            ->then([new Included($this->uuid)]);
     }
 
     /**

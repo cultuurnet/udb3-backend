@@ -103,14 +103,14 @@ final class Label extends EventSourcedAggregateRoot
     public function include(): void
     {
         if ($this->excluded) {
-            $this->apply(new Included($this->uuid, $this->name));
+            $this->apply(new Included($this->uuid));
         }
     }
 
     public function exclude(): void
     {
         if ($this->excluded === false) {
-            $this->apply(new Excluded($this->uuid, $this->name));
+            $this->apply(new Excluded($this->uuid));
         }
     }
 
