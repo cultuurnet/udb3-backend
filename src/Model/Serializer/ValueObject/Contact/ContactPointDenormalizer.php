@@ -38,9 +38,9 @@ class ContactPointDenormalizer implements DenormalizerInterface
                 function ($value) {
                     return new TelephoneNumber($value);
                 },
-                $data['phone']
+                array_filter($data['phone'])
             );
-            $phones = new TelephoneNumbers(...$phones);
+            $phones = count($phones) > 0 ? new TelephoneNumbers(...$phones) : null;
         }
 
         if (isset($data['email'])) {
@@ -48,9 +48,9 @@ class ContactPointDenormalizer implements DenormalizerInterface
                 function ($value) {
                     return new EmailAddress($value);
                 },
-                $data['email']
+                array_filter($data['email'])
             );
-            $emails = new EmailAddresses(...$emails);
+            $emails = count($emails) > 0 ? new EmailAddresses(...$emails) : null;
         }
 
         if (isset($data['url'])) {
@@ -58,9 +58,9 @@ class ContactPointDenormalizer implements DenormalizerInterface
                 function ($value) {
                     return new Url($value);
                 },
-                $data['url']
+                array_filter($data['url'])
             );
-            $urls = new Urls(...$urls);
+            $urls = count($urls) > 0 ? new Urls(...$urls) : null;
         }
 
         return new ContactPoint(
