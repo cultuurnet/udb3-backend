@@ -47,8 +47,7 @@ class Projector extends AbstractProjector
             $created->getUuid(),
             new StringLiteral($created->getName()),
             $created->getVisibility(),
-            $created->getPrivacy(),
-            $created->isExcluded()
+            $created->getPrivacy()
         );
     }
 
@@ -66,7 +65,6 @@ class Projector extends AbstractProjector
             new StringLiteral($copyCreated->getName()),
             $copyCreated->getVisibility(),
             $copyCreated->getPrivacy(),
-            $copyCreated->isExcluded(),
             $copyCreated->getParentUuid()
         );
     }

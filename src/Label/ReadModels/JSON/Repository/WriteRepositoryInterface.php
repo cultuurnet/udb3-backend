@@ -16,7 +16,6 @@ interface WriteRepositoryInterface
         StringLiteral $name,
         Visibility $visibility,
         Privacy $privacy,
-        bool $excluded,
         UUID $parentUuid = null
     );
 

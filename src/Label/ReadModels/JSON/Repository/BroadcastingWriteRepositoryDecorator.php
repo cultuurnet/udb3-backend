@@ -32,7 +32,6 @@ final class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInter
         StringLiteral $name,
         Visibility $visibility,
         Privacy $privacy,
-        bool $excluded,
         UUID $parentUuid = null
     ): void {
         $this->writeRepository->save(
@@ -40,7 +39,6 @@ final class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInter
             $name,
             $visibility,
             $privacy,
-            $excluded,
             $parentUuid
         );
     }
