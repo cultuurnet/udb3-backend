@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Label;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
+use CultuurNet\UDB3\Label\Events\Excluded;
+use CultuurNet\UDB3\Label\Events\Included;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadePrivate;
 use CultuurNet\UDB3\Label\Events\MadePublic;
@@ -15,7 +17,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
-class LabelTest extends AggregateRootScenarioTestCase
+final class LabelTest extends AggregateRootScenarioTestCase
 {
     private UUID $uuid;
 
@@ -68,14 +70,14 @@ class LabelTest extends AggregateRootScenarioTestCase
     public function it_can_create_a_new_label(): void
     {
         $this->scenario
-            ->when(function () {
-                return Label::create(
+            ->when(
+                fn () => Label::create(
                     $this->uuid,
                     $this->name,
                     $this->visibility,
                     $this->privacy
-                );
-            })
+                )
+            )
             ->then([$this->created]);
     }
 
@@ -85,15 +87,15 @@ class LabelTest extends AggregateRootScenarioTestCase
     public function it_can_create_a_copied_label(): void
     {
         $this->scenario
-            ->when(function () {
-                return Label::createCopy(
+            ->when(
+                fn () => Label::createCopy(
                     $this->uuid,
                     $this->name,
                     $this->visibility,
                     $this->privacy,
                     $this->parentUuid
-                );
-            })
+                )
+            )
             ->then([$this->copyCreated]);
     }
 
@@ -105,10 +107,7 @@ class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
-            ->when(function ($label) {
-                /** @var Label $label */
-                $label->makeVisible();
-            })
+            ->when(fn (Label $label) => $label->makeVisible())
             ->then([new MadeVisible($this->uuid, $this->name)]);
     }
 
@@ -120,8 +119,7 @@ class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
-            ->when(function ($label) {
-                /** @var Label $label */
+            ->when(function (Label $label) {
                 $label->makeInvisible();
                 $label->makeVisible();
             })
@@ -139,10 +137,7 @@ class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
-            ->when(function ($label) {
-                /** @var Label $label */
-                $label->makeVisible();
-            })
+            ->when(fn (Label $label) => $label->makeVisible())
             ->then([]);
     }
 
@@ -154,10 +149,7 @@ class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
-            ->when(function ($label) {
-                /** @var Label $label */
-                $label->makeInvisible();
-            })
+            ->when(fn (Label $label) => $label->makeInvisible())
             ->then([new MadeInvisible($this->uuid, $this->name)]);
     }
 
@@ -169,10 +161,7 @@ class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
-            ->when(function ($label) {
-                /** @var Label $label */
-                $label->makeInvisible();
-            })
+            ->when(fn (Label $label) => $label->makeInvisible())
             ->then([]);
     }
 
@@ -184,10 +173,7 @@ class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
-            ->when(function ($label) {
-                /** @var Label $label */
-                $label->makePublic();
-            })
+            ->when(fn ($label) => $label->makePublic())
             ->then([new MadePublic($this->uuid, $this->name)]);
     }
 
@@ -199,8 +185,7 @@ class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadePublic($this->uuid, $this->name)])
-            ->when(function ($label) {
-                /** @var Label $label */
+            ->when(function (Label $label) {
                 $label->makePrivate();
                 $label->makePublic();
             })
@@ -218,10 +203,7 @@ class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadePublic($this->uuid, $this->name)])
-            ->when(function ($label) {
-                /** @var Label $label */
-                $label->makePublic();
-            })
+            ->when(fn ($label) => $label->makePublic())
             ->then([]);
     }
 
@@ -233,10 +215,7 @@ class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadePublic($this->uuid, $this->name)])
-            ->when(function ($label) {
-                /** @var Label $label */
-                $label->makePrivate();
-            })
+            ->when(fn ($label) => $label->makePrivate())
             ->then([new MadePrivate($this->uuid, $this->name)]);
     }
 
@@ -248,10 +227,95 @@ class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
-            ->when(function ($label) {
-                /** @var Label $label */
-                $label->makePrivate();
-            })
+            ->when(fn ($label) => $label->makePrivate())
             ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_exclude_an_included_label(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created])
+            ->when(fn (Label $label) => $label->exclude())
+            ->then([new Excluded($this->uuid)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_exclude_an_already_excluded_label(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created, new Excluded($this->uuid)])
+            ->when(fn (Label $label) => $label->exclude())
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_exclude_after_including_it(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created, new Excluded($this->uuid)])
+            ->when(function (Label $label) {
+                $label->include();
+                $label->exclude();
+            })
+            ->then(
+                [
+                    new Included($this->uuid),
+                    new Excluded($this->uuid),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_include_an_excluded_label(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created, new Excluded($this->uuid)])
+            ->when(fn (Label $label) => $label->include())
+            ->then([new Included($this->uuid)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_include_an_already_included_label(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created])
+            ->when(fn (Label $label) => $label->include())
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_include_after_excluding_it(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->uuid->toString())
+            ->given([$this->created])
+            ->when(function (Label $label) {
+                $label->exclude();
+                $label->include();
+            })
+            ->then(
+                [
+                    new Excluded($this->uuid),
+                    new Included($this->uuid),
+                ]
+            );
     }
 }
