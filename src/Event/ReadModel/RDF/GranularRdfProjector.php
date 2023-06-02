@@ -29,7 +29,7 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\RDF\Editor\AddressEditor;
+use CultuurNet\UDB3\RDF\Editor\GranularAddressEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
@@ -253,7 +253,7 @@ final class GranularRdfProjector implements EventListener
 
     private function handleDummyLocationUpdated(DummyLocationUpdated $event, string $iri, Graph $graph): void
     {
-        AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
+        GranularAddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
             ->addAddress($iri, $event->getDummyLocation()->getAddress(), self::PROPERTY_ACTVITEIT_LOCATIE);
 
         $this->graphRepository->save($iri, $graph);
@@ -263,7 +263,7 @@ final class GranularRdfProjector implements EventListener
     {
         $calendar = $event->getCalendar();
 
-        $address = AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
+        $address = GranularAddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
             ->getAddress();
 
         if ($calendar->getType()->sameAs(CalendarType::PERMANENT())) {
