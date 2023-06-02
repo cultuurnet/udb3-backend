@@ -12,20 +12,16 @@ class Created extends AbstractEvent
 {
     public const VISIBILITY = 'visibility';
     public const PRIVACY = 'privacy';
-    public const EXCLUDED = 'excluded';
 
     private Visibility $visibility;
 
     private Privacy $privacy;
 
-    private bool $excluded;
-
     public function __construct(
         UUID $uuid,
         string $name,
         Visibility $visibility,
-        Privacy $privacy,
-        bool $excluded = false
+        Privacy $privacy
     ) {
         parent::__construct($uuid, $name);
 
@@ -46,7 +42,7 @@ class Created extends AbstractEvent
 
     public function isExcluded(): bool
     {
-        return $this->excluded;
+        return false;
     }
 
     public static function deserialize(array $data): Created
