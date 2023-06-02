@@ -96,7 +96,7 @@ class Projector extends AbstractProjector
 
     public function applyLabelExcluded(Excluded $excluded): void
     {
-        $this->writeRepository->updateCountDecrement($excluded->getUuid());
+        $this->writeRepository->updateExcluded($excluded->getUuid());
     }
 
     public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata): void
