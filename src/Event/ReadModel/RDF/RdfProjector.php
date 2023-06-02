@@ -97,9 +97,9 @@ final class RdfProjector implements EventListener
 
         $this->setTerms($resource, $event->getTerms());
 
-        WorkflowStatusEditor::for($graph)->setWorkflowStatus($resource, $event->getWorkflowStatus());
+        (new WorkflowStatusEditor())->setWorkflowStatus($resource, $event->getWorkflowStatus());
         if ($event->getAvailableFrom()) {
-            WorkflowStatusEditor::for($graph)->setAvailableFrom($resource, $event->getAvailableFrom());
+            (new WorkflowStatusEditor())->setAvailableFrom($resource, $event->getAvailableFrom());
         }
 
         $this->setCalendarWithLocation($resource, $event->getCalendar(), $event->getPlaceReference());

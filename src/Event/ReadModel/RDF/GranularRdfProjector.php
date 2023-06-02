@@ -33,7 +33,7 @@ use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
-use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
+use CultuurNet\UDB3\RDF\Editor\GranularWorkflowStatusEditor;
 use CultuurNet\UDB3\Timestamp;
 use DateTime;
 use EasyRdf\Graph;
@@ -164,28 +164,28 @@ final class GranularRdfProjector implements EventListener
 
     private function handlePublished(Published $event, string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->publish($iri, $event->getPublicationDate()->format(DateTime::ATOM));
+        GranularWorkflowStatusEditor::for($graph)->publish($iri, $event->getPublicationDate()->format(DateTime::ATOM));
 
         $this->graphRepository->save($iri, $graph);
     }
 
     private function handleApproved(string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->approve($iri);
+        GranularWorkflowStatusEditor::for($graph)->approve($iri);
 
         $this->graphRepository->save($iri, $graph);
     }
 
     private function handleRejected(string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->reject($iri);
+        GranularWorkflowStatusEditor::for($graph)->reject($iri);
 
         $this->graphRepository->save($iri, $graph);
     }
 
     private function handleDeleted(string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->delete($iri);
+        GranularWorkflowStatusEditor::for($graph)->delete($iri);
 
         $this->graphRepository->save($iri, $graph);
     }
@@ -221,7 +221,7 @@ final class GranularRdfProjector implements EventListener
         $this->locationIdRepository->save($iri, $event->getLocationId());
         $locationIri = $this->placesIriGenerator->iri($event->getLocationId()->toString());
 
-        AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
+        GranularAddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
             ->removeAddresses();
 
         $resource = $graph->resource($iri);
