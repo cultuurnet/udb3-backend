@@ -27,7 +27,6 @@ class Created extends AbstractEvent
 
         $this->visibility = $visibility;
         $this->privacy = $privacy;
-        $this->excluded = $excluded;
     }
 
     public function getVisibility(): Visibility
