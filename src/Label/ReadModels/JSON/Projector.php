@@ -89,12 +89,12 @@ class Projector extends AbstractProjector
         $this->writeRepository->updatePrivate($madePrivate->getUuid());
     }
 
-    public function applyLabelIncluded(Included $included): void
+    public function applyIncluded(Included $included): void
     {
         $this->writeRepository->updateIncluded($included->getUuid());
     }
 
-    public function applyLabelExcluded(Excluded $excluded): void
+    public function applyExcluded(Excluded $excluded): void
     {
         $this->writeRepository->updateExcluded($excluded->getUuid());
     }

@@ -12,6 +12,8 @@ use CultuurNet\UDB3\Event\Events\LabelRemoved as LabelRemovedFromEvent;
 use CultuurNet\UDB3\Label\Events\AbstractEvent;
 use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
+use CultuurNet\UDB3\Label\Events\Excluded;
+use CultuurNet\UDB3\Label\Events\Included;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadePrivate;
 use CultuurNet\UDB3\Label\Events\MadePublic;
@@ -291,6 +293,40 @@ final class ProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_including(): void
+    {
+        $domainMessage = $this->createDomainMessage(
+            $this->uuid,
+            new Included($this->uuid)
+        );
+
+        $this->writeRepository->expects($this->once())
+            ->method('updateIncluded')
+            ->with($this->uuid);
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_excluded(): void
+    {
+        $domainMessage = $this->createDomainMessage(
+            $this->uuid,
+            new Excluded($this->uuid)
+        );
+
+        $this->writeRepository->expects($this->once())
+            ->method('updateExcluded')
+            ->with($this->uuid);
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_made_private(): void
     {
         $domainMessage = $this->createDomainMessage(
@@ -358,7 +394,7 @@ final class ProjectorTest extends TestCase
     }
 
     /**
-     * @param AbstractEvent|AbstractLabelEvent $payload
+     * @param AbstractEvent|AbstractLabelEvent|Included|Excluded $payload
      */
     private function createDomainMessage(UUID $id, $payload): DomainMessage
     {
