@@ -178,7 +178,6 @@ final class ProjectorTest extends TestCase
                 new StringLiteral($this->unknownLabelName),
                 $this->entity->getVisibility(),
                 $this->entity->getPrivacy(),
-                $this->entity->isExcluded(),
                 $this->entity->getParentUuid()
             );
 

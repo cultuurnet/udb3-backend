@@ -43,7 +43,6 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             $expectedEntity->getName(),
             $expectedEntity->getVisibility(),
             $expectedEntity->getPrivacy(),
-            $expectedEntity->isExcluded(),
             $expectedEntity->getParentUuid()
         );
 
@@ -82,7 +81,6 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             $entity2->getName(),
             $entity2->getVisibility(),
             $entity2->getPrivacy(),
-            $entity2->isExcluded(),
             $entity2->getParentUuid()
         );
     }
@@ -117,7 +115,6 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             $entity2->getName(),
             $entity2->getVisibility(),
             $entity2->getPrivacy(),
-            $entity2->isExcluded(),
             $entity2->getParentUuid()
         );
     }
