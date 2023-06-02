@@ -36,7 +36,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
                 $visibility->sameAs(Visibility::VISIBLE()) ? 1 : 0,
                 $privacy->sameAs(Privacy::PRIVACY_PRIVATE()) ? 1 : 0,
                 $parentUuid ? $parentUuid->toString() : null,
-                false,
+                0,
             ]);
 
         $queryBuilder->execute();
