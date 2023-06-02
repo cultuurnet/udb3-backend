@@ -39,11 +39,6 @@ class Created extends AbstractEvent
         return $this->privacy;
     }
 
-    public function isExcluded(): bool
-    {
-        return false;
-    }
-
     public static function deserialize(array $data): Created
     {
         return new self(
