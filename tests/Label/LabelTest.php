@@ -31,8 +31,6 @@ final class LabelTest extends AggregateRootScenarioTestCase
 
     private Created $created;
 
-    private bool $excluded;
-
     private CopyCreated $copyCreated;
 
     public function setUp(): void
@@ -44,14 +42,12 @@ final class LabelTest extends AggregateRootScenarioTestCase
         $this->visibility = Visibility::INVISIBLE();
         $this->privacy = Privacy::PRIVACY_PRIVATE();
         $this->parentUuid = new UUID('efaddd1d-837c-49ea-81d0-f4882fdf4123');
-        $this->excluded = false;
 
         $this->created = new Created(
             $this->uuid,
             $this->name,
             $this->visibility,
             $this->privacy,
-            $this->excluded
         );
 
         $this->copyCreated = new CopyCreated(
@@ -59,8 +55,7 @@ final class LabelTest extends AggregateRootScenarioTestCase
             $this->name,
             $this->visibility,
             $this->privacy,
-            $this->parentUuid,
-            $this->excluded
+            $this->parentUuid
         );
     }
 
