@@ -51,7 +51,27 @@ class CommandTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_only_four_specified_options()
+    public function it_has_a_make_include_option()
+    {
+        $commandType = CommandType::include();
+
+        $this->assertEquals($commandType->toString(), 'Include');
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_a_make_exclude_option()
+    {
+        $commandType = CommandType::exclude();
+
+        $this->assertEquals($commandType->toString(), 'Exclude');
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_only_six_specified_options()
     {
         $options = CommandType::getAllowedValues();
 
@@ -61,6 +81,8 @@ class CommandTypeTest extends TestCase
                 CommandType::makeInvisible()->toString(),
                 CommandType::makePublic()->toString(),
                 CommandType::makePrivate()->toString(),
+                CommandType::include()->toString(),
+                CommandType::exclude()->toString(),
             ],
             $options
         );
