@@ -39,8 +39,7 @@ final class CopyCreated extends Created
             $data[self::NAME],
             new Visibility($data[self::VISIBILITY]),
             new Privacy($data[self::PRIVACY]),
-            new UUID($data[self::PARENT_UUID]),
-            (bool) $data[self::EXCLUDED]
+            new UUID($data[self::PARENT_UUID])
         );
     }
 
