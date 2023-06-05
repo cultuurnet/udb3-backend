@@ -19,21 +19,19 @@ interface WriteRepositoryInterface
         UUID $parentUuid = null
     );
 
+    public function updateVisible(UUID $uuid): void;
 
-    public function updateVisible(UUID $uuid);
+    public function updateInvisible(UUID $uuid): void;
 
+    public function updatePublic(UUID $uuid): void;
 
-    public function updateInvisible(UUID $uuid);
+    public function updatePrivate(UUID $uuid): void;
 
+    public function updateExcluded(UUID $uuid): void;
 
-    public function updatePublic(UUID $uuid);
+    public function updateIncluded(UUID $uuid): void;
 
+    public function updateCountIncrement(UUID $uuid): void;
 
-    public function updatePrivate(UUID $uuid);
-
-
-    public function updateCountIncrement(UUID $uuid);
-
-
-    public function updateCountDecrement(UUID $uuid);
+    public function updateCountDecrement(UUID $uuid): void;
 }
