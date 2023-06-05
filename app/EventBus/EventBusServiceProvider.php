@@ -8,7 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
-use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector as EventRdfProjector;
+use CultuurNet\UDB3\Event\ReadModel\RDF\GranularRdfProjector as EventRdfProjector;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsProjector;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;

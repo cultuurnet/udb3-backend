@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event;
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\RDF\CacheLocationIdRepository;
-use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector;
+use CultuurNet\UDB3\Event\ReadModel\RDF\GranularRdfProjector;
 use CultuurNet\UDB3\RDF\CacheGraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
@@ -18,7 +18,7 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
-            RdfProjector::class,
+            GranularRdfProjector::class,
         ];
     }
 
@@ -33,8 +33,8 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
         }
 
         $this->container->addShared(
-            RdfProjector::class,
-            fn (): RdfProjector => new RdfProjector(
+            GranularRdfProjector::class,
+            fn (): GranularRdfProjector => new GranularRdfProjector(
                 $this->container->get(MainLanguageRepository::class),
                 $graphStoreRepository,
                 new CacheLocationIdRepository($this->container->get('cache')('rdf_location_id')),

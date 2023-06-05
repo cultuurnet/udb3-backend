@@ -48,7 +48,8 @@ final class GraphEditor
         }
 
         // Set the udb:workflowStatus property to draft if not set yet.
-        WorkflowStatusEditor::for($this->graph)->draft($resourceIri);
+        // TODO: This can be removed once everything is ported to JSON conversion to turtle.
+        GranularWorkflowStatusEditor::for($this->graph)->draft($resourceIri);
 
         // Set the dcterms:created property if not set yet.
         // (Otherwise it would constantly update like dcterms:modified).

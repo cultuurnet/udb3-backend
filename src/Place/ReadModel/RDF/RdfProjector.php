@@ -6,18 +6,16 @@ namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\AddressParser;
-use CultuurNet\UDB3\Address\FullAddressFormatter;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\Place;
-use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
+use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
+use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
@@ -35,30 +33,12 @@ final class RdfProjector implements EventListener
     private AddressParser $addressParser;
 
     private const TYPE_LOCATIE = 'dcterms:Location';
-    private const TYPE_ADRES = 'locn:Address';
     private const TYPE_GEOMETRIE = 'locn:Geometry';
 
     private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_LOCATIE_GEOMETRIE = 'locn:geometry';
-
-    private const PROPERTY_ADRES_STRAATNAAM = 'locn:thoroughfare';
-    private const PROPERTY_ADRES_HUISNUMMER = 'locn:locatorDesignator';
-    private const PROPERTY_ADRES_POSTCODE = 'locn:postcode';
-    private const PROPERTY_ADRES_GEMEENTENAAM = 'locn:postName';
-    private const PROPERTY_ADRES_LAND = 'locn:adminUnitL1';
-    private const PROPERTY_ADRES_VOLLEDIG_ADRES = 'locn:fullAddress';
-
     private const PROPERTY_GEOMETRIE_GML = 'geosparql:asGML';
-
-    private const PROPERTY_WORKFLOW_STATUS = 'udb:workflowStatus';
-    private const PROPERTY_WORKFLOW_STATUS_DRAFT = 'https://data.publiq.be/concepts/workflowStatus/draft';
-    private const PROPERTY_WORKFLOW_STATUS_READY_FOR_VALIDATION = 'https://data.publiq.be/concepts/workflowStatus/ready-for-validation';
-    private const PROPERTY_WORKFLOW_STATUS_APPROVED = 'https://data.publiq.be/concepts/workflowStatus/approved';
-    private const PROPERTY_WORKFLOW_STATUS_REJECTED = 'https://data.publiq.be/concepts/workflowStatus/rejected';
-    private const PROPERTY_WORKFLOW_STATUS_DELETED = 'https://data.publiq.be/concepts/workflowStatus/deleted';
-
-    private const PROPERTY_AVAILABLE_FROM = 'udb:availableFrom';
 
     public function __construct(
         GraphRepository $graphRepository,
@@ -80,7 +60,7 @@ final class RdfProjector implements EventListener
             return;
         }
 
-        $iri = $this->iriGenerator->iri($domainMessage->getId());
+        $iri = $this->iriGenerator->iri($domainMessage->getPayload()->getItemId());
         $graph = new Graph($iri);
         $resource = $graph->resource($iri);
 
@@ -92,14 +72,14 @@ final class RdfProjector implements EventListener
 
         $place = $this->getPlace($domainMessage);
 
-        $this->setWorkflowStatus($resource, $place->getWorkflowStatus());
+        (new WorkflowStatusEditor())->setWorkflowStatus($resource, $place->getWorkflowStatus());
         if ($place->getAvailableFrom()) {
-            $this->setAvailableFrom($resource, $place->getAvailableFrom());
+            (new WorkflowStatusEditor())->setAvailableFrom($resource, $place->getAvailableFrom());
         }
 
         $this->setTitle($resource, $place->getTitle());
 
-        $this->setAddress($resource, $place->getAddress());
+        (new AddressEditor($this->addressParser))->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $place->getAddress());
 
         if ($place->getGeoCoordinates()) {
             $this->setCoordinates($resource, $place->getGeoCoordinates());
@@ -129,88 +109,14 @@ final class RdfProjector implements EventListener
         }
     }
 
-    private function setAddress(Resource $resource, TranslatedAddress $translatedAddress): void
-    {
-        foreach ($translatedAddress->getLanguages() as $language) {
-            $address = $translatedAddress->getTranslation($language);
-
-            if (!$resource->hasProperty(self::PROPERTY_LOCATIE_ADRES)) {
-                $resource->add(self::PROPERTY_LOCATIE_ADRES, $resource->getGraph()->newBNode([self::TYPE_ADRES]));
-            }
-            $addressResource = $resource->getResource(self::PROPERTY_LOCATIE_ADRES);
-
-            $countryCode = $address->getCountryCode()->toString();
-            if ($addressResource->get(self::PROPERTY_ADRES_LAND) !== $countryCode) {
-                $addressResource->set(self::PROPERTY_ADRES_LAND, $countryCode);
-            }
-
-            $postalCode = $address->getPostalCode()->toString();
-            if ($addressResource->get(self::PROPERTY_ADRES_POSTCODE) !== $postalCode) {
-                $addressResource->set(self::PROPERTY_ADRES_POSTCODE, $postalCode);
-            }
-
-            $addressFormatter = new FullAddressFormatter();
-            $formattedAddress = $addressFormatter->format(LegacyAddress::fromUdb3ModelAddress($address));
-            $parsedAddress = $this->addressParser->parse($formattedAddress);
-
-            $houseNumber = $parsedAddress ? $parsedAddress->getHouseNumber() : null;
-            if ($houseNumber !== null) {
-                $addressResource->set(self::PROPERTY_ADRES_HUISNUMMER, $houseNumber);
-            }
-
-            $addressResource->addLiteral(
-                self::PROPERTY_ADRES_VOLLEDIG_ADRES,
-                new Literal($formattedAddress, $language->toString())
-            );
-
-            $addressResource->addLiteral(
-                self::PROPERTY_ADRES_GEMEENTENAAM,
-                new Literal($address->getLocality()->toString(), $language->toString())
-            );
-
-            if ($parsedAddress && $parsedAddress->getThoroughfare() !== null) {
-                $addressResource->addLiteral(
-                    self::PROPERTY_ADRES_STRAATNAAM,
-                    new Literal($parsedAddress->getThoroughfare(), $language->toString())
-                );
-            }
-        }
-    }
-
     private function setCoordinates(Resource $resource, Coordinates $coordinates): void
     {
         $gmlTemplate = '<gml:Point srsName=\'http://www.opengis.net/def/crs/OGC/1.3/CRS84\'><gml:coordinates>%s, %s</gml:coordinates></gml:Point>';
         $gmlCoordinate = sprintf($gmlTemplate, $coordinates->getLongitude()->toDouble(), $coordinates->getLatitude()->toDouble());
 
-        if (!$resource->hasProperty(self::PROPERTY_LOCATIE_GEOMETRIE)) {
-            $resource->add(self::PROPERTY_LOCATIE_GEOMETRIE, $resource->getGraph()->newBNode([self::TYPE_GEOMETRIE]));
-        }
-        $geometryResource = $resource->getResource(self::PROPERTY_LOCATIE_GEOMETRIE);
+        $geometryResource = $resource->getGraph()->newBNode([self::TYPE_GEOMETRIE]);
+        $resource->add(self::PROPERTY_LOCATIE_GEOMETRIE, $geometryResource);
 
         $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
-    }
-
-    private function setWorkflowStatus(Resource $resource, WorkflowStatus $workflowStatus): void
-    {
-        $workflowStatusMapping = [
-            WorkflowStatus::DRAFT()->toString() => self::PROPERTY_WORKFLOW_STATUS_DRAFT,
-            WorkflowStatus::READY_FOR_VALIDATION()->toString() => self::PROPERTY_WORKFLOW_STATUS_READY_FOR_VALIDATION,
-            WorkflowStatus::APPROVED()->toString() => self::PROPERTY_WORKFLOW_STATUS_APPROVED,
-            WorkflowStatus::REJECTED()->toString() => self::PROPERTY_WORKFLOW_STATUS_REJECTED,
-            WorkflowStatus::DELETED()->toString() => self::PROPERTY_WORKFLOW_STATUS_DELETED,
-        ];
-
-        $resource->set(
-            self::PROPERTY_WORKFLOW_STATUS,
-            new Resource($workflowStatusMapping[$workflowStatus->toString()])
-        );
-    }
-
-    private function setAvailableFrom(Resource $resource, \DateTimeImmutable $publicationDate): void
-    {
-        $resource->set(
-            self::PROPERTY_AVAILABLE_FROM,
-            new Literal($publicationDate->format(DateTime::ATOM), null, 'xsd:dateTime')
-        );
     }
 }

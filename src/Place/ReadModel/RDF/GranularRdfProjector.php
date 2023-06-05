@@ -22,11 +22,11 @@ use CultuurNet\UDB3\Place\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
-use CultuurNet\UDB3\RDF\Editor\AddressEditor;
+use CultuurNet\UDB3\RDF\Editor\GranularAddressEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\MainLanguageRepository;
-use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
+use CultuurNet\UDB3\RDF\Editor\GranularWorkflowStatusEditor;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
 use DateTime;
@@ -131,8 +131,8 @@ final class GranularRdfProjector implements EventListener
 
     private function handleAddressUpdated(AddressUpdated $event, string $iri, Graph $graph): void
     {
-        AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
-            ->addAddress($iri, AddressEditor::fromLegacyAddress($event->getAddress()), self::PROPERTY_LOCATIE_ADRES);
+        GranularAddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
+            ->addAddress($iri, GranularAddressEditor::fromLegacyAddress($event->getAddress()), self::PROPERTY_LOCATIE_ADRES);
 
         $this->graphRepository->save($iri, $graph);
     }
@@ -144,10 +144,10 @@ final class GranularRdfProjector implements EventListener
         // language (set by handleAddressUpdated) are the source of truth, and any deviation in those propeties in
         // AddressTranslated is a mistake since those properties are not translatable in reality, but they are in UDB3
         // because of a historical design flaw.
-        AddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
+        GranularAddressEditor::for($graph, $this->mainLanguageRepository, $this->addressParser)
             ->updateTranslatableAddress(
                 $iri,
-                AddressEditor::fromLegacyAddress($event->getAddress()),
+                GranularAddressEditor::fromLegacyAddress($event->getAddress()),
                 $event->getLanguage()->getCode(),
                 self::PROPERTY_LOCATIE_ADRES
             );
@@ -179,28 +179,28 @@ final class GranularRdfProjector implements EventListener
 
     private function handlePublished(Published $event, string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->publish($iri, $event->getPublicationDate()->format(DateTime::ATOM));
+        GranularWorkflowStatusEditor::for($graph)->publish($iri, $event->getPublicationDate()->format(DateTime::ATOM));
 
         $this->graphRepository->save($iri, $graph);
     }
 
     private function handleApproved(string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->approve($iri);
+        GranularWorkflowStatusEditor::for($graph)->approve($iri);
 
         $this->graphRepository->save($iri, $graph);
     }
 
     private function handleRejected(string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->reject($iri);
+        GranularWorkflowStatusEditor::for($graph)->reject($iri);
 
         $this->graphRepository->save($iri, $graph);
     }
 
     private function handleDeleted(string $iri, Graph $graph): void
     {
-        WorkflowStatusEditor::for($graph)->delete($iri);
+        GranularWorkflowStatusEditor::for($graph)->delete($iri);
 
         $this->graphRepository->save($iri, $graph);
     }
