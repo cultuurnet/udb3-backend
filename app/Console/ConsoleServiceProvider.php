@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\CopyToFuseki;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
+use CultuurNet\UDB3\Console\Command\ExcludeMalformedLabel;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
@@ -76,6 +77,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:change-owner-bulk',
         'console.label:bulk-exclude',
         'console.label:exclude',
+        'console.label:exclude-malformed',
         'console.label:include',
         'console.label:update-unique',
         'console.organizer:update-unique',
@@ -327,6 +329,11 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.label:exclude',
             fn () => new ExcludeLabel($container->get('event_command_bus'))
+        );
+
+        $container->addShared(
+            'console.label:exclude-malformed',
+            fn () => new ExcludeMalformedLabel($container->get('event_command_bus'), $container->get('dbal_connection'))
         );
 
         $container->addShared(
