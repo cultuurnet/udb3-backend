@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Label;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
+use CultuurNet\UDB3\Label\Events\Excluded;
+use CultuurNet\UDB3\Label\Events\Included;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadePrivate;
 use CultuurNet\UDB3\Label\Events\MadePublic;
@@ -15,7 +17,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
-class Label extends EventSourcedAggregateRoot
+final class Label extends EventSourcedAggregateRoot
 {
     private UUID $uuid;
 
@@ -24,6 +26,8 @@ class Label extends EventSourcedAggregateRoot
     private Visibility $visibility;
 
     private Privacy $privacy;
+
+    private bool $excluded;
 
     public function getAggregateRootId(): string
     {
@@ -96,12 +100,27 @@ class Label extends EventSourcedAggregateRoot
         }
     }
 
+    public function include(): void
+    {
+        if ($this->excluded) {
+            $this->apply(new Included($this->uuid));
+        }
+    }
+
+    public function exclude(): void
+    {
+        if ($this->excluded === false) {
+            $this->apply(new Excluded($this->uuid));
+        }
+    }
+
     public function applyCreated(Created $created): void
     {
         $this->uuid = $created->getUuid();
         $this->name = $created->getName();
         $this->visibility = $created->getVisibility();
         $this->privacy = $created->getPrivacy();
+        $this->excluded = false;
     }
 
     public function applyCopyCreated(CopyCreated $copyCreated): void
@@ -127,5 +146,15 @@ class Label extends EventSourcedAggregateRoot
     public function applyMadePrivate(MadePrivate $madePrivate): void
     {
         $this->privacy = Privacy::PRIVACY_PRIVATE();
+    }
+
+    public function applyIncluded(): void
+    {
+        $this->excluded = false;
+    }
+
+    public function applyExcluded(): void
+    {
+        $this->excluded = true;
     }
 }
