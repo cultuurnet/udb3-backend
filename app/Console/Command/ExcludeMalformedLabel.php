@@ -11,6 +11,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class ExcludeMalformedLabel extends AbstractCommand
 {
@@ -32,12 +33,26 @@ final class ExcludeMalformedLabel extends AbstractCommand
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
-        $malformedLabelIds = $queryBuilder->select('uuid')
+        $malformedLabelIdCount = $queryBuilder->select('*')
             ->from('labels_json')
-            ->Where('exclude = :excluded')
+            ->where('exclude = :excluded')
             ->setParameter(':excluded', 0)
             ->andWhere('name REGEXP \'^[a-zA-Z\d_\-]{2,50}$\'')
-            ->setMaxResults(1000)
+            ->execute()
+            ->rowCount();
+
+        $labelsToExclude = min($malformedLabelIdCount, 1000);
+
+        if (!$this->askConfirmation($input, $output, $malformedLabelIdCount, $labelsToExclude)) {
+            return 0;
+        }
+
+        $malformedLabelIds = $queryBuilder->select('uuid')
+            ->from('labels_json')
+            ->where('exclude = :excluded')
+            ->setParameter(':excluded', 0)
+            ->andWhere('name REGEXP \'^[a-zA-Z\d_\-]{2,50}$\'')
+            ->setMaxResults($labelsToExclude)
             ->execute()
             ->fetchAll(FetchMode::COLUMN);
 
@@ -48,5 +63,23 @@ final class ExcludeMalformedLabel extends AbstractCommand
         }
 
         return 0;
+    }
+
+    private function askConfirmation(
+        InputInterface $input,
+        OutputInterface $output,
+        int $total,
+        int $labelsToExclude
+    ): bool {
+        return $this
+            ->getHelper('question')
+            ->ask(
+                $input,
+                $output,
+                new ConfirmationQuestion(
+                    "This are {$total} malformed labels to exclude, exclude next {$labelsToExclude}? [y/N] ",
+                    false
+                )
+            );
     }
 }
