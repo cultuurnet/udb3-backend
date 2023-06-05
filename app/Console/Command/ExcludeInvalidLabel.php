@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-final class ExcludeMalformedLabel extends AbstractCommand
+final class ExcludeInvalidLabel extends AbstractCommand
 {
     private const LABEL_REGEX = '/^[a-zA-Z\d_\-]{2,50}$/';
 
@@ -23,8 +23,8 @@ final class ExcludeMalformedLabel extends AbstractCommand
 
     public function configure(): void
     {
-        $this->setName('label:exclude-malformed');
-        $this->setDescription('Excludes malformed labels based on a regex');
+        $this->setName('label:exclude-invalid');
+        $this->setDescription('Excludes invalid labels based on a regex');
     }
 
     public function __construct(CommandBus $commandBus, Connection $connection)
