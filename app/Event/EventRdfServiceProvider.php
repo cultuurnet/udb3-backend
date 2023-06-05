@@ -6,19 +6,17 @@ namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Event\ReadModel\RDF\CacheLocationIdRepository;
-use CultuurNet\UDB3\Event\ReadModel\RDF\GranularRdfProjector;
+use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector;
+use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\RDF\CacheGraphRepository;
-use CultuurNet\UDB3\RDF\MainLanguageRepository;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
-use CultuurNet\UDB3\UDB2\UDB2EventServicesProvider;
 
 final class EventRdfServiceProvider extends AbstractServiceProvider
 {
     protected function getProvidedServiceNames(): array
     {
         return [
-            GranularRdfProjector::class,
+            RdfProjector::class,
         ];
     }
 
@@ -33,16 +31,15 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
         }
 
         $this->container->addShared(
-            GranularRdfProjector::class,
-            fn (): GranularRdfProjector => new GranularRdfProjector(
-                $this->container->get(MainLanguageRepository::class),
+            RdfProjector::class,
+            fn (): RdfProjector => new RdfProjector(
                 $graphStoreRepository,
-                new CacheLocationIdRepository($this->container->get('cache')('rdf_location_id')),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['eventsRdfBaseUri']),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['placesRdfBaseUri']),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['taxonomy']['terms']),
-                $this->container->get(AddressParser::class),
-                UDB2EventServicesProvider::buildMappingServiceForPlaces(),
+                $this->container->get('event_jsonld_repository'),
+                new EventDenormalizer(),
+                $this->container->get(AddressParser::class)
             )
         );
     }
