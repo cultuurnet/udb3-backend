@@ -61,7 +61,7 @@ class CommandTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_make_exclude_option()
+    public function it_has_a_exclude_option()
     {
         $commandType = CommandType::exclude();
 
