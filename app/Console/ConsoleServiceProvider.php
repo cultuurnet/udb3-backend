@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\CopyToFuseki;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
-use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabel;
+use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
@@ -333,7 +333,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'console.label:exclude-invalid',
-            fn () => new ExcludeInvalidLabel($container->get('event_command_bus'), $container->get('dbal_connection'))
+            fn () => new ExcludeInvalidLabels($container->get('event_command_bus'), $container->get('dbal_connection'))
         );
 
         $container->addShared(

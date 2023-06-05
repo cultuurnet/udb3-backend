@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-final class ExcludeInvalidLabel extends AbstractCommand
+final class ExcludeInvalidLabels extends AbstractCommand
 {
     private const LABEL_REGEX = '/^[a-zA-Z\d_\-]{2,50}$/';
 
