@@ -48,6 +48,9 @@ final class ExcludeInvalidLabels extends AbstractCommand
         $offset = 0;
         do {
             $labels = $this->getAllLabels($offset);
+            if (count($labels) === 0) {
+                break;
+            }
 
             foreach ($labels as $label) {
                 $labelId = new Uuid($label['uuid_col']);
