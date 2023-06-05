@@ -9,6 +9,8 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Label\Commands\AbstractCommand;
+use CultuurNet\UDB3\Label\Commands\ExcludeLabel;
+use CultuurNet\UDB3\Label\Commands\IncludeLabel;
 use CultuurNet\UDB3\Label\Commands\MakeInvisible;
 use CultuurNet\UDB3\Label\Commands\MakePrivate;
 use CultuurNet\UDB3\Label\Commands\MakePublic;
@@ -69,6 +71,14 @@ final class PatchLabelRequestHandlerTest extends TestCase
             'makePrivate' => [
                 'command' => CommandType::makePrivate(),
                 'expectedCommand' => new MakePrivate(new UUID('9714108c-dddc-4105-a736-2e32632999f4')),
+            ],
+            'include' => [
+                'command' => CommandType::include(),
+                'expectedCommand' => new IncludeLabel(new UUID('9714108c-dddc-4105-a736-2e32632999f4')),
+            ],
+            'exclude' => [
+                'command' => CommandType::exclude(),
+                'expectedCommand' => new ExcludeLabel(new UUID('9714108c-dddc-4105-a736-2e32632999f4')),
             ],
         ];
     }

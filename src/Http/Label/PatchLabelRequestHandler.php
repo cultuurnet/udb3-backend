@@ -8,6 +8,8 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Label\Commands\ExcludeLabel;
+use CultuurNet\UDB3\Label\Commands\IncludeLabel;
 use CultuurNet\UDB3\Label\Commands\MakeInvisible;
 use CultuurNet\UDB3\Label\Commands\MakePrivate;
 use CultuurNet\UDB3\Label\Commands\MakePublic;
@@ -45,6 +47,12 @@ final class PatchLabelRequestHandler implements RequestHandlerInterface
                 break;
             case CommandType::makePrivate():
                 $this->commandBus->dispatch(new MakePrivate($labelId));
+                break;
+            case CommandType::include():
+                $this->commandBus->dispatch(new IncludeLabel($labelId));
+                break;
+            case CommandType::exclude():
+                $this->commandBus->dispatch(new ExcludeLabel($labelId));
                 break;
         }
 
