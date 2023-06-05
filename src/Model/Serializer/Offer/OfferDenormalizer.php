@@ -192,19 +192,24 @@ abstract class OfferDenormalizer implements DenormalizerInterface
 
     protected function denormalizeDescription(array $data, ImmutableOffer $offer): ImmutableOffer
     {
-        if (isset($data['description'])) {
-            /* @var TranslatedDescription $description */
-            $description = $this->descriptionDenormalizer->denormalize(
-                $data['description'],
-                TranslatedDescription::class,
-                null,
-                ['originalLanguage' => $data['mainLanguage']]
-            );
-
-            $offer = $offer->withDescription($description);
+        if (!isset($data['description'])) {
+            return $offer;
         }
 
-        return $offer;
+        $nonEmptyDescriptions = array_filter($data['description']);
+        if (empty($nonEmptyDescriptions)) {
+            return $offer;
+        }
+
+        /* @var TranslatedDescription $description */
+        $description = $this->descriptionDenormalizer->denormalize(
+            $nonEmptyDescriptions,
+            TranslatedDescription::class,
+            null,
+            ['originalLanguage' => $data['mainLanguage']]
+        );
+
+        return $offer->withDescription($description);
     }
 
     protected function denormalizeLabels(array $data, ImmutableOffer $offer): ImmutableOffer
