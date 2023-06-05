@@ -52,9 +52,8 @@ final class ExcludeInvalidLabels extends AbstractCommand
             foreach ($labels as $label) {
                 $labelId = new Uuid($label['uuid_col']);
                 $labelName = $label['name'];
-                $excluded = (bool) $label['excluded'];
 
-                if (!$excluded && !preg_match(self::LABEL_REGEX, $labelName)) {
+                if (!preg_match(self::LABEL_REGEX, $labelName)) {
                     $this->commandBus->dispatch(
                         new ExcludeLabelCommand($labelId)
                     );
@@ -75,6 +74,8 @@ final class ExcludeInvalidLabels extends AbstractCommand
     {
         return $this->connection->createQueryBuilder()->select('*')
             ->from('labels_json')
+            ->where('excluded = :excluded')
+            ->setParameter(':excluded', 0)
             ->execute()
             ->rowCount();
     }
@@ -82,8 +83,10 @@ final class ExcludeInvalidLabels extends AbstractCommand
     private function getAllLabels(int $offset): array
     {
         return $this->connection->createQueryBuilder()
-            ->select('uuid_col, name, excluded')
+            ->select('uuid_col, name')
             ->from('labels_json')
+            ->where('excluded = :excluded')
+            ->setParameter(':excluded', 0)
             ->setFirstResult($offset)
             ->setMaxResults(self::MAX_RESULTS)
             ->execute()
