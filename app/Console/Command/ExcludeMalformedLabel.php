@@ -35,7 +35,7 @@ final class ExcludeMalformedLabel extends AbstractCommand
 
         $malformedLabelIdCount = $queryBuilder->select('*')
             ->from('labels_json')
-            ->where('exclude = :excluded')
+            ->where('excluded = :excluded')
             ->setParameter(':excluded', 0)
             ->andWhere('name REGEXP \'^[a-zA-Z\d_\-]{2,50}$\'')
             ->execute()
@@ -47,9 +47,9 @@ final class ExcludeMalformedLabel extends AbstractCommand
             return 0;
         }
 
-        $malformedLabelIds = $queryBuilder->select('uuid')
+        $malformedLabelIds = $queryBuilder->select('uuid_col')
             ->from('labels_json')
-            ->where('exclude = :excluded')
+            ->where('excluded = :excluded')
             ->setParameter(':excluded', 0)
             ->andWhere('name REGEXP \'^[a-zA-Z\d_\-]{2,50}$\'')
             ->setMaxResults($labelsToExclude)
