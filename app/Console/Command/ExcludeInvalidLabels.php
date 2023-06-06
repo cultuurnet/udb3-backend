@@ -48,9 +48,6 @@ final class ExcludeInvalidLabels extends AbstractCommand
         $firstResult = 0;
         do {
             $labels = $this->getLabelsFromFirstResult($firstResult);
-            if (count($labels) === 0) {
-                break;
-            }
 
             foreach ($labels as $label) {
                 $labelId = new Uuid($label['uuid_col']);
@@ -64,8 +61,8 @@ final class ExcludeInvalidLabels extends AbstractCommand
                 $progressBar->advance();
             }
 
-            $firstResult += count($labels);
-        } while ($firstResult < $labelsCount);
+            $firstResult += self::MAX_RESULTS;
+        } while (count($labels) < self::MAX_RESULTS);
 
         $progressBar->finish();
         $output->writeln('');
