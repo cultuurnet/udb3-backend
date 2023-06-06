@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Label\Commands\ExcludeLabel as ExcludeLabelCommand;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class ExcludeLabel extends AbstractCommand
@@ -27,6 +28,7 @@ final class ExcludeLabel extends AbstractCommand
             new ExcludeLabelCommand(new UUID($labelId))
         );
 
+        (new ConsoleLogger($output))->info('label with id ' . $labelId . ' successfully excluded.');
         return 0;
     }
 }
