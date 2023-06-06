@@ -27,6 +27,7 @@ final class IncludeLabel extends AbstractCommand
             new IncludeLabelCommand(new UUID($labelId))
         );
 
+        $output->writeln('label with id ' . $labelId . ' successfully included.');
         return 0;
     }
 }

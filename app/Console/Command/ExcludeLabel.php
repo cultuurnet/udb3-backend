@@ -27,6 +27,7 @@ final class ExcludeLabel extends AbstractCommand
             new ExcludeLabelCommand(new UUID($labelId))
         );
 
+        $output->writeln('label with id ' . $labelId . ' successfully excluded.');
         return 0;
     }
 }
