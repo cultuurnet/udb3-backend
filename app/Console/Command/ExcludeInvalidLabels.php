@@ -45,9 +45,9 @@ final class ExcludeInvalidLabels extends AbstractCommand
 
         $progressBar = new ProgressBar($output, $labelsCount);
 
-        $offset = 0;
+        $firstResult = 0;
         do {
-            $labels = $this->getAllLabels($offset);
+            $labels = $this->getAllLabels($firstResult);
             if (count($labels) === 0) {
                 break;
             }
@@ -64,8 +64,8 @@ final class ExcludeInvalidLabels extends AbstractCommand
                 $progressBar->advance();
             }
 
-            $offset += count($labels);
-        } while ($offset < $labelsCount);
+            $firstResult += count($labels);
+        } while ($firstResult < $labelsCount);
 
         $progressBar->finish();
         $output->writeln('');
@@ -83,14 +83,14 @@ final class ExcludeInvalidLabels extends AbstractCommand
             ->rowCount();
     }
 
-    private function getAllLabels(int $offset): array
+    private function getAllLabels(int $firstResult): array
     {
         return $this->connection->createQueryBuilder()
             ->select('uuid_col, name')
             ->from('labels_json')
             ->where('excluded = :excluded')
             ->setParameter(':excluded', 0)
-            ->setFirstResult($offset)
+            ->setFirstResult($firstResult)
             ->setMaxResults(self::MAX_RESULTS)
             ->execute()
             ->fetchAll(PDO::FETCH_ASSOC);
