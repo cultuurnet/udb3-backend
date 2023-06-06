@@ -54,13 +54,13 @@ final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
                     LoggerFactory::create($container, LoggerName::forAmqpWorker('uitpas')),
                     $uitpasDeserializerLocator,
                     $container->get(EventBus::class),
-                    new StringLiteral($container->get('config')['amqp']['consumer_tag']),
+                    $container->get('config')['amqp']['consumer_tag'],
                     new UuidFactory()
                 );
 
                 $consumerConfig = $container->get('config')['amqp']['consumers']['uitpas'];
-                $exchange = new StringLiteral($consumerConfig['exchange']);
-                $queue = new StringLiteral($consumerConfig['queue']);
+                $exchange = $consumerConfig['exchange'];
+                $queue = $consumerConfig['queue'];
                 return $consumerFactory->create($exchange, $queue);
             }
         );
