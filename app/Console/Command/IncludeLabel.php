@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Label\Commands\IncludeLabel as IncludeLabelCommand;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class IncludeLabel extends AbstractCommand
@@ -28,7 +27,7 @@ final class IncludeLabel extends AbstractCommand
             new IncludeLabelCommand(new UUID($labelId))
         );
 
-        (new ConsoleLogger($output))->info('label with id ' . $labelId . ' successfully included.');
+        $output->writeln('label with id ' . $labelId . ' successfully included.');
         return 0;
     }
 }
