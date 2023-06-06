@@ -72,7 +72,7 @@ final class ExcludeInvalidLabels extends AbstractCommand
 
     private function getAllLabelsCount(): int
     {
-        return $this->connection->createQueryBuilder()->select('*')
+        return $this->connection->createQueryBuilder()->select('uuid_col')
             ->from('labels_json')
             ->where('excluded = :excluded')
             ->setParameter(':excluded', 0)
