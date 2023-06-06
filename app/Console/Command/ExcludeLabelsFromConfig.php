@@ -14,7 +14,7 @@ final class ExcludeLabelsFromConfig extends AbstractCommand
 {
     public function configure(): void
     {
-        $this->setName('label:bulk-exclude');
+        $this->setName('label:exclude-from-config');
         $this->setDescription('Excludes all labels in the config.excluded_labels file');
     }
 
