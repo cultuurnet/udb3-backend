@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console;
 
 use Broadway\EventHandling\EventBus;
-use CultuurNet\UDB3\Console\Command\BulkExcludeLabel;
+use CultuurNet\UDB3\Console\Command\ExcludeLabelsFromConfig;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
@@ -75,8 +75,8 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.offer:change-owner-bulk',
         'console.organizer:change-owner',
         'console.organizer:change-owner-bulk',
-        'console.label:bulk-exclude',
         'console.label:exclude',
+        'console.label:exclude-from-config',
         'console.label:exclude-invalid',
         'console.label:include',
         'console.label:update-unique',
@@ -322,8 +322,8 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            'console.label:bulk-exclude',
-            fn () => new BulkExcludeLabel($container->get('event_command_bus'))
+            'console.label:exclude-from-config',
+            fn () => new ExcludeLabelsFromConfig($container->get('event_command_bus'))
         );
 
         $container->addShared(

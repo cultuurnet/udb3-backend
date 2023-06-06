@@ -10,11 +10,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-final class BulkExcludeLabel extends AbstractCommand
+final class ExcludeLabelsFromConfig extends AbstractCommand
 {
     public function configure(): void
     {
-        $this->setName('label:bulk-exclude');
+        $this->setName('label:exclude-from-config');
         $this->setDescription('Excludes all labels in the config.excluded_labels file');
     }
 
