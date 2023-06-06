@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-final class BulkExcludeLabel extends AbstractCommand
+final class ExcludeLabelsFromConfig extends AbstractCommand
 {
     public function configure(): void
     {
