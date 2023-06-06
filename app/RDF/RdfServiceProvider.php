@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\RDF;
 
-use Broadway\EventHandling\EventBus;
 use Broadway\EventHandling\SimpleEventBus;
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Address\CachingAddressParser;
