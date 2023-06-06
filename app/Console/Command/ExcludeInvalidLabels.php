@@ -47,7 +47,7 @@ final class ExcludeInvalidLabels extends AbstractCommand
 
         $firstResult = 0;
         do {
-            $labels = $this->getAllLabels($firstResult);
+            $labels = $this->getLabelsFromFirstResult($firstResult);
             if (count($labels) === 0) {
                 break;
             }
@@ -83,7 +83,7 @@ final class ExcludeInvalidLabels extends AbstractCommand
             ->rowCount();
     }
 
-    private function getAllLabels(int $firstResult): array
+    private function getLabelsFromFirstResult(int $firstResult): array
     {
         return $this->connection->createQueryBuilder()
             ->select('uuid_col, name')
