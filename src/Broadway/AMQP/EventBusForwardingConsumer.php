@@ -12,17 +12,10 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Ramsey\Uuid\UuidFactoryInterface;
-use CultuurNet\UDB3\StringLiteral;
 
-/**
- * Forwards messages coming in via AMQP to an event bus.
- */
 class EventBusForwardingConsumer extends AbstractConsumer
 {
-    /**
-     * @var EventBus
-     */
-    private $eventBus;
+    private EventBus $eventBus;
 
     private UuidFactoryInterface $uuidFactory;
 
@@ -30,9 +23,9 @@ class EventBusForwardingConsumer extends AbstractConsumer
         AMQPStreamConnection $connection,
         EventBus $eventBus,
         DeserializerLocatorInterface $deserializerLocator,
-        StringLiteral $consumerTag,
-        StringLiteral $exchangeName,
-        StringLiteral $queueName,
+        string $consumerTag,
+        string $exchangeName,
+        String $queueName,
         UuidFactoryInterface $uuidFactory,
         int $delay = 0
     ) {

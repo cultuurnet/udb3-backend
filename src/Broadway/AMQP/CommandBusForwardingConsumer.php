@@ -7,25 +7,18 @@ namespace CultuurNet\UDB3\Broadway\AMQP;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use CultuurNet\UDB3\StringLiteral;
 
-/**
- * Forwards messages coming in via AMQP to an event bus.
- */
 class CommandBusForwardingConsumer extends AbstractConsumer
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
     public function __construct(
         AMQPStreamConnection $connection,
         CommandBus $commandBus,
         DeserializerLocatorInterface $deserializerLocator,
-        StringLiteral $consumerTag,
-        StringLiteral $exchangeName,
-        StringLiteral $queueName,
+        string $consumerTag,
+        string $exchangeName,
+        string $queueName,
         int $delay = 0
     ) {
         $this->commandBus = $commandBus;
@@ -40,7 +33,6 @@ class CommandBusForwardingConsumer extends AbstractConsumer
             'command bus'
         );
     }
-
 
     protected function handle($deserializedMessage, array $context)
     {

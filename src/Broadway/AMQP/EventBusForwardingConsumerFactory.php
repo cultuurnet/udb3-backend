@@ -10,7 +10,6 @@ use InvalidArgumentException;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidFactoryInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 final class EventBusForwardingConsumerFactory
 {
@@ -30,7 +29,7 @@ final class EventBusForwardingConsumerFactory
 
     private EventBus $eventBus;
 
-    private StringLiteral $consumerTag;
+    private string $consumerTag;
 
     private UuidFactoryInterface $uuidFactory;
 
@@ -40,7 +39,7 @@ final class EventBusForwardingConsumerFactory
         LoggerInterface $logger,
         DeserializerLocatorInterface $deserializerLocator,
         EventBus $eventBus,
-        StringLiteral $consumerTag,
+        string $consumerTag,
         UuidFactoryInterface $uuidFactory
     ) {
         if ($executionDelay < 0) {
@@ -57,8 +56,8 @@ final class EventBusForwardingConsumerFactory
     }
 
     public function create(
-        StringLiteral $exchange,
-        StringLiteral $queue
+        string $exchange,
+        string $queue
     ): EventBusForwardingConsumer {
         $eventBusForwardingConsumer = new EventBusForwardingConsumer(
             $this->connection,

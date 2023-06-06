@@ -18,26 +18,6 @@ use CultuurNet\UDB3\StringLiteral;
 class CommandBusForwardingConsumerTest extends TestCase
 {
     /**
-     * @var AMQPStreamConnection|MockObject
-     */
-    private $connection;
-
-    /**
-     * @var StringLiteral
-     */
-    private $queueName;
-
-    /**
-     * @var StringLiteral
-     */
-    private $exchangeName;
-
-    /**
-     * @var StringLiteral
-     */
-    private $consumerTag;
-
-    /**
      * @var CommandBus|MockObject
      */
     private $commandBus;
@@ -54,20 +34,11 @@ class CommandBusForwardingConsumerTest extends TestCase
 
     /**
      * Seconds to delay the actual consumption of the message after it arrived.
-     *
-     * @var int
      */
-    private $delay;
+    private int $delay;
 
-    /**
-     * @var CommandBusForwardingConsumer
-     */
-    private $commandBusForwardingConsumer;
 
-    /**
-     * @var LoggerInterface|MockObject
-     */
-    private $logger;
+    private CommandBusForwardingConsumer $commandBusForwardingConsumer;
 
     /**
      * @var DeserializerInterface|MockObject
@@ -77,13 +48,13 @@ class CommandBusForwardingConsumerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->connection = $this->createMock(AMQPStreamConnection::class);
+        $connection = $this->createMock(AMQPStreamConnection::class);
 
         $this->delay = 1;
 
-        $this->queueName = new StringLiteral('my-queue');
-        $this->exchangeName = new StringLiteral('my-exchange');
-        $this->consumerTag = new StringLiteral('my-tag');
+        $queueName = 'my-queue';
+        $exchangeName = 'my-exchange';
+        $consumerTag = 'my-tag';
         $this->commandBus = $this->createMock(CommandBus::class);
         $this->deserializerLocator = $this->createMock(DeserializerLocatorInterface::class);
         $this->channel = $this->getMockBuilder(AMQPChannel::class)
@@ -91,22 +62,22 @@ class CommandBusForwardingConsumerTest extends TestCase
             ->disableProxyingToOriginalMethods()
             ->getMock();
 
-        $this->connection->expects($this->any())
+        $connection->expects($this->any())
             ->method('channel')
             ->willReturn($this->channel);
 
         $this->commandBusForwardingConsumer = new CommandBusForwardingConsumer(
-            $this->connection,
+            $connection,
             $this->commandBus,
             $this->deserializerLocator,
-            $this->consumerTag,
-            $this->exchangeName,
-            $this->queueName,
+            $consumerTag,
+            $exchangeName,
+            $queueName,
             $this->delay
         );
 
-        $this->logger = $this->createMock(LoggerInterface::class);
-        $this->commandBusForwardingConsumer->setLogger($this->logger);
+        $logger = $this->createMock(LoggerInterface::class);
+        $this->commandBusForwardingConsumer->setLogger($logger);
 
         $this->deserializer = $this->createMock(DeserializerInterface::class);
     }
@@ -116,9 +87,6 @@ class CommandBusForwardingConsumerTest extends TestCase
      */
     public function it_can_dispatch_the_message_on_the_command_bus()
     {
-        $context = [];
-        $context['correlation_id'] = 'my-correlation-id-123';
-
         $expectedCommand = new \stdClass();
         $expectedCommand->foo = 'bar';
 
