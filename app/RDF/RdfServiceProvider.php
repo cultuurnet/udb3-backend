@@ -4,15 +4,24 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\RDF;
 
+use Broadway\EventHandling\SimpleEventBus;
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Address\CachingAddressParser;
 use CultuurNet\UDB3\Address\GeopuntAddressParser;
+use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector as EventRdfProjector;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
+use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector as PlaceRdfProjector;
+use CultuurNet\UDB3\StringLiteral;
 use EasyRdf\GraphStore;
+use Ramsey\Uuid\UuidFactory;
 
 final class RdfServiceProvider extends AbstractServiceProvider
 {
@@ -21,6 +30,7 @@ final class RdfServiceProvider extends AbstractServiceProvider
         return [
             MainLanguageRepository::class,
             AddressParser::class,
+            'amqp.rdf_event_bus_forwarding_consumer',
         ];
     }
 
@@ -45,6 +55,46 @@ final class RdfServiceProvider extends AbstractServiceProvider
                 $parser->setLogger($logger);
 
                 return $parser;
+            }
+        );
+
+        $this->container->addShared(
+            'amqp.rdf_event_bus_forwarding_consumer',
+            function () {
+                $eventBus = new SimpleEventBus();
+                if (($this->container->get('config')['rdf']['enabled'] ?? false) === true) {
+                    $eventBus->subscribe($this->container->get(PlaceRdfProjector::class));
+                    $eventBus->subscribe($this->container->get(EventRdfProjector::class));
+                }
+
+                $deserializerLocator = new SimpleDeserializerLocator();
+                $deserializerMapping = [
+                    EventProjectedToJSONLD::class =>
+                        'application/vnd.cultuurnet.udb3-events.event-projected-to-jsonld+json',
+                    PlaceProjectedToJSONLD::class =>
+                        'application/vnd.cultuurnet.udb3-events.place-projected-to-jsonld+json',
+                ];
+                foreach ($deserializerMapping as $payloadClass => $contentType) {
+                    $deserializerLocator->registerDeserializer(
+                        new StringLiteral($contentType),
+                        new DomainMessageJSONDeserializer($payloadClass)
+                    );
+                }
+
+                $consumerFactory = new EventBusForwardingConsumerFactory(
+                    0,
+                    $this->container->get('amqp.connection'),
+                    LoggerFactory::create($this->container, LoggerName::forAmqpWorker('rdf')),
+                    $deserializerLocator,
+                    $eventBus,
+                    $this->container->get('config')['amqp']['consumer_tag'],
+                    new UuidFactory()
+                );
+
+                $consumerConfig = $this->container->get('config')['amqp']['consumers']['rdf'];
+                $exchange = $consumerConfig['exchange'];
+                $queue = $consumerConfig['queue'];
+                return $consumerFactory->create($exchange, $queue);
             }
         );
     }

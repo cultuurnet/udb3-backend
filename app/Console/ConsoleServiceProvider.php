@@ -54,6 +54,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 {
     private const COMMAND_SERVICES = [
         'console.amqp-listen-uitpas',
+        'console.amqp-listen-rdf',
         'console.replay',
         'console.find-out-of-sync-projections',
         'console.event:ancestors',
@@ -135,6 +136,23 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 return new ConsumeCommand(
                     'amqp-listen-uitpas',
                     'amqp.uitpas_event_bus_forwarding_consumer',
+                    $container,
+                    $heartBeat
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.amqp-listen-rdf',
+            function () use ($container) {
+                $heartBeat = static function () use ($container) {
+                    $db = $container->get('dbal_connection');
+                    $db->query('SELECT 1')->execute();
+                };
+
+                return new ConsumeCommand(
+                    'amqp-listen-rdf',
+                    'amqp.rdf_event_bus_forwarding_consumer',
                     $container,
                     $heartBeat
                 );
