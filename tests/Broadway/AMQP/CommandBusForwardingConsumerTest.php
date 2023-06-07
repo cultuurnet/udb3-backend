@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use CultuurNet\UDB3\StringLiteral;
 
-class CommandBusForwardingConsumerTest extends TestCase
+final class CommandBusForwardingConsumerTest extends TestCase
 {
     /**
      * @var CommandBus|MockObject
