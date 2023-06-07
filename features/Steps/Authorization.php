@@ -13,7 +13,7 @@ trait Authorization
     /**
      * @Given I am using the UDB3 base URL
      */
-    public function iAmUsingTheUDB3BaseURL()
+    public function iAmUsingTheUDB3BaseURL(): void
     {
         $this->baseUrl = $this->config['base_url'];
     }
@@ -21,7 +21,7 @@ trait Authorization
     /**
      * @Given I am using an UiTID v1 API key of consumer :arg1
      */
-    public function iAmUsingAnUitidV1ApiKeyOfConsumer($arg1)
+    public function iAmUsingAnUitidV1ApiKeyOfConsumer($arg1): void
     {
         $this->apiKey = $this->config['apiKeys'][$arg1];
     }
@@ -29,7 +29,7 @@ trait Authorization
     /**
      * @Given I am authorized as JWT provider v1 user :arg1
      */
-    public function iAmAuthorizedAsJwtProviderV1User($arg1)
+    public function iAmAuthorizedAsJwtProviderV1User($arg1): void
     {
         $this->jwt = $this->config['users']['uitid_v1'][$arg1]['jwt'];
     }

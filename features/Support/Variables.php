@@ -25,10 +25,10 @@ final class Variables
         if ($this->containsVariable($key)) {
             $variable = $this->extractVariable($key);
             $value = $this->variables[$variable];
-            return str_replace('%{'. $variable . '}', $value, $key);
+            return str_replace('%{' . $variable . '}', $value, $key);
         }
 
-         return $this->variables[$key] ?? $key;
+        return $this->variables[$key] ?? $key;
     }
 
     public function addRandomVariable(string $key, int $length): string

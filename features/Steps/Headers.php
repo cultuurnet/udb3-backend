@@ -12,7 +12,7 @@ trait Headers
     /**
      * @Given I send and accept :arg1
      */
-    public function iSendAndAccept($arg1)
+    public function iSendAndAccept($arg1): void
     {
         $this->acceptHeader = $arg1;
         $this->contentTypeHeader = $arg1;

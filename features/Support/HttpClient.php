@@ -12,13 +12,13 @@ final class HttpClient
 {
     private Client $client;
 
-    function __construct(
+    public function __construct(
         string $jwt,
         string $apiKey,
         string $contentTypeHeader,
         string $acceptHeader,
         string $baseUrl
-    ){
+    ) {
         $headers = [
             'Authorization' => 'Bearer ' . $jwt,
             'x-api-key' => $apiKey,
@@ -28,6 +28,7 @@ final class HttpClient
 
         $this->client = new Client([
             'base_uri' => $baseUrl,
+            'http_errors' => false,
             RequestOptions::HEADERS => $headers,
         ]);
     }
@@ -42,10 +43,18 @@ final class HttpClient
         );
     }
 
-    public function getJSON(string $url): string
+    public function putJSON(string $url, string $json): ResponseInterface
     {
-        $response = $this->client->get($url);
+        return $this->client->put(
+            $url,
+            [
+                RequestOptions::BODY => $json,
+            ]
+        );
+    }
 
-        return $response->getBody()->getContents();
+    public function getJSON(string $url): ResponseInterface
+    {
+        return $this->client->get($url);
     }
 }
