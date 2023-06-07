@@ -1,0 +1,11 @@
+{
+  "mainLanguage":"nl",
+  "name": {
+    "nl": "%{name}"
+  },
+  "url": "https://www.%{name}.be",
+  "labels": [],
+  "hiddenLabels": [null],
+  "contactPoint": null,
+  "images": []
+}
