@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Ramsey\Uuid\UuidFactoryInterface;
 
-class EventBusForwardingConsumer extends AbstractConsumer
+final class EventBusForwardingConsumer extends AbstractConsumer
 {
     private EventBus $eventBus;
 

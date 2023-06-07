@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
-class CommandBusForwardingConsumer extends AbstractConsumer
+final class CommandBusForwardingConsumer extends AbstractConsumer
 {
     private CommandBus $commandBus;
 
