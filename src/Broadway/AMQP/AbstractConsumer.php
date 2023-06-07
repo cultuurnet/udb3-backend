@@ -16,60 +16,33 @@ abstract class AbstractConsumer implements ConsumerInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var AMQPStreamConnection
-     */
-    private $connection;
+    private AMQPStreamConnection $connection;
 
-    /**
-     * @var DeserializerLocatorInterface
-     */
-    private $deserializerLocator;
+    private DeserializerLocatorInterface $deserializerLocator;
 
-    /**
-     * @var StringLiteral
-     */
-    private $queueName;
+    private string $queueName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $exchangeName;
+    private string $exchangeName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $consumerTag;
+    private string $consumerTag;
 
-    /**
-     * @var AMQPChannel
-     */
-    private $channel;
+    private AMQPChannel $channel;
 
     /**
      * Seconds to delay the actual consumption of the message after it arrived.
-     *
-     * @var int
      */
-    private $delay = 0;
+    private int $delay;
 
-    /**
-     * @var string
-     */
-    private $messageHandlerName = 'message handler';
+    private string $messageHandlerName;
 
-    /**
-     * @param int $delay
-     * @param string $messageHandlerName
-     */
     public function __construct(
         AMQPStreamConnection $connection,
         DeserializerLocatorInterface $deserializerLocator,
-        StringLiteral $consumerTag,
-        StringLiteral $exchangeName,
-        StringLiteral $queueName,
-        $delay = 0,
-        $messageHandlerName = 'message handler'
+        string $consumerTag,
+        string $exchangeName,
+        string $queueName,
+        int $delay = 0,
+        string $messageHandlerName = 'message handler'
     ) {
         $this->connection = $connection;
         $this->channel = $connection->channel();
@@ -86,7 +59,6 @@ abstract class AbstractConsumer implements ConsumerInterface
         $this->registerConsumeCallback();
     }
 
-
     abstract protected function handle($deserializedMessage, array $context);
 
     private function delayIfNecessary()
@@ -95,7 +67,6 @@ abstract class AbstractConsumer implements ConsumerInterface
             sleep($this->delay);
         }
     }
-
 
     public function consume(AMQPMessage $message)
     {
@@ -185,17 +156,17 @@ abstract class AbstractConsumer implements ConsumerInterface
     private function declareQueue()
     {
         $this->channel->queue_declare(
-            (string) $this->queueName,
-            $passive = false,
-            $durable = true,
-            $exclusive = false,
-            $autoDelete = false
+            $this->queueName,
+            false,
+            true,
+            false,
+            false
         );
 
         $this->channel->queue_bind(
             $this->queueName,
             $this->exchangeName,
-            $routingKey = '#'
+            '#'
         );
     }
 
@@ -203,27 +174,21 @@ abstract class AbstractConsumer implements ConsumerInterface
     {
         $this->channel->basic_consume(
             $this->queueName,
-            $consumerTag = (string) $this->consumerTag,
-            $noLocal = false,
-            $noAck = false,
-            $exclusive = false,
-            $noWait = false,
+            $this->consumerTag,
+            false,
+            false,
+            false,
+            false,
             [$this, 'consume']
         );
     }
 
-    /**
-     * @return AMQPStreamConnection
-     */
-    public function getConnection()
+    public function getConnection(): AMQPStreamConnection
     {
         return $this->connection;
     }
 
-    /**
-     * @return AMQPChannel
-     */
-    public function getChannel()
+    public function getChannel(): AMQPChannel
     {
         return $this->channel;
     }

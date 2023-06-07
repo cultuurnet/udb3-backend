@@ -26,11 +26,11 @@ final class EventBusForwardingConsumerTest extends TestCase
      */
     private $connection;
 
-    private StringLiteral $queueName;
+    private string $queueName;
 
-    private StringLiteral $exchangeName;
+    private string $exchangeName;
 
-    private StringLiteral $consumerTag;
+    private string $consumerTag;
 
     /**
      * @var EventBus|MockObject
@@ -46,11 +46,6 @@ final class EventBusForwardingConsumerTest extends TestCase
      * @var AMQPChannel|MockObject
      */
     private $channel;
-
-    /**
-     * Seconds to delay the actual consumption of the message after it arrived.
-     */
-    private int $delay;
 
     private EventBusForwardingConsumer $eventBusForwardingConsumer;
 
@@ -69,11 +64,11 @@ final class EventBusForwardingConsumerTest extends TestCase
     {
         $this->connection = $this->createMock(AMQPStreamConnection::class);
 
-        $this->delay = 1;
+        $delay = 1;
 
-        $this->queueName = new StringLiteral('my-queue');
-        $this->exchangeName = new StringLiteral('my-exchange');
-        $this->consumerTag = new StringLiteral('my-tag');
+        $this->queueName = 'my-queue';
+        $this->exchangeName = 'my-exchange';
+        $this->consumerTag = 'my-tag';
         $this->eventBus = $this->createMock(EventBus::class);
         $this->deserializerLocator = $this->createMock(DeserializerLocatorInterface::class);
         $this->channel = $this->getMockBuilder(AMQPChannel::class)
@@ -93,7 +88,7 @@ final class EventBusForwardingConsumerTest extends TestCase
             $this->exchangeName,
             $this->queueName,
             new UuidFactory(),
-            $this->delay
+            $delay
         );
 
         $this->logger = $this->createMock(LoggerInterface::class);
@@ -231,9 +226,6 @@ final class EventBusForwardingConsumerTest extends TestCase
      */
     public function it_rejects_the_massage_when_an_error_occurs(): void
     {
-        $context = [];
-        $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
-
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
             ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
