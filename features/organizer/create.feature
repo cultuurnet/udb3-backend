@@ -8,7 +8,19 @@ Feature: Test creating organizers
   Scenario: Create a new organizer with minimal properties
     Given I create a minimal organizer and save the "url" as "organizerUrl"
     When I get the organizer at "%{organizerUrl}"
-    And the JSON response at "@id" should be "%{organizerUrl}"
+    Then the JSON response at "@id" should be "%{organizerUrl}"
     And the JSON response at "mainLanguage" should be "nl"
     And the JSON response at "name/nl" should be "%{name}"
     And the JSON response at "url" should be "https://www.%{name}.be"
+
+  Scenario: Create a new organizer with missing contact point fields
+    Given I create an organizer from "organizers/organizer-contact-point-missing-fields.json" and save the "url" as "organizerUrl"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "contactPoint" should be:
+    """
+    {
+      "phone": [],
+      "email": ["info@publiq.be"],
+      "url": []
+    }
+    """

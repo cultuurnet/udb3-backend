@@ -2,6 +2,8 @@
 
 namespace CultuurNet\UDB3\Steps;
 
+use Behat\Gherkin\Node\PyStringNode;
+use Psr\Http\Message\ResponseInterface;
 use function PHPUnit\Framework\assertEquals;
 
 trait Organizer
@@ -13,20 +15,29 @@ trait Organizer
      */
     public function iCreateAMinimalOrganizerAndSaveTheAs($arg1, $arg2)
     {
-        $organizer = file_get_contents(__DIR__ . '/../data/organizer/organizer-minimal.json');
-
-        $name = $this->variables->addRandomVariable('name', 10);
-        $organizer = str_replace('%{name}', $name, $organizer);
+        $organizer = $this->loadOrganizerWithRandomName('/organizers/organizer-minimal.json');
 
         $response = $this->getHttpClient()->postJSON(
             $this->baseUrl . '/organizers',
             $organizer
         );
 
-        $content = $response->getBody()->getContents();
-        $json = json_decode($content, true);
+        $this->storeResponseValue($response, $arg1, $arg2);
+    }
 
-        $this->variables->addVariable($arg2, $json[$arg1]);
+    /**
+     * @When I create an organizer from :arg1 and save the :arg2 as :arg3
+     */
+    public function iCreateAnOrganizerFromAndSaveTheAs($arg1, $arg2, $arg3)
+    {
+        $organizer = $this->loadOrganizerWithRandomName($arg1);
+
+        $response = $this->getHttpClient()->postJSON(
+            $this->baseUrl . '/organizers',
+            $organizer
+        );
+
+        $this->storeResponseValue($response, $arg2, $arg3);
     }
 
     /**
@@ -44,12 +55,42 @@ trait Organizer
      */
     public function theJsonResponseAtShouldBe($arg1, $arg2)
     {
-        $value = $this->variables->getVariable($arg2);
-
-        assertEquals($value, $this->getValueByPath($this->jsonResponse, $arg1));
+        assertEquals(
+            $this->variables->getVariable($arg2),
+            $this->getValueByPath($this->jsonResponse, $arg1)
+        );
     }
 
-    function getValueByPath($array, $path)
+    /**
+     * @Then the JSON response at :arg1 should be:
+     */
+    public function theJsonResponseAtShouldBe2($arg1, PyStringNode $string)
+    {
+        assertEquals(
+            json_decode($string->getRaw(), true),
+            $this->jsonResponse[$arg1]
+        );
+    }
+
+    private function loadOrganizerWithRandomName(string $filename): string
+    {
+        $organizer = file_get_contents(__DIR__ . '/../data/' . $filename);
+        $name = $this->variables->addRandomVariable('name', 10);
+        return str_replace('%{name}', $name, $organizer);
+    }
+
+    private function storeResponseValue(
+        ResponseInterface $response,
+        string $path,
+        string $variableName
+    ): void {
+        $content = $response->getBody()->getContents();
+        $json = json_decode($content, true);
+
+        $this->variables->addVariable($variableName, $json[$path]);
+    }
+
+    private function getValueByPath($array, $path)
     {
         $parts = explode('/', $path);
         $value = $array;
