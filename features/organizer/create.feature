@@ -24,3 +24,84 @@ Feature: Test creating organizers
       "url": []
     }
     """
+
+  Scenario: Create a new organizer with all properties
+    Given I create an organizer from "organizers/organizer.json" and save the "url" as "organizerUrl"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "@id" should be "%{organizerUrl}"
+    And the JSON response at "mainLanguage" should be "nl"
+    And the JSON response at "name/nl" should be "%{name}"
+    And the JSON response at "url" should be "https://www.%{name}.be"
+    And the JSON response at "address" should be:
+    """
+    {
+      "nl": {
+        "streetAddress": "Henegouwenkaai 41-43",
+        "postalCode": "1080",
+        "addressLocality": "Brussel",
+        "addressCountry": "BE"
+      },
+      "fr": {
+        "streetAddress": "Quai du Hainaut 41-43",
+        "postalCode": "1080",
+        "addressLocality": "Bruxelles",
+        "addressCountry": "BE"
+      }
+    }
+    """
+    And the JSON response at "labels" should be:
+    """
+    [ "public-visible" ]
+    """
+    And the JSON response at "hiddenLabels" should be:
+    """
+    [ "public-invisible" ]
+    """
+    And the JSON response at "contactPoint" should be:
+    """
+    {
+      "phone": [
+        "123",
+        "456"
+      ],
+      "email": [
+        "mock@publiq.be"
+      ],
+      "url": [
+        "https://www.publiq.be",
+        "https://www.madewithlove.be"
+      ]
+    }
+    """
+
+  @bugfix # https://jira.uitdatabank.be/browse/III-4669
+  Scenario: Create a new organizer with all properties and remove them with null values or empty lists in the JSON
+    When I create an organizer from "organizers/organizer.json" and save the "url" as "organizerUrl"
+    And I update the organizer at "%{organizerUrl}" from "organizers/organizer-minimal-with-null-or-empty-values.json"
+    And I get the organizer at "%{organizerUrl}"
+    And the JSON response should not have "labels"
+    And the JSON response should not have "hiddenLabels"
+    And the JSON response at "contactPoint" should be:
+    """
+    {
+      "phone": [],
+      "email": [],
+      "url": []
+    }
+    """
+
+  Scenario: Create a new organizer with an existing url
+    Given I create a random name of 10 characters
+    And I create an organizer from "organizers/organizer.json" and save the "url" as "organizerUrl"
+    And I set the JSON request payload from "organizers/organizer.json"
+    When I send a POST request to "/organizers/"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+     "type": "https://api.publiq.be/probs/uitdatabank/duplicate-url",
+     "title": "Duplicate URL",
+     "status": 400,
+     "detail": "The url https://www.%{name}.be (normalized to %{name}.be) is already in use."
+    }
+    """
