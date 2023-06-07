@@ -82,7 +82,6 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.label:update-unique',
         'console.organizer:update-unique',
         'console.place:facilities:remove',
-        'console.place:actortype:reject',
         'console.event:place-eventtype:update',
         'console.offer:remove-label',
         'console.organizer:remove-label',
@@ -362,14 +361,6 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new ChangePlaceTypeOnEvents(
                 $container->get('event_command_bus'),
                 $container->get('sapi3_search_service_events')
-            )
-        );
-
-        $container->addShared(
-            'console.place:actortype:reject',
-            fn () => new RejectPlaceDeprecatedType(
-                $container->get('event_command_bus'),
-                $container->get('sapi3_search_service_places')
             )
         );
 
