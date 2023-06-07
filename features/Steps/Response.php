@@ -74,7 +74,8 @@ trait Response
         $this->variables->addVariable($variableName, $this->jsonContent[$path]);
     }
 
-    public function storeResponse(ResponseInterface $response): void {
+    public function storeResponse(ResponseInterface $response): void
+    {
         $this->response = $response;
         $this->status = $response->getStatusCode();
         $this->content = $response->getBody()->getContents();
