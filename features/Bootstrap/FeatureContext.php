@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
+use CultuurNet\UDB3\Steps\Request;
+use CultuurNet\UDB3\Steps\Response;
+use CultuurNet\UDB3\Steps\Utils;
 use CultuurNet\UDB3\Support\HttpClient;
 use CultuurNet\UDB3\Support\Variables;
 use CultuurNet\UDB3\Steps\Authorization;
@@ -13,6 +16,9 @@ final class FeatureContext implements Context
 {
     use Authorization;
     use Headers;
+    use Request;
+    use Response;
+    use Utils;
 
     use Organizer;
 
