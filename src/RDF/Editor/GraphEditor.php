@@ -47,10 +47,6 @@ final class GraphEditor
             $resource->setType($type);
         }
 
-        // Set the udb:workflowStatus property to draft if not set yet.
-        // TODO: This can be removed once everything is ported to JSON conversion to turtle.
-        GranularWorkflowStatusEditor::for($this->graph)->draft($resourceIri);
-
         // Set the dcterms:created property if not set yet.
         // (Otherwise it would constantly update like dcterms:modified).
         if (!$resource->hasProperty(self::PROPERTY_AANGEMAAKT_OP)) {
@@ -75,49 +71,6 @@ final class GraphEditor
             $identificator->add(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR, new Resource(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT));
             $resource->add(self::PROPERTY_IDENTIFICATOR, $identificator);
         }
-
-        return $this;
-    }
-
-    public function replaceLanguageValue(string $resourceIri, string $property, string $value, string $language): self
-    {
-        $resource = $this->graph->resource($resourceIri);
-
-        // Get all literal values for the property, and key them by their language tag.
-        // This will be an empty list if no value(s) were set before for this property.
-        $literalValues = $resource->allLiterals($property);
-        $literalValues = array_filter($literalValues, fn (Literal $literal): bool => $literal->getLang() !== null);
-        $languages = array_map(fn (Literal $literal): string => $literal->getLang(), $literalValues);
-        $literalValuePerLanguage = array_combine($languages, $literalValues);
-
-        // Override or add the new or updated value for the language.
-        // If the language was set before, it will keep its original position in the list. If the language was not set
-        // before it will be appended at the end of the list.
-        $literalValuePerLanguage[$language] = new Literal($value, $language);
-
-        // Remove all existing values of the property, then (re)add them in the intended order.
-        $resource->delete($property);
-        $resource->addLiteral($property, array_values($literalValuePerLanguage));
-
-        return $this;
-    }
-
-    public function deleteLanguageValue(string $resourceIri, string $property, string $language): self
-    {
-        $resource = $this->graph->resource($resourceIri);
-
-        // Get all literal values for the property, and key them by their language tag.
-        // This will be an empty list if no value(s) are set for this property.
-        $literalValues = $resource->allLiterals($property);
-        $languages = array_map(fn (Literal $literal): string => $literal->getLang(), $literalValues);
-        $literalValuePerLanguage = array_combine($languages, $literalValues);
-
-        // Remove the value for the given language.
-        unset($literalValuePerLanguage[$language]);
-
-        // Remove all existing values of the property, then (re)add them in the intended order.
-        $resource->delete($property);
-        $resource->addLiteral($property, array_values($literalValuePerLanguage));
 
         return $this;
     }

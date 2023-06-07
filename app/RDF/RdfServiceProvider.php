@@ -28,7 +28,6 @@ final class RdfServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
-            MainLanguageRepository::class,
             AddressParser::class,
             'amqp.rdf_event_bus_forwarding_consumer',
         ];
@@ -36,13 +35,6 @@ final class RdfServiceProvider extends AbstractServiceProvider
 
     public function register(): void
     {
-        $this->container->addShared(
-            MainLanguageRepository::class,
-            fn (): MainLanguageRepository => new CacheMainLanguageRepository(
-                $this->container->get('cache')('rdf_main_language')
-            )
-        );
-
         $this->container->addShared(
             AddressParser::class,
             function (): AddressParser {
