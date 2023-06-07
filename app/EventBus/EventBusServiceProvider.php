@@ -8,7 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
-use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector as EventRdfProjector;
+use CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector as EventHistoryProjector;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsProjector;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;
@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider;
 use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
-use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector as PlaceRdfProjector;
+use CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector as PlaceHistoryProjector;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 
@@ -50,8 +50,8 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                             EventRelationsProjector::class,
                             PlaceRelationsProjector::class,
                             EventJSONLDServiceProvider::PROJECTOR,
-                            \CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector::class,
-                            \CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector::class,
+                            EventHistoryProjector::class,
+                            PlaceHistoryProjector::class,
                             PlaceJSONLDServiceProvider::PROJECTOR,
                             OrganizerJSONLDServiceProvider::PROJECTOR,
                             RelatedDocumentProjectedToJSONLDDispatcher::class,
@@ -79,11 +79,6 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                             RelocateEventToCanonicalPlace::class,
                             AutoApproveForUiTIDv1ApiKeysProcessManager::class,
                         ];
-
-                        if (($container->get('config')['rdf']['enabled'] ?? false) === true) {
-                            $subscribers[] = PlaceRdfProjector::class;
-                            $subscribers[] = EventRdfProjector::class;
-                        }
 
                         $initialSubscribersCount = count($subscribers);
                         $subscribers = array_unique($subscribers);
