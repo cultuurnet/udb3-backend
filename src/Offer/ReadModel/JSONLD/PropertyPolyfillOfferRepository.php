@@ -39,6 +39,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = $this->removeNullLabels($document);
         $document = $this->removeThemes($document);
         $document = $this->removeMainImageWhenMediaObjectIsEmpty($document);
+        $document = $this->removeActorType($document);
         return $this->fixDuplicateLabelVisibility($document);
     }
 
