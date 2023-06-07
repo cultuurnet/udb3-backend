@@ -39,6 +39,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = $this->removeNullLabels($document);
         $document = $this->removeThemes($document);
         $document = $this->removeMainImageWhenMediaObjectIsEmpty($document);
+        $document = $this->removeActorType($document);
         return $this->fixDuplicateLabelVisibility($document);
     }
 
@@ -279,7 +280,6 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         );
     }
 
-    /** @phpstan-ignore-next-line */
     private function removeActorType(JsonDocument $jsonDocument): JsonDocument
     {
         return $jsonDocument->applyAssoc(
