@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Traits;
+namespace CultuurNet\UDB3\Steps;
 
 trait Headers
 {

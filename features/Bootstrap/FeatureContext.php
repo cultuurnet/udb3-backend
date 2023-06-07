@@ -5,9 +5,9 @@ declare(strict_types=1);
 use Behat\Behat\Context\Context;
 use CultuurNet\UDB3\Support\HttpClient;
 use CultuurNet\UDB3\Support\Variables;
-use CultuurNet\UDB3\Traits\Authorization;
-use CultuurNet\UDB3\Traits\Headers;
-use CultuurNet\UDB3\Traits\Organizer;
+use CultuurNet\UDB3\Steps\Authorization;
+use CultuurNet\UDB3\Steps\Headers;
+use CultuurNet\UDB3\Steps\Organizer;
 
 final class FeatureContext implements Context
 {

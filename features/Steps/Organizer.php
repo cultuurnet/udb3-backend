@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Traits;
+namespace CultuurNet\UDB3\Steps;
 
 use function PHPUnit\Framework\assertEquals;
 
