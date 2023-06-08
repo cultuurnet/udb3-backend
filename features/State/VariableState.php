@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\State;
 
-final class Variables
+final class VariableState
 {
     private const START_DELIMITER = '%{';
     private const END_DELIMITER = '}';
@@ -28,7 +28,7 @@ final class Variables
             $key = str_replace('%{' . $variable . '}', $value, $key);
         }
 
-        return $this->variables[$key] ?? $key;
+        return $this->variableState[$key] ?? $key;
     }
 
     public function getVariables(): array

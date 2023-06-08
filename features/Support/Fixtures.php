@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Support;
 
-use CultuurNet\UDB3\State\Variables;
+use CultuurNet\UDB3\State\VariableState;
 
 final class Fixtures
 {
-    public function loadJson(string $filename, Variables $variables): string
+    public function loadJson(string $filename, VariableState $variables): string
     {
         $json = file_get_contents(__DIR__ . '/../data/' . $filename);
 
@@ -19,7 +19,7 @@ final class Fixtures
         return $json;
     }
 
-    public function loadJsonWithRandomName(string $filename, Variables $variables): string
+    public function loadJsonWithRandomName(string $filename, VariableState $variables): string
     {
         $variables->addRandomVariable('name', 10);
         return $this->loadJson($filename, $variables);

@@ -13,7 +13,7 @@ trait EventSteps
     {
         $response = $this->getHttpClient()->postJSON(
             $this->requestState->getBaseUrl() . '/events',
-            $this->fixtures->loadJson('/events/event-minimal-permanent.json', $this->variables)
+            $this->fixtures->loadJson('/events/event-minimal-permanent.json', $this->variableState)
         );
         $this->responseState->setResponse($response);
 

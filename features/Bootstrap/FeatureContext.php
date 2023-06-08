@@ -6,7 +6,7 @@ use Behat\Behat\Context\Context;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\State\ResponseState;
-use CultuurNet\UDB3\State\Variables;
+use CultuurNet\UDB3\State\VariableState;
 use CultuurNet\UDB3\Steps\AuthorizationSteps;
 use CultuurNet\UDB3\Steps\EventSteps;
 use CultuurNet\UDB3\Steps\OrganizerSteps;
@@ -29,9 +29,9 @@ final class FeatureContext implements Context
     use OrganizerSteps;
 
     private array $config;
-    private Variables $variables;
     private Fixtures $fixtures;
 
+    private VariableState $variableState;
     private RequestState $requestState;
     private ResponseState $responseState;
 
@@ -39,10 +39,10 @@ final class FeatureContext implements Context
     {
         $this->config = require __DIR__ . '/../config.php';
 
-        $this->variables = new Variables();
         $this->fixtures = new Fixtures();
 
         $this->requestState = new RequestState();
+        $this->variableState = new VariableState();
         $this->responseState = new ResponseState();
     }
 
@@ -70,6 +70,6 @@ final class FeatureContext implements Context
      */
     public function replaceUrl($url): string
     {
-        return $this->variables->replaceVariable($url);
+        return $this->variableState->replaceVariable($url);
     }
 }

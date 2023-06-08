@@ -13,7 +13,7 @@ trait OrganizerSteps
     {
         $response = $this->getHttpClient()->postJSON(
             $this->requestState->getBaseUrl() . '/organizers',
-            $this->fixtures->loadJsonWithRandomName('/organizers/organizer-minimal.json', $this->variables)
+            $this->fixtures->loadJsonWithRandomName('/organizers/organizer-minimal.json', $this->variableState)
         );
         $this->responseState->setResponse($response);
 
@@ -27,7 +27,7 @@ trait OrganizerSteps
      */
     public function iCreateAnOrganizerFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName): void
     {
-        $organizer = $this->fixtures->loadJsonWithRandomName($fileName, $this->variables);
+        $organizer = $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState);
 
         $response = $this->getHttpClient()->postJSON(
             $this->requestState->getBaseUrl() . '/organizers',
@@ -45,7 +45,7 @@ trait OrganizerSteps
      */
     public function iImportANewOrganizerFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName): void
     {
-        $organizer = $this->fixtures->loadJsonWithRandomName($fileName, $this->variables);
+        $organizer = $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState);
 
         $response = $this->getHttpClient()->postJSON(
             $this->requestState->getBaseUrl() . '/imports/organizers',
@@ -81,7 +81,7 @@ trait OrganizerSteps
     {
         $this->getHttpClient()->putJSON(
             $url,
-            $this->fixtures->loadJsonWithRandomName($fileName, $this->variables)
+            $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState)
         );
     }
 

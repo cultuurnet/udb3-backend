@@ -11,7 +11,7 @@ trait PlaceSteps
      */
     public function iCreateAPlaceFromAndSaveTheAs(string $fileName, $jsonPath, $variableName): void
     {
-        $place = $this->fixtures->loadJson($fileName, $this->variables);
+        $place = $this->fixtures->loadJson($fileName, $this->variableState);
 
         $response = $this->getHttpClient()->postJSON(
             $this->requestState->getBaseUrl() . '/places',
