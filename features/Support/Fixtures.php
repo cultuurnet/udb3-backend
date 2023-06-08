@@ -14,7 +14,7 @@ final class Fixtures
             $json = str_replace('%{' . $key . '}', $value, $json);
         }
 
-       return $json;
+        return $json;
     }
 
     public function loadJsonWithRandomName(string $filename, Variables $variables): string

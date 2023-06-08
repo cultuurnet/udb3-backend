@@ -37,5 +37,4 @@ trait AuthorizationSteps
     {
         $this->requestState->setJwt('');
     }
-
 }
