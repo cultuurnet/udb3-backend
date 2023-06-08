@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Steps;
 
 use Behat\Gherkin\Node\PyStringNode;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertNotEquals;
 use function PHPUnit\Framework\assertNull;
 use function PHPUnit\Framework\assertStringContainsString;
 
@@ -17,6 +18,17 @@ trait ResponseSteps
     public function theJsonResponseAtShouldBe(string $jsonPath, string $value): void
     {
         assertEquals(
+            $this->variables->replaceVariable($value),
+            $this->responseState->getValueOnPath($jsonPath)
+        );
+    }
+
+    /**
+     * @When the JSON response at :jsonPath should not be :value
+     */
+    public function theJsonResponseAtShouldNotBe($jsonPath, $value)
+    {
+        assertNotEquals(
             $this->variables->replaceVariable($value),
             $this->responseState->getValueOnPath($jsonPath)
         );
