@@ -59,6 +59,22 @@ trait OrganizerSteps
     }
 
     /**
+     * @When I create an organizer and save the :jsonPath as :variableName
+     */
+    public function iCreateAnOrganizerAndSaveTheAs(string $jsonPath, string $variableName): void
+    {
+        $response = $this->getHttpClient()->postJSON(
+            $this->requestState->getBaseUrl() . '/imports/organizers',
+            $this->requestState->getJson()
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseStatusShouldBe(200);
+        $this->theResponseBodyShouldBeValidJson();
+        $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
+    }
+
+    /**
      * @When I update the organizer at :url from :fileName
      */
     public function iUpdateTheOrganizerAtFrom(string $url, string $fileName): void
@@ -67,6 +83,14 @@ trait OrganizerSteps
             $this->variables->getVariable($url),
             $this->fixtures->loadJsonWithRandomName($fileName, $this->variables)
         );
+    }
+
+    /**
+     * @When I update the organizer at :url
+     */
+    public function iUpdateTheOrganizerAt(string $url): void
+    {
+        $this->getHttpClient()->putJSON($url, $this->requestState->getJson());
     }
 
     /**
