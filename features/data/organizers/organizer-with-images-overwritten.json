@@ -1,0 +1,21 @@
+{
+  "mainLanguage":"nl",
+  "name": {
+    "nl": "%{name}"
+  },
+  "url": "https://www.%{name}.be",
+  "images": [
+    {
+      "@id": "%{baseUrl}/images/%{imageId1}",
+      "description": "OVERWRITTEN DESCRIPTION",
+      "copyrightHolder": "OVERWRITTEN COPYRIGHTHOLDER",
+      "inLanguage": "de"
+    },
+    {
+      "id": "%{imageId2}",
+      "description": "OVERWRITTEN DESCRIPTION 2",
+      "copyrightHolder": "OVERWRITTEN COPYRIGHTHOLDER 2",
+      "inLanguage": "fr"
+    }
+  ]
+}

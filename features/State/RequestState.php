@@ -9,9 +9,12 @@ final class RequestState
     private string $baseUrl = '';
     private string $apiKey = '';
     private string $jwt = '';
+
     private string $acceptHeader = '';
     private string $contentTypeHeader = '';
+
     private string $json = '';
+    private array $form = [];
 
     public function getBaseUrl(): string
     {
@@ -71,5 +74,15 @@ final class RequestState
     public function setJson(string $json): void
     {
         $this->json = $json;
+    }
+
+    public function getForm(): array
+    {
+        return $this->form;
+    }
+
+    public function setForm(array $form): void
+    {
+        $this->form = $form;
     }
 }

@@ -57,6 +57,16 @@ final class HttpClient
         );
     }
 
+    public function patchJSON(string $url, string $json): ResponseInterface
+    {
+        return $this->client->patch(
+            $url,
+            [
+                RequestOptions::BODY => $json,
+            ]
+        );
+    }
+
     public function getJSON(string $url): ResponseInterface
     {
         return $this->client->get($url);
@@ -65,5 +75,29 @@ final class HttpClient
     public function delete(string $url): ResponseInterface
     {
         return $this->client->delete($url);
+    }
+
+    public function postMultipart(string $url, array $form, string $fileKey, string $filePath): ResponseInterface
+    {
+        $multipart = [];
+
+        $multipart[] = [
+            'name' => $fileKey,
+            'contents' => fopen(__DIR__ . '/../data/' . $filePath, 'r'),
+        ];
+
+        foreach ($form as $row) {
+            $multipart[] = [
+                'name' => $row[0],
+                'contents' => $row[1],
+            ];
+        }
+
+        return $this->client->post(
+            $url,
+            [
+                RequestOptions::MULTIPART => $multipart,
+            ]
+        );
     }
 }
