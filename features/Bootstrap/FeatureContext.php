@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
+use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\State\ResponseState;
 use CultuurNet\UDB3\Steps\EventSteps;
@@ -54,5 +55,29 @@ final class FeatureContext implements Context
             $this->requestState->getAcceptHeader(),
             $this->requestState->getBaseUrl()
         );
+    }
+
+    /**
+     * @BeforeSuite
+     */
+    public static function beforeSuite(BeforeSuiteScope $scope): void
+    {
+        // TODO: Create test labels if needed
+    }
+
+    /**
+     * @Transform :variableName
+     */
+    public function replaceVariableName($variableName): string
+    {
+        return $this->variables->replaceVariable($variableName);
+    }
+
+    /**
+     * @Transform :url
+     */
+    public function replaceUrl($url): string
+    {
+        return $this->variables->replaceVariable($url);
     }
 }

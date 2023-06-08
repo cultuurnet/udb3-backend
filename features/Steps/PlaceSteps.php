@@ -30,7 +30,7 @@ trait PlaceSteps
     public function iGetThePlaceAt(string $url): void
     {
         $this->responseState->setResponse(
-            $this->getHttpClient()->getJSON($this->variables->getVariable($url))
+            $this->getHttpClient()->getJSON($url)
         );
 
         $this->theResponseStatusShouldBe(200);

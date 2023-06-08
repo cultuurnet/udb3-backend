@@ -43,7 +43,7 @@ trait OrganizerSteps
     /**
      * @When I import a new organizer from :fileName and save the :jsonPath as :variableName
      */
-    public function iImportANewOrganizerFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName)
+    public function iImportANewOrganizerFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName): void
     {
         $organizer = $this->fixtures->loadJsonWithRandomName($fileName, $this->variables);
 
@@ -80,7 +80,7 @@ trait OrganizerSteps
     public function iUpdateTheOrganizerAtFrom(string $url, string $fileName): void
     {
         $this->getHttpClient()->putJSON(
-            $this->variables->getVariable($url),
+            $url,
             $this->fixtures->loadJsonWithRandomName($fileName, $this->variables)
         );
     }
@@ -99,7 +99,7 @@ trait OrganizerSteps
     public function iGetTheOrganizerAt(string $url): void
     {
         $this->responseState->setResponse(
-            $this->getHttpClient()->getJSON($this->variables->getVariable($url))
+            $this->getHttpClient()->getJSON($url)
         );
 
         $this->theResponseStatusShouldBe(200);
@@ -112,7 +112,7 @@ trait OrganizerSteps
     public function iDeleteTheOrganizerAt($url)
     {
         $this->responseState->setResponse(
-            $this->getHttpClient()->delete($this->variables->getVariable($url))
+            $this->getHttpClient()->delete($url)
         );
 
         $this->theResponseStatusShouldBe(204);

@@ -16,7 +16,7 @@ final class Variables
         $this->variables[$key] = $value;
     }
 
-    public function getVariable(string $key): string
+    public function replaceVariable(string $key): string
     {
         if ($this->isVariable($key)) {
             return $this->variables[$this->extractVariable($key)];

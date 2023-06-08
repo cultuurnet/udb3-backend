@@ -32,7 +32,9 @@ trait RequestSteps
      */
     public function iSetTheJsonRequestPayloadTo(PyStringNode $jsonPayload): void
     {
-        $this->requestState->setJson($jsonPayload->getRaw());
+        $this->requestState->setJson(
+            $this->variables->replaceVariable($jsonPayload->getRaw())
+        );
     }
 
     /**
@@ -40,11 +42,7 @@ trait RequestSteps
      */
     public function iSendAPostRequestTo(string $url): void
     {
-        $response = $this->getHttpClient()->postJSON(
-            $url,
-            $this->requestState->getJson()
-        );
-
+        $response = $this->getHttpClient()->postJSON($url, $this->requestState->getJson());
         $this->responseState->setResponse($response);
     }
 
@@ -53,13 +51,7 @@ trait RequestSteps
      */
     public function iSendAPutRequestTo(string $url): void
     {
-        $url = $this->variables->getVariable($url);
-
-        $response = $this->getHttpClient()->putJSON(
-            $url,
-            $this->requestState->getJson()
-        );
-
+        $response = $this->getHttpClient()->putJSON($url, $this->requestState->getJson());
         $this->responseState->setResponse($response);
     }
 
@@ -68,10 +60,7 @@ trait RequestSteps
      */
     public function iSendAGetRequestTo(string $url): void
     {
-        $url = $this->variables->getVariable($url);
-
         $response = $this->getHttpClient()->getJSON($url);
-
         $this->responseState->setResponse($response);
     }
 
@@ -80,10 +69,7 @@ trait RequestSteps
      */
     public function iSendADeleteRequestTo(string $url): void
     {
-        $url = $this->variables->getVariable($url);
-
         $response = $this->getHttpClient()->delete($url);
-
         $this->responseState->setResponse($response);
     }
 }
