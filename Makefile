@@ -27,6 +27,9 @@ test:
 test-filter:
 	docker exec -it php.uitdatabank composer test -- --filter=$(filter)
 
+test-api:
+	docker exec -it php.uitdatabank composer test-api
+
 migrate:
 	docker exec -it php.uitdatabank ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
 

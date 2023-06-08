@@ -122,6 +122,7 @@
   ],
   "scripts": {
     "test": "vendor/bin/phpunit",
+    "test-api": "vendor/bin/behat",
     "phpstan": "vendor/bin/phpstan analyse",
     "migrate": "vendor/bin/doctrine-dbal migrations:migrate --no-interaction",
     "ci": [
