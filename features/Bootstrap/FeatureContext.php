@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Steps\UtilitySteps;
 use CultuurNet\UDB3\Support\HttpClient;
 use CultuurNet\UDB3\Support\Variables;
 use CultuurNet\UDB3\Steps\AuthorizationSteps;
-use CultuurNet\UDB3\Steps\Organizer;
+use CultuurNet\UDB3\Steps\OrganizerSteps;
 
 final class FeatureContext implements Context
 {
@@ -19,7 +19,7 @@ final class FeatureContext implements Context
     use Response;
     use UtilitySteps;
 
-    use Organizer;
+    use OrganizerSteps;
 
     private array $config;
     private Variables $variables;

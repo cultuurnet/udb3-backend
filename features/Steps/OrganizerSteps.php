@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
-trait Organizer
+trait OrganizerSteps
 {
     /**
      * @Given I create a minimal organizer and save the :arg1 as :arg2
@@ -12,7 +12,7 @@ trait Organizer
     public function iCreateAMinimalOrganizerAndSaveTheAs($arg1, $arg2): void
     {
         $response = $this->getHttpClient()->postJSON(
-            $this->baseUrl . '/organizers',
+            $this->requestState->getBaseUrl() . '/organizers',
             $this->loadOrganizerWithRandomName('/organizers/organizer-minimal.json')
         );
 
@@ -27,7 +27,7 @@ trait Organizer
         $organizer = $this->loadOrganizerWithRandomName($arg1);
 
         $response = $this->getHttpClient()->postJSON(
-            $this->baseUrl . '/organizers',
+            $this->requestState->getBaseUrl() . '/organizers',
             $organizer
         );
 
