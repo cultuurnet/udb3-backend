@@ -26,6 +26,10 @@ final class HttpClient
             'Accept' => $acceptHeader,
         ];
 
+        if (empty($jwt)) {
+            unset($headers['Authorization']);
+        }
+
         $this->client = new Client([
             'base_uri' => $baseUrl,
             'http_errors' => false,
