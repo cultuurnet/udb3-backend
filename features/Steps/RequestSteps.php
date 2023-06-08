@@ -64,6 +64,18 @@ trait RequestSteps
     }
 
     /**
+     * @When I send a GET request to :url
+     */
+    public function iSendAGetRequestTo(string $url): void
+    {
+        $url = $this->variables->getVariable($url);
+
+        $response = $this->getHttpClient()->getJSON($url);
+
+        $this->responseState->setResponse($response);
+    }
+
+    /**
      * @When I send a DELETE request to :url
      */
     public function iSendADeleteRequestTo(string $url): void
