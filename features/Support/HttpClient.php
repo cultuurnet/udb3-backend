@@ -57,4 +57,9 @@ final class HttpClient
     {
         return $this->client->get($url);
     }
+
+    public function delete(string $url): ResponseInterface
+    {
+        return $this->client->delete($url);
+    }
 }

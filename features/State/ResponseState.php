@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\State;
 
-use CultuurNet\UDB3\Support\Variables;
 use Psr\Http\Message\ResponseInterface;
 
 final class ResponseState
@@ -17,7 +16,9 @@ final class ResponseState
     {
         $this->statusCode = $response->getStatusCode();
         $this->content = $response->getBody()->getContents();
-        $this->jsonContent = json_decode($this->content, true);
+        if (!empty($this->content)) {
+            $this->jsonContent = json_decode($this->content, true);
+        }
     }
 
     public function getStatusCode(): int
