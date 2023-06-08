@@ -9,7 +9,7 @@ trait RequestSteps
     /**
      * @Given I send and accept :type
      */
-    public function iSendAndAccept($type): void
+    public function iSendAndAccept(string $type): void
     {
         $this->requestState->setAcceptHeader($type);
         $this->requestState->setContentTypeHeader($type);
@@ -18,7 +18,7 @@ trait RequestSteps
     /**
      * @Given I set the JSON request payload from :fileName
      */
-    public function iSetTheJsonRequestPayloadFrom($fileName)
+    public function iSetTheJsonRequestPayloadFrom(string $fileName)
     {
         $this->requestState->setJson(
             $this->fixtures->loadJson($fileName, $this->variables)
@@ -28,7 +28,7 @@ trait RequestSteps
     /**
      * @When I send a POST request to :url
      */
-    public function iSendAPostRequestTo($url)
+    public function iSendAPostRequestTo(string $url)
     {
         $response = $this->getHttpClient()->postJSON(
             $url,

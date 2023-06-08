@@ -17,7 +17,7 @@ trait AuthorizationSteps
     /**
      * @Given I am using an UiTID v1 API key of consumer :consumerName
      */
-    public function iAmUsingAnUitidV1ApiKeyOfConsumer($consumerName): void
+    public function iAmUsingAnUitidV1ApiKeyOfConsumer(string $consumerName): void
     {
         $this->requestState->setApiKey($this->config['apiKeys'][$consumerName]);
     }
@@ -25,7 +25,7 @@ trait AuthorizationSteps
     /**
      * @Given I am authorized as JWT provider v1 user :userName
      */
-    public function iAmAuthorizedAsJwtProviderV1User($userName): void
+    public function iAmAuthorizedAsJwtProviderV1User(string $userName): void
     {
         $this->requestState->setJwt($this->config['users']['uitid_v1'][$userName]['jwt']);
     }

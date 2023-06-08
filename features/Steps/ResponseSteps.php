@@ -13,7 +13,7 @@ trait ResponseSteps
     /**
      * @Then the JSON response at :jsonPath should be :variableName
      */
-    public function theJsonResponseAtShouldBe($jsonPath, $variableName): void
+    public function theJsonResponseAtShouldBe(string $jsonPath, string $variableName): void
     {
         assertEquals(
             $this->variables->getVariable($variableName),
@@ -24,7 +24,7 @@ trait ResponseSteps
     /**
      * @Then the JSON response at :jsonPath should be:
      */
-    public function theJsonResponseAtShouldBe2($jsonPath, PyStringNode $value): void
+    public function theJsonResponseAtShouldBe2(string $jsonPath, PyStringNode $value): void
     {
         assertEquals(
             json_decode($value->getRaw(), true),
@@ -35,7 +35,7 @@ trait ResponseSteps
     /**
      * @Then the JSON response should not have :jsonPath
      */
-    public function theJsonResponseShouldNotHave($jsonPath): void
+    public function theJsonResponseShouldNotHave(string $jsonPath): void
     {
         assertNull($this->responseState->getValueOnPath($jsonPath));
     }
@@ -43,7 +43,7 @@ trait ResponseSteps
     /**
      * @Then the response status should be :statusCode
      */
-    public function theResponseStatusShouldBe($statusCode)
+    public function theResponseStatusShouldBe(int $statusCode)
     {
         assertEquals($statusCode, $this->responseState->getStatusCode());
     }

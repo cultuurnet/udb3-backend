@@ -9,7 +9,7 @@ trait OrganizerSteps
     /**
      * @Given I create a minimal organizer and save the :jsonPath as :variableName
      */
-    public function iCreateAMinimalOrganizerAndSaveTheAs($jsonPath, $variableName): void
+    public function iCreateAMinimalOrganizerAndSaveTheAs(string $jsonPath, string $variableName): void
     {
         $response = $this->getHttpClient()->postJSON(
             $this->requestState->getBaseUrl() . '/organizers',
@@ -25,7 +25,7 @@ trait OrganizerSteps
     /**
      * @When I create an organizer from :fileName and save the :jsonPath as :variableName
      */
-    public function iCreateAnOrganizerFromAndSaveTheAs($fileName, $jsonPath, $variableName): void
+    public function iCreateAnOrganizerFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName): void
     {
         $organizer = $this->fixtures->loadJsonWithRandomName($fileName, $this->variables);
 
@@ -43,7 +43,7 @@ trait OrganizerSteps
     /**
      * @When I import a new organizer from :fileName and save the :jsonPath as :variableName
      */
-    public function iImportANewOrganizerFromAndSaveTheAs($fileName, $jsonPath, $variableName)
+    public function iImportANewOrganizerFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName)
     {
         $organizer = $this->fixtures->loadJsonWithRandomName($fileName, $this->variables);
 
@@ -61,7 +61,7 @@ trait OrganizerSteps
     /**
      * @When I update the organizer at :url from :fileName
      */
-    public function iUpdateTheOrganizerAtFrom($url, $fileName): void
+    public function iUpdateTheOrganizerAtFrom(string $url, string $fileName): void
     {
         $this->getHttpClient()->putJSON(
             $this->variables->getVariable($url),
@@ -72,7 +72,7 @@ trait OrganizerSteps
     /**
      * @When I get the organizer at :url
      */
-    public function iGetTheOrganizerAt($url): void
+    public function iGetTheOrganizerAt(string $url): void
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->getJSON($this->variables->getVariable($url))
