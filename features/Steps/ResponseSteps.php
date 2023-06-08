@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Steps;
 use Behat\Gherkin\Node\PyStringNode;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNull;
+use function PHPUnit\Framework\assertStringContainsString;
 
 trait ResponseSteps
 {
@@ -28,6 +29,17 @@ trait ResponseSteps
     {
         assertEquals(
             json_decode($value->getRaw(), true),
+            $this->responseState->getValueOnPath($jsonPath)
+        );
+    }
+
+    /**
+     * @Then the JSON response at :url should include :value
+     */
+    public function theJsonResponseAtShouldInclude($jsonPath, $value)
+    {
+        assertStringContainsString(
+            $value,
             $this->responseState->getValueOnPath($jsonPath)
         );
     }
