@@ -12,11 +12,14 @@ use function PHPUnit\Framework\assertStringContainsString;
 trait ResponseSteps
 {
     /**
-     * @Then the JSON response at :jsonPath should be :variableName
+     * @Then the JSON response at :jsonPath should be :value
      */
-    public function theJsonResponseAtShouldBe(string $jsonPath, string $variableName): void
+    public function theJsonResponseAtShouldBe(string $jsonPath, string $value): void
     {
-        assertEquals($variableName, $this->responseState->getValueOnPath($jsonPath));
+        assertEquals(
+            $this->variables->replaceVariable($value),
+            $this->responseState->getValueOnPath($jsonPath)
+        );
     }
 
     /**
@@ -25,7 +28,7 @@ trait ResponseSteps
     public function theJsonResponseAtShouldBe2(string $jsonPath, PyStringNode $value): void
     {
         assertEquals(
-            json_decode($value->getRaw(), true),
+            json_decode($this->variables->replaceVariable($value->getRaw()), true),
             $this->responseState->getValueOnPath($jsonPath)
         );
     }

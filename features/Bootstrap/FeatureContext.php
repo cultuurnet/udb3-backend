@@ -66,14 +66,6 @@ final class FeatureContext implements Context
     }
 
     /**
-     * @Transform :variableName
-     */
-    public function replaceVariableName($variableName): string
-    {
-        return $this->variables->replaceVariable($variableName);
-    }
-
-    /**
      * @Transform :url
      */
     public function replaceUrl($url): string
