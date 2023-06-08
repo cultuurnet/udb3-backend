@@ -15,11 +15,11 @@ trait OrganizerSteps
             $this->requestState->getBaseUrl() . '/organizers',
             $this->fixtures->loadJsonWithRandomName('/organizers/organizer-minimal.json', $this->variables)
         );
-
-        $this->responseState->setResponseAndStoreVariable($response, $this->variables, $jsonPath, $variableName);
+        $this->responseState->setResponse($response);
 
         $this->theResponseStatusShouldBe(201);
         $this->theResponseBodyShouldBeValidJson();
+        $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
     }
 
     /**
@@ -33,11 +33,11 @@ trait OrganizerSteps
             $this->requestState->getBaseUrl() . '/organizers',
             $organizer
         );
-
-        $this->responseState->setResponseAndStoreVariable($response, $this->variables, $jsonPath, $variableName);
+        $this->responseState->setResponse($response);
 
         $this->theResponseStatusShouldBe(201);
         $this->theResponseBodyShouldBeValidJson();
+        $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
     }
 
     /**
@@ -51,11 +51,11 @@ trait OrganizerSteps
             $this->requestState->getBaseUrl() . '/imports/organizers',
             $organizer
         );
-
-        $this->responseState->setResponseAndStoreVariable($response, $this->variables, $jsonPath, $variableName);
+        $this->responseState->setResponse($response);
 
         $this->theResponseStatusShouldBe(200);
         $this->theResponseBodyShouldBeValidJson();
+        $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
     }
 
     /**

@@ -66,4 +66,15 @@ trait ResponseSteps
         json_decode($this->responseState->getContent());
         assertEquals(JSON_ERROR_NONE, json_last_error());
     }
+
+    /**
+     * @Then I keep the value of the JSON response at :jsonPath as :variableName
+     */
+    public function iKeepTheValueOfTheJsonResponseAtAs(string $jsonPath, string $variableName)
+    {
+        $this->variables->addVariable(
+            $variableName,
+            $this->responseState->getValueOnPath($jsonPath)
+        );
+    }
 }

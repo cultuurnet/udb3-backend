@@ -20,16 +20,6 @@ final class ResponseState
         $this->jsonContent = json_decode($this->content, true);
     }
 
-    public function setResponseAndStoreVariable(
-        ResponseInterface $response,
-        Variables $variables,
-        string $path,
-        string $variableName
-    ): void {
-        $this->setResponse($response);
-        $variables->addVariable($variableName, $this->getValueOnPath($path));
-    }
-
     public function getStatusCode(): int
     {
         return $this->statusCode;
