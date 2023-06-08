@@ -77,9 +77,10 @@ trait ResponseSteps
      */
     public function theJsonResponseShouldBe(PyStringNode $value): void
     {
-        $name = $this->variableState->replaceVariables('name');
-        $value = str_replace('%{name}', $name, $value->getRaw());
-        assertEquals(json_decode($value, true), $this->responseState->getJsonContent());
+        assertEquals(
+            json_decode($this->variableState->replaceVariables($value->getRaw()), true),
+            $this->responseState->getJsonContent()
+        );
     }
 
     /**
