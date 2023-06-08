@@ -148,3 +148,60 @@ Feature: Test creating organizers
       ]
     }
     """
+
+  Scenario: Create a new organizer with minimal properties via the old imports path
+    Given I import a new organizer from "organizers/organizer-minimal.json" and save the "url" as "organizerUrl"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "@id" should be "%{organizerUrl}"
+    And the JSON response at "mainLanguage" should be "nl"
+    And the JSON response at "name/nl" should be "%{name}"
+    And the JSON response at "url" should be "https://www.%{name}.be"
+
+  Scenario: Create a new organizer with all properties via the old imports path
+    Given I import a new organizer from "organizers/organizer.json" and save the "url" as "organizerUrl"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "@id" should be "%{organizerUrl}"
+    And the JSON response at "mainLanguage" should be "nl"
+    And the JSON response at "name/nl" should be "%{name}"
+    And the JSON response at "url" should be "https://www.%{name}.be"
+    And the JSON response at "address" should be:
+    """
+    {
+      "nl": {
+        "streetAddress": "Henegouwenkaai 41-43",
+        "postalCode": "1080",
+        "addressLocality": "Brussel",
+        "addressCountry": "BE"
+      },
+      "fr": {
+        "streetAddress": "Quai du Hainaut 41-43",
+        "postalCode": "1080",
+        "addressLocality": "Bruxelles",
+        "addressCountry": "BE"
+      }
+    }
+    """
+    And the JSON response at "labels" should be:
+    """
+    [ "public-visible" ]
+    """
+    And the JSON response at "hiddenLabels" should be:
+    """
+    [ "public-invisible" ]
+    """
+    And the JSON response at "contactPoint" should be:
+    """
+    {
+      "phone": [
+        "123",
+        "456"
+      ],
+      "email": [
+        "mock@publiq.be"
+      ],
+      "url": [
+        "https://www.publiq.be",
+        "https://www.madewithlove.be"
+      ]
+    }
+    """
