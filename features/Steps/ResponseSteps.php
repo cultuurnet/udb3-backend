@@ -51,7 +51,7 @@ trait ResponseSteps
     /**
      * @Then the JSON response should be:
      */
-    public function theJsonResponseShouldBe(PyStringNode $value)
+    public function theJsonResponseShouldBe(PyStringNode $value): void
     {
         $name = $this->variables->getVariable('name');
         $value = str_replace('%{name}', $name, $value->getRaw());
@@ -61,7 +61,7 @@ trait ResponseSteps
     /**
      * @Then the response body should be valid JSON
      */
-    public function theResponseBodyShouldBeValidJson()
+    public function theResponseBodyShouldBeValidJson(): void
     {
         json_decode($this->responseState->getContent());
         assertEquals(JSON_ERROR_NONE, json_last_error());
@@ -70,7 +70,7 @@ trait ResponseSteps
     /**
      * @Then I keep the value of the JSON response at :jsonPath as :variableName
      */
-    public function iKeepTheValueOfTheJsonResponseAtAs(string $jsonPath, string $variableName)
+    public function iKeepTheValueOfTheJsonResponseAtAs(string $jsonPath, string $variableName): void
     {
         $this->variables->addVariable(
             $variableName,
