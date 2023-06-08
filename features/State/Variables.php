@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Support;
+namespace CultuurNet\UDB3\State;
 
 final class Variables
 {

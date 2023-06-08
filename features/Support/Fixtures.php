@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Support;
 
+use CultuurNet\UDB3\State\Variables;
+
 final class Fixtures
 {
     public function loadJson(string $filename, Variables $variables): string

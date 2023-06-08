@@ -6,16 +6,16 @@ use Behat\Behat\Context\Context;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\State\ResponseState;
+use CultuurNet\UDB3\State\Variables;
+use CultuurNet\UDB3\Steps\AuthorizationSteps;
 use CultuurNet\UDB3\Steps\EventSteps;
+use CultuurNet\UDB3\Steps\OrganizerSteps;
 use CultuurNet\UDB3\Steps\PlaceSteps;
 use CultuurNet\UDB3\Steps\RequestSteps;
 use CultuurNet\UDB3\Steps\ResponseSteps;
 use CultuurNet\UDB3\Steps\UtilitySteps;
 use CultuurNet\UDB3\Support\Fixtures;
 use CultuurNet\UDB3\Support\HttpClient;
-use CultuurNet\UDB3\Support\Variables;
-use CultuurNet\UDB3\Steps\AuthorizationSteps;
-use CultuurNet\UDB3\Steps\OrganizerSteps;
 
 final class FeatureContext implements Context
 {
