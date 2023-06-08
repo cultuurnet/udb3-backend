@@ -13,7 +13,7 @@ trait OrganizerSteps
     {
         $response = $this->getHttpClient()->postJSON(
             $this->requestState->getBaseUrl() . '/organizers',
-            $this->loadOrganizerWithRandomName('/organizers/organizer-minimal.json')
+            $this->fixtures->loadJsonWithRandomName('/organizers/organizer-minimal.json', $this->variables)
         );
 
         $this->storeResponseValue($response, $arg1, $arg2);
@@ -24,7 +24,7 @@ trait OrganizerSteps
      */
     public function iCreateAnOrganizerFromAndSaveTheAs($arg1, $arg2, $arg3): void
     {
-        $organizer = $this->loadOrganizerWithRandomName($arg1);
+        $organizer = $this->fixtures->loadJsonWithRandomName($arg1, $this->variables);
 
         $response = $this->getHttpClient()->postJSON(
             $this->requestState->getBaseUrl() . '/organizers',
@@ -41,7 +41,7 @@ trait OrganizerSteps
     {
         $this->getHttpClient()->putJSON(
             $this->variables->getVariable($arg1),
-            $this->loadOrganizerWithRandomName($arg2)
+            $this->fixtures->loadJsonWithRandomName($arg2, $this->variables)
         );
     }
 
@@ -53,12 +53,5 @@ trait OrganizerSteps
         $this->storeResponse(
             $this->getHttpClient()->getJSON($this->variables->getVariable($arg1))
         );
-    }
-
-    private function loadOrganizerWithRandomName(string $filename): string
-    {
-        $organizer = file_get_contents(__DIR__ . '/../data/' . $filename);
-        $name = $this->iCreateARandomNameOfCharacters(10);
-        return str_replace('%{name}', $name, $organizer);
     }
 }

@@ -20,9 +20,9 @@ trait RequestSteps
      */
     public function iSetTheJsonRequestPayloadFrom($arg1)
     {
-        $organizer = file_get_contents(__DIR__ . '/../data/' . $arg1);
-        $name = $this->variables->getVariable('name');
-        $this->requestState->setJson(str_replace('%{name}', $name, $organizer));
+        $this->requestState->setJson(
+            $this->fixtures->loadJson($arg1, $this->variables)
+        );
     }
 
     /**

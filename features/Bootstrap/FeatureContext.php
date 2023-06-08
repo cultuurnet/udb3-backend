@@ -7,6 +7,7 @@ use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\Steps\RequestSteps;
 use CultuurNet\UDB3\Steps\Response;
 use CultuurNet\UDB3\Steps\UtilitySteps;
+use CultuurNet\UDB3\Support\Fixtures;
 use CultuurNet\UDB3\Support\HttpClient;
 use CultuurNet\UDB3\Support\Variables;
 use CultuurNet\UDB3\Steps\AuthorizationSteps;
@@ -23,6 +24,7 @@ final class FeatureContext implements Context
 
     private array $config;
     private Variables $variables;
+    private Fixtures $fixtures;
     private RequestState $requestState;
 
     public function __construct()
@@ -30,6 +32,7 @@ final class FeatureContext implements Context
         $this->config = require __DIR__ . '/../config.php';
 
         $this->variables = new Variables();
+        $this->fixtures = new Fixtures();
         $this->requestState = new RequestState();
     }
 

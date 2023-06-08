@@ -9,8 +9,8 @@ trait UtilitySteps
     /**
      * @Given I create a random name of :arg1 characters
      */
-    public function iCreateARandomNameOfCharacters(int $arg1): string
+    public function iCreateARandomNameOfCharacters(int $arg1): void
     {
-        return $this->variables->addRandomVariable('name', $arg1);
+        $this->variables->addRandomVariable('name', $arg1);
     }
 }
