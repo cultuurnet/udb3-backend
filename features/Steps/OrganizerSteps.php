@@ -16,7 +16,7 @@ trait OrganizerSteps
             $this->fixtures->loadJsonWithRandomName('/organizers/organizer-minimal.json', $this->variables)
         );
 
-        $this->storeResponseValue($response, $arg1, $arg2);
+        $this->responseState->setResponseAndStoreVariable($response, $this->variables, $arg1, $arg2);
     }
 
     /**
@@ -31,7 +31,7 @@ trait OrganizerSteps
             $organizer
         );
 
-        $this->storeResponseValue($response, $arg2, $arg3);
+        $this->responseState->setResponseAndStoreVariable($response, $this->variables, $arg2, $arg3);
     }
 
     /**
@@ -50,7 +50,7 @@ trait OrganizerSteps
      */
     public function iGetTheOrganizerAt($arg1): void
     {
-        $this->storeResponse(
+        $this->responseState->setResponse(
             $this->getHttpClient()->getJSON($this->variables->getVariable($arg1))
         );
     }

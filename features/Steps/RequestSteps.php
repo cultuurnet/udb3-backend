@@ -35,6 +35,6 @@ trait RequestSteps
             $this->requestState->getJson()
         );
 
-        $this->storeResponse($response);
+        $this->responseState->setResponse($response);
     }
 }

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
 use CultuurNet\UDB3\State\RequestState;
+use CultuurNet\UDB3\State\ResponseState;
 use CultuurNet\UDB3\Steps\RequestSteps;
-use CultuurNet\UDB3\Steps\Response;
+use CultuurNet\UDB3\Steps\ResponseSteps;
 use CultuurNet\UDB3\Steps\UtilitySteps;
 use CultuurNet\UDB3\Support\Fixtures;
 use CultuurNet\UDB3\Support\HttpClient;
@@ -17,7 +18,7 @@ final class FeatureContext implements Context
 {
     use AuthorizationSteps;
     use RequestSteps;
-    use Response;
+    use ResponseSteps;
     use UtilitySteps;
 
     use OrganizerSteps;
@@ -25,7 +26,9 @@ final class FeatureContext implements Context
     private array $config;
     private Variables $variables;
     private Fixtures $fixtures;
+
     private RequestState $requestState;
+    private ResponseState $responseState;
 
     public function __construct()
     {
@@ -33,7 +36,9 @@ final class FeatureContext implements Context
 
         $this->variables = new Variables();
         $this->fixtures = new Fixtures();
+
         $this->requestState = new RequestState();
+        $this->responseState = new ResponseState();
     }
 
     private function getHttpClient(): HttpClient
