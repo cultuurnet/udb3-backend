@@ -1,4 +1,3 @@
-@api @organizers
 Feature: Test organizer url property
 
   Background:

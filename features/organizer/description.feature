@@ -1,4 +1,3 @@
-@api @organizers
 Feature: Test organizer description property
 
   Background:
@@ -8,7 +7,6 @@ Feature: Test organizer description property
     And I send and accept "application/json"
     And I create a minimal organizer and save the "url" as "organizerUrl"
 
-  @description
   Scenario: Set organizer description in `en` via description endpoint
     When I set the JSON request payload to:
     """
@@ -22,7 +20,6 @@ Feature: Test organizer description property
     {"en": "The best organizer in the world!"}
     """
 
-  @description
   Scenario: Set organizer description in `en` and `fr` via description endpoint
     When I set the JSON request payload to:
     """
@@ -45,7 +42,6 @@ Feature: Test organizer description property
     }
     """
 
-  @description
   Scenario: Set and then update organizer description in `en` via description endpoint
     When I set the JSON request payload to:
     """
@@ -67,7 +63,6 @@ Feature: Test organizer description property
     }
     """
 
-  @description
   Scenario: Remove organizer description via description endpoint
     When I set the JSON request payload to:
     """

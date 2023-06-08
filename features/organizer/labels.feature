@@ -1,4 +1,3 @@
-@api @organizers
 Feature: Test organizer labels property
 
   Background:

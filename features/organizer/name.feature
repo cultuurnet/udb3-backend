@@ -1,4 +1,3 @@
-@api @organizers
 Feature: Test organizer name property
 
   Background:
@@ -8,7 +7,6 @@ Feature: Test organizer name property
     And I send and accept "application/json"
     And I create a minimal organizer and save the "url" as "organizerUrl"
 
-  @name
   Scenario: Update organizer name in default language `nl` via name endpoint
     When I set the JSON request payload to:
     """
@@ -19,7 +17,6 @@ Feature: Test organizer name property
     When I get the organizer at "%{organizerUrl}"
     Then the JSON response at "name/nl" should be "madewithlove"
 
-  @name
   Scenario: Update organizer name in non-default language `fr` via name endpoint
     When I set the JSON request payload to:
     """
