@@ -21,7 +21,7 @@ final class Fixtures
 
     public function loadJsonWithRandomName(string $filename, VariableState $variables): string
     {
-        $variables->addRandomVariable('name', 10);
+        $variables->setRandomVariable('name', 10);
         return $this->loadJson($filename, $variables);
     }
 }

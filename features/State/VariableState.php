@@ -11,12 +11,24 @@ final class VariableState
 
     private array $variables = [];
 
-    public function addVariable(string $key, string $value): void
+    public function setVariable(string $key, string $value): void
     {
         $this->variables[$key] = $value;
     }
 
-    public function replaceVariable(string $key): string
+    public function setRandomVariable(string $key, int $length): string
+    {
+        $variable = $this->generateRandomVariable($length);
+        $this->variables[$key] = $variable;
+        return $variable;
+    }
+
+    public function getVariables(): array
+    {
+        return $this->variables;
+    }
+
+    public function replaceVariables(string $key): string
     {
         if ($this->isVariable($key)) {
             return $this->variables[$this->extractVariable($key)];
@@ -29,18 +41,6 @@ final class VariableState
         }
 
         return $this->variableState[$key] ?? $key;
-    }
-
-    public function getVariables(): array
-    {
-        return $this->variables;
-    }
-
-    public function addRandomVariable(string $key, int $length): string
-    {
-        $variable = $this->generateRandomVariable($length);
-        $this->variables[$key] = $variable;
-        return $variable;
     }
 
     private function generateRandomVariable(int $length): string

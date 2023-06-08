@@ -34,7 +34,7 @@ trait RequestSteps
     public function iSetTheJsonRequestPayloadTo(PyStringNode $jsonPayload): void
     {
         $this->requestState->setJson(
-            $this->variableState->replaceVariable($jsonPayload->getRaw())
+            $this->variableState->replaceVariables($jsonPayload->getRaw())
         );
     }
 

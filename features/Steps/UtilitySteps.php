@@ -11,6 +11,6 @@ trait UtilitySteps
      */
     public function iCreateARandomNameOfCharacters(int $nrOfCharacters): void
     {
-        $this->variableState->addRandomVariable('name', $nrOfCharacters);
+        $this->variableState->setRandomVariable('name', $nrOfCharacters);
     }
 }

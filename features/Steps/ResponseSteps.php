@@ -18,7 +18,7 @@ trait ResponseSteps
     public function theJsonResponseAtShouldBe(string $jsonPath, string $value): void
     {
         assertEquals(
-            $this->variableState->replaceVariable($value),
+            $this->variableState->replaceVariables($value),
             $this->responseState->getValueOnPath($jsonPath)
         );
     }
@@ -29,7 +29,7 @@ trait ResponseSteps
     public function theJsonResponseAtShouldNotBe($jsonPath, $value)
     {
         assertNotEquals(
-            $this->variableState->replaceVariable($value),
+            $this->variableState->replaceVariables($value),
             $this->responseState->getValueOnPath($jsonPath)
         );
     }
@@ -40,7 +40,7 @@ trait ResponseSteps
     public function theJsonResponseAtShouldBe2(string $jsonPath, PyStringNode $value): void
     {
         assertEquals(
-            json_decode($this->variableState->replaceVariable($value->getRaw()), true),
+            json_decode($this->variableState->replaceVariables($value->getRaw()), true),
             $this->responseState->getValueOnPath($jsonPath)
         );
     }
@@ -77,7 +77,7 @@ trait ResponseSteps
      */
     public function theJsonResponseShouldBe(PyStringNode $value): void
     {
-        $name = $this->variableState->replaceVariable('name');
+        $name = $this->variableState->replaceVariables('name');
         $value = str_replace('%{name}', $name, $value->getRaw());
         assertEquals(json_decode($value, true), $this->responseState->getJsonContent());
     }
@@ -96,7 +96,7 @@ trait ResponseSteps
      */
     public function iKeepTheValueOfTheJsonResponseAtAs(string $jsonPath, string $variableName): void
     {
-        $this->variableState->addVariable(
+        $this->variableState->setVariable(
             $variableName,
             $this->responseState->getValueOnPath($jsonPath)
         );

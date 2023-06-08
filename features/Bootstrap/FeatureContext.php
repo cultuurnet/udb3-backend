@@ -70,6 +70,6 @@ final class FeatureContext implements Context
      */
     public function replaceUrl($url): string
     {
-        return $this->variableState->replaceVariable($url);
+        return $this->variableState->replaceVariables($url);
     }
 }
