@@ -17,6 +17,9 @@ trait OrganizerSteps
         );
 
         $this->responseState->setResponseAndStoreVariable($response, $this->variables, $jsonPath, $variableName);
+
+        $this->theResponseStatusShouldBe(201);
+        $this->theResponseBodyShouldBeValidJson();
     }
 
     /**
@@ -32,6 +35,9 @@ trait OrganizerSteps
         );
 
         $this->responseState->setResponseAndStoreVariable($response, $this->variables, $jsonPath, $variableName);
+
+        $this->theResponseStatusShouldBe(201);
+        $this->theResponseBodyShouldBeValidJson();
     }
 
     /**
@@ -53,5 +59,8 @@ trait OrganizerSteps
         $this->responseState->setResponse(
             $this->getHttpClient()->getJSON($this->variables->getVariable($url))
         );
+
+        $this->theResponseStatusShouldBe(200);
+        $this->theResponseBodyShouldBeValidJson();
     }
 }

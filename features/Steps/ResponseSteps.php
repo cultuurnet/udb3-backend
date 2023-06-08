@@ -33,7 +33,7 @@ trait ResponseSteps
     }
 
     /**
-     * @When the JSON response should not have :jsonPath
+     * @Then the JSON response should not have :jsonPath
      */
     public function theJsonResponseShouldNotHave($jsonPath): void
     {
@@ -56,5 +56,14 @@ trait ResponseSteps
         $name = $this->variables->getVariable('name');
         $value = str_replace('%{name}', $name, $value->getRaw());
         assertEquals(json_decode($value, true), $this->responseState->getJsonContent());
+    }
+
+    /**
+     * @Then the response body should be valid JSON
+     */
+    public function theResponseBodyShouldBeValidJson()
+    {
+        json_decode($this->responseState->getContent());
+        assertEquals(JSON_ERROR_NONE, json_last_error());
     }
 }
