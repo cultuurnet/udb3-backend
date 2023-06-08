@@ -7,51 +7,51 @@ namespace CultuurNet\UDB3\Steps;
 trait OrganizerSteps
 {
     /**
-     * @Given I create a minimal organizer and save the :arg1 as :arg2
+     * @Given I create a minimal organizer and save the :jsonPath as :variableName
      */
-    public function iCreateAMinimalOrganizerAndSaveTheAs($arg1, $arg2): void
+    public function iCreateAMinimalOrganizerAndSaveTheAs($jsonPath, $variableName): void
     {
         $response = $this->getHttpClient()->postJSON(
             $this->requestState->getBaseUrl() . '/organizers',
             $this->fixtures->loadJsonWithRandomName('/organizers/organizer-minimal.json', $this->variables)
         );
 
-        $this->responseState->setResponseAndStoreVariable($response, $this->variables, $arg1, $arg2);
+        $this->responseState->setResponseAndStoreVariable($response, $this->variables, $jsonPath, $variableName);
     }
 
     /**
-     * @When I create an organizer from :arg1 and save the :arg2 as :arg3
+     * @When I create an organizer from :fileName and save the :jsonPath as :variableName
      */
-    public function iCreateAnOrganizerFromAndSaveTheAs($arg1, $arg2, $arg3): void
+    public function iCreateAnOrganizerFromAndSaveTheAs($fileName, $jsonPath, $variableName): void
     {
-        $organizer = $this->fixtures->loadJsonWithRandomName($arg1, $this->variables);
+        $organizer = $this->fixtures->loadJsonWithRandomName($fileName, $this->variables);
 
         $response = $this->getHttpClient()->postJSON(
             $this->requestState->getBaseUrl() . '/organizers',
             $organizer
         );
 
-        $this->responseState->setResponseAndStoreVariable($response, $this->variables, $arg2, $arg3);
+        $this->responseState->setResponseAndStoreVariable($response, $this->variables, $jsonPath, $variableName);
     }
 
     /**
-     * @When I update the organizer at :arg1 from :arg2
+     * @When I update the organizer at :url from :fileName
      */
-    public function iUpdateTheOrganizerAtFrom($arg1, $arg2): void
+    public function iUpdateTheOrganizerAtFrom($url, $fileName): void
     {
         $this->getHttpClient()->putJSON(
-            $this->variables->getVariable($arg1),
-            $this->fixtures->loadJsonWithRandomName($arg2, $this->variables)
+            $this->variables->getVariable($url),
+            $this->fixtures->loadJsonWithRandomName($fileName, $this->variables)
         );
     }
 
     /**
-     * @When I get the organizer at :arg1
+     * @When I get the organizer at :url
      */
-    public function iGetTheOrganizerAt($arg1): void
+    public function iGetTheOrganizerAt($url): void
     {
         $this->responseState->setResponse(
-            $this->getHttpClient()->getJSON($this->variables->getVariable($arg1))
+            $this->getHttpClient()->getJSON($this->variables->getVariable($url))
         );
     }
 }

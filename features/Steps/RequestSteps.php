@@ -7,31 +7,31 @@ namespace CultuurNet\UDB3\Steps;
 trait RequestSteps
 {
     /**
-     * @Given I send and accept :arg1
+     * @Given I send and accept :type
      */
-    public function iSendAndAccept($arg1): void
+    public function iSendAndAccept($type): void
     {
-        $this->requestState->setAcceptHeader($arg1);
-        $this->requestState->setContentTypeHeader($arg1);
+        $this->requestState->setAcceptHeader($type);
+        $this->requestState->setContentTypeHeader($type);
     }
 
     /**
-     * @Given I set the JSON request payload from :arg1
+     * @Given I set the JSON request payload from :fileName
      */
-    public function iSetTheJsonRequestPayloadFrom($arg1)
+    public function iSetTheJsonRequestPayloadFrom($fileName)
     {
         $this->requestState->setJson(
-            $this->fixtures->loadJson($arg1, $this->variables)
+            $this->fixtures->loadJson($fileName, $this->variables)
         );
     }
 
     /**
-     * @When I send a POST request to :arg1
+     * @When I send a POST request to :url
      */
-    public function iSendAPostRequestTo($arg1)
+    public function iSendAPostRequestTo($url)
     {
         $response = $this->getHttpClient()->postJSON(
-            $arg1,
+            $url,
             $this->requestState->getJson()
         );
 

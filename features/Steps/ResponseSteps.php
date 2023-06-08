@@ -11,50 +11,50 @@ use function PHPUnit\Framework\assertNull;
 trait ResponseSteps
 {
     /**
-     * @Then the JSON response at :arg1 should be :arg2
+     * @Then the JSON response at :jsonPath should be :variableName
      */
-    public function theJsonResponseAtShouldBe($arg1, $arg2): void
+    public function theJsonResponseAtShouldBe($jsonPath, $variableName): void
     {
         assertEquals(
-            $this->variables->getVariable($arg2),
-            $this->responseState->getValueOnPath($arg1)
+            $this->variables->getVariable($variableName),
+            $this->responseState->getValueOnPath($jsonPath)
         );
     }
 
     /**
-     * @Then the JSON response at :arg1 should be:
+     * @Then the JSON response at :jsonPath should be:
      */
-    public function theJsonResponseAtShouldBe2($arg1, PyStringNode $string): void
+    public function theJsonResponseAtShouldBe2($jsonPath, PyStringNode $value): void
     {
         assertEquals(
-            json_decode($string->getRaw(), true),
-            $this->responseState->getValueOnPath($arg1)
+            json_decode($value->getRaw(), true),
+            $this->responseState->getValueOnPath($jsonPath)
         );
     }
 
     /**
-     * @When the JSON response should not have :arg1
+     * @When the JSON response should not have :jsonPath
      */
-    public function theJsonResponseShouldNotHave($arg1): void
+    public function theJsonResponseShouldNotHave($jsonPath): void
     {
-        assertNull($this->responseState->getValueOnPath($arg1));
+        assertNull($this->responseState->getValueOnPath($jsonPath));
     }
 
     /**
-     * @Then the response status should be :arg1
+     * @Then the response status should be :statusCode
      */
-    public function theResponseStatusShouldBe($arg1)
+    public function theResponseStatusShouldBe($statusCode)
     {
-        assertEquals($arg1, $this->responseState->getStatusCode());
+        assertEquals($statusCode, $this->responseState->getStatusCode());
     }
 
     /**
      * @Then the JSON response should be:
      */
-    public function theJsonResponseShouldBe(PyStringNode $string)
+    public function theJsonResponseShouldBe(PyStringNode $value)
     {
         $name = $this->variables->getVariable('name');
-        $string = str_replace('%{name}', $name, $string->getRaw());
-        assertEquals(json_decode($string, true), $this->responseState->getJsonContent());
+        $value = str_replace('%{name}', $name, $value->getRaw());
+        assertEquals(json_decode($value, true), $this->responseState->getJsonContent());
     }
 }

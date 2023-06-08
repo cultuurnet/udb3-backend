@@ -7,10 +7,10 @@ namespace CultuurNet\UDB3\Steps;
 trait UtilitySteps
 {
     /**
-     * @Given I create a random name of :arg1 characters
+     * @Given I create a random name of :nrOfCharacters characters
      */
-    public function iCreateARandomNameOfCharacters(int $arg1): void
+    public function iCreateARandomNameOfCharacters(int $nrOfCharacters): void
     {
-        $this->variables->addRandomVariable('name', $arg1);
+        $this->variables->addRandomVariable('name', $nrOfCharacters);
     }
 }
