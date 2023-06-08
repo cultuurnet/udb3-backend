@@ -4,9 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
-trait Request
+trait RequestSteps
 {
-    private string $json = '';
+    /**
+     * @Given I send and accept :arg1
+     */
+    public function iSendAndAccept($arg1): void
+    {
+        $this->requestState->setAcceptHeader($arg1);
+        $this->requestState->setContentTypeHeader($arg1);
+    }
 
     /**
      * @Given I set the JSON request payload from :arg1
@@ -15,7 +22,7 @@ trait Request
     {
         $organizer = file_get_contents(__DIR__ . '/../data/' . $arg1);
         $name = $this->variables->getVariable('name');
-        $this->json = str_replace('%{name}', $name, $organizer);
+        $this->requestState->setJson(str_replace('%{name}', $name, $organizer));
     }
 
     /**
@@ -25,7 +32,7 @@ trait Request
     {
         $response = $this->getHttpClient()->postJSON(
             $arg1,
-            $this->json
+            $this->requestState->getJson()
         );
 
         $this->storeResponse($response);

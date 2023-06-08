@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
-trait Authorization
+trait AuthorizationSteps
 {
-    private string $baseUrl = '';
-    private string $apiKey = '';
-    private string $jwt = '';
-
     /**
      * @Given I am using the UDB3 base URL
      */
     public function iAmUsingTheUDB3BaseURL(): void
     {
-        $this->baseUrl = $this->config['base_url'];
+        $this->requestState->setBaseUrl($this->config['base_url']);
     }
 
     /**
@@ -23,7 +19,7 @@ trait Authorization
      */
     public function iAmUsingAnUitidV1ApiKeyOfConsumer($arg1): void
     {
-        $this->apiKey = $this->config['apiKeys'][$arg1];
+        $this->requestState->setApiKey($this->config['apiKeys'][$arg1]);
     }
 
     /**
@@ -31,6 +27,6 @@ trait Authorization
      */
     public function iAmAuthorizedAsJwtProviderV1User($arg1): void
     {
-        $this->jwt = $this->config['users']['uitid_v1'][$arg1]['jwt'];
+        $this->requestState->setJwt($this->config['users']['uitid_v1'][$arg1]['jwt']);
     }
 }
