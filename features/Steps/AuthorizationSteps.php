@@ -29,4 +29,13 @@ trait AuthorizationSteps
     {
         $this->requestState->setJwt($this->config['users']['uitid_v1'][$userName]['jwt']);
     }
+
+    /**
+     * @Given I am not authorized
+     */
+    public function iAmNotAuthorized(): void
+    {
+        $this->requestState->setJwt('');
+    }
+
 }
