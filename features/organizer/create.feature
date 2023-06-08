@@ -105,3 +105,46 @@ Feature: Test creating organizers
      "detail": "The url https://www.%{name}.be (normalized to %{name}.be) is already in use."
     }
     """
+
+  Scenario: Create a new organizer with minimal properties from the legacy schema
+    Given I create an organizer from "organizers/legacy/create-organizer-with-required-properties.json" and save the "url" as "organizerUrl"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "@id" should be "%{organizerUrl}"
+    And the JSON response at "mainLanguage" should be "nl"
+    And the JSON response at "name/nl" should be "%{name}"
+    And the JSON response at "url" should be "https://www.%{name}.be"
+
+  Scenario: Create a new organizer with all properties from the legacy schema
+    Given I create an organizer from "organizers/legacy/create-organizer-with-all-properties.json" and save the "url" as "organizerUrl"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "@id" should be "%{organizerUrl}"
+    And the JSON response at "mainLanguage" should be "nl"
+    And the JSON response at "name/nl" should be "%{name}"
+    And the JSON response at "url" should be "https://www.%{name}.be"
+    And the JSON response at "address" should be:
+    """
+    {
+      "nl": {
+        "streetAddress": "Henegouwenkaai 41-43",
+        "postalCode": "1080",
+        "addressLocality": "Brussel",
+        "addressCountry": "BE"
+      }
+    }
+    """
+    And the JSON response at "contactPoint" should be:
+    """
+    {
+      "phone": [
+        "123",
+        "456"
+      ],
+      "email": [
+        "mock@publiq.be"
+      ],
+      "url": [
+        "https://www.publiq.be",
+        "https://www.madewithlove.be"
+      ]
+    }
+    """
