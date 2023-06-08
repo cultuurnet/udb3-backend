@@ -6,7 +6,7 @@ use Behat\Behat\Context\Context;
 use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\Steps\RequestSteps;
 use CultuurNet\UDB3\Steps\Response;
-use CultuurNet\UDB3\Steps\Utils;
+use CultuurNet\UDB3\Steps\UtilitySteps;
 use CultuurNet\UDB3\Support\HttpClient;
 use CultuurNet\UDB3\Support\Variables;
 use CultuurNet\UDB3\Steps\AuthorizationSteps;
@@ -17,7 +17,7 @@ final class FeatureContext implements Context
     use AuthorizationSteps;
     use RequestSteps;
     use Response;
-    use Utils;
+    use UtilitySteps;
 
     use Organizer;
 
