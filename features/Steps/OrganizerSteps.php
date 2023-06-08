@@ -81,4 +81,16 @@ trait OrganizerSteps
         $this->theResponseStatusShouldBe(200);
         $this->theResponseBodyShouldBeValidJson();
     }
+
+    /**
+     * @When I delete the organizer at :url
+     */
+    public function iDeleteTheOrganizerAt($url)
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->delete($this->variables->getVariable($url))
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
 }

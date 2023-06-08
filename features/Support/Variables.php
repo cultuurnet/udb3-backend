@@ -22,13 +22,18 @@ final class Variables
             return $this->variables[$this->extractVariable($key)];
         }
 
-        if ($this->containsVariable($key)) {
+        while ($this->containsVariable($key)) {
             $variable = $this->extractVariable($key);
             $value = $this->variables[$variable];
-            return str_replace('%{' . $variable . '}', $value, $key);
+            $key = str_replace('%{' . $variable . '}', $value, $key);
         }
 
         return $this->variables[$key] ?? $key;
+    }
+
+    public function getVariables(): array
+    {
+        return $this->variables;
     }
 
     public function addRandomVariable(string $key, int $length): string

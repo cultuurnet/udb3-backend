@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Behat\Behat\Context\Context;
 use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\State\ResponseState;
+use CultuurNet\UDB3\Steps\EventSteps;
+use CultuurNet\UDB3\Steps\PlaceSteps;
 use CultuurNet\UDB3\Steps\RequestSteps;
 use CultuurNet\UDB3\Steps\ResponseSteps;
 use CultuurNet\UDB3\Steps\UtilitySteps;
@@ -21,6 +23,8 @@ final class FeatureContext implements Context
     use ResponseSteps;
     use UtilitySteps;
 
+    use EventSteps;
+    use PlaceSteps;
     use OrganizerSteps;
 
     private array $config;
