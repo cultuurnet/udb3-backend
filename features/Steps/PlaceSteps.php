@@ -69,6 +69,19 @@ trait PlaceSteps
         $this->theResponseBodyShouldBeValidJson();
     }
 
+    /**
+     * @When I get the RDF of place :id
+     */
+    public function iGetTheRdfOfPlace($id)
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->getWithTimeout('/places/' . $id)
+        );
+
+        $this->theResponseStatusShouldBe(200);
+    }
+
+
     private function createPlace(string $endpoint, string $json, string $jsonPath, string $variableName): void
     {
         $response = $this->getHttpClient()->postJSON(
