@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Steps;
 
 use Behat\Gherkin\Node\PyStringNode;
+use CultuurNet\UDB3\Json;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
 use function PHPUnit\Framework\assertNull;
@@ -30,7 +31,7 @@ trait ResponseSteps
     public function theJsonResponseShouldBe(PyStringNode $value): void
     {
         assertEquals(
-            json_decode($this->variableState->replaceVariables($value->getRaw()), true),
+            Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
             $this->responseState->getJsonContent()
         );
     }
@@ -41,7 +42,7 @@ trait ResponseSteps
     public function theJsonResponseAtShouldBe2(string $jsonPath, PyStringNode $value): void
     {
         assertEquals(
-            json_decode($this->variableState->replaceVariables($value->getRaw()), true),
+            Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
             $this->responseState->getValueOnPath($jsonPath)
         );
     }
@@ -89,8 +90,7 @@ trait ResponseSteps
      */
     public function theResponseBodyShouldBeValidJson(): void
     {
-        json_decode($this->responseState->getContent());
-        assertEquals(JSON_ERROR_NONE, json_last_error());
+        assertTrue($this->responseState->isValidJson());
     }
 
     /**
