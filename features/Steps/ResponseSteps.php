@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Steps;
 
 use Behat\Gherkin\Node\PyStringNode;
 use CultuurNet\UDB3\Json;
+use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
 use function PHPUnit\Framework\assertNull;
@@ -70,6 +71,17 @@ trait ResponseSteps
     }
 
     /**
+     * @Then the JSON response at :jsonPath should include:
+     */
+    public function theJsonResponseAtShouldInclude2($jsonPath, PyStringNode $value)
+    {
+        assertContains(
+            Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
+            $this->responseState->getValueOnPath($jsonPath)
+        );
+    }
+
+    /**
      * @Then the JSON response should not have :jsonPath
      */
     public function theJsonResponseShouldNotHave(string $jsonPath): void
@@ -83,6 +95,17 @@ trait ResponseSteps
     public function theJsonResponseShouldHave($jsonPath)
     {
         assertNotEquals(null, $this->responseState->getValueOnPath($jsonPath));
+    }
+
+    /**
+     * @Then the JSON response at :jsonPath should have :nrOfEntries entries
+     */
+    public function theJsonResponseAtShouldHaveEntries(string $jsonPath, int $nrOfEntries): void
+    {
+        assertEquals(
+            $nrOfEntries,
+            count($this->responseState->getValueOnPath($jsonPath))
+        );
     }
 
     /**
