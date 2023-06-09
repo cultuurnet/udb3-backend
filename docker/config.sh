@@ -6,6 +6,7 @@ if [ -d "$DIR" ]; then
   cp "$DIR"/* .
   # needed because it is hidden
   cp "$DIR"/.env .
+  mv ./config.features.php features/
 else
   echo "Error: missing appconfig see docker.md prerequisites to fix this."
   exit 1
