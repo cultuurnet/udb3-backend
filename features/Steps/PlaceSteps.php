@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use CultuurNet\UDB3\Json;
+
 trait PlaceSteps
 {
     /**
@@ -72,7 +74,7 @@ trait PlaceSteps
     /**
      * @When I get the RDF of place with id :id
      */
-    public function iGetTheRdfOfPlaceWithId($id)
+    public function iGetTheRdfOfPlaceWithId($id): void
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->getWithTimeout('/places/' . $id)
@@ -81,6 +83,53 @@ trait PlaceSteps
         $this->theResponseStatusShouldBe(200);
     }
 
+    /**
+     * @When I publish the place via legacy PATCH at :url
+     */
+    public function iPublishThePlaceViaLegacyPatchAt(string $url): void
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->putJSON(
+                $url . '/workflow-status',
+                Json::encode(['workflowStatus' => 'READY_FOR_VALIDATION'])
+            )
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I approve the place via legacy PATCH at :url
+     */
+    public function iApproveThePlaceViaLegacyPatchAt($url): void
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->putJSON(
+                $url . '/workflow-status',
+                Json::encode(['workflowStatus' => 'APPROVED'])
+            )
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I reject the place via legacy PATCH at :url with reason :reason
+     */
+    public function iRejectThePlaceViaLegacyPatchAtWithReason($url, $reason): void
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->putJSON(
+                $url . '/workflow-status',
+                Json::encode([
+                    'workflowStatus' => 'REJECTED',
+                    'reason' => $reason,
+                ])
+            )
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
 
     private function createPlace(string $endpoint, string $json, string $jsonPath, string $variableName): void
     {
