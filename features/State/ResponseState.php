@@ -11,7 +11,7 @@ final class ResponseState
 {
     private int $statusCode;
     private string $content;
-    private string $contentType;
+    private array $headers;
     private bool $validJson;
     private array $jsonContent;
 
@@ -19,7 +19,7 @@ final class ResponseState
     {
         $this->statusCode = $response->getStatusCode();
         $this->content = $response->getBody()->getContents();
-        $this->contentType = $response->getHeader('Content-Type')[0];
+        $this->headers = $response->getHeaders();
 
         try {
             $this->jsonContent = Json::decodeAssociatively($this->content);
@@ -41,7 +41,7 @@ final class ResponseState
 
     public function getContentType(): string
     {
-        return $this->contentType;
+        return $this->headers['Content-Type'][0] ?? '';
     }
 
     public function isValidJson(): bool
