@@ -67,7 +67,7 @@ final class HttpClient
         );
     }
 
-    public function getJSON(string $url): ResponseInterface
+    public function get(string $url): ResponseInterface
     {
         return $this->client->get($url);
     }

@@ -69,7 +69,7 @@ trait RequestSteps
      */
     public function iSendAGetRequestTo(string $url): void
     {
-        $response = $this->getHttpClient()->getJSON($url);
+        $response = $this->getHttpClient()->get($url);
         $this->responseState->setResponse($response);
     }
 
