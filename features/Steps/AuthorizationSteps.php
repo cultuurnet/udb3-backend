@@ -16,6 +16,15 @@ trait AuthorizationSteps
     }
 
     /**
+     * @Given I am using the RDF base URL
+     */
+    public function iAmUsingTheRDFBaseURL(): void
+    {
+        $this->variableState->setVariable('baseUrl', $this->config['base_url_rdf']);
+        $this->requestState->setBaseUrl($this->config['base_url_rdf']);
+    }
+
+    /**
      * @Given I am using an UiTID v1 API key of consumer :consumerName
      */
     public function iAmUsingAnUitidV1ApiKeyOfConsumer(string $consumerName): void
