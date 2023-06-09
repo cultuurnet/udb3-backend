@@ -72,4 +72,12 @@ final class FeatureContext implements Context
     {
         return $this->variableState->replaceVariables($url);
     }
+
+    /**
+     * @Transform :id
+     */
+    public function replaceId($id): string
+    {
+        return $this->variableState->replaceVariables($id);
+    }
 }
