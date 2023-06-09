@@ -117,9 +117,9 @@ trait PlaceSteps
     }
 
     /**
-     * @When I publish the place via legacy PATCH at :url
+     * @When I publish the place at :url
      */
-    public function iPublishThePlaceViaLegacyPatchAt(string $url): void
+    public function iPublishThePlaceAt(string $url): void
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->putJSON(
@@ -132,9 +132,41 @@ trait PlaceSteps
     }
 
     /**
-     * @When I approve the place via legacy PATCH at :url
+     * @When I publish the place at :url with availableFrom :availableFrom
      */
-    public function iApproveThePlaceViaLegacyPatchAt($url): void
+    public function iPublishThePlaceAtWithAvailableFrom($url, $availableFrom)
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->putJSON(
+                $url . '/workflow-status',
+                Json::encode([
+                    'workflowStatus' => 'READY_FOR_VALIDATION',
+                    'availableFrom' => $availableFrom,
+                ])
+            )
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I publish the place via legacy PATCH at :url
+     */
+    public function iPublishThePlaceViaLegacyPatchAt(string $url): void
+    {
+        $this->requestState->setContentTypeHeader('application/ld+json;domain-model=Publish');
+
+        $this->responseState->setResponse(
+            $this->getHttpClient()->patchJSON($url, '')
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I approve the place at :url
+     */
+    public function iApproveThePlaceAt($url): void
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->putJSON(
@@ -147,9 +179,23 @@ trait PlaceSteps
     }
 
     /**
-     * @When I reject the place via legacy PATCH at :url with reason :reason
+     * @When I approve the place via legacy PATCH at :url
      */
-    public function iRejectThePlaceViaLegacyPatchAtWithReason($url, $reason): void
+    public function iApproveThePlaceViaLegacyPatchAt($url): void
+    {
+        $this->requestState->setContentTypeHeader('application/ld+json;domain-model=Approve');
+
+        $this->responseState->setResponse(
+            $this->getHttpClient()->patchJSON($url, '')
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I reject the place at :url with reason :reason
+     */
+    public function iRejectThePlaceWithReason($url, $reason): void
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->putJSON(
@@ -159,6 +205,20 @@ trait PlaceSteps
                     'reason' => $reason,
                 ])
             )
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I reject the place via legacy PATCH at :url with reason :reason
+     */
+    public function iRejectThePlaceViaLegacyPatchAtWithReason($url, $reason): void
+    {
+        $this->requestState->setContentTypeHeader('application/ld+json;domain-model=Reject');
+
+        $this->responseState->setResponse(
+            $this->getHttpClient()->patchJSON($url, Json::encode(['reason' => $reason]))
         );
 
         $this->theResponseStatusShouldBe(204);
