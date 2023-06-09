@@ -1,0 +1,69 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Cafe Den Hemel"
+  },
+  "terms": [
+    {
+      "id": "Yf4aZBfsUEu2NsQqsprngw"
+    }
+  ],
+  "address": {
+    "nl" : {
+      "addressCountry": "BE",
+      "addressLocality": "Scherpenheuvel-Zichem",
+      "postalCode": "3271",
+      "streetAddress": "Hoornblaas 107"
+    }
+  },
+  "calendarType": "permanent",
+  "openingHours": [
+    {
+      "dayOfWeek": [
+        "monday",
+        "wednesday",
+        "thursday",
+        "friday"
+      ],
+      "opens": "17:00",
+      "closes": "23:59"
+    },
+    {
+      "dayOfWeek": [
+        "saturday",
+        "sunday"
+      ],
+      "opens": "15:00",
+      "closes": "23:59"
+    }
+  ],
+  "priceInfo":[
+    {
+      "category":"base",
+      "name":{
+        "nl":"Basistarief",
+        "fr":"Tarif de base",
+        "en":"Base tariff",
+        "de":"Basisrate"
+      },
+      "price":5,
+      "priceCurrency":"EUR"
+    },
+    {
+      "category":"tariff",
+      "name":{
+        "nl":"Kinderen"
+      },
+      "price":1,
+      "priceCurrency":"EUR"
+    },
+    {
+      "category":"tariff",
+      "name":{
+        "nl":"Senioren"
+      },
+      "price":3,
+      "priceCurrency":"EUR"
+    }
+  ]
+}
