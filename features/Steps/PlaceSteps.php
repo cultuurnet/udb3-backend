@@ -84,6 +84,18 @@ trait PlaceSteps
     }
 
     /**
+     * @When I delete the place at :url
+     */
+    public function iDeleteThePlaceAt($url)
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->delete($url)
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
      * @When I publish the place via legacy PATCH at :url
      */
     public function iPublishThePlaceViaLegacyPatchAt(string $url): void
