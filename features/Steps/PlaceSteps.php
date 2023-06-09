@@ -70,9 +70,9 @@ trait PlaceSteps
     }
 
     /**
-     * @When I get the RDF of place :id
+     * @When I get the RDF of place with id :id
      */
-    public function iGetTheRdfOfPlace($id)
+    public function iGetTheRdfOfPlaceWithId($id)
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->getWithTimeout('/places/' . $id)
