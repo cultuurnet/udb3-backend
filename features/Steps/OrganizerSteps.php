@@ -7,19 +7,29 @@ namespace CultuurNet\UDB3\Steps;
 trait OrganizerSteps
 {
     /**
+     * @When I create an organizer and save the :jsonPath as :variableName
+     */
+    public function iCreateAnOrganizerAndSaveTheAs(string $jsonPath, string $variableName): void
+    {
+        $this->createOrganizer(
+            '/organizers',
+            $this->requestState->getJson(),
+            $jsonPath,
+            $variableName
+        );
+    }
+
+    /**
      * @Given I create a minimal organizer and save the :jsonPath as :variableName
      */
     public function iCreateAMinimalOrganizerAndSaveTheAs(string $jsonPath, string $variableName): void
     {
-        $response = $this->getHttpClient()->postJSON(
-            $this->requestState->getBaseUrl() . '/organizers',
-            $this->fixtures->loadJsonWithRandomName('/organizers/organizer-minimal.json', $this->variableState)
+        $this->createOrganizer(
+            '/organizers',
+            $this->fixtures->loadJsonWithRandomName('organizers/organizer-minimal.json', $this->variableState),
+            $jsonPath,
+            $variableName
         );
-        $this->responseState->setResponse($response);
-
-        $this->theResponseStatusShouldBe(201);
-        $this->theResponseBodyShouldBeValidJson();
-        $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
     }
 
     /**
@@ -27,17 +37,12 @@ trait OrganizerSteps
      */
     public function iCreateAnOrganizerFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName): void
     {
-        $organizer = $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState);
-
-        $response = $this->getHttpClient()->postJSON(
-            $this->requestState->getBaseUrl() . '/organizers',
-            $organizer
+        $this->createOrganizer(
+            '/organizers',
+            $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState),
+            $jsonPath,
+            $variableName
         );
-        $this->responseState->setResponse($response);
-
-        $this->theResponseStatusShouldBe(201);
-        $this->theResponseBodyShouldBeValidJson();
-        $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
     }
 
     /**
@@ -45,33 +50,12 @@ trait OrganizerSteps
      */
     public function iImportANewOrganizerFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName): void
     {
-        $organizer = $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState);
-
-        $response = $this->getHttpClient()->postJSON(
-            $this->requestState->getBaseUrl() . '/imports/organizers',
-            $organizer
+        $this->createOrganizer(
+            '/imports/organizers',
+            $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState),
+            $jsonPath,
+            $variableName
         );
-        $this->responseState->setResponse($response);
-
-        $this->theResponseStatusShouldBe(200);
-        $this->theResponseBodyShouldBeValidJson();
-        $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
-    }
-
-    /**
-     * @When I create an organizer and save the :jsonPath as :variableName
-     */
-    public function iCreateAnOrganizerAndSaveTheAs(string $jsonPath, string $variableName): void
-    {
-        $response = $this->getHttpClient()->postJSON(
-            $this->requestState->getBaseUrl() . '/imports/organizers',
-            $this->requestState->getJson()
-        );
-        $this->responseState->setResponse($response);
-
-        $this->theResponseStatusShouldBe(200);
-        $this->theResponseBodyShouldBeValidJson();
-        $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
     }
 
     /**
@@ -116,5 +100,18 @@ trait OrganizerSteps
         );
 
         $this->theResponseStatusShouldBe(204);
+    }
+
+    private function createOrganizer(string $endpoint, string $json, string $jsonPath, string $variableName): void
+    {
+        $response = $this->getHttpClient()->postJSON(
+            $this->requestState->getBaseUrl() . $endpoint,
+            $json
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseStatusShouldBe(str_contains($endpoint, 'imports') ? 200 : 201);
+        $this->theResponseBodyShouldBeValidJson();
+        $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
     }
 }
