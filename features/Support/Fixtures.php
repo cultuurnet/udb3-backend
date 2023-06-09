@@ -8,20 +8,21 @@ use CultuurNet\UDB3\State\VariableState;
 
 final class Fixtures
 {
-    public function loadJson(string $filename, VariableState $variables): string
+    public function loadJson(string $filename, VariableState $variableState): string
     {
         $json = file_get_contents(__DIR__ . '/../data/' . $filename);
-
-        foreach ($variables->getVariables() as $key => $value) {
-            $json = str_replace('%{' . $key . '}', $value, $json);
-        }
-
-        return $json;
+        return $variableState->replaceVariables($json);
     }
 
-    public function loadJsonWithRandomName(string $filename, VariableState $variables): string
+    public function loadJsonWithRandomName(string $filename, VariableState $variableState): string
     {
-        $variables->setRandomVariable('name', 10);
-        return $this->loadJson($filename, $variables);
+        $variableState->setRandomVariable('name', 10);
+        return $this->loadJson($filename, $variableState);
+    }
+
+    public function loadTurtle(string $filename, VariableState $variableState): string
+    {
+        $turtle = file_get_contents(__DIR__ . '/../data/' . $filename);
+        return $variableState->replaceVariables($turtle);
     }
 }
