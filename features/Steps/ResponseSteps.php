@@ -102,6 +102,22 @@ trait ResponseSteps
     }
 
     /**
+     * @Then the content type should be :contentType
+     */
+    public function theContentTypeShouldBe(string $contentType): void
+    {
+        assertStringContainsString($contentType, $this->responseState->getContentType());
+    }
+
+    /**
+     * @Then the body should be :body
+     */
+    public function theBodyShouldBe(string $body): void
+    {
+        assertEquals($body, $this->responseState->getContent());
+    }
+
+    /**
      * @Then I keep the value of the JSON response at :jsonPath as :variableName
      */
     public function iKeepTheValueOfTheJsonResponseAtAs(string $jsonPath, string $variableName): void
