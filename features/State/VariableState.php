@@ -23,11 +23,6 @@ final class VariableState
         return $variable;
     }
 
-    public function getVariables(): array
-    {
-        return $this->variables;
-    }
-
     public function replaceVariables(string $key): string
     {
         if ($this->isVariable($key)) {
