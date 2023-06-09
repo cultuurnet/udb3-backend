@@ -72,6 +72,20 @@ final class HttpClient
         return $this->client->get($url);
     }
 
+    public function getWithTimeout(string $url, int $timeout = 5): ResponseInterface
+    {
+        $elapsedTime = 0;
+        do {
+            $response = $this->client->get($url);
+            if ($response->getStatusCode() !== 200) {
+                sleep(1);
+                $elapsedTime++;
+            }
+        } while ($response->getStatusCode() !== 200 && $elapsedTime < $timeout);
+
+        return $response;
+    }
+
     public function delete(string $url): ResponseInterface
     {
         return $this->client->delete($url);
