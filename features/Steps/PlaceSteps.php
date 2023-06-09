@@ -9,6 +9,19 @@ use CultuurNet\UDB3\Json;
 trait PlaceSteps
 {
     /**
+     * @When I create a place and save the :jsonPath as :variableName
+     */
+    public function iCreateAPlaceAndSaveTheAs(string $jsonPath, string $variableName): void
+    {
+        $this->createOrganizer(
+            '/places',
+            $this->requestState->getJson(),
+            $jsonPath,
+            $variableName
+        );
+    }
+
+    /**
      * @Given I create a minimal place and save the :jsonPath as :variableName
      */
     public function iCreateAMinimalPlaceAndSaveTheAs($jsonPath, $variableName): void
@@ -45,6 +58,14 @@ trait PlaceSteps
             $jsonPath,
             $variableName
         );
+    }
+
+    /**
+     * @When I update the place at :url
+     */
+    public function iUpdateThePlaceAt(string $url): void
+    {
+        $this->getHttpClient()->putJSON($url, $this->requestState->getJson());
     }
 
     /**
