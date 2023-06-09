@@ -111,4 +111,21 @@ trait ResponseSteps
             $this->responseState->getValueOnPath($jsonPath)
         );
     }
+
+    /**
+     * @Then the RDF response should match :fileName
+     */
+    public function theRdfResponseShouldMatch(string $fileName): void
+    {
+        assertEquals(
+            $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
+            $this->removeDates($this->responseState->getContent())
+        );
+    }
+
+    private function removeDates(string $value): string
+    {
+        $datePattern = '/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}/';
+        return preg_replace($datePattern, '', $value);
+    }
 }
