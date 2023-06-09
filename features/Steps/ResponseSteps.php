@@ -9,6 +9,7 @@ use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
 use function PHPUnit\Framework\assertNull;
 use function PHPUnit\Framework\assertStringContainsString;
+use function PHPUnit\Framework\assertTrue;
 
 trait ResponseSteps
 {
@@ -24,13 +25,13 @@ trait ResponseSteps
     }
 
     /**
-     * @When the JSON response at :jsonPath should not be :value
+     * @Then the JSON response should be:
      */
-    public function theJsonResponseAtShouldNotBe($jsonPath, $value)
+    public function theJsonResponseShouldBe(PyStringNode $value): void
     {
-        assertNotEquals(
-            $this->variableState->replaceVariables($value),
-            $this->responseState->getValueOnPath($jsonPath)
+        assertEquals(
+            json_decode($this->variableState->replaceVariables($value->getRaw()), true),
+            $this->responseState->getJsonContent()
         );
     }
 
@@ -41,6 +42,17 @@ trait ResponseSteps
     {
         assertEquals(
             json_decode($this->variableState->replaceVariables($value->getRaw()), true),
+            $this->responseState->getValueOnPath($jsonPath)
+        );
+    }
+
+    /**
+     * @When the JSON response at :jsonPath should not be :value
+     */
+    public function theJsonResponseAtShouldNotBe($jsonPath, $value)
+    {
+        assertNotEquals(
+            $this->variableState->replaceVariables($value),
             $this->responseState->getValueOnPath($jsonPath)
         );
     }
@@ -65,22 +77,11 @@ trait ResponseSteps
     }
 
     /**
-     * @Then the response status should be :statusCode
+     * @Then the JSON response should have :jsonPath
      */
-    public function theResponseStatusShouldBe(int $statusCode)
+    public function theJsonResponseShouldHave($jsonPath)
     {
-        assertEquals($statusCode, $this->responseState->getStatusCode());
-    }
-
-    /**
-     * @Then the JSON response should be:
-     */
-    public function theJsonResponseShouldBe(PyStringNode $value): void
-    {
-        assertEquals(
-            json_decode($this->variableState->replaceVariables($value->getRaw()), true),
-            $this->responseState->getJsonContent()
-        );
+        assertNotEquals(null, $this->responseState->getValueOnPath($jsonPath));
     }
 
     /**
@@ -90,6 +91,14 @@ trait ResponseSteps
     {
         json_decode($this->responseState->getContent());
         assertEquals(JSON_ERROR_NONE, json_last_error());
+    }
+
+    /**
+     * @Then the response status should be :statusCode
+     */
+    public function theResponseStatusShouldBe(int $statusCode)
+    {
+        assertEquals($statusCode, $this->responseState->getStatusCode());
     }
 
     /**
