@@ -1,0 +1,107 @@
+{
+  "name": {
+    "nl": "Cafe Den Hemel"
+  },
+  "terms": [
+    {
+      "id": "Yf4aZBfsUEu2NsQqsprngw"
+    }
+  ],
+  "address": {
+    "nl" : {
+      "addressCountry": "BE",
+      "addressLocality": "Scherpenheuvel-Zichem",
+      "postalCode": "3271",
+      "streetAddress": "Hoornblaas 107"
+    }
+  },
+  "calendarType": "permanent",
+  "openingHours": [
+    {
+      "dayOfWeek": [
+        "monday",
+        "wednesday",
+        "thursday",
+        "friday"
+      ],
+      "opens": "17:00",
+      "closes": "23:59"
+    },
+    {
+      "dayOfWeek": [
+        "saturday",
+        "sunday"
+      ],
+      "opens": "15:00",
+      "closes": "23:59"
+    }
+  ],
+  "mainLanguage": "nl",
+  "availableFrom": "2032-01-01T11:22:33+01:00",
+  "languages": [
+    "nl"
+  ],
+  "completedLanguages": [
+    "nl"
+  ],
+  "status": {
+    "type": "Unavailable",
+    "reason": {
+      "nl": "We zijn nog steeds gesloten."
+    }
+  },
+  "bookingAvailability": {
+    "type": "Available"
+  },
+  "priceInfo": [
+    {
+      "category": "base",
+      "price": 10.5,
+      "priceCurrency": "EUR",
+      "name": {
+        "nl": "Basistarief"
+      }
+    }
+  ],
+  "contactPoint": {
+    "phone": [
+      "016 10 20 30"
+    ],
+    "email": [
+      "info@denhemel.be"
+    ],
+    "url": [
+      "https://www.denhemel.be"
+    ]
+  },
+  "bookingInfo": {
+    "phone": "016 10 20 30",
+    "email": "booking@denhemel.be",
+    "url": "https://www.denhemel.be/booking",
+    "urlLabel": {
+      "nl": "Bestel hier je tickets"
+    },
+    "availabilityStarts": "2020-05-17T22:00:00+00:00",
+    "availabilityEnds": "2028-05-17T22:00:00+00:00"
+  },
+  "videos": [
+    {
+      "id": "b504cf44-9ab8-4641-9934-38d1cc67242c",
+      "url": "https://www.youtube.com/watch?v=cEItmb_a20D",
+      "embedUrl": "https://www.youtube.com/embed/cEItmb_a20D",
+      "language": "nl",
+      "copyrightHolder": "Den Hemel"
+    },
+    {
+      "id": "5c549a24-bb97-4f83-8ea5-21a6d56aff72",
+      "url": "https://vimeo.com/98765432",
+      "language": "nl"
+    }
+  ],
+  "labels": [
+    "public-visible"
+  ],
+  "hiddenLabels": [
+    "public-invisible"
+  ]
+}

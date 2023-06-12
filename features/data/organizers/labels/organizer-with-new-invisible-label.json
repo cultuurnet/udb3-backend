@@ -1,0 +1,10 @@
+{
+  "mainLanguage":"nl",
+  "name": {
+    "nl": "%{name}"
+  },
+  "url": "https://www.%{name}.be",
+  "hiddenLabels": [
+    "%{name}"
+  ]
+}

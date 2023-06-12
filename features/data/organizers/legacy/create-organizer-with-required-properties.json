@@ -1,0 +1,5 @@
+{
+  "mainLanguage": "nl",
+  "name": "%{name}",
+  "website": "https://www.%{name}.be"
+}

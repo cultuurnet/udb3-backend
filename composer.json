@@ -78,6 +78,7 @@
   },
   "require-dev": {
     "alchemy/zippy": "~0.2",
+    "behat/behat": "^3.13",
     "icanhazstring/composer-unused": "^0.7.7",
     "mikey179/vfsstream": "~1.6.2",
     "phpstan/phpstan": "^1.8",
@@ -93,7 +94,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "CultuurNet\\UDB3\\": "tests//"
+      "CultuurNet\\UDB3\\": ["tests/", "features/"]
     }
   },
   "extra": {
@@ -121,6 +122,7 @@
   ],
   "scripts": {
     "test": "vendor/bin/phpunit",
+    "test-features": "vendor/bin/behat",
     "phpstan": "vendor/bin/phpstan analyse",
     "migrate": "vendor/bin/doctrine-dbal migrations:migrate --no-interaction",
     "ci": [

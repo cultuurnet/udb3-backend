@@ -1,0 +1,56 @@
+{
+  "mainLanguage":"nl",
+  "name": {
+    "nl": "%{name}"
+  },
+  "url": "https://www.%{name}.be",
+  "address": {
+    "nl": {
+      "streetAddress": "Henegouwenkaai 41-43",
+      "postalCode": "1080",
+      "addressLocality": "Brussel",
+      "addressCountry": "BE"
+    },
+    "fr": {
+      "streetAddress": "Quai du Hainaut 41-43",
+      "postalCode": "1080",
+      "addressLocality": "Bruxelles",
+      "addressCountry": "BE"
+    }
+  },
+  "description": {
+    "nl": "Dutch description",
+    "fr": "French description",
+    "de": "German description",
+    "en": "English description"
+  },
+  "labels":["public-visible"],
+  "hiddenLabels":["public-invisible"],
+  "contactPoint": {
+    "phone": [
+      "123",
+      "456"
+    ],
+    "email": [
+      "mock@publiq.be"
+    ],
+    "url": [
+      "https://www.publiq.be",
+      "https://www.madewithlove.be"
+    ]
+  },
+  "images": [
+    {
+      "@id": "%{baseUrl}/images/00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "@id": "%{baseUrl}/images/%{imageId1}"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000000"
+    },
+    {
+      "id": "%{imageId2}"
+    }
+  ]
+}

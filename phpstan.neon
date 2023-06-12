@@ -4,6 +4,7 @@ parameters:
 		- app
 		- src
 		- tests
+		- features
 		- bootstrap.php
 		- web/index.php
 	bootstrapFiles:

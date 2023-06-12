@@ -1,0 +1,15 @@
+{
+  "mainLanguage":"nl",
+  "name": {
+    "nl": "%{name}"
+  },
+  "url": "https://www.%{name}.be",
+  "images": [
+    {
+      "@id": "%{baseUrl}/images/%{imageId1}"
+    },
+    {
+      "id": "%{imageId2}"
+    }
+  ]
+}

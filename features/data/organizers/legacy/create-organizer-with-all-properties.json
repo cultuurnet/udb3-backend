@@ -1,0 +1,33 @@
+{
+  "mainLanguage": "nl",
+  "name": "%{name}",
+  "website": "https://www.%{name}.be",
+  "address": {
+    "streetAddress": "Henegouwenkaai 41-43",
+    "postalCode": "1080",
+    "addressLocality": "Brussel",
+    "addressCountry": "BE"
+  },
+  "contact": [
+    {
+      "type": "phone",
+      "value": "123"
+    },
+    {
+      "type": "phone",
+      "value": "456"
+    },
+    {
+      "type": "email",
+      "value": "mock@publiq.be"
+    },
+    {
+      "type": "url",
+      "value": "https://www.publiq.be"
+    },
+    {
+      "type": "url",
+      "value": "https://www.madewithlove.be"
+    }
+  ]
+}

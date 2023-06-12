@@ -1,0 +1,19 @@
+{
+  "mainLanguage": "nl",
+  "name": "Cafe Den Hemel",
+  "type": {
+    "id": "ekdc4ATGoUitCa0e6me6xA",
+    "label": "Horeca",
+    "domain": "eventtype"
+  },
+  "address": {
+    "addressCountry": "BE",
+    "addressLocality": "Scherpenheuvel-Zichem",
+    "postalCode": "3271",
+    "streetAddress": "Hoornblaas 107"
+  },
+  "calendar": {
+    "startDate": "2022-01-01T11:22:33+00:00",
+    "endDate": "2032-01-01T11:22:33+00:00"
+  }
+}
