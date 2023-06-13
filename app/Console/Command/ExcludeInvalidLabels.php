@@ -62,7 +62,7 @@ final class ExcludeInvalidLabels extends AbstractCommand
             }
 
             $firstResult += self::MAX_RESULTS;
-        } while (count($labels) < self::MAX_RESULTS);
+        } while (count($labels) === self::MAX_RESULTS);
 
         $progressBar->finish();
         $output->writeln('');

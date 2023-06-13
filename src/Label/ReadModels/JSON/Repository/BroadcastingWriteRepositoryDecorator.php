@@ -80,13 +80,11 @@ final class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInter
     public function updateIncluded(UUID $uuid): void
     {
         $this->writeRepository->updateIncluded($uuid);
-        $this->broadcastDocumentUpdated($uuid);
     }
 
     public function updateExcluded(UUID $uuid): void
     {
         $this->writeRepository->updateExcluded($uuid);
-        $this->broadcastDocumentUpdated($uuid);
     }
 
     private function broadcastDocumentUpdated(UUID $uuid): void
