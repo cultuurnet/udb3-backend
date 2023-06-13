@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector;
-use CultuurNet\UDB3\RDF\CacheGraphRepository;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
 
 final class PlaceRdfServiceProvider extends AbstractServiceProvider
@@ -25,10 +24,6 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
         $graphStoreRepository = RdfServiceProvider::createGraphStoreRepository(
             $this->container->get('config')['rdf']['placesGraphStoreUrl']
         );
-
-        if ($this->container->get('config')['rdf']['placesCacheGraphEnabled']) {
-            $graphStoreRepository = new CacheGraphRepository($this->container->get('cache')('rdf_place'));
-        }
 
         $this->container->addShared(
             RdfProjector::class,

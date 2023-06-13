@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
-use CultuurNet\UDB3\RDF\CacheGraphRepository;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
 
 final class EventRdfServiceProvider extends AbstractServiceProvider
@@ -25,10 +24,6 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
         $graphStoreRepository = RdfServiceProvider::createGraphStoreRepository(
             $this->container->get('config')['rdf']['eventsGraphStoreUrl']
         );
-
-        if ($this->container->get('config')['rdf']['eventsCacheGraphEnabled']) {
-            $graphStoreRepository = new CacheGraphRepository($this->container->get('cache')('rdf_event'));
-        }
 
         $this->container->addShared(
             RdfProjector::class,
