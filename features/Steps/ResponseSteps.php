@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Steps;
 
 use Behat\Gherkin\Node\PyStringNode;
 use CultuurNet\UDB3\Json;
+use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
 use function PHPUnit\Framework\assertNull;
@@ -70,6 +71,17 @@ trait ResponseSteps
     }
 
     /**
+     * @Then the JSON response at :jsonPath should include:
+     */
+    public function theJsonResponseAtShouldInclude2($jsonPath, PyStringNode $value)
+    {
+        assertContains(
+            Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
+            $this->responseState->getValueOnPath($jsonPath)
+        );
+    }
+
+    /**
      * @Then the JSON response should not have :jsonPath
      */
     public function theJsonResponseShouldNotHave(string $jsonPath): void
@@ -86,6 +98,17 @@ trait ResponseSteps
     }
 
     /**
+     * @Then the JSON response at :jsonPath should have :nrOfEntries entries
+     */
+    public function theJsonResponseAtShouldHaveEntries(string $jsonPath, int $nrOfEntries): void
+    {
+        assertEquals(
+            $nrOfEntries,
+            count($this->responseState->getValueOnPath($jsonPath))
+        );
+    }
+
+    /**
      * @Then the response body should be valid JSON
      */
     public function theResponseBodyShouldBeValidJson(): void
@@ -99,6 +122,22 @@ trait ResponseSteps
     public function theResponseStatusShouldBe(int $statusCode)
     {
         assertEquals($statusCode, $this->responseState->getStatusCode());
+    }
+
+    /**
+     * @Then the content type should be :contentType
+     */
+    public function theContentTypeShouldBe(string $contentType): void
+    {
+        assertStringContainsString($contentType, $this->responseState->getContentType());
+    }
+
+    /**
+     * @Then the body should be :body
+     */
+    public function theBodyShouldBe(string $body): void
+    {
+        assertEquals($body, $this->responseState->getContent());
     }
 
     /**

@@ -9,6 +9,9 @@ return Publiq\PhpCsFixer\Config::fromFolders(
         'src/',
         'tests/',
         'web/',
-        'features/'
-    ]
+        'features/Bootstrap/',
+        'features/State/',
+        'features/Steps/',
+        'features/Support/',
+    ],
 )->legacy();
