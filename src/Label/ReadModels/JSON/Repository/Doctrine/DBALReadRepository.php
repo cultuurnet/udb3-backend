@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelR
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionsSchemaConfigurator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -148,7 +149,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             );
 
         if ($query->isSuggestion()) {
-            $queryBuilder->andWhere('name REGEXP \'^[a-zA-Z\d_\- ]{2,50}$\'');
+            $queryBuilder->andWhere('name REGEXP \'' . str_replace('/', '', LabelName::REGEX)  . '\'');
 
             $excludedLabels = $this->excludedLabelsRepository->getAll();
             if (!empty($excludedLabels)) {
