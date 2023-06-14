@@ -16,7 +16,7 @@ class LabelName
 
     public const LEGACY_REGEX = '/^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$/';
 
-    public const REGEX = '/^(?=[^\s\-_;&.,#\'"]{2,50}$)(?=.*\S.*\S.*)[^;.&,\'#"\'\s]*$/';
+    public const REGEX = '/^(?![-_ ])(?=.{2,50}$)(?=.*\S.*\S.*)[^;,\#\'!&]*$/';
 
     /**
      * @param string $value
