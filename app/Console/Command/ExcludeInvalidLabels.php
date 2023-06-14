@@ -16,7 +16,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class ExcludeInvalidLabels extends AbstractCommand
 {
-    private const LABEL_REGEX = '/^[a-zA-Z\d_\-]{2,50}$/';
+    private const LABEL_REGEX = '/^[a-zA-Z\d_\- ]{2,50}$/';
 
     private const MAX_RESULTS = 500;
     private Connection $connection;
