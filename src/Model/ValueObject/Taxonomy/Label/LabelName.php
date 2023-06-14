@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\MatchesRegexPattern;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
-class LabelName
+final class LabelName
 {
     use IsString;
     use Trims;
@@ -18,10 +18,7 @@ class LabelName
 
     public const REGEX = '/^(?![-_ ])(?=.{2,50}$)(?=.*\S.*\S.*)[^;,\#\'!&]*$/';
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $value = $this->trim($value);
 
