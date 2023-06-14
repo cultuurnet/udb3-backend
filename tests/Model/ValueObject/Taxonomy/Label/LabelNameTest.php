@@ -10,17 +10,17 @@ class LabelNameTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider labelNameDataProvider
+     * @dataProvider legacyLabelNameDataProvider
      */
-    public function validateRegex(string $labelName, bool $valid): void
+    public function validateLegacyRegex(string $labelName, bool $valid): void
     {
         $this->assertEquals(
             $valid,
-            preg_match(LabelName::REGEX, $labelName)
+            preg_match(LabelName::LEGACY_REGEX, $labelName)
         );
     }
 
-    public function labelNameDataProvider(): array
+    public function legacyLabelNameDataProvider(): array
     {
         return [
             [

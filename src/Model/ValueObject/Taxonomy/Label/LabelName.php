@@ -14,7 +14,9 @@ class LabelName
     use Trims;
     use MatchesRegexPattern;
 
-    public const REGEX = '/^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$/';
+    public const LEGACY_REGEX = '/^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$/';
+
+
 
     /**
      * @param string $value
@@ -23,7 +25,7 @@ class LabelName
     {
         $value = $this->trim($value);
 
-        $this->guardRegexPattern(self::REGEX, $value);
+        $this->guardRegexPattern(self::LEGACY_REGEX, $value);
 
         $this->setValue($value);
     }
