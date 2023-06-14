@@ -10,78 +10,155 @@ class LabelNameTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider legacyLabelNameDataProvider
+     * @dataProvider labelNameDataProvider
      */
-    public function validateLegacyRegex(string $labelName, bool $valid): void
+    public function validateLegacyRegex(string $labelName, bool $matchesLegacyRegex): void
     {
         $this->assertEquals(
-            $valid,
+            $matchesLegacyRegex,
             preg_match(LabelName::LEGACY_REGEX, $labelName)
         );
     }
 
-    public function legacyLabelNameDataProvider(): array
+    /**
+     * @test
+     * @dataProvider labelNameDataProvider
+     */
+    public function validateRegex(string $labelName, bool $matchesLegacyRegex, bool $matchesRegex): void
+    {
+        $this->assertEquals(
+            $matchesRegex,
+            preg_match(LabelName::REGEX, $labelName)
+        );
+    }
+
+    public function labelNameDataProvider(): array
     {
         return [
             [
-                ';',
-                false,
+                'labelName' => ';',
+                'matchesLegacyRegex' => false,
+                'matchesRegex' => false,
             ],
             [
-                'a',
-                false,
+                'labelName' => 'a',
+                'matchesLegacyRegex' => false,
+                'matchesRegex' => false,
             ],
             [
-                '',
-                false,
+                'labelName' => '',
+                'matchesLegacyRegex' => false,
+                'matchesRegex' => false,
             ],
             [
-                '   ',
-                false,
+                'labelName' => '   ',
+                'matchesLegacyRegex' => false,
+                'matchesRegex' => false,
             ],
             [
-                ' a',
-                false,
+                'labelName' => ' a',
+                'matchesLegacyRegex' => false,
+                'matchesRegex' => false,
             ],
             [
-                'a ',
-                false,
+                'labelName' => 'a ',
+                'matchesLegacyRegex' => false,
+                'matchesRegex' => false,
             ],
             [
-                'a;a',
-                false,
+                'labelName' => 'a;a',
+                'matchesLegacyRegex' => false,
+                'matchesRegex' => false,
             ],
             [
-                str_repeat('abcde', 51) . 'f',
-                false,
+                'labelName' => str_repeat('abcde', 51) . 'f',
+                'matchesLegacyRegex' => false,
+                'matchesRegex' => false,
             ],
             [
-                'aa',
-                true,
+                'labelName' => 'aa',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => true,
             ],
             [
-                ' aa ',
-                true,
+                'labelName' => ' aa ',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => false,
             ],
             [
-                '--',
-                true,
+                'labelName' => '--',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => false,
             ],
             [
-                "\r\n",
-                false,
+                'labelName' => "\r\n",
+                'matchesLegacyRegex' => false,
+                'matchesRegex' => false,
             ],
             [
-                "A\n",
-                false,
+                'labelName' => "A\n",
+                'matchesLegacyRegex' => false,
+                'matchesRegex' => false,
             ],
             [
-                "Hard\r\nRock",
-                false,
+                'labelName' => "Hard\r\nRock",
+                'matchesLegacyRegex' => false,
+                'matchesRegex' => false,
             ],
             [
-                "\r\nTechno",
-                false,
+                'labelName' => "\r\nTechno",
+                'matchesLegacyRegex' => false,
+                'matchesRegex' => false,
+            ],
+            [
+                'labelName' => '#Hashtag',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => false,
+            ],
+            [
+                'labelName' => 'Europese Thema\'s',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => false,
+            ],
+            [
+                'labelName' => 'Yin & Yang',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => false,
+            ],
+            [
+                'labelName' => '-MyLabel',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => false,
+            ],
+            [
+                'labelName' => '_MyLabel',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => false,
+            ],
+            [
+                'labelName' => 'My-Label',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => true,
+            ],
+            [
+                'labelName' => 'My_Label',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => true,
+            ],
+            [
+                'labelName' => 'één taalicoon',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => true,
+            ],
+            [
+                'labelName' => 'Feest!',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => false,
+            ],
+            [
+                'labelName' => 'Waar is iedereen-fuif!',
+                'matchesLegacyRegex' => true,
+                'matchesRegex' => false,
             ],
         ];
     }
@@ -110,7 +187,7 @@ class LabelNameTest extends TestCase
     public function it_does_not_support_semi_colons(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('String \'foo;bar\' does not match regex pattern ' . LabelName::REGEX . '.');
+        $this->expectExceptionMessage('String \'foo;bar\' does not match regex pattern ' . LabelName::LEGACY_REGEX . '.');
         new LabelName('foo;bar');
     }
 
@@ -120,7 +197,7 @@ class LabelNameTest extends TestCase
     public function it_requires_labels_of_at_least_2_characters(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('String \'f\' does not match regex pattern ' . LabelName::REGEX . '.');
+        $this->expectExceptionMessage('String \'f\' does not match regex pattern ' . LabelName::LEGACY_REGEX . '.');
         new LabelName('f');
     }
 
@@ -141,7 +218,7 @@ class LabelNameTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'String \'' . $longLabel . '\' does not match regex pattern ' . LabelName::REGEX . '.'
+            'String \'' . $longLabel . '\' does not match regex pattern ' . LabelName::LEGACY_REGEX . '.'
         );
         new LabelName($longLabel);
     }
@@ -154,7 +231,7 @@ class LabelNameTest extends TestCase
         $newLineLabel = "New\nWave";
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'String \'' . $newLineLabel . '\' does not match regex pattern ' . LabelName::REGEX . '.'
+            'String \'' . $newLineLabel . '\' does not match regex pattern ' . LabelName::LEGACY_REGEX . '.'
         );
         new LabelName($newLineLabel);
     }
