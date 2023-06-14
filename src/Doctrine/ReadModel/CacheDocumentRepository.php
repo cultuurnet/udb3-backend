@@ -42,8 +42,6 @@ final class CacheDocumentRepository implements DocumentRepository
 
     public function save(JsonDocument $document, int $attempts = null): void
     {
-        $this->logger->info('Method "save" called for document ' . $document->getId());
-
         if ($attempts === null) {
             $attempts = $this->allowedRetries;
         }
