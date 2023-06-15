@@ -733,8 +733,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected function applyPublished(AbstractPublished $published): JsonDocument
     {
-        $this->logger->info('Method "applyPublished" called for document ' . $published->getItemId());
-
         $document = $this->loadDocumentFromRepository($published);
 
         $offerLd = $document->getBody();
