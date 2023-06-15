@@ -80,8 +80,6 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:remove-label',
         'console.offer:import-auto-classification-labels',
         'console.article:replace-publisher',
-        'console.event:copy-to-fuseki',
-        'console.place:copy-to-fuseki',
     ];
 
     protected function getProvidedServiceNames(): array
