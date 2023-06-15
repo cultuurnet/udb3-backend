@@ -52,7 +52,7 @@ final class ExcludeInvalidLabels extends AbstractCommand
                 $labelId = new Uuid($label['uuid_col']);
                 $labelName = $label['name'];
 
-                if (!preg_match(LabelName::REGEX, $labelName)) {
+                if (!preg_match(LabelName::REGEX_SUGGESTIONS, $labelName)) {
                     $this->commandBus->dispatch(
                         new ExcludeLabelCommand($labelId)
                     );

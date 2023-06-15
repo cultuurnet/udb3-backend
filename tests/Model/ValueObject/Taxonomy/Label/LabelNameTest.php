@@ -28,7 +28,7 @@ class LabelNameTest extends TestCase
     {
         $this->assertEquals(
             $matchesRegex,
-            preg_match(LabelName::REGEX, $labelName)
+            preg_match(LabelName::REGEX_SUGGESTIONS, $labelName)
         );
     }
 
