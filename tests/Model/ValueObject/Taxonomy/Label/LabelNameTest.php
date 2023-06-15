@@ -12,10 +12,10 @@ class LabelNameTest extends TestCase
      * @test
      * @dataProvider labelNameDataProvider
      */
-    public function validateLegacyRegex(string $labelName, bool $matchesLegacyRegex): void
+    public function validateRegex(string $labelName, bool $matchesRegex): void
     {
         $this->assertEquals(
-            $matchesLegacyRegex,
+            $matchesRegex,
             preg_match(LabelName::REGEX, $labelName)
         );
     }
@@ -24,10 +24,10 @@ class LabelNameTest extends TestCase
      * @test
      * @dataProvider labelNameDataProvider
      */
-    public function validateRegex(string $labelName, bool $matchesLegacyRegex, bool $matchesRegex): void
+    public function validateSuggestionsRegex(string $labelName, bool $matchesRegex, bool $matchesSuggestionsRegex): void
     {
         $this->assertEquals(
-            $matchesRegex,
+            $matchesSuggestionsRegex,
             preg_match(LabelName::REGEX_SUGGESTIONS, $labelName)
         );
     }
@@ -37,123 +37,123 @@ class LabelNameTest extends TestCase
         return [
             [
                 'labelName' => ';',
-                'matchesLegacyRegex' => false,
                 'matchesRegex' => false,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => 'a',
-                'matchesLegacyRegex' => false,
                 'matchesRegex' => false,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => '',
-                'matchesLegacyRegex' => false,
                 'matchesRegex' => false,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => '   ',
-                'matchesLegacyRegex' => false,
                 'matchesRegex' => false,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => ' a',
-                'matchesLegacyRegex' => false,
                 'matchesRegex' => false,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => 'a ',
-                'matchesLegacyRegex' => false,
                 'matchesRegex' => false,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => 'a;a',
-                'matchesLegacyRegex' => false,
                 'matchesRegex' => false,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => str_repeat('abcde', 51) . 'f',
-                'matchesLegacyRegex' => false,
                 'matchesRegex' => false,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => 'aa',
-                'matchesLegacyRegex' => true,
                 'matchesRegex' => true,
+                'matchesSuggestionsRegex' => true,
             ],
             [
                 'labelName' => ' aa ',
-                'matchesLegacyRegex' => true,
-                'matchesRegex' => false,
+                'matchesRegex' => true,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => '--',
-                'matchesLegacyRegex' => true,
-                'matchesRegex' => false,
+                'matchesRegex' => true,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => "\r\n",
-                'matchesLegacyRegex' => false,
                 'matchesRegex' => false,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => "A\n",
-                'matchesLegacyRegex' => false,
                 'matchesRegex' => false,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => "Hard\r\nRock",
-                'matchesLegacyRegex' => false,
                 'matchesRegex' => false,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => "\r\nTechno",
-                'matchesLegacyRegex' => false,
                 'matchesRegex' => false,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => '#Hashtag',
-                'matchesLegacyRegex' => true,
-                'matchesRegex' => false,
+                'matchesRegex' => true,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => 'Europese Thema\'s',
-                'matchesLegacyRegex' => true,
-                'matchesRegex' => false,
+                'matchesRegex' => true,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => 'Yin & Yang',
-                'matchesLegacyRegex' => true,
-                'matchesRegex' => false,
+                'matchesRegex' => true,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => '-MyLabel',
-                'matchesLegacyRegex' => true,
-                'matchesRegex' => false,
+                'matchesRegex' => true,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => '_MyLabel',
-                'matchesLegacyRegex' => true,
-                'matchesRegex' => false,
+                'matchesRegex' => true,
+                'matchesSuggestionsRegex' => false,
             ],
             [
                 'labelName' => 'My-Label',
-                'matchesLegacyRegex' => true,
                 'matchesRegex' => true,
+                'matchesSuggestionsRegex' => true,
             ],
             [
                 'labelName' => 'My_Label',
-                'matchesLegacyRegex' => true,
                 'matchesRegex' => true,
+                'matchesSuggestionsRegex' => true,
             ],
             [
                 'labelName' => 'één taalicoon',
-                'matchesLegacyRegex' => true,
                 'matchesRegex' => true,
+                'matchesSuggestionsRegex' => true,
             ],
             [
                 'labelName' => 'Feest!',
-                'matchesLegacyRegex' => true,
-                'matchesRegex' => false,
+                'matchesRegex' => true,
+                'matchesSuggestionsRegex' => false,
             ],
         ];
     }
