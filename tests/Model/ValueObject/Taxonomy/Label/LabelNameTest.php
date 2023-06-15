@@ -16,7 +16,7 @@ class LabelNameTest extends TestCase
     {
         $this->assertEquals(
             $matchesLegacyRegex,
-            preg_match(LabelName::LEGACY_REGEX, $labelName)
+            preg_match(LabelName::REGEX, $labelName)
         );
     }
 
@@ -182,7 +182,7 @@ class LabelNameTest extends TestCase
     public function it_does_not_support_semi_colons(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('String \'foo;bar\' does not match regex pattern ' . LabelName::LEGACY_REGEX . '.');
+        $this->expectExceptionMessage('String \'foo;bar\' does not match regex pattern ' . LabelName::REGEX . '.');
         new LabelName('foo;bar');
     }
 
@@ -192,7 +192,7 @@ class LabelNameTest extends TestCase
     public function it_requires_labels_of_at_least_2_characters(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('String \'f\' does not match regex pattern ' . LabelName::LEGACY_REGEX . '.');
+        $this->expectExceptionMessage('String \'f\' does not match regex pattern ' . LabelName::REGEX . '.');
         new LabelName('f');
     }
 
@@ -213,7 +213,7 @@ class LabelNameTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'String \'' . $longLabel . '\' does not match regex pattern ' . LabelName::LEGACY_REGEX . '.'
+            'String \'' . $longLabel . '\' does not match regex pattern ' . LabelName::REGEX . '.'
         );
         new LabelName($longLabel);
     }
@@ -226,7 +226,7 @@ class LabelNameTest extends TestCase
         $newLineLabel = "New\nWave";
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'String \'' . $newLineLabel . '\' does not match regex pattern ' . LabelName::LEGACY_REGEX . '.'
+            'String \'' . $newLineLabel . '\' does not match regex pattern ' . LabelName::REGEX . '.'
         );
         new LabelName($newLineLabel);
     }
