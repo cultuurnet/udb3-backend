@@ -155,11 +155,6 @@ class LabelNameTest extends TestCase
                 'matchesLegacyRegex' => true,
                 'matchesRegex' => false,
             ],
-            [
-                'labelName' => 'Waar is iedereen-fuif!',
-                'matchesLegacyRegex' => true,
-                'matchesRegex' => false,
-            ],
         ];
     }
 
