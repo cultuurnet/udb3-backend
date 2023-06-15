@@ -60,7 +60,8 @@ final class SearchProductionsRequestHandler implements RequestHandlerInterface
     {
         return [
             'name' => $production->getName(),
-            'production_id' => $production->getProductionId()->toNative(),
+            'production_id' => $production->getProductionId()->toNative(), // Legacy property, kept to avoid breaking changes
+            'productionId' => $production->getProductionId()->toNative(),
             'events' => $production->getEventIds(),
         ];
     }
