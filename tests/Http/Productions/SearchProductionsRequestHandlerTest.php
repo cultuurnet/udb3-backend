@@ -125,6 +125,7 @@ final class SearchProductionsRequestHandlerTest extends TestCase
                 'member' => [
                     [
                         'production_id' => $productionId->toNative(),
+                        'productionId' => $productionId->toNative(),
                         'name' => $name,
                         'events' => $events,
                     ],
