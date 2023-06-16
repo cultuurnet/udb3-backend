@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\MatchesRegexPattern;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
-class LabelName
+final class LabelName
 {
     use IsString;
     use Trims;
@@ -16,10 +16,9 @@ class LabelName
 
     public const REGEX = '/^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$/';
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
+    public const REGEX_SUGGESTIONS = '/^(?![_ \-])(?!.*[_ \-]$)[a-zA-ZÀ-ÿ\d_ \-]{2,50}$/';
+
+    public function __construct(string $value)
     {
         $value = $this->trim($value);
 
