@@ -149,7 +149,8 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             );
 
         if ($query->isSuggestion()) {
-            $queryBuilder->andWhere('name REGEXP \'' . str_replace('/', '', LabelName::REGEX_SUGGESTIONS) . '\'');
+            // LabelName::REGEX_SUGGESTIONS is incompatible with MySQL used on acc, test, prod
+            $queryBuilder->andWhere('name REGEXP \'^[a-zA-Z\d_\-]{2,50}$\'');
 
             $excludedLabels = $this->excludedLabelsRepository->getAll();
             if (!empty($excludedLabels)) {
