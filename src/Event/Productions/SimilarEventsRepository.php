@@ -6,19 +6,18 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use Doctrine\DBAL\Connection;
-use CultuurNet\UDB3\StringLiteral;
 
 final class SimilarEventsRepository extends AbstractDBALRepository
 {
     public function __construct(Connection $connection)
     {
-        parent::__construct($connection, new StringLiteral('similar_events'));
+        parent::__construct($connection, 'similar_events');
     }
 
     public function add(Suggestion $suggestion): void
     {
         $this->getConnection()->insert(
-            $this->getTableName()->toNative(),
+            $this->getTableName(),
             [
                 'similarity' => $suggestion->getSimilarity(),
                 'event1' => $suggestion->getEventOne(),
@@ -47,7 +46,7 @@ final class SimilarEventsRepository extends AbstractDBALRepository
 
         $query = $this->getConnection()->createQueryBuilder()
             ->select('se.similarity, se.event1, se.event2, p1.production_id as production1, p2.production_id as production2')
-            ->from($this->getTableName()->toNative(), 'se')
+            ->from($this->getTableName(), 'se')
             ->leftJoin('se', DBALProductionRepository::TABLE_NAME, 'p1', 'p1.event_id = se.event1')
             ->leftJoin('se', DBALProductionRepository::TABLE_NAME, 'p2', 'p2.event_id = se.event2')
             ->where('(p1.production_id IS NULL OR p2.production_id IS NULL OR p1.production_id != p2.production_id)')

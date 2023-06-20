@@ -14,10 +14,7 @@ class SkippedSimilarEventsRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var SkippedSimilarEventsRepository
-     */
-    private $repository;
+    private SkippedSimilarEventsRepository $repository;
 
     protected function setUp(): void
     {
@@ -43,7 +40,7 @@ class SkippedSimilarEventsRepositoryTest extends TestCase
 
     private function assertSkippedSimilarEventExists(string $event1, string $event2): void
     {
-        $table = $this->repository->getTableName()->toNative();
+        $table = $this->repository->getTableName();
         $sql = "SELECT * FROM $table WHERE event1 = :event1 AND event2 = :event2";
         $result = $this->getConnection()->executeQuery(
             $sql,

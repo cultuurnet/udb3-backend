@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use CultuurNet\UDB3\StringLiteral;
 
 class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 {
@@ -19,7 +18,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 
         $this->dbalWriteRepository = new DBALWriteRepository(
             $this->getConnection(),
-            new StringLiteral($this->getTableName())
+            $this->getTableName()
         );
     }
 

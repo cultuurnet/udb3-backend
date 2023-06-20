@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
-use CultuurNet\UDB3\StringLiteral;
 
 class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 {
@@ -24,7 +23,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $this->readRepository = new DBALReadRepository(
             $this->getConnection(),
-            new StringLiteral($this->getTableName())
+            $this->getTableName()
         );
 
         $this->saveOfferLabelRelations();
