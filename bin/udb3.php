@@ -43,7 +43,7 @@ try {
     $consoleApp->run();
 } catch (\Exception $exception) {
     $container->get(ErrorLogger::class)->log($exception);
-    $consoleApp->renderException($exception, new ConsoleOutput());
+    $consoleApp->renderThrowable($exception, new ConsoleOutput());
     // Exit with a non-zero status code so a script executing this command gets feedback on whether it was successful or
     // not. This is also how Symfony Console normally does it when it catches exceptions. (Which we disabled)
     exit(1);
