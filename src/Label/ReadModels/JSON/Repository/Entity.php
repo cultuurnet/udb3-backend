@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use InvalidArgumentException;
 use CultuurNet\UDB3\StringLiteral;
 
 class Entity implements \JsonSerializable
@@ -26,8 +25,6 @@ class Entity implements \JsonSerializable
 
     private Privacy $privacy;
 
-    private int $count;
-
     private bool $excluded;
 
     public function __construct(
@@ -35,18 +32,12 @@ class Entity implements \JsonSerializable
         StringLiteral $name,
         Visibility $visibility,
         Privacy $privacy,
-        int $count = null,
         bool $excluded = false
     ) {
-        if ($count < 0) {
-            throw new InvalidArgumentException('Count should be zero or higher.');
-        }
-
         $this->uuid = $uuid;
         $this->name = $name;
         $this->visibility = $visibility;
         $this->privacy = $privacy;
-        $this->count = $count ?: 0;
         $this->excluded = $excluded;
     }
 
@@ -68,11 +59,6 @@ class Entity implements \JsonSerializable
     public function getPrivacy(): Privacy
     {
         return $this->privacy;
-    }
-
-    public function getCount(): int
-    {
-        return $this->count;
     }
 
     public function isExcluded(): bool

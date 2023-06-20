@@ -238,7 +238,6 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new StringLiteral('labelName'),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC(),
-            0,
             true
         );
 
@@ -249,86 +248,5 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $actualEntity = $this->getEntity();
 
         $this->assertFalse($actualEntity->isExcluded());
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_increment(): void
-    {
-        $expectedEntity = new Entity(
-            new UUID('df9e1cd0-60f4-4c5d-abb8-d381a93b2c13'),
-            new StringLiteral('labelName'),
-            Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
-            666
-        );
-
-        $this->saveEntity($expectedEntity);
-
-        $this->dbalWriteRepository->updateCountIncrement(
-            $expectedEntity->getUuid()
-        );
-
-        $actualEntity = $this->getEntity();
-
-        $this->assertEquals(
-            667,
-            $actualEntity->getCount()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_decrement(): void
-    {
-        $expectedEntity = new Entity(
-            new UUID('5d9b7e42-b841-4d92-a5ab-7623f3518bb0'),
-            new StringLiteral('labelName'),
-            Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
-            666
-        );
-
-        $this->saveEntity($expectedEntity);
-
-        $this->dbalWriteRepository->updateCountDecrement(
-            $expectedEntity->getUuid()
-        );
-
-        $actualEntity = $this->getEntity();
-
-        $this->assertEquals(
-            665,
-            $actualEntity->getCount()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function count_never_smaller_then_zero(): void
-    {
-        $expectedEntity = new Entity(
-            new UUID('044a810b-a905-4f6b-88ff-df8bf5508e6c'),
-            new StringLiteral('labelName'),
-            Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
-            0
-        );
-
-        $this->saveEntity($expectedEntity);
-
-        $this->dbalWriteRepository->updateCountDecrement(
-            $expectedEntity->getUuid()
-        );
-
-        $actualEntity = $this->getEntity();
-
-        $this->assertEquals(
-            0,
-            $actualEntity->getCount()
-        );
     }
 }

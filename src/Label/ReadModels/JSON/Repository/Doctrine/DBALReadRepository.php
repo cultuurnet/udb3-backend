@@ -279,8 +279,6 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         $privacy = $row[SchemaConfigurator::PRIVATE_COLUMN]
             ? Privacy::PRIVACY_PRIVATE() : Privacy::PRIVACY_PUBLIC();
 
-        $count = (int) $row[SchemaConfigurator::COUNT_COLUMN];
-
         $excluded =  (bool) $row[SchemaConfigurator::EXCLUDED_COLUMN];
 
         return new Entity(
@@ -288,7 +286,6 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             $name,
             $visibility,
             $privacy,
-            $count,
             $this->isExcluded($uuid, $excluded)
         );
     }
