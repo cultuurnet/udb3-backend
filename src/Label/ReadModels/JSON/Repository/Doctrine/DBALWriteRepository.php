@@ -9,13 +9,12 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\StringLiteral;
 
 final class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
 {
     public function save(
         UUID $uuid,
-        StringLiteral $name,
+        string $name,
         Visibility $visibility,
         Privacy $privacy
     ): void {
@@ -31,7 +30,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
             ])
             ->setParameters([
                 $uuid->toString(),
-                $name->toNative(),
+                $name,
                 $visibility->sameAs(Visibility::VISIBLE()) ? 1 : 0,
                 $privacy->sameAs(Privacy::PRIVACY_PRIVATE()) ? 1 : 0,
                 null,

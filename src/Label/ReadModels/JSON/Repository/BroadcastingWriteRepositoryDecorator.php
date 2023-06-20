@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Label\Events\LabelDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\StringLiteral;
 
 final class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInterface
 {
@@ -29,7 +28,7 @@ final class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInter
 
     public function save(
         UUID $uuid,
-        StringLiteral $name,
+        string $name,
         Visibility $visibility,
         Privacy $privacy
     ): void {
