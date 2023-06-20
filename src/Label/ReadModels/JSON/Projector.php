@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 class Projector extends AbstractProjector
 {
@@ -43,7 +42,7 @@ class Projector extends AbstractProjector
         }
         $this->writeRepository->save(
             $created->getUuid(),
-            new StringLiteral($created->getName()),
+            $created->getName(),
             $created->getVisibility(),
             $created->getPrivacy()
         );

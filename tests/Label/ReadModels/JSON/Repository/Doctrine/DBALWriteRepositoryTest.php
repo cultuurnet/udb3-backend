@@ -39,7 +39,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 
         $this->dbalWriteRepository->save(
             $expectedEntity->getUuid(),
-            $expectedEntity->getName(),
+            $expectedEntity->getName()->toNative(),
             $expectedEntity->getVisibility(),
             $expectedEntity->getPrivacy()
         );
@@ -74,7 +74,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 
         $this->dbalWriteRepository->save(
             $entity2->getUuid(),
-            $entity2->getName(),
+            $entity2->getName()->toNative(),
             $entity2->getVisibility(),
             $entity2->getPrivacy()
         );
@@ -105,7 +105,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 
         $this->dbalWriteRepository->save(
             $entity2->getUuid(),
-            $entity2->getName(),
+            $entity2->getName()->toNative(),
             $entity2->getVisibility(),
             $entity2->getPrivacy()
         );

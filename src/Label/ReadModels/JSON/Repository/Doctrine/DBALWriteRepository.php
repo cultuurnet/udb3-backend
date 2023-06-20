@@ -21,7 +21,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
 
     public function save(
         UUID $uuid,
-        StringLiteral $name,
+        string $name,
         Visibility $visibility,
         Privacy $privacy
     ): void {
@@ -37,7 +37,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
             ])
             ->setParameters([
                 $uuid->toString(),
-                $name->toNative(),
+                $name,
                 $visibility->sameAs(Visibility::VISIBLE()) ? 1 : 0,
                 $privacy->sameAs(Privacy::PRIVACY_PRIVATE()) ? 1 : 0,
                 null,
