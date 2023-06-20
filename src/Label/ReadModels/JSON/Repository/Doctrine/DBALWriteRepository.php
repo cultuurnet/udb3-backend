@@ -95,22 +95,6 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
         );
     }
 
-    public function updateCountIncrement(UUID $uuid): void
-    {
-        $this->executeCountUpdate(
-            1,
-            $uuid
-        );
-    }
-
-    public function updateCountDecrement(UUID $uuid): void
-    {
-        $this->executeCountUpdate(
-            -1,
-            $uuid
-        );
-    }
-
     private function executeUpdate(
         string $column,
         bool $value,
@@ -126,39 +110,5 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
             ]);
 
         $queryBuilder->execute();
-    }
-
-
-    private function executeCountUpdate(
-        int $value,
-        UUID $uuid
-    ): void {
-        $currentCount = $this->getCurrentCount($uuid);
-        $newCount = $currentCount + $value;
-
-        $queryBuilder = $this->createQueryBuilder()
-            ->update($this->getTableName()->toNative())
-            ->set(
-                SchemaConfigurator::COUNT_COLUMN,
-                $newCount < 0 ? 0 : $newCount
-            )
-            ->where(SchemaConfigurator::UUID_COLUMN . ' = ?')
-            ->setParameters([$uuid->toString()]);
-
-        $queryBuilder->execute();
-    }
-
-    private function getCurrentCount(UUID $uuid): int
-    {
-        $queryBuilder = $this->createQueryBuilder()
-            ->select([SchemaConfigurator::COUNT_COLUMN])
-            ->from($this->getTableName()->toNative())
-            ->where(SchemaConfigurator::UUID_COLUMN . ' = ?')
-            ->setParameters([$uuid->toString()]);
-
-        $statement = $queryBuilder->execute();
-        $row = $statement->fetch(\PDO::FETCH_NUM);
-
-        return (int) $row[0];
     }
 }

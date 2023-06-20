@@ -29,8 +29,4 @@ interface WriteRepositoryInterface
     public function updateExcluded(UUID $uuid): void;
 
     public function updateIncluded(UUID $uuid): void;
-
-    public function updateCountIncrement(UUID $uuid): void;
-
-    public function updateCountDecrement(UUID $uuid): void;
 }

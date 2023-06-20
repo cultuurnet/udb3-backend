@@ -72,52 +72,6 @@ final class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_broadcast_on_update_count_increment(): void
-    {
-        $uuid = new UUID('963d50b4-62f5-43cc-a028-fdfdc0280bdd');
-
-        $this->writeRepository
-            ->expects($this->once())
-            ->method('updateCountIncrement')
-            ->with(
-                $uuid
-            );
-
-        $this->eventBus
-            ->expects($this->never())
-            ->method('publish');
-
-        $this->broadcastingWriteRepositoryDecorator->updateCountIncrement(
-            $uuid
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_broadcast_on_update_count_decrement(): void
-    {
-        $uuid = new UUID('34198f6d-e782-4e94-9593-8e31e2e2913a');
-
-        $this->writeRepository
-            ->expects($this->once())
-            ->method('updateCountDecrement')
-            ->with(
-                $uuid
-            );
-
-        $this->eventBus
-            ->expects($this->never())
-            ->method('publish');
-
-        $this->broadcastingWriteRepositoryDecorator->updateCountDecrement(
-            $uuid
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_does_broadcast_on_update_private(): void
     {
         $uuid = new UUID('17bcae0c-ac05-4da9-9883-421b5a8fc666');

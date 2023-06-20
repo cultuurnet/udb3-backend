@@ -41,16 +41,6 @@ final class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInter
         );
     }
 
-    public function updateCountIncrement(UUID $uuid): void
-    {
-        $this->writeRepository->updateCountIncrement($uuid);
-    }
-
-    public function updateCountDecrement(UUID $uuid): void
-    {
-        $this->writeRepository->updateCountDecrement($uuid);
-    }
-
     public function updatePrivate(UUID $uuid): void
     {
         $this->writeRepository->updatePrivate($uuid);
