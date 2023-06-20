@@ -28,7 +28,7 @@ class LabelNameUniqueConstraintService implements UniqueConstraintService
 
     public function getUniqueConstraintValue(DomainMessage $domainMessage): string
     {
-        /** @var Created|CopyCreated $event */
+        /** @var Created $event */
         $event = $domainMessage->getPayload();
 
         return $event->getName();

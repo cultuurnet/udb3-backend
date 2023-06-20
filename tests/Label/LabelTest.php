@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
 use CultuurNet\UDB3\Label\Events\Excluded;
 use CultuurNet\UDB3\Label\Events\Included;
@@ -27,11 +26,7 @@ final class LabelTest extends AggregateRootScenarioTestCase
 
     private Privacy $privacy;
 
-    private UUID $parentUuid;
-
     private Created $created;
-
-    private CopyCreated $copyCreated;
 
     public function setUp(): void
     {
@@ -41,21 +36,12 @@ final class LabelTest extends AggregateRootScenarioTestCase
         $this->name = 'labelName';
         $this->visibility = Visibility::INVISIBLE();
         $this->privacy = Privacy::PRIVACY_PRIVATE();
-        $this->parentUuid = new UUID('efaddd1d-837c-49ea-81d0-f4882fdf4123');
 
         $this->created = new Created(
             $this->uuid,
             $this->name,
             $this->visibility,
             $this->privacy
-        );
-
-        $this->copyCreated = new CopyCreated(
-            $this->uuid,
-            $this->name,
-            $this->visibility,
-            $this->privacy,
-            $this->parentUuid
         );
     }
 
@@ -79,24 +65,6 @@ final class LabelTest extends AggregateRootScenarioTestCase
                 )
             )
             ->then([$this->created]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_create_a_copied_label(): void
-    {
-        $this->scenario
-            ->when(
-                fn () => Label::createCopy(
-                    $this->uuid,
-                    $this->name,
-                    $this->visibility,
-                    $this->privacy,
-                    $this->parentUuid
-                )
-            )
-            ->then([$this->copyCreated]);
     }
 
     /**

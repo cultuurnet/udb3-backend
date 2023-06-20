@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
-use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
 use CultuurNet\UDB3\Label\Events\Excluded;
 use CultuurNet\UDB3\Label\Events\Included;
@@ -47,26 +46,6 @@ final class Label extends EventSourcedAggregateRoot
             $name,
             $visibility,
             $privacy
-        ));
-
-        return $label;
-    }
-
-    public static function createCopy(
-        UUID $uuid,
-        string $name,
-        Visibility $visibility,
-        Privacy $privacy,
-        UUID $parentUuid
-    ): Label {
-        $label = new Label();
-
-        $label->apply(new CopyCreated(
-            $uuid,
-            $name,
-            $visibility,
-            $privacy,
-            $parentUuid
         ));
 
         return $label;
@@ -121,11 +100,6 @@ final class Label extends EventSourcedAggregateRoot
         $this->visibility = $created->getVisibility();
         $this->privacy = $created->getPrivacy();
         $this->excluded = false;
-    }
-
-    public function applyCopyCreated(CopyCreated $copyCreated): void
-    {
-        $this->applyCreated($copyCreated);
     }
 
     public function applyMadeVisible(MadeVisible $madeVisible): void

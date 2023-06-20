@@ -10,7 +10,6 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Event\Events\LabelAdded as LabelAddedToEvent;
 use CultuurNet\UDB3\Event\Events\LabelRemoved as LabelRemovedFromEvent;
 use CultuurNet\UDB3\Label\Events\AbstractEvent;
-use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
 use CultuurNet\UDB3\Label\Events\Excluded;
 use CultuurNet\UDB3\Label\Events\Included;
@@ -156,85 +155,6 @@ final class ProjectorTest extends TestCase
             ->method('save');
 
         $domainMessage = $this->createDomainMessage($this->unknownId, $created);
-
-        $this->projector->handle($domainMessage);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_copy_created_when_uuid_and_name_are_unique(): void
-    {
-        $copyCreated = new CopyCreated(
-            $this->unknownId,
-            $this->unknownLabelName,
-            $this->entity->getVisibility(),
-            $this->entity->getPrivacy(),
-            $this->entity->getParentUuid()
-        );
-
-        $this->writeRepository->expects($this->once())
-            ->method('save')
-            ->with(
-                $this->unknownId,
-                new StringLiteral($this->unknownLabelName),
-                $this->entity->getVisibility(),
-                $this->entity->getPrivacy(),
-                $this->entity->getParentUuid()
-            );
-
-        $domainMessage = $this->createDomainMessage(
-            $this->unknownId,
-            $copyCreated
-        );
-
-        $this->projector->handle($domainMessage);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_handle_copy_created_when_uuid_not_unique(): void
-    {
-        $copyCreated = new CopyCreated(
-            $this->uuid,
-            $this->unknownLabelName,
-            $this->entity->getVisibility(),
-            $this->entity->getPrivacy(),
-            $this->entity->getParentUuid()
-        );
-
-        $this->writeRepository->expects($this->never())
-            ->method('save');
-
-        $domainMessage = $this->createDomainMessage(
-            $this->unknownId,
-            $copyCreated
-        );
-
-        $this->projector->handle($domainMessage);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_handle_copy_created_when_name_not_unique(): void
-    {
-        $copyCreated = new CopyCreated(
-            $this->unknownId,
-            $this->labelName,
-            $this->entity->getVisibility(),
-            $this->entity->getPrivacy(),
-            $this->entity->getParentUuid()
-        );
-
-        $this->writeRepository->expects($this->never())
-            ->method('save');
-
-        $domainMessage = $this->createDomainMessage(
-            $this->unknownId,
-            $copyCreated
-        );
 
         $this->projector->handle($domainMessage);
     }
