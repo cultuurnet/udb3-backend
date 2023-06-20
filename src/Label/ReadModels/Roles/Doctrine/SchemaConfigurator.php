@@ -14,7 +14,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     public const ROLE_ID_COLUMN = 'role_id';
 
     private string $labelRolesTableName;
-    
+
     public function __construct(string $labelRolesTableName)
     {
         $this->labelRolesTableName = $labelRolesTableName;

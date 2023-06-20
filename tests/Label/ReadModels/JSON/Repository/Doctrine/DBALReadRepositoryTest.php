@@ -55,9 +55,9 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $this->dbalReadRepository = new DBALReadRepository(
             $this->getConnection(),
-            $this->getTableName(),
-            new StringLiteral($this->labelRolesTableName),
-            $this->userRolesTableName,
+            $this->getTableName()->toNative(),
+            $this->labelRolesTableName,
+            $this->userRolesTableName->toNative(),
             new InMemoryExcludedLabelsRepository(
                 [
                     '67dcd2a0-5301-4747-a956-3741420efd52',

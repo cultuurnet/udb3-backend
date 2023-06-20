@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelR
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionsSchemaConfigurator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -21,20 +20,20 @@ use CultuurNet\UDB3\StringLiteral;
 
 final class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
 {
-    private StringLiteral $labelRolesTableName;
+    private string $labelRolesTableName;
 
-    private StringLiteral $userRolesTableName;
+    private string $userRolesTableName;
 
     private ExcludedLabelsRepository $excludedLabelsRepository;
 
     public function __construct(
         Connection $connection,
-        StringLiteral $tableName,
-        StringLiteral $labelRolesTableName,
-        StringLiteral $userRolesTableName,
+        string $tableName,
+        string $labelRolesTableName,
+        string $userRolesTableName,
         ExcludedLabelsRepository $excludedLabelsRepository
     ) {
-        parent::__construct($connection, $tableName);
+        parent::__construct($connection, new StringLiteral($tableName));
 
         $this->labelRolesTableName = $labelRolesTableName;
         $this->userRolesTableName = $userRolesTableName;
@@ -199,10 +198,10 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
     {
         return $this->createQueryBuilder()
             ->select('DISTINCT ' . LabelRolesSchemaConfigurator::LABEL_ID_COLUMN)
-            ->from($this->userRolesTableName->toNative(), 'ur')
+            ->from($this->userRolesTableName, 'ur')
             ->innerJoin(
                 'ur',
-                $this->labelRolesTableName->toNative(),
+                $this->labelRolesTableName,
                 'lr',
                 'ur.' . PermissionsSchemaConfigurator::ROLE_ID_COLUMN . ' = lr.' . LabelRolesSchemaConfigurator::ROLE_ID_COLUMN
             )

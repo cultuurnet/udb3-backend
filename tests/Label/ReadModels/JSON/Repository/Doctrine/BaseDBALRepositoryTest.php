@@ -34,7 +34,6 @@ abstract class BaseDBALRepositoryTest extends TestCase
         return $this->tableName;
     }
 
-
     protected function saveEntity(Entity $entity): void
     {
         $values = $this->entityToValues($entity);

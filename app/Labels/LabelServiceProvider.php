@@ -160,9 +160,9 @@ final class LabelServiceProvider extends AbstractServiceProvider
                     new GodUserReadRepositoryDecorator(
                         new JsonReadRepository(
                             $container->get('dbal_connection'),
-                            new StringLiteral(self::JSON_TABLE),
-                            new StringLiteral(self::LABEL_ROLES_TABLE),
-                            new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
+                            self::JSON_TABLE,
+                            self::LABEL_ROLES_TABLE,
+                            UserPermissionsServiceProvider::USER_ROLES_TABLE,
                             new InMemoryExcludedLabelsRepository($labels ?? [])
                         ),
                         $container->get('config')['user_permissions']['allow_all']
