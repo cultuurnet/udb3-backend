@@ -17,8 +17,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
         UUID $uuid,
         StringLiteral $name,
         Visibility $visibility,
-        Privacy $privacy,
-        UUID $parentUuid = null
+        Privacy $privacy
     ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->insert($this->getTableName()->toNative())
@@ -35,7 +34,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
                 $name->toNative(),
                 $visibility->sameAs(Visibility::VISIBLE()) ? 1 : 0,
                 $privacy->sameAs(Privacy::PRIVACY_PRIVATE()) ? 1 : 0,
-                $parentUuid ? $parentUuid->toString() : null,
+                null,
                 0,
             ]);
 

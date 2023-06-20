@@ -65,8 +65,7 @@ final class ProjectorTest extends TestCase
             $this->uuid,
             new StringLiteral($this->labelName),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PRIVATE(),
-            new UUID('e7dd8377-b697-4ba1-a688-164daaf961b5')
+            Privacy::PRIVACY_PRIVATE()
         );
 
         $uuidMap = [
