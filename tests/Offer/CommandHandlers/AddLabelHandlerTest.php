@@ -29,8 +29,6 @@ use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 
-use CultuurNet\UDB3\StringLiteral;
-
 final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
 {
     /**
@@ -73,7 +71,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->mockedLabelReadModels['foo'] = new Entity(
             new UUID('9702eec8-badd-43be-b4d0-19b016ad6ecb'),
-            new StringLiteral('foo'),
+            'foo',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );

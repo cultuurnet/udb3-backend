@@ -92,7 +92,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
         $nameLowerCase = mb_strtolower($name);
         foreach ($foundLabels as $foundLabel) {
-            $foundLabelLowerCase = mb_strtolower($foundLabel->getName()->toNative());
+            $foundLabelLowerCase = mb_strtolower($foundLabel->getName());
             if ($nameLowerCase === $foundLabelLowerCase) {
                 return true;
             }
@@ -270,7 +270,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
     {
         $uuid = new UUID($row[SchemaConfigurator::UUID_COLUMN]);
 
-        $name = new StringLiteral($row[SchemaConfigurator::NAME_COLUMN]);
+        $name = $row[SchemaConfigurator::NAME_COLUMN];
 
         $visibility = $row[SchemaConfigurator::VISIBLE_COLUMN]
             ? Visibility::VISIBLE() : Visibility::INVISIBLE();

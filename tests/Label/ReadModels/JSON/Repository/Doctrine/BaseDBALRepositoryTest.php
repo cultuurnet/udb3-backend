@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 abstract class BaseDBALRepositoryTest extends TestCase
 {
@@ -47,7 +46,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
     {
         return [
             $entity->getUuid()->toString(),
-            $entity->getName()->toNative(),
+            $entity->getName(),
             $entity->getVisibility()->sameAs(Visibility::VISIBLE()),
             $entity->getPrivacy()->sameAs(Privacy::PRIVACY_PRIVATE()),
             null,
@@ -70,7 +69,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
     {
         return new Entity(
             new UUID($row[SchemaConfigurator::UUID_COLUMN]),
-            new StringLiteral($row[SchemaConfigurator::NAME_COLUMN]),
+            $row[SchemaConfigurator::NAME_COLUMN],
             $row[SchemaConfigurator::VISIBLE_COLUMN]
                 ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
             $row[SchemaConfigurator::PRIVATE_COLUMN]

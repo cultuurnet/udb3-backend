@@ -68,7 +68,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $this->entityByUuid = new Entity(
             new UUID('7f328086-0e56-4c7d-a2e7-38ac5eaa0347'),
-            new StringLiteral('bibliotheekweek'),
+            'bibliotheekweek',
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );
@@ -76,7 +76,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $this->entityByName = new Entity(
             new UUID('25ea383c-b14d-4776-989c-24e0ac044638'),
-            new StringLiteral('boswandeling'),
+            'boswandeling',
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );
@@ -84,7 +84,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $this->entityPrivateAccess = new Entity(
             new UUID('6639d6d2-ac7d-4995-91e3-7660c74cf1eb'),
-            new StringLiteral('wandeltocht'),
+            'wandeltocht',
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE()
         );
@@ -92,7 +92,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $this->entityPrivateNoAccess = new Entity(
             new UUID('b14dd3ea-6962-4565-91b6-d0e8d929e685'),
-            new StringLiteral('stadswandeling'),
+            'stadswandeling',
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE()
         );
@@ -100,7 +100,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $this->excluded = new Entity(
             new UUID('67dcd2a0-5301-4747-a956-3741420efd52'),
-            new StringLiteral('excluded'),
+            'excluded',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC(),
             true
@@ -110,7 +110,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         for ($i = 0; $i < 10; $i++) {
             $entity = new Entity(
                 new UUID('15c8c391-724d-4878-8a06-86163ed5412' . $i),
-                new StringLiteral('label' . $i),
+                'label' . $i,
                 Visibility::VISIBLE(),
                 Privacy::PRIVACY_PUBLIC()
             );
@@ -148,7 +148,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_get_by_name(): void
     {
         $entity = $this->dbalReadRepository->getByName(
-            $this->entityByName->getName()->toNative()
+            $this->entityByName->getName()
         );
 
         $this->assertEquals($this->entityByName, $entity);
@@ -261,8 +261,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $entities = $this->dbalReadRepository->search($search);
 
         $this->assertCount(5, $entities);
-        $this->assertEquals('label5', $entities[0]->getName()->toNative());
-        $this->assertEquals('label9', $entities[4]->getName()->toNative());
+        $this->assertEquals('label5', $entities[0]->getName());
+        $this->assertEquals('label9', $entities[4]->getName());
     }
 
     /**
@@ -280,8 +280,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $entities = $this->dbalReadRepository->search($search);
 
         $this->assertCount(3, $entities);
-        $this->assertEquals('label4', $entities[0]->getName()->toNative());
-        $this->assertEquals('label6', $entities[2]->getName()->toNative());
+        $this->assertEquals('label4', $entities[0]->getName());
+        $this->assertEquals('label6', $entities[2]->getName());
     }
 
     /**
@@ -299,8 +299,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $entities = $this->dbalReadRepository->search($search);
 
         $this->assertCount(3, $entities);
-        $this->assertEquals('label0', $entities[0]->getName()->toNative());
-        $this->assertEquals('label2', $entities[2]->getName()->toNative());
+        $this->assertEquals('label0', $entities[0]->getName());
+        $this->assertEquals('label2', $entities[2]->getName());
     }
 
     /**
@@ -369,12 +369,12 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $this->assertTrue($this->dbalReadRepository->canUseLabel(
             $userId,
-            $this->entityPrivateAccess->getName()->toNative()
+            $this->entityPrivateAccess->getName()
         ));
 
         $this->assertFalse($this->dbalReadRepository->canUseLabel(
             $userId,
-            $this->entityPrivateNoAccess->getName()->toNative()
+            $this->entityPrivateNoAccess->getName()
         ));
     }
 

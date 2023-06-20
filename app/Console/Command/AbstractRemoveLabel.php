@@ -35,6 +35,6 @@ abstract class AbstractRemoveLabel extends Command
     {
         $uuid = new UUID($labelId);
         $entity = $this->readRepository->getByUuid($uuid);
-        return isset($entity) ? $entity->getName()->toNative() : null;
+        return isset($entity) ? $entity->getName() : null;
     }
 }

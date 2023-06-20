@@ -55,7 +55,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
             ->willReturn(
                 new Entity(
                     new UUID('86c5b0f4-a5da-4a81-815f-3839634c212c'),
-                    new StringLiteral('2dotstwice'),
+                    '2dotstwice',
                     Visibility::INVISIBLE(),
                     Privacy::PRIVACY_PRIVATE()
                 )

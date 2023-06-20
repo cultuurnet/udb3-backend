@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -57,7 +56,7 @@ final class ProjectorTest extends TestCase
 
         $this->entity = new Entity(
             $this->uuid,
-            new StringLiteral($this->labelName),
+            $this->labelName,
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PRIVATE()
         );
@@ -102,7 +101,7 @@ final class ProjectorTest extends TestCase
             ->method('save')
             ->with(
                 $this->unknownId,
-                new StringLiteral($this->unknownLabelName),
+                $this->unknownLabelName,
                 $this->entity->getVisibility(),
                 $this->entity->getPrivacy()
             );
