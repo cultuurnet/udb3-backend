@@ -57,8 +57,6 @@ final class LabelServiceProvider extends AbstractServiceProvider
     public const RELATIONS_WRITE_REPOSITORY = 'labels.relations_write_repository';
     public const LABEL_ROLES_WRITE_REPOSITORY = 'labels.label_roles_write_repository';
 
-    public const WRITE_SERVICE = 'labels.write_service';
-
     public const UNIQUE_EVENT_STORE = 'labels.unique_event_store';
     public const REPOSITORY = 'labels.repository';
     public const COMMAND_HANDLER = 'labels.command_handler';
@@ -212,7 +210,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
             function () use ($container): LabelRolesWriteRepository {
                 return new LabelRolesWriteRepository(
                     $container->get('dbal_connection'),
-                    new StringLiteral(self::LABEL_ROLES_TABLE)
+                    self::LABEL_ROLES_TABLE
                 );
             }
         );

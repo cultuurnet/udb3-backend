@@ -7,19 +7,15 @@ namespace CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine;
 use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Types\Type;
-use CultuurNet\UDB3\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
     public const LABEL_ID_COLUMN = 'label_id';
     public const ROLE_ID_COLUMN = 'role_id';
 
-    private StringLiteral $labelRolesTableName;
-
-    /**
-     * SchemaConfigurator constructor.
-     */
-    public function __construct(StringLiteral $labelRolesTableName)
+    private string $labelRolesTableName;
+    
+    public function __construct(string $labelRolesTableName)
     {
         $this->labelRolesTableName = $labelRolesTableName;
     }
@@ -28,9 +24,9 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     {
         $schema = $schemaManager->createSchema();
 
-        if (!$schema->hasTable((string) $this->labelRolesTableName)) {
+        if (!$schema->hasTable($this->labelRolesTableName)) {
             $labelRolesTable = $schema->createTable(
-                $this->labelRolesTableName->toNative()
+                $this->labelRolesTableName
             );
 
             $labelRolesTable->addColumn(self::LABEL_ID_COLUMN, Type::GUID)

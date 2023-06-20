@@ -28,7 +28,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
     private Entity $excluded;
 
-    private StringLiteral $labelRolesTableName;
+    private string $labelRolesTableName;
 
     private StringLiteral $userRolesTableName;
 
@@ -36,7 +36,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     {
         parent::setUp();
 
-        $this->labelRolesTableName = new StringLiteral('label_roles');
+        $this->labelRolesTableName = 'label_roles';
         $schemaConfigurator = new LabelRolesSchemaConfigurator(
             $this->labelRolesTableName
         );
@@ -56,7 +56,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $this->dbalReadRepository = new DBALReadRepository(
             $this->getConnection(),
             $this->getTableName(),
-            $this->labelRolesTableName,
+            new StringLiteral($this->labelRolesTableName),
             $this->userRolesTableName,
             new InMemoryExcludedLabelsRepository(
                 [
@@ -412,7 +412,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     private function insertLabelRole(UUID $labelId, UUID $roleId): void
     {
         $this->getConnection()->insert(
-            $this->labelRolesTableName->toNative(),
+            $this->labelRolesTableName,
             [
                 LabelRolesSchemaConfigurator::LABEL_ID_COLUMN => $labelId->toString(),
                 LabelRolesSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
