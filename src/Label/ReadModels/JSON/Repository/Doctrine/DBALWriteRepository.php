@@ -10,9 +10,15 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\StringLiteral;
+use Doctrine\DBAL\Connection;
 
 final class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
 {
+    public function __construct(Connection $connection, string $tableName)
+    {
+        parent::__construct($connection, new StringLiteral($tableName));
+    }
+
     public function save(
         UUID $uuid,
         StringLiteral $name,

@@ -178,7 +178,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
                 return new BroadcastingWriteRepositoryDecorator(
                     new JsonWriteRepository(
                         $container->get('dbal_connection'),
-                        new StringLiteral(self::JSON_TABLE)
+                        self::JSON_TABLE
                     ),
                     $container->get(EventBus::class)
                 );

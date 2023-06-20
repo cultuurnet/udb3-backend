@@ -16,11 +16,11 @@ abstract class BaseDBALRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    private StringLiteral $tableName;
+    private string $tableName;
 
     protected function setUp(): void
     {
-        $this->tableName = new StringLiteral('test_places_json');
+        $this->tableName = 'test_labels_json';
 
         $schemaConfigurator = new SchemaConfigurator($this->tableName);
 
@@ -29,7 +29,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
         $schemaConfigurator->configure($schemaManager);
     }
 
-    protected function getTableName(): StringLiteral
+    protected function getTableName(): string
     {
         return $this->tableName;
     }
