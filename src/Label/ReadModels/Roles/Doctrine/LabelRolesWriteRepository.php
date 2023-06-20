@@ -11,19 +11,10 @@ use CultuurNet\UDB3\StringLiteral;
 
 class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var StringLiteral
-     */
-    private $labelRolesTableName;
+    private StringLiteral $labelRolesTableName;
 
-    /**
-     * LabelRolesWriteRepository constructor.
-     */
     public function __construct(
         Connection $connection,
         StringLiteral $labelRolesTableName

@@ -10,15 +10,9 @@ use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractDBALRepository
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var StringLiteral
-     */
-    private $tableName;
+    private StringLiteral $tableName;
 
     public function __construct(
         Connection $connection,
@@ -28,26 +22,17 @@ abstract class AbstractDBALRepository
         $this->tableName = $tableName;
     }
 
-    /**
-     * @return Connection
-     */
-    public function getConnection()
+    public function getConnection(): Connection
     {
         return $this->connection;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getTableName()
+    public function getTableName(): StringLiteral
     {
         return $this->tableName;
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    public function createQueryBuilder()
+    public function createQueryBuilder(): QueryBuilder
     {
         return $this->connection->createQueryBuilder();
     }

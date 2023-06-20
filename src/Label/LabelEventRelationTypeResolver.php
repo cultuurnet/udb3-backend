@@ -16,20 +16,11 @@ use CultuurNet\UDB3\Place\Events\LabelsImported as PlaceLabelsImported;
 
 class LabelEventRelationTypeResolver implements LabelEventRelationTypeResolverInterface
 {
-    /**
-     * @var LabelEventIsOfEventType
-     */
-    private $eventTypeSpecification;
+    private LabelEventIsOfEventType $eventTypeSpecification;
 
-    /**
-     * @var LabelEventIsOfPlaceType
-     */
-    private $placeTypeSpecification;
+    private LabelEventIsOfPlaceType $placeTypeSpecification;
 
-    /**
-     * @var LabelEventIsOfOrganizerType
-     */
-    private $organizerTypeSpecification;
+    private LabelEventIsOfOrganizerType $organizerTypeSpecification;
 
     public function __construct()
     {
@@ -38,11 +29,7 @@ class LabelEventRelationTypeResolver implements LabelEventRelationTypeResolverIn
         $this->organizerTypeSpecification = new LabelEventIsOfOrganizerType();
     }
 
-    /**
-     * @return RelationType
-     * @throws \InvalidArgumentException
-     */
-    public function getRelationType(LabelEventInterface $labelEvent)
+    public function getRelationType(LabelEventInterface $labelEvent): RelationType
     {
         if ($this->eventTypeSpecification->isSatisfiedBy($labelEvent)) {
             $relationType = RelationType::event();
@@ -58,10 +45,7 @@ class LabelEventRelationTypeResolver implements LabelEventRelationTypeResolverIn
         return $relationType;
     }
 
-    /**
-     * @return RelationType
-     */
-    public function getRelationTypeForImport(LabelsImportedEventInterface $labelsImported)
+    public function getRelationTypeForImport(LabelsImportedEventInterface $labelsImported): RelationType
     {
         if ($labelsImported instanceof EventLabelsImported) {
             return RelationType::event();
@@ -77,9 +61,8 @@ class LabelEventRelationTypeResolver implements LabelEventRelationTypeResolverIn
 
     /**
      * @param LabelEventInterface|LabelsImportedEventInterface $labelEvent
-     * @return string
      */
-    private function createIllegalArgumentMessage($labelEvent)
+    private function createIllegalArgumentMessage($labelEvent): string
     {
         return 'Event with type ' . get_class($labelEvent) . ' can not be converted to a relation type!';
     }

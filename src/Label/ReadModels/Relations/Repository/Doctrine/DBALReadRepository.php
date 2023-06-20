@@ -11,9 +11,6 @@ use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 
 class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function getLabelRelations(string $labelName)
     {
         $aliases = $this->getAliases();
@@ -44,9 +41,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         ->execute()->fetchAll(\PDO::FETCH_COLUMN);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getLabelRelationsForItem(string $relationId): array
     {
         $aliases = $this->getAliases();

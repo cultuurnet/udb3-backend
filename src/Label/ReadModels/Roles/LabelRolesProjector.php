@@ -14,14 +14,8 @@ class LabelRolesProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var LabelRolesWriteRepositoryInterface
-     */
-    private $labelRolesWriteRepository;
+    private LabelRolesWriteRepositoryInterface $labelRolesWriteRepository;
 
-    /**
-     * LabelRolesProjector constructor.
-     */
     public function __construct(
         LabelRolesWriteRepositoryInterface $labelRolesWriteRepository
     ) {
@@ -45,7 +39,6 @@ class LabelRolesProjector implements EventListener
             $labelRemoved->getUuid()
         );
     }
-
 
     protected function applyRoleDeleted(RoleDeleted $roleDeleted)
     {

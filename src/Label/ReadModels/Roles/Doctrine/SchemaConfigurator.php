@@ -14,10 +14,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     public const LABEL_ID_COLUMN = 'label_id';
     public const ROLE_ID_COLUMN = 'role_id';
 
-    /**
-     * @var StringLiteral
-     */
-    private $labelRolesTableName;
+    private StringLiteral $labelRolesTableName;
 
     /**
      * SchemaConfigurator constructor.
