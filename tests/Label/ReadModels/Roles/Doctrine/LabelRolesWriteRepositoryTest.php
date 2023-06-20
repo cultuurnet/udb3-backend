@@ -14,15 +14,9 @@ class LabelRolesWriteRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var StringLiteral
-     */
-    private $labelRolesTableName;
+    private StringLiteral $labelRolesTableName;
 
-    /**
-     * @var LabelRolesWriteRepositoryInterface
-     */
-    private $labelRolesWriteRepository;
+    private LabelRolesWriteRepositoryInterface $labelRolesWriteRepository;
 
     protected function setUp(): void
     {
@@ -135,10 +129,7 @@ class LabelRolesWriteRepositoryTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    private function getRows()
+    private function getRows(): array
     {
         $sql = 'SELECT * FROM ' . $this->labelRolesTableName->toNative();
         $statement = $this->connection->executeQuery($sql);

@@ -18,11 +18,6 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
      */
     private $mockRepository;
 
-    /**
-     * @var string[]
-     */
-    private array $godUserIds;
-
     private GodUserReadRepositoryDecorator $repository;
 
     private string $godUserId;
@@ -106,19 +101,19 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
                 }
             );
 
-        $this->godUserIds = [
+        $godUserIds = [
             '720ba243-9b1f-44bd-82c1-729012b2aef4',
             '7f91831c-bdd4-4124-a3f0-df7183cdfcc7',
             '88272ef3-0add-47df-b40e-1eaaa509b1c8',
         ];
 
-        $this->godUserId = $this->godUserIds[0];
+        $this->godUserId = $godUserIds[0];
         $this->userId = '50793168-2667-44f1-9a78-bf8548d7810d';
 
         $this->privateLabel = 'foo';
         $this->publicLabel = 'bar';
 
-        $this->repository = new GodUserReadRepositoryDecorator($this->mockRepository, $this->godUserIds);
+        $this->repository = new GodUserReadRepositoryDecorator($this->mockRepository, $godUserIds);
     }
 
     /**

@@ -12,15 +12,9 @@ use CultuurNet\UDB3\StringLiteral;
 
 class AbstractDBALRepositoryTest extends TestCase
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var StringLiteral
-     */
-    private $tableName;
+    private StringLiteral $tableName;
 
     /**
      * @var AbstractDBALRepository|MockObject
