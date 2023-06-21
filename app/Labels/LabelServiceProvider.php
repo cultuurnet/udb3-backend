@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepository
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository as JsonReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALWriteRepository as JsonWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\GodUserReadRepositoryDecorator;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\InMemoryExcludedLabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Projector as RelationsProjector;
@@ -161,8 +160,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
                             $container->get('dbal_connection'),
                             self::JSON_TABLE,
                             self::LABEL_ROLES_TABLE,
-                            UserPermissionsServiceProvider::USER_ROLES_TABLE,
-                            new InMemoryExcludedLabelsRepository($labels ?? [])
+                            UserPermissionsServiceProvider::USER_ROLES_TABLE
                         ),
                         $container->get('config')['user_permissions']['allow_all']
                     ),
