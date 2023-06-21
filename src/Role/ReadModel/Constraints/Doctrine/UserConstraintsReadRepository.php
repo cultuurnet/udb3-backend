@@ -48,7 +48,7 @@ class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInte
         $queryBuilder = $this->connection->createQueryBuilder();
         $userConstraintsQuery = $queryBuilder
             ->select('rs.' . SearchSchemaConfigurator::CONSTRAINT_COLUMN)
-            ->from($this->rolesSearchTableName, 'rs')
+            ->from($this->rolesSearchTableName->toNative(), 'rs')
             ->innerJoin(
                 'rs',
                 sprintf('(%s)', $userRolesSubQuery->getSQL()),
