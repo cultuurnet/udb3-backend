@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
-use CultuurNet\UDB3\StringLiteral;
 
 final class PlaceServiceProvider extends AbstractServiceProvider
 {
@@ -95,7 +94,7 @@ final class PlaceServiceProvider extends AbstractServiceProvider
                 $container->get(EventRelationsRepository::class),
                 new DBALReadRepository(
                     $container->get('dbal_connection'),
-                    new StringLiteral('labels_relations')
+                    'labels_relations'
                 ),
                 $container->get('place_jsonld_repository'),
             )
