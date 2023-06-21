@@ -6,17 +6,13 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class StripHtmlStringFilterTest extends StringFilterTest
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected $filterClass = StripHtmlStringFilter::class;
+    protected string $filterClass = StripHtmlStringFilter::class;
 
     /**
      * @test
-     *
      * @dataProvider htmlStringDataProvider
      */
-    public function it_converts_html_strings_to_plain_text($original, $expected): void
+    public function it_converts_html_strings_to_plain_text(string $original, string $expected): void
     {
         $this->assertFilterValue($expected, $original);
     }

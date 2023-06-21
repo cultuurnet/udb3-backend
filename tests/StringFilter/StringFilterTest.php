@@ -15,16 +15,10 @@ abstract class StringFilterTest extends TestCase
      *
      * If you want to pass arguments to the filter's constructor, you should override getFilter() and construct the
      * object yourself instead of setting this property.
-     *
-     * @var string
      */
-    protected $filterClass;
+    protected string $filterClass;
 
-    /**
-     * Filter object.
-     * @var StringFilterInterface
-     */
-    protected $filter;
+    protected StringFilterInterface $filter;
 
     /**
      * {@inheritdoc}
@@ -37,36 +31,24 @@ abstract class StringFilterTest extends TestCase
 
     /**
      * Returns the filter to be used in all the test methods of the test.
-     * @return StringFilterInterface
      */
-    protected function getFilter()
+    protected function getFilter(): StringFilterInterface
     {
         return new $this->filterClass();
     }
 
     /**
      * Uses the $filter property to filter a string.
-     *
-     * @param string $string
-     *   String to filter.
-     *
-     * @return string
-     *   Filtered string.
      */
-    protected function filter($string)
+    protected function filter(string $string): string
     {
         return $this->filter->filter($string);
     }
 
     /**
      * Asserts that a filtered string is the same as a another string.
-     *
-     * @param string $expected
-     *   Expected string value after filtering.
-     * @param string $original
-     *   String to filter and compare afterwards.
      */
-    protected function assertFilterValue($expected, $original)
+    protected function assertFilterValue(string $expected, string $original): void
     {
         $actual = $this->filter($original);
         $this->assertEquals($expected, $actual);

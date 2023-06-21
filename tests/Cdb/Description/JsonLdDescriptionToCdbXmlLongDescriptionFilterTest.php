@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Cdb\Description;
 
+use CultuurNet\UDB3\StringFilter\StringFilterInterface;
 use CultuurNet\UDB3\StringFilter\StringFilterTest;
 
 class JsonLdDescriptionToCdbXmlLongDescriptionFilterTest extends StringFilterTest
 {
-    /**
-     * @return JsonLdDescriptionToCdbXmlLongDescriptionFilter
-     */
-    protected function getFilter()
+    protected function getFilter(): StringFilterInterface
     {
         return new JsonLdDescriptionToCdbXmlLongDescriptionFilter();
     }

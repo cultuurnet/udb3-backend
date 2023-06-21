@@ -9,7 +9,7 @@ class StripSourceStringFilterTest extends StringFilterTest
     /**
      * {@inheritdoc}
      */
-    protected $filterClass = StripSourceStringFilter::class;
+    protected string $filterClass = StripSourceStringFilter::class;
 
     /**
      * @test

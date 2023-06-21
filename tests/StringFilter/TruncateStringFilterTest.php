@@ -9,13 +9,12 @@ class TruncateStringFilterTest extends StringFilterTest
     /**
      * @var TruncateStringFilter
      */
-    protected $filter;
+    protected StringFilterInterface $filter;
 
     /**
      * Returns the filter to be used in all the test methods of the test.
-     * @return TruncateStringFilter
      */
-    protected function getFilter()
+    protected function getFilter(): StringFilterInterface
     {
         return new TruncateStringFilter(15);
     }

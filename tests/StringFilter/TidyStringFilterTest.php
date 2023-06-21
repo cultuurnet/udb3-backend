@@ -9,7 +9,7 @@ class TidyStringFilterTest extends StringFilterTest
     /**
      * {@inheritdoc}
      */
-    protected $filterClass = TidyStringFilter::class;
+    protected string $filterClass = TidyStringFilter::class;
 
     /**
      * @test

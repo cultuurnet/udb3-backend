@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class BreakTagToNewlineStringFilterTest extends StringFilterTest
 {
-    /**
-     * @return BreakTagToNewlineStringFilter
-     */
-    protected function getFilter()
+    protected function getFilter(): StringFilterInterface
     {
         return new BreakTagToNewlineStringFilter();
     }

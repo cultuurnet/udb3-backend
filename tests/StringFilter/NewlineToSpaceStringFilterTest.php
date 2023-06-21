@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class NewlineToSpaceStringFilterTest extends StringFilterTest
 {
-    /**
-     * @return NewlineToSpaceStringFilter
-     */
-    protected function getFilter()
+    protected function getFilter(): StringFilterInterface
     {
         return new NewlineToSpaceStringFilter();
     }

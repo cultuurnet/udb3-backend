@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class StripNewlineStringFilterTest extends StringFilterTest
 {
-    /**
-     * @return StripNewlineStringFilter
-     */
-    protected function getFilter()
+    protected function getFilter(): StringFilterInterface
     {
         return new StripNewlineStringFilter();
     }

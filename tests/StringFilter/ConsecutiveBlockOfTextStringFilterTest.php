@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class ConsecutiveBlockOfTextStringFilterTest extends StringFilterTest
 {
-    /**
-     * @return ConsecutiveBlockOfTextStringFilter
-     */
-    protected function getFilter()
+    protected function getFilter(): StringFilterInterface
     {
         return new ConsecutiveBlockOfTextStringFilter();
     }
