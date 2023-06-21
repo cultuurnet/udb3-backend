@@ -8,35 +8,22 @@ use Broadway\Domain\DomainMessage;
 
 class PayloadInNamespace implements SpecificationInterface
 {
-    /**
-     * @var string
-     */
-    private $namespace;
+    private string $namespace;
 
-    /**
-     * @param string $namespace
-     */
-    public function __construct($namespace)
+    public function __construct(string $namespace)
     {
         $namespace = $this->appendNamespaceSeparator($namespace);
         $this->namespace = $namespace;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function isSatisfiedBy(DomainMessage $domainMessage)
+    public function isSatisfiedBy(DomainMessage $domainMessage): bool
     {
         $payload = $domainMessage->getPayload();
 
         return 0 === stripos(get_class($payload), $this->namespace);
     }
 
-    /**
-     * @param string $namespace
-     * @return string
-     */
-    private function appendNamespaceSeparator($namespace)
+    private function appendNamespaceSeparator(string $namespace): string
     {
         if (substr($namespace, -1, 1) !== '\\') {
             $namespace .= '\\';
