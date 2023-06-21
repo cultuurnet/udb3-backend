@@ -70,7 +70,6 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:change-owner',
         'console.organizer:change-owner-bulk',
         'console.label:exclude',
-        'console.label:exclude-from-config',
         'console.label:exclude-invalid',
         'console.label:include',
         'console.label:update-unique',
@@ -324,11 +323,6 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('event_command_bus'),
                 $container->get('organizer_owner.repository')
             )
-        );
-
-        $container->addShared(
-            'console.label:exclude-from-config',
-            fn () => new ExcludeLabelsFromConfig($container->get('event_command_bus'))
         );
 
         $container->addShared(
