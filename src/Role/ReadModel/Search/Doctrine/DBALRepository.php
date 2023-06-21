@@ -11,16 +11,9 @@ use CultuurNet\UDB3\StringLiteral;
 
 class DBALRepository implements RepositoryInterface
 {
-    /**
-     * @var Connection
-     */
-    protected $connection;
+    protected Connection $connection;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $tableName;
-
+    protected StringLiteral $tableName;
 
     public function __construct(Connection $connection, StringLiteral $tableName)
     {
@@ -102,7 +95,7 @@ class DBALRepository implements RepositoryInterface
 
         $total = $q->execute()->fetchColumn();
 
-        return new Results($limit, $results, $total);
+        return new Results($limit, $results, (int) $total);
     }
 
     /**

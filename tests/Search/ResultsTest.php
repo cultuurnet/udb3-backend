@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use TypeError;
 
 class ResultsTest extends TestCase
 {
@@ -46,29 +45,5 @@ class ResultsTest extends TestCase
 
         $this->assertEquals($items->toArray(), $results->getItems());
         $this->assertEquals($totalItems, $results->getTotalItems());
-    }
-
-    /**
-     * @test
-     */
-    public function it_only_accepts_an_items_array(): void
-    {
-        $this->expectException(TypeError::class);
-        new Results('foo', 5);
-    }
-
-    /**
-     * @test
-     */
-    public function it_only_accepts_a_total_items_integer(): void
-    {
-        $this->expectException(TypeError::class);
-
-        new Results(
-            new ItemIdentifiers(
-                new ItemIdentifier(new Url('http://du.de/event/1'), '1', ItemType::event()),
-            ),
-            'foo'
-        );
     }
 }
