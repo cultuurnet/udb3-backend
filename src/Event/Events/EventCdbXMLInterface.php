@@ -6,18 +6,9 @@ namespace CultuurNet\UDB3\Event\Events;
 
 interface EventCdbXMLInterface
 {
-    /**
-     * @return int
-     */
-    public function getEventId();
+    public function getEventId(): string;
 
-    /**
-     * @return string
-     */
-    public function getCdbXml();
+    public function getCdbXml(): string;
 
-    /**
-     * @return string
-     */
-    public function getCdbXmlNamespaceUri();
+    public function getCdbXmlNamespaceUri(): string;
 }

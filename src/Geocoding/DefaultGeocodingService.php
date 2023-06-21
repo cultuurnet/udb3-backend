@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use Geocoder\Exception\CollectionIsEmpty;
+use Geocoder\Model\Coordinates as GeocoderCoordinates;
 use Geocoder\Exception\Exception;
 use Geocoder\Geocoder;
 use Psr\Log\LoggerInterface;
@@ -30,7 +31,7 @@ class DefaultGeocodingService implements GeocodingService
     {
         try {
             $addresses = $this->geocoder->geocode($address);
-            /** @var Coordinates|null $coordinates */
+            /** @var GeocoderCoordinates|null $coordinates */
             $coordinates = $addresses->first()->getCoordinates();
 
             if ($coordinates === null) {

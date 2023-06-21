@@ -14,8 +14,8 @@ use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\User\CurrentUser;
-use League\Container\Container;
 use CultuurNet\UDB3\StringLiteral;
+use League\Container\DefinitionContainerInterface;
 
 final class SavedSearchesServiceProvider extends AbstractServiceProvider
 {
@@ -100,7 +100,7 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function getCreatedByQueryMode(Container $container): CreatedByQueryMode
+    private function getCreatedByQueryMode(DefinitionContainerInterface $container): CreatedByQueryMode
     {
         $createdByQueryMode = CreatedByQueryMode::uuid();
         if (!empty($container->get('config')['created_by_query_mode'])) {

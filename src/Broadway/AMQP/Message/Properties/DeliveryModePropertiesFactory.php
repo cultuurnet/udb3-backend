@@ -9,35 +9,27 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class DeliveryModePropertiesFactory implements PropertiesFactoryInterface
 {
-    /**
-     * @var int
-     */
-    private $deliveryMode;
+    private int $deliveryMode;
 
     /**
-     * @param int $deliveryMode
      *   Use AMQPMessage::DELIVERY_MODE_PERSISTENT or AMQPMessage::DELIVERY_MODE_NON_PERSISTENT
      */
-    public function __construct($deliveryMode)
+    public function __construct(int $deliveryMode)
     {
         $this->guardDeliveryMode($deliveryMode);
 
         $this->deliveryMode = $deliveryMode;
     }
 
-    /**
-     * @return array
-     */
-    public function createProperties(DomainMessage $domainMessage)
+    public function createProperties(DomainMessage $domainMessage): array
     {
         return ['delivery_mode' => $this->deliveryMode];
     }
 
     /**
-     * @param string $deliveryMode
      * @throws \InvalidArgumentException
      */
-    private function guardDeliveryMode($deliveryMode)
+    private function guardDeliveryMode(int $deliveryMode)
     {
         $validModes = [
             AMQPMessage::DELIVERY_MODE_NON_PERSISTENT,

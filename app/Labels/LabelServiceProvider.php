@@ -41,7 +41,7 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
-use League\Container\Container;
+use League\Container\DefinitionContainerInterface;
 use Monolog\Handler\StreamHandler;
 
 final class LabelServiceProvider extends AbstractServiceProvider
@@ -148,7 +148,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function setUpReadModels(Container $container): void
+    private function setUpReadModels(DefinitionContainerInterface $container): void
     {
         $container->addShared(
             self::JSON_READ_REPOSITORY,
@@ -215,7 +215,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function setUpServices(Container $container): void
+    private function setUpServices(DefinitionContainerInterface $container): void
     {
         $container->addShared(
             'labels.constraint_aware_service',
@@ -235,7 +235,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function setUpEventStore(Container $container): void
+    private function setUpEventStore(DefinitionContainerInterface $container): void
     {
         $container->addShared(
             self::UNIQUE_EVENT_STORE,
@@ -254,7 +254,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function setUpCommandHandler(Container $container): void
+    private function setUpCommandHandler(DefinitionContainerInterface $container): void
     {
         $container->addShared(
             self::REPOSITORY,
@@ -277,7 +277,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function setUpProjectors(Container $container): void
+    private function setUpProjectors(DefinitionContainerInterface $container): void
     {
         $container->addShared(
             self::JSON_PROJECTOR,
@@ -333,7 +333,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function setUpQueryFactory(Container $container): void
+    private function setUpQueryFactory(DefinitionContainerInterface $container): void
     {
         $container->addShared(
             self::QUERY_FACTORY,
@@ -345,7 +345,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function setUpLogger(Container $container): void
+    private function setUpLogger(DefinitionContainerInterface $container): void
     {
         $container->addShared(
             self::LOGGER,

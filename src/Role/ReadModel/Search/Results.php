@@ -6,53 +6,30 @@ namespace CultuurNet\UDB3\Role\ReadModel\Search;
 
 class Results
 {
-    /**
-     * @var int
-     */
-    private $itemsPerPage;
+    private int $itemsPerPage;
 
-    /**
-     * @var array
-     */
-    private $member;
+    private array $member;
 
-    /**
-     * @var int
-     */
-    private $totalItems;
+    private int $totalItems;
 
-    /**
-     * @param int $itemsPerPage
-     * @param array $member
-     * @param int $totalItems
-     */
-    public function __construct($itemsPerPage, $member, $totalItems)
+    public function __construct(int $itemsPerPage, array $member, int $totalItems)
     {
         $this->itemsPerPage = $itemsPerPage;
         $this->member = $member;
         $this->totalItems = $totalItems;
     }
 
-    /**
-     * @return int
-     */
-    public function getItemsPerPage()
+    public function getItemsPerPage(): int
     {
         return $this->itemsPerPage;
     }
 
-    /**
-     * @return array
-     */
-    public function getMember()
+    public function getMember(): array
     {
         return $this->member;
     }
 
-    /**
-     * @return int
-     */
-    public function getTotalItems()
+    public function getTotalItems(): int
     {
         return $this->totalItems;
     }

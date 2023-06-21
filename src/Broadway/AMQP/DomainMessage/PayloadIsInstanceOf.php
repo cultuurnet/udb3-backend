@@ -14,15 +14,9 @@ class PayloadIsInstanceOf implements SpecificationInterface, LoggerAwareInterfac
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var string
-     */
-    private $typeName;
+    private string $typeName;
 
-    /**
-     * @param string $typeName
-     */
-    public function __construct($typeName)
+    public function __construct(string $typeName)
     {
         if (!is_string($typeName)) {
             throw new InvalidArgumentException('Value for argument typeName should be a string');
@@ -31,10 +25,7 @@ class PayloadIsInstanceOf implements SpecificationInterface, LoggerAwareInterfac
         $this->logger = new NullLogger();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function isSatisfiedBy(DomainMessage $domainMessage)
+    public function isSatisfiedBy(DomainMessage $domainMessage): bool
     {
         $payload = $domainMessage->getPayload();
 

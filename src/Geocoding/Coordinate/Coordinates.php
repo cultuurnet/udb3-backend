@@ -6,16 +6,9 @@ namespace CultuurNet\UDB3\Geocoding\Coordinate;
 
 class Coordinates
 {
-    /**
-     * @var Latitude
-     */
-    private $lat;
+    private Latitude $lat;
 
-    /**
-     * @var Longitude
-     */
-    private $long;
-
+    private Longitude $long;
 
     public function __construct(Latitude $lat, Longitude $long)
     {
@@ -23,36 +16,23 @@ class Coordinates
         $this->long = $long;
     }
 
-    /**
-     * @return Latitude
-     */
-    public function getLatitude()
+    public function getLatitude(): Latitude
     {
         return $this->lat;
     }
 
-    /**
-     * @return Longitude
-     */
-    public function getLongitude()
+    public function getLongitude(): Longitude
     {
         return $this->long;
     }
 
-    /**
-     * @return bool
-     */
-    public function sameAs(Coordinates $coordinates)
+    public function sameAs(Coordinates $coordinates): bool
     {
         return $coordinates->getLatitude()->sameAs($this->lat) &&
             $coordinates->getLongitude()->sameAs($this->long);
     }
 
-    /**
-     * @param string $latLon
-     * @return Coordinates
-     */
-    public static function fromLatLonString($latLon)
+    public static function fromLatLonString(string $latLon): Coordinates
     {
         $split = explode(',', $latLon);
 

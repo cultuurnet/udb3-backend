@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Broadway\AMQP\DomainMessage\SpecificationInterface;
 
 class DummyAlwaysSatisfied implements SpecificationInterface
 {
-    public function isSatisfiedBy(DomainMessage $domainMessage)
+    public function isSatisfiedBy(DomainMessage $domainMessage): bool
     {
         return true;
     }

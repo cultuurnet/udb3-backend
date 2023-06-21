@@ -59,7 +59,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
         $distributionKeyConditionFactory = new DistributionKeyConditionFactory();
         $distributionKeys = [];
         $distributionKeys[] = $distributionKeyFactory->buildKey(
-            2.0,
+            '2.0',
             [
                 $distributionKeyConditionFactory->buildCondition(
                     Condition::DEFINITION_KANSARM,
@@ -79,7 +79,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
             ]
         );
         $distributionKeys[] = $distributionKeyFactory->buildKey(
-            0.50,
+            '0.50',
             [
                 $distributionKeyConditionFactory->buildCondition(
                     Condition::DEFINITION_KANSARM,

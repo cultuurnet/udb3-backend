@@ -112,7 +112,7 @@ final class RdfProjector implements EventListener
     private function setCoordinates(Resource $resource, Coordinates $coordinates): void
     {
         $gmlTemplate = '<gml:Point srsName=\'http://www.opengis.net/def/crs/OGC/1.3/CRS84\'><gml:coordinates>%s, %s</gml:coordinates></gml:Point>';
-        $gmlCoordinate = sprintf($gmlTemplate, $coordinates->getLongitude()->toDouble(), $coordinates->getLatitude()->toDouble());
+        $gmlCoordinate = sprintf($gmlTemplate, $coordinates->getLongitude()->toFloat(), $coordinates->getLatitude()->toFloat());
 
         $geometryResource = $resource->getGraph()->newBNode([self::TYPE_GEOMETRIE]);
         $resource->add(self::PROPERTY_LOCATIE_GEOMETRIE, $geometryResource);

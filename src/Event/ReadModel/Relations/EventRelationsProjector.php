@@ -22,16 +22,9 @@ final class EventRelationsProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var EventRelationsRepository
-     */
-    protected $repository;
+    protected EventRelationsRepository $repository;
 
-    /**
-     * @var EventCdbIdExtractorInterface
-     */
-    protected $cdbIdExtractor;
-
+    protected EventCdbIdExtractorInterface $cdbIdExtractor;
 
     public function __construct(
         EventRelationsRepository $repository,
@@ -41,12 +34,10 @@ final class EventRelationsProjector implements EventListener
         $this->cdbIdExtractor = $cdbIdExtractor;
     }
 
-
     protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $event)
     {
         $this->applyEventDataFromUDB2($event);
     }
-
 
     protected function applyEventUpdatedFromUDB2(EventUpdatedFromUDB2 $event)
     {
@@ -71,7 +62,6 @@ final class EventRelationsProjector implements EventListener
         $this->storeRelations($eventId, $placeId, $organizerId);
     }
 
-
     protected function applyEventCreated(EventCreated $event)
     {
         $eventId = $event->getEventId();
@@ -83,7 +73,6 @@ final class EventRelationsProjector implements EventListener
             $this->storeRelations($eventId, $cdbid, $organizer);
         }
     }
-
 
     protected function applyEventCopied(EventCopied $eventCopied)
     {
@@ -98,14 +87,12 @@ final class EventRelationsProjector implements EventListener
         );
     }
 
-
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
     {
         $eventId = $majorInfoUpdated->getItemId();
         $cdbId = $majorInfoUpdated->getLocation()->toString();
         $this->repository->storePlace($eventId, $cdbId);
     }
-
 
     protected function applyLocationUpdated(LocationUpdated $locationUpdated)
     {
@@ -114,37 +101,23 @@ final class EventRelationsProjector implements EventListener
         $this->repository->storePlace($eventId, $locationId);
     }
 
-    /**
-     * Delete the relations.
-     */
     protected function applyEventDeleted(EventDeleted $event)
     {
         $eventId = $event->getItemId();
         $this->repository->removeRelations($eventId);
     }
 
-    /**
-     * Store the relation when the organizer was changed
-     */
     protected function applyOrganizerUpdated(OrganizerUpdated $organizerUpdated)
     {
         $this->repository->storeOrganizer($organizerUpdated->getItemId(), $organizerUpdated->getOrganizerId());
     }
 
-    /**
-     * Remove the relation.
-     */
     protected function applyOrganizerDeleted(OrganizerDeleted $organizerDeleted)
     {
         $this->repository->storeOrganizer($organizerDeleted->getItemId(), null);
     }
 
-    /**
-     * @param string $eventId
-     * @param string $placeId
-     * @param string $organizerId
-     */
-    protected function storeRelations($eventId, $placeId, $organizerId)
+    protected function storeRelations(string $eventId, ?string $placeId, ?string $organizerId)
     {
         $this->repository->storeRelations($eventId, $placeId, $organizerId);
     }

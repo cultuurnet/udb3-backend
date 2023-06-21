@@ -6,15 +6,9 @@ namespace CultuurNet\UDB3\Geocoding\Coordinate;
 
 abstract class Coordinate
 {
-    /**
-     * @var double
-     */
-    private $value;
+    private float $value;
 
-    /**
-     * @param double $value
-     */
-    public function __construct($value)
+    public function __construct(float $value)
     {
         if (!is_double($value)) {
             throw new \InvalidArgumentException('Coordinate value should be of type double.');
@@ -23,18 +17,12 @@ abstract class Coordinate
         $this->value = $value;
     }
 
-    /**
-     * @return double
-     */
-    public function toDouble()
+    public function toFloat(): float
     {
         return $this->value;
     }
 
-    /**
-     * @return bool
-     */
-    public function sameAs(Coordinate $coordinate)
+    public function sameAs(Coordinate $coordinate): bool
     {
         return $this->value === $coordinate->value;
     }

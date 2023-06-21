@@ -16,20 +16,11 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
  */
 class CdbXMLImporter
 {
-    /**
-     * @var CdbXMLItemBaseImporter
-     */
-    private $cdbXMLItemBaseImporter;
+    private CdbXMLItemBaseImporter $cdbXMLItemBaseImporter;
 
-    /**
-     * @var CalendarFactoryInterface
-     */
-    private $calendarFactory;
+    private CalendarFactoryInterface $calendarFactory;
 
-    /**
-     * @var CdbXmlContactInfoImporterInterface
-     */
-    private $cdbXmlContactInfoImporter;
+    private CdbXmlContactInfoImporterInterface $cdbXmlContactInfoImporter;
 
     private CdbXMLToJsonLDLabelImporter $cdbXmlLabelImporter;
 
@@ -157,15 +148,6 @@ class CdbXMLImporter
             );
             $jsonLD = (object)array_merge((array)$jsonLD, $calendar->toJsonLd());
         }
-
-        return $jsonLD;
-    }
-
-    public function eventDocumentWithCdbXML(
-        $base,
-        \CultureFeed_Cdb_Item_Base $item
-    ) {
-        $jsonLD = $this->documentWithCdbXML($base, $item);
 
         return $jsonLD;
     }
