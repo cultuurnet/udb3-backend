@@ -10,10 +10,7 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 
 abstract class AbstractGeoCoordinatesUpdated extends AbstractEvent
 {
-    /**
-     * @var Coordinates
-     */
-    private $coordinates;
+    private Coordinates $coordinates;
 
     final public function __construct(string $itemId, Coordinates $coordinates)
     {
@@ -30,8 +27,8 @@ abstract class AbstractGeoCoordinatesUpdated extends AbstractEvent
     {
         return parent::serialize() + [
             'coordinates' => [
-                'lat' => $this->coordinates->getLatitude()->toDouble(),
-                'long' => $this->coordinates->getLongitude()->toDouble(),
+                'lat' => $this->coordinates->getLatitude()->toFloat(),
+                'long' => $this->coordinates->getLongitude()->toFloat(),
             ],
         ];
     }

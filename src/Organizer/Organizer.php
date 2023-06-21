@@ -402,8 +402,8 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         $this->apply(
             new GeoCoordinatesUpdated(
                 $this->actorId,
-                $coordinate->getLatitude()->toDouble(),
-                $coordinate->getLongitude()->toDouble()
+                $coordinate->getLatitude()->toFloat(),
+                $coordinate->getLongitude()->toFloat()
             )
         );
     }
