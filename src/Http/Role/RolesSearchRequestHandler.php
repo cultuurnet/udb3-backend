@@ -26,7 +26,7 @@ class RolesSearchRequestHandler implements RequestHandlerInterface
         $itemsPerPage = $request->getQueryParams()['limit'] ?? 10;
         $start = $request->getQueryParams()['start'] ?? 0;
 
-        $result = $this->roleSearchRepository->search($query,(int) $itemsPerPage, (int) $start);
+        $result = $this->roleSearchRepository->search($query, (int) $itemsPerPage, (int) $start);
 
         $data = (object) [
             'itemsPerPage' => $result->getItemsPerPage(),
