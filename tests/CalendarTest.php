@@ -115,7 +115,6 @@ class CalendarTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Timestamps should have type TimeStamp.');
 
-
         new Calendar(
             CalendarType::SINGLE(),
             DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
