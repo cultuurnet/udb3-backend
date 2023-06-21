@@ -69,7 +69,6 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:change-owner',
         'console.organizer:change-owner-bulk',
         'console.label:exclude',
-        'console.label:exclude-invalid',
         'console.label:include',
         'console.label:update-unique',
         'console.organizer:update-unique',
@@ -327,11 +326,6 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.label:exclude',
             fn () => new ExcludeLabel($container->get('event_command_bus'))
-        );
-
-        $container->addShared(
-            'console.label:exclude-invalid',
-            fn () => new ExcludeInvalidLabels($container->get('event_command_bus'), $container->get('dbal_connection'))
         );
 
         $container->addShared(
