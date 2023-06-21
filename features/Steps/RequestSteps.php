@@ -113,4 +113,21 @@ trait RequestSteps
         );
         $this->responseState->setResponse($response);
     }
+
+    /**
+     * @Then I wait for the command with id :commandId to complete
+     */
+    public function iWaitForTheCommandWithIdToComplete(string $commandId): void
+    {
+        $elapsedTime = 0;
+        do {
+            $response = $this->getHttpClient()->get('/jobs/' . $this->variableState->replaceVariables($commandId));
+            $this->responseState->setResponse($response);
+
+            if ($this->responseState->getContent() !== 'complete') {
+                sleep(1);
+                $elapsedTime++;
+            }
+        } while ($this->responseState->getContent() !== 'complete' && $elapsedTime++ < 5);
+    }
 }
