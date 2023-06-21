@@ -41,7 +41,7 @@ trait RequestSteps
     /**
      * @Given I set the form data properties to:
      */
-    public function iSetTheFormDataPropertiesTo(TableNode $table)
+    public function iSetTheFormDataPropertiesTo(TableNode $table): void
     {
         $this->requestState->setForm($table->getRows());
     }
@@ -76,7 +76,7 @@ trait RequestSteps
     /**
      * @When I send a GET request to :url with parameters:
      */
-    public function iSendAGetRequestToWithParameters($url, TableNode $parameters)
+    public function iSendAGetRequestToWithParameters(string $url, TableNode $parameters): void
     {
         $response = $this->getHttpClient()->getWithParameters($url, $parameters->getRows(), $this->variableState);
         $this->responseState->setResponse($response);
@@ -103,7 +103,7 @@ trait RequestSteps
     /**
      * @When I upload :fileKey from path :filePath to :endpoint
      */
-    public function iUploadFromPathTo($fileKey, $filePath, $endpoint)
+    public function iUploadFromPathTo(string $fileKey, string $filePath, string $endpoint): void
     {
         $response = $this->getHttpClient()->postMultipart(
             $this->requestState->getBaseUrl() . $endpoint,

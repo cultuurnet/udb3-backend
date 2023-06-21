@@ -93,7 +93,7 @@ trait OrganizerSteps
     /**
      * @When I delete the organizer at :url
      */
-    public function iDeleteTheOrganizerAt($url)
+    public function iDeleteTheOrganizerAt(string $url): void
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->delete($url)

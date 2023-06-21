@@ -24,7 +24,7 @@ trait PlaceSteps
     /**
      * @Given I create a minimal place and save the :jsonPath as :variableName
      */
-    public function iCreateAMinimalPlaceAndSaveTheAs($jsonPath, $variableName): void
+    public function iCreateAMinimalPlaceAndSaveTheAs(string $jsonPath, string $variableName): void
     {
         $this->createPlace(
             '/places',
@@ -37,7 +37,7 @@ trait PlaceSteps
     /**
      * @Given I create a place from :fileName and save the :jsonPath as :variableName
      */
-    public function iCreateAPlaceFromAndSaveTheAs(string $fileName, $jsonPath, $variableName): void
+    public function iCreateAPlaceFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName): void
     {
         $this->createPlace(
             '/places',
@@ -50,7 +50,7 @@ trait PlaceSteps
     /**
      * @Given I import a new place from :fileName and save the :jsonPath as :variableName
      */
-    public function iImportANewPlaceFromAndSaveTheAs(string $fileName, $jsonPath, $variableName): void
+    public function iImportANewPlaceFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName): void
     {
         $this->createPlace(
             '/imports/places',
@@ -95,7 +95,7 @@ trait PlaceSteps
     /**
      * @When I get the RDF of place with id :id
      */
-    public function iGetTheRdfOfPlaceWithId($id): void
+    public function iGetTheRdfOfPlaceWithId(string $id): void
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->getWithTimeout('/places/' . $id)
@@ -107,7 +107,7 @@ trait PlaceSteps
     /**
      * @When I delete the place at :url
      */
-    public function iDeleteThePlaceAt($url)
+    public function iDeleteThePlaceAt(string $url): void
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->delete($url)
@@ -134,7 +134,7 @@ trait PlaceSteps
     /**
      * @When I publish the place at :url with availableFrom :availableFrom
      */
-    public function iPublishThePlaceAtWithAvailableFrom($url, $availableFrom)
+    public function iPublishThePlaceAtWithAvailableFrom(string $url, string $availableFrom): void
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->putJSON(
@@ -166,7 +166,7 @@ trait PlaceSteps
     /**
      * @When I approve the place at :url
      */
-    public function iApproveThePlaceAt($url): void
+    public function iApproveThePlaceAt(string $url): void
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->putJSON(
@@ -181,7 +181,7 @@ trait PlaceSteps
     /**
      * @When I approve the place via legacy PATCH at :url
      */
-    public function iApproveThePlaceViaLegacyPatchAt($url): void
+    public function iApproveThePlaceViaLegacyPatchAt(string $url): void
     {
         $this->requestState->setContentTypeHeader('application/ld+json;domain-model=Approve');
 
@@ -195,7 +195,7 @@ trait PlaceSteps
     /**
      * @When I reject the place at :url with reason :reason
      */
-    public function iRejectThePlaceWithReason($url, $reason): void
+    public function iRejectThePlaceWithReason(string $url, string $reason): void
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->putJSON(
@@ -213,7 +213,7 @@ trait PlaceSteps
     /**
      * @When I reject the place via legacy PATCH at :url with reason :reason
      */
-    public function iRejectThePlaceViaLegacyPatchAtWithReason($url, $reason): void
+    public function iRejectThePlaceViaLegacyPatchAtWithReason(string $url, string $reason): void
     {
         $this->requestState->setContentTypeHeader('application/ld+json;domain-model=Reject');
 

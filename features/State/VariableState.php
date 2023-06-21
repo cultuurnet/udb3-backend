@@ -23,6 +23,9 @@ final class VariableState
         return $variable;
     }
 
+    /**
+     * @return mixed
+     */
     public function getVariable(string $key)
     {
         return $this->variables[$key];
