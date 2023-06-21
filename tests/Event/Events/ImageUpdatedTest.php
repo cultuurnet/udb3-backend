@@ -11,10 +11,9 @@ class ImageUpdatedTest extends TestCase
     /**
      * @test
      * @dataProvider eventDataProvider
-     * @param array $expectedSerializedValue
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         ImageUpdated $imageUpdated
     ): void {
         $this->assertEquals(
@@ -26,10 +25,9 @@ class ImageUpdatedTest extends TestCase
     /**
      * @test
      * @dataProvider eventDataProvider
-     * @param array $serializedValue
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array $serializedValue,
         ImageUpdated $expectedImageUpdated
     ): void {
         $this->assertEquals(
@@ -38,7 +36,7 @@ class ImageUpdatedTest extends TestCase
         );
     }
 
-    public function eventDataProvider()
+    public function eventDataProvider(): array
     {
         return [
             'imageUpdated' => [

@@ -62,7 +62,7 @@ class MajorInfoUpdatedTest extends TestCase
      * @dataProvider serializationDataProvider
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         MajorInfoUpdated $majorInfoUpdated
     ): void {
         $this->assertEquals(
@@ -76,7 +76,7 @@ class MajorInfoUpdatedTest extends TestCase
      * @dataProvider serializationDataProvider
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array $serializedValue,
         MajorInfoUpdated $expectedMajorInfoUpdated
     ): void {
         $this->assertEquals(
@@ -85,7 +85,7 @@ class MajorInfoUpdatedTest extends TestCase
         );
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'event' => [

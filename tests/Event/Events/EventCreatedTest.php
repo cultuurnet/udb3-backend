@@ -203,7 +203,7 @@ class EventCreatedTest extends TestCase
         );
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             [

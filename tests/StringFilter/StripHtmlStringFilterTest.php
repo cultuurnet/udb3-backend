@@ -23,11 +23,8 @@ class StripHtmlStringFilterTest extends StringFilterTest
 
     /**
      * Provides test data for converting paragraphs and breaks into newlines.
-     *
-     * @return array
-     *   Array of arrays, each individual array contains all arguments for the test method.
      */
-    public function htmlStringDataProvider()
+    public function htmlStringDataProvider(): array
     {
         $single_newline = 'Line 1.' . PHP_EOL . 'Line 2.';
         $double_newline = 'Line 1.' . PHP_EOL . PHP_EOL . 'Line 2.';

@@ -11,10 +11,9 @@ class OrganizerEventTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $expectedSerializedValue
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         MockOrganizerEvent $organizerEvent
     ): void {
         $this->assertEquals(
@@ -37,7 +36,7 @@ class OrganizerEventTest extends TestCase
         );
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'organizerEvent' => [

@@ -24,7 +24,7 @@ class PriceFormatterTest extends TestCase
         $this->assertEquals($expected, $formatted);
     }
 
-    public function priceData()
+    public function priceData(): array
     {
         return [
             // Zero significant decimals.
@@ -68,7 +68,7 @@ class PriceFormatterTest extends TestCase
         $this->assertEquals($expected, $formatted);
     }
 
-    public function customSeparatorData()
+    public function customSeparatorData(): array
     {
         return [
             ['.', ',', 1000000.66, '1,000,000.66'],

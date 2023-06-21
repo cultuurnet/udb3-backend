@@ -44,10 +44,8 @@ class UUIDTest extends TestCase
         new UUID($invalidUuid);
     }
 
-    /**
-     * @return array
-     */
-    public function invalidUUIDDataProvider()
+
+    public function invalidUUIDDataProvider(): array
     {
         return [
             'multi-line' => ['00000000-0000-0000-0000-000000000000' . PHP_EOL],

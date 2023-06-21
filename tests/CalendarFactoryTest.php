@@ -129,7 +129,7 @@ class CalendarFactoryTest extends TestCase
         $this->assertEquals($expectedCalendar, $calendar);
     }
 
-    public function timestampListDataProvider()
+    public function timestampListDataProvider(): array
     {
         $timeZone = new DateTimeZone('Europe/Brussels');
 
@@ -871,7 +871,7 @@ class CalendarFactoryTest extends TestCase
         return \CultureFeed_Cdb_Data_Calendar_PeriodList::parseFromCdbXml($xmlElement);
     }
 
-    public function periodListDataProvider()
+    public function periodListDataProvider(): array
     {
         $timeZone = new DateTimeZone('Europe/Brussels');
 

@@ -10,15 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
 {
-    /**
-     * @var DistributionKeyFactory
-     */
-    protected $keyFactory;
+    protected DistributionKeyFactory $keyFactory;
 
-    /**
-     * @var KansentariefForCurrentCardSystemSpecification
-     */
-    private $specification;
+    private KansentariefForCurrentCardSystemSpecification $specification;
 
     public function setUp(): void
     {
@@ -26,7 +20,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
             new KansentariefForCurrentCardSystemSpecification();
     }
 
-    public function satisfyingDistributionKeysProvider()
+    public function satisfyingDistributionKeysProvider(): array
     {
         $conditionFactory = new DistributionKeyConditionFactory();
         $keyFactory = new DistributionKeyFactory();
@@ -68,7 +62,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
                         $conditionFactory->buildCondition(
                             Condition::DEFINITION_PRICE,
                             Condition::OPERATOR_LESS_THAN,
-                            7
+                            '7'
                         ),
                     ]
                 ),
@@ -90,7 +84,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
         );
     }
 
-    public function nonSatisfyingDistributionKeysProvider()
+    public function nonSatisfyingDistributionKeysProvider(): array
     {
         $conditionFactory = new DistributionKeyConditionFactory();
         $keyFactory = new DistributionKeyFactory();

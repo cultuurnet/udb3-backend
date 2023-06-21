@@ -18,7 +18,7 @@ class CulturefeedSluggerTest extends TestCase
         $this->slugger = new CulturefeedSlugger();
     }
 
-    public function slugsProvider()
+    public function slugsProvider(): array
     {
         return [
             [

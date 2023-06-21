@@ -8,8 +8,11 @@ use CultureFeed_Uitpas_DistributionKey_Condition;
 
 class DistributionKeyConditionFactory
 {
-    public function buildCondition($definition, $operator, $value)
-    {
+    public function buildCondition(
+        string $definition,
+        string $operator,
+        string $value
+    ): CultureFeed_Uitpas_DistributionKey_Condition {
         $condition = new CultureFeed_Uitpas_DistributionKey_Condition();
         $condition->definition = $definition;
         $condition->operator = $operator;

@@ -20,7 +20,7 @@ class MediaObjectCreatedTest extends TestCase
      * @dataProvider serializationDataProvider
      */
     public function it_should_include_all_properties_when_serializing(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         MediaObjectCreated $mediaObjectCreated
     ): void {
         $this->assertEquals(
@@ -34,7 +34,7 @@ class MediaObjectCreatedTest extends TestCase
      * @dataProvider serializationDataProvider
      */
     public function it_should_set_all_the_properties_when_deserializing(
-        $serializedValue,
+        array $serializedValue,
         MediaObjectCreated $expectedMediaObjectCreated
     ): void {
         $this->assertEquals(
@@ -43,7 +43,7 @@ class MediaObjectCreatedTest extends TestCase
         );
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'creationEvent' => [

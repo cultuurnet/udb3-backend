@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class OrganizerDeletedTest extends TestCase
 {
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             [

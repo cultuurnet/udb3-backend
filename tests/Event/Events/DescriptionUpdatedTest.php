@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class DescriptionUpdatedTest extends TestCase
 {
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             [

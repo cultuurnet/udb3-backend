@@ -29,7 +29,7 @@ class IsNotEmptyTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function stringValueProvider()
+    public function stringValueProvider(): array
     {
         return [
             [

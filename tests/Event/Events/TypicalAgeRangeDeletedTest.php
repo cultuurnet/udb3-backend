@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace test\Event\Events;
+namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use PHPUnit\Framework\TestCase;
 
 class TypicalAgeRangeDeletedTest extends TestCase
@@ -12,10 +11,9 @@ class TypicalAgeRangeDeletedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $expectedSerializedValue
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         TypicalAgeRangeDeleted $typicalAgeRangeDeleted
     ): void {
         $this->assertEquals(
@@ -27,10 +25,9 @@ class TypicalAgeRangeDeletedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $serializedValue
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array $serializedValue,
         TypicalAgeRangeDeleted $expectedTypicalAgeRangeDeleted
     ): void {
         $this->assertEquals(
@@ -39,7 +36,7 @@ class TypicalAgeRangeDeletedTest extends TestCase
         );
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'typical age range' => [

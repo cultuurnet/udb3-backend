@@ -14,10 +14,9 @@ class ActorImportedFromUDB2Test extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $expectedSerializedValue
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         ActorImportedFromUDB2 $actorImportedFromUDB2
     ): void {
         $this->assertEquals(
@@ -29,10 +28,9 @@ class ActorImportedFromUDB2Test extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $serializedValue
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array $serializedValue,
         ActorImportedFromUDB2 $expectedActorImportedFromUDB2
     ): void {
         $this->assertEquals(
@@ -59,7 +57,7 @@ class ActorImportedFromUDB2Test extends TestCase
         $this->assertEquals($expectedCdbXmlNamespace, $actorImportedFromUDB2->getCdbXmlNamespaceUri());
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'actorImportedFromUDB2' => [

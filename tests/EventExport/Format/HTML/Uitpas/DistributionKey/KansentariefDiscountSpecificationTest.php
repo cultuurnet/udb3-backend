@@ -10,25 +10,13 @@ use PHPUnit\Framework\TestCase;
 
 class KansentariefDiscountSpecificationTest extends TestCase
 {
-    /**
-     * @var KansentariefDiscountSpecification
-     */
-    protected $specification;
+    protected KansentariefDiscountSpecification $specification;
 
-    /**
-     * @var DistributionKeyConditionFactory
-     */
-    protected $conditionFactory;
+    protected DistributionKeyConditionFactory $conditionFactory;
 
-    /**
-     * @var DistributionKeyFactory
-     */
-    protected $keyFactory;
+    protected DistributionKeyFactory $keyFactory;
 
-    /**
-     * @var array
-     */
-    protected $cardSystems;
+    protected array $cardSystems;
 
     public function setUp(): void
     {
@@ -44,7 +32,7 @@ class KansentariefDiscountSpecificationTest extends TestCase
         $this->assertTrue($this->specification->isSatisfiedBy($key));
     }
 
-    public function satisfyingDistributionKeyProvider()
+    public function satisfyingDistributionKeyProvider(): array
     {
         $data = [];
 
@@ -114,7 +102,7 @@ class KansentariefDiscountSpecificationTest extends TestCase
         $this->assertFalse($this->specification->isSatisfiedBy($key));
     }
 
-    public function unsatisfyingDistributionKeyProvider()
+    public function unsatisfyingDistributionKeyProvider(): array
     {
         $conditionFactory = new DistributionKeyConditionFactory();
         $keyFactory = new DistributionKeyFactory();
