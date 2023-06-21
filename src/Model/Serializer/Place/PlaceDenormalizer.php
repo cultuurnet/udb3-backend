@@ -24,15 +24,9 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class PlaceDenormalizer extends OfferDenormalizer
 {
-    /**
-     * @var DenormalizerInterface
-     */
-    private $addressDenormalizer;
+    private DenormalizerInterface $addressDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $geoCoordinatesDenormalizer;
+    private DenormalizerInterface $geoCoordinatesDenormalizer;
 
     public function __construct(
         UUIDParser $placeIDParser = null,
@@ -109,9 +103,6 @@ class PlaceDenormalizer extends OfferDenormalizer
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
@@ -129,10 +120,7 @@ class PlaceDenormalizer extends OfferDenormalizer
         return $offer;
     }
 
-    /**
-     * @return ImmutablePlace
-     */
-    private function denormalizeGeoCoordinates(array $data, ImmutablePlace $place)
+    private function denormalizeGeoCoordinates(array $data, ImmutablePlace $place): ImmutablePlace
     {
         if (isset($data['geo'])) {
             try {
@@ -146,10 +134,7 @@ class PlaceDenormalizer extends OfferDenormalizer
         return $place;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === ImmutablePlace::class || $type === Place::class;
     }
