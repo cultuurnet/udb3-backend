@@ -325,6 +325,22 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
+    public function it_filters_excluded_labels_if_suggestions_is_true(): void
+    {
+        $search = new Query(
+            'excluded',
+            null,
+            null,
+            null,
+            true
+        );
+        $entities = $this->dbalReadRepository->search($search);
+        $this->assertEquals([], $entities);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_get_total_items_of_search(): void
     {
         $search = new Query('lab');
