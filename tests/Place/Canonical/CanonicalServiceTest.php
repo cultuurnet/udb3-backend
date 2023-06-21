@@ -122,7 +122,7 @@ class CanonicalServiceTest extends TestCase
         $labelsRelations->addColumn('labelName', Type::STRING)->setLength(255);
         $labelsRelations->addColumn('relationType', Type::STRING)->setLength(255);
         $labelsRelations->addColumn('relationId', Type::BIGINT)->setNotnull(true);
-        $labelsRelations->addColumn('imported', Type::SMALLINT)->setNotnull(true)->setNotnull(0);
+        $labelsRelations->addColumn('imported', Type::SMALLINT)->setNotnull(true)->setDefault(0);
         $this->createTable($labelsRelations);
 
         $this->getConnection()->insert(
