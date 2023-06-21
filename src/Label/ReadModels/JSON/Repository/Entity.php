@@ -18,30 +18,13 @@ class Entity implements \JsonSerializable
     public const PRIVACY = 'privacy';
     public const EXCLUDED = 'excluded';
 
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    private $name;
+    private StringLiteral $name;
 
-    /**
-     * @var Visibility
-     */
-    private $visibility;
+    private Visibility $visibility;
 
-    /**
-     * @var Privacy
-     */
-    private $privacy;
-
-    /**
-     * @var UUID
-     */
-    private $parentUuid;
+    private Privacy $privacy;
 
     private int $count;
 
@@ -52,7 +35,6 @@ class Entity implements \JsonSerializable
         StringLiteral $name,
         Visibility $visibility,
         Privacy $privacy,
-        UUID $parentUuid = null,
         int $count = null,
         bool $excluded = false
     ) {
@@ -64,49 +46,28 @@ class Entity implements \JsonSerializable
         $this->name = $name;
         $this->visibility = $visibility;
         $this->privacy = $privacy;
-        $this->parentUuid = $parentUuid;
         $this->count = $count ?: 0;
         $this->excluded = $excluded;
     }
 
-    /**
-     * @return UUID
-     */
-    public function getUuid()
+    public function getUuid(): UUID
     {
         return $this->uuid;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getName()
+    public function getName(): StringLiteral
     {
         return $this->name;
     }
 
-    /**
-     * @return Visibility
-     */
-    public function getVisibility()
+    public function getVisibility(): Visibility
     {
         return $this->visibility;
     }
 
-    /**
-     * @return Privacy
-     */
-    public function getPrivacy()
+    public function getPrivacy(): Privacy
     {
         return $this->privacy;
-    }
-
-    /**
-     * @return ?UUID
-     */
-    public function getParentUuid()
-    {
-        return $this->parentUuid;
     }
 
     public function getCount(): int

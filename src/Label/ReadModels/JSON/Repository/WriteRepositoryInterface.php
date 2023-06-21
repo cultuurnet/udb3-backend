@@ -15,8 +15,7 @@ interface WriteRepositoryInterface
         UUID $uuid,
         StringLiteral $name,
         Visibility $visibility,
-        Privacy $privacy,
-        UUID $parentUuid = null
+        Privacy $privacy
     );
 
     public function updateVisible(UUID $uuid): void;

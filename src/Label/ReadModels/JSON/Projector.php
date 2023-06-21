@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\ReadModels\JSON;
 
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
 use CultuurNet\UDB3\Label\Events\Excluded;
 use CultuurNet\UDB3\Label\Events\Included;
@@ -48,24 +47,6 @@ class Projector extends AbstractProjector
             new StringLiteral($created->getName()),
             $created->getVisibility(),
             $created->getPrivacy()
-        );
-    }
-
-    public function applyCopyCreated(CopyCreated $copyCreated): void
-    {
-        $labelWithSameUuid = $this->readRepository->getByUuid($copyCreated->getUuid());
-        $labelWithSameName = $this->readRepository->getByName($copyCreated->getName());
-
-        if ($labelWithSameUuid ||  $labelWithSameName) {
-            return;
-        }
-
-        $this->writeRepository->save(
-            $copyCreated->getUuid(),
-            new StringLiteral($copyCreated->getName()),
-            $copyCreated->getVisibility(),
-            $copyCreated->getPrivacy(),
-            $copyCreated->getParentUuid()
         );
     }
 

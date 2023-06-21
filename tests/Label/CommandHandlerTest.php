@@ -9,14 +9,12 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Label\Commands\Create;
-use CultuurNet\UDB3\Label\Commands\CreateCopy;
 use CultuurNet\UDB3\Label\Commands\ExcludeLabel;
 use CultuurNet\UDB3\Label\Commands\IncludeLabel;
 use CultuurNet\UDB3\Label\Commands\MakeInvisible;
 use CultuurNet\UDB3\Label\Commands\MakePrivate;
 use CultuurNet\UDB3\Label\Commands\MakePublic;
 use CultuurNet\UDB3\Label\Commands\MakeVisible;
-use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
 use CultuurNet\UDB3\Label\Events\Excluded;
 use CultuurNet\UDB3\Label\Events\Included;
@@ -39,11 +37,7 @@ final class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
     private Privacy $privacy;
 
-    private UUID $parentUuid;
-
     private Created $created;
-
-    private CopyCreated $copyCreated;
 
     public function setUp(): void
     {
@@ -51,21 +45,12 @@ final class CommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->name = 'labelName';
         $this->visibility = Visibility::INVISIBLE();
         $this->privacy = Privacy::PRIVACY_PRIVATE();
-        $this->parentUuid = new UUID('f4e5608b-348d-4321-86f7-567891bf33b7');
 
         $this->created = new Created(
             $this->uuid,
             $this->name,
             $this->visibility,
             $this->privacy
-        );
-
-        $this->copyCreated = new CopyCreated(
-            $this->uuid,
-            $this->name,
-            $this->visibility,
-            $this->privacy,
-            $this->parentUuid
         );
 
         // Ensure all members are created before createCommandHandler is called.
@@ -99,24 +84,6 @@ final class CommandHandlerTest extends CommandHandlerScenarioTestCase
                 $this->privacy
             ))
             ->then([$this->created]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_create_copy(): void
-    {
-        $this->scenario
-            ->withAggregateId($this->uuid->toString())
-            ->given([])
-            ->when(new CreateCopy(
-                $this->uuid,
-                new LabelName($this->name),
-                $this->visibility,
-                $this->privacy,
-                $this->parentUuid
-            ))
-            ->then([$this->copyCreated]);
     }
 
     /**

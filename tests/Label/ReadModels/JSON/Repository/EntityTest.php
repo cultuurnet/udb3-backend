@@ -13,44 +13,21 @@ use CultuurNet\UDB3\StringLiteral;
 
 class EntityTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    private $name;
+    private StringLiteral $name;
 
-    /**
-     * @var Visibility
-     */
-    private $visibilty;
+    private Visibility $visibilty;
 
-    /**
-     * @var Privacy
-     */
-    private $privacy;
-
-    /**
-     * @var UUID
-     */
-    private $parentUuid;
+    private Privacy $privacy;
 
     private int $count;
 
     private bool $excluded;
 
-    /**
-     * @var Entity
-     */
-    private $entity;
+    private Entity $entity;
 
-    /**
-     * @var Entity
-     */
-    private $entityWithDefaults;
+    private Entity $entityWithDefaults;
 
     protected function setUp(): void
     {
@@ -62,8 +39,6 @@ class EntityTest extends TestCase
 
         $this->privacy = Privacy::PRIVACY_PRIVATE();
 
-        $this->parentUuid = new UUID('17ee8501-0168-4469-ba37-458a6a526466');
-
         $this->count = 666;
 
         $this->excluded = true;
@@ -73,7 +48,6 @@ class EntityTest extends TestCase
             $this->name,
             $this->visibilty,
             $this->privacy,
-            $this->parentUuid,
             $this->count,
             $this->excluded
         );
@@ -121,14 +95,6 @@ class EntityTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_parent_uuid()
-    {
-        $this->assertEquals($this->parentUuid, $this->entity->getParentUuid());
-    }
-
-    /**
-     * @test
-     */
     public function it_stores_a_count()
     {
         $this->assertEquals($this->count, $this->entity->getCount());
@@ -140,14 +106,6 @@ class EntityTest extends TestCase
     public function it_stores_excluded(): void
     {
         $this->assertEquals($this->excluded, $this->entity->isExcluded());
-    }
-
-    /**
-     * @test
-     */
-    public function it_has_a_default_parent_uuid_of_null()
-    {
-        $this->assertEquals(null, $this->entityWithDefaults->getParentUuid());
     }
 
     /**
@@ -181,7 +139,6 @@ class EntityTest extends TestCase
             $this->name,
             $this->visibilty,
             $this->privacy,
-            $this->parentUuid,
             -1
         );
     }

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Label;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler as AbstractCommandHandler;
 use CultuurNet\UDB3\Label\Commands\Create;
-use CultuurNet\UDB3\Label\Commands\CreateCopy;
 use CultuurNet\UDB3\Label\Commands\ExcludeLabel;
 use CultuurNet\UDB3\Label\Commands\IncludeLabel;
 use CultuurNet\UDB3\Label\Commands\MakeInvisible;
@@ -33,19 +32,6 @@ final class CommandHandler extends AbstractCommandHandler
             $create->getName()->toString(),
             $create->getVisibility(),
             $create->getPrivacy()
-        );
-
-        $this->save($label);
-    }
-
-    public function handleCreateCopy(CreateCopy $createCopy): void
-    {
-        $label = Label::createCopy(
-            $createCopy->getUuid(),
-            $createCopy->getName()->toString(),
-            $createCopy->getVisibility(),
-            $createCopy->getPrivacy(),
-            $createCopy->getParentUuid()
         );
 
         $this->save($label);

@@ -31,15 +31,13 @@ final class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInter
         UUID $uuid,
         StringLiteral $name,
         Visibility $visibility,
-        Privacy $privacy,
-        UUID $parentUuid = null
+        Privacy $privacy
     ): void {
         $this->writeRepository->save(
             $uuid,
             $name,
             $visibility,
-            $privacy,
-            $parentUuid
+            $privacy
         );
     }
 
