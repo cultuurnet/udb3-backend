@@ -25,7 +25,7 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
         $this->connection = $connection;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('fire-projected-to-jsonld-for-relations')
@@ -104,7 +104,7 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
         OutputInterface $output,
         DomainMessageBuilder $domainMessageBuilder,
         EventBus $eventBus
-    ) {
+    ): void {
         foreach ($ids as $key => $id) {
             $output->writeln($key . ': ' . $id);
 
