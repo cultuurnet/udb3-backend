@@ -150,7 +150,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     private function insertUserRole(StringLiteral $userId, UUID $roleId): void
     {
         $this->getConnection()->insert(
-            $this->userRolesTableName,
+            $this->userRolesTableName->toNative(),
             [
                 PermissionSchemaConfigurator::USER_ID_COLUMN => $userId->toNative(),
                 PermissionSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
@@ -162,7 +162,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     private function insertUserPermission(UUID $roleId, Permission $permission): void
     {
         $this->getConnection()->insert(
-            $this->rolePermissionsTableName,
+            $this->rolePermissionsTableName->toNative(),
             [
                 PermissionSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
                 PermissionSchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
@@ -176,7 +176,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
         StringLiteral $constraint = null
     ): void {
         $this->getConnection()->insert(
-            $this->rolesSearchTableName,
+            $this->rolesSearchTableName->toNative(),
             [
                 SearchSchemaConfigurator::UUID_COLUMN => $roleId->toString(),
                 SearchSchemaConfigurator::NAME_COLUMN => $roleName->toNative(),
