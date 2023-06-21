@@ -8,29 +8,20 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesWriteRepositoryInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class LabelRolesWriteRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var StringLiteral
-     */
-    private $labelRolesTableName;
+    private string $labelRolesTableName;
 
-    /**
-     * @var LabelRolesWriteRepositoryInterface
-     */
-    private $labelRolesWriteRepository;
+    private LabelRolesWriteRepositoryInterface $labelRolesWriteRepository;
 
     protected function setUp(): void
     {
-        $this->labelRolesTableName = new StringLiteral('label_roles');
+        $this->labelRolesTableName = 'label_roles';
 
-        $schemaConfigurator = new SchemaConfigurator(
-            $this->labelRolesTableName
-        );
+        $schemaConfigurator = new SchemaConfigurator($this->labelRolesTableName);
         $schemaConfigurator->configure(
             $this->getConnection()->getSchemaManager()
         );
@@ -135,12 +126,9 @@ class LabelRolesWriteRepositoryTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    private function getRows()
+    private function getRows(): array
     {
-        $sql = 'SELECT * FROM ' . $this->labelRolesTableName->toNative();
+        $sql = 'SELECT * FROM ' . $this->labelRolesTableName;
         $statement = $this->connection->executeQuery($sql);
 
         return $statement->fetchAll(\PDO::FETCH_ASSOC);

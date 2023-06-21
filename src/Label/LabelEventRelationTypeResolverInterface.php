@@ -11,13 +11,9 @@ use CultuurNet\UDB3\LabelsImportedEventInterface;
 interface LabelEventRelationTypeResolverInterface
 {
     /**
-     * @return RelationType
      * @throws \InvalidArgumentException
      */
-    public function getRelationType(LabelEventInterface $labelEvent);
+    public function getRelationType(LabelEventInterface $labelEvent): RelationType;
 
-    /**
-     * @return RelationType
-     */
-    public function getRelationTypeForImport(LabelsImportedEventInterface $labelsImported);
+    public function getRelationTypeForImport(LabelsImportedEventInterface $labelsImported): RelationType;
 }

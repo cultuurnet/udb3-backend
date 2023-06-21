@@ -10,10 +10,7 @@ use CultuurNet\UDB3\LabelEventInterface;
 
 class LabelEventIsOfEventType implements LabelEventSpecificationInterface
 {
-    /**
-     * @return bool
-     */
-    public function isSatisfiedBy(LabelEventInterface $labelEvent)
+    public function isSatisfiedBy(LabelEventInterface $labelEvent): bool
     {
         return ($labelEvent instanceof LabelAdded || $labelEvent instanceof LabelRemoved);
     }

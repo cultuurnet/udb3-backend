@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\AddLabel;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -155,7 +154,7 @@ final class AddLabelToRoleRequestHandlerTest extends TestCase
     {
         $label = new Entity(
             $labelId,
-            new StringLiteral($name),
+            $name,
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );

@@ -22,10 +22,7 @@ class LabelRolesProjectorTest extends TestCase
      */
     private $labelRolesWriteRepository;
 
-    /**
-     * @var LabelRolesProjector
-     */
-    private $labelRolesProjector;
+    private LabelRolesProjector $labelRolesProjector;
 
     protected function setUp(): void
     {

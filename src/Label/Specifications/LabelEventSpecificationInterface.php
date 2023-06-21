@@ -8,8 +8,5 @@ use CultuurNet\UDB3\LabelEventInterface;
 
 interface LabelEventSpecificationInterface
 {
-    /**
-     * @return bool
-     */
-    public function isSatisfiedBy(LabelEventInterface $labelEvent);
+    public function isSatisfiedBy(LabelEventInterface $labelEvent): bool;
 }

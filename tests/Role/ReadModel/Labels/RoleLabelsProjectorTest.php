@@ -275,7 +275,7 @@ class RoleLabelsProjectorTest extends TestCase
     {
         return new Entity(
             new UUID($uuid->toString()),
-            new StringLiteral('labelName'),
+            'labelName',
             new Visibility('invisible'),
             new Privacy('private')
         );

@@ -7,26 +7,16 @@ namespace CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesWriteRepositoryInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Doctrine\DBAL\Connection;
-use CultuurNet\UDB3\StringLiteral;
 
 class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var StringLiteral
-     */
-    private $labelRolesTableName;
+    private string $labelRolesTableName;
 
-    /**
-     * LabelRolesWriteRepository constructor.
-     */
     public function __construct(
         Connection $connection,
-        StringLiteral $labelRolesTableName
+        string $labelRolesTableName
     ) {
         $this->connection = $connection;
         $this->labelRolesTableName = $labelRolesTableName;

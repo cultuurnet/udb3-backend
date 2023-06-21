@@ -8,13 +8,12 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class EntityTest extends TestCase
 {
     private UUID $uuid;
 
-    private StringLiteral $name;
+    private string $name;
 
     private Visibility $visibility;
 
@@ -30,7 +29,7 @@ class EntityTest extends TestCase
     {
         $this->uuid = new UUID('17d17095-a628-4cfe-98c2-3306bb6af450');
 
-        $this->name = new StringLiteral('labelName');
+        $this->name = 'labelName';
 
         $this->visibility = Visibility::INVISIBLE();
 
@@ -110,7 +109,7 @@ class EntityTest extends TestCase
         $json = json_encode($this->entity);
 
         $expectedJson = '{"uuid":"' . $this->uuid->toString()
-            . '","name":"' . $this->name->toNative()
+            . '","name":"' . $this->name
             . '","visibility":"' . $this->visibility->toString()
             . '","privacy":"' . $this->privacy->toString()
             . '","excluded":true}';

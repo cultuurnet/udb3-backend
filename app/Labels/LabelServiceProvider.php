@@ -57,8 +57,6 @@ final class LabelServiceProvider extends AbstractServiceProvider
     public const RELATIONS_WRITE_REPOSITORY = 'labels.relations_write_repository';
     public const LABEL_ROLES_WRITE_REPOSITORY = 'labels.label_roles_write_repository';
 
-    public const WRITE_SERVICE = 'labels.write_service';
-
     public const UNIQUE_EVENT_STORE = 'labels.unique_event_store';
     public const REPOSITORY = 'labels.repository';
     public const COMMAND_HANDLER = 'labels.command_handler';
@@ -162,9 +160,9 @@ final class LabelServiceProvider extends AbstractServiceProvider
                     new GodUserReadRepositoryDecorator(
                         new JsonReadRepository(
                             $container->get('dbal_connection'),
-                            new StringLiteral(self::JSON_TABLE),
-                            new StringLiteral(self::LABEL_ROLES_TABLE),
-                            new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
+                            self::JSON_TABLE,
+                            self::LABEL_ROLES_TABLE,
+                            UserPermissionsServiceProvider::USER_ROLES_TABLE,
                             new InMemoryExcludedLabelsRepository($labels ?? [])
                         ),
                         $container->get('config')['user_permissions']['allow_all']
@@ -180,7 +178,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
                 return new BroadcastingWriteRepositoryDecorator(
                     new JsonWriteRepository(
                         $container->get('dbal_connection'),
-                        new StringLiteral(self::JSON_TABLE)
+                        self::JSON_TABLE
                     ),
                     $container->get(EventBus::class)
                 );
@@ -212,7 +210,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
             function () use ($container): LabelRolesWriteRepository {
                 return new LabelRolesWriteRepository(
                     $container->get('dbal_connection'),
-                    new StringLiteral(self::LABEL_ROLES_TABLE)
+                    self::LABEL_ROLES_TABLE
                 );
             }
         );

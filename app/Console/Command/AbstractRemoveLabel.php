@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\InMemoryExcludedLabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\StringLiteral;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 
@@ -23,9 +22,9 @@ abstract class AbstractRemoveLabel extends Command
     {
         $this->readRepository = new DBALReadRepository(
             $connection,
-            new StringLiteral('labels_json'),
-            new StringLiteral('label_roles'),
-            new StringLiteral('user_roles'),
+            'labels_json',
+            'label_roles',
+            'user_roles',
             new InMemoryExcludedLabelsRepository([])
         );
         $this->commandBus = $commandBus;
@@ -36,6 +35,6 @@ abstract class AbstractRemoveLabel extends Command
     {
         $uuid = new UUID($labelId);
         $entity = $this->readRepository->getByUuid($uuid);
-        return isset($entity) ? $entity->getName()->toNative() : null;
+        return isset($entity) ? $entity->getName() : null;
     }
 }

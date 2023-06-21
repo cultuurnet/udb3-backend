@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 final class GodUserReadRepositoryDecoratorTest extends TestCase
 {
@@ -17,11 +16,6 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
      * @var ReadRepositoryInterface|MockObject
      */
     private $mockRepository;
-
-    /**
-     * @var string[]
-     */
-    private array $godUserIds;
 
     private GodUserReadRepositoryDecorator $repository;
 
@@ -40,13 +34,13 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
         $this->labels = [
             'c7a73397-a210-4126-8fa0-a9f822c2a356' => new Entity(
                 new UUID('c7a73397-a210-4126-8fa0-a9f822c2a356'),
-                new StringLiteral('foo'),
+                'foo',
                 Visibility::VISIBLE(),
                 Privacy::PRIVACY_PRIVATE()
             ),
             'fa285cf6-314c-42cc-99ee-94030127954d' => new Entity(
                 new UUID('fa285cf6-314c-42cc-99ee-94030127954d'),
-                new StringLiteral('bar'),
+                'bar',
                 Visibility::VISIBLE(),
                 Privacy::PRIVACY_PUBLIC()
             ),
@@ -71,7 +65,7 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
                     $labels = array_filter(
                         $this->labels,
                         function (Entity $label) use ($name) {
-                            return $label->getName()->toNative() === $name;
+                            return $label->getName() === $name;
                         }
                     );
 
@@ -106,19 +100,19 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
                 }
             );
 
-        $this->godUserIds = [
+        $godUserIds = [
             '720ba243-9b1f-44bd-82c1-729012b2aef4',
             '7f91831c-bdd4-4124-a3f0-df7183cdfcc7',
             '88272ef3-0add-47df-b40e-1eaaa509b1c8',
         ];
 
-        $this->godUserId = $this->godUserIds[0];
+        $this->godUserId = $godUserIds[0];
         $this->userId = '50793168-2667-44f1-9a78-bf8548d7810d';
 
         $this->privateLabel = 'foo';
         $this->publicLabel = 'bar';
 
-        $this->repository = new GodUserReadRepositoryDecorator($this->mockRepository, $this->godUserIds);
+        $this->repository = new GodUserReadRepositoryDecorator($this->mockRepository, $godUserIds);
     }
 
     /**
