@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class CultureFeedAddressFactoryTest extends TestCase
 {
-    /**
-     * @var CultureFeedAddressFactory
-     */
-    private $factory;
+    private CultureFeedAddressFactory $factory;
 
     public function setUp(): void
     {
@@ -27,7 +24,7 @@ class CultureFeedAddressFactoryTest extends TestCase
         $cdbPhysicalAddress = new \CultureFeed_Cdb_Data_Address_PhysicalAddress();
         $cdbPhysicalAddress->setStreet('Jeugdlaan');
         $cdbPhysicalAddress->setHouseNumber(2);
-        $cdbPhysicalAddress->setZip(3900);
+        $cdbPhysicalAddress->setZip('3900');
         $cdbPhysicalAddress->setCity('Overpelt');
         $cdbPhysicalAddress->setCountry('BE');
 
@@ -46,12 +43,10 @@ class CultureFeedAddressFactoryTest extends TestCase
     /**
      * @test
      * @dataProvider incompletePhysicalAddressDataProvider
-     *
-     * @param string $exceptionMessage
      */
     public function it_throws_an_exception_when_a_required_field_is_missing_on_the_physical_address(
         \CultureFeed_Cdb_Data_Address_PhysicalAddress $incompletePhysicalAddress,
-        $exceptionMessage
+        string $exceptionMessage
     ) {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($exceptionMessage);
@@ -59,14 +54,11 @@ class CultureFeedAddressFactoryTest extends TestCase
         $this->factory->fromCdbAddress($incompletePhysicalAddress);
     }
 
-    /**
-     * @return array
-     */
-    public function incompletePhysicalAddressDataProvider()
+    public function incompletePhysicalAddressDataProvider(): array
     {
         $withoutStreet = new \CultureFeed_Cdb_Data_Address_PhysicalAddress();
         $withoutStreet->setHouseNumber(2);
-        $withoutStreet->setZip(3900);
+        $withoutStreet->setZip('3900');
         $withoutStreet->setCity('Overpelt');
         $withoutStreet->setCountry('BE');
 
@@ -79,19 +71,19 @@ class CultureFeedAddressFactoryTest extends TestCase
         $withoutCity = new \CultureFeed_Cdb_Data_Address_PhysicalAddress();
         $withoutCity->setStreet('Jeugdlaan');
         $withoutCity->setHouseNumber(2);
-        $withoutCity->setZip(3900);
+        $withoutCity->setZip('3900');
         $withoutCity->setCountry('BE');
 
         $withoutCountry = new \CultureFeed_Cdb_Data_Address_PhysicalAddress();
         $withoutCountry->setStreet('Jeugdlaan');
         $withoutCountry->setHouseNumber(2);
-        $withoutCountry->setZip(3900);
+        $withoutCountry->setZip('3900');
         $withoutCountry->setCity('Overpelt');
 
         $withoutCityAndCountry = new \CultureFeed_Cdb_Data_Address_PhysicalAddress();
         $withoutCityAndCountry->setStreet('Jeugdlaan');
         $withoutCityAndCountry->setHouseNumber(2);
-        $withoutCityAndCountry->setZip(3900);
+        $withoutCityAndCountry->setZip('3900');
 
         return [
             [$withoutStreet, 'The given cdbxml address is missing a street'],
