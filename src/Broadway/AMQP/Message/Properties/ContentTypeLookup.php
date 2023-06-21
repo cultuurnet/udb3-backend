@@ -9,28 +9,21 @@ class ContentTypeLookup implements ContentTypeLookupInterface
     /**
      * @var string[]
      */
-    protected $payloadClassToContentTypeMap;
+    protected array $payloadClassToContentTypeMap;
 
     public function __construct(array $mapping = [])
     {
         $this->payloadClassToContentTypeMap = $mapping;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function withContentType($payloadClass, $contentType)
+    public function withContentType(string $payloadClass, string $contentType): ContentTypeLookupInterface
     {
         $c = clone $this;
         $c->setContentType($payloadClass, $contentType);
         return $c;
     }
 
-    /**
-     * @param string $payloadClass
-     * @param string $contentType
-     */
-    private function setContentType($payloadClass, $contentType)
+    private function setContentType(string $payloadClass, string $contentType): void
     {
         if (!is_string($payloadClass)) {
             throw new \InvalidArgumentException(
@@ -53,10 +46,7 @@ class ContentTypeLookup implements ContentTypeLookupInterface
         $this->payloadClassToContentTypeMap[$payloadClass] = $contentType;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getContentType($payloadClass)
+    public function getContentType(string $payloadClass): string
     {
         if (isset($this->payloadClassToContentTypeMap[$payloadClass])) {
             return $this->payloadClassToContentTypeMap[$payloadClass];

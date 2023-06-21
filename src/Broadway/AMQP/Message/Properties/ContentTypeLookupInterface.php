@@ -6,16 +6,7 @@ namespace CultuurNet\UDB3\Broadway\AMQP\Message\Properties;
 
 interface ContentTypeLookupInterface
 {
-    /**
-     * @param string $payloadClass
-     * @param string $contentType
-     * @return static
-     */
-    public function withContentType($payloadClass, $contentType);
+    public function withContentType(string $payloadClass, string $contentType): ContentTypeLookupInterface;
 
-    /**
-     * @param string $payloadClass
-     * @return string
-     */
-    public function getContentType($payloadClass);
+    public function getContentType(string $payloadClass): string;
 }

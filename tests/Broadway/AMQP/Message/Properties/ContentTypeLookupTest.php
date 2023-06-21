@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ContentTypeLookupTest extends TestCase
 {
-    /**
-     * @var ContentTypeLookup
-     */
-    protected $contentTypeLookup;
+    protected ContentTypeLookupInterface $contentTypeLookup;
 
     public function setUp(): void
     {
@@ -33,38 +30,6 @@ class ContentTypeLookupTest extends TestCase
         $contentType = $this->contentTypeLookup->getContentType(DummyEvent::class);
 
         $this->assertEquals($expectedContentType, $contentType);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_invalid_argument_exception_when_payload_class_is_not_a_string()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Value for argument payloadClass should be a string'
-        );
-
-        $this->contentTypeLookup->withContentType(
-            1,
-            'application/vnd.cultuurnet.udb3-events.dummy-event+json'
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_invalid_argument_exception_when_content_type_is_not_a_string()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Value for argument contentType should be a string'
-        );
-
-        $this->contentTypeLookup->withContentType(
-            DummyEvent::class,
-            1
-        );
     }
 
     /**

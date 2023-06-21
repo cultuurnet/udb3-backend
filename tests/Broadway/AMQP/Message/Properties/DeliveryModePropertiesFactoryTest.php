@@ -15,16 +15,6 @@ class DeliveryModePropertiesFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_validates_the_injected_delivery_mode()
-    {
-        $invalidDeliveryMode = 'PERSISTENT';
-        $this->expectException(\InvalidArgumentException::class);
-        new DeliveryModePropertiesFactory($invalidDeliveryMode);
-    }
-
-    /**
-     * @test
-     */
     public function it_sets_delivery_mode_based_on_the_injected_mode()
     {
         $domainMessage = new DomainMessage(

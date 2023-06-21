@@ -13,19 +13,11 @@ use PHPUnit\Framework\TestCase;
 
 class ContentTypePropertiesFactoryTest extends TestCase
 {
-    /**
-     * @var ContentTypeLookup
-     */
-    private $contentTypeLookup;
-
-    /**
-     * @var ContentTypePropertiesFactory
-     */
-    private $contentTypePropertiesFactory;
+    private ContentTypePropertiesFactory $contentTypePropertiesFactory;
 
     public function setUp(): void
     {
-        $this->contentTypeLookup = (new ContentTypeLookup())
+        $contentTypeLookup = (new ContentTypeLookup())
             ->withContentType(
                 DummyEvent::class,
                 'application/vnd.cultuurnet.udb3-events.dummy-event+json'
@@ -35,16 +27,14 @@ class ContentTypePropertiesFactoryTest extends TestCase
                 'application/vnd.cultuurnet.udb3-events.dummy-event-not-serializable+json'
             );
 
-        $this->contentTypePropertiesFactory = new ContentTypePropertiesFactory($this->contentTypeLookup);
+        $this->contentTypePropertiesFactory = new ContentTypePropertiesFactory($contentTypeLookup);
     }
 
     /**
      * @test
      * @dataProvider contentTypeDataProvider
-     *
-     * @param string $expectedContentType
      */
-    public function it_determines_content_type_by_payload_class($payload, $expectedContentType)
+    public function it_determines_content_type_by_payload_class($payload, string $expectedContentType)
     {
         $domainMessage = new DomainMessage(
             '097c36dc-6019-44e2-b6e0-c57d32d8f97c',
@@ -61,18 +51,15 @@ class ContentTypePropertiesFactoryTest extends TestCase
         $this->assertEquals($expectedProperties, $actualProperties);
     }
 
-    /**
-     * @return array
-     */
-    public function contentTypeDataProvider()
+    public function contentTypeDataProvider(): array
     {
         return [
             [
-                new DummyEvent(1, 'foo'),
+                new DummyEvent('1', 'foo'),
                 'application/vnd.cultuurnet.udb3-events.dummy-event+json',
             ],
             [
-                new DummyEventNotSerializable(2, 'bar'),
+                new DummyEventNotSerializable('2', 'bar'),
                 'application/vnd.cultuurnet.udb3-events.dummy-event-not-serializable+json',
             ],
         ];
