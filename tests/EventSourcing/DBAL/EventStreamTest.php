@@ -54,17 +54,6 @@ class EventStreamTest extends TestCase
 
     /**
      * @test
-     */
-    public function it_requires_int_type_for_optional_start_id(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('StartId should have type int.');
-
-        $this->eventStream->withStartId('100');
-    }
-
-    /**
-     * @test
      * @dataProvider invalidStartIdDataProvider
      */
     public function it_requires_a_value_higher_than_zero_for_optional_start_id(int $invalidStartId): void
@@ -82,17 +71,6 @@ class EventStreamTest extends TestCase
             [-1],
             [-0],
         ];
-    }
-
-    /**
-     * @test
-     */
-    public function it_requires_string_type_for_optional_cdbid(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cdbids should have type array.');
-
-        $this->eventStream->withCdbids('1021');
     }
 
     /**
