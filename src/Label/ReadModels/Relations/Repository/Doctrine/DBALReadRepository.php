@@ -17,7 +17,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         $whereLabelName = SchemaConfigurator::LABEL_NAME . ' = ?';
 
         $queryBuilder = $this->createQueryBuilder()->select($aliases)
-            ->from($this->getTableName()->toNative())
+            ->from($this->getTableName())
             ->where($whereLabelName)
             ->setParameters([$labelName]);
 
@@ -34,7 +34,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         $whereLabelName = SchemaConfigurator::LABEL_NAME . ' = ?';
 
         return $this->createQueryBuilder()->select(SchemaConfigurator::RELATION_ID)
-            ->from($this->getTableName()->toNative())
+            ->from($this->getTableName())
             ->where($whereLabelName)
             ->andWhere(SchemaConfigurator::RELATION_TYPE . ' = ?')
             ->setParameters([$labelName, $relationType->toString()])
@@ -47,7 +47,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         $whereRelationId = SchemaConfigurator::RELATION_ID . ' = ?';
 
         $queryBuilder = $this->createQueryBuilder()->select($aliases)
-            ->from($this->getTableName()->toNative())
+            ->from($this->getTableName())
             ->where($whereRelationId)
             ->setParameters(
                 [

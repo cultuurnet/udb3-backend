@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepos
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\StringLiteral;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\TestCase;
@@ -209,7 +208,7 @@ class CanonicalServiceTest extends TestCase
             ),
             new DBALReadRepository(
                 $this->getConnection(),
-                new StringLiteral('labels_relations')
+                'labels_relations'
             ),
             $documentRepository
         );

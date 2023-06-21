@@ -40,7 +40,6 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\LabelRolesWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\User\CurrentUser;
 use League\Container\Container;
 use Monolog\Handler\StreamHandler;
@@ -190,7 +189,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
             function () use ($container): RelationsWriteRepository {
                 return new RelationsWriteRepository(
                     $container->get('dbal_connection'),
-                    new StringLiteral(self::RELATIONS_TABLE)
+                    self::RELATIONS_TABLE
                 );
             }
         );
@@ -200,7 +199,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
             function () use ($container): RelationsReadRepository {
                 return new RelationsReadRepository(
                     $container->get('dbal_connection'),
-                    new StringLiteral(self::RELATIONS_TABLE)
+                    self::RELATIONS_TABLE
                 );
             }
         );

@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionsSchemaConfigurator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use CultuurNet\UDB3\StringLiteral;
 
 final class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
 {
@@ -33,7 +32,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         string $userRolesTableName,
         ExcludedLabelsRepository $excludedLabelsRepository
     ) {
-        parent::__construct($connection, new StringLiteral($tableName));
+        parent::__construct($connection, $tableName);
 
         $this->labelRolesTableName = $labelRolesTableName;
         $this->userRolesTableName = $userRolesTableName;
@@ -46,7 +45,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         $whereId = SchemaConfigurator::UUID_COLUMN . ' = ?';
 
         $queryBuilder = $this->createQueryBuilder()->select($aliases)
-            ->from($this->getTableName()->toNative())
+            ->from($this->getTableName())
             ->where($whereId)
             ->setParameters([$uuid->toString()]);
 
@@ -63,7 +62,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         );
 
         $queryBuilder = $queryBuilder->select($aliases)
-            ->from($this->getTableName()->toNative())
+            ->from($this->getTableName())
             ->where($likeCondition)
             ->setParameter(
                 SchemaConfigurator::NAME_COLUMN,
@@ -140,7 +139,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         $queryBuilder = $this->createQueryBuilder();
         $like = $this->createLike($queryBuilder);
 
-        $queryBuilder->from($this->getTableName()->toNative())
+        $queryBuilder->from($this->getTableName())
             ->where($like)
             ->setParameter(
                 SchemaConfigurator::NAME_COLUMN,

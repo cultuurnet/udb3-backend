@@ -6,17 +6,16 @@ namespace CultuurNet\UDB3\Label\ReadModels\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractDBALRepository
 {
     private Connection $connection;
 
-    private StringLiteral $tableName;
+    private string $tableName;
 
     public function __construct(
         Connection $connection,
-        StringLiteral $tableName
+        string $tableName
     ) {
         $this->connection = $connection;
         $this->tableName = $tableName;
@@ -27,7 +26,7 @@ abstract class AbstractDBALRepository
         return $this->connection;
     }
 
-    public function getTableName(): StringLiteral
+    public function getTableName(): string
     {
         return $this->tableName;
     }

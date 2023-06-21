@@ -9,7 +9,6 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use CultuurNet\UDB3\StringLiteral;
 
 class DBALProductionRepository extends AbstractDBALRepository implements ProductionRepository
 {
@@ -17,7 +16,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
 
     public function __construct(Connection $connection)
     {
-        parent::__construct($connection, new StringLiteral(self::TABLE_NAME));
+        parent::__construct($connection, self::TABLE_NAME);
     }
 
     public function add(Production $production): void
@@ -57,7 +56,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
     {
         $addedAt = Chronos::now();
         $this->getConnection()->insert(
-            $this->getTableName()->toNative(),
+            $this->getTableName(),
             [
                 'event_id' => $eventId,
                 'production_id' => $production->getProductionId()->toNative(),
@@ -70,7 +69,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
     public function removeEvent(string $eventId, ProductionId $productionId): void
     {
         $this->getConnection()->delete(
-            $this->getTableName()->toNative(),
+            $this->getTableName(),
             [
                 'event_id' => $eventId,
                 'production_id' => $productionId->toNative(),
@@ -82,7 +81,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
     {
         $addedAt = Chronos::now();
         $this->getConnection()->update(
-            $this->getTableName()->toNative(),
+            $this->getTableName(),
             [
                 'production_id' => $to->getProductionId()->toNative(),
                 'name' => $to->getName(),
@@ -97,7 +96,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
     public function renameProduction(ProductionId $productionId, string $name): void
     {
         $this->getConnection()->update(
-            $this->getTableName()->toNative(),
+            $this->getTableName(),
             [
                 'name' => $name,
             ],
@@ -119,7 +118,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
 
         $query = $this->getConnection()->createQueryBuilder()
             ->select('p1.production_id, p1.name, p1.event_id')
-            ->from($this->getTableName()->toNative(), 'p1')
+            ->from($this->getTableName(), 'p1')
             ->innerJoin('p1', sprintf('(%s)', $subQuery->getSQL()), 'p2', 'p1.production_id = p2.production_id');
 
         if (!empty($keyword)) {
@@ -162,7 +161,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
     {
         $query = $this->getConnection()->createQueryBuilder()
             ->select('DISTINCT production_id')
-            ->from($this->getTableName()->toNative());
+            ->from($this->getTableName());
 
         if (!empty($keyword)) {
             $query = $query->where('MATCH(name) AGAINST(:keyword IN BOOLEAN MODE)')
