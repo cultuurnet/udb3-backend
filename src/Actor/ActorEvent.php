@@ -8,12 +8,9 @@ use Broadway\Serializer\Serializable;
 
 abstract class ActorEvent implements Serializable
 {
-    /**
-     * @var string
-     */
-    protected $actorId;
+    protected string $actorId;
 
-    public function __construct($actorId)
+    public function __construct(string $actorId)
     {
         $this->actorId = $actorId;
     }
