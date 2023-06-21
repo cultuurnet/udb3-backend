@@ -162,6 +162,14 @@ trait ResponseSteps
         );
     }
 
+    /**
+     * @Then show me the unparsed response
+     */
+    public function showMeTheUnparsedResponse(): void
+    {
+        echo $this->responseState->getContent();
+    }
+
     private function removeDates(string $value): string
     {
         $datePattern = '/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}/';
