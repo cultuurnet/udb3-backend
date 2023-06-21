@@ -6,35 +6,13 @@ namespace CultuurNet\UDB3\Role\ReadModel\Search;
 
 interface RepositoryInterface
 {
-    /**
-     * @param string $uuid
-     */
-    public function remove($uuid);
+    public function remove(string $uuid): void;
 
-    /**
-     * @param string $uuid
-     * @param string $name
-     * @param string|null $constraint
-     */
-    public function save($uuid, $name, $constraint = null);
+    public function save(string $uuid, string $name, ?string $constraint = null): void;
 
-    /**
-     * @param string $query
-     * @param int $limit
-     * @param int $start
-     * @return Results
-     */
-    public function search($query = '', $limit = 10, $start = 0);
+    public function search(string $query = '', int $limit = 10, int $start = 0): Results;
 
-    /**
-     * @param string $uuid
-     * @param string $name
-     */
-    public function updateName($uuid, $name);
+    public function updateName(string $uuid, string $name): void;
 
-    /**
-     * @param string $uuid
-     * @param string|null $constraint
-     */
-    public function updateConstraint($uuid, $constraint = null);
+    public function updateConstraint(string $uuid, ?string $constraint = null): void;
 }

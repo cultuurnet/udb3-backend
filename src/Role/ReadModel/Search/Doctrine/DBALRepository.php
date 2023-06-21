@@ -21,10 +21,7 @@ class DBALRepository implements RepositoryInterface
         $this->tableName = $tableName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($uuid)
+    public function remove(string $uuid): void
     {
         $q = $this->connection->createQueryBuilder();
         $expr = $this->connection->getExpressionBuilder();
@@ -36,10 +33,7 @@ class DBALRepository implements RepositoryInterface
         $q->execute();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function save($uuid, $name, $constraint = null)
+    public function save(string $uuid, string $name, string $constraint = null): void
     {
         $q = $this->connection->createQueryBuilder();
         $q
@@ -57,10 +51,7 @@ class DBALRepository implements RepositoryInterface
         $q->execute();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function search($query = '', $limit = 10, $start = 0)
+    public function search(string $query = '', int $limit = 10, int $start = 0): Results
     {
         $q = $this->connection->createQueryBuilder();
         $expr = $this->connection->getExpressionBuilder();
@@ -98,10 +89,7 @@ class DBALRepository implements RepositoryInterface
         return new Results($limit, $results, (int) $total);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function updateName($uuid, $name)
+    public function updateName(string $uuid, string $name): void
     {
         $q = $this->connection->createQueryBuilder();
         $expr = $this->connection->getExpressionBuilder();
@@ -116,10 +104,7 @@ class DBALRepository implements RepositoryInterface
         $q->execute();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function updateConstraint($uuid, $constraint = null)
+    public function updateConstraint(string $uuid, string $constraint = null): void
     {
         $q = $this->connection->createQueryBuilder();
         $expr = $this->connection->getExpressionBuilder();
