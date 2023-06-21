@@ -18,10 +18,20 @@ trait ResponseSteps
     /**
      * @Then the JSON response at :jsonPath should be :value
      */
-    public function theJsonResponseAtShouldBe(string $jsonPath, string $value): void
+    public function theJsonResponseAtShouldBe(string $jsonPath, $value): void
     {
+        $expected = $this->variableState->replaceVariables($value);
+
+        if ($value === 'true' || $value === 'false') {
+            $expected = $value === 'true';
+        }
+
+        if (is_numeric($value)) {
+            $expected = (int) $value;
+        }
+
         assertEquals(
-            $this->variableState->replaceVariables($value),
+            $expected,
             $this->responseState->getValueOnPath($jsonPath)
         );
     }
@@ -160,6 +170,14 @@ trait ResponseSteps
             $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
             $this->removeDates($this->responseState->getContent())
         );
+    }
+
+    /**
+     * @Then show me the unparsed response
+     */
+    public function showMeTheUnparsedResponse(): void
+    {
+        echo $this->responseState->getContent();
     }
 
     private function removeDates(string $value): string
