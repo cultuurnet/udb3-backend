@@ -29,10 +29,7 @@ class DefaultGeocodingServiceTest extends TestCase
      */
     private $logger;
 
-    /**
-     * @var DefaultGeocodingService
-     */
-    private $service;
+    private DefaultGeocodingService $service;
 
     public function setUp(): void
     {

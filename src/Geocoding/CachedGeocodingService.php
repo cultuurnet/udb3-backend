@@ -52,8 +52,8 @@ class CachedGeocodingService implements GeocodingService
         $cacheData = self::NO_COORDINATES_FOUND;
         if ($coordinates) {
             $cacheData = [
-                'lat' => $coordinates->getLatitude()->toDouble(),
-                'long' => $coordinates->getLongitude()->toDouble(),
+                'lat' => $coordinates->getLatitude()->toFloat(),
+                'long' => $coordinates->getLongitude()->toFloat(),
             ];
         }
 
