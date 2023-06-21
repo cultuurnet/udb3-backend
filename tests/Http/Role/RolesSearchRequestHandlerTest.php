@@ -38,7 +38,7 @@ class RolesSearchRequestHandlerTest extends TestCase
     {
         $search = 'search-test';
         $limit = 42;
-        $start = '24';
+        $start = 24;
 
         $this->roleSearchRepository
             ->expects($this->once())

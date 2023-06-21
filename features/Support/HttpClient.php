@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Support;
 
+use CultuurNet\UDB3\State\VariableState;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
@@ -69,6 +70,22 @@ final class HttpClient
 
     public function get(string $url): ResponseInterface
     {
+        return $this->client->get($url);
+    }
+
+    public function getWithParameters(string $url, array $parameters, VariableState $variableState): ResponseInterface
+    {
+        $url .= '?';
+
+        for ($i = 0; $i < count($parameters); $i++) {
+            $url .= $parameters[$i][0] . '=' . $parameters[$i][1];
+            if ($i < count($parameters) - 1) {
+                $url .= '&';
+            }
+        }
+
+        $url = $variableState->replaceVariables($url);
+
         return $this->client->get($url);
     }
 
