@@ -39,7 +39,7 @@ class AddConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_extends_an_abstract_command()
+    public function it_extends_an_abstract_command(): void
     {
         $this->assertTrue(is_subclass_of(
             $this->addConstraint,
@@ -50,7 +50,7 @@ class AddConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals($this->uuid, $this->addConstraint->getUuid());
     }
@@ -58,7 +58,7 @@ class AddConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_query()
+    public function it_stores_a_query(): void
     {
         $this->assertEquals($this->query, $this->addConstraint->getQuery());
     }

@@ -37,7 +37,7 @@ class ConsumeCommand extends Command
 
     private function registerSignalHandlers(OutputInterface $output): void
     {
-        $handler = function ($signal) use ($output) {
+        $handler = function ($signal) use ($output): void {
             $this->handleSignal($output, $signal);
         };
 

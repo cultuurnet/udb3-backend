@@ -52,7 +52,7 @@ class ContactPointTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_phones()
+    public function it_stores_phones(): void
     {
         $this->assertEquals($this->phones, $this->contactPoint->getPhones());
     }
@@ -60,7 +60,7 @@ class ContactPointTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_emails()
+    public function it_stores_emails(): void
     {
         $this->assertEquals($this->emails, $this->contactPoint->getEmails());
     }
@@ -68,7 +68,7 @@ class ContactPointTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_urls()
+    public function it_stores_urls(): void
     {
         $this->assertEquals($this->urls, $this->contactPoint->getUrls());
     }
@@ -76,7 +76,7 @@ class ContactPointTest extends TestCase
     /**
      * @test
      */
-    public function it_can_compare()
+    public function it_can_compare(): void
     {
         $sameContactPoint = new ContactPoint(
             $this->phones,
@@ -97,7 +97,7 @@ class ContactPointTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_contact_point()
+    public function it_should_be_creatable_from_an_udb3_model_contact_point(): void
     {
         $udb3ModelContactPoint = new \CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint(
             new TelephoneNumbers(

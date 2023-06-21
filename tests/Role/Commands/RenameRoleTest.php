@@ -36,7 +36,7 @@ class RenameRoleTest extends TestCase
     /**
      * @test
      */
-    public function it_extends_an_abstract_command()
+    public function it_extends_an_abstract_command(): void
     {
         $this->assertTrue(is_subclass_of(
             $this->renameRole,
@@ -47,7 +47,7 @@ class RenameRoleTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals($this->uuid, $this->renameRole->getUuid());
     }
@@ -55,7 +55,7 @@ class RenameRoleTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_name()
+    public function it_stores_a_name(): void
     {
         $this->assertEquals($this->name, $this->renameRole->getName());
     }
@@ -63,7 +63,7 @@ class RenameRoleTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $actualCreate = unserialize(serialize($this->renameRole));
 

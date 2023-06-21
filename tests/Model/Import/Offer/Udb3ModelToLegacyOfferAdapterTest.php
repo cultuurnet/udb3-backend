@@ -177,7 +177,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_id()
+    public function it_should_return_an_id(): void
     {
         $expected = '91060c19-a860-4a47-8591-8a779bfa520a';
         $actual = $this->adapter->getId();
@@ -187,7 +187,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_main_language()
+    public function it_should_return_a_main_language(): void
     {
         $expected = new \CultuurNet\UDB3\Language('nl');
         $actual = $this->adapter->getMainLanguage();
@@ -197,7 +197,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_title()
+    public function it_should_return_a_title(): void
     {
         $expected = new \CultuurNet\UDB3\Title('Voorbeeld titel');
         $actual = $this->adapter->getTitle();
@@ -207,7 +207,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_type()
+    public function it_should_return_a_type(): void
     {
         $expected = new EventType('0.6.0.0.0', 'Beurs');
         $actual = $this->adapter->getType();
@@ -217,7 +217,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_theme()
+    public function it_should_return_a_theme(): void
     {
         $expected = new Theme('0.52.0.0.0', 'Circus');
         $actual = $this->adapter->getTheme();
@@ -227,7 +227,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_null_as_theme_if_there_is_none()
+    public function it_should_return_null_as_theme_if_there_is_none(): void
     {
         $offer = $this->offer->withTerms(
             new Categories(
@@ -247,7 +247,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_calendar()
+    public function it_should_return_a_calendar(): void
     {
         $expected = new Calendar(CalendarType::PERMANENT());
         $actual = $this->adapter->getCalendar();
@@ -257,7 +257,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_description_by_default()
+    public function it_should_return_no_description_by_default(): void
     {
         $actual = $this->adapter->getDescription();
         $this->assertNull($actual);
@@ -266,7 +266,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_description_if_there_is_one()
+    public function it_should_return_a_description_if_there_is_one(): void
     {
         $expected = new \CultuurNet\UDB3\Description('Voorbeeld beschrijving');
         $actual = $this->completeAdapter->getDescription();
@@ -276,7 +276,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_organizer_id_by_default()
+    public function it_should_return_no_organizer_id_by_default(): void
     {
         $actual = $this->adapter->getOrganizerId();
         $this->assertNull($actual);
@@ -285,7 +285,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_organizer_id_if_there_is_one()
+    public function it_should_return_an_organizer_id_if_there_is_one(): void
     {
         $expected = 'cc4fa0d1-f86c-42cd-a9c6-995a660ba948';
         $actual = $this->completeAdapter->getOrganizerId();
@@ -295,7 +295,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_age_range_by_default()
+    public function it_should_return_no_age_range_by_default(): void
     {
         $actual = $this->adapter->getAgeRange();
         $this->assertNull($actual);
@@ -304,7 +304,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_age_range_if_there_is_one()
+    public function it_should_return_an_age_range_if_there_is_one(): void
     {
         $expected = new \CultuurNet\UDB3\Offer\AgeRange(
             new Age(8),
@@ -317,7 +317,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_price_info_by_default()
+    public function it_should_return_no_price_info_by_default(): void
     {
         $actual = $this->adapter->getPriceInfo();
         $this->assertNull($actual);
@@ -326,7 +326,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_price_info_if_there_is_any()
+    public function it_should_return_price_info_if_there_is_any(): void
     {
         $expected = new \CultuurNet\UDB3\PriceInfo\PriceInfo(
             new BasePrice(
@@ -346,7 +346,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_empty_booking_info_by_default()
+    public function it_should_return_empty_booking_info_by_default(): void
     {
         $expected = new \CultuurNet\UDB3\BookingInfo();
         $actual = $this->adapter->getBookingInfo();
@@ -356,7 +356,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_booking_info_if_there_is_any()
+    public function it_should_return_booking_info_if_there_is_any(): void
     {
         $expected = new \CultuurNet\UDB3\BookingInfo(
             'https://www.publiq.be',
@@ -376,7 +376,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_empty_contact_point_by_default()
+    public function it_should_return_an_empty_contact_point_by_default(): void
     {
         $expected = new \CultuurNet\UDB3\ContactPoint();
         $actual = $this->adapter->getContactPoint();
@@ -386,7 +386,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_contact_point_if_there_is_one()
+    public function it_should_return_a_contact_point_if_there_is_one(): void
     {
         $expected = new \CultuurNet\UDB3\ContactPoint(
             ['044/444444', '055/555555'],
@@ -432,7 +432,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_title_translations()
+    public function it_should_return_the_title_translations(): void
     {
         $expected = [
             'fr' => new \CultuurNet\UDB3\Title('Titre example'),
@@ -445,7 +445,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_description_translations_by_default()
+    public function it_should_return_no_description_translations_by_default(): void
     {
         $expected = [];
         $actual = $this->adapter->getDescriptionTranslations();
@@ -455,7 +455,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_description_translations_if_there_are_any()
+    public function it_should_return_description_translations_if_there_are_any(): void
     {
         $expected = [
             'en' => new \CultuurNet\UDB3\Description('Example description'),

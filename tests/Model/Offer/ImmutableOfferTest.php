@@ -59,7 +59,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_initial_properties_and_some_sensible_defaults()
+    public function it_returns_the_initial_properties_and_some_sensible_defaults(): void
     {
         $offer = $this->getOffer();
 
@@ -74,7 +74,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_title()
+    public function it_should_return_a_copy_with_an_updated_title(): void
     {
         $originalTitle = $this->getTitle();
         $updatedTitle = $this->getTitle()
@@ -92,7 +92,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_injected_calendar()
+    public function it_should_return_the_injected_calendar(): void
     {
         $calendar = $this->getCalendar();
         $offer = $this->getOffer();
@@ -103,7 +103,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_calendar()
+    public function it_should_return_a_copy_with_an_updated_calendar(): void
     {
         $calendar = $this->getCalendar();
         $offer = $this->getOffer();
@@ -119,7 +119,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_a_description()
+    public function it_should_return_a_copy_with_a_description(): void
     {
         $description = new TranslatedDescription(
             new Language('nl'),
@@ -137,7 +137,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_description()
+    public function it_should_return_a_copy_with_an_updated_description(): void
     {
         $initialDescription = new TranslatedDescription(
             new Language('nl'),
@@ -158,7 +158,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_without_description()
+    public function it_should_return_a_copy_without_description(): void
     {
         $description = new TranslatedDescription(
             new Language('nl'),
@@ -176,7 +176,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_updated_terms()
+    public function it_should_return_a_copy_with_updated_terms(): void
     {
         $updatedTerms = new Categories(
             new Category(
@@ -202,7 +202,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_empty_list_of_labels_by_default()
+    public function it_should_return_an_empty_list_of_labels_by_default(): void
     {
         $this->assertEquals(new Labels(), $this->getOffer()->getLabels());
     }
@@ -210,7 +210,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_updated_labels()
+    public function it_should_return_a_copy_with_updated_labels(): void
     {
         $labels = new Labels();
         $updatedLabels = new Labels(
@@ -235,7 +235,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_organizer_reference_by_default()
+    public function it_should_return_no_organizer_reference_by_default(): void
     {
         $this->assertNull($this->getOffer()->getOrganizerReference());
     }
@@ -243,7 +243,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_organizer_reference()
+    public function it_should_return_a_copy_with_an_updated_organizer_reference(): void
     {
         $reference = OrganizerReference::createWithOrganizerId(
             new UUID('dd5e196a-4afb-449a-bcce-0120d01263b9')
@@ -260,7 +260,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_without_an_organizer_reference()
+    public function it_should_return_a_copy_without_an_organizer_reference(): void
     {
         $reference = OrganizerReference::createWithOrganizerId(
             new UUID('dd5e196a-4afb-449a-bcce-0120d01263b9')
@@ -277,7 +277,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_age_range()
+    public function it_should_return_a_copy_with_an_age_range(): void
     {
         $ageRange = new AgeRange(new Age(8), new Age(12));
 
@@ -292,7 +292,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_age_range()
+    public function it_should_return_a_copy_with_an_updated_age_range(): void
     {
         $initialAgeRange = new AgeRange(new Age(8), new Age(14));
         $updatedAgeRange = new AgeRange(new Age(8), new Age(12));
@@ -308,7 +308,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_without_age_range()
+    public function it_should_return_a_copy_without_age_range(): void
     {
         $ageRange = new AgeRange(new Age(8), new Age(12));
 
@@ -323,7 +323,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_price_info_by_default()
+    public function it_should_return_no_price_info_by_default(): void
     {
         $this->assertNull($this->getOffer()->getPriceInfo());
     }
@@ -332,7 +332,7 @@ class ImmutableOfferTest extends TestCase
      * @test
      * @throws \Money\UnknownCurrencyException
      */
-    public function it_should_return_a_copy_with_updated_price_info()
+    public function it_should_return_a_copy_with_updated_price_info(): void
     {
         $priceInfo = new PriceInfo(
             Tariff::createBasePrice(
@@ -353,7 +353,7 @@ class ImmutableOfferTest extends TestCase
      * @test
      * @throws \Money\UnknownCurrencyException
      */
-    public function it_should_return_a_copy_without_price_info()
+    public function it_should_return_a_copy_without_price_info(): void
     {
         $priceInfo = new PriceInfo(
             Tariff::createBasePrice(
@@ -373,7 +373,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_empty_booking_info_by_default()
+    public function it_should_return_empty_booking_info_by_default(): void
     {
         $this->assertTrue($this->getOffer()->getBookingInfo()->isEmpty());
     }
@@ -381,7 +381,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_booking_info()
+    public function it_should_return_a_copy_with_an_updated_booking_info(): void
     {
         $offer = $this->getOffer();
         $bookingInfo = $offer->getBookingInfo();
@@ -405,7 +405,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_empty_contact_point_by_default()
+    public function it_should_return_an_empty_contact_point_by_default(): void
     {
         $this->assertTrue($this->getOffer()->getContactPoint()->isEmpty());
     }
@@ -413,7 +413,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_contact_point()
+    public function it_should_return_a_copy_with_an_updated_contact_point(): void
     {
         $offer = $this->getOffer();
         $contactPoint = $offer->getContactPoint();
@@ -433,7 +433,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_empty_media_object_references_list_by_default()
+    public function it_should_return_an_empty_media_object_references_list_by_default(): void
     {
         $this->assertEquals(new MediaObjectReferences(), $this->getOffer()->getMediaObjectReferences());
     }
@@ -441,7 +441,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_updated_media_object_references()
+    public function it_should_return_a_copy_with_updated_media_object_references(): void
     {
         $reference = MediaObjectReference::createWithMediaObjectId(
             new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
@@ -492,7 +492,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_draft_workflow_status_by_default()
+    public function it_should_return_a_draft_workflow_status_by_default(): void
     {
         $workflowStatus = $this->getOffer()->getWorkflowStatus();
         $this->assertTrue($workflowStatus->sameAs(WorkflowStatus::DRAFT()));
@@ -501,7 +501,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_workflow_status()
+    public function it_should_return_a_copy_with_an_updated_workflow_status(): void
     {
         $offer = $this->getOffer();
         $workflowStatus = $offer->getWorkflowStatus();
@@ -517,7 +517,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_available_from_by_default()
+    public function it_should_return_no_available_from_by_default(): void
     {
         $this->assertNull($this->getOffer()->getAvailableFrom());
     }
@@ -525,7 +525,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_available_from()
+    public function it_should_return_a_copy_with_an_updated_available_from(): void
     {
         $availableFrom = \DateTimeImmutable::createFromFormat(
             DateTimeInterface::ATOM,
@@ -543,7 +543,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_without_available_from()
+    public function it_should_return_a_copy_without_available_from(): void
     {
         $availableFrom = \DateTimeImmutable::createFromFormat(
             DateTimeInterface::ATOM,
@@ -561,7 +561,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_calendar_end_date_as_available_to()
+    public function it_should_return_the_calendar_end_date_as_available_to(): void
     {
         $offer = $this->getOffer();
         $calendar = $offer->getCalendar();
@@ -576,7 +576,7 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_available_forever_as_available_to()
+    public function it_should_return_available_forever_as_available_to(): void
     {
         $calendar = new PermanentCalendar(new OpeningHours());
         $offer = new MockImmutableOffer(

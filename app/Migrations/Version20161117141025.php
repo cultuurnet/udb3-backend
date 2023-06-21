@@ -12,7 +12,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20161117141025 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->changeColumnName('uuid_col', 'labelName');
         $this->changeColumnName('offerType', 'relationType');
@@ -20,7 +20,7 @@ class Version20161117141025 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // Converting back down would loose data if the size was changed.
         $this->changeColumnName('labelName', 'uuid_col');
@@ -32,7 +32,7 @@ class Version20161117141025 extends AbstractMigration
      * @param string $oldName
      * @param string $newName
      */
-    private function changeColumnName($oldName, $newName)
+    private function changeColumnName($oldName, $newName): void
     {
         $this->connection->exec(
             "ALTER TABLE labels_relations CHANGE $oldName $newName VARCHAR(255)"

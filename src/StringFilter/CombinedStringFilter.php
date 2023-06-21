@@ -14,7 +14,7 @@ class CombinedStringFilter implements StringFilterInterface
     /**
      * @param StringFilterInterface $filter
      */
-    public function addFilter($filter)
+    public function addFilter($filter): void
     {
         $this->filters[] = $filter;
     }

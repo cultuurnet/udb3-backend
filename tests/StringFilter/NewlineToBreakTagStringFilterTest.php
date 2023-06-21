@@ -17,7 +17,7 @@ class NewlineToBreakTagStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_converts_newlines_to_break_tags()
+    public function it_converts_newlines_to_break_tags(): void
     {
         $original = "Hello\nworld!\nGoodbye!";
         $expected = 'Hello<br />world!<br />Goodbye!';
@@ -27,7 +27,7 @@ class NewlineToBreakTagStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_converts_newlines_to_break_tags_without_closing_tag()
+    public function it_converts_newlines_to_break_tags_without_closing_tag(): void
     {
         $original = "Hello\nworld!\nGoodbye!";
         $expected = 'Hello<br>world!<br>Goodbye!';
@@ -41,7 +41,7 @@ class NewlineToBreakTagStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_converts_consecutive_newlines_to_consecutive_break_tags()
+    public function it_converts_consecutive_newlines_to_consecutive_break_tags(): void
     {
         $original = "Hello\n\nworld!";
         $expected = 'Hello<br /><br />world!';
@@ -51,7 +51,7 @@ class NewlineToBreakTagStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_only_filters_strings()
+    public function it_only_filters_strings(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->filter->filter(12345);

@@ -27,7 +27,7 @@ class TranslatedStatusReasonTest extends TestCase
     /**
      * @test
      */
-    public function it_should_only_accept_an_status_reason_as_translation()
+    public function it_should_only_accept_an_status_reason_as_translation(): void
     {
         $nl = new Language('nl');
         $nlValue = new StatusReason('foo');

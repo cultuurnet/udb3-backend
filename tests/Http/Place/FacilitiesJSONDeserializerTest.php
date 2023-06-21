@@ -28,7 +28,7 @@ class FacilitiesJSONDeserializerTest extends TestCase
      * @test
      * @throws DataValidationException
      */
-    public function it_should_not_accept_data_without_a_list_of_facility_ids()
+    public function it_should_not_accept_data_without_a_list_of_facility_ids(): void
     {
         $deserializer = new FacilitiesJSONDeserializer($this->facilityResolver);
 
@@ -42,7 +42,7 @@ class FacilitiesJSONDeserializerTest extends TestCase
      * @test
      * @throws DataValidationException
      */
-    public function it_should_return_a_facilities_list_from_valid_data_with_a_single_facility()
+    public function it_should_return_a_facilities_list_from_valid_data_with_a_single_facility(): void
     {
         $deserializer = new FacilitiesJSONDeserializer($this->facilityResolver);
         $facility = new Facility('3.23.1.0.0', 'Voorzieningen voor rolstoelgebruikers');
@@ -64,7 +64,7 @@ class FacilitiesJSONDeserializerTest extends TestCase
      * @test
      * @throws DataValidationException
      */
-    public function it_should_return_a_facilities_list_without_duplicates()
+    public function it_should_return_a_facilities_list_without_duplicates(): void
     {
         $deserializer = new FacilitiesJSONDeserializer($this->facilityResolver);
         $facility = new Facility('3.23.1.0.0', 'Voorzieningen voor rolstoelgebruikers');
@@ -86,7 +86,7 @@ class FacilitiesJSONDeserializerTest extends TestCase
      * @test
      * @throws DataValidationException
      */
-    public function it_should_return_a_facilities_list_from_valid_data_with_multiple_facilities()
+    public function it_should_return_a_facilities_list_from_valid_data_with_multiple_facilities(): void
     {
         $deserializer = new FacilitiesJSONDeserializer(new PlaceFacilityResolver());
         $wheelchairFacility = new Facility('3.13.1.0.0', 'Voorzieningen voor assistentiehonden');
@@ -104,7 +104,7 @@ class FacilitiesJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_deserialize_unresolvable_facility_ids()
+    public function it_should_not_deserialize_unresolvable_facility_ids(): void
     {
         $deserializer = new FacilitiesJSONDeserializer(new PlaceFacilityResolver());
 

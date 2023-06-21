@@ -12,7 +12,7 @@ final class DefaultAddressFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_formats_addresses()
+    public function it_formats_addresses(): void
     {
         $formatter = new FullAddressFormatter();
 
@@ -31,7 +31,7 @@ final class DefaultAddressFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_formats_addresses_with_empty_street()
+    public function it_formats_addresses_with_empty_street(): void
     {
         $formatter = new FullAddressFormatter();
 

@@ -40,7 +40,7 @@ class AnyOfTest extends TestCase
     /**
      * @test
      */
-    public function it_is_satisfied_when_at_least_one_matches()
+    public function it_is_satisfied_when_at_least_one_matches(): void
     {
         $domainMessage = new DomainMessage(
             'F68E71A1-DBB0-4542-AEE5-BD937E095F74',
@@ -59,7 +59,7 @@ class AnyOfTest extends TestCase
     /**
      * @test
      */
-    public function it_is_not_satisfied_when_none_match()
+    public function it_is_not_satisfied_when_none_match(): void
     {
         $domainMessage = new DomainMessage(
             'F68E71A1-DBB0-4542-AEE5-BD937E095F74',

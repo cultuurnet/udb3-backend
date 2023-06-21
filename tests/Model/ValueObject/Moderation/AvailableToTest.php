@@ -21,7 +21,7 @@ class AvailableToTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_immutable_datetime_set_in_2100()
+    public function it_should_return_an_immutable_datetime_set_in_2100(): void
     {
         $expected = '2100-01-01T00:00:00+00:00';
         $actual = AvailableTo::forever()->format(DateTimeInterface::ATOM);
@@ -31,7 +31,7 @@ class AvailableToTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_a_calendar()
+    public function it_should_be_creatable_from_a_calendar(): void
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018');

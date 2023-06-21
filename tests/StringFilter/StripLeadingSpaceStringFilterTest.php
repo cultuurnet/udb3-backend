@@ -17,7 +17,7 @@ class StripLeadingSpaceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_strips_leading_spaces()
+    public function it_strips_leading_spaces(): void
     {
         $original = "   Hello!   \n       Goodbye!\n\n\n Hello again!  ";
         $expected = "Hello!   \nGoodbye!\n\n\nHello again!  ";
@@ -27,7 +27,7 @@ class StripLeadingSpaceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_strips_leading_tabs()
+    public function it_strips_leading_tabs(): void
     {
         $original = "\tHello!\t   \n \t      Goodbye!\n\n\n Hello again!\t";
         $expected = "Hello!\t   \nGoodbye!\n\n\nHello again!\t";
@@ -37,7 +37,7 @@ class StripLeadingSpaceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_only_filters_strings()
+    public function it_only_filters_strings(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->filter->filter(12345);

@@ -22,7 +22,7 @@ class JsonDocumentNullEnricherTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_same_json_document()
+    public function it_should_return_the_same_json_document(): void
     {
         $document = new JsonDocument('68ec37bf-9d1f-412b-81c6-af26ee4cb10a', '{}');
         $this->assertEquals($document, $this->enricher->enrich($document, new Metadata()));

@@ -34,7 +34,7 @@ class MajorInfoDataValidator implements DataValidatorInterface
     /**
      * @throws DataValidationException
      */
-    public function validate(array $data)
+    public function validate(array $data): void
     {
         $this->validator->validate($data);
     }

@@ -13,7 +13,7 @@ class LanguageTest extends TestCase
     /**
      * @test
      */
-    public function it_requires_an_iso_639_1_code()
+    public function it_requires_an_iso_639_1_code(): void
     {
         $language = new Language('en');
 
@@ -41,7 +41,7 @@ class LanguageTest extends TestCase
      */
     public function it_refuses_something_that_does_not_look_like_a_iso_639_1_code(
         string $invalid_code
-    ) {
+    ): void {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid language code: ' . $invalid_code);
 
@@ -51,7 +51,7 @@ class LanguageTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_language()
+    public function it_should_be_creatable_from_an_udb3_model_language(): void
     {
         $udb3ModelLanguage = new Udb3ModelLanguage('nl');
         $expected = new Language('nl');

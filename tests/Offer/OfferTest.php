@@ -107,7 +107,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new ItemCreated($itemId),
             ])
             ->when(
-                function (Item $item) use ($newOwner1, $newOwner2) {
+                function (Item $item) use ($newOwner1, $newOwner2): void {
                     $item->changeOwner($newOwner1);
                     $item->changeOwner($newOwner1);
                     $item->changeOwner($newOwner2);
@@ -165,7 +165,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     $otherFacilities,
                     $moreFacilities,
                     $lessFacilities
-                ) {
+                ): void {
                     $item->updateFacilities($facilities);
                     $item->updateFacilities($sameFacilities);
                     $item->updateFacilities($otherFacilities);
@@ -246,7 +246,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     $contactPoint,
                     $sameContactPoint,
                     $otherContactPoint
-                ) {
+                ): void {
                     $item->updateContactPoint($contactPoint);
                     $item->updateContactPoint($sameContactPoint);
                     $item->updateContactPoint($otherContactPoint);
@@ -280,7 +280,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     $sameAgeRange,
                     $otherAgeRange,
                     $allAges
-                ) {
+                ): void {
                     $item->updateTypicalAgeRange($typicalAgeRange);
                     $item->updateTypicalAgeRange($sameAgeRange);
                     $item->deleteTypicalAgeRange();
@@ -310,7 +310,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new ItemCreated($itemId),
             ])
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->addLabel(new Label(new LabelName('purple')));
                     $item->addLabel(new Label(new LabelName('orange')));
                     $item->addLabel(new Label(new LabelName('green')));
@@ -339,7 +339,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new ItemCreated($itemId),
             ])
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->addLabel(new Label(new LabelName('purple')));
                     $item->addLabel(new Label(new LabelName('orange')));
                     $item->addLabel(new Label(new LabelName('green')));
@@ -371,7 +371,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new LabelAdded($itemId, "newline\r\nlabel", false),
             ])
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->removeLabel('invalid;label');
                     $item->removeLabel("newline\r\nlabel");
                 }
@@ -421,7 +421,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new LabelAdded($itemId, 'existing_label_4_added_via_import'),
             ])
             ->when(
-                function (Item $item) use ($labels) {
+                function (Item $item) use ($labels): void {
                     $item->importLabels($labels);
                     $item->importLabels($labels);
                 }
@@ -469,7 +469,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($image, $anotherImage) {
+                function (Item $item) use ($image, $anotherImage): void {
                     $item->addImage($image);
                     $item->addImage($anotherImage);
                     $item->selectMainImage($anotherImage);
@@ -507,7 +507,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($anotherImage) {
+                function (Item $item) use ($anotherImage): void {
                     $item->addImage($this->image);
                     $item->addImage($anotherImage);
                     $item->updateImage(
@@ -546,7 +546,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->addImage($this->image);
                     $item->removeImage($this->image);
                     $item->updateImage(
@@ -590,7 +590,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->addImage($this->image);
                     $item->updateImage(
                         $this->image->getMediaObjectId(),
@@ -644,7 +644,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->addImage($this->image);
                     $item->addImage($this->image);
                 }
@@ -687,7 +687,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($originalMainImage, $oldestImage, $newerImage) {
+                function (Item $item) use ($originalMainImage, $oldestImage, $newerImage): void {
                     $item->addImage($originalMainImage);
                     $item->addImage($oldestImage);
                     $item->addImage($newerImage);
@@ -721,7 +721,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($firstImage) {
+                function (Item $item) use ($firstImage): void {
                     $item->addImage($firstImage);
                     // If no event fires when selecting an image as main, it is already set.
                     $item->selectMainImage($firstImage);
@@ -757,7 +757,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($originalMainImage, $newMainImage) {
+                function (Item $item) use ($originalMainImage, $newMainImage): void {
                     $item->addImage($originalMainImage);
                     $item->addImage($newMainImage);
                     $item->selectMainImage($newMainImage);
@@ -792,7 +792,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new ItemCreated($itemId),
                 ]
             )
-            ->when(function (Item $item) use ($video) {
+            ->when(function (Item $item) use ($video): void {
                 $item->addVideo($video);
             })
             ->then(
@@ -829,7 +829,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new ItemCreated($itemId),
                 ]
             )
-            ->when(function (Item $item) use ($video1, $video2) {
+            ->when(function (Item $item) use ($video1, $video2): void {
                 $item->addVideo($video1);
                 $item->addVideo($video2);
             })
@@ -871,7 +871,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new ItemCreated($itemId),
                 ]
             )
-            ->when(function (Item $item) use ($video1, $video2) {
+            ->when(function (Item $item) use ($video1, $video2): void {
                 $item->addVideo($video1);
                 $item->addVideo($video2);
             })
@@ -905,7 +905,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new VideoAdded($itemId, $video1),
                 ]
             )
-            ->when(function (Item $item) use ($url, $language, $copyrightHolder) {
+            ->when(function (Item $item) use ($url, $language, $copyrightHolder): void {
                 $item->updateVideo(
                     '91c75325-3830-4000-b580-5778b2de4548',
                     $url,
@@ -979,7 +979,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new ItemCreated($itemId),
                 ]
             )
-            ->when(function (Item $item) {
+            ->when(function (Item $item): void {
                 $item->updateVideo(
                     '65d29008-a8da-4479-863c-beba35ec7412',
                     null,
@@ -1009,7 +1009,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new VideoAdded($itemId, $video1),
                 ]
             )
-            ->when(function (Item $item) {
+            ->when(function (Item $item): void {
                 $item->updateVideo(
                     '65d29008-a8da-4479-863c-beba35ec7412',
                     null,
@@ -1039,7 +1039,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new VideoAdded($itemId, $video1),
                 ]
             )
-            ->when(function (Item $item) {
+            ->when(function (Item $item): void {
                 $item->updateVideo(
                     '91c75325-3830-4000-b580-5778b2de4548',
                     null,
@@ -1251,7 +1251,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given([
                 new ItemCreated($itemId),
             ])
-            ->when(function (Item $item) use ($now) {
+            ->when(function (Item $item) use ($now): void {
                 $item->publish($now);
             })
             ->then([
@@ -1272,7 +1272,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new ItemCreated($itemId),
                 new Published($itemId, $now),
             ])
-            ->when(function (Item $item) use ($now) {
+            ->when(function (Item $item) use ($now): void {
                 $item->publish($now);
             })
             ->then([]);
@@ -1295,7 +1295,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new Published($itemId, $now),
                 new FlaggedAsDuplicate($itemId),
             ])
-            ->when(function (Item $item) use ($now) {
+            ->when(function (Item $item) use ($now): void {
                 $item->publish($now);
             })
             ->then([]);
@@ -1315,7 +1315,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new Published($itemId, $now),
                 new Approved($itemId),
             ])
-            ->when(function (Item $item) use ($now) {
+            ->when(function (Item $item) use ($now): void {
                 $item->publish($now);
             })
             ->then([]);
@@ -1338,7 +1338,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->approve();
                 }
             )
@@ -1366,7 +1366,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->approve();
                     $item->approve();
                 }
@@ -1397,7 +1397,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->approve();
                 }
             )
@@ -1422,7 +1422,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($reason) {
+                function (Item $item) use ($reason): void {
                     $item->reject($reason);
                     $item->reject($reason);
                 }
@@ -1454,7 +1454,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($differentReason) {
+                function (Item $item) use ($differentReason): void {
                     $item->reject($differentReason);
                 }
             )
@@ -1479,7 +1479,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($reason) {
+                function (Item $item) use ($reason): void {
                     $item->reject($reason);
                 }
             )
@@ -1507,7 +1507,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->flagAsDuplicate();
                 }
             )
@@ -1537,7 +1537,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($reason) {
+                function (Item $item) use ($reason): void {
                     $item->reject($reason);
                 }
             )
@@ -1561,7 +1561,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->flagAsInappropriate();
                 }
             )
@@ -1591,7 +1591,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($reason) {
+                function (Item $item) use ($reason): void {
                     $item->reject($reason);
                 }
             )
@@ -1617,7 +1617,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($reason) {
+                function (Item $item) use ($reason): void {
                     $item->reject($reason);
                 }
             )
@@ -1641,7 +1641,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($organizerId) {
+                function (Item $item) use ($organizerId): void {
                     $item->updateOrganizer($organizerId);
                 }
             )
@@ -1666,7 +1666,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($organizerId) {
+                function (Item $item) use ($organizerId): void {
                     $item->updateOrganizer($organizerId);
                 }
             )
@@ -1690,7 +1690,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->deleteCurrentOrganizer();
                 }
             )
@@ -1712,7 +1712,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) {
+                function (Item $item): void {
                     $item->deleteCurrentOrganizer();
                 }
             )
@@ -1736,7 +1736,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($title) {
+                function (Item $item) use ($title): void {
                     $item->updateTitle(new LegacyLanguage('nl'), $title);
                 }
             )
@@ -1761,7 +1761,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($title, $language) {
+                function (Item $item) use ($title, $language): void {
                     $item->updateTitle($language, $title);
                 }
             )
@@ -1788,7 +1788,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($title, $language) {
+                function (Item $item) use ($title, $language): void {
                     $item->updateTitle($language, $title);
                     $item->updateTitle($language, $title);
                     $item->updateTitle(new LegacyLanguage('nl'), new Title('Een titel'));
@@ -1816,7 +1816,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($description) {
+                function (Item $item) use ($description): void {
                     $item->updateDescription($description, new LegacyLanguage('nl'));
                 }
             )
@@ -1841,7 +1841,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($description, $language) {
+                function (Item $item) use ($description, $language): void {
                     $item->updateDescription($description, $language);
                 }
             )
@@ -1886,7 +1886,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($bookingInfo, $sameBookingInfo, $otherBookingInfo) {
+                function (Item $item) use ($bookingInfo, $sameBookingInfo, $otherBookingInfo): void {
                     $item->updateBookingInfo($bookingInfo);
                     $item->updateBookingInfo($sameBookingInfo);
                     $item->updateBookingInfo($otherBookingInfo);
@@ -1915,7 +1915,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given([
                 new ItemCreated($itemId),
             ])
-            ->when(function (Item $item) use ($image, $imageCollection) {
+            ->when(function (Item $item) use ($image, $imageCollection): void {
                 $item->importImagesFromUDB2($imageCollection);
                 $item->addImage($image);
                 $item->selectMainImage($image);
@@ -1957,7 +1957,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given([
                 new ItemCreated($itemId),
             ])
-            ->when(function (Item $item) use ($image, $dutchUdb3Image, $udb2Images) {
+            ->when(function (Item $item) use ($image, $dutchUdb3Image, $udb2Images): void {
                 $item->addImage($image);
                 $item->addImage($dutchUdb3Image);
                 $item->importImagesFromUDB2($udb2Images);
@@ -1987,7 +1987,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given([
                 new ItemCreated($itemId),
             ])
-            ->when(function (Item $item) use ($image, $imageCollection) {
+            ->when(function (Item $item) use ($image, $imageCollection): void {
                 $item->UpdateImagesFromUDB2($imageCollection);
                 $item->addImage($image);
                 $item->selectMainImage($image);

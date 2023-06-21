@@ -63,7 +63,7 @@ class HTMLFileWriter implements FileWriterInterface
     /**
      * {@inheritdoc}
      */
-    public function write($filePath, $events)
+    public function write($filePath, $events): void
     {
         file_put_contents($filePath, $this->getHTML($events));
     }

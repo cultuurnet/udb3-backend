@@ -64,7 +64,7 @@ class MajorInfoUpdatedTest extends TestCase
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
         MajorInfoUpdated $majorInfoUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $majorInfoUpdated->serialize()
@@ -78,7 +78,7 @@ class MajorInfoUpdatedTest extends TestCase
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,
         MajorInfoUpdated $expectedMajorInfoUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedMajorInfoUpdated,
             MajorInfoUpdated::deserialize($serializedValue)

@@ -12,7 +12,7 @@ class TitleTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_at_least_one_character_long()
+    public function it_should_be_at_least_one_character_long(): void
     {
         $this->expectException(InvalidArgumentException::class);
         new Title('');

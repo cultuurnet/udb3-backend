@@ -13,7 +13,7 @@ class HasVliegBrandTest extends TestCase
     /**
      * @test
      */
-    public function it_brands_events_aged_from_0_to_13_as_vlieg()
+    public function it_brands_events_aged_from_0_to_13_as_vlieg(): void
     {
         $event = $this->getEventLdFromFile('event_with_typical_age_range.json');
 

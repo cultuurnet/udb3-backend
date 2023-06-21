@@ -9,7 +9,7 @@ class MatchesRegexPatternTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_trying_to_match_a_value_that_is_not_a_string()
+    public function it_should_throw_an_exception_when_trying_to_match_a_value_that_is_not_a_string(): void
     {
         $value = 10;
 
@@ -22,7 +22,7 @@ class MatchesRegexPatternTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_the_given_string_does_not_match_the_regex_pattern()
+    public function it_should_throw_an_exception_if_the_given_string_does_not_match_the_regex_pattern(): void
     {
         $value = 'ab10';
 
@@ -35,7 +35,7 @@ class MatchesRegexPatternTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_create_a_value_object_if_the_given_string_matches()
+    public function it_should_create_a_value_object_if_the_given_string_matches(): void
     {
         $value = '10';
         $vo = new MockDigitsRegexPattern($value);

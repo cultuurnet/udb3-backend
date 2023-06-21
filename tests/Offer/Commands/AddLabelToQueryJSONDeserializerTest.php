@@ -25,7 +25,7 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_a_valid_add_label_to_query_command()
+    public function it_can_deserialize_a_valid_add_label_to_query_command(): void
     {
         $expectedLabel = new Label(new LabelName('foo'));
         $expectedQuery = 'city:leuven';
@@ -41,7 +41,7 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_label_is_missing()
+    public function it_throws_an_exception_when_label_is_missing(): void
     {
         $json = new StringLiteral('{"query": "city:leuven"}');
 
@@ -54,7 +54,7 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_label_is_empty()
+    public function it_throws_an_exception_when_label_is_empty(): void
     {
         $json = new StringLiteral('{"label": "", "query": "city:leuven"}');
 
@@ -67,7 +67,7 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_query_is_missing()
+    public function it_throws_an_exception_when_query_is_missing(): void
     {
         $json = new StringLiteral('{"label": "foo"}');
 
@@ -80,7 +80,7 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_query_is_empty()
+    public function it_throws_an_exception_when_query_is_empty(): void
     {
         $json = new StringLiteral('{"label": "foo", "query": ""}');
 

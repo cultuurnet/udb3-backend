@@ -12,7 +12,7 @@ class OrganizerReferenceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_using_a_organizer_id()
+    public function it_should_be_creatable_using_a_organizer_id(): void
     {
         $id = new UUID('38d78529-29b8-4635-a26e-51bbb2eba535');
         $reference = OrganizerReference::createWithOrganizerId($id);

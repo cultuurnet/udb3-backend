@@ -11,7 +11,7 @@ abstract class AbstractModerationCommandTestBase extends TestCase
     /**
      * @test
      */
-    public function it_is_an_abstract_moderation_command()
+    public function it_is_an_abstract_moderation_command(): void
     {
         $this->assertTrue(is_subclass_of(
             $this->createModerationCommand(),

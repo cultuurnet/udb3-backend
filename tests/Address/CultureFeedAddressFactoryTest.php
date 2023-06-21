@@ -19,7 +19,7 @@ class CultureFeedAddressFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_converts_a_cdb_physical_address_to_an_udb3_address()
+    public function it_converts_a_cdb_physical_address_to_an_udb3_address(): void
     {
         $cdbPhysicalAddress = new \CultureFeed_Cdb_Data_Address_PhysicalAddress();
         $cdbPhysicalAddress->setStreet('Jeugdlaan');
@@ -47,7 +47,7 @@ class CultureFeedAddressFactoryTest extends TestCase
     public function it_throws_an_exception_when_a_required_field_is_missing_on_the_physical_address(
         \CultureFeed_Cdb_Data_Address_PhysicalAddress $incompletePhysicalAddress,
         string $exceptionMessage
-    ) {
+    ): void {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($exceptionMessage);
 

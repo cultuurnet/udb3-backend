@@ -39,7 +39,7 @@ class KansentariefDiscountSpecificationTest extends TestCase
      * @test
      * @dataProvider satisfyingDistributionKeyProvider
      */
-    public function it_is_satisfied_by_a_key_with_kansarm_condition(CultureFeed_Uitpas_DistributionKey $key)
+    public function it_is_satisfied_by_a_key_with_kansarm_condition(CultureFeed_Uitpas_DistributionKey $key): void
     {
         $this->assertTrue($this->specification->isSatisfiedBy($key));
     }
@@ -109,7 +109,7 @@ class KansentariefDiscountSpecificationTest extends TestCase
      * @test
      * @dataProvider unsatisfyingDistributionKeyProvider
      */
-    public function it_is_unsatisfied_by_a_key_without_kansarm_condition(CultureFeed_Uitpas_DistributionKey $key)
+    public function it_is_unsatisfied_by_a_key_without_kansarm_condition(CultureFeed_Uitpas_DistributionKey $key): void
     {
         $this->assertFalse($this->specification->isSatisfiedBy($key));
     }

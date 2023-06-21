@@ -20,7 +20,7 @@ class Version20160607132920 extends AbstractMigration
     public const UNIQUE_COLUMN = 'unique_col';
 
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->createLabelStore($schema);
 
@@ -28,7 +28,7 @@ class Version20160607132920 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable(self::LABELS_TABLE);
 
@@ -36,7 +36,7 @@ class Version20160607132920 extends AbstractMigration
     }
 
 
-    private function createLabelStore(Schema $schema)
+    private function createLabelStore(Schema $schema): void
     {
         $table = $schema->createTable(self::LABELS_TABLE);
 
@@ -53,7 +53,7 @@ class Version20160607132920 extends AbstractMigration
     }
 
 
-    private function createUniqueLabelStore(Schema $schema)
+    private function createUniqueLabelStore(Schema $schema): void
     {
         $table = $schema->createTable(self::LABELS_UNIQUE_TABLE);
 

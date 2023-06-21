@@ -34,7 +34,7 @@ class SimpleContextAwareCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function on_dispatch_it_delegates_the_work_to_handlers()
+    public function on_dispatch_it_delegates_the_work_to_handlers(): void
     {
         $commandOne = new \stdClass();
         $commandOne->target = 1;
@@ -56,7 +56,7 @@ class SimpleContextAwareCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function on_dispatch_it_passes_its_context_to_context_aware_command_handlers()
+    public function on_dispatch_it_passes_its_context_to_context_aware_command_handlers(): void
     {
         $context = new Metadata(
             [

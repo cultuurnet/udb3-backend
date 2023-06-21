@@ -11,7 +11,7 @@ class DaysTest extends TestCase
     /**
      * @test
      */
-    public function it_should_have_unique_values()
+    public function it_should_have_unique_values(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

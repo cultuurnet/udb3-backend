@@ -33,7 +33,7 @@ class PayloadIsInstanceOfTest extends TestCase
     /**
      * @test
      */
-    public function it_satisfies_payload_is_an_instanceof()
+    public function it_satisfies_payload_is_an_instanceof(): void
     {
         $payloadIsInstanceOf = new PayloadIsInstanceOf(
             DummyEvent::class
@@ -47,7 +47,7 @@ class PayloadIsInstanceOfTest extends TestCase
     /**
      * @test
      */
-    public function it_satisfies_payload_is_a_subclass_of()
+    public function it_satisfies_payload_is_a_subclass_of(): void
     {
         $domainMessage = new DomainMessage(
             'F68E71A1-DBB0-4542-AEE5-BD937E095F74',
@@ -72,7 +72,7 @@ class PayloadIsInstanceOfTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_satisfy_different_payload_instance_type()
+    public function it_does_not_satisfy_different_payload_instance_type(): void
     {
         $payloadIsInstanceOf = new PayloadIsInstanceOf(
             DummyEventNotSerializable::class

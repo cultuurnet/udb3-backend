@@ -61,7 +61,7 @@ class CulturefeedSluggerTest extends TestCase
      * @param string $expectedSlug
      * @dataProvider slugsProvider
      */
-    public function testSlug($title, $expectedSlug)
+    public function testSlug($title, $expectedSlug): void
     {
         $this->assertEquals($expectedSlug, $this->slugger->slug($title));
     }

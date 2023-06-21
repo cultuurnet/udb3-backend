@@ -11,7 +11,7 @@ class TitleTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_string()
+    public function it_should_return_the_string(): void
     {
         $string = 'test foo bar';
         $title = new Title($string);
@@ -21,7 +21,7 @@ class TitleTest extends TestCase
     /**
      * @test
      */
-    public function it_should_trim_the_string()
+    public function it_should_trim_the_string(): void
     {
         $string = '  test foo bar  ';
         $title = new Title($string);
@@ -31,7 +31,7 @@ class TitleTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_be_empty()
+    public function it_should_not_be_empty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given string should not be empty.');
@@ -42,7 +42,7 @@ class TitleTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_be_empty_after_trimming()
+    public function it_should_not_be_empty_after_trimming(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given string should not be empty.');

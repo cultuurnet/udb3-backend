@@ -15,7 +15,7 @@ class MediaObjectReferencesTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_all_references_either_with_or_without_an_embedded_media_object()
+    public function it_should_return_all_references_either_with_or_without_an_embedded_media_object(): void
     {
         $referenceWithEmbeddedMediaObject = MediaObjectReference::createWithEmbeddedMediaObject(
             new MediaObject(

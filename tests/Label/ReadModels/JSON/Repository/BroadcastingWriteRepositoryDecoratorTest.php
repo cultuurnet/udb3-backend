@@ -117,7 +117,7 @@ final class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_broadcast_on_update_visible()
+    public function it_does_broadcast_on_update_visible(): void
     {
         $uuid = new UUID('5691c5f0-280a-47c2-b3d6-faede6d74b2f');
 

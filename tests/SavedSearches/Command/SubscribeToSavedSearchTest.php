@@ -13,7 +13,7 @@ class SubscribeToSavedSearchTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_stored_data()
+    public function it_returns_the_stored_data(): void
     {
         $userId = new StringLiteral('some-user-id');
         $name = new StringLiteral('My very first saved search.');

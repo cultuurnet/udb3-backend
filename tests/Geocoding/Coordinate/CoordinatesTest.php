@@ -11,7 +11,7 @@ class CoordinatesTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_compared_to_another_instance_of_coordinates()
+    public function it_can_be_compared_to_another_instance_of_coordinates(): void
     {
         $coordinates = new Coordinates(
             new Latitude(1.07845),
@@ -41,7 +41,7 @@ class CoordinatesTest extends TestCase
     public function it_can_be_created_from_a_valid_lat_lon_string(
         $latLonString,
         Coordinates $expectedCoordinates
-    ) {
+    ): void {
         $coordinates = Coordinates::fromLatLonString($latLonString);
         $this->assertEquals($expectedCoordinates, $coordinates);
     }
@@ -52,7 +52,7 @@ class CoordinatesTest extends TestCase
      *
      * @param string $latLonString
      */
-    public function it_throws_an_exception_if_the_given_string_is_invalid($latLonString)
+    public function it_throws_an_exception_if_the_given_string_is_invalid($latLonString): void
     {
         $this->expectException(\InvalidArgumentException::class);
         Coordinates::fromLatLonString($latLonString);

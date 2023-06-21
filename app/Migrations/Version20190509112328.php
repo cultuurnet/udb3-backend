@@ -14,7 +14,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20190509112328 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->getTable('roles_search_v3');
 
@@ -28,7 +28,7 @@ class Version20190509112328 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $table = $schema->getTable('roles_search_v3');
 

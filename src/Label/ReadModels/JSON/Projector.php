@@ -78,12 +78,12 @@ class Projector extends AbstractProjector
         $this->writeRepository->updateExcluded($excluded->getUuid());
     }
 
-    public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata)
+    public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata): void
     {
         // This projector does not handle this event, but it is part of abstract projector.
     }
 
-    public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata)
+    public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata): void
     {
         // This projector does not handle this event, but it is part of abstract projector.
     }

@@ -14,7 +14,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20170413075617 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->getLabelsRelationsTable($schema)
             ->addColumn(SchemaConfigurator::IMPORTED, Type::BOOLEAN)
@@ -23,7 +23,7 @@ class Version20170413075617 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->getLabelsRelationsTable($schema)
             ->dropColumn(SchemaConfigurator::IMPORTED);

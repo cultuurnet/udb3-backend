@@ -24,7 +24,7 @@ class ContactPointJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_validates_data_on_deserialize_and_throws_exception_when_invalid()
+    public function it_validates_data_on_deserialize_and_throws_exception_when_invalid(): void
     {
         $data = new StringLiteral('[{"type":"foo","value":"0123456789"}]');
 
@@ -36,7 +36,7 @@ class ContactPointJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_deserializes_data_to_contact_point()
+    public function it_deserializes_data_to_contact_point(): void
     {
         $phone1 = '{"type":"phone","value":"0123456789"}';
         $phone2 = '{"type":"phone","value":"9876543210"}';

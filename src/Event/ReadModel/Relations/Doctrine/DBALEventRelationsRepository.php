@@ -35,7 +35,7 @@ final class DBALEventRelationsRepository implements EventRelationsRepository
 
     public function removeOrganizer(string $eventId): void
     {
-        $transaction = function ($connection) use ($eventId) {
+        $transaction = function ($connection) use ($eventId): void {
             if ($this->eventHasRelations($connection, $eventId)) {
                 $this->updateEventRelation($connection, $eventId, 'organizer', null);
             }
@@ -56,7 +56,7 @@ final class DBALEventRelationsRepository implements EventRelationsRepository
 
     private function storeRelation(string $eventId, string $relationType, ?string $itemId): void
     {
-        $transaction = function ($connection) use ($eventId, $relationType, $itemId) {
+        $transaction = function ($connection) use ($eventId, $relationType, $itemId): void {
             if ($this->eventHasRelations($connection, $eventId)) {
                 $this->updateEventRelation($connection, $eventId, $relationType, $itemId);
             } else {

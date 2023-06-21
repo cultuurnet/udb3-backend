@@ -62,7 +62,7 @@ class EventRelationsProjectorTest extends TestCase
         $expectedEventId,
         $expectedPlaceId,
         $expectedOrganizerId
-    ) {
+    ): void {
         $this->repository
             ->expects($this->once())
             ->method('storeRelations')
@@ -167,7 +167,7 @@ class EventRelationsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_the_organizer_relation_when_the_organizer_of_an_event_is_updated()
+    public function it_stores_the_organizer_relation_when_the_organizer_of_an_event_is_updated(): void
     {
         $eventId = 'event-id';
         $organizerId = 'organizer-id';
@@ -195,7 +195,7 @@ class EventRelationsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_the_organizer_relation_when_the_organizer_is_removed_from_an_event()
+    public function it_stores_the_organizer_relation_when_the_organizer_is_removed_from_an_event(): void
     {
         $eventId = 'event-id';
         $organizerId = 'organizer-id';
@@ -223,7 +223,7 @@ class EventRelationsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_related_place_and_organizer_from_original_event_on_copy()
+    public function it_stores_related_place_and_organizer_from_original_event_on_copy(): void
     {
         $originalEventId = 'e7b5d985-9f35-4d2f-bd0f-4f5ddf7ce2f6';
         $eventId = 'dcfe65ea-c5a3-4ee3-ab75-1973aecc2cba';
@@ -264,7 +264,7 @@ class EventRelationsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_the_location_relation_when_the_place_of_an_event_is_updated()
+    public function it_stores_the_location_relation_when_the_place_of_an_event_is_updated(): void
     {
         $eventId = 'event-id';
         $locationId = 'location-id';
@@ -292,7 +292,7 @@ class EventRelationsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_the_location_relation_when_the_place_of_an_event_is_updated_via_a_major_info_update()
+    public function it_stores_the_location_relation_when_the_place_of_an_event_is_updated_via_a_major_info_update(): void
     {
         $eventId = 'event-id';
         $locationId = 'location-id';

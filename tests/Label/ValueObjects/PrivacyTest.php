@@ -11,7 +11,7 @@ class PrivacyTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_public_option()
+    public function it_has_a_public_option(): void
     {
         $privacy = Privacy::PRIVACY_PUBLIC();
 
@@ -21,7 +21,7 @@ class PrivacyTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_private_option()
+    public function it_has_a_private_option(): void
     {
         $privacy = Privacy::PRIVACY_PRIVATE();
 
@@ -31,7 +31,7 @@ class PrivacyTest extends TestCase
     /**
      * @test
      */
-    public function it_has_only_a_private_and_public_option()
+    public function it_has_only_a_private_and_public_option(): void
     {
         $options = Privacy::getAllowedValues();
 

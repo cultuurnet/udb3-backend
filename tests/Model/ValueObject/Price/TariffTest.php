@@ -14,7 +14,7 @@ class TariffTest extends TestCase
     /**
      * @test
      */
-    public function it_should_combine_a_translated_name_and_a_price()
+    public function it_should_combine_a_translated_name_and_a_price(): void
     {
         $name = new TranslatedTariffName(
             new Language('nl'),
@@ -32,7 +32,7 @@ class TariffTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_name()
+    public function it_should_return_a_copy_with_an_updated_name(): void
     {
         $name = new TranslatedTariffName(
             new Language('nl'),
@@ -55,7 +55,7 @@ class TariffTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_price()
+    public function it_should_return_a_copy_with_an_updated_price(): void
     {
         $name = new TranslatedTariffName(
             new Language('nl'),

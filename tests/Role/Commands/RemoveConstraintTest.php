@@ -23,7 +23,7 @@ class RemoveConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_extends_an_abstract_command()
+    public function it_extends_an_abstract_command(): void
     {
         $this->assertTrue(is_subclass_of(
             $this->removeConstraint,
@@ -34,7 +34,7 @@ class RemoveConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals($this->uuid, $this->removeConstraint->getUuid());
     }

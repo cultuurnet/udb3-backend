@@ -33,7 +33,7 @@ class CdbXMLItemBaseImporter
     public function importPublicationInfo(
         CultureFeed_Cdb_Item_Base $item,
         \stdClass $jsonLD
-    ) {
+    ): void {
         $jsonLD->creator = $item->getCreatedBy();
 
         $itemCreationDate = $item->getCreationDate();
@@ -64,7 +64,7 @@ class CdbXMLItemBaseImporter
     public function importAvailable(
         \CultureFeed_Cdb_Item_Base $item,
         \stdClass $jsonLD
-    ) {
+    ): void {
         $availableFromString = $item->getAvailableFrom();
         if ($availableFromString) {
             $jsonLD->availableFrom = $this->formatAvailableString(

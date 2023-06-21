@@ -11,7 +11,7 @@ class DayOfWeekTest extends TestCase
     /**
      * @test
      */
-    public function it_has_all_the_days_of_a_week_in_lower_case()
+    public function it_has_all_the_days_of_a_week_in_lower_case(): void
     {
         $this->assertEquals(
             [

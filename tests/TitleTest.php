@@ -23,7 +23,7 @@ class TitleTest extends TestCase
      * @dataProvider emptyStringValues()
      * @param string $emptyStringValue
      */
-    public function it_can_not_be_empty($emptyStringValue)
+    public function it_can_not_be_empty($emptyStringValue): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Title can not be empty.');
@@ -33,7 +33,7 @@ class TitleTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_title()
+    public function it_should_be_creatable_from_an_udb3_model_title(): void
     {
         $udb3ModelTitle = new Udb3ModelTitle('foo bar');
 

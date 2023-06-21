@@ -132,7 +132,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
         );
     }
 
-    private function broadcastNow($event)
+    private function broadcastNow($event): void
     {
         $this->processManager->handle(
             DomainMessage::recordNow(

@@ -37,7 +37,7 @@ class UserRemovedTest extends TestCase
     /**
      * @test
      */
-    public function it_extends_an_abstract_user_event()
+    public function it_extends_an_abstract_user_event(): void
     {
         $this->assertTrue(is_subclass_of(
             $this->userRemoved,
@@ -48,7 +48,7 @@ class UserRemovedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $userRemovedAsArray = [
             AbstractUserEvent::UUID => $this->uuid->toString(),

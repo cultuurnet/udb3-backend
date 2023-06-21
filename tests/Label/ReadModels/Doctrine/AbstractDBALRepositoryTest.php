@@ -43,7 +43,7 @@ class AbstractDBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_connection()
+    public function it_stores_a_connection(): void
     {
         $this->assertEquals(
             $this->connection,
@@ -54,7 +54,7 @@ class AbstractDBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_table_name()
+    public function it_stores_a_table_name(): void
     {
         $this->assertEquals(
             $this->tableName,
@@ -65,7 +65,7 @@ class AbstractDBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_query_builder()
+    public function it_creates_a_query_builder(): void
     {
         $this->assertNotNull(
             $this->abstractDBALRepository->createQueryBuilder()

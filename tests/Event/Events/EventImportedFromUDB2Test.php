@@ -79,7 +79,7 @@ final class EventImportedFromUDB2Test extends TestCase
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,
         EventImportedFromUDB2 $expectedEventImportedFromUDB2
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedEventImportedFromUDB2,
             EventImportedFromUDB2::deserialize($serializedValue)

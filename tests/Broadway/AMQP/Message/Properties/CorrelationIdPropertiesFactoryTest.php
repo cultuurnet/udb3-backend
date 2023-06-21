@@ -24,7 +24,7 @@ class CorrelationIdPropertiesFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_determines_correlation_id_based_on_message_id_and_playhead()
+    public function it_determines_correlation_id_based_on_message_id_and_playhead(): void
     {
         $id = 'effa2456-de78-480c-90ef-eb0a02b687c8';
         $playhead = 3;

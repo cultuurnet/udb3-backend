@@ -45,7 +45,7 @@ final class PlaceRelationsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_empty_relation_when_place_imported_from_udb2()
+    public function it_stores_empty_relation_when_place_imported_from_udb2(): void
     {
         $xml = file_get_contents(__DIR__ . '/place_imported_from_udb2.cdbxml.xml');
 
@@ -74,7 +74,7 @@ final class PlaceRelationsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_relations_when_place_deleted()
+    public function it_removes_relations_when_place_deleted(): void
     {
         $placeDeleted = new PlaceDeleted(self::PLACE_ID);
 
@@ -96,7 +96,7 @@ final class PlaceRelationsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_relation_when_organizer_updated()
+    public function it_updates_relation_when_organizer_updated(): void
     {
         $organizerUpdated = new OrganizerUpdated(
             self::PLACE_ID,
@@ -122,7 +122,7 @@ final class PlaceRelationsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_clears_relation_when_organizer_deleted()
+    public function it_clears_relation_when_organizer_deleted(): void
     {
         $organizerDeleted = new OrganizerDeleted(
             self::PLACE_ID,

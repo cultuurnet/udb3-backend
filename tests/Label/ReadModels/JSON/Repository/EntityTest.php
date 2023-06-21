@@ -96,7 +96,7 @@ class EntityTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_default_excluded()
+    public function it_has_a_default_excluded(): void
     {
         $this->assertFalse($this->entityWithDefaults->isExcluded());
     }
@@ -104,7 +104,7 @@ class EntityTest extends TestCase
     /**
      * @test
      */
-    public function it_can_encode_to_json()
+    public function it_can_encode_to_json(): void
     {
         $json = json_encode($this->entity);
 

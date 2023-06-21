@@ -84,7 +84,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
      */
     public function it_is_satisfied_by_a_kansarm_in_my_cardsystem_condition(
         CultureFeed_Uitpas_DistributionKey $key
-    ) {
+    ): void {
         $this->assertTrue(
             $this->specification->isSatisfiedBy($key)
         );
@@ -148,7 +148,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
      */
     public function it_is_not_satisfied_by_other_distribution_key_conditions(
         CultureFeed_Uitpas_DistributionKey $key
-    ) {
+    ): void {
         $this->assertFalse(
             $this->specification->isSatisfiedBy($key)
         );

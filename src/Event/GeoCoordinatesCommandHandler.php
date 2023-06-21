@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Offer\AbstractGeoCoordinatesCommandHandler;
 
 class GeoCoordinatesCommandHandler extends AbstractGeoCoordinatesCommandHandler
 {
-    public function handleUpdateGeoCoordinatesFromAddress(UpdateGeoCoordinatesFromAddress $updateGeoCoordinates)
+    public function handleUpdateGeoCoordinatesFromAddress(UpdateGeoCoordinatesFromAddress $updateGeoCoordinates): void
     {
         $this->updateGeoCoordinatesFromAddress($updateGeoCoordinates);
     }

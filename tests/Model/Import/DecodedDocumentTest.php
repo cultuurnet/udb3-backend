@@ -12,7 +12,7 @@ class DecodedDocumentTest extends TestCase
     /**
      * @test
      */
-    public function it_should_have_an_id_and_an_array_as_a_body()
+    public function it_should_have_an_id_and_an_array_as_a_body(): void
     {
         $id = '7b53e1cf-4407-4681-b059-ceffaaef2bf3';
         $body = [
@@ -29,7 +29,7 @@ class DecodedDocumentTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_body()
+    public function it_should_return_a_copy_with_an_updated_body(): void
     {
         $id = '7b53e1cf-4407-4681-b059-ceffaaef2bf3';
         $body = [
@@ -57,7 +57,7 @@ class DecodedDocumentTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_convertible_to_json_or_a_json_document()
+    public function it_should_be_convertible_to_json_or_a_json_document(): void
     {
         $id = '7b53e1cf-4407-4681-b059-ceffaaef2bf3';
         $body = [
@@ -80,7 +80,7 @@ class DecodedDocumentTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_json_or_a_json_document()
+    public function it_should_be_creatable_from_json_or_a_json_document(): void
     {
         $id = '7b53e1cf-4407-4681-b059-ceffaaef2bf3';
         $json = '{"@id":"http://io.uitdatabank.be/event/7b53e1cf-4407-4681-b059-ceffaaef2bf3","@type":"Event"}';
@@ -102,7 +102,7 @@ class DecodedDocumentTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_creating_from_invalid_json()
+    public function it_should_throw_an_exception_when_creating_from_invalid_json(): void
     {
         $id = '7b53e1cf-4407-4681-b059-ceffaaef2bf3';
         $json = '{';

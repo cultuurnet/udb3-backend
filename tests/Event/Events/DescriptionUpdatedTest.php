@@ -32,7 +32,7 @@ class DescriptionUpdatedTest extends TestCase
     public function it_can_be_serialized_to_an_array(
         array $expectedSerializedValue,
         DescriptionUpdated $descriptionUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $descriptionUpdated->serialize()
@@ -46,7 +46,7 @@ class DescriptionUpdatedTest extends TestCase
     public function it_can_be_deserialized_from_an_array(
         array $serializedValue,
         DescriptionUpdated $expectedDescriptionUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedDescriptionUpdated,
             DescriptionUpdated::deserialize($serializedValue)

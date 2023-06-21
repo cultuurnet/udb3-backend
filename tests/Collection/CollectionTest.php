@@ -46,7 +46,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_create_a_copy_with_a_new_item_for_a_specific_key()
+    public function it_can_create_a_copy_with_a_new_item_for_a_specific_key(): void
     {
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1)
@@ -63,7 +63,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_assign_a_key_automatically_and_return_it_when_necessary()
+    public function it_can_assign_a_key_automatically_and_return_it_when_necessary(): void
     {
         $collection = (new FooCollection())
             ->with($this->foo1)
@@ -83,7 +83,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_guards_the_object_type_of_new_items()
+    public function it_guards_the_object_type_of_new_items(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -94,7 +94,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_guards_the_object_type_of_items_when_initializing_from_array()
+    public function it_guards_the_object_type_of_items_when_initializing_from_array(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -110,7 +110,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_sub_classes_when_guarding_the_object_type_of_new_items()
+    public function it_allows_sub_classes_when_guarding_the_object_type_of_new_items(): void
     {
         $collection = (new FooCollection())
             ->withKey('fooExtended', $this->fooExtended);
@@ -125,7 +125,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_remove_an_item()
+    public function it_can_remove_an_item(): void
     {
         $collection = (new FooCollection())
             ->with($this->foo1)
@@ -143,7 +143,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_removing_an_unknown_item()
+    public function it_throws_an_exception_when_removing_an_unknown_item(): void
     {
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1);
@@ -155,7 +155,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_remove_an_item_by_key()
+    public function it_can_remove_an_item_by_key(): void
     {
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1)
@@ -173,7 +173,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_removing_by_unknown_key()
+    public function it_throws_an_exception_when_removing_by_unknown_key(): void
     {
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1)
@@ -186,7 +186,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_check_if_the_collection_contains_a_given_item()
+    public function it_can_check_if_the_collection_contains_a_given_item(): void
     {
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1);
@@ -197,7 +197,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_check_if_the_collection_does_not_contain_a_given_item()
+    public function it_can_check_if_the_collection_does_not_contain_a_given_item(): void
     {
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1);
@@ -208,7 +208,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_an_item_by_key()
+    public function it_can_return_an_item_by_key(): void
     {
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1)
@@ -228,7 +228,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_looking_for_an_item_with_an_unknown_key()
+    public function it_throws_an_exception_when_looking_for_an_item_with_an_unknown_key(): void
     {
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1);
@@ -240,7 +240,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_the_key_for_an_item()
+    public function it_can_return_the_key_for_an_item(): void
     {
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1)
@@ -260,7 +260,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_looking_for_the_key_of_an_unknown_item()
+    public function it_throws_an_exception_when_looking_for_the_key_of_an_unknown_item(): void
     {
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1);
@@ -272,7 +272,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_a_list_of_keys()
+    public function it_can_return_a_list_of_keys(): void
     {
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1)
@@ -289,7 +289,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_the_number_of_items()
+    public function it_can_return_the_number_of_items(): void
     {
         $collection = new FooCollection();
         $this->assertEquals(0, $collection->length());
@@ -304,7 +304,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_converted_from_and_to_an_array()
+    public function it_can_be_converted_from_and_to_an_array(): void
     {
         $original = [
             $this->foo1,
@@ -319,7 +319,7 @@ class CollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_looped_over_like_an_array()
+    public function it_can_be_looped_over_like_an_array(): void
     {
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1)

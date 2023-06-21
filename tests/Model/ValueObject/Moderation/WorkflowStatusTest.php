@@ -11,7 +11,7 @@ class WorkflowStatusTest extends TestCase
     /**
      * @test
      */
-    public function it_should_have_five_possible_values()
+    public function it_should_have_five_possible_values(): void
     {
         $readyForValidation = WorkflowStatus::READY_FOR_VALIDATION();
         $approved = WorkflowStatus::APPROVED();

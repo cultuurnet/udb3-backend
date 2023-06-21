@@ -9,7 +9,7 @@ class IsIntegerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_accept_and_return_an_integer_value()
+    public function it_should_accept_and_return_an_integer_value(): void
     {
         $integerValue = 123;
         $vo = new MockInteger($integerValue);
@@ -19,7 +19,7 @@ class IsIntegerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_be_comparable_to_other_objects_of_the_same_type()
+    public function it_should_be_comparable_to_other_objects_of_the_same_type(): void
     {
         $one = new MockInteger(1);
         $two = new MockInteger(2);
@@ -85,7 +85,7 @@ class IsIntegerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_a_non_integer_value_is_given()
+    public function it_should_throw_an_exception_if_a_non_integer_value_is_given(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given value should be an int, got string instead.');
@@ -95,7 +95,7 @@ class IsIntegerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_checking_if_greater_or_less_than_an_invalid_object()
+    public function it_should_throw_an_exception_when_checking_if_greater_or_less_than_an_invalid_object(): void
     {
         $integer = new MockInteger(123);
         $other = new DifferentMockInteger(456);

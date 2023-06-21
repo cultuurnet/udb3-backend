@@ -16,7 +16,7 @@ class ImageUpdatedTest extends TestCase
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
         ImageUpdated $imageUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $imageUpdated->serialize()
@@ -31,7 +31,7 @@ class ImageUpdatedTest extends TestCase
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,
         ImageUpdated $expectedImageUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedImageUpdated,
             ImageUpdated::deserialize($serializedValue)

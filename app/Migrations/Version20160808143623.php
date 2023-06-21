@@ -16,7 +16,7 @@ class Version20160808143623 extends AbstractMigration
     public const PERMISSION_COLUMN = 'permission';
 
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $userRoleTable = $schema->createTable(UserPermissionsServiceProvider::USER_ROLES_TABLE);
 
@@ -45,7 +45,7 @@ class Version20160808143623 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable(UserPermissionsServiceProvider::USER_ROLES_TABLE);
 

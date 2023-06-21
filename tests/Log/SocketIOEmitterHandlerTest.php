@@ -74,7 +74,7 @@ class SocketIOEmitterHandlerTest extends TestCase
 
 class TestRedisClientDouble
 {
-    public function publish()
+    public function publish(): void
     {
     }
 }

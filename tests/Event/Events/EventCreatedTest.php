@@ -124,7 +124,7 @@ class EventCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_event_id()
+    public function it_stores_an_event_id(): void
     {
         $this->assertEquals('id', $this->eventCreated->getEventId());
     }
@@ -132,7 +132,7 @@ class EventCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_event_main_language()
+    public function it_stores_an_event_main_language(): void
     {
         $this->assertEquals(new Language('es'), $this->eventCreated->getMainLanguage());
     }
@@ -140,7 +140,7 @@ class EventCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_event_title()
+    public function it_stores_an_event_title(): void
     {
         $this->assertEquals(new Title('title'), $this->eventCreated->getTitle());
     }
@@ -148,7 +148,7 @@ class EventCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_event_location()
+    public function it_stores_an_event_location(): void
     {
         $this->assertEquals($this->location, $this->eventCreated->getLocation());
     }
@@ -156,7 +156,7 @@ class EventCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_event_calendar()
+    public function it_stores_an_event_calendar(): void
     {
         $this->assertEquals(
             new Calendar(CalendarType::PERMANENT()),
@@ -167,7 +167,7 @@ class EventCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_event_publication_date()
+    public function it_stores_an_event_publication_date(): void
     {
         $this->assertEquals(
             $this->publicationDate,
@@ -182,7 +182,7 @@ class EventCreatedTest extends TestCase
     public function it_can_be_serialized_into_an_array(
         array $expectedSerializedValue,
         EventCreated $eventCreated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $eventCreated->serialize()
@@ -196,7 +196,7 @@ class EventCreatedTest extends TestCase
     public function it_can_be_deserialized_from_an_array(
         array $serializedValue,
         EventCreated $expectedEventCreated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedEventCreated,
             EventCreated::deserialize($serializedValue)

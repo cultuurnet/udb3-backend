@@ -80,7 +80,7 @@ class OrganizerCreationPayloadTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_main_language()
+    public function it_stores_a_main_language(): void
     {
         $this->assertEquals(
             $this->mainLanguage,
@@ -91,7 +91,7 @@ class OrganizerCreationPayloadTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_website()
+    public function it_stores_a_website(): void
     {
         $this->assertEquals(
             $this->website,
@@ -102,7 +102,7 @@ class OrganizerCreationPayloadTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_title()
+    public function it_stores_a_title(): void
     {
         $this->assertEquals(
             $this->title,
@@ -113,7 +113,7 @@ class OrganizerCreationPayloadTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_address()
+    public function it_stores_an_address(): void
     {
         $this->assertEquals(
             $this->address,
@@ -124,7 +124,7 @@ class OrganizerCreationPayloadTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_contact_point()
+    public function it_stores_a_contact_point(): void
     {
         $this->assertEquals(
             $this->contactPoint,

@@ -12,7 +12,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20160224144108 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->getTable('event_variation_search_index');
 
@@ -25,14 +25,14 @@ class Version20160224144108 extends AbstractMigration
     }
 
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         // copy data from "event" to "origin_url" column.
         $this->connection->executeQuery('UPDATE event_variation_search_index SET origin_url = event');
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $table = $schema->getTable('event_variation_search_index');
 

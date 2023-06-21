@@ -17,7 +17,7 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_without_any_info()
+    public function it_should_be_creatable_without_any_info(): void
     {
         $bookingInfo = new BookingInfo();
         $this->assertTrue($bookingInfo->isEmpty());
@@ -26,7 +26,7 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_copy_with_an_updated_website()
+    public function it_should_return_copy_with_an_updated_website(): void
     {
         $website = $this->getWebsiteLink();
         $bookingInfo = $this->getBookingInfo();
@@ -50,7 +50,7 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_copy_with_an_updated_telephone_number()
+    public function it_should_return_copy_with_an_updated_telephone_number(): void
     {
         $telephoneNumber = $this->getTelephoneNumber();
         $bookingInfo = $this->getBookingInfo();
@@ -71,7 +71,7 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_copy_with_an_updated_email_address()
+    public function it_should_return_copy_with_an_updated_email_address(): void
     {
         $emailAddress = $this->getEmailAddress();
         $bookingInfo = $this->getBookingInfo();
@@ -92,7 +92,7 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_copy_with_an_updated_availability()
+    public function it_should_return_copy_with_an_updated_availability(): void
     {
         $availability = $this->getAvailability();
         $bookingInfo = $this->getBookingInfo();

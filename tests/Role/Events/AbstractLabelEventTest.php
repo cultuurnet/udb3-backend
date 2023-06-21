@@ -39,7 +39,7 @@ class AbstractLabelEventTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid_and_a_label_id()
+    public function it_stores_a_uuid_and_a_label_id(): void
     {
         $this->assertEquals($this->uuid, $this->event->getUuid());
         $this->assertEquals($this->labelId, $this->event->getLabelId());
@@ -48,7 +48,7 @@ class AbstractLabelEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $actualArray = $this->event->serialize();
 
@@ -63,7 +63,7 @@ class AbstractLabelEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $data = [
              AbstractEvent::UUID => $this->uuid->toString(),

@@ -9,7 +9,7 @@ class IsStringTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_accept_and_return_a_string_value()
+    public function it_should_accept_and_return_a_string_value(): void
     {
         $stringValue = 'test';
         $vo = new MockString($stringValue);
@@ -19,7 +19,7 @@ class IsStringTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_be_comparable_to_other_objects_of_the_same_type()
+    public function it_should_be_comparable_to_other_objects_of_the_same_type(): void
     {
         $lorem = new MockString('lorem');
         $ipsum = new MockString('ipsum');
@@ -34,7 +34,7 @@ class IsStringTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_a_non_string_value_is_given()
+    public function it_should_throw_an_exception_if_a_non_string_value_is_given(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given value should be a string, got integer instead.');

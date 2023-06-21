@@ -34,7 +34,7 @@ class JsonDocumentLanguageEnricherTest extends TestCase
     /**
      * @test
      */
-    public function it_should_enrich_a_json_document_with_a_list_of_all_languages_and_a_list_of_completed_languages()
+    public function it_should_enrich_a_json_document_with_a_list_of_all_languages_and_a_list_of_completed_languages(): void
     {
         $givenJsonDocument = new JsonDocument(
             '41278834-8a90-4b4a-bca2-c3189787146d',
@@ -87,7 +87,7 @@ class JsonDocumentLanguageEnricherTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_enrich_empty_properties_if_no_languages_are_found()
+    public function it_should_not_enrich_empty_properties_if_no_languages_are_found(): void
     {
         $givenJsonDocument = new JsonDocument(
             '41278834-8a90-4b4a-bca2-c3189787146d',

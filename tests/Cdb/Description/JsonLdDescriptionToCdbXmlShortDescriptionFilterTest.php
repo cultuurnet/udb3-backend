@@ -16,7 +16,7 @@ class JsonLdDescriptionToCdbXmlShortDescriptionFilterTest extends StringFilterTe
     /**
      * @test
      */
-    public function it_should_strip_html_and_put_everything_on_a_single_line()
+    public function it_should_strip_html_and_put_everything_on_a_single_line(): void
     {
         $long = ' <p>Lange <b>beschrijving</b>.</p>Regel 2.<br /><br />Regel 3. <br /> ';
         $expected = 'Lange beschrijving. Regel 2. Regel 3.';
@@ -29,7 +29,7 @@ class JsonLdDescriptionToCdbXmlShortDescriptionFilterTest extends StringFilterTe
     /**
      * @test
      */
-    public function it_should_truncate_the_string_if_it_exceeds_400_characters()
+    public function it_should_truncate_the_string_if_it_exceeds_400_characters(): void
     {
         // @codingStandardsIgnoreStart
         $long = '<p>Maecenas faucibus mollis interdum. Donec sed odio dui. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p><p>Donec id elit non mi porta gravida at eget metus. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla sed consectetur.</p><p>Maecenas faucibus mollis interdum. Donec sed odio dui. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p><p>Donec id elit non mi porta gravida at eget metus. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla sed consectetur.</p><p>Maecenas faucibus mollis interdum. Donec sed odio dui. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p><p>Donec id elit non mi porta gravida at eget metus. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla sed consectetur.</p>';

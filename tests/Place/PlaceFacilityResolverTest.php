@@ -14,7 +14,7 @@ class PlaceFacilityResolverTest extends TestCase
      * @test
      * @throws \Exception
      */
-    public function it_should_not_resolve_a_facility_when_the_id_is_unknown()
+    public function it_should_not_resolve_a_facility_when_the_id_is_unknown(): void
     {
         $resolver = new PlaceFacilityResolver();
 
@@ -28,7 +28,7 @@ class PlaceFacilityResolverTest extends TestCase
      * @test
      * @throws \Exception
      */
-    public function it_should_return_the_matching_facility_when_passed_a_known_id()
+    public function it_should_return_the_matching_facility_when_passed_a_known_id(): void
     {
         $resolver = new PlaceFacilityResolver();
 

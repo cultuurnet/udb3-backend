@@ -56,7 +56,7 @@ class PlaceRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_save_multiple_places_in_a_single_transaction()
+    public function it_should_save_multiple_places_in_a_single_transaction(): void
     {
         $place1 = Place::create(
             '41c94f16-9edf-4eaf-914a-cfc01336b66e',
@@ -127,7 +127,7 @@ class PlaceRepositoryTest extends TestCase
 
         $this->eventStore->expects($this->once())
             ->method('append')
-            ->willReturnCallback(function ($firstId, DomainEventStream $eventStream) use (&$actualEvents) {
+            ->willReturnCallback(function ($firstId, DomainEventStream $eventStream) use (&$actualEvents): void {
                 $this->assertEquals('41c94f16-9edf-4eaf-914a-cfc01336b66e', $firstId);
 
                 $actualEvents = array_map(

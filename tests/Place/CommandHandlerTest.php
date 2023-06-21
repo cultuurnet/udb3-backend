@@ -34,7 +34,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_can_update_major_info_of_a_place()
+    public function it_can_update_major_info_of_a_place(): void
     {
         $id = '1';
         $title = new Title('foo');
@@ -65,7 +65,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_should_handle_an_update_address_command_for_the_main_language(
         Address $updatedAddress
-    ) {
+    ): void {
         $id = '45b9e456-f5d6-4b5c-b692-a4bb22b88332';
 
         $this->scenario
@@ -84,7 +84,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_should_handle_an_update_address_command_for_any_language_other_than_the_language(
         Address $updatedAddress
-    ) {
+    ): void {
         $id = '45b9e456-f5d6-4b5c-b692-a4bb22b88332';
 
         $this->scenario

@@ -45,7 +45,7 @@ class DelegatingAMQPMessageFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_delegates_body_and_properties_creation_to_the_respective_injected_factories()
+    public function it_delegates_body_and_properties_creation_to_the_respective_injected_factories(): void
     {
         $domainMessage = new DomainMessage(
             '06d0906d-e235-40d2-b9f3-1fa6aebc9e00',

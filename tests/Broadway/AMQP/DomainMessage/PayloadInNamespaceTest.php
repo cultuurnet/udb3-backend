@@ -34,7 +34,7 @@ class PayloadInNamespaceTest extends TestCase
     /**
      * @test
      */
-    public function it_satisfies_matching_payload_namespace()
+    public function it_satisfies_matching_payload_namespace(): void
     {
         $payloadInNamespace = new PayloadInNamespace(
             'CultuurNet\UDB3\Broadway\AMQP\Dummies'
@@ -48,7 +48,7 @@ class PayloadInNamespaceTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_satisfy_a_payload_namespace_that_does_not_match()
+    public function it_does_not_satisfy_a_payload_namespace_that_does_not_match(): void
     {
         $payloadInNamespace = new PayloadInNamespace(
             'CultuurNet\UDB3\Broadway\AMQP\CrashTestDummies'

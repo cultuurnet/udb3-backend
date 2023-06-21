@@ -32,7 +32,7 @@ class IriOfferIdentifierFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_error_when_using_a_malformed_url()
+    public function it_throws_an_error_when_using_a_malformed_url(): void
     {
         $this->expectException(RuntimeException::class);
 
@@ -44,7 +44,7 @@ class IriOfferIdentifierFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_error_when_using_an_unsupported_offer_type()
+    public function it_throws_an_error_when_using_an_unsupported_offer_type(): void
     {
         $this->expectException(RuntimeException::class);
 
@@ -56,7 +56,7 @@ class IriOfferIdentifierFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_error_when_the_offertype_index_is_not_found_in_the_regex()
+    public function it_throws_an_error_when_the_offertype_index_is_not_found_in_the_regex(): void
     {
         $iriOfferIdentifierFactory = new IriOfferIdentifierFactory(
             'https?://foo\.bar/(?<offer>[event|place]+)/(?<offerid>[a-zA-Z0-9\-]+)'
@@ -73,7 +73,7 @@ class IriOfferIdentifierFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_error_when_the_offerid_index_is_not_found_in_the_regex()
+    public function it_throws_an_error_when_the_offerid_index_is_not_found_in_the_regex(): void
     {
         $iriOfferIdentifierFactory = new IriOfferIdentifierFactory(
             'https?://foo\.bar/(?<offertype>[event|place]+)/(?<id>[a-zA-Z0-9\-]+)'
@@ -90,7 +90,7 @@ class IriOfferIdentifierFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_correct_iri_offer_identifier_when_url_is_valid()
+    public function it_returns_a_correct_iri_offer_identifier_when_url_is_valid(): void
     {
         $iriOfferIdentifier = $this->iriOfferIdentifierFactory->fromIri(
             new Url('https://foo.bar/place/1234')

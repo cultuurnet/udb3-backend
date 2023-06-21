@@ -13,7 +13,7 @@ class MediaObjectTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_injected_properties()
+    public function it_should_return_the_injected_properties(): void
     {
         $id = new UUID('2a04345a-5e3e-4a23-a513-ce8197a10af6');
         $type = MediaObjectType::imageObject();

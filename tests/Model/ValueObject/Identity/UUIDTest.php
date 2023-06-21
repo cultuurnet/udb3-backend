@@ -13,7 +13,7 @@ class UUIDTest extends TestCase
      * @dataProvider validUUIDDataProvider
      * @param string $uuidString
      */
-    public function it_should_accept_a_valid_uuid_string($uuidString)
+    public function it_should_accept_a_valid_uuid_string($uuidString): void
     {
         $uuid = new UUID($uuidString);
         $this->assertEquals($uuidString, $uuid->toString());
@@ -36,7 +36,7 @@ class UUIDTest extends TestCase
      * @test
      * @dataProvider invalidUUIDDataProvider
      */
-    public function it_should_throw_an_exception_if_an_invalid_uuid_is_given($invalidUuid)
+    public function it_should_throw_an_exception_if_an_invalid_uuid_is_given($invalidUuid): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("{$invalidUuid} is not a valid uuid.");

@@ -59,7 +59,7 @@ class AddLabelToMultipleTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_correct_property_values()
+    public function it_returns_the_correct_property_values(): void
     {
         $this->assertEquals($this->offerIdentifiers, $this->labelMultiple->getOfferIdentifiers());
         $this->assertEquals($this->label, $this->labelMultiple->getLabel());

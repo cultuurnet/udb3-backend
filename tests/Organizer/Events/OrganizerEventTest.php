@@ -16,7 +16,7 @@ class OrganizerEventTest extends TestCase
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
         MockOrganizerEvent $organizerEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $organizerEvent->serialize()
@@ -30,7 +30,7 @@ class OrganizerEventTest extends TestCase
     public function it_can_be_deserialized_from_an_array(
         array $serializedValue,
         MockOrganizerEvent $expectedUnlabelled
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedUnlabelled,
             MockOrganizerEvent::deserialize($serializedValue)

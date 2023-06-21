@@ -181,7 +181,7 @@ final class EventExportServiceTest extends TestCase
         $this->resultsGenerator->expects($this->any())
             ->method('search')
             ->willReturnCallback(
-                function () {
+                function (): Traversable {
                     yield from $this->searchResults;
                 }
             );
@@ -209,7 +209,7 @@ final class EventExportServiceTest extends TestCase
         $fileWriter->expects($this->once())
             ->method('write')
             ->willReturnCallback(
-                function ($tmpPath, Traversable $events) {
+                function ($tmpPath, Traversable $events): void {
                     $contents = iterator_to_array($events);
                     $contents = array_map(function ($content) {
                         return Json::decode($content);

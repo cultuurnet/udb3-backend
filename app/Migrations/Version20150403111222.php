@@ -12,7 +12,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20150403111222 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         foreach (['event', 'place', 'organizer'] as $column) {
             $schema->getTable('event_relations')->getColumn(
@@ -22,7 +22,7 @@ class Version20150403111222 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         foreach (['event', 'place', 'organizer'] as $column) {
             $schema->getTable('event_relations')->getColumn(

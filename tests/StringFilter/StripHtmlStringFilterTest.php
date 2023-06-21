@@ -16,7 +16,7 @@ class StripHtmlStringFilterTest extends StringFilterTest
      *
      * @dataProvider htmlStringDataProvider
      */
-    public function it_converts_html_strings_to_plain_text($original, $expected)
+    public function it_converts_html_strings_to_plain_text($original, $expected): void
     {
         $this->assertFilterValue($expected, $original);
     }

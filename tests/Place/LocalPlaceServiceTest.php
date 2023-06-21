@@ -63,7 +63,7 @@ class LocalPlaceServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_places_organized_by_organizer()
+    public function it_returns_places_organized_by_organizer(): void
     {
         $expectedPlaces = ['placeId1', 'placeId2'];
 

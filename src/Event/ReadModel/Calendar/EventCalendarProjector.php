@@ -22,17 +22,17 @@ class EventCalendarProjector implements EventListener
         $this->repository = $repository;
     }
 
-    public function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImportedFromUDB2)
+    public function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImportedFromUDB2): void
     {
         $this->saveEventCalendar($eventImportedFromUDB2);
     }
 
-    public function applyEventUpdatedFromUDB2(EventUpdatedFromUDB2 $eventUpdatedFromUDB2)
+    public function applyEventUpdatedFromUDB2(EventUpdatedFromUDB2 $eventUpdatedFromUDB2): void
     {
         $this->saveEventCalendar($eventUpdatedFromUDB2);
     }
 
-    private function saveEventCalendar(EventCdbXMLInterface $eventEvent)
+    private function saveEventCalendar(EventCdbXMLInterface $eventEvent): void
     {
         $eventId = $eventEvent->getEventId();
 

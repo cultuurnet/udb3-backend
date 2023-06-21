@@ -39,7 +39,7 @@ class CombinedResourceOwnerQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_get_editable_offers_on_all_permission_queries()
+    public function it_calls_get_editable_offers_on_all_permission_queries(): void
     {
         foreach ($this->permissionQueries as $permissionQuery) {
             $permissionQuery->expects($this->once())
@@ -54,7 +54,7 @@ class CombinedResourceOwnerQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_merged_array_from_all_permission_queries()
+    public function it_returns_merged_array_from_all_permission_queries(): void
     {
         $editableOffers = $this->combinedPermissionQuery->getEditableResourceIds(
             new StringLiteral('userId')
@@ -72,7 +72,7 @@ class CombinedResourceOwnerQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_empty_array_when_queries_contain_no_editable_offers()
+    public function it_returns_empty_array_when_queries_contain_no_editable_offers(): void
     {
         $permissionQueries[] = $this->createPermissionQuery([]);
         $permissionQueries[] = $this->createPermissionQuery([]);

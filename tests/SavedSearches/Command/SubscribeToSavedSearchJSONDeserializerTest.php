@@ -33,7 +33,7 @@ class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_commands_with_the_user_id_passed_in_the_constructor()
+    public function it_creates_commands_with_the_user_id_passed_in_the_constructor(): void
     {
         $command = $this->deserializer->deserialize(
             $this->getStringFromFile('subscribe.json')
@@ -52,7 +52,7 @@ class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_requires_a_query()
+    public function it_requires_a_query(): void
     {
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('query is missing');
@@ -65,7 +65,7 @@ class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_requires_a_name()
+    public function it_requires_a_name(): void
     {
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('name is missing');

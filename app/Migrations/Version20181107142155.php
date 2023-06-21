@@ -17,7 +17,7 @@ class Version20181107142155 extends AbstractMigration
     private const SAVED_SEARCHES_SAPI3 = 'saved_searches_sapi3';
 
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->createTable(self::SAVED_SEARCHES_SAPI3);
 
@@ -41,7 +41,7 @@ class Version20181107142155 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable(self::SAVED_SEARCHES_SAPI3);
     }

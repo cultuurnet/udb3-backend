@@ -59,7 +59,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
         $cdbXmlNamespaceUri,
         $cdbXml,
         $eventId
-    ) {
+    ): void {
         $event = EventItemFactory::createEventFromCdbXml(
             $cdbXmlNamespaceUri,
             $cdbXml

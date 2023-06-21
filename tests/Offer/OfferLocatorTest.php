@@ -26,7 +26,7 @@ class OfferLocatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_the_location_of_an_offer_to_its_metadata_as_id()
+    public function it_should_add_the_location_of_an_offer_to_its_metadata_as_id(): void
     {
         $this->iriGenerator
             ->method('iri')

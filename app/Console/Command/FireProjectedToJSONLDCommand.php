@@ -36,7 +36,7 @@ class FireProjectedToJSONLDCommand extends AbstractFireProjectedToJSONLDCommand
                 EventBus $eventBus,
                 InputInterface $input,
                 OutputInterface $output
-            ) {
+            ): void {
                 $type = $input->getArgument('type');
 
                 $domainMessageBuilder = new DomainMessageBuilder();

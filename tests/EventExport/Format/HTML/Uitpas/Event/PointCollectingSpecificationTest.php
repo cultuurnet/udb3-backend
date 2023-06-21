@@ -23,7 +23,7 @@ class PointCollectingSpecificationTest extends TestCase
      * @test
      * @dataProvider satisfyingEventProvider
      */
-    public function it_is_satisfied_by_events_with_points(Event $event)
+    public function it_is_satisfied_by_events_with_points(Event $event): void
     {
         $this->assertTrue($this->specification->isSatisfiedBy($event));
     }
@@ -51,7 +51,7 @@ class PointCollectingSpecificationTest extends TestCase
      * @test
      * @dataProvider unsatisfyingEventProvider
      */
-    public function it_is_unsatisfied_by_events_without_points(Event $event)
+    public function it_is_unsatisfied_by_events_without_points(Event $event): void
     {
         $this->assertFalse($this->specification->isSatisfiedBy($event));
     }

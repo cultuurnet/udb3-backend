@@ -9,7 +9,7 @@ use Doctrine\DBAL\Schema\Schema;
 
 class Version20180823080123 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->createTable('my_organizers');
 
@@ -40,7 +40,7 @@ class Version20180823080123 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('my_organizers');
     }

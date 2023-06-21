@@ -34,7 +34,7 @@ class CopyAwareEventStoreDecoratorTest extends TestCase
      * This is a test case when the aggregate is not copied.
      * @test
      */
-    public function it_should_return_the_aggregate_event_stream_when_it_contains_all_history()
+    public function it_should_return_the_aggregate_event_stream_when_it_contains_all_history(): void
     {
         $firstDomainMessage = $this->getDomainMessage(0, '');
         $secondDomainMessage = $this->getDomainMessage(1, '');
@@ -55,7 +55,7 @@ class CopyAwareEventStoreDecoratorTest extends TestCase
      * Both the parent and copy events are loaded.
      * @test
      */
-    public function it_should_load_the_parent_history_when_aggregate_history_is_incomplete()
+    public function it_should_load_the_parent_history_when_aggregate_history_is_incomplete(): void
     {
         $parentFirstEventMessage = $this->getDomainMessage(0, '');
         $parentOtherEventMessage = $this->getDomainMessage(1, '');
@@ -83,7 +83,7 @@ class CopyAwareEventStoreDecoratorTest extends TestCase
      * But the events on the parent after the copy should be ignored.
      * @test
      */
-    public function it_should_load_the_copied_history_when_aggregate_history_is_incomplete()
+    public function it_should_load_the_copied_history_when_aggregate_history_is_incomplete(): void
     {
         $parentFirstEventMessage = $this->getDomainMessage(0, '');
         $parentOtherEventMessage = $this->getDomainMessage(1, '');
@@ -112,7 +112,7 @@ class CopyAwareEventStoreDecoratorTest extends TestCase
      * It can handle gaps in playhead numbering.
      * @test
      */
-    public function it_should_only_load_the_inherited_parent_history_when_there_are_jumps_in_playhead()
+    public function it_should_only_load_the_inherited_parent_history_when_there_are_jumps_in_playhead(): void
     {
         $parentFirstEventMessage = $this->getDomainMessage(0, '');
         $parentJumpedEventMessage = $this->getDomainMessage(2, '');
@@ -139,7 +139,7 @@ class CopyAwareEventStoreDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_load_the_complete_aggregate_history_when_there_are_multiple_ancestors()
+    public function it_should_load_the_complete_aggregate_history_when_there_are_multiple_ancestors(): void
     {
         $oldestAncestorEventMessage = $this->getDomainMessage(0, '');
         $parentCopiedEventMessage = $this->getDomainMessage(1, '94ae3a8f-596a-480b-b4f0-be7f8fe7e9b3');

@@ -13,7 +13,7 @@ class OfferIdentifierCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_only_accepts_offer_identifier_interface_instances()
+    public function it_only_accepts_offer_identifier_interface_instances(): void
     {
         $collection = new OfferIdentifierCollection();
 

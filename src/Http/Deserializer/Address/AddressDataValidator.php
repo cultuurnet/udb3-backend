@@ -34,7 +34,7 @@ class AddressDataValidator implements DataValidatorInterface
     /**
      * @throws DataValidationException
      */
-    public function validate(array $data)
+    public function validate(array $data): void
     {
         $this->notEmptyPropertiesDataValidator->validate($data);
     }

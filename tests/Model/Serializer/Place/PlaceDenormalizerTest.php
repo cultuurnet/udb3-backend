@@ -91,7 +91,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_place_data_with_only_the_required_properties()
+    public function it_should_denormalize_place_data_with_only_the_required_properties(): void
     {
         $placeData = [
             '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -149,7 +149,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_place_data_with_status()
+    public function it_should_denormalize_place_data_with_status(): void
     {
         $placeData = [
             '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -225,7 +225,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_place_data_with_title_translations()
+    public function it_should_denormalize_place_data_with_title_translations(): void
     {
         $placeData = [
             '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -287,7 +287,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_place_data_with_address_translations()
+    public function it_should_denormalize_place_data_with_address_translations(): void
     {
         $placeData = [
             '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -360,7 +360,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_place_data_with_a_periodic_calendar_and_no_opening_hours()
+    public function it_should_denormalize_place_data_with_a_periodic_calendar_and_no_opening_hours(): void
     {
         $placeData = [
             '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -426,7 +426,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_place_data_with_a_periodic_calendar_and_opening_hours()
+    public function it_should_denormalize_place_data_with_a_periodic_calendar_and_opening_hours(): void
     {
         $placeData = [
             '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -525,7 +525,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_place_data_with_a_permanent_calendar_and_opening_hours()
+    public function it_should_denormalize_place_data_with_a_permanent_calendar_and_opening_hours(): void
     {
         $placeData = [
             '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -618,7 +618,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_place_data_with_terms_with_labels_and_domains()
+    public function it_should_denormalize_place_data_with_terms_with_labels_and_domains(): void
     {
         $placeData = [
             '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -690,7 +690,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_place_data_with_optional_properties()
+    public function it_should_denormalize_place_data_with_optional_properties(): void
     {
         $placeData = [
             '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -971,7 +971,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_trying_to_denormalize_to_an_unsupported_class()
+    public function it_should_throw_an_exception_when_trying_to_denormalize_to_an_unsupported_class(): void
     {
         $this->expectException(UnsupportedException::class);
         $this->denormalizer->denormalize([], ImmutableEvent::class);
@@ -980,7 +980,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_trying_to_denormalize_data_that_is_not_an_array()
+    public function it_should_throw_an_exception_when_trying_to_denormalize_data_that_is_not_an_array(): void
     {
         $this->expectException(UnsupportedException::class);
         $this->denormalizer->denormalize(new \stdClass(), ImmutablePlace::class);
@@ -989,7 +989,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_support_denormalization_to_immutable_place()
+    public function it_should_support_denormalization_to_immutable_place(): void
     {
         $this->assertTrue(
             $this->denormalizer->supportsDenormalization([], ImmutablePlace::class)

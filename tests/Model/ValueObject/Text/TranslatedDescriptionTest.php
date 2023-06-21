@@ -12,7 +12,7 @@ class TranslatedDescriptionTest extends TestCase
     /**
      * @test
      */
-    public function it_should_only_accept_a_description_as_original_text_value()
+    public function it_should_only_accept_a_description_as_original_text_value(): void
     {
         $className = Description::class;
         $invalidClassName = Title::class;
@@ -26,7 +26,7 @@ class TranslatedDescriptionTest extends TestCase
     /**
      * @test
      */
-    public function it_should_only_accept_a_description_as_translation()
+    public function it_should_only_accept_a_description_as_translation(): void
     {
         $nl = new Language('nl');
         $nlValue = new Description('foo');

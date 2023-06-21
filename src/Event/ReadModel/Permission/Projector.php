@@ -92,7 +92,7 @@ class Projector implements EventListener
     private function makeOfferEditableByUser(
         $offerId,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $metadata = $domainMessage->getMetadata()->serialize();
         $ownerId = new StringLiteral($metadata['user_id']);
 

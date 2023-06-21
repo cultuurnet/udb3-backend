@@ -42,7 +42,7 @@ class DefaultGeocodingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_coordinates()
+    public function it_returns_coordinates(): void
     {
         $address = 'Wetstraat 1, 1000 Brussel, BE';
 
@@ -75,7 +75,7 @@ class DefaultGeocodingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_on_no_result_exception_from_geocoder()
+    public function it_returns_null_on_no_result_exception_from_geocoder(): void
     {
         $address = 'Eikelberg (achter de bibliotheek), 8340 Sijsele (Damme), BE';
 

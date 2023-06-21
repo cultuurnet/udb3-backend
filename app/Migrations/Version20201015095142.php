@@ -14,7 +14,7 @@ class Version20201015095142 extends AbstractMigration
         $schema->dropTable('event_variation_search_index');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
     }
 }

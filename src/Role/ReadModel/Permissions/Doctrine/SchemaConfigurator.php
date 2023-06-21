@@ -35,7 +35,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     }
 
 
-    public function configure(AbstractSchemaManager $schemaManager)
+    public function configure(AbstractSchemaManager $schemaManager): void
     {
         $schema = $schemaManager->createSchema();
 

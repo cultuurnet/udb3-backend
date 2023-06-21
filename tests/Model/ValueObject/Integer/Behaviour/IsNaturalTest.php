@@ -11,7 +11,7 @@ class IsNaturalTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_a_value_lower_than_zero_is_given()
+    public function it_should_throw_an_exception_if_a_value_lower_than_zero_is_given(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given integer should be greater or equal to zero. Got -1 instead.');

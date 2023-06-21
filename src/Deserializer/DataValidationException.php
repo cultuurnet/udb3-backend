@@ -18,7 +18,7 @@ class DataValidationException extends \Exception
     /**
      * @param string[] $validationMessages
      */
-    public function setValidationMessages(array $validationMessages)
+    public function setValidationMessages(array $validationMessages): void
     {
         $this->validationMessages = $validationMessages;
     }

@@ -15,7 +15,7 @@ class Auth0UserIdentityResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_get_user_by_id()
+    public function it_get_user_by_id(): void
     {
         $userId = '9f3e9228-4eca-40ad-982f-4420bf4bbf09';
         $email = 'ivo@hdz.com';
@@ -46,7 +46,7 @@ class Auth0UserIdentityResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_for_no_user_matching_id()
+    public function it_returns_null_for_no_user_matching_id(): void
     {
         $userId = '9f3e9228-4eca-40ad-982f-4420bf4bbf09';
 
@@ -71,7 +71,7 @@ class Auth0UserIdentityResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_gets_user_by_email()
+    public function it_gets_user_by_email(): void
     {
         $userId = '9f3e9228-4eca-40ad-982f-4420bf4bbf09';
         $email = 'ivo@hdz.com';
@@ -103,7 +103,7 @@ class Auth0UserIdentityResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_for_no_user_matching_email()
+    public function it_returns_null_for_no_user_matching_email(): void
     {
         $email = 'ivo@hdz.com';
 
@@ -128,7 +128,7 @@ class Auth0UserIdentityResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_gets_user_by_nick_name()
+    public function it_gets_user_by_nick_name(): void
     {
         $userId = '9f3e9228-4eca-40ad-982f-4420bf4bbf09';
         $email = 'ivo@hdz.com';
@@ -160,7 +160,7 @@ class Auth0UserIdentityResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_for_no_user_matching_nick_name()
+    public function it_returns_null_for_no_user_matching_nick_name(): void
     {
         $name = 'Caca';
 
@@ -186,7 +186,7 @@ class Auth0UserIdentityResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_old_uuid_if_it_is_present()
+    public function it_returns_old_uuid_if_it_is_present(): void
     {
         $user = $this->aUser('auth0|9f3e9228-4eca-40ad-982f-4420bf4bbf09', 'ivo@hdz.com', 'Caca');
         // only migrated users will have this "old" uuid

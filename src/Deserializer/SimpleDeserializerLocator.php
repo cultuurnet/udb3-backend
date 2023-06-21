@@ -17,7 +17,7 @@ class SimpleDeserializerLocator implements DeserializerLocatorInterface
     public function registerDeserializer(
         StringLiteral $contentType,
         DeserializerInterface $deserializer
-    ) {
+    ): void {
         $this->deserializers[$contentType->toNative()] = $deserializer;
     }
 

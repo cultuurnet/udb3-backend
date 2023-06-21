@@ -11,7 +11,7 @@ class CompositeCommandValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_call_each_injected_validator_once_when_asked_to_validate_a_command()
+    public function it_should_call_each_injected_validator_once_when_asked_to_validate_a_command(): void
     {
         $command = (object) ['do' => 'something'];
 
@@ -35,7 +35,7 @@ class CompositeCommandValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_able_to_register_more_validators_after_construction()
+    public function it_should_be_able_to_register_more_validators_after_construction(): void
     {
         $command = (object) ['do' => 'something'];
 

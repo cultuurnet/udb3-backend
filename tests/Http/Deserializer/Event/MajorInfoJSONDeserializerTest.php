@@ -16,7 +16,7 @@ class MajorInfoJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize_major_info()
+    public function it_can_serialize_major_info(): void
     {
         $majorInfoAsJson = file_get_contents(__DIR__ . '/../samples/event-major-info.json');
 
@@ -35,7 +35,7 @@ class MajorInfoJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize_major_info_with_a_nested_location_id()
+    public function it_can_serialize_major_info_with_a_nested_location_id(): void
     {
         $majorInfoAsJson = file_get_contents(__DIR__ . '/../samples/event-major-info-with-nested-location-id.json');
 

@@ -11,7 +11,7 @@ class VisibilityTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_visible_option()
+    public function it_has_a_visible_option(): void
     {
         $visibility = Visibility::VISIBLE();
 
@@ -21,7 +21,7 @@ class VisibilityTest extends TestCase
     /**
      * @test
      */
-    public function it_has_an_invisible_option()
+    public function it_has_an_invisible_option(): void
     {
         $visibility = Visibility::INVISIBLE();
 
@@ -31,7 +31,7 @@ class VisibilityTest extends TestCase
     /**
      * @test
      */
-    public function it_has_only_a_visible_and_invisible_option()
+    public function it_has_only_a_visible_and_invisible_option(): void
     {
         $options = Visibility::getAllowedValues();
 

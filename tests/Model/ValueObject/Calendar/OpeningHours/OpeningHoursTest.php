@@ -11,7 +11,7 @@ class OpeningHoursTest extends TestCase
     /**
      * @test
      */
-    public function it_should_always_be_open_if_no_opening_hours_are_given()
+    public function it_should_always_be_open_if_no_opening_hours_are_given(): void
     {
         $days = new Days(
             Day::monday(),

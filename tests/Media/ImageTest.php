@@ -17,7 +17,7 @@ class ImageTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized()
+    public function it_can_be_serialized(): void
     {
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
@@ -44,7 +44,7 @@ class ImageTest extends TestCase
     /**
      * @test
      */
-    public function it_can_create_an_image_from_serialized_data()
+    public function it_can_create_an_image_from_serialized_data(): void
     {
         $serializedData = [
             'media_object_id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
@@ -70,7 +70,7 @@ class ImageTest extends TestCase
     /**
      * @test
      */
-    public function it_can_create_an_image_from_serialized_data_with_invalid_length_copyright_holder()
+    public function it_can_create_an_image_from_serialized_data_with_invalid_length_copyright_holder(): void
     {
         $serializedData = [
             'media_object_id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
@@ -98,7 +98,7 @@ class ImageTest extends TestCase
     /**
      * @test
      */
-    public function it_should_default_to_dutch_when_deserializing_image_data_without_a_language()
+    public function it_should_default_to_dutch_when_deserializing_image_data_without_a_language(): void
     {
         $serializedData = [
             'media_object_id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',

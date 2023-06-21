@@ -11,7 +11,7 @@ class MediaObjectTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_have_exactly_two_values()
+    public function it_should_have_exactly_two_values(): void
     {
         $imageObject = MediaObjectType::imageObject();
         $mediaObject = MediaObjectType::mediaObject();

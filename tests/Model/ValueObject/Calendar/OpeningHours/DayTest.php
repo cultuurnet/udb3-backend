@@ -11,7 +11,7 @@ class DayTest extends TestCase
     /**
      * @test
      */
-    public function it_should_have_a_value_for_each_day_of_the_week()
+    public function it_should_have_a_value_for_each_day_of_the_week(): void
     {
         $monday = Day::monday();
         $tuesday = Day::tuesday();

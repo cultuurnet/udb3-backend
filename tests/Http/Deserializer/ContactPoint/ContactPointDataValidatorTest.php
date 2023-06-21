@@ -22,7 +22,7 @@ class ContactPointDataValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_for_multiple_errors_at_once()
+    public function it_throws_an_exception_for_multiple_errors_at_once(): void
     {
         $data = [
             [

@@ -33,7 +33,7 @@ class RoleUsersProjector extends RoleProjector
     }
 
 
-    public function applyUserAdded(UserAdded $userAdded)
+    public function applyUserAdded(UserAdded $userAdded): void
     {
         $document = $this->getDocument($userAdded->getUuid());
 
@@ -56,7 +56,7 @@ class RoleUsersProjector extends RoleProjector
     }
 
 
-    public function applyUserRemoved(UserRemoved $userRemoved)
+    public function applyUserRemoved(UserRemoved $userRemoved): void
     {
         $document = $this->getDocument($userRemoved->getUuid());
 
@@ -70,7 +70,7 @@ class RoleUsersProjector extends RoleProjector
     }
 
 
-    public function applyRoleCreated(RoleCreated $roleCreated)
+    public function applyRoleCreated(RoleCreated $roleCreated): void
     {
         $this->repository->save(
             new JsonDocument(
@@ -81,7 +81,7 @@ class RoleUsersProjector extends RoleProjector
     }
 
 
-    public function applyRoleDeleted(RoleDeleted $roleDeleted)
+    public function applyRoleDeleted(RoleDeleted $roleDeleted): void
     {
         $this->repository->remove($roleDeleted->getUuid()->toString());
     }

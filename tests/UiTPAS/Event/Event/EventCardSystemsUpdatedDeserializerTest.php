@@ -23,7 +23,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_deserialize_a_valid_message()
+    public function it_should_deserialize_a_valid_message(): void
     {
         $json = json_encode(
             [
@@ -55,7 +55,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_deserialize_a_valid_message_with_only_one_card_system()
+    public function it_should_deserialize_a_valid_message_with_only_one_card_system(): void
     {
         $json = json_encode(
             [
@@ -81,7 +81,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_deserialize_a_valid_message_without_card_systems()
+    public function it_should_deserialize_a_valid_message_without_card_systems(): void
     {
         $json = json_encode(
             [
@@ -100,7 +100,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_the_cdbid_property_is_missing()
+    public function it_should_throw_an_exception_when_the_cdbid_property_is_missing(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -116,7 +116,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_the_card_systems_property_is_missing()
+    public function it_should_throw_an_exception_when_the_card_systems_property_is_missing(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -132,7 +132,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_the_card_systems_property_is_not_an_array()
+    public function it_should_throw_an_exception_when_the_card_systems_property_is_not_an_array(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -149,7 +149,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_the_card_system_id_property_is_missing()
+    public function it_should_throw_an_exception_when_the_card_system_id_property_is_missing(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -170,7 +170,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_the_card_system_name_property_is_missing()
+    public function it_should_throw_an_exception_when_the_card_system_name_property_is_missing(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

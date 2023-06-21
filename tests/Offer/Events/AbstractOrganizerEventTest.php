@@ -36,7 +36,7 @@ class AbstractOrganizerEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_instantiated_With_properties()
+    public function it_can_be_instantiated_With_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedorganizerId = 'my-organizer-123';
@@ -52,7 +52,7 @@ class AbstractOrganizerEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedOrganizerId = 'my-organizer-123';
@@ -71,7 +71,7 @@ class AbstractOrganizerEventTest extends TestCase
     public function it_can_be_serialized_to_an_array(
         array $expectedSerializedValue,
         MockAbstractOrganizerEvent $organizerEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $organizerEvent->serialize()
@@ -85,7 +85,7 @@ class AbstractOrganizerEventTest extends TestCase
     public function it_can_deserialize_an_array(
         array $serializedValue,
         MockAbstractOrganizerEvent $expectedOrganizerEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedOrganizerEvent,
             MockAbstractOrganizerEvent::deserialize($serializedValue)

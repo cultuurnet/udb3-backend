@@ -75,7 +75,7 @@ class EventProcessManagerTest extends TestCase
         $commandBus->expects($this->any())
             ->method('dispatch')
             ->willReturnCallback(
-                function ($command) {
+                function ($command): void {
                     $this->tracedCommands[] = $command;
                 }
             );
@@ -83,7 +83,7 @@ class EventProcessManagerTest extends TestCase
         $logger->expects($this->any())
             ->method('warning')
             ->willReturnCallback(
-                function ($msg) {
+                function ($msg): void {
                     $this->warningLogs[] = $msg;
                 }
             );
@@ -91,7 +91,7 @@ class EventProcessManagerTest extends TestCase
         $logger->expects($this->any())
             ->method('info')
             ->willReturnCallback(
-                function ($msg) {
+                function ($msg): void {
                     $this->infoLogs[] = $msg;
                 }
             );

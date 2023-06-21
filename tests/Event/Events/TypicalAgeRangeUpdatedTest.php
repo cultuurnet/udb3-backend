@@ -19,7 +19,7 @@ class TypicalAgeRangeUpdatedTest extends TestCase
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
         TypicalAgeRangeUpdated $typicalAgeRangeUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $typicalAgeRangeUpdated->serialize()
@@ -34,7 +34,7 @@ class TypicalAgeRangeUpdatedTest extends TestCase
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,
         TypicalAgeRangeUpdated $expectedTypicalAgeRangeUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedTypicalAgeRangeUpdated,
             TypicalAgeRangeUpdated::deserialize($serializedValue)

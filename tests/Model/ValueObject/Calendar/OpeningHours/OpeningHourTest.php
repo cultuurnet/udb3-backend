@@ -11,7 +11,7 @@ class OpeningHourTest extends TestCase
     /**
      * @test
      */
-    public function it_should_have_a_list_of_open_days_combined_with_an_opening_and_closing_time()
+    public function it_should_have_a_list_of_open_days_combined_with_an_opening_and_closing_time(): void
     {
         $days = new Days(
             Day::monday(),

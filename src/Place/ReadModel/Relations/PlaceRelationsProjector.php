@@ -28,7 +28,7 @@ final class PlaceRelationsProjector implements EventListener
     /**
      * Store the relation for places imported from UDB2.
      */
-    protected function applyPlaceImportedFromUDB2(PlaceImportedFromUDB2 $place)
+    protected function applyPlaceImportedFromUDB2(PlaceImportedFromUDB2 $place): void
     {
         // No relation exists in UDB2.
         $placeId = $place->getActorId();
@@ -38,7 +38,7 @@ final class PlaceRelationsProjector implements EventListener
     /**
      * Delete the relations.
      */
-    protected function applyPlaceDeleted(PlaceDeleted $place)
+    protected function applyPlaceDeleted(PlaceDeleted $place): void
     {
         $placeId = $place->getItemId();
         $this->repository->removeRelations($placeId);
@@ -47,7 +47,7 @@ final class PlaceRelationsProjector implements EventListener
     /**
      * Store the relation when the organizer was changed
      */
-    protected function applyOrganizerUpdated(OrganizerUpdated $organizerUpdated)
+    protected function applyOrganizerUpdated(OrganizerUpdated $organizerUpdated): void
     {
         $this->storeRelations(
             $organizerUpdated->getItemId(),
@@ -58,7 +58,7 @@ final class PlaceRelationsProjector implements EventListener
     /**
      * Remove the relation.
      */
-    protected function applyOrganizerDeleted(OrganizerDeleted $organizerDeleted)
+    protected function applyOrganizerDeleted(OrganizerDeleted $organizerDeleted): void
     {
         $this->storeRelations($organizerDeleted->getItemId(), null);
     }
@@ -66,7 +66,7 @@ final class PlaceRelationsProjector implements EventListener
     /**
      * Store the relation.
      */
-    protected function storeRelations($placeId, $organizerId)
+    protected function storeRelations($placeId, $organizerId): void
     {
         $this->repository->storeRelations($placeId, $organizerId);
     }

@@ -15,7 +15,7 @@ class CategoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_category()
+    public function it_should_be_creatable_from_an_udb3_model_category(): void
     {
         $id = new CategoryID('0.50.4.0.0');
         $label = new CategoryLabel('concert');
@@ -37,7 +37,7 @@ class CategoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_the_given_udb3_model_category_has_no_label()
+    public function it_should_throw_an_exception_if_the_given_udb3_model_category_has_no_label(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -52,7 +52,7 @@ class CategoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_the_given_udb3_model_category_has_no_domain()
+    public function it_should_throw_an_exception_if_the_given_udb3_model_category_has_no_domain(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

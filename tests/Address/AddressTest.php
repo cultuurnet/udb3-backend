@@ -12,7 +12,7 @@ class AddressTest extends TestCase
     /**
      * @test
      */
-    public function it_can_compare_two_addresses()
+    public function it_can_compare_two_addresses(): void
     {
         $addressLeuven = new Address(
             new Street('Martelarenlaan 1'),
@@ -35,7 +35,7 @@ class AddressTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_address()
+    public function it_should_be_creatable_from_an_udb3_model_address(): void
     {
         $udb3ModelAddress = new \CultuurNet\UDB3\Model\ValueObject\Geography\Address(
             new \CultuurNet\UDB3\Model\ValueObject\Geography\Street('Henegouwenkaai 41-43'),

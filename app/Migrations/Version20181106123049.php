@@ -17,7 +17,7 @@ class Version20181106123049 extends AbstractMigration
     private const ROLES_SEARCH_V3 = 'roles_search_v3';
 
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->createTable(self::ROLES_SEARCH_V3);
 
@@ -49,7 +49,7 @@ class Version20181106123049 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable(self::ROLES_SEARCH_V3);
     }

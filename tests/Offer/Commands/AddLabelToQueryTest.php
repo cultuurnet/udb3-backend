@@ -26,7 +26,7 @@ class AddLabelToQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_correct_property_values()
+    public function it_returns_the_correct_property_values(): void
     {
         $expectedQuery = 'query';
         $expectedLabel = new Label(new LabelName('testlabel'));

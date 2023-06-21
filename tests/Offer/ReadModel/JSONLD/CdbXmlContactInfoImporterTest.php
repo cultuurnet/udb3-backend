@@ -28,7 +28,7 @@ class CdbXmlContactInfoImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_converts_contact_info_to_booking_info_json()
+    public function it_converts_contact_info_to_booking_info_json(): void
     {
         $jsonLd = new \stdClass();
 
@@ -52,7 +52,7 @@ class CdbXmlContactInfoImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_converts_price_to_booking_info_json()
+    public function it_converts_price_to_booking_info_json(): void
     {
         $cdbPrice = new \CultureFeed_Cdb_Data_Price();
         $cdbPrice->setDescription('Prijs voor volwassen.');
@@ -88,7 +88,7 @@ class CdbXmlContactInfoImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_converts_contact_info_to_contact_point_json()
+    public function it_converts_contact_info_to_contact_point_json(): void
     {
         $jsonLd = new \stdClass();
 

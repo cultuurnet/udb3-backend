@@ -11,7 +11,7 @@ class LabelTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_name_and_a_visibility()
+    public function it_has_a_name_and_a_visibility(): void
     {
         $name = new LabelName('foo');
         $label = new Label($name, true);

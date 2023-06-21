@@ -34,7 +34,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_a_valid_iri_offer_identifier()
+    public function it_can_deserialize_a_valid_iri_offer_identifier(): void
     {
         $json = new StringLiteral('{"@id":"http://du.de/event/1","@type":"Event"}');
 
@@ -57,7 +57,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_the_json_is_malformed()
+    public function it_throws_an_exception_when_the_json_is_malformed(): void
     {
         $json = new StringLiteral('{"foo"');
 
@@ -70,7 +70,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_id_is_missing()
+    public function it_throws_an_exception_when_id_is_missing(): void
     {
         $json = new StringLiteral('{"@type":"Event"}');
 
@@ -83,7 +83,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_type_is_missing()
+    public function it_throws_an_exception_when_type_is_missing(): void
     {
         $json = new StringLiteral('{"@id":"http://du.de/event/1"}');
 

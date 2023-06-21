@@ -177,7 +177,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * Handle an add image command.
      */
-    public function handleAddImage(AbstractAddImage $addImage)
+    public function handleAddImage(AbstractAddImage $addImage): void
     {
         $offer = $this->load($addImage->getItemId());
 
@@ -188,7 +188,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     }
 
 
-    public function handleRemoveImage(AbstractRemoveImage $removeImage)
+    public function handleRemoveImage(AbstractRemoveImage $removeImage): void
     {
         $offer = $this->load($removeImage->getItemId());
         $offer->removeImage($removeImage->getImage());
@@ -196,7 +196,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     }
 
 
-    public function handleUpdateImage(AbstractUpdateImage $updateImage)
+    public function handleUpdateImage(AbstractUpdateImage $updateImage): void
     {
         $offer = $this->load($updateImage->getItemId());
         $offer->updateImage(
@@ -208,7 +208,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     }
 
 
-    public function handleSelectMainImage(AbstractSelectMainImage $selectMainImage)
+    public function handleSelectMainImage(AbstractSelectMainImage $selectMainImage): void
     {
         $offer = $this->load($selectMainImage->getItemId());
         $offer->selectMainImage($selectMainImage->getImage());
@@ -216,7 +216,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     }
 
 
-    public function handleImportImages(AbstractImportImages $importImages)
+    public function handleImportImages(AbstractImportImages $importImages): void
     {
         $offer = $this->load($importImages->getItemId());
         $offer->importImages($importImages->getImages());
@@ -226,7 +226,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * Handle the update of description on a place.
      */
-    public function handleUpdateDescription(AbstractUpdateDescription $updateDescription)
+    public function handleUpdateDescription(AbstractUpdateDescription $updateDescription): void
     {
         $offer = $this->load($updateDescription->getItemId());
 
@@ -241,7 +241,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * Handle the update of typical age range on a place.
      */
-    public function handleUpdateTypicalAgeRange(AbstractUpdateTypicalAgeRange $updateTypicalAgeRange)
+    public function handleUpdateTypicalAgeRange(AbstractUpdateTypicalAgeRange $updateTypicalAgeRange): void
     {
         $offer = $this->load($updateTypicalAgeRange->getItemId());
 
@@ -255,7 +255,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * Handle the deletion of typical age range on a place.
      */
-    public function handleDeleteTypicalAgeRange(AbstractDeleteTypicalAgeRange $deleteTypicalAgeRange)
+    public function handleDeleteTypicalAgeRange(AbstractDeleteTypicalAgeRange $deleteTypicalAgeRange): void
     {
         $offer = $this->load($deleteTypicalAgeRange->getItemId());
 
@@ -264,7 +264,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    public function handleDeleteCurrentOrganizer(AbstractDeleteCurrentOrganizer $deleteCurrentOrganizer)
+    public function handleDeleteCurrentOrganizer(AbstractDeleteCurrentOrganizer $deleteCurrentOrganizer): void
     {
         $offer = $this->load($deleteCurrentOrganizer->getItemId());
 
@@ -276,7 +276,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * Handle an update command to updated the contact point.
      */
-    public function handleUpdateContactPoint(AbstractUpdateContactPoint $updateContactPoint)
+    public function handleUpdateContactPoint(AbstractUpdateContactPoint $updateContactPoint): void
     {
         $offer = $this->load($updateContactPoint->getItemId());
 
@@ -290,7 +290,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * Handle an update command to updated the booking info.
      */
-    public function handleUpdateBookingInfo(AbstractUpdateBookingInfo $updateBookingInfo)
+    public function handleUpdateBookingInfo(AbstractUpdateBookingInfo $updateBookingInfo): void
     {
         $offer = $this->load($updateBookingInfo->getItemId());
 
@@ -302,7 +302,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     }
 
 
-    private function handlePublish(AbstractPublish $publish)
+    private function handlePublish(AbstractPublish $publish): void
     {
         $offer = $this->load($publish->getItemId());
         $offer->publish($publish->getPublicationDate());
@@ -310,7 +310,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     }
 
 
-    private function handleApprove(AbstractApprove $approve)
+    private function handleApprove(AbstractApprove $approve): void
     {
         $offer = $this->load($approve->getItemId());
         $offer->approve();
@@ -318,7 +318,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     }
 
 
-    private function handleReject(AbstractReject $reject)
+    private function handleReject(AbstractReject $reject): void
     {
         $offer = $this->load($reject->getItemId());
         $offer->reject($reject->getReason());
@@ -326,7 +326,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     }
 
 
-    private function handleFlagAsDuplicate(AbstractFlagAsDuplicate $flagAsDuplicate)
+    private function handleFlagAsDuplicate(AbstractFlagAsDuplicate $flagAsDuplicate): void
     {
         $offer = $this->load($flagAsDuplicate->getItemId());
         $offer->flagAsDuplicate();
@@ -334,7 +334,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     }
 
 
-    private function handleFlagAsInappropriate(AbstractFlagAsInappropriate $flagAsInappropriate)
+    private function handleFlagAsInappropriate(AbstractFlagAsInappropriate $flagAsInappropriate): void
     {
         $offer = $this->load($flagAsInappropriate->getItemId());
         $offer->flagAsInappropriate();

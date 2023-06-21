@@ -41,7 +41,7 @@ class AbstractUserEventTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals($this->uuid, $this->abstractUserEvent->getUuid());
     }
@@ -49,7 +49,7 @@ class AbstractUserEventTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_user_id()
+    public function it_stores_a_user_id(): void
     {
         $this->assertEquals($this->userId, $this->abstractUserEvent->getUserId());
     }
@@ -57,7 +57,7 @@ class AbstractUserEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $actualArray = $this->abstractUserEvent->serialize();
 

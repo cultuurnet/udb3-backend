@@ -28,7 +28,7 @@ class AbstractEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_instantiated_With_properties()
+    public function it_can_be_instantiated_With_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedEvent = new MockAbstractEvent($expectedItemId);
@@ -39,7 +39,7 @@ class AbstractEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $expectedItemId = 'Foo';
 
@@ -55,7 +55,7 @@ class AbstractEventTest extends TestCase
     public function it_can_be_serialized_to_an_array(
         array $expectedSerializedValue,
         MockAbstractEvent $abstractEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $abstractEvent->serialize()
@@ -69,7 +69,7 @@ class AbstractEventTest extends TestCase
     public function it_can_deserialize_an_array(
         array $serializedValue,
         MockAbstractEvent $expectedAbstractEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedAbstractEvent,
             MockAbstractEvent::deserialize($serializedValue)

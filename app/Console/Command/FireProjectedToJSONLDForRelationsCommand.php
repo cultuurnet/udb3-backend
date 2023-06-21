@@ -41,7 +41,7 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
                 EventBus $eventBus,
                 InputInterface $input,
                 OutputInterface $output
-            ) use ($connection) {
+            ) use ($connection): void {
                 $domainMessageBuilder = new DomainMessageBuilder();
 
                 $queryBuilder = $this->connection->createQueryBuilder();

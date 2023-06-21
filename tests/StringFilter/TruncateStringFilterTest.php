@@ -23,7 +23,7 @@ class TruncateStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_truncates_strings()
+    public function it_truncates_strings(): void
     {
         // String longer than the allowed character count.
         $original = 'Sem Dolor Tristique Mollis Fusce Mollis Nibh Aenean Tortor Consectetur.';
@@ -39,7 +39,7 @@ class TruncateStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_can_truncate_words_safely()
+    public function it_can_truncate_words_safely(): void
     {
         // Basic word-safe truncating.
         $this->filter->turnOnWordSafe();
@@ -57,7 +57,7 @@ class TruncateStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_can_add_an_ellipsis()
+    public function it_can_add_an_ellipsis(): void
     {
         $this->filter->addEllipsis(true);
 
@@ -92,7 +92,7 @@ class TruncateStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_can_add_an_ellipsis_with_space()
+    public function it_can_add_an_ellipsis_with_space(): void
     {
         $this->filter->addEllipsis(true);
         $this->filter->spaceBeforeEllipsis(true);
@@ -105,7 +105,7 @@ class TruncateStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_does_not_truncate_new_lines_when_word_safe_is_on()
+    public function it_does_not_truncate_new_lines_when_word_safe_is_on(): void
     {
         $this->filter->turnOnWordSafe(0);
         $expected = "Wij\n zijn";
@@ -116,7 +116,7 @@ class TruncateStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_truncates_to_the_closest_sentence_when_possible()
+    public function it_truncates_to_the_closest_sentence_when_possible(): void
     {
         $this->filter->beSentenceFriendly();
         $expected = 'Een zin.';
@@ -127,7 +127,7 @@ class TruncateStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_truncates_sentences_followed_immediately_by_a_new_line()
+    public function it_truncates_sentences_followed_immediately_by_a_new_line(): void
     {
         // @codingStandardsIgnoreStart
         $original = "Tijdens de zomerweek gaan we een week lang tijdstappen , we reizen\ndoor tijd en ruimte van de prehistorie naar onze moderne tijd.\nTijdens de zomerweek gaan we tijdstappen , we reizen door tijd en\nruimte van de prehistorie naar de Vikingen en via de middeleeuwen\nnaar onze moderne tijd!\nWe ontmoeten dino\u2019s, verdedigen een middeleeuws kasteel, maken\nkennis met Asterix en zo veel meer.\nEen waar avontuur en een overheerlijke vakantie\n";
@@ -143,7 +143,7 @@ class TruncateStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_truncates_sentences_followed_by_a_no_break_space()
+    public function it_truncates_sentences_followed_by_a_no_break_space(): void
     {
         // @codingStandardsIgnoreStart
         $original = "The Dialogue Series: IV Moya is het resultaat van een intiem\ngesprek tussen de Congolese choreograaf Faustin Linyekula,\nafgelopen seizoenen vaste gast in KVS, en de Zuid-Afrikaanse Moya\nMichael die danste bij Rosas, Akram Kahn en\u00a0Sidi Larbi\nCherkaoui.\u00a0 De voorstelling verbindt hun persoonlijke\ngeschiedenis en leefwereld met elkaar. To be or not to be couloured\n(kleurling): in Johannesburg, Kisangani of Brussel heeft het een\nandere betekenis. Een danssolo, kwetsbaar en eerlijk, die indruk\nmaakt door zijn eenvoud.";
@@ -159,7 +159,7 @@ class TruncateStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_still_truncates_there_is_no_sentence()
+    public function it_still_truncates_there_is_no_sentence(): void
     {
         $this->filter->turnOnWordSafe(0);
         $this->filter->beSentenceFriendly();
@@ -171,7 +171,7 @@ class TruncateStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_still_truncates_when_the_sentence_is_too_long()
+    public function it_still_truncates_when_the_sentence_is_too_long(): void
     {
         $this->filter->turnOnWordSafe(0);
         $this->filter->beSentenceFriendly();

@@ -19,7 +19,7 @@ class AbstractRejectTest extends AbstractModerationCommandTestBase
     /**
      * @test
      */
-    public function it_stores_a_reason()
+    public function it_stores_a_reason(): void
     {
         $reason = new StringLiteral('This event is the same as.');
 

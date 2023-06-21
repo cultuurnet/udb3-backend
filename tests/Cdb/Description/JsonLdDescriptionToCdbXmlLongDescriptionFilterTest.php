@@ -19,7 +19,7 @@ class JsonLdDescriptionToCdbXmlLongDescriptionFilterTest extends StringFilterTes
     /**
      * @test
      */
-    public function it_should_convert_any_newlines_to_br_tags()
+    public function it_should_convert_any_newlines_to_br_tags(): void
     {
         $description = "Beschrijving.\n\nRegel 2.\n\nRegel 3.\nRegel 4.";
         $expected = 'Beschrijving.<br><br>Regel 2.<br><br>Regel 3.<br>Regel 4.';

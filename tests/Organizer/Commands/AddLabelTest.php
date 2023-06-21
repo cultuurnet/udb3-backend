@@ -13,7 +13,7 @@ class AddLabelTest extends TestCase
     /**
      * @test
      */
-    public function it_derives_from_abstract_label_command()
+    public function it_derives_from_abstract_label_command(): void
     {
         $addLabel = new AddLabel('organizerId', new Label(new LabelName('foo')));
 

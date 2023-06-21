@@ -50,7 +50,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_save()
+    public function it_can_save(): void
     {
         $expectedRole = $this->role;
 
@@ -68,7 +68,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_a_role_contraint()
+    public function it_can_update_a_role_contraint(): void
     {
         $expectedRole = $this->role;
 
@@ -93,7 +93,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_a_role_name()
+    public function it_can_update_a_role_name(): void
     {
         $expectedRole = $this->role;
 
@@ -115,7 +115,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_remove()
+    public function it_can_remove(): void
     {
         $expectedRole = $this->role;
 
@@ -133,7 +133,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_search()
+    public function it_can_search(): void
     {
         $expectedRole1 = [
             'uuid' => '8d17cffe-6f28-459c-8627-1f6345f8b296',

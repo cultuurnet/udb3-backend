@@ -230,7 +230,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindNewsArticles(Router $router): void
     {
-        $router->group('news-articles', function (RouteGroup $routeGroup) {
+        $router->group('news-articles', function (RouteGroup $routeGroup): void {
             $routeGroup->get('', GetNewsArticlesRequestHandler::class);
             $routeGroup->get('{articleId}/', GetNewsArticleRequestHandler::class);
 
@@ -243,7 +243,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindProductions(Router $router): void
     {
-        $router->group('productions', function (RouteGroup $routeGroup) {
+        $router->group('productions', function (RouteGroup $routeGroup): void {
             $routeGroup->get('', SearchProductionsRequestHandler::class);
 
             $routeGroup->post('', CreateProductionRequestHandler::class);
@@ -260,7 +260,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindExports(Router $router): void
     {
-        $router->group('events/export', function (RouteGroup $routeGroup) {
+        $router->group('events/export', function (RouteGroup $routeGroup): void {
             $routeGroup->post('json/', ExportEventsAsJsonLdRequestHandler::class);
             $routeGroup->post('ooxml/', ExportEventsAsOoXmlRequestHandler::class);
             $routeGroup->post('pdf/', ExportEventsAsPdfRequestHandler::class);
@@ -270,7 +270,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
     private function bindLegacyImports(Router $router): void
     {
         // Bind the `/imports/...` routes for backwards compatibility.
-        $router->group('imports', function (RouteGroup $routeGroup) {
+        $router->group('imports', function (RouteGroup $routeGroup): void {
             $routeGroup->post('events/', ImportEventRequestHandler::class);
             $routeGroup->put('events/{eventId}/', ImportEventRequestHandler::class);
 
@@ -284,7 +284,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindJobs(Router $router): void
     {
-        $router->group('jobs', function (RouteGroup $routeGroup) {
+        $router->group('jobs', function (RouteGroup $routeGroup): void {
             $routeGroup->get('{jobId}/', GetJobStatusRequestHandler::class);
         });
     }
@@ -294,7 +294,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
         $router->post('/query/labels/', AddLabelToQueryRequestHandler::class);
         $router->post('/offers/labels/', AddLabelToMultipleRequestHandler::class);
 
-        $router->group('labels', function (RouteGroup $routeGroup) {
+        $router->group('labels', function (RouteGroup $routeGroup): void {
             $routeGroup->post('', CreateLabelRequestHandler::class);
             $routeGroup->patch('{labelId}/', PatchLabelRequestHandler::class);
 
@@ -305,7 +305,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindImages(Router $router): void
     {
-        $router->group('images', function (RouteGroup $routeGroup) {
+        $router->group('images', function (RouteGroup $routeGroup): void {
             $routeGroup->post('', UploadMediaRequestHandler::class);
             $routeGroup->get('{id}/', GetMediaRequestHandler::class);
         });
@@ -316,7 +316,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindOrganizers(Router $router): void
     {
-        $router->group('organizers', function (RouteGroup $routeGroup) {
+        $router->group('organizers', function (RouteGroup $routeGroup): void {
             $routeGroup->post('', ImportOrganizerRequestHandler::class);
             $routeGroup->put('{organizerId}/', ImportOrganizerRequestHandler::class);
             $routeGroup->get('{organizerId}/', GetOrganizerRequestHandler::class);
@@ -427,7 +427,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindEvents(Router $router): void
     {
-        $router->group('events', function (RouteGroup $routeGroup) {
+        $router->group('events', function (RouteGroup $routeGroup): void {
             $routeGroup->post('', ImportEventRequestHandler::class);
             $routeGroup->put('{eventId}/', ImportEventRequestHandler::class);
 
@@ -452,7 +452,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindPlaces(Router $router): void
     {
-        $router->group('places', function (RouteGroup $routeGroup) {
+        $router->group('places', function (RouteGroup $routeGroup): void {
             $routeGroup->post('', ImportPlaceRequestHandler::class);
             $routeGroup->put('{placeId}/', ImportPlaceRequestHandler::class);
 
@@ -502,7 +502,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindSavedSearches(Router $router): void
     {
-        $router->group('saved-searches', function (RouteGroup $routeGroup) {
+        $router->group('saved-searches', function (RouteGroup $routeGroup): void {
             $routeGroup->get('v3/', ReadSavedSearchesRequestHandler::class);
 
             $routeGroup->post('v3/', CreateSavedSearchRequestHandler::class);
@@ -512,7 +512,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindUiTPASEvents(Router $router): void
     {
-        $router->group('uitpas/events', function (RouteGroup $routeGroup) {
+        $router->group('uitpas/events', function (RouteGroup $routeGroup): void {
             $routeGroup->get('{eventId}/', GetUiTPASDetailRequestHandler::class);
 
             $routeGroup->get('{eventId}/card-systems/', GetCardSystemsFromEventRequestHandler::class);
@@ -532,14 +532,14 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindUiTPASLabels(Router $router): void
     {
-        $router->group('uitpas/labels', function (RouteGroup $routeGroup) {
+        $router->group('uitpas/labels', function (RouteGroup $routeGroup): void {
             $routeGroup->get('', GetUiTPASLabelsRequestHandler::class);
         });
     }
 
     private function bindUiTPASOrganizers(Router $router): void
     {
-        $router->group('uitpas/organizers', function (RouteGroup $routeGroup) {
+        $router->group('uitpas/organizers', function (RouteGroup $routeGroup): void {
             $routeGroup->get('{organizerId}/card-systems/', GetCardSystemsFromOrganizerRequestHandler::class);
         });
     }

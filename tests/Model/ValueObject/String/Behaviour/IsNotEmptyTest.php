@@ -16,7 +16,7 @@ class IsNotEmptyTest extends \PHPUnit_Framework_TestCase
     public function it_should_throw_an_exception_if_an_empty_string_is_given(
         $stringValue,
         $expectException
-    ) {
+    ): void {
         if ($expectException) {
             $this->expectException(\InvalidArgumentException::class);
             $this->expectExceptionMessage('Given string should not be empty.');

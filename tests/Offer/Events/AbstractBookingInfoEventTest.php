@@ -47,7 +47,7 @@ class AbstractBookingInfoEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_instantiated_with_properties()
+    public function it_can_be_instantiated_with_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedBookingInfo = new BookingInfo(
@@ -69,7 +69,7 @@ class AbstractBookingInfoEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedBookingInfo = new BookingInfo(
@@ -95,7 +95,7 @@ class AbstractBookingInfoEventTest extends TestCase
     public function it_can_be_serialized_to_an_array(
         array $expectedSerializedValue,
         MockAbstractBookingInfoEvent $bookingInfoEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $bookingInfoEvent->serialize()
@@ -109,7 +109,7 @@ class AbstractBookingInfoEventTest extends TestCase
     public function it_can_deserialize_an_array(
         array $serializedValue,
         MockAbstractBookingInfoEvent $expectedBookingInfoEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedBookingInfoEvent,
             MockAbstractBookingInfoEvent::deserialize($serializedValue)

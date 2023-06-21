@@ -16,7 +16,7 @@ class CombinedSavedSearchRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_combine_the_results_of_multiple_repositories()
+    public function it_can_combine_the_results_of_multiple_repositories(): void
     {
         $savedSearches = [
             new SavedSearch(

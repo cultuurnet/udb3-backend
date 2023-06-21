@@ -11,7 +11,7 @@ class QueryStringTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_a_query_string_from_a_url_query_string()
+    public function it_can_get_a_query_string_from_a_url_query_string(): void
     {
         // Valid URL query string, with a "q" parameter.
         $urlQueryString = 'a=b&q=city:leuven&c=d';
