@@ -115,13 +115,12 @@ class CalendarTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Timestamps should have type TimeStamp.');
 
+
         new Calendar(
             CalendarType::SINGLE(),
             DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
             DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
-            [
-                'wrong timestamp',
-            ]
+            ['wrong timestamp'] // @phpstan-ignore-line
         );
     }
 
@@ -138,9 +137,7 @@ class CalendarTest extends TestCase
             DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
             DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
             [],
-            [
-                'wrong opening hours',
-            ]
+            ['wrong opening hours'] // @phpstan-ignore-line
         );
     }
 
