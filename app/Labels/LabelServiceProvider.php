@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepository
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository as JsonReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALWriteRepository as JsonWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\GodUserReadRepositoryDecorator;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Projector as RelationsProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository as RelationsReadRepository;
@@ -151,11 +150,8 @@ final class LabelServiceProvider extends AbstractServiceProvider
     {
         $container->addShared(
             self::JSON_READ_REPOSITORY,
-            function () use ($container): ReadRepositoryInterface {
-                $labels = file_exists(__DIR__ . '/../../config.excluded_labels.php') ? require __DIR__ . '/../../config.excluded_labels.php' : [];
-
-                return new AppConfigReadRepositoryDecorator(
-                    new GodUserReadRepositoryDecorator(
+            fn () => new AppConfigReadRepositoryDecorator(
+                new GodUserReadRepositoryDecorator(
                         new JsonReadRepository(
                             $container->get('dbal_connection'),
                             self::JSON_TABLE,
@@ -164,9 +160,8 @@ final class LabelServiceProvider extends AbstractServiceProvider
                         ),
                         $container->get('config')['user_permissions']['allow_all']
                     ),
-                    $container->get('config')['client_permissions']
-                );
-            }
+                $container->get('config')['client_permissions']
+            )
         );
 
         $container->addShared(
