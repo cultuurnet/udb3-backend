@@ -152,14 +152,14 @@ final class LabelServiceProvider extends AbstractServiceProvider
             self::JSON_READ_REPOSITORY,
             fn () => new AppConfigReadRepositoryDecorator(
                 new GodUserReadRepositoryDecorator(
-                        new JsonReadRepository(
-                            $container->get('dbal_connection'),
-                            self::JSON_TABLE,
-                            self::LABEL_ROLES_TABLE,
-                            UserPermissionsServiceProvider::USER_ROLES_TABLE
-                        ),
-                        $container->get('config')['user_permissions']['allow_all']
+                    new JsonReadRepository(
+                        $container->get('dbal_connection'),
+                        self::JSON_TABLE,
+                        self::LABEL_ROLES_TABLE,
+                        UserPermissionsServiceProvider::USER_ROLES_TABLE
                     ),
+                    $container->get('config')['user_permissions']['allow_all']
+                ),
                 $container->get('config')['client_permissions']
             )
         );
