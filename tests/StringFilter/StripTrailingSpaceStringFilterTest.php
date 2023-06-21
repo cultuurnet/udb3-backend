@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class StripTrailingSpaceStringFilterTest extends StringFilterTest
 {
-    /**
-     * @return StripTrailingSpaceStringFilter
-     */
-    protected function getFilter()
+    protected function getFilter(): StripTrailingSpaceStringFilter
     {
         return new StripTrailingSpaceStringFilter();
     }

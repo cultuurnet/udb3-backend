@@ -10,7 +10,7 @@ namespace CultuurNet\UDB3\StringFilter;
 interface StringFilterInterface
 {
     /**
-     * @param string $string
+     * @param string|int $string
      * @return string
      */
     public function filter($string);
