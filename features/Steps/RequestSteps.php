@@ -74,6 +74,15 @@ trait RequestSteps
     }
 
     /**
+     * @When I send a GET request to :url with parameters:
+     */
+    public function iSendAGetRequestToWithParameters($url, TableNode $parameters)
+    {
+        $response = $this->getHttpClient()->getWithParameters($url, $parameters->getRows(), $this->variableState);
+        $this->responseState->setResponse($response);
+    }
+
+    /**
      * @When I send a PATCH request to :url
      */
     public function iSendAPatchRequestTo(string $url): void
