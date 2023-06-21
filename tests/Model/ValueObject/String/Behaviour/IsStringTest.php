@@ -30,14 +30,4 @@ class IsStringTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($lorem->sameAs($ipsum));
         $this->assertFalse($lorem->sameAs($loremOtherType));
     }
-
-    /**
-     * @test
-     */
-    public function it_should_throw_an_exception_if_a_non_string_value_is_given(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Given value should be a string, got integer instead.');
-        new MockString(123);
-    }
 }

@@ -9,19 +9,6 @@ class MatchesRegexPatternTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_trying_to_match_a_value_that_is_not_a_string(): void
-    {
-        $value = 10;
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Given value should be a string, got integer instead.');
-
-        new MockDigitsRegexPattern($value);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_throw_an_exception_if_the_given_string_does_not_match_the_regex_pattern(): void
     {
         $value = 'ab10';

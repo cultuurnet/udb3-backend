@@ -9,7 +9,7 @@ class MockDigitsRegexPattern
     use IsString;
     use MatchesRegexPattern;
 
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $this->guardRegexPattern('/\\A\\d+\\Z/', $value, 'The given value is not a digit.');
         $this->setValue($value);

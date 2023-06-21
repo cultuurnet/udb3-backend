@@ -36,7 +36,7 @@ class UUIDTest extends TestCase
      * @test
      * @dataProvider invalidUUIDDataProvider
      */
-    public function it_should_throw_an_exception_if_an_invalid_uuid_is_given($invalidUuid): void
+    public function it_should_throw_an_exception_if_an_invalid_uuid_is_given(string $invalidUuid): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("{$invalidUuid} is not a valid uuid.");
