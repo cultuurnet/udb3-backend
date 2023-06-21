@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Search;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\Role\Events\ConstraintRemoved;
@@ -15,6 +16,7 @@ use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -26,6 +28,7 @@ class ProjectorTest extends TestCase
 
     private UUID $uuid;
 
+    /** @var RepositoryInterface|MockObject */
     private $repository;
 
     public function setUp(): void
@@ -140,7 +143,7 @@ class ProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    private function createDomainMessage($payload): DomainMessage
+    private function createDomainMessage(Serializable $payload): DomainMessage
     {
         return new DomainMessage(
             'id',

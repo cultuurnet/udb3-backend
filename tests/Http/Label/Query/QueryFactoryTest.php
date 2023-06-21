@@ -205,6 +205,7 @@ final class QueryFactoryTest extends TestCase
     /**
      * @test
      * @dataProvider suggestionDataProvider
+     * @param string|int|bool $queryValue
      */
     public function it_can_return_a_query_with_suggestion($queryValue, bool $suggestion): void
     {

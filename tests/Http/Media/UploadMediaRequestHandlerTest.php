@@ -193,8 +193,12 @@ final class UploadMediaRequestHandlerTest extends TestCase
         $this->uploadMediaRequestHandler->handle($request);
     }
 
-    private function createUploadedFile($content, $error, $clientFileName, $clientMediaType): UploadedFile
-    {
+    private function createUploadedFile(
+        string $content,
+        int $error,
+        string $clientFileName,
+        string $clientMediaType
+    ): UploadedFile {
         $filePath = tempnam(sys_get_temp_dir(), uniqid('', true));
         file_put_contents($filePath, $content);
 

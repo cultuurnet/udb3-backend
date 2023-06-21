@@ -107,9 +107,9 @@ class DelegateEventHandlingToSpecificMethodTraitTest extends TestCase
     }
 
     /**
-     * @return DomainMessage
+     * @param MockTitleTranslated|MockLabelRemoved|MockLabelUpdated|MockLabelAdded $payload
      */
-    private function createDomainMessage($payload)
+    private function createDomainMessage($payload): DomainMessage
     {
         return new DomainMessage(
             'id',

@@ -11,15 +11,9 @@ use CultuurNet\UDB3\StringLiteral;
 
 class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var StringLiteral
-     */
-    protected $userId;
+    protected StringLiteral $userId;
 
-    /**
-     * @var SubscribeToSavedSearchJSONDeserializer
-     */
-    protected $deserializer;
+    protected SubscribeToSavedSearchJSONDeserializer $deserializer;
 
     public function setUp(): void
     {
@@ -75,7 +69,7 @@ class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
         );
     }
 
-    private function getStringFromFile($fileName)
+    private function getStringFromFile(string $fileName): StringLiteral
     {
         $json = file_get_contents(
             __DIR__ . '/' . $fileName

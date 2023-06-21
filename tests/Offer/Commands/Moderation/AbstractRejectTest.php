@@ -8,10 +8,7 @@ use CultuurNet\UDB3\StringLiteral;
 
 class AbstractRejectTest extends AbstractModerationCommandTestBase
 {
-    /**
-     * @inheritdoc
-     */
-    public function getModerationCommandClass()
+    public function getModerationCommandClass(): string
     {
         return AbstractReject::class;
     }

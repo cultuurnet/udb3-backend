@@ -22,10 +22,7 @@ use PHPUnit\Framework\TestCase;
 
 class CdbXMLImporterTest extends TestCase
 {
-    /**
-     * @var CdbXMLImporter
-     */
-    protected $importer;
+    protected CdbXMLImporter $importer;
 
     /**
      * @var OrganizerServiceInterface|MockObject
@@ -70,7 +67,7 @@ class CdbXMLImporterTest extends TestCase
         date_default_timezone_set('Europe/Brussels');
     }
 
-    private function createEventFromCdbXml(string $fileName, $version = '3.2'): CultureFeed_Cdb_Item_Event
+    private function createEventFromCdbXml(string $fileName, string $version = '3.2'): CultureFeed_Cdb_Item_Event
     {
         $cdbXml = file_get_contents(
             __DIR__ . '/' . $fileName
@@ -82,12 +79,7 @@ class CdbXMLImporterTest extends TestCase
         );
     }
 
-    /**
-     * @param string $fileName
-     * @param string $version
-     * @return \stdClass
-     */
-    private function createJsonEventFromCdbXml($fileName, $version = '3.2')
+    private function createJsonEventFromCdbXml(string $fileName, string $version = '3.2'): \stdClass
     {
         $event = $this->createEventFromCdbXml($fileName, $version);
 
@@ -102,12 +94,7 @@ class CdbXMLImporterTest extends TestCase
         return $jsonEvent;
     }
 
-    /**
-     * @param integer|null $ageFrom
-     * @param integer|null $ageTo
-     * @return \stdClass
-     */
-    private function createJsonEventFromCdbXmlWithAgeRange($ageFrom = null, $ageTo = null)
+    private function createJsonEventFromCdbXmlWithAgeRange(?int $ageFrom = null, ?int $ageTo = null): \stdClass
     {
         $event = $this->createEventFromCdbXml(
             '../../samples/event_with_age_from.cdbxml.xml'
@@ -127,21 +114,14 @@ class CdbXMLImporterTest extends TestCase
         return $jsonEvent;
     }
 
-    /**
-     * @return \stdClass
-     */
-    private function createJsonEventFromCdbXmlWithoutAgeFrom()
+    private function createJsonEventFromCdbXmlWithoutAgeFrom(): \stdClass
     {
         return $this->createJsonEventFromCdbXml(
             '../../samples/event_without_age_from.cdbxml.xml'
         );
     }
 
-    /**
-     * @param string $fileName
-     * @return \stdClass
-     */
-    private function createJsonEventFromCalendarSample($fileName)
+    private function createJsonEventFromCalendarSample(string $fileName): \stdClass
     {
         $cdbXml = file_get_contents(
             __DIR__ . '/../../samples/calendar/' . $fileName
@@ -1128,7 +1108,7 @@ class CdbXMLImporterTest extends TestCase
     /**
      * Provides cdbxml with descriptions and the expected UDB3 description.
      */
-    public function descriptionsProvider()
+    public function descriptionsProvider(): array
     {
         return [
             'merge short description and long description when short description is not repeated in long description for events' => [
@@ -1207,7 +1187,7 @@ class CdbXMLImporterTest extends TestCase
         $this->assertEquals($expectedAudience, $jsonEvent->audience);
     }
 
-    public function audienceProvider()
+    public function audienceProvider(): array
     {
         return [
             "import event without property 'private' as audienceType 'everyone'" => [

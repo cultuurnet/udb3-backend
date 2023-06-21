@@ -58,7 +58,7 @@ class RemoveAddressHandlerTest extends CommandHandlerScenarioTestCase
             ->then([]);
     }
 
-    private function organizerCreated($id): OrganizerCreatedWithUniqueWebsite
+    private function organizerCreated(string $id): OrganizerCreatedWithUniqueWebsite
     {
         return new OrganizerCreatedWithUniqueWebsite(
             $id,

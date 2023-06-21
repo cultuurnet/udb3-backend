@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Place\ReadModel\History;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -1122,7 +1123,7 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
-    private function aDomainMessageForEvent(string $eventId, $placeCreatedEvent): DomainMessage
+    private function aDomainMessageForEvent(string $eventId, Serializable $placeCreatedEvent): DomainMessage
     {
         return new DomainMessage(
             $eventId,
@@ -1133,7 +1134,7 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
-    private function getActorCdbXml()
+    private function getActorCdbXml(): string
     {
         return file_get_contents(__DIR__ . '/actor.xml');
     }

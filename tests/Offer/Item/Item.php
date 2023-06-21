@@ -89,7 +89,7 @@ class Item extends Offer
         $this->workflowStatus = WorkflowStatus::DELETED();
     }
 
-    protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged
+    protected function createOwnerChangedEvent(string $newOwnerId): AbstractOwnerChanged
     {
         return new OwnerChanged($this->id, $newOwnerId);
     }

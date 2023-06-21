@@ -17,7 +17,7 @@ class PriceFormatterTest extends TestCase
      * @test
      * @dataProvider priceData
      */
-    public function it_rounds_prices($decimals, $price, $expected): void
+    public function it_rounds_prices(int $decimals, float $price, string $expected): void
     {
         $formatter = new PriceFormatter($decimals);
         $formatted = $formatter->format($price);
@@ -61,8 +61,12 @@ class PriceFormatterTest extends TestCase
      * @test
      * @dataProvider customSeparatorData()
      */
-    public function it_has_customizable_separators($decimalPoint, $thousandsSeparator, $original, $expected): void
-    {
+    public function it_has_customizable_separators(
+        string $decimalPoint,
+        string $thousandsSeparator,
+        float $original,
+        string $expected
+    ): void {
         $formatter = new PriceFormatter(2, $decimalPoint, $thousandsSeparator);
         $formatted = $formatter->format($original);
         $this->assertEquals($expected, $formatted);

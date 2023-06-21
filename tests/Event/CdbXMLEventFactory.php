@@ -10,15 +10,10 @@ use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 class CdbXMLEventFactory
 {
     public const AN_EVENT_ID = 'someId';
-    /**
-     * @var string
-     */
-    private $samplesPath;
 
-    /**
-     * @param string|null $samplesPath
-     */
-    public function __construct($samplesPath = null)
+    private ?string $samplesPath;
+
+    public function __construct(string $samplesPath = null)
     {
         if (null === $samplesPath) {
             $samplesPath = __DIR__;
@@ -26,29 +21,20 @@ class CdbXMLEventFactory
         $this->samplesPath = $samplesPath;
     }
 
-    /**
-     * @param string $fileName
-     * @return EventImportedFromUDB2
-     */
-    public function eventImportedFromUDB2($fileName)
+    public function eventImportedFromUDB2(string $fileName): EventImportedFromUDB2
     {
         return $this->eventFromFile($fileName, EventImportedFromUDB2::class);
     }
 
-    /**
-     * @param string $fileName
-     * @return EventUpdatedFromUDB2
-     */
-    public function eventUpdatedFromUDB2($fileName)
+    public function eventUpdatedFromUDB2(string $fileName): EventUpdatedFromUDB2
     {
         return $this->eventFromFile($fileName, EventUpdatedFromUDB2::class);
     }
 
     /**
-     * @param string $fileName
-     * @param string $eventClass
+     * @return EventImportedFromUDB2|EventUpdatedFromUDB2
      */
-    private function eventFromFile($fileName, $eventClass)
+    private function eventFromFile(string $fileName, string $eventClass)
     {
         $cdbXml = file_get_contents($this->samplesPath . '/' . $fileName);
 

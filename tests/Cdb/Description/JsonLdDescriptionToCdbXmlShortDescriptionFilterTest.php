@@ -8,10 +8,7 @@ use CultuurNet\UDB3\StringFilter\StringFilterTest;
 
 class JsonLdDescriptionToCdbXmlShortDescriptionFilterTest extends StringFilterTest
 {
-    /**
-     * @var string
-     */
-    protected $filterClass = JsonLdDescriptionToCdbXmlShortDescriptionFilter::class;
+    protected string $filterClass = JsonLdDescriptionToCdbXmlShortDescriptionFilter::class;
 
     /**
      * @test

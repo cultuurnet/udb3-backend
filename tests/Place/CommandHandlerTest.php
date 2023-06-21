@@ -133,7 +133,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         );
     }
 
-    private function factorOfferCreated($id)
+    private function factorOfferCreated(string $id): PlaceCreated
     {
         return new PlaceCreated(
             $id,

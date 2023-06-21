@@ -19,20 +19,11 @@ use PHPUnit\Framework\TestCase;
 
 class EventCreatedTest extends TestCase
 {
-    /**
-     * @var LocationId
-     */
-    private $location;
+    private LocationId $location;
 
-    /**
-     * @var DateTimeImmutable
-     */
-    private $publicationDate;
+    private DateTimeImmutable $publicationDate;
 
-    /**
-     * @var EventCreated
-     */
-    private $eventCreated;
+    private EventCreated $eventCreated;
 
     protected function setUp(): void
     {

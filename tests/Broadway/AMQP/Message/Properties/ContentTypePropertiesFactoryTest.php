@@ -33,6 +33,7 @@ class ContentTypePropertiesFactoryTest extends TestCase
     /**
      * @test
      * @dataProvider contentTypeDataProvider
+     * @param DummyEvent|DummyEventNotSerializable $payload
      */
     public function it_determines_content_type_by_payload_class($payload, string $expectedContentType): void
     {

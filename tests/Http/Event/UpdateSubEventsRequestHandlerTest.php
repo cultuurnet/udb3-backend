@@ -43,7 +43,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
      * @test
      * @dataProvider validDataProvider
      */
-    public function it_does_not_throw_when_given_valid_data($data, UpdateSubEvents $expectedCommand): void
+    public function it_does_not_throw_when_given_valid_data(array $data, UpdateSubEvents $expectedCommand): void
     {
         $this->requestHandler->handle(
             (new Psr7RequestBuilder())
@@ -244,7 +244,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
      * @test
      * @dataProvider invalidDataProvider
      */
-    public function it_throws_an_api_problem_when_given_invalid_data($data, array $expectedSchemaErrors): void
+    public function it_throws_an_api_problem_when_given_invalid_data(array $data, array $expectedSchemaErrors): void
     {
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),

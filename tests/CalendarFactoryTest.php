@@ -18,10 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class CalendarFactoryTest extends TestCase
 {
-    /**
-     * @var CalendarFactory
-     */
-    private $factory;
+    private CalendarFactory $factory;
 
     public function setUp(): void
     {

@@ -50,7 +50,7 @@ class OfferLocatorTest extends TestCase
         }
     }
 
-    private function createDomainEventStream()
+    private function createDomainEventStream(): DomainEventStream
     {
         $m1 = DomainMessage::recordNow('id', 42, Metadata::kv('bar', 1337), 'payload');
         $m2 = DomainMessage::recordNow('id', 42, Metadata::kv('bar', 1337), 'payload');

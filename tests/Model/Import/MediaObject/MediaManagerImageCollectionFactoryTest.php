@@ -45,7 +45,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_image_collection_with_an_image_for_each_image_in_the_list_of_media_objects()
+    public function it_should_return_an_image_collection_with_an_image_for_each_image_in_the_list_of_media_objects(): void
     {
         $existingMedia = [
             // JPG image.

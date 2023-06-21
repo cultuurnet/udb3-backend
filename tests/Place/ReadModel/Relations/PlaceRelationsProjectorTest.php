@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Place\ReadModel\Relations;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Place\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Place\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
@@ -145,11 +146,7 @@ final class PlaceRelationsProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @param string $placeId
-     * @return DomainMessage
-     */
-    private function createDomainMessage($placeId, $payload)
+    private function createDomainMessage(string $placeId, Serializable $payload): DomainMessage
     {
         return new DomainMessage(
             $placeId,

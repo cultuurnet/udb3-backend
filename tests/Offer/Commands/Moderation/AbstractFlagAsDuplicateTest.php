@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\Offer\Commands\Moderation;
 
 class AbstractFlagAsDuplicateTest extends AbstractModerationCommandTestBase
 {
-    /**
-     * @inheritdoc
-     */
-    public function getModerationCommandClass()
+    public function getModerationCommandClass(): string
     {
         return AbstractFlagAsDuplicate::class;
     }

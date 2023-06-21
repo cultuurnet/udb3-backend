@@ -32,10 +32,8 @@ class EventRelationsProjectorTest extends TestCase
      */
     private $repository;
 
-    /**
-     * @var EventRelationsProjector
-     */
-    private $projector;
+
+    private EventRelationsProjector $projector;
 
     public function setUp(): void
     {
@@ -50,18 +48,14 @@ class EventRelationsProjectorTest extends TestCase
     /**
      * @test
      * @dataProvider cdbXmlDataProvider
-     *
-     * @param string $aggregateId
-     * @param string $expectedEventId
-     * @param string $expectedPlaceId
-     * @param string $expectedOrganizerId
+     * @param EventImportedFromUDB2|EventUpdatedFromUDB2 $event
      */
     public function it_stores_relations_when_creating_or_updating_events_from_udb2_or_cdbxml(
-        $aggregateId,
+        string $aggregateId,
         $event,
-        $expectedEventId,
-        $expectedPlaceId,
-        $expectedOrganizerId
+        string $expectedEventId,
+        ?string $expectedPlaceId,
+        ?string $expectedOrganizerId
     ): void {
         $this->repository
             ->expects($this->once())
