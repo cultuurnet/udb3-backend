@@ -29,7 +29,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
     private string $labelRolesTableName;
 
-    private StringLiteral $userRolesTableName;
+    private string $userRolesTableName;
 
     protected function setUp(): void
     {
@@ -43,9 +43,9 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             $this->getConnection()->getSchemaManager()
         );
 
-        $this->userRolesTableName = new StringLiteral('user_roles');
+        $this->userRolesTableName = 'user_roles';
         $schemaConfigurator = new PermissionsSchemaConfigurator(
-            $this->userRolesTableName,
+            new StringLiteral($this->userRolesTableName),
             new StringLiteral('role_permissions')
         );
         $schemaConfigurator->configure(
@@ -56,7 +56,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             $this->getConnection(),
             $this->getTableName(),
             $this->labelRolesTableName,
-            $this->userRolesTableName->toNative()
+            $this->userRolesTableName
         );
 
         $this->entityByUuid = new Entity(
@@ -433,7 +433,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     private function insertUserRole(string $userId, UUID $roleId): void
     {
         $this->getConnection()->insert(
-            $this->userRolesTableName->toNative(),
+            $this->userRolesTableName,
             [
                 PermissionsSchemaConfigurator::USER_ID_COLUMN => $userId,
                 PermissionsSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
