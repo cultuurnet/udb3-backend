@@ -115,9 +115,7 @@ class PlaceDenormalizer extends OfferDenormalizer
 
         /* @var ImmutablePlace $offer */
         $offer = $this->denormalizeOffer($data);
-        $offer = $this->denormalizeGeoCoordinates($data, $offer);
-
-        return $offer;
+        return $this->denormalizeGeoCoordinates($data, $offer); // @phpstan-ignore-line
     }
 
     private function denormalizeGeoCoordinates(array $data, ImmutablePlace $place): ImmutablePlace
