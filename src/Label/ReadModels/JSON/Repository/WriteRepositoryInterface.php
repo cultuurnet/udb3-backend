@@ -7,13 +7,12 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\StringLiteral;
 
 interface WriteRepositoryInterface
 {
     public function save(
         UUID $uuid,
-        StringLiteral $name,
+        string $name,
         Visibility $visibility,
         Privacy $privacy
     );
@@ -29,8 +28,4 @@ interface WriteRepositoryInterface
     public function updateExcluded(UUID $uuid): void;
 
     public function updateIncluded(UUID $uuid): void;
-
-    public function updateCountIncrement(UUID $uuid): void;
-
-    public function updateCountDecrement(UUID $uuid): void;
 }

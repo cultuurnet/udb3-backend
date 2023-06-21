@@ -52,7 +52,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
             $entity->getVisibility()->sameAs(Visibility::VISIBLE()),
             $entity->getPrivacy()->sameAs(Privacy::PRIVACY_PRIVATE()),
             null,
-            $entity->getCount(),
+            0,
             $entity->isExcluded(),
         ];
     }
@@ -76,7 +76,6 @@ abstract class BaseDBALRepositoryTest extends TestCase
                 ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
             $row[SchemaConfigurator::PRIVATE_COLUMN]
                 ? Privacy::PRIVACY_PRIVATE() : Privacy::PRIVACY_PUBLIC(),
-            (int) $row[SchemaConfigurator::COUNT_COLUMN],
             (bool) $row[SchemaConfigurator::EXCLUDED_COLUMN]
         );
     }

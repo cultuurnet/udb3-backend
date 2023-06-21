@@ -103,7 +103,6 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             new StringLiteral('excluded'),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC(),
-            2,
             true
         );
         $this->saveEntity($this->excluded);

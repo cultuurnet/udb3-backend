@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Event\Events\LabelAdded as LabelAddedToEvent;
-use CultuurNet\UDB3\Event\Events\LabelRemoved as LabelRemovedFromEvent;
 use CultuurNet\UDB3\Label\Events\AbstractEvent;
 use CultuurNet\UDB3\Label\Events\Created;
 use CultuurNet\UDB3\Label\Events\Excluded;
@@ -23,11 +21,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
-use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
-use CultuurNet\UDB3\Place\Events\LabelAdded as LabelAddedToPlace;
-use CultuurNet\UDB3\Place\Events\LabelRemoved as LabelRemovedFromPlace;
 use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -261,58 +255,6 @@ final class ProjectorTest extends TestCase
     }
 
     /**
-     * @test
-     */
-    public function it_handles_label_added_to_event(): void
-    {
-        $labelAdded = new LabelAddedToEvent(
-            '350bd67a-814a-4be0-acc8-f92395830e94',
-            $this->labelName
-        );
-
-        $this->handleAdding($labelAdded);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_label_removed_from_event(): void
-    {
-        $labelRemoved = new LabelRemovedFromEvent(
-            '350bd67a-814a-4be0-acc8-f92395830e94',
-            $this->labelName
-        );
-
-        $this->handleDeleting($labelRemoved);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_label_added_to_place(): void
-    {
-        $labelAdded = new LabelAddedToPlace(
-            '350bd67a-814a-4be0-acc8-f92395830e94',
-            $this->labelName
-        );
-
-        $this->handleAdding($labelAdded);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_label_removed_from_place(): void
-    {
-        $labelRemoved = new LabelRemovedFromPlace(
-            '350bd67a-814a-4be0-acc8-f92395830e94',
-            $this->labelName
-        );
-
-        $this->handleDeleting($labelRemoved);
-    }
-
-    /**
      * @param AbstractEvent|AbstractLabelEvent|Included|Excluded $payload
      */
     private function createDomainMessage(UUID $id, $payload): DomainMessage
@@ -324,33 +266,5 @@ final class ProjectorTest extends TestCase
             $payload,
             BroadwayDateTime::now()
         );
-    }
-
-
-    private function handleAdding(AbstractLabelAdded $labelAdded): void
-    {
-        $this->handleLabelMovement($labelAdded, 'updateCountIncrement');
-    }
-
-
-    private function handleDeleting(AbstractLabelRemoved $labelRemoved): void
-    {
-        $this->handleLabelMovement($labelRemoved, 'updateCountDecrement');
-    }
-
-    private function handleLabelMovement(
-        AbstractLabelEvent $labelEvent,
-        string $expectedMethod
-    ): void {
-        $domainMessage = $this->createDomainMessage(
-            new UUID($labelEvent->getItemId()),
-            $labelEvent
-        );
-
-        $this->writeRepository->expects($this->once())
-            ->method($expectedMethod)
-            ->with($this->uuid);
-
-        $this->projector->handle($domainMessage);
     }
 }

@@ -17,8 +17,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\StringLiteral;
 
 class Projector extends AbstractProjector
 {
@@ -44,7 +42,7 @@ class Projector extends AbstractProjector
         }
         $this->writeRepository->save(
             $created->getUuid(),
-            new StringLiteral($created->getName()),
+            $created->getName(),
             $created->getVisibility(),
             $created->getPrivacy()
         );
@@ -80,39 +78,18 @@ class Projector extends AbstractProjector
         $this->writeRepository->updateExcluded($excluded->getUuid());
     }
 
-    public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata): void
+    public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata)
     {
-        $uuid = $this->getUuid($labelAdded);
-
-        if ($uuid) {
-            $this->writeRepository->updateCountIncrement($uuid);
-        }
+        // This projector does not handle this event, but it is part of abstract projector.
     }
 
-    public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata): void
+    public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata)
     {
-        $uuid = $this->getUuid($labelRemoved);
-
-        if ($uuid) {
-            $this->writeRepository->updateCountDecrement($uuid);
-        }
+        // This projector does not handle this event, but it is part of abstract projector.
     }
 
     public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata): void
     {
         // This projector does not handle this event, but it is part of abstract projector.
-    }
-
-    private function getUuid(LabelEventInterface $labelEvent): ?UUID
-    {
-        $uuid = null;
-
-        $entity = $this->readRepository->getByName($labelEvent->getLabelName());
-
-        if ($entity !== null) {
-            $uuid = $entity->getUuid();
-        }
-
-        return $uuid;
     }
 }

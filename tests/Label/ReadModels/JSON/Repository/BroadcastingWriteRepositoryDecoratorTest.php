@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 final class BroadcastingWriteRepositoryDecoratorTest extends TestCase
 {
@@ -43,7 +42,7 @@ final class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     public function it_does_not_broadcast_on_save(): void
     {
         $uuid = new UUID('eea246d1-4f50-4879-8f52-42867ed51670');
-        $name = new StringLiteral('labelName');
+        $name = 'labelName';
         $visibility = new Visibility('invisible');
         $privacy = new Privacy('private');
 
@@ -66,52 +65,6 @@ final class BroadcastingWriteRepositoryDecoratorTest extends TestCase
             $name,
             $visibility,
             $privacy
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_broadcast_on_update_count_increment(): void
-    {
-        $uuid = new UUID('963d50b4-62f5-43cc-a028-fdfdc0280bdd');
-
-        $this->writeRepository
-            ->expects($this->once())
-            ->method('updateCountIncrement')
-            ->with(
-                $uuid
-            );
-
-        $this->eventBus
-            ->expects($this->never())
-            ->method('publish');
-
-        $this->broadcastingWriteRepositoryDecorator->updateCountIncrement(
-            $uuid
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_broadcast_on_update_count_decrement(): void
-    {
-        $uuid = new UUID('34198f6d-e782-4e94-9593-8e31e2e2913a');
-
-        $this->writeRepository
-            ->expects($this->once())
-            ->method('updateCountDecrement')
-            ->with(
-                $uuid
-            );
-
-        $this->eventBus
-            ->expects($this->never())
-            ->method('publish');
-
-        $this->broadcastingWriteRepositoryDecorator->updateCountDecrement(
-            $uuid
         );
     }
 
