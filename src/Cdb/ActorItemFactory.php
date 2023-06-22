@@ -6,36 +6,25 @@ namespace CultuurNet\UDB3\Cdb;
 
 class ActorItemFactory implements ActorItemFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $namespaceUri;
+    private string $namespaceUri;
 
-    /**
-     * @param string $namespaceUri
-     */
-    public function __construct($namespaceUri)
+    public function __construct(string $namespaceUri)
     {
         $this->namespaceUri = $namespaceUri;
     }
 
     /**
-     * @param string $cdbXml
      * @throws \CultureFeed_Cdb_ParseException
-     * @return \CultureFeed_Cdb_Item_Actor
      */
-    public function createFromCdbXml($cdbXml)
+    public function createFromCdbXml(string $cdbXml): \CultureFeed_Cdb_Item_Actor
     {
         return self::createActorFromCdbXml($this->namespaceUri, $cdbXml);
     }
 
     /**
-     * @param string $namespaceUri
-     * @param string $cdbXml
      * @throws \CultureFeed_Cdb_ParseException
-     * @return \CultureFeed_Cdb_Item_Actor
      */
-    public static function createActorFromCdbXml($namespaceUri, $cdbXml)
+    public static function createActorFromCdbXml(string $namespaceUri, string $cdbXml): \CultureFeed_Cdb_Item_Actor
     {
         $udb2SimpleXml = new \SimpleXMLElement(
             $cdbXml,

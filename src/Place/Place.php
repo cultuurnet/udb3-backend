@@ -309,7 +309,7 @@ class Place extends Offer
         return $this->canonicalPlaceId;
     }
 
-    public function updateWithCdbXml($cdbXml, $cdbXmlNamespaceUri): void
+    public function updateWithCdbXml(string $cdbXml, string $cdbXmlNamespaceUri): void
     {
         ActorItemFactory::createActorFromCdbXml($cdbXmlNamespaceUri, $cdbXml);
 
