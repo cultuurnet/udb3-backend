@@ -8,6 +8,7 @@ use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\State\ResponseState;
 use CultuurNet\UDB3\State\VariableState;
 use CultuurNet\UDB3\Steps\AuthorizationSteps;
+use CultuurNet\UDB3\Steps\CuratorSteps;
 use CultuurNet\UDB3\Steps\EventSteps;
 use CultuurNet\UDB3\Steps\LabelSteps;
 use CultuurNet\UDB3\Steps\OrganizerSteps;
@@ -25,6 +26,7 @@ final class FeatureContext implements Context
     use ResponseSteps;
     use UtilitySteps;
 
+    use CuratorSteps;
     use EventSteps;
     use OrganizerSteps;
     use PlaceSteps;
