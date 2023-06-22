@@ -34,6 +34,9 @@ final class CommandBusForwardingConsumer extends AbstractConsumer
         );
     }
 
+    /**
+     * @param null|object|string $deserializedMessage
+     */
     protected function handle($deserializedMessage, array $context): void
     {
         $this->commandBus->dispatch($deserializedMessage);

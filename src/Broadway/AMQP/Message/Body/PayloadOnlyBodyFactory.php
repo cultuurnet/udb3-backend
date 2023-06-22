@@ -22,7 +22,7 @@ class PayloadOnlyBodyFactory implements BodyFactoryInterface
     /**
      * @throws SerializationException
      */
-    private function guardSerializable($object): void
+    private function guardSerializable(object $object): void
     {
         if (!$object instanceof Serializable) {
             throw new SerializationException(

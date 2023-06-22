@@ -59,6 +59,9 @@ abstract class AbstractConsumer implements ConsumerInterface
         $this->registerConsumeCallback();
     }
 
+    /**
+     * @param null|object|string $deserializedMessage
+     */
     abstract protected function handle($deserializedMessage, array $context): void;
 
     private function delayIfNecessary(): void
