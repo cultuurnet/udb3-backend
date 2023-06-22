@@ -10,15 +10,9 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInt
 
 class TabularDataFileWriter implements FileWriterInterface
 {
-    /**
-     * @var TabularDataEventFormatter
-     */
-    protected $eventFormatter;
+    protected TabularDataEventFormatter $eventFormatter;
 
-    /**
-     * @var TabularDataFileWriterFactoryInterface
-     */
-    protected $tabularDataFileWriterFactory;
+    protected TabularDataFileWriterFactoryInterface $tabularDataFileWriterFactory;
 
     /**
      * @param string[] $include
@@ -33,18 +27,14 @@ class TabularDataFileWriter implements FileWriterInterface
         $this->eventFormatter = new TabularDataEventFormatter($include, $uitpas, $calendarSummaryRepository);
     }
 
-
-    protected function writeHeader(TabularDataFileWriterInterface $tabularDataFileWriter)
+    protected function writeHeader(TabularDataFileWriterInterface $tabularDataFileWriter): void
     {
         $headerRow = $this->eventFormatter->formatHeader();
 
         $tabularDataFileWriter->writeRow($headerRow);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function write($filePath, $events): void
+    public function write(string $filePath, \Traversable $events): void
     {
         $tabularDataFileWriter = $this->openFileWriter($filePath);
 
@@ -54,24 +44,17 @@ class TabularDataFileWriter implements FileWriterInterface
         $tabularDataFileWriter->close();
     }
 
-    /**
-     * @param \Traversable                   $events
-     */
     protected function writeEvents(
         TabularDataFileWriterInterface $tabularDataFileWriter,
-        $events
-    ) {
+        \Traversable $events
+    ): void {
         foreach ($events as $event) {
             $eventRow = $this->eventFormatter->formatEvent($event);
             $tabularDataFileWriter->writeRow($eventRow);
         }
     }
 
-    /**
-     * @param string $filePath
-     * @return TabularDataFileWriterInterface
-     */
-    protected function openFileWriter($filePath)
+    protected function openFileWriter(string $filePath): TabularDataFileWriterInterface
     {
         return $this->tabularDataFileWriterFactory->openTabularDataFileWriter(
             $filePath

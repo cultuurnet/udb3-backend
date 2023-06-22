@@ -742,7 +742,7 @@ class TabularDataEventFormatter
         };
     }
 
-    private function parseEventIdFromUrl($event): string
+    private function parseEventIdFromUrl(stdClass $event): string
     {
         $eventUri = $event->{'@id'};
         $uriParts = explode('/', $eventUri);

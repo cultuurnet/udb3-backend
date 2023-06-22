@@ -17,7 +17,7 @@ final class JSONLDFileWriter implements FileWriterInterface
     }
 
     /**
-     * @return Resource
+     * @return resource
      */
     private function openFile(string $filePath)
     {
@@ -31,9 +31,6 @@ final class JSONLDFileWriter implements FileWriterInterface
         return $file;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function write($filePath, $events): void
     {
         $file = $this->openFile($filePath);
@@ -48,7 +45,7 @@ final class JSONLDFileWriter implements FileWriterInterface
     }
 
     /**
-     * @param Resource $file
+     * @param resource $file
      */
     private function writeEvents($file, \Traversable $events): void
     {

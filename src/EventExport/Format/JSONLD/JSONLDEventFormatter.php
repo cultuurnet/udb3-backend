@@ -65,7 +65,7 @@ final class JSONLDEventFormatter
         $this->includedProperties = $include;
     }
 
-    private function filterTermsFromProperties($properties): array
+    private function filterTermsFromProperties(array $properties): array
     {
         $termPrefix = 'terms.';
 
@@ -121,7 +121,7 @@ final class JSONLDEventFormatter
         return $event;
     }
 
-    private function parseEventIdFromUrl($event): string
+    private function parseEventIdFromUrl(\stdClass $event): string
     {
         $eventUri = $event->{'@id'};
         $uriParts = explode('/', $eventUri);
