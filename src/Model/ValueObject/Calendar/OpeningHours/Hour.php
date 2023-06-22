@@ -10,13 +10,8 @@ class Hour
 {
     use IsInteger;
 
-    /**
-     * @param int $value
-     */
-    public function __construct($value)
+    public function __construct(int $value)
     {
-        $this->guardInteger($value);
-
         if ($value < 0 || $value > 23) {
             throw new \InvalidArgumentException('Hour should be an integer between 0 and 23.');
         }

@@ -68,6 +68,7 @@ trait IsInteger
 
     /**
      * @throws \InvalidArgumentException
+     * @param IsInteger|mixed $other
      */
     private function guardSameType($other): void
     {
@@ -79,19 +80,8 @@ trait IsInteger
         }
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
-    private function guardInteger($value): void
+    private function setValue(int $value): void
     {
-        if (!is_int($value)) {
-            throw new \InvalidArgumentException('Given value should be an int, got ' . gettype($value) . ' instead.');
-        }
-    }
-
-    private function setValue($value): void
-    {
-        $this->guardInteger($value);
         $this->value = $value;
     }
 }
