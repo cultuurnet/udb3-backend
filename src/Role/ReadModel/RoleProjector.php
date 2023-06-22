@@ -24,7 +24,7 @@ class RoleProjector implements EventListener
         $this->repository = $repository;
     }
 
-    protected function saveNewDocument(string $uuid, callable $fn)
+    protected function saveNewDocument(string $uuid, callable $fn): void
     {
         $document = $this
             ->newDocument($uuid)
