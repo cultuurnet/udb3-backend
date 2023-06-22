@@ -33,10 +33,10 @@ final class ProductionEnrichedEventRepository extends DocumentRepositoryDecorato
         );
     }
 
-    public function save(JsonDocument $readModel): void
+    public function save(JsonDocument $document): void
     {
         parent::save(
-            $readModel->applyAssoc(
+            $document->applyAssoc(
                 function (array $json) {
                     unset($json['production']);
                     return $json;
