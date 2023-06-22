@@ -8,14 +8,9 @@ use CultuurNet\UDB3\StringLiteral;
 
 class UnauthorizableCommandException extends \Exception
 {
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
-
+    private StringLiteral $userId;
 
     private $command;
-
 
     public function __construct(StringLiteral $userId, $command)
     {
@@ -27,10 +22,7 @@ class UnauthorizableCommandException extends \Exception
         $this->command = $command;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getUserId()
+    public function getUserId(): StringLiteral
     {
         return $this->userId;
     }

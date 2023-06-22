@@ -15,20 +15,11 @@ use CultuurNet\UDB3\StringLiteral;
 
 class AuthorizedCommandBus extends CommandBusDecoratorBase implements AuthorizedCommandBusInterface, LoggerAwareInterface, ContextAwareInterface
 {
-    /**
-     * @var Metadata
-     */
-    protected $metadata;
+    protected ?Metadata $metadata;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var CommandBusSecurity
-     */
-    private $security;
+    private CommandBusSecurity $security;
 
     public function __construct(
         CommandBus $decoratee,
@@ -76,7 +67,7 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
         }
     }
 
-    public function setContext(Metadata $context = null): void
+    public function setContext(?Metadata $context = null): void
     {
         $this->metadata = $context;
 

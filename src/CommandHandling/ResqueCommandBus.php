@@ -23,25 +23,13 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
 
     public const EVENT_COMMAND_CONTEXT_SET = 'broadway.command_handling.context';
 
-    /**
-     * @var CommandBus
-     */
-    protected $decoratee;
+    protected CommandBus $decoratee;
 
-    /**
-     * @var Metadata
-     */
-    protected $context;
+    protected ?Metadata $context = null;
 
-    /**
-     * @var string
-     */
-    protected $queueName;
+    protected string $queueName;
 
-    /**
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
+    protected EventDispatcher $eventDispatcher;
 
     public function __construct(
         CommandBus $decoratee,
@@ -57,7 +45,7 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
         $this->eventDispatcher = $dispatcher;
     }
 
-    public function setContext(Metadata $context = null): void
+    public function setContext(?Metadata $context = null): void
     {
         $this->context = $context;
 
@@ -73,12 +61,7 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
         );
     }
 
-    /**
-     * Get the current execution context.
-     *
-     * @return Metadata
-     */
-    public function getContext()
+    public function getContext(): ?Metadata
     {
         return $this->context;
     }

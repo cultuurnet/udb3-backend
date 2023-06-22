@@ -14,17 +14,14 @@ class SimpleContextAwareCommandBus implements CommandBus, ContextAwareInterface,
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var Metadata
-     */
-    protected $context;
+    protected ?Metadata $context = null;
 
     /**
      * @var CommandHandler[]
      */
-    private $commandHandlers = [];
+    private array $commandHandlers = [];
 
-    public function setContext(Metadata $context = null): void
+    public function setContext(?Metadata $context = null): void
     {
         $this->context = $context;
     }
