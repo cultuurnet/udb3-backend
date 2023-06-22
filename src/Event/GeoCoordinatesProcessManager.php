@@ -12,10 +12,7 @@ use CultuurNet\UDB3\Offer\AbstractGeoCoordinatesProcessManager;
 
 class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
 {
-    /**
-     * @return array
-     */
-    protected function getEventHandlers()
+    protected function getEventHandlers(): array
     {
         return [
             EventImportedFromUDB2::class => 'handleEventImportedFromUDB2',
@@ -28,7 +25,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
      */
     protected function handleEventImportedFromUDB2(
         EventImportedFromUDB2 $eventImportedFromUDB2
-    ) {
+    ): void {
         $this->dispatchCommand(
             $eventImportedFromUDB2->getCdbXmlNamespaceUri(),
             $eventImportedFromUDB2->getCdbXml(),
@@ -41,7 +38,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
      */
     protected function handleEventUpdatedFromUDB2(
         EventUpdatedFromUDB2 $eventUpdatedFromUDB2
-    ) {
+    ): void {
         $this->dispatchCommand(
             $eventUpdatedFromUDB2->getCdbXmlNamespaceUri(),
             $eventUpdatedFromUDB2->getCdbXml(),
@@ -50,15 +47,12 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
     }
 
     /**
-     * @param string $cdbXmlNamespaceUri
-     * @param string $cdbXml
-     * @param string $eventId
      * @throws \CultureFeed_Cdb_ParseException
      */
     private function dispatchCommand(
-        $cdbXmlNamespaceUri,
-        $cdbXml,
-        $eventId
+        string $cdbXmlNamespaceUri,
+        string $cdbXml,
+        string $eventId
     ): void {
         $event = EventItemFactory::createEventFromCdbXml(
             $cdbXmlNamespaceUri,

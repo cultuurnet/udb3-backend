@@ -17,10 +17,7 @@ use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 
 class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
 {
-    /**
-     * @return array
-     */
-    protected function getEventHandlers()
+    protected function getEventHandlers(): array
     {
         return [
             PlaceCreated::class => 'handlePlaceCreated',
@@ -31,8 +28,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
         ];
     }
 
-
-    protected function handlePlaceCreated(PlaceCreated $placeCreated)
+    protected function handlePlaceCreated(PlaceCreated $placeCreated): void
     {
         $command = new UpdateGeoCoordinatesFromAddress(
             $placeCreated->getPlaceId(),
@@ -42,8 +38,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
         $this->commandBus->dispatch($command);
     }
 
-
-    protected function handleMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
+    protected function handleMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
     {
         // We don't know if the address has actually been updated because
         // MajorInfoUpdated is too coarse, but if we use the cached geocoding
@@ -57,8 +52,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
         $this->commandBus->dispatch($command);
     }
 
-
-    protected function handleAddressUpdated(AddressUpdated $addressUpdated)
+    protected function handleAddressUpdated(AddressUpdated $addressUpdated): void
     {
         $command = new UpdateGeoCoordinatesFromAddress(
             $addressUpdated->getPlaceId(),
@@ -71,7 +65,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
     /**
      * @throws \CultureFeed_Cdb_ParseException
      */
-    protected function handleActorImportedFromUDB2(ActorImportedFromUDB2 $actorImportedFromUDB2)
+    protected function handleActorImportedFromUDB2(ActorImportedFromUDB2 $actorImportedFromUDB2): void
     {
         $actor = ActorItemFactory::createActorFromCdbXml(
             $actorImportedFromUDB2->getCdbXmlNamespaceUri(),
