@@ -70,10 +70,7 @@ abstract class AbstractCollection implements CollectionInterface
         return $copy;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function contains($item)
+    public function contains($item): bool
     {
         $this->guardObjectType($item);
 
@@ -90,7 +87,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @inheritdoc
      */
-    public function getByKey($key)
+    public function getByKey(string $key)
     {
         if (!isset($this->items[$key])) {
             throw new CollectionKeyNotFoundException($key);
@@ -99,9 +96,6 @@ abstract class AbstractCollection implements CollectionInterface
         return $this->items[$key];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getKeyFor($item)
     {
         $this->guardObjectType($item);
@@ -115,26 +109,17 @@ abstract class AbstractCollection implements CollectionInterface
         return $key;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getKeys()
+    public function getKeys(): array
     {
         return array_keys($this->items);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function length()
+    public function length(): int
     {
         return count($this->items);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->items;
     }
@@ -152,18 +137,12 @@ abstract class AbstractCollection implements CollectionInterface
         return $collection;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->items);
     }
 
-    /**
-     * @return string
-     */
-    abstract protected function getValidObjectType();
+    abstract protected function getValidObjectType(): string;
 
     /**
      * @param mixed $object
@@ -172,9 +151,9 @@ abstract class AbstractCollection implements CollectionInterface
      * @return bool
      *   TRUE if the object is of a valid type, FALSE otherwise.
      */
-    protected function isValidObjectType($object)
+    protected function isValidObjectType($object): bool
     {
-        $type = (string) $this->getValidObjectType();
+        $type = $this->getValidObjectType();
         return ($object instanceof $type);
     }
 
@@ -185,7 +164,7 @@ abstract class AbstractCollection implements CollectionInterface
      * @throws \InvalidArgumentException
      *   When the provided object is not of the specified type.
      */
-    protected function guardObjectType($object)
+    protected function guardObjectType($object): void
     {
         if (!$this->isValidObjectType($object)) {
             throw new \InvalidArgumentException(

@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Collection\AbstractCollection;
  */
 class OfferIdentifierCollection extends AbstractCollection
 {
-    protected function getValidObjectType()
+    protected function getValidObjectType(): string
     {
         return IriOfferIdentifier::class;
     }
