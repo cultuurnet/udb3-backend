@@ -10,16 +10,17 @@ trait DelegateEventHandlingToSpecificMethodTrait
 {
     public function handle(DomainMessage $domainMessage): void
     {
-        $event  = $domainMessage->getPayload();
-        $method = $this->getHandleMethodName($event);
+        $method = $this->getHandleMethodName($domainMessage);
 
         if ($method) {
-            $this->$method($event, $domainMessage);
+            $this->$method($domainMessage->getPayload(), $domainMessage);
         }
     }
 
-    private function getHandleMethodName($event)
+    private function getHandleMethodName(DomainMessage $domainMessage): ?string
     {
+        $event = $domainMessage->getPayload();
+
         $classParts = explode('\\', get_class($event));
         $methodName = 'apply' . end($classParts);
 
