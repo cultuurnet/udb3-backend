@@ -9,21 +9,14 @@ use Doctrine\Common\Cache\Cache;
 
 class CacheCalendarRepository implements CalendarRepositoryInterface
 {
-    /**
-     * @var Cache
-     */
-    protected $cache;
-
+    protected Cache $cache;
 
     public function __construct(Cache $cache)
     {
         $this->cache = $cache;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get($id)
+    public function get(string $id): ?Calendar
     {
         $value = $this->cache->fetch($id);
         if ($value === false) {
@@ -32,10 +25,7 @@ class CacheCalendarRepository implements CalendarRepositoryInterface
         return unserialize($value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function save($id, Calendar $calendar): void
+    public function save(string $id, Calendar $calendar): void
     {
         $calendar = serialize($calendar);
         $this->cache->save($id, $calendar, 0);
