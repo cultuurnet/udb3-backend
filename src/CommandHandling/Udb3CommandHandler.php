@@ -30,7 +30,7 @@ abstract class Udb3CommandHandler implements CommandHandler
         }
     }
 
-    private function getHandleMethod($command): string
+    private function getHandleMethod(object $command): string
     {
         $classParts = explode('\\', get_class($command));
 

@@ -91,10 +91,9 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
     /**
      * Really dispatches the command to the proper handler to be executed.
      *
-     *
      * @throws \Exception
      */
-    public function deferredDispatch($command): void
+    public function deferredDispatch(object $command): void
     {
         if ($this->decoratee instanceof LoggerAwareInterface && $this->logger instanceof LoggerInterface) {
             $this->decoratee->setLogger($this->logger);

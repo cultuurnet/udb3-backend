@@ -10,9 +10,9 @@ class UnauthorizableCommandException extends \Exception
 {
     private StringLiteral $userId;
 
-    private $command;
+    private object $command;
 
-    public function __construct(StringLiteral $userId, $command)
+    public function __construct(StringLiteral $userId, object $command)
     {
         parent::__construct('User with id: ' . $userId->toNative() .
             ' failed to execute command: ' . get_class($command) .
@@ -27,8 +27,7 @@ class UnauthorizableCommandException extends \Exception
         return $this->userId;
     }
 
-
-    public function getCommand()
+    public function getCommand(): object
     {
         return $this->command;
     }
