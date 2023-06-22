@@ -25,6 +25,7 @@ trait IsString
 
     /**
      * @throws \InvalidArgumentException
+     * @param mixed $value
      */
     private function guardString($value): void
     {
@@ -36,7 +37,7 @@ trait IsString
     /**
      * @param string $value
      */
-    private function setValue($value): void
+    private function setValue(string $value): void
     {
         $this->guardString($value);
         $this->value = $value;
