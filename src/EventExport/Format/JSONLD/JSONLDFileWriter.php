@@ -11,7 +11,7 @@ final class JSONLDFileWriter implements FileWriterInterface
 {
     private JSONLDEventFormatter $eventFormatter;
 
-    public function __construct($include, CalendarSummaryRepositoryInterface $calendarSummaryRepository)
+    public function __construct(array $include, CalendarSummaryRepositoryInterface $calendarSummaryRepository)
     {
         $this->eventFormatter = new JSONLDEventFormatter($include, $calendarSummaryRepository);
     }
@@ -31,7 +31,7 @@ final class JSONLDFileWriter implements FileWriterInterface
         return $file;
     }
 
-    public function write($filePath, $events): void
+    public function write(string $filePath, \Traversable $events): void
     {
         $file = $this->openFile($filePath);
 

@@ -27,7 +27,7 @@ class DefaultGeocodingService implements GeocodingService
         $this->logger = $logger;
     }
 
-    public function getCoordinates($address): ?Coordinates
+    public function getCoordinates(string $address): ?Coordinates
     {
         try {
             $addresses = $this->geocoder->geocode($address);

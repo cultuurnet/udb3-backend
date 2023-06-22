@@ -32,7 +32,7 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
 {
     use LoggerAwareTrait;
 
-    protected function handleCreateEvent(CreateEvent $command)
+    protected function handleCreateEvent(CreateEvent $command): void
     {
         $event = Event::create(
             $command->getItemId(),
