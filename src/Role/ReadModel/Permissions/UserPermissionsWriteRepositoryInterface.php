@@ -10,17 +10,17 @@ use CultuurNet\UDB3\StringLiteral;
 
 interface UserPermissionsWriteRepositoryInterface
 {
-    public function removeRole(UUID $roleId);
+    public function removeRole(UUID $roleId): void;
 
 
-    public function addRolePermission(UUID $roleId, Permission $permission);
+    public function addRolePermission(UUID $roleId, Permission $permission): void;
 
 
-    public function removeRolePermission(UUID $roleId, Permission $permission);
+    public function removeRolePermission(UUID $roleId, Permission $permission): void;
 
 
-    public function addUserRole(StringLiteral $userId, UUID $roleId);
+    public function addUserRole(StringLiteral $userId, UUID $roleId): void;
 
 
-    public function removeUserRole(StringLiteral $userId, UUID $roleId);
+    public function removeUserRole(StringLiteral $userId, UUID $roleId): void;
 }
