@@ -14,10 +14,7 @@ class Title
     use IsNotEmpty;
     use Trims;
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $value = $this->trim($value);
         $this->guardNotEmpty($value);
