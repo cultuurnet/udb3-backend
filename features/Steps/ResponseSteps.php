@@ -119,6 +119,14 @@ trait ResponseSteps
     }
 
     /**
+     * @Then the JSON response at :jsonPath should have :nrOfEntries entry
+     */
+    public function theJsonResponseAtShouldHaveEntry(string $jsonPath, int $nrOfEntries): void
+    {
+        $this->theJsonResponseAtShouldHaveEntries($jsonPath, $nrOfEntries);
+    }
+
+    /**
      * @Then the response body should be valid JSON
      */
     public function theResponseBodyShouldBeValidJson(): void
