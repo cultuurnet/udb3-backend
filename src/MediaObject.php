@@ -12,35 +12,17 @@ use Broadway\Serializer\Serializable;
  */
 final class MediaObject implements Serializable, JsonLdSerializableInterface
 {
-    /**
-     * @var string|null
-     */
-    private $type;
+    private ?string $type;
 
-    /**
-     * @var string
-     */
-    private $internalId;
+    private string $internalId;
 
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
-    /**
-     * @var string
-     */
-    private $thumbnailUrl;
+    private string $thumbnailUrl;
 
-    /**
-     * @var string
-     */
-    private $description;
+    private string $description;
 
-    /**
-     * @var string
-     */
-    private $copyrightHolder;
+    private string $copyrightHolder;
 
     public function __construct(string $url, string $thumbnailUrl, string $description, string $copyrightHolder, string $internalId = '', ?string $type = null)
     {

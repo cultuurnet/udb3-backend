@@ -13,44 +13,19 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\StringLiteral;
 
-/**
- * MediaObjects for UDB3.
- */
 class MediaObject extends EventSourcedAggregateRoot
 {
-    /**
-     * Mime type of the media object.
-     *
-     * @var MIMEType
-     */
-    protected $mimeType;
+    protected MIMEType $mimeType;
 
     protected UUID $mediaObjectId;
 
-    /**
-     * Description of the media object.
-     *
-     * @var StringLiteral
-     */
-    protected $description;
+    protected StringLiteral $description;
 
-    /**
-     * Copyright info.
-     *
-     * @var CopyrightHolder
-     */
-    protected $copyrightHolder;
+    protected CopyrightHolder $copyrightHolder;
 
-    /**
-     * The URL where the source file can be found.
-     * @var Url
-     */
-    protected $sourceLocation;
+    protected Url $sourceLocation;
 
-    /**
-     * @var Language
-     */
-    protected $language;
+    protected Language $language;
 
     public static function create(
         UUID $id,
@@ -80,7 +55,7 @@ class MediaObject extends EventSourcedAggregateRoot
         return $this->mediaObjectId->toString();
     }
 
-    protected function applyMediaObjectCreated(MediaObjectCreated $mediaObjectCreated)
+    protected function applyMediaObjectCreated(MediaObjectCreated $mediaObjectCreated): void
     {
         $this->mediaObjectId = $mediaObjectCreated->getMediaObjectId();
         $this->mimeType = $mediaObjectCreated->getMimeType();
@@ -90,10 +65,7 @@ class MediaObject extends EventSourcedAggregateRoot
         $this->language = $mediaObjectCreated->getLanguage();
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getDescription()
+    public function getDescription(): StringLiteral
     {
         return $this->description;
     }
@@ -108,26 +80,17 @@ class MediaObject extends EventSourcedAggregateRoot
         return $this->mediaObjectId;
     }
 
-    /**
-     * @return MIMEType
-     */
-    public function getMimeType()
+    public function getMimeType(): MIMEType
     {
         return $this->mimeType;
     }
 
-    /**
-     * @return Url
-     */
-    public function getSourceLocation()
+    public function getSourceLocation(): Url
     {
         return $this->sourceLocation;
     }
 
-    /**
-     * @return Language
-     */
-    public function getLanguage()
+    public function getLanguage(): Language
     {
         return $this->language;
     }
