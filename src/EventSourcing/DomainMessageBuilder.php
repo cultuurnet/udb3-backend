@@ -64,7 +64,7 @@ class DomainMessageBuilder
         return $this;
     }
 
-    public function create($payload): DomainMessage
+    public function create(object $payload): DomainMessage
     {
         $finalMetaData = new Metadata();
 

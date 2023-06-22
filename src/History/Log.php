@@ -116,7 +116,7 @@ class Log implements JsonSerializable
 
     public static function createFromDomainMessage(
         DomainMessage $domainMessage,
-        $description,
+        string $description,
         ?string $idSuffix = null
     ): Log {
         $id = $domainMessage->getId() . '_' . $domainMessage->getPlayhead();

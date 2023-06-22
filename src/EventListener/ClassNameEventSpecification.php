@@ -15,7 +15,7 @@ class ClassNameEventSpecification implements EventSpecification
         $this->classNames = $classNames;
     }
 
-    public function matches($event): bool
+    public function matches(object $event): bool
     {
         foreach ($this->classNames as $className) {
             if (get_class($event) === $className->toNative()) {
