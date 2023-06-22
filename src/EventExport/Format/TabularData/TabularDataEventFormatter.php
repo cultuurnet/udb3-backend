@@ -19,6 +19,7 @@ use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
 use DateTimeInterface;
 use Exception;
@@ -77,7 +78,7 @@ class TabularDataEventFormatter
         return $columns;
     }
 
-    public function formatEvent($event): array
+    public function formatEvent(string $event): array
     {
         $event = Json::decode($event);
         $includedProperties = $this->includedProperties;
@@ -137,7 +138,7 @@ class TabularDataEventFormatter
         return $row;
     }
 
-    protected function expandMultiColumnProperties($properties): array
+    protected function expandMultiColumnProperties(array $properties): array
     {
         $expandedProperties = [];
 
@@ -196,7 +197,7 @@ class TabularDataEventFormatter
         return $expandedProperties;
     }
 
-    protected function includedOrDefaultProperties($include): array
+    protected function includedOrDefaultProperties(?array $include): array
     {
         if ($include) {
             $properties = $this->expandMultiColumnProperties($include);
@@ -717,7 +718,7 @@ class TabularDataEventFormatter
         }, $priceInfo));
     }
 
-    private function formatTariff($tariff, string $language): string
+    private function formatTariff(\stdClass $tariff, string $language): string
     {
         $price = (float) $tariff->price;
 
