@@ -23,23 +23,8 @@ trait IsString
             $this->toString() === $other->toString();
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     * @param mixed $value
-     */
-    private function guardString($value): void
-    {
-        if (!is_string($value)) {
-            throw new \InvalidArgumentException('Given value should be a string, got ' . gettype($value) . ' instead.');
-        }
-    }
-
-    /**
-     * @param string $value
-     */
     private function setValue(string $value): void
     {
-        $this->guardString($value);
         $this->value = $value;
     }
 }

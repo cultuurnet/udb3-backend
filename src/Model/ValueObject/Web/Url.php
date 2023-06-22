@@ -12,12 +12,8 @@ class Url
     use IsString;
     use MatchesRegexPattern;
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
-        $this->guardString($value);
         $this->guardRegexPattern('/\\Ahttp[s]?:\\/\\//', strtolower($value));
 
         if (filter_var($value, FILTER_VALIDATE_URL) === false) {
