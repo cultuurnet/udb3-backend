@@ -9,8 +9,11 @@ trait MatchesRegexPattern
     /**
      * @throws \InvalidArgumentException
      */
-    private function guardRegexPattern(string $pattern, string $value, ?string $customExceptionMessage = null)
-    {
+    private function guardRegexPattern(
+        string $pattern,
+        string $value,
+        ?string $customExceptionMessage = null
+    ): void {
         if (!preg_match($pattern, $value)) {
             $message = "String '{$value}' does not match regex pattern {$pattern}.";
             if ($customExceptionMessage) {
