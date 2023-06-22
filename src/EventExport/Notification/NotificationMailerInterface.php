@@ -9,5 +9,5 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 interface NotificationMailerInterface
 {
-    public function sendNotificationMail(EmailAddress $address, EventExportResult $eventExportResult);
+    public function sendNotificationMail(EmailAddress $address, EventExportResult $eventExportResult): void;
 }
