@@ -17,7 +17,7 @@ final class PlaceRelationsProjector implements EventListener
 
     protected PlaceRelationsRepository $repository;
 
-    public function __construct($repository)
+    public function __construct(PlaceRelationsRepository $repository)
     {
         $this->repository = $repository;
     }
