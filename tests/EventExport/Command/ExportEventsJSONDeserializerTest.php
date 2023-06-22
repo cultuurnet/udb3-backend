@@ -41,7 +41,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
                 null,
                 null
             )
-            ->willReturn(new \stdClass());
+            ->willReturn(new ExportEventsAsOOXML(new EventExportQuery('city:leuven'), []));
 
         $this->deserializer->deserialize($data);
     }
@@ -71,7 +71,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
                     'eb59c69c-2e29-4cbc-901f-d9076b38ca59',
                 ]
             )
-            ->willReturn(new \stdClass());
+            ->willReturn(new ExportEventsAsOOXML(new EventExportQuery('city:leuven'), []));
 
         $this->deserializer->deserialize($data);
     }

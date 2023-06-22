@@ -16,10 +16,7 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class IriOfferIdentifierJSONDeserializer implements DeserializerInterface
 {
-    /**
-     * @var IriOfferIdentifierFactoryInterface
-     */
-    private $iriOfferIdentifierFactory;
+    private IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory;
 
     /**
      * IriOfferIdentifierJSONDeserializer constructor.
@@ -29,10 +26,7 @@ class IriOfferIdentifierJSONDeserializer implements DeserializerInterface
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
     }
 
-    /**
-     * @return IriOfferIdentifier
-     */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): IriOfferIdentifier
     {
         $data = json_decode($data->toNative(), true);
 

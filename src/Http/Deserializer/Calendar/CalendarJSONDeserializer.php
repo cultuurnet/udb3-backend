@@ -16,15 +16,9 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class CalendarJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var CalendarJSONParser
-     */
-    private $calendarJSONParser;
+    private CalendarJSONParser $calendarJSONParser;
 
-    /**
-     * @var DataValidatorInterface
-     */
-    private $calendarDataValidator;
+    private DataValidatorInterface $calendarDataValidator;
 
     public function __construct(
         CalendarJSONParser $calendarJSONParser,
@@ -36,10 +30,7 @@ class CalendarJSONDeserializer extends JSONDeserializer
         $this->calendarDataValidator = $calendarDataValidator;
     }
 
-    /**
-     * @return Calendar
-     */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): Calendar
     {
         $data = (array) parent::deserialize($data);
 
@@ -104,11 +95,7 @@ class CalendarJSONDeserializer extends JSONDeserializer
         return CalendarType::PERMANENT();
     }
 
-    /**
-     *
-     * @return \DateTimeInterface|null
-     */
-    private function getStartDate(array $data)
+    private function getStartDate(array $data): ?\DateTimeInterface
     {
         $timestamps = $this->calendarJSONParser->getTimestamps($data);
         if (count($timestamps)) {
@@ -122,11 +109,7 @@ class CalendarJSONDeserializer extends JSONDeserializer
         return null;
     }
 
-    /**
-     *
-     * @return \DateTimeInterface|null
-     */
-    private function getEndDate(array $data)
+    private function getEndDate(array $data): ?\DateTimeInterface
     {
         $timestamps = $this->calendarJSONParser->getTimestamps($data);
         if (count($timestamps)) {

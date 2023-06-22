@@ -18,25 +18,15 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class OrganizerCreationPayloadJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var OrganizerCreationPayloadDataValidator
-     */
-    private $validator;
+    private OrganizerCreationPayloadDataValidator $validator;
 
-    /**
-     * @var AddressJSONDeserializer
-     */
-    private $addressDeserializer;
+    private AddressJSONDeserializer $addressDeserializer;
 
-    /**
-     * @var ContactPointJSONDeserializer
-     */
-    private $contactPointDeserializer;
+    private ContactPointJSONDeserializer $contactPointDeserializer;
 
     public function __construct()
     {
-        $assoc = true;
-        parent::__construct($assoc);
+        parent::__construct(true);
 
         $this->validator = new OrganizerCreationPayloadDataValidator();
 
@@ -44,10 +34,7 @@ class OrganizerCreationPayloadJSONDeserializer extends JSONDeserializer
         $this->contactPointDeserializer = new ContactPointJSONDeserializer();
     }
 
-    /**
-     * @return OrganizerCreationPayload
-     */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): OrganizerCreationPayload
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);

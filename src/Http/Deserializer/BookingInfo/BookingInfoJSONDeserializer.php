@@ -21,10 +21,7 @@ class BookingInfoJSONDeserializer extends JSONDeserializer
         parent::__construct(true);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): BookingInfo
     {
         /* @var array $data */
         $data = parent::deserialize($data);

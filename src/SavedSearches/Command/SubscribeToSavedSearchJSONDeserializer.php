@@ -15,23 +15,15 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var StringLiteral
-     */
-    protected $userId;
+    protected StringLiteral $userId;
 
-
-    public function __construct(
-        StringLiteral $userId
-    ) {
+    public function __construct(StringLiteral $userId)
+    {
         parent::__construct();
         $this->userId = $userId;
     }
 
-    /**
-     * @return SubscribeToSavedSearch|\stdClass
-     */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): SubscribeToSavedSearch
     {
         $json = parent::deserialize($data);
 
