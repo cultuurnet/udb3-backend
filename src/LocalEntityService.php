@@ -55,7 +55,7 @@ class LocalEntityService implements EntityServiceInterface
         return $document->getRawBody();
     }
 
-    public function iri($id): string
+    public function iri(string $id): string
     {
         return $this->iriGenerator->iri($id);
     }

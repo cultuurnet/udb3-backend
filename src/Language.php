@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3ModelLanguage;
  */
 class Language
 {
-    protected $code;
+    protected string $code;
 
     public function __construct(string $code)
     {
@@ -24,26 +24,17 @@ class Language
         $this->code = $code;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->code;
     }
 
-    /**
-     * @return string
-     */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
 
-    /**
-     * @return self
-     */
-    public static function fromUdb3ModelLanguage(Udb3ModelLanguage $language)
+    public static function fromUdb3ModelLanguage(Udb3ModelLanguage $language): Language
     {
         return new self($language->toString());
     }

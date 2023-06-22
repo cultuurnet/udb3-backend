@@ -13,7 +13,7 @@ use DateTimeZone;
  */
 class SystemClock implements Clock
 {
-    private $timezone;
+    private DateTimeZone $timezone;
 
     public function __construct(DateTimeZone $timezone)
     {

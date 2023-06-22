@@ -16,7 +16,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @var array
      */
-    protected $items;
+    protected array $items;
 
     public function __construct()
     {
