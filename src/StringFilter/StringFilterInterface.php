@@ -4,14 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\StringFilter;
 
-/**
- * Interface for filtering the description of a json-ld event.
- */
 interface StringFilterInterface
 {
-    /**
-     * @param string|int $string
-     * @return string
-     */
-    public function filter($string);
+    public function filter(string $string): string;
 }

@@ -30,13 +30,4 @@ class StripLeadingSpaceStringFilterTest extends StringFilterTest
         $expected = "Hello!\t   \nGoodbye!\n\n\nHello again!\t";
         $this->assertFilterValue($expected, $original);
     }
-
-    /**
-     * @test
-     */
-    public function it_only_filters_strings(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->filter->filter(12345);
-    }
 }

@@ -8,72 +8,39 @@ use Stringy\Stringy as Stringy;
 
 class TruncateStringFilter implements StringFilterInterface
 {
-    /**
-     * @var bool
-     */
-    protected $wordSafe = false;
+    protected bool $wordSafe = false;
 
-    /**
-     * @var int
-     */
-    protected $minWordSafeLength;
+    protected int $minWordSafeLength = 0;
 
-    /**
-     * @var bool
-     */
-    protected $addEllipsis = false;
+    protected bool $addEllipsis = false;
 
-    /**
-     * @var bool
-     */
-    protected $spaceBeforeEllipsis = false;
+    protected bool $spaceBeforeEllipsis = false;
 
-    /**
-     * @var bool
-     */
-    protected $sentenceFriendly = false;
+    protected bool $sentenceFriendly = false;
 
-    /**
-     * @var int
-     */
-    protected $maxLength;
+    protected int $maxLength;
 
-    /**
-     * @param int $maxLength
-     */
-    public function __construct($maxLength)
+    public function __construct(int $maxLength)
     {
         $this->setMaxLength($maxLength);
     }
 
-    /**
-     * @param int $maxLength
-     */
-    public function setMaxLength($maxLength): void
+    public function setMaxLength(int $maxLength): void
     {
         $this->maxLength = $maxLength;
     }
 
-    /**
-     * @param bool $toggle
-     */
-    public function addEllipsis($toggle = true): void
+    public function addEllipsis(bool $toggle = true): void
     {
         $this->addEllipsis = $toggle;
     }
 
-    /**
-     * @param bool $toggle
-     */
-    public function spaceBeforeEllipsis($toggle = true): void
+    public function spaceBeforeEllipsis(bool $toggle = true): void
     {
         $this->spaceBeforeEllipsis = $toggle;
     }
 
-    /**
-     * @param int $minWordSafeLength
-     */
-    public function turnOnWordSafe($minWordSafeLength = 1): void
+    public function turnOnWordSafe(int $minWordSafeLength = 1): void
     {
         $this->wordSafe = true;
         $this->minWordSafeLength = $minWordSafeLength;
@@ -87,10 +54,7 @@ class TruncateStringFilter implements StringFilterInterface
         $this->sentenceFriendly = true;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function filter($string)
+    public function filter(string $string): string
     {
         // Maximum length and minimum length to enable word-safe truncating should always be greater than zero.
         $maxLength = max($this->maxLength, 0);

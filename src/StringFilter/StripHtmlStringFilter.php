@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class StripHtmlStringFilter implements StringFilterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function filter($string)
+    public function filter(string $string): string
     {
         // Add one newline after each break tag.
         $string = $this->setNewlinesAfterClosingTags($string, 'br', 1, true);
@@ -48,8 +45,12 @@ class StripHtmlStringFilter implements StringFilterInterface
      * @return string
      *   Processed string.
      */
-    protected function setNewlinesAfterClosingTags($string, $tag, $newlineCount = 1, $selfClosing = false)
-    {
+    protected function setNewlinesAfterClosingTags(
+        string $string,
+        string $tag,
+        int $newlineCount = 1,
+        bool $selfClosing = false
+    ): string {
         // Start of the pattern.
         $pattern = '/';
 
@@ -94,7 +95,7 @@ class StripHtmlStringFilter implements StringFilterInterface
      * @return string
      *   Processed string.
      */
-    protected function limitConsecutiveNewlines($string, $limit = 2)
+    protected function limitConsecutiveNewlines(string $string, int $limit = 2): string
     {
         // Pattern that finds any consecutive newlines that exceed the allowed limit.
         $exceeded = $limit + 1;
