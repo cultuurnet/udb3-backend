@@ -74,10 +74,19 @@ trait ResponseSteps
      */
     public function theJsonResponseAtShouldInclude(string $jsonPath, string $value): void
     {
-        assertStringContainsString(
-            $value,
-            $this->responseState->getValueOnPath($jsonPath)
-        );
+        $actual = $this->responseState->getValueOnPath($jsonPath);
+
+        if (is_array($actual)) {
+            assertContains(
+                $this->variableState->replaceVariables($value),
+                $actual
+            );
+        } else {
+            assertStringContainsString(
+                $this->variableState->replaceVariables($value),
+                $actual
+            );
+        }
     }
 
     /**
@@ -85,10 +94,19 @@ trait ResponseSteps
      */
     public function theJsonResponseAtShouldInclude2(string $jsonPath, PyStringNode $value): void
     {
-        assertContains(
-            Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
-            $this->responseState->getValueOnPath($jsonPath)
-        );
+        $actual = $this->responseState->getValueOnPath($jsonPath);
+
+        if (is_array($actual)) {
+            assertContains(
+                Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
+                $actual
+            );
+        } else {
+            assertStringContainsString(
+                $this->variableState->replaceVariables($value->getRaw()),
+                $actual
+            );
+        }
     }
 
     /**
