@@ -19,7 +19,6 @@ use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
 use DateTimeInterface;
 use Exception;
