@@ -21,7 +21,6 @@ class EventInfo
     protected array $promotions;
 
     /**
-     * @param array $prices
      * @param EventAdvantage[] $advantages
      * @param string[] $promotions
      */
