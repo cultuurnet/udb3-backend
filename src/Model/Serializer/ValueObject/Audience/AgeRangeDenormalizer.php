@@ -18,17 +18,17 @@ class AgeRangeDenormalizer implements DenormalizerInterface
         return new AgeRange($parts['from'], $parts['to']);
     }
 
-    public function denormalizeFrom($data, $class, $format = null): ?Age
+    public function denormalizeFrom(string $data, string $class, ?string $format = null): ?Age
     {
         return $this->getParts($data, $class, $format)['from'];
     }
 
-    public function denormalizeTo($data, $class, $format = null): ?Age
+    public function denormalizeTo(string $data, string $class, ?string $format = null): ?Age
     {
         return $this->getParts($data, $class, $format)['to'];
     }
 
-    private function getParts($data, $class, $format): array
+    private function getParts(string $data, string $class, ?string $format): array
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("AgeRangeDenormalizer does not support {$class}.");
