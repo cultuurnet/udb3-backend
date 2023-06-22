@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\EventExport\EventExportQuery;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
@@ -54,7 +53,7 @@ final class AddLabelToQueryRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new AddLabelToQuery(
-                    new EventExportQuery('Dansvoorstellingen'),
+                    'Dansvoorstellingen',
                     new Label(
                         new LabelName('Dansje')
                     )
