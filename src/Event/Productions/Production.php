@@ -8,25 +8,19 @@ use InvalidArgumentException;
 
 final class Production
 {
-    /**
-     * @var ProductionId
-     */
-    private $productionId;
+    private ProductionId $productionId;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     /**
      * @var string[]
      */
-    private $events;
+    private array $events;
 
     public function __construct(
         ProductionId $productionId,
         string $name,
-        $events
+        array $events
     ) {
         if (empty(trim($name))) {
             throw new InvalidArgumentException('Production name cannot be empty');
@@ -72,7 +66,7 @@ final class Production
     /**
      * string[]
      */
-    public function getEventIds()
+    public function getEventIds(): array
     {
         return $this->events;
     }
