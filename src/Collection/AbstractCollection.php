@@ -13,9 +13,6 @@ use CultuurNet\UDB3\Collection\Exception\CollectionKeyNotFoundException;
  */
 abstract class AbstractCollection implements CollectionInterface
 {
-    /**
-     * @var array
-     */
     protected array $items;
 
     public function __construct()
