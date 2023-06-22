@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications;
 
 class HasVliegBrand implements EventSpecificationInterface
 {
-    public function isSatisfiedBy(\stdClass $eventLd)
+    public function isSatisfiedBy(\stdClass $eventLd): bool
     {
         $hasAppropriateAge = false;
 
