@@ -15,25 +15,15 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     public const ROLE_ID_COLUMN = 'role_id';
     public const PERMISSION_COLUMN = 'permission';
 
-    /**
-     * @var StringLiteral
-     */
-    private $userRoleTableName;
+    private StringLiteral $userRoleTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $rolePermissionTableName;
+    private StringLiteral $rolePermissionTableName;
 
-    /**
-     * SchemaConfigurator constructor.
-     */
     public function __construct(StringLiteral $userRoleTableName, StringLiteral $rolePermissionTableName)
     {
         $this->userRoleTableName = $userRoleTableName;
         $this->rolePermissionTableName = $rolePermissionTableName;
     }
-
 
     public function configure(AbstractSchemaManager $schemaManager): void
     {

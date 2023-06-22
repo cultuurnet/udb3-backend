@@ -8,5 +8,5 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
 
 interface SchemaConfiguratorInterface
 {
-    public function configure(AbstractSchemaManager $schemaManager);
+    public function configure(AbstractSchemaManager $schemaManager): void;
 }
