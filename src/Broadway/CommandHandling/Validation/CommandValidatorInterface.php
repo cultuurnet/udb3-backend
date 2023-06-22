@@ -9,5 +9,5 @@ interface CommandValidatorInterface
     /**
      * @throws \Exception
      */
-    public function validate($command): void;
+    public function validate(object $command): void;
 }

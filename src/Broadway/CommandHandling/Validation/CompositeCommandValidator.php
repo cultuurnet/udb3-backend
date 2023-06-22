@@ -21,7 +21,7 @@ class CompositeCommandValidator implements CommandValidatorInterface
         $this->commandValidators[] = $commandValidator;
     }
 
-    public function validate($command): void
+    public function validate(object $command): void
     {
         foreach ($this->commandValidators as $commandValidator) {
             $commandValidator->validate($command);
