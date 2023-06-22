@@ -10,7 +10,7 @@ class Has1Taalicoon implements EventSpecificationInterface
 {
     use Labelable;
 
-    public function isSatisfiedBy($eventLd)
+    public function isSatisfiedBy(\stdClass $eventLd)
     {
         return $this->hasLabel($eventLd, new StringLiteral('één taalicoon'));
     }
