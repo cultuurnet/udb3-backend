@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\Offer\Events;
 
 abstract class AbstractEventWithIri extends AbstractEvent
 {
-    /**
-     * @var string
-     */
-    private $iri;
+    private string $iri;
 
     final public function __construct(string $itemId, $iri)
     {

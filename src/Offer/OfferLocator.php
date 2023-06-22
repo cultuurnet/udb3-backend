@@ -12,22 +12,16 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 
 class OfferLocator implements EventStreamDecorator
 {
-    /**
-     * @var IriGeneratorInterface
-     */
-    private $iriGenerator;
+    private IriGeneratorInterface $iriGenerator;
 
-    /**
-     * OfferLocator constructor.
-     */
     public function __construct(IriGeneratorInterface $iriGenerator)
     {
         $this->iriGenerator = $iriGenerator;
     }
 
     public function decorateForWrite(
-        $aggregateType,
-        $aggregateIdentifier,
+        string $aggregateType,
+        string $aggregateIdentifier,
         DomainEventStream $eventStream
     ): DomainEventStream {
         $offerLocation = $this->iriGenerator->iri($aggregateIdentifier);
