@@ -10,11 +10,7 @@ use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 
 class EventFactory implements DocumentEventFactory
 {
-    /**
-     * @var IriGeneratorInterface
-     */
-    private $iriGenerator;
-
+    private IriGeneratorInterface $iriGenerator;
 
     public function __construct(IriGeneratorInterface $iriGenerator)
     {
