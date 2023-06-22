@@ -17,15 +17,9 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
  */
 class BroadcastingDocumentRepositoryDecorator extends DocumentRepositoryDecorator
 {
-    /**
-     * @var DocumentEventFactory
-     */
-    protected $eventFactory;
+    protected DocumentEventFactory $eventFactory;
 
-    /**
-     * @var EventBus
-     */
-    protected $eventBus;
+    protected EventBus $eventBus;
 
     public function __construct(
         DocumentRepository $repository,
@@ -44,7 +38,7 @@ class BroadcastingDocumentRepositoryDecorator extends DocumentRepositoryDecorato
         $this->broadcastDocumentUpdated($document->getId());
     }
 
-    protected function broadcastDocumentUpdated($id): void
+    protected function broadcastDocumentUpdated(string $id): void
     {
         $event = $this->eventFactory->createEvent($id);
 
