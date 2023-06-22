@@ -22,8 +22,7 @@ class LabelRolesProjector implements EventListener
         $this->labelRolesWriteRepository = $labelRolesWriteRepository;
     }
 
-
-    protected function applyLabelAdded(LabelAdded $labelAdded)
+    protected function applyLabelAdded(LabelAdded $labelAdded): void
     {
         $this->labelRolesWriteRepository->insertLabelRole(
             $labelAdded->getLabelId(),
@@ -31,8 +30,7 @@ class LabelRolesProjector implements EventListener
         );
     }
 
-
-    protected function applyLabelRemoved(LabelRemoved $labelRemoved)
+    protected function applyLabelRemoved(LabelRemoved $labelRemoved): void
     {
         $this->labelRolesWriteRepository->removeLabelRole(
             $labelRemoved->getLabelId(),
@@ -40,7 +38,7 @@ class LabelRolesProjector implements EventListener
         );
     }
 
-    protected function applyRoleDeleted(RoleDeleted $roleDeleted)
+    protected function applyRoleDeleted(RoleDeleted $roleDeleted): void
     {
         $this->labelRolesWriteRepository->removeRole($roleDeleted->getUuid());
     }
