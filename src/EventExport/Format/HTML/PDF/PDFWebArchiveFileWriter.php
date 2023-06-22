@@ -17,11 +17,8 @@ class PDFWebArchiveFileWriter extends WebArchiveFileWriter
 {
     protected PrinceWrapper $prince;
 
-    /**
-     * @param string                                  $princeXMLBinaryPath
-     */
     public function __construct(
-        $princeXMLBinaryPath,
+        string $princeXMLBinaryPath,
         HTMLFileWriter $htmlFileWriter,
         EventInfoServiceInterface $uitpas = null,
         CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
@@ -30,10 +27,7 @@ class PDFWebArchiveFileWriter extends WebArchiveFileWriter
         $this->prince = new PrinceWrapper($princeXMLBinaryPath);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function write($filePath, $events)
+    public function write(string $filePath, \Traversable $events): void
     {
         $originDirectory = $this->createWebArchiveDirectory($events);
         $originFile = $this->expandTmpPath($originDirectory) . '/index.html';
