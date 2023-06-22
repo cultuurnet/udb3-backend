@@ -11,8 +11,5 @@ interface ConsumerInterface
 {
     public function consume(AMQPMessage $message);
 
-    /**
-     * @return AMQPChannel
-     */
-    public function getChannel();
+    public function getChannel(): AMQPChannel;
 }
