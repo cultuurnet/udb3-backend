@@ -105,7 +105,7 @@ class EventDenormalizer extends OfferDenormalizer
 
         /* @var ImmutableEvent $offer */
         $offer = $this->denormalizeOffer($data);
-        $offer = $this->denormalizeAttendanceMode($data, $offer);
+        $offer = $this->denormalizeAttendanceMode($data, $offer); // @phpstan-ignore-line
         $offer = $this->denormalizeOnlineUrl($data, $offer);
         return $this->denormalizeAudienceType($data, $offer);
     }

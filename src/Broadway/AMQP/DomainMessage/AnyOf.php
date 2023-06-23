@@ -18,10 +18,7 @@ class AnyOf implements SpecificationInterface
         $this->specifications = $specifications;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function isSatisfiedBy(DomainMessage $domainMessage)
+    public function isSatisfiedBy(DomainMessage $domainMessage): bool
     {
         foreach ($this->specifications as $specification) {
             if ($specification->isSatisfiedBy($domainMessage)) {

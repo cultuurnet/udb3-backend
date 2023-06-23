@@ -6,21 +6,11 @@ namespace CultuurNet\UDB3\Broadway\AMQP\Dummies;
 
 class DummyEventNotSerializable
 {
-    /**
-     * @var string
-     */
-    protected $id;
+    protected string $id;
 
-    /**
-     * @var string
-     */
-    protected $content;
+    protected string $content;
 
-    /**
-     * @param string $id
-     * @param string $content
-     */
-    public function __construct($id, $content)
+    public function __construct(string $id, string $content)
     {
         $this->id = $id;
         $this->content = $content;

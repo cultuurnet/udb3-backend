@@ -15,50 +15,26 @@ use Doctrine\DBAL\DBALException;
 
 class EventStream
 {
-    /**
-     * @var Connection
-     */
-    protected $connection;
+    protected Connection $connection;
 
-    /**
-     * @var Serializer
-     */
-    protected $payloadSerializer;
+    protected Serializer $payloadSerializer;
 
-    /**
-     * @var Serializer
-     */
-    protected $metadataSerializer;
+    protected Serializer $metadataSerializer;
 
-    /**
-     * @var string
-     */
-    protected $tableName;
+    protected string $tableName;
 
-    /**
-     * @var int
-     */
-    protected $startId;
+    protected int $startId;
 
-    /**
-     * @var int
-     */
-    protected $lastProcessedId;
+    protected int $lastProcessedId;
 
     /**
      * @var string[]
      */
-    protected $cdbids;
+    protected array $cdbids;
 
-    /**
-     * @var EventStreamDecorator|null
-     */
-    private $domainEventStreamDecorator;
+    private ?EventStreamDecorator $domainEventStreamDecorator;
 
-    /**
-     * @var string
-     */
-    private $aggregateType;
+    private string $aggregateType;
 
     public function __construct(
         Connection $connection,
@@ -71,14 +47,13 @@ class EventStream
         $this->metadataSerializer = $metadataSerializer;
         $this->tableName = $tableName;
         $this->startId = 0;
+        $this->lastProcessedId = 0;
+        $this->cdbids = [];
+        $this->domainEventStreamDecorator = null;
         $this->aggregateType = '';
     }
 
-    /**
-     * @param int $startId
-     * @return EventStream
-     */
-    public function withStartId($startId)
+    public function withStartId(int $startId): EventStream
     {
         if (!is_int($startId)) {
             throw new \InvalidArgumentException('StartId should have type int.');
@@ -93,11 +68,7 @@ class EventStream
         return $c;
     }
 
-    /**
-     * @param string $aggregateType
-     * @return EventStream
-     */
-    public function withAggregateType($aggregateType)
+    public function withAggregateType(string $aggregateType): EventStream
     {
         $c = clone $this;
         $c->aggregateType = $aggregateType;
@@ -107,9 +78,8 @@ class EventStream
 
     /**
      * @param string[] $cdbids
-     * @return EventStream
      */
-    public function withCdbids($cdbids)
+    public function withCdbids(array $cdbids): EventStream
     {
         if (!is_array($cdbids)) {
             throw new \InvalidArgumentException('Cdbids should have type array.');
@@ -131,7 +101,7 @@ class EventStream
         return $c;
     }
 
-    public function __invoke()
+    public function __invoke(): \Generator
     {
         do {
             $statement = $this->prepareLoadStatement();
@@ -139,7 +109,7 @@ class EventStream
             $events = [];
             while ($row = $statement->fetch()) {
                 $events[] = $this->deserializeEvent($row);
-                $this->lastProcessedId = $row['id'];
+                $this->lastProcessedId = (int) $row['id'];
                 // Make sure to increment to prevent endless loop.
                 $this->startId = $row['id'] + 1;
             }
@@ -167,10 +137,7 @@ class EventStream
         } while (!empty($events));
     }
 
-    /**
-     * @return int
-     */
-    public function getLastProcessedId()
+    public function getLastProcessedId(): int
     {
         return $this->lastProcessedId;
     }
@@ -182,10 +149,9 @@ class EventStream
      * statement on the connection, this did not require all parameters to be
      * set up front.
      *
-     * @return Statement
      * @throws DBALException
      */
-    protected function prepareLoadStatement()
+    protected function prepareLoadStatement(): Statement
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 

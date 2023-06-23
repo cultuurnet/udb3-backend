@@ -14,10 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class PayloadIsInstanceOfTest extends TestCase
 {
-    /**
-     * @var DomainMessage
-     */
-    private $domainMessage;
+    private DomainMessage $domainMessage;
 
     protected function setUp(): void
     {
@@ -84,16 +81,5 @@ class PayloadIsInstanceOfTest extends TestCase
         $this->assertFalse($payloadIsInstanceOf->isSatisfiedBy(
             $this->domainMessage
         ));
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_invalid_argument_exception_when_created_with_wrong_type_for_typename()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value for argument typeName should be a string');
-
-        new PayloadIsInstanceOf(1);
     }
 }

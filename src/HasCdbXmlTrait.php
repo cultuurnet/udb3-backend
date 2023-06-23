@@ -6,20 +6,11 @@ namespace CultuurNet\UDB3;
 
 trait HasCdbXmlTrait
 {
-    /**
-     * @var string
-     */
-    protected $cdbXml;
+    protected string $cdbXml;
 
-    /**
-     * @var string
-     */
-    protected $cdbXmlNamespaceUri;
+    protected string $cdbXmlNamespaceUri;
 
-    /**
-     * @param string $cdbXml
-     */
-    private function setCdbXml($cdbXml)
+    private function setCdbXml(string $cdbXml)
     {
         if (!is_string($cdbXml)) {
             throw new \InvalidArgumentException(
@@ -29,10 +20,7 @@ trait HasCdbXmlTrait
         $this->cdbXml = $cdbXml;
     }
 
-    /**
-     * @param string $cdbXmlNamespaceUri
-     */
-    private function setCdbXmlNamespaceUri($cdbXmlNamespaceUri)
+    private function setCdbXmlNamespaceUri(string $cdbXmlNamespaceUri)
     {
         if (!is_string($cdbXmlNamespaceUri)) {
             throw new \InvalidArgumentException(
@@ -42,18 +30,12 @@ trait HasCdbXmlTrait
         $this->cdbXmlNamespaceUri = $cdbXmlNamespaceUri;
     }
 
-    /**
-     * @return string
-     */
-    public function getCdbXml()
+    public function getCdbXml(): string
     {
         return $this->cdbXml;
     }
 
-    /**
-     * @return string
-     */
-    public function getCdbXmlNamespaceUri()
+    public function getCdbXmlNamespaceUri(): string
     {
         return $this->cdbXmlNamespaceUri;
     }

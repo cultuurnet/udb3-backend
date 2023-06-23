@@ -122,7 +122,7 @@ class UpdateUniqueLabels extends Command
      * @throws DBALException
      * @throws UniqueConstraintViolationException
      */
-    private function updateLabel(Uuid $labelUuid, LabelName $labelName): void
+    private function updateLabel(UuidInterface $labelUuid, LabelName $labelName): void
     {
         $this->connection
             ->insert(

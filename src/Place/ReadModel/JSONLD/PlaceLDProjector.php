@@ -322,8 +322,8 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         $placeLd = $document->getBody();
 
         $placeLd->geo = (object) [
-            'latitude' => $geoCoordinatesUpdated->getCoordinates()->getLatitude()->toDouble(),
-            'longitude' => $geoCoordinatesUpdated->getCoordinates()->getLongitude()->toDouble(),
+            'latitude' => $geoCoordinatesUpdated->getCoordinates()->getLatitude()->toFloat(),
+            'longitude' => $geoCoordinatesUpdated->getCoordinates()->getLongitude()->toFloat(),
         ];
 
         return $document->withBody($placeLd);

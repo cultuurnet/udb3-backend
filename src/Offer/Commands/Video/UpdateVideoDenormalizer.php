@@ -7,9 +7,9 @@ namespace CultuurNet\UDB3\Offer\Commands\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use Symfony\Component\Serializer\Normalizer\DenormalizableInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class UpdateVideoDenormalizer implements DenormalizableInterface
+class UpdateVideoDenormalizer implements DenormalizerInterface
 {
     private string $offerId;
 

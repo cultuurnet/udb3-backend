@@ -74,8 +74,8 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
 
         $expectedEvent = new GeoCoordinatesUpdated(
             $organizerId,
-            $coordinates->getLatitude()->toDouble(),
-            $coordinates->getLongitude()->toDouble()
+            $coordinates->getLatitude()->toFloat(),
+            $coordinates->getLongitude()->toFloat()
         );
 
         $this->scenario
@@ -123,8 +123,8 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
 
         $expectedEvent = new GeoCoordinatesUpdated(
             $organizerId,
-            $coordinates->getLatitude()->toDouble(),
-            $coordinates->getLongitude()->toDouble()
+            $coordinates->getLatitude()->toFloat(),
+            $coordinates->getLongitude()->toFloat()
         );
 
         $this->scenario

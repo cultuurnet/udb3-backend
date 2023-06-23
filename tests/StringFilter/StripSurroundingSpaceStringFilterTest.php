@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class StripSurroundingSpaceStringFilterTest extends StringFilterTest
 {
-    /**
-     * @return StripSurroundingSpaceStringFilter
-     */
-    protected function getFilter()
+    protected function getFilter(): StripSurroundingSpaceStringFilter
     {
         return new StripSurroundingSpaceStringFilter();
     }

@@ -9,6 +9,7 @@ use CultuurNet\UDB3\State\ResponseState;
 use CultuurNet\UDB3\State\VariableState;
 use CultuurNet\UDB3\Steps\AuthorizationSteps;
 use CultuurNet\UDB3\Steps\EventSteps;
+use CultuurNet\UDB3\Steps\LabelSteps;
 use CultuurNet\UDB3\Steps\OrganizerSteps;
 use CultuurNet\UDB3\Steps\PlaceSteps;
 use CultuurNet\UDB3\Steps\RequestSteps;
@@ -25,8 +26,9 @@ final class FeatureContext implements Context
     use UtilitySteps;
 
     use EventSteps;
-    use PlaceSteps;
     use OrganizerSteps;
+    use PlaceSteps;
+    use LabelSteps;
 
     private array $config;
     private Fixtures $fixtures;

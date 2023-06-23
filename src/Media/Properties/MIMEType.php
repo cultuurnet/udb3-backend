@@ -10,7 +10,7 @@ use function is_string;
 
 final class MIMEType extends StringLiteral
 {
-    protected static $supportedSubtypes = [
+    protected static array $supportedSubtypes = [
         'jpeg' => 'image',
         'png' => 'image',
         'gif' => 'image',
@@ -20,7 +20,7 @@ final class MIMEType extends StringLiteral
     public static function fromSubtype(string $subtypeString): MIMEType
     {
         if (!is_string($subtypeString)) {
-            throw new InvalidArgumentException($subtypeString, ['string']);
+            throw new InvalidArgumentException($subtypeString);
         }
 
         $typeSupported = array_key_exists($subtypeString, self::$supportedSubtypes);

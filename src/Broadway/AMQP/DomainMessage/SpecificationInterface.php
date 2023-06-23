@@ -8,5 +8,5 @@ use Broadway\Domain\DomainMessage;
 
 interface SpecificationInterface
 {
-    public function isSatisfiedBy(DomainMessage $domainMessage);
+    public function isSatisfiedBy(DomainMessage $domainMessage): bool;
 }
