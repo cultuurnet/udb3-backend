@@ -404,7 +404,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function deleteOrganizer($organizerId): void
+    public function deleteOrganizer(string $organizerId): void
     {
         if ($this->organizerId === $organizerId) {
             $this->apply(

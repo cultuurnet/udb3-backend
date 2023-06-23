@@ -14,5 +14,5 @@ use CultuurNet\UDB3\EventExport\EventExportResult;
  */
 interface BodyFactoryInterface
 {
-    public function getBodyFor(EventExportResult $eventExportResult);
+    public function getBodyFor(EventExportResult $eventExportResult): string;
 }

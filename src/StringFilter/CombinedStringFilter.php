@@ -16,10 +16,7 @@ class CombinedStringFilter implements StringFilterInterface
         $this->filters[] = $filter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function filter($string)
+    public function filter(string $string): string
     {
         foreach ($this->filters as $filter) {
             $string = $filter->filter($string);

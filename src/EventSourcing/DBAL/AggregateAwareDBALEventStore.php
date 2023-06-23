@@ -51,12 +51,12 @@ class AggregateAwareDBALEventStore implements EventStore
         return $this->loadDomainEventStream($id, 0);
     }
 
-    public function loadFromPlayhead($id, $playhead): DomainEventStream
+    public function loadFromPlayhead($id, int $playhead): DomainEventStream
     {
         return $this->loadDomainEventStream($id, $playhead);
     }
 
-    private function loadDomainEventStream($id, $playhead): DomainEventStream
+    private function loadDomainEventStream(string $id, int $playhead): DomainEventStream
     {
         $statement = $this->prepareLoadStatement();
         $statement->bindValue('uuid', $id);

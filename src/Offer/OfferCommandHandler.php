@@ -29,15 +29,9 @@ use CultuurNet\UDB3\StringLiteral;
 
 abstract class OfferCommandHandler extends Udb3CommandHandler
 {
-    /**
-     * @var Repository
-     */
-    protected $offerRepository;
+    protected Repository $offerRepository;
 
-    /**
-     * @var Repository
-     */
-    protected $organizerRepository;
+    protected Repository $organizerRepository;
 
     /**
      * @var MediaManagerInterface|MediaManager
@@ -74,7 +68,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
      * @return string[]
      *   An associative array of commands and their handler methods.
      */
-    private function getCommandHandlers()
+    private function getCommandHandlers(): array
     {
         $commands = [];
 
@@ -94,89 +88,38 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         return $commands;
     }
 
-    /**
-     * @return string
-     */
-    abstract protected function getAddImageClassName();
+    abstract protected function getAddImageClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getUpdateImageClassName();
+    abstract protected function getUpdateImageClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getRemoveImageClassName();
+    abstract protected function getRemoveImageClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getSelectMainImageClassName();
+    abstract protected function getSelectMainImageClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getImportImagesClassName();
+    abstract protected function getImportImagesClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getUpdateDescriptionClassName();
+    abstract protected function getUpdateDescriptionClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getUpdateTypicalAgeRangeClassName();
+    abstract protected function getUpdateTypicalAgeRangeClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getDeleteTypicalAgeRangeClassName();
+    abstract protected function getDeleteTypicalAgeRangeClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getDeleteCurrentOrganizerClassName();
+    abstract protected function getDeleteCurrentOrganizerClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getUpdateContactPointClassName();
+    abstract protected function getUpdateContactPointClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getUpdateBookingInfoClassName();
+    abstract protected function getUpdateBookingInfoClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getPublishClassName();
+    abstract protected function getPublishClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getApproveClassName();
+    abstract protected function getApproveClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getRejectClassName();
+    abstract protected function getRejectClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getFlagAsDuplicateClassName();
+    abstract protected function getFlagAsDuplicateClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getFlagAsInappropriateClassName();
+    abstract protected function getFlagAsInappropriateClassName(): string;
 
-    /**
-     * Handle an add image command.
-     */
     public function handleAddImage(AbstractAddImage $addImage): void
     {
         $offer = $this->load($addImage->getItemId());
@@ -187,14 +130,12 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-
     public function handleRemoveImage(AbstractRemoveImage $removeImage): void
     {
         $offer = $this->load($removeImage->getItemId());
         $offer->removeImage($removeImage->getImage());
         $this->offerRepository->save($offer);
     }
-
 
     public function handleUpdateImage(AbstractUpdateImage $updateImage): void
     {
@@ -206,7 +147,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         );
         $this->offerRepository->save($offer);
     }
-
 
     public function handleSelectMainImage(AbstractSelectMainImage $selectMainImage): void
     {
@@ -223,9 +163,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * Handle the update of description on a place.
-     */
     public function handleUpdateDescription(AbstractUpdateDescription $updateDescription): void
     {
         $offer = $this->load($updateDescription->getItemId());
@@ -238,9 +175,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * Handle the update of typical age range on a place.
-     */
     public function handleUpdateTypicalAgeRange(AbstractUpdateTypicalAgeRange $updateTypicalAgeRange): void
     {
         $offer = $this->load($updateTypicalAgeRange->getItemId());
@@ -252,9 +186,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * Handle the deletion of typical age range on a place.
-     */
     public function handleDeleteTypicalAgeRange(AbstractDeleteTypicalAgeRange $deleteTypicalAgeRange): void
     {
         $offer = $this->load($deleteTypicalAgeRange->getItemId());
@@ -273,9 +204,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * Handle an update command to updated the contact point.
-     */
     public function handleUpdateContactPoint(AbstractUpdateContactPoint $updateContactPoint): void
     {
         $offer = $this->load($updateContactPoint->getItemId());
@@ -287,9 +215,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * Handle an update command to updated the booking info.
-     */
     public function handleUpdateBookingInfo(AbstractUpdateBookingInfo $updateBookingInfo): void
     {
         $offer = $this->load($updateBookingInfo->getItemId());
@@ -301,14 +226,12 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-
     private function handlePublish(AbstractPublish $publish): void
     {
         $offer = $this->load($publish->getItemId());
         $offer->publish($publish->getPublicationDate());
         $this->offerRepository->save($offer);
     }
-
 
     private function handleApprove(AbstractApprove $approve): void
     {
@@ -317,7 +240,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-
     private function handleReject(AbstractReject $reject): void
     {
         $offer = $this->load($reject->getItemId());
@@ -325,14 +247,12 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-
     private function handleFlagAsDuplicate(AbstractFlagAsDuplicate $flagAsDuplicate): void
     {
         $offer = $this->load($flagAsDuplicate->getItemId());
         $offer->flagAsDuplicate();
         $this->offerRepository->save($offer);
     }
-
 
     private function handleFlagAsInappropriate(AbstractFlagAsInappropriate $flagAsInappropriate): void
     {

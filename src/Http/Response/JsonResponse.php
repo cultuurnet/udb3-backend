@@ -14,6 +14,10 @@ use Slim\Psr7\Response;
 
 class JsonResponse extends Response
 {
+    /**
+     * @param null|string|array|object $data
+     * @throws ApiProblem
+     */
     public function __construct($data, int $status = StatusCodeInterface::STATUS_OK, ?HeadersInterface $headers = null)
     {
         try {

@@ -19,15 +19,9 @@ class Projector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var CreatedByToUserIdResolverInterface
-     */
-    private $userIdResolver;
+    private CreatedByToUserIdResolverInterface $userIdResolver;
 
-    /**
-     * @var ResourceOwnerRepository
-     */
-    private $permissionRepository;
+    private ResourceOwnerRepository $permissionRepository;
 
     public function __construct(
         ResourceOwnerRepository $permissionRepository,
@@ -39,7 +33,7 @@ class Projector implements EventListener
 
     protected function applyPlaceImportedFromUDB2(
         PlaceImportedFromUDB2 $placeImportedFromUDB2
-    ) {
+    ): void {
         $cdbActor = ActorItemFactory::createActorFromCdbXml(
             $placeImportedFromUDB2->getCdbXmlNamespaceUri(),
             $placeImportedFromUDB2->getCdbXml()
@@ -66,7 +60,7 @@ class Projector implements EventListener
     protected function applyPlaceCreated(
         PlaceCreated $placeCreated,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $metadata = $domainMessage->getMetadata()->serialize();
         $ownerId = new StringLiteral($metadata['user_id']);
 

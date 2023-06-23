@@ -8,7 +8,7 @@ use CultuurNet\UDB3\StringLiteral;
 
 trait Labelable
 {
-    public function hasLabel($eventLd, StringLiteral $label): bool
+    public function hasLabel(\stdClass $eventLd, StringLiteral $label): bool
     {
         if ($label->isEmpty()) {
             throw new \InvalidArgumentException('Label can not be empty');

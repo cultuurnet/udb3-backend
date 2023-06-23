@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class TidyStringFilter implements StringFilterInterface
 {
-    public function filter($string)
+    public function filter(string $string): string
     {
         $config = ['show-body-only' => true];
 

@@ -15,10 +15,7 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class UrlJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @return Url
-     */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): Url
     {
         $data = parent::deserialize($data);
 

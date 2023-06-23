@@ -10,7 +10,7 @@ trait HasCdbXmlTrait
 
     protected string $cdbXmlNamespaceUri;
 
-    private function setCdbXml(string $cdbXml)
+    private function setCdbXml(string $cdbXml): void
     {
         if (!is_string($cdbXml)) {
             throw new \InvalidArgumentException(
@@ -20,7 +20,7 @@ trait HasCdbXmlTrait
         $this->cdbXml = $cdbXml;
     }
 
-    private function setCdbXmlNamespaceUri(string $cdbXmlNamespaceUri)
+    private function setCdbXmlNamespaceUri(string $cdbXmlNamespaceUri): void
     {
         if (!is_string($cdbXmlNamespaceUri)) {
             throw new \InvalidArgumentException(

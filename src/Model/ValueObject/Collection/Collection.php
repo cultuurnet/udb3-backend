@@ -33,7 +33,7 @@ abstract class Collection implements \IteratorAggregate, \Countable
     /**
      * @return static
      */
-    public function with($value)
+    public function with($value) // @phpstan-ignore-line
     {
         $values = $this->values;
         $values[] = $value;
@@ -55,7 +55,7 @@ abstract class Collection implements \IteratorAggregate, \Countable
     /**
      * @see array_search
      */
-    public function contains($value): bool
+    public function contains($value): bool // @phpstan-ignore-line
     {
         $index = array_search($value, $this->values);
         return is_int($index);

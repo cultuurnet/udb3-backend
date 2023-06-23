@@ -8,20 +8,14 @@ use CultuurNet\UDB3\EventExport\EventExportResult;
 
 class LiteralSubjectFactory implements SubjectFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $subject;
+    private string $subject;
 
-    /**
-     * @param string $subject
-     */
-    public function __construct($subject)
+    public function __construct(string $subject)
     {
         $this->subject = $subject;
     }
 
-    public function getSubjectFor(EventExportResult $eventExportResult)
+    public function getSubjectFor(EventExportResult $eventExportResult): string
     {
         return $this->subject;
     }

@@ -17,25 +17,13 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var Repository
-     */
-    private $offerRepository;
+    private Repository $offerRepository;
 
-    /**
-     * @var AddressFormatter
-     */
-    private $defaultAddressFormatter;
+    private AddressFormatter $defaultAddressFormatter;
 
-    /**
-     * @var AddressFormatter
-     */
-    private $fallbackAddressFormatter;
+    private AddressFormatter $fallbackAddressFormatter;
 
-    /**
-     * @var GeocodingService
-     */
-    private $geocodingService;
+    private GeocodingService $geocodingService;
 
     public function __construct(
         Repository $placeRepository,
@@ -50,9 +38,9 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
         $this->logger = new NullLogger();
     }
 
-
-    protected function updateGeoCoordinatesFromAddress(AbstractUpdateGeoCoordinatesFromAddress $updateGeoCoordinates)
-    {
+    protected function updateGeoCoordinatesFromAddress(
+        AbstractUpdateGeoCoordinatesFromAddress $updateGeoCoordinates
+    ): void {
         $offerId = $updateGeoCoordinates->getItemId();
 
         $exactAddress = $this->defaultAddressFormatter->format(

@@ -8,17 +8,14 @@ use CultuurNet\UDB3\StringLiteral;
 
 class ClassNameEventSpecification implements EventSpecification
 {
-    private $classNames;
+    private array $classNames;
 
     public function __construct(StringLiteral ...$classNames)
     {
         $this->classNames = $classNames;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function matches($event)
+    public function matches(object $event): bool
     {
         foreach ($this->classNames as $className) {
             if (get_class($event) === $className->toNative()) {

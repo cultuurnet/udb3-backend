@@ -14,20 +14,11 @@ use RuntimeException;
  */
 class PriceDescriptionParser
 {
-    /**
-     * @var NumberFormatRepositoryInterface
-     */
-    private $numberFormatRepository;
+    private NumberFormatRepositoryInterface $numberFormatRepository;
 
-    /**
-     * @var CurrencyRepositoryInterface
-     */
-    private $currencyRepository;
+    private CurrencyRepositoryInterface $currencyRepository;
 
-    /**
-     * @var NumberFormatter
-     */
-    private $currencyFormatter;
+    private NumberFormatter $currencyFormatter;
 
     public function __construct(
         NumberFormatRepositoryInterface $numberFormatRepository,
@@ -41,13 +32,7 @@ class PriceDescriptionParser
         );
     }
 
-    /**
-     * @param string $description
-     *
-     * @return array
-     *   An array of price name value pairs.
-     */
-    public function parse($description)
+    public function parse(string $description): array
     {
         $prices = [];
 
@@ -65,7 +50,7 @@ class PriceDescriptionParser
         return $prices;
     }
 
-    private function parseSinglePriceDescription($possiblePriceDescription)
+    private function parseSinglePriceDescription(string $possiblePriceDescription): array
     {
         $possiblePriceDescription = trim($possiblePriceDescription);
         $matches = [];

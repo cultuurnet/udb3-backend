@@ -10,16 +10,9 @@ use CultuurNet\UDB3\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
-    /**
-     * @var StringLiteral
-     */
-    protected $tableName;
+    protected StringLiteral $tableName;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $idField;
-
+    protected StringLiteral $idField;
 
     public function __construct(StringLiteral $tableName, StringLiteral $idField)
     {
@@ -27,9 +20,6 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
         $this->idField = $idField;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function configure(AbstractSchemaManager $schemaManager): void
     {
         $schema = $schemaManager->createSchema();

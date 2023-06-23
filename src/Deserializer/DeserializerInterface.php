@@ -8,5 +8,8 @@ use CultuurNet\UDB3\StringLiteral;
 
 interface DeserializerInterface
 {
+    /**
+     * @return array|object
+     */
     public function deserialize(StringLiteral $data);
 }

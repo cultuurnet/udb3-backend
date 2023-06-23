@@ -6,5 +6,5 @@ namespace CultuurNet\UDB3\EventListener;
 
 interface EventSpecification
 {
-    public function matches($event);
+    public function matches(object $event): bool;
 }

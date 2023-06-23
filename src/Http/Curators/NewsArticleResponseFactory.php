@@ -57,7 +57,7 @@ final class NewsArticleResponseFactory
         return $this->mediaType === 'application/ld+json';
     }
 
-    private function createResponse($data, int $status): ResponseInterface
+    private function createResponse(array $data, int $status): ResponseInterface
     {
         if ($this->asJsonLd()) {
             return new JsonLdResponse($data, $status);

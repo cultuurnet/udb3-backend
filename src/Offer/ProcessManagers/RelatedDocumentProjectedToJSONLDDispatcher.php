@@ -144,6 +144,9 @@ final class RelatedDocumentProjectedToJSONLDDispatcher implements EventListener
         );
     }
 
+    /**
+     * @param EventProjectedToJSONLD|PlaceProjectedToJSONLD $event
+     */
     private function createNewDomainMessage(string $id, $event): DomainMessage
     {
         return DomainMessage::recordNow(

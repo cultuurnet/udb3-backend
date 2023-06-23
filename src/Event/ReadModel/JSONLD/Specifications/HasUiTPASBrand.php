@@ -13,9 +13,9 @@ class HasUiTPASBrand implements EventSpecificationInterface
     /**
      * @var string[]
      */
-    private $uitPasLabels = ['UiTPAS Regio Aalst', 'UiTPAS Gent', 'Paspartoe'];
+    private array $uitPasLabels = ['UiTPAS Regio Aalst', 'UiTPAS Gent', 'Paspartoe'];
 
-    public function isSatisfiedBy($eventLd)
+    public function isSatisfiedBy(\stdClass $eventLd): bool
     {
         foreach ($this->uitPasLabels as $label) {
             if ($this->hasLabel($eventLd, new StringLiteral($label))) {

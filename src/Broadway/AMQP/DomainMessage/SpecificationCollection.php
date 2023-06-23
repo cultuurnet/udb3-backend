@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Collection\AbstractCollection;
 
 class SpecificationCollection extends AbstractCollection
 {
-    protected function getValidObjectType()
+    protected function getValidObjectType(): string
     {
         return SpecificationInterface::class;
     }

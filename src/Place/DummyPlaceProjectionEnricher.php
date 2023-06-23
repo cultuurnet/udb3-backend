@@ -9,15 +9,12 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 class DummyPlaceProjectionEnricher implements DocumentRepository
 {
-    /**
-     * @var DocumentRepository
-     */
-    private $repository;
+    private DocumentRepository $repository;
 
     /**
      * @var string[]
      */
-    private $dummyPlaceIds;
+    private array $dummyPlaceIds;
 
     public function __construct(
         DocumentRepository $repository,
@@ -34,12 +31,12 @@ class DummyPlaceProjectionEnricher implements DocumentRepository
         );
     }
 
-    public function save(JsonDocument $readModel): void
+    public function save(JsonDocument $document): void
     {
-        $this->repository->save($readModel);
+        $this->repository->save($document);
     }
 
-    public function remove($id): void
+    public function remove(string $id): void
     {
         $this->repository->remove($id);
     }

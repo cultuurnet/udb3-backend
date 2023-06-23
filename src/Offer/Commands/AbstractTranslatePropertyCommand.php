@@ -8,21 +8,15 @@ use CultuurNet\UDB3\Language;
 
 abstract class AbstractTranslatePropertyCommand extends AbstractCommand
 {
-    /**
-     * @var Language
-     */
-    protected $language;
+    protected Language $language;
 
-    public function __construct($itemId, Language $language)
+    public function __construct(string $itemId, Language $language)
     {
         parent::__construct($itemId);
         $this->language = $language;
     }
 
-    /**
-     * @return Language
-     */
-    public function getLanguage()
+    public function getLanguage(): Language
     {
         return $this->language;
     }

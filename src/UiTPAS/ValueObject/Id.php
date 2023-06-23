@@ -8,7 +8,7 @@ use CultuurNet\UDB3\StringLiteral;
 
 class Id extends StringLiteral
 {
-    public function __construct($value)
+    public function __construct(string $value)
     {
         parent::__construct($value);
 

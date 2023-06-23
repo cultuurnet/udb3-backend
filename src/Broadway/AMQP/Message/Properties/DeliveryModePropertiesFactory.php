@@ -29,7 +29,7 @@ class DeliveryModePropertiesFactory implements PropertiesFactoryInterface
     /**
      * @throws \InvalidArgumentException
      */
-    private function guardDeliveryMode(int $deliveryMode)
+    private function guardDeliveryMode(int $deliveryMode): void
     {
         $validModes = [
             AMQPMessage::DELIVERY_MODE_NON_PERSISTENT,

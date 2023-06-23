@@ -15,19 +15,13 @@ final class PlaceRelationsProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var PlaceRelationsRepository
-     */
-    protected $repository;
+    protected PlaceRelationsRepository $repository;
 
-    public function __construct($repository)
+    public function __construct(PlaceRelationsRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    /**
-     * Store the relation for places imported from UDB2.
-     */
     protected function applyPlaceImportedFromUDB2(PlaceImportedFromUDB2 $place): void
     {
         // No relation exists in UDB2.
@@ -35,18 +29,12 @@ final class PlaceRelationsProjector implements EventListener
         $this->storeRelations($placeId, null);
     }
 
-    /**
-     * Delete the relations.
-     */
     protected function applyPlaceDeleted(PlaceDeleted $place): void
     {
         $placeId = $place->getItemId();
         $this->repository->removeRelations($placeId);
     }
 
-    /**
-     * Store the relation when the organizer was changed
-     */
     protected function applyOrganizerUpdated(OrganizerUpdated $organizerUpdated): void
     {
         $this->storeRelations(
@@ -55,18 +43,12 @@ final class PlaceRelationsProjector implements EventListener
         );
     }
 
-    /**
-     * Remove the relation.
-     */
     protected function applyOrganizerDeleted(OrganizerDeleted $organizerDeleted): void
     {
         $this->storeRelations($organizerDeleted->getItemId(), null);
     }
 
-    /**
-     * Store the relation.
-     */
-    protected function storeRelations($placeId, $organizerId): void
+    protected function storeRelations(string $placeId, ?string $organizerId): void
     {
         $this->repository->storeRelations($placeId, $organizerId);
     }

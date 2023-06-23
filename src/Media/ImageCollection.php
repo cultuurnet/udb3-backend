@@ -10,20 +10,14 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class ImageCollection extends AbstractCollection
 {
-    /**
-     * @var Image|null
-     */
-    protected $mainImage;
+    protected ?Image $mainImage = null;
 
-    protected function getValidObjectType()
+    protected function getValidObjectType(): string
     {
         return Image::class;
     }
 
-    /**
-     * @return ImageCollection
-     */
-    public function withMain(Image $image)
+    public function withMain(Image $image): ImageCollection
     {
         $collection = $this->contains($image) ? $this : $this->with($image);
 
@@ -32,10 +26,7 @@ class ImageCollection extends AbstractCollection
         return $copy;
     }
 
-    /**
-     * @return Image|null
-     */
-    public function getMain()
+    public function getMain(): ?Image
     {
         if (0 === $this->length()) {
             return null;
@@ -52,10 +43,7 @@ class ImageCollection extends AbstractCollection
         }
     }
 
-    /**
-     * @return Image|null
-     */
-    public function findImageByUUID(UUID $uuid)
+    public function findImageByUUID(UUID $uuid): ?Image
     {
         /** @var Image $image */
         foreach ($this->items as $image) {

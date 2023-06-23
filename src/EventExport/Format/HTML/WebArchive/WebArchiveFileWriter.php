@@ -144,8 +144,5 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function write($filePath, $events);
+    abstract public function write(string $filePath, \Traversable $events): void;
 }

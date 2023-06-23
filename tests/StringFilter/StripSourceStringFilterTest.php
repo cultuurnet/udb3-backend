@@ -105,13 +105,4 @@ class StripSourceStringFilterTest extends StringFilterTest
         $this->filter('');
         $this->expectNotToPerformAssertions();
     }
-
-    /**
-     * @test
-     */
-    public function it_only_filters_strings(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->filter->filter(12345);
-    }
 }

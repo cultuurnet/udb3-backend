@@ -15,24 +15,19 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class EventTypeJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var EventTypeDataValidator
-     */
-    private $validator;
+    private EventTypeDataValidator $validator;
 
     public function __construct()
     {
-        $assoc = true;
-        parent::__construct($assoc);
+        parent::__construct(true);
 
         $this->validator = new EventTypeDataValidator();
     }
 
     /**
-     * @return EventType
      * @throws DataValidationException
      */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): EventType
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);

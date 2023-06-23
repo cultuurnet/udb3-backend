@@ -9,6 +9,9 @@ use Slim\Psr7\Interfaces\HeadersInterface;
 
 class JsonLdResponse extends JsonResponse
 {
+    /**
+     * @inheritdoc
+     */
     public function __construct($data = null, $status = 200, ?HeadersInterface $headers = null)
     {
         if (!($headers instanceof HeadersInterface)) {

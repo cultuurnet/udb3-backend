@@ -411,7 +411,7 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function attendanceModeNotSupported($detail): self
+    public static function attendanceModeNotSupported(string $detail): self
     {
         return self::create(
             'https://api.publiq.be/probs/uitdatabank/attendance-mode-not-supported',
@@ -439,7 +439,7 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function fileMissing($detail): self
+    public static function fileMissing(string $detail): self
     {
         return self::create(
             'https://api.publiq.be/probs/body/file-missing',
@@ -449,7 +449,7 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function fileInvalidType($detail): self
+    public static function fileInvalidType(string $detail): self
     {
         return self::create(
             'https://api.publiq.be/probs/body/file-invalid-type',
@@ -459,7 +459,7 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function fileInvalidSize($detail): self
+    public static function fileInvalidSize(string $detail): self
     {
         return self::create(
             'https://api.publiq.be/probs/body/file-invalid-size',

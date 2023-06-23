@@ -15,24 +15,19 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class AddressJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var AddressDataValidator
-     */
-    private $validator;
+    private AddressDataValidator $validator;
 
     public function __construct()
     {
-        $assoc = true;
-        parent::__construct($assoc);
+        parent::__construct(true);
 
         $this->validator = new AddressDataValidator();
     }
 
     /**
-     * @return Address
      * @throws DataValidationException
      */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): Address
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);

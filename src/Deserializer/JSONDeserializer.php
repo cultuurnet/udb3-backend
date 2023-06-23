@@ -8,17 +8,9 @@ use CultuurNet\UDB3\StringLiteral;
 
 class JSONDeserializer implements DeserializerInterface
 {
-    /**
-     * When true, returned objects will be converted into associative arrays.
-     *
-     * @var bool
-     */
-    private $assoc;
+    private bool $assoc;
 
-    /**
-     * @param bool $assoc
-     */
-    public function __construct($assoc = false)
+    public function __construct(bool $assoc = false)
     {
         $this->assoc = $assoc;
     }

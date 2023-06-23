@@ -20,30 +20,17 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class MajorInfoJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var MajorInfoDataValidator
-     */
-    private $validator;
+    private MajorInfoDataValidator $validator;
 
-    /**
-     * @var EventTypeJSONDeserializer
-     */
-    private $typeDeserializer;
+    private EventTypeJSONDeserializer $typeDeserializer;
 
-    /**
-     * @var CalendarJSONDeserializer
-     */
-    private $calendarDeserializer;
+    private CalendarJSONDeserializer $calendarDeserializer;
 
-    /**
-     * @var ThemeJSONDeserializer
-     */
-    private $themeDeserializer;
+    private ThemeJSONDeserializer $themeDeserializer;
 
     public function __construct()
     {
-        $assoc = true;
-        parent::__construct($assoc);
+        parent::__construct(true);
 
         $this->validator = new MajorInfoDataValidator();
 
@@ -56,10 +43,9 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @return MajorInfo
      * @throws DataValidationException
      */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): MajorInfo
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);

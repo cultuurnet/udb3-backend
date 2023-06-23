@@ -15,24 +15,19 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class ThemeJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var ThemeDataValidator
-     */
-    private $validator;
+    private ThemeDataValidator $validator;
 
     public function __construct()
     {
-        $assoc = true;
-        parent::__construct($assoc);
+        parent::__construct(true);
 
         $this->validator = new ThemeDataValidator();
     }
 
     /**
-     * @return Theme
      * @throws DataValidationException
      */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): Theme
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);

@@ -13,7 +13,6 @@ abstract class Enum
 
     final public function __construct(string $value)
     {
-        $this->guardString($value);
         $this->guardAllowedValue($value);
         $this->setValue($value);
     }

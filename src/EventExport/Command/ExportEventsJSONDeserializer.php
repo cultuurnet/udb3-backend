@@ -16,10 +16,7 @@ use CultuurNet\UDB3\StringLiteral;
  */
 abstract class ExportEventsJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @return ExportEvents
-     */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): ExportEvents
     {
         $data = parent::deserialize($data);
 

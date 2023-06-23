@@ -20,15 +20,9 @@ class Projector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var CreatedByToUserIdResolverInterface
-     */
-    private $userIdResolver;
+    private CreatedByToUserIdResolverInterface $userIdResolver;
 
-    /**
-     * @var ResourceOwnerRepository
-     */
-    private $permissionRepository;
+    private ResourceOwnerRepository $permissionRepository;
 
     public function __construct(
         ResourceOwnerRepository $permissionRepository,
@@ -40,7 +34,7 @@ class Projector implements EventListener
 
     protected function applyEventImportedFromUDB2(
         EventImportedFromUDB2 $eventImportedFromUDB2
-    ) {
+    ): void {
         $cdbEvent = EventItemFactory::createEventFromCdbXml(
             $eventImportedFromUDB2->getCdbXmlNamespaceUri(),
             $eventImportedFromUDB2->getCdbXml()
@@ -67,14 +61,14 @@ class Projector implements EventListener
     protected function applyEventCreated(
         EventCreated $eventCreated,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $this->makeOfferEditableByUser($eventCreated->getEventId(), $domainMessage);
     }
 
     protected function applyEventCopied(
         EventCopied $eventCopied,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $this->makeOfferEditableByUser($eventCopied->getItemId(), $domainMessage);
     }
 
@@ -86,11 +80,8 @@ class Projector implements EventListener
         );
     }
 
-    /**
-     * @param string $offerId
-     */
     private function makeOfferEditableByUser(
-        $offerId,
+        string $offerId,
         DomainMessage $domainMessage
     ): void {
         $metadata = $domainMessage->getMetadata()->serialize();

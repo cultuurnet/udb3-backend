@@ -8,11 +8,7 @@ use CultuurNet\UDB3\StringFilter\StringFilterInterface;
 
 class ShortDescriptionUDB2FormattingFilter implements StringFilterInterface
 {
-    /**
-     * @param string $string
-     * @return string
-     */
-    public function filter($string)
+    public function filter(string $string): string
     {
         return strip_tags(html_entity_decode($string));
     }

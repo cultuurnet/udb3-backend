@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -17,19 +18,12 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     public const NAME_COLUMN = 'name';
     public const CONSTRAINT_COLUMN = 'constraint_query';
 
-    /**
-     * @var StringLiteral
-     */
-    private $tableName;
+    private StringLiteral $tableName;
 
-    /**
-     * SchemaConfigurator constructor.
-     */
     public function __construct(StringLiteral $tableName)
     {
         $this->tableName = $tableName;
     }
-
 
     public function configure(AbstractSchemaManager $schemaManager): void
     {
@@ -42,10 +36,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
         }
     }
 
-    /**
-     * @return \Doctrine\DBAL\Schema\Table
-     */
-    private function createTable(Schema $schema, StringLiteral $tableName)
+    private function createTable(Schema $schema, StringLiteral $tableName): Table
     {
         $table = $schema->createTable($tableName->toNative());
 
