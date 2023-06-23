@@ -11,7 +11,7 @@ class CommandTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_make_visible_option()
+    public function it_has_a_make_visible_option(): void
     {
         $commandType = CommandType::makeVisible();
 
@@ -21,7 +21,7 @@ class CommandTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_make_invisible_option()
+    public function it_has_a_make_invisible_option(): void
     {
         $commandType = CommandType::makeInvisible();
 
@@ -31,7 +31,7 @@ class CommandTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_make_public_option()
+    public function it_has_a_make_public_option(): void
     {
         $commandType = CommandType::makePublic();
 
@@ -41,7 +41,7 @@ class CommandTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_make_private_option()
+    public function it_has_a_make_private_option(): void
     {
         $commandType = CommandType::makePrivate();
 
@@ -51,7 +51,7 @@ class CommandTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_an_include_option()
+    public function it_has_an_include_option(): void
     {
         $commandType = CommandType::include();
 
@@ -61,7 +61,7 @@ class CommandTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_exclude_option()
+    public function it_has_a_exclude_option(): void
     {
         $commandType = CommandType::exclude();
 
@@ -71,7 +71,7 @@ class CommandTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_only_six_specified_options()
+    public function it_has_only_six_specified_options(): void
     {
         $options = CommandType::getAllowedValues();
 

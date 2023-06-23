@@ -18,10 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class CalendarFactoryTest extends TestCase
 {
-    /**
-     * @var CalendarFactory
-     */
-    private $factory;
+    private CalendarFactory $factory;
 
     public function setUp(): void
     {
@@ -31,7 +28,7 @@ class CalendarFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_drops_timestamp_timeend_before_timestart()
+    public function it_drops_timestamp_timeend_before_timestart(): void
     {
         $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
         $cdbCalendar->add(
@@ -69,7 +66,7 @@ class CalendarFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_create_a_calendar_from_a_weekscheme()
+    public function it_can_create_a_calendar_from_a_weekscheme(): void
     {
         $weekDays = new DayOfWeekCollection(
             DayOfWeek::MONDAY(),
@@ -124,12 +121,12 @@ class CalendarFactoryTest extends TestCase
     public function it_creates_calendars_with_timestamps_from_a_cdb_timestamp_list(
         CultureFeed_Cdb_Data_Calendar_TimestampList $cdbCalendar,
         Calendar $expectedCalendar
-    ) {
+    ): void {
         $calendar = $this->factory->createFromCdbCalendar($cdbCalendar);
         $this->assertEquals($expectedCalendar, $calendar);
     }
 
-    public function timestampListDataProvider()
+    public function timestampListDataProvider(): array
     {
         $timeZone = new DateTimeZone('Europe/Brussels');
 
@@ -855,7 +852,7 @@ class CalendarFactoryTest extends TestCase
     public function it_creates_a_periodic_calendar_from_cdb_calendar_with_period_list(
         \CultureFeed_Cdb_Data_Calendar_PeriodList $cdbCalendar,
         Calendar $expectedCalendar
-    ) {
+    ): void {
         $calendar = $this->factory->createFromCdbCalendar($cdbCalendar);
 
         $this->assertEquals($expectedCalendar, $calendar);
@@ -871,7 +868,7 @@ class CalendarFactoryTest extends TestCase
         return \CultureFeed_Cdb_Data_Calendar_PeriodList::parseFromCdbXml($xmlElement);
     }
 
-    public function periodListDataProvider()
+    public function periodListDataProvider(): array
     {
         $timeZone = new DateTimeZone('Europe/Brussels');
 
@@ -986,7 +983,7 @@ class CalendarFactoryTest extends TestCase
     public function it_creates_a_permanent_calendar_from_cdb_calendar(
         \CultureFeed_Cdb_Data_Calendar_Permanent $cdbCalendar,
         Calendar $expectedCalendar
-    ) {
+    ): void {
         $calendar = $this->factory->createFromCdbCalendar($cdbCalendar);
 
         $this->assertEquals($expectedCalendar, $calendar);

@@ -14,16 +14,7 @@ class StripSurroundingSpaceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_only_filters_strings()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->filter->filter(12345);
-    }
-
-    /**
-     * @test
-     */
-    public function it_strips_leading_and_trailing_space_and_tabs()
+    public function it_strips_leading_and_trailing_space_and_tabs(): void
     {
         $this->assertFilterValue(
             file_get_contents(__DIR__ . '/text_without_surrounding_whitespace.txt'),

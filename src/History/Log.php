@@ -11,50 +11,23 @@ use JsonSerializable;
 
 class Log implements JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var DateTime
-     */
-    private $date;
+    private DateTime $date;
 
-    /**
-     * @var String|null
-     */
-    private $author;
+    private ?string $author;
 
-    /**
-     * @var String
-     */
-    private $description;
+    private string $description;
 
-    /**
-     * @var string
-     */
-    private $apiKey;
+    private ?string $apiKey;
 
-    /**
-     * @var string
-     */
-    private $auth0ClientId;
+    private ?string $auth0ClientId;
 
-    /**
-     * @var string
-     */
-    private $auth0ClientName;
+    private ?string $auth0ClientName;
 
-    /**
-     * @var string
-     */
-    private $api;
+    private ?string $api;
 
-    /**
-     * @var string
-     */
-    private $consumerName;
+    private ?string $consumerName;
 
     private function __construct(
         string $id,
@@ -143,7 +116,7 @@ class Log implements JsonSerializable
 
     public static function createFromDomainMessage(
         DomainMessage $domainMessage,
-        $description,
+        string $description,
         ?string $idSuffix = null
     ): Log {
         $id = $domainMessage->getId() . '_' . $domainMessage->getPlayhead();

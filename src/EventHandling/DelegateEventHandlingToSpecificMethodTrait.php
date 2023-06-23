@@ -14,11 +14,12 @@ trait DelegateEventHandlingToSpecificMethodTrait
         $method = $this->getHandleMethodName($event);
 
         if ($method) {
-            $this->$method($event, $domainMessage);
+            $this->$method($domainMessage->getPayload(), $domainMessage);
         }
     }
 
-    private function getHandleMethodName($event)
+    // @phpstan-ignore-next-line
+    private function getHandleMethodName($event): ?string
     {
         $classParts = explode('\\', get_class($event));
         $methodName = 'apply' . end($classParts);

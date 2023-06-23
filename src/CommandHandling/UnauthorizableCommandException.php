@@ -8,16 +8,11 @@ use CultuurNet\UDB3\StringLiteral;
 
 class UnauthorizableCommandException extends \Exception
 {
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
+    private StringLiteral $userId;
 
+    private object $command;
 
-    private $command;
-
-
-    public function __construct(StringLiteral $userId, $command)
+    public function __construct(StringLiteral $userId, object $command)
     {
         parent::__construct('User with id: ' . $userId->toNative() .
             ' failed to execute command: ' . get_class($command) .
@@ -27,16 +22,12 @@ class UnauthorizableCommandException extends \Exception
         $this->command = $command;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getUserId()
+    public function getUserId(): StringLiteral
     {
         return $this->userId;
     }
 
-
-    public function getCommand()
+    public function getCommand(): object
     {
         return $this->command;
     }

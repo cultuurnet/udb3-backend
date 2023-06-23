@@ -46,7 +46,7 @@ class AbstractUpdateDescriptionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $description = $this->updateDescriptionCommand->getDescription();
         $expectedDescription = new Description('This is the event description update.');
@@ -62,7 +62,7 @@ class AbstractUpdateDescriptionTest extends TestCase
     /**
      * @test
      */
-    public function it_should_keep_track_of_the_description_language()
+    public function it_should_keep_track_of_the_description_language(): void
     {
         $this->assertEquals(new Language('en'), $this->updateDescriptionCommand->getLanguage());
     }

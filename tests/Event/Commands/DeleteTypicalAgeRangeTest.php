@@ -21,7 +21,7 @@ class DeleteTypicalAgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_is_possible_to_instantiate_the_command_with_parameters()
+    public function it_is_possible_to_instantiate_the_command_with_parameters(): void
     {
         $expectedDeleteTypicalAgeRange = new DeleteTypicalAgeRange('id');
 
@@ -31,7 +31,7 @@ class DeleteTypicalAgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_id()
+    public function it_can_return_its_id(): void
     {
         $expectedId = 'id';
         $this->assertEquals($expectedId, $this->deleteTypicalAgeRange->getItemId());

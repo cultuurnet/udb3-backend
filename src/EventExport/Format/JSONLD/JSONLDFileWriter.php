@@ -11,13 +11,13 @@ final class JSONLDFileWriter implements FileWriterInterface
 {
     private JSONLDEventFormatter $eventFormatter;
 
-    public function __construct($include, CalendarSummaryRepositoryInterface $calendarSummaryRepository)
+    public function __construct(array $include, CalendarSummaryRepositoryInterface $calendarSummaryRepository)
     {
         $this->eventFormatter = new JSONLDEventFormatter($include, $calendarSummaryRepository);
     }
 
     /**
-     * @return Resource
+     * @return resource
      */
     private function openFile(string $filePath)
     {
@@ -31,10 +31,7 @@ final class JSONLDFileWriter implements FileWriterInterface
         return $file;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function write($filePath, $events): void
+    public function write(string $filePath, \Traversable $events): void
     {
         $file = $this->openFile($filePath);
 
@@ -48,7 +45,7 @@ final class JSONLDFileWriter implements FileWriterInterface
     }
 
     /**
-     * @param Resource $file
+     * @param resource $file
      */
     private function writeEvents($file, \Traversable $events): void
     {

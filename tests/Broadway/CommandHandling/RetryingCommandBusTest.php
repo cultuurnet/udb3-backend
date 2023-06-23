@@ -63,7 +63,7 @@ class RetryingCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function it_decorates_handler_subscriptions()
+    public function it_decorates_handler_subscriptions(): void
     {
         /* @var CommandHandler $handler */
         $handler = $this->createMock(CommandHandler::class);

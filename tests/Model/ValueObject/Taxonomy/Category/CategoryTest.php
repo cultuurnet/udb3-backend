@@ -11,7 +11,7 @@ class CategoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_consist_of_an_id_and_label_and_domain()
+    public function it_should_consist_of_an_id_and_label_and_domain(): void
     {
         $id = new CategoryID('0.50.4.0.0');
         $label = new CategoryLabel('concert');

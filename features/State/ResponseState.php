@@ -15,7 +15,7 @@ final class ResponseState
     private bool $validJson;
     private array $jsonContent;
 
-    public function setResponse(ResponseInterface $response)
+    public function setResponse(ResponseInterface $response): void
     {
         $this->statusCode = $response->getStatusCode();
         $this->content = $response->getBody()->getContents();
@@ -54,7 +54,10 @@ final class ResponseState
         return $this->jsonContent;
     }
 
-    public function getValueOnPath($path)
+    /**
+     * @return mixed|null
+     */
+    public function getValueOnPath(string $path)
     {
         $parts = explode('/', $path);
         $value = $this->jsonContent;

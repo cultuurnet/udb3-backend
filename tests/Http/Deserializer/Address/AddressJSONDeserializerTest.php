@@ -28,7 +28,7 @@ class AddressJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_checks_all_required_fields_are_present()
+    public function it_checks_all_required_fields_are_present(): void
     {
         $data = new StringLiteral('{}');
 
@@ -53,7 +53,7 @@ class AddressJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_address_object()
+    public function it_returns_an_address_object(): void
     {
         $data = new StringLiteral(
             json_encode(

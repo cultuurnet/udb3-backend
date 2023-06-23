@@ -18,23 +18,14 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     public const NAME = 'name';
     public const QUERY = 'query';
 
-    /**
-     * @var StringLiteral
-     */
-    private $tableName;
+    private StringLiteral $tableName;
 
-    /**
-     * SchemaConfigurator constructor.
-     */
     public function __construct(StringLiteral $tableName)
     {
         $this->tableName = $tableName;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function configure(AbstractSchemaManager $schemaManager)
+    public function configure(AbstractSchemaManager $schemaManager): void
     {
         $schema = $schemaManager->createSchema();
 
@@ -45,10 +36,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
         }
     }
 
-    /**
-     * @return Table
-     */
-    private function createTable(Schema $schema, StringLiteral $tableName)
+    private function createTable(Schema $schema, StringLiteral $tableName): Table
     {
         $table = $schema->createTable($tableName->toNative());
 

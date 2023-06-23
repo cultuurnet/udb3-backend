@@ -39,7 +39,7 @@ class AbstractTranslatePropertyCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $language = $this->translatePropertyCommand->getLanguage();
         $expectedLanguage = new Language('en');

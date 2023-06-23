@@ -9,10 +9,7 @@ use Broadway\CommandHandling\CommandHandler;
 
 abstract class CommandBusDecoratorBase implements CommandBus
 {
-    /**
-     * @var CommandBus
-     */
-    protected $decoratee;
+    protected CommandBus $decoratee;
 
     public function __construct(CommandBus $decoratee)
     {

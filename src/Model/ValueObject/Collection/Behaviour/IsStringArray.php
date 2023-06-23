@@ -17,6 +17,9 @@ trait IsStringArray
         );
     }
 
+    /**
+     * @param IsStringArray|mixed $other
+     */
     public function sameAs($other): bool
     {
         return $this->toStringArray() === $other->toStringArray();

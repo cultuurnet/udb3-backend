@@ -33,7 +33,7 @@ class UploadImageTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_file_id()
+    public function it_stores_a_file_id(): void
     {
         $this->assertEquals(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
@@ -44,7 +44,7 @@ class UploadImageTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_mime_type()
+    public function it_stores_a_mime_type(): void
     {
         $this->assertEquals(
             new MIMEType('image/png'),
@@ -55,7 +55,7 @@ class UploadImageTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_description()
+    public function it_stores_a_description(): void
     {
         $this->assertEquals(
             StringLiteral::fromNative('description'),
@@ -66,7 +66,7 @@ class UploadImageTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_copyright()
+    public function it_stores_a_copyright(): void
     {
         $this->assertEquals(
             new CopyrightHolder('copyright'),
@@ -77,7 +77,7 @@ class UploadImageTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_file_path()
+    public function it_stores_a_file_path(): void
     {
         $this->assertEquals(
             StringLiteral::fromNative('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
@@ -88,7 +88,7 @@ class UploadImageTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_language()
+    public function it_stores_a_language(): void
     {
         $this->assertEquals(
             new Language('en'),

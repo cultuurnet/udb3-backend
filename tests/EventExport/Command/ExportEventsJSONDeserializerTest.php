@@ -27,7 +27,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_deserializes_a_minimal_export_command()
+    public function it_deserializes_a_minimal_export_command(): void
     {
         $data = new StringLiteral(
             $this->getJsonData('export_data_query.json')
@@ -41,7 +41,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
                 null,
                 null
             )
-            ->willReturn(new \stdClass());
+            ->willReturn(new ExportEventsAsOOXML(new EventExportQuery('city:leuven'), []));
 
         $this->deserializer->deserialize($data);
     }
@@ -49,7 +49,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_deserializes_a_complete_export_command()
+    public function it_deserializes_a_complete_export_command(): void
     {
         $data = new StringLiteral(
             $this->getJsonData('export_data.json')
@@ -71,7 +71,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
                     'eb59c69c-2e29-4cbc-901f-d9076b38ca59',
                 ]
             )
-            ->willReturn(new \stdClass());
+            ->willReturn(new ExportEventsAsOOXML(new EventExportQuery('city:leuven'), []));
 
         $this->deserializer->deserialize($data);
     }
@@ -79,7 +79,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_query_is_missing()
+    public function it_throws_an_exception_when_query_is_missing(): void
     {
         $data = new StringLiteral('{"email":"foo@bar.com"}');
         $this->expectException(MissingValueException::class);
@@ -95,7 +95,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
     public function it_can_create_different_command_types(
         DeserializerInterface $deserializer,
         $expectedCommandType
-    ) {
+    ): void {
         $data = new StringLiteral(
             $this->getJsonData('export_data.json')
         );

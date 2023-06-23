@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class StripNewlineStringFilterTest extends StringFilterTest
 {
-    /**
-     * @return StripNewlineStringFilter
-     */
-    protected function getFilter()
+    protected function getFilter(): StringFilterInterface
     {
         return new StripNewlineStringFilter();
     }
@@ -17,19 +14,10 @@ class StripNewlineStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_strips_newlines()
+    public function it_strips_newlines(): void
     {
         $original = "\nHello\n world!\n Goodbye!\n";
         $expected = 'Hello world! Goodbye!';
         $this->assertFilterValue($expected, $original);
-    }
-
-    /**
-     * @test
-     */
-    public function it_only_filters_strings()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->filter->filter(12345);
     }
 }

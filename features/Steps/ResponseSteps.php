@@ -18,7 +18,7 @@ trait ResponseSteps
     /**
      * @Then the JSON response at :jsonPath should be :value
      */
-    public function theJsonResponseAtShouldBe(string $jsonPath, $value): void
+    public function theJsonResponseAtShouldBe(string $jsonPath, string $value): void
     {
         $expected = $this->variableState->replaceVariables($value);
 
@@ -61,7 +61,7 @@ trait ResponseSteps
     /**
      * @When the JSON response at :jsonPath should not be :value
      */
-    public function theJsonResponseAtShouldNotBe($jsonPath, $value)
+    public function theJsonResponseAtShouldNotBe(string $jsonPath, string $value): void
     {
         assertNotEquals(
             $this->variableState->replaceVariables($value),
@@ -72,23 +72,41 @@ trait ResponseSteps
     /**
      * @Then the JSON response at :url should include :value
      */
-    public function theJsonResponseAtShouldInclude($jsonPath, $value)
+    public function theJsonResponseAtShouldInclude(string $jsonPath, string $value): void
     {
-        assertStringContainsString(
-            $value,
-            $this->responseState->getValueOnPath($jsonPath)
-        );
+        $actual = $this->responseState->getValueOnPath($jsonPath);
+
+        if (is_array($actual)) {
+            assertContains(
+                $this->variableState->replaceVariables($value),
+                $actual
+            );
+        } else {
+            assertStringContainsString(
+                $this->variableState->replaceVariables($value),
+                $actual
+            );
+        }
     }
 
     /**
      * @Then the JSON response at :jsonPath should include:
      */
-    public function theJsonResponseAtShouldInclude2($jsonPath, PyStringNode $value)
+    public function theJsonResponseAtShouldInclude2(string $jsonPath, PyStringNode $value): void
     {
-        assertContains(
-            Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
-            $this->responseState->getValueOnPath($jsonPath)
-        );
+        $actual = $this->responseState->getValueOnPath($jsonPath);
+
+        if (is_array($actual)) {
+            assertContains(
+                Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
+                $actual
+            );
+        } else {
+            assertStringContainsString(
+                $this->variableState->replaceVariables($value->getRaw()),
+                $actual
+            );
+        }
     }
 
     /**
@@ -102,7 +120,7 @@ trait ResponseSteps
     /**
      * @Then the JSON response should have :jsonPath
      */
-    public function theJsonResponseShouldHave($jsonPath)
+    public function theJsonResponseShouldHave(string $jsonPath): void
     {
         assertNotEquals(null, $this->responseState->getValueOnPath($jsonPath));
     }
@@ -119,6 +137,14 @@ trait ResponseSteps
     }
 
     /**
+     * @Then the JSON response at :jsonPath should have :nrOfEntries entry
+     */
+    public function theJsonResponseAtShouldHaveEntry(string $jsonPath, int $nrOfEntries): void
+    {
+        $this->theJsonResponseAtShouldHaveEntries($jsonPath, $nrOfEntries);
+    }
+
+    /**
      * @Then the response body should be valid JSON
      */
     public function theResponseBodyShouldBeValidJson(): void
@@ -129,7 +155,7 @@ trait ResponseSteps
     /**
      * @Then the response status should be :statusCode
      */
-    public function theResponseStatusShouldBe(int $statusCode)
+    public function theResponseStatusShouldBe(int $statusCode): void
     {
         assertEquals($statusCode, $this->responseState->getStatusCode());
     }

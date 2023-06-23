@@ -8,17 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 class CulturefeedSluggerTest extends TestCase
 {
-    /**
-     * @var CulturefeedSlugger
-     */
-    protected $slugger;
+    protected CulturefeedSlugger $slugger;
 
     public function setUp(): void
     {
         $this->slugger = new CulturefeedSlugger();
     }
 
-    public function slugsProvider()
+    public function slugsProvider(): array
     {
         return [
             [
@@ -57,11 +54,9 @@ class CulturefeedSluggerTest extends TestCase
     }
 
     /**
-     * @param string $title
-     * @param string $expectedSlug
      * @dataProvider slugsProvider
      */
-    public function testSlug($title, $expectedSlug)
+    public function testSlug(string $title, string $expectedSlug): void
     {
         $this->assertEquals($expectedSlug, $this->slugger->slug($title));
     }

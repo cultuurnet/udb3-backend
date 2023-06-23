@@ -8,6 +8,7 @@ use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\State\ResponseState;
 use CultuurNet\UDB3\State\VariableState;
 use CultuurNet\UDB3\Steps\AuthorizationSteps;
+use CultuurNet\UDB3\Steps\CuratorSteps;
 use CultuurNet\UDB3\Steps\EventSteps;
 use CultuurNet\UDB3\Steps\LabelSteps;
 use CultuurNet\UDB3\Steps\OrganizerSteps;
@@ -25,6 +26,7 @@ final class FeatureContext implements Context
     use ResponseSteps;
     use UtilitySteps;
 
+    use CuratorSteps;
     use EventSteps;
     use OrganizerSteps;
     use PlaceSteps;
@@ -70,7 +72,7 @@ final class FeatureContext implements Context
     /**
      * @Transform :url
      */
-    public function replaceUrl($url): string
+    public function replaceUrl(string $url): string
     {
         return $this->variableState->replaceVariables($url);
     }
@@ -78,7 +80,7 @@ final class FeatureContext implements Context
     /**
      * @Transform :id
      */
-    public function replaceId($id): string
+    public function replaceId(string $id): string
     {
         return $this->variableState->replaceVariables($id);
     }

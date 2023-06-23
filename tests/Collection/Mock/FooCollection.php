@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Collection\AbstractCollection;
 
 final class FooCollection extends AbstractCollection
 {
-    /**
-     * @inheritdoc
-     */
-    protected function getValidObjectType()
+    protected function getValidObjectType(): string
     {
         return Foo::class;
     }

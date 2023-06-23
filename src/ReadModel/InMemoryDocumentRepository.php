@@ -9,7 +9,7 @@ class InMemoryDocumentRepository implements DocumentRepository
     /**
      * @var JsonDocument[]|string[]
      */
-    private $documents;
+    private array $documents;
 
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
     {
@@ -28,12 +28,12 @@ class InMemoryDocumentRepository implements DocumentRepository
         return $document;
     }
 
-    public function save(JsonDocument $readModel): void
+    public function save(JsonDocument $document): void
     {
-        $this->documents[$readModel->getId()] = $readModel;
+        $this->documents[$document->getId()] = $document;
     }
 
-    public function remove($id): void
+    public function remove(string $id): void
     {
         unset($this->documents[$id]);
     }

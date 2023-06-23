@@ -21,7 +21,7 @@ class Version20181217144324 extends AbstractMigration
     ];
 
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         foreach (self::EVENT_STORE_TABLES as $eventStoreTable) {
             $schema->dropTable($eventStoreTable);
@@ -29,14 +29,14 @@ class Version20181217144324 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         foreach (self::EVENT_STORE_TABLES as $eventStoreTable) {
             $this->createEventStoreTable($schema, new StringLiteral($eventStoreTable));
         }
     }
 
-    private function createEventStoreTable(Schema $schema, StringLiteral $name)
+    private function createEventStoreTable(Schema $schema, StringLiteral $name): void
     {
         // @see \Broadway\EventStore\DBALEventStore
         $table = $schema->createTable($name->toNative());

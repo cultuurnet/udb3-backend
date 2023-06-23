@@ -33,7 +33,7 @@ class AbstractEventWithIriTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_id()
+    public function it_returns_the_id(): void
     {
         $this->assertEquals('1', $this->event->getItemId());
     }
@@ -41,7 +41,7 @@ class AbstractEventWithIriTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_iri()
+    public function it_returns_the_iri(): void
     {
         $this->assertEquals('event/1', $this->event->getIri());
     }
@@ -49,7 +49,7 @@ class AbstractEventWithIriTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized()
+    public function it_can_be_serialized(): void
     {
         $serialized = $this->event->serialize();
         $deserialized = MockAbstractEventWithIri::deserialize($serialized);

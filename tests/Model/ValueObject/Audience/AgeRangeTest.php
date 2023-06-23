@@ -11,7 +11,7 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_never_have_a_from_greater_than_the_to()
+    public function it_should_never_have_a_from_greater_than_the_to(): void
     {
         $from = new Age(10);
         $to = new Age(8);
@@ -25,7 +25,7 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_given_from_and_to()
+    public function it_should_return_the_given_from_and_to(): void
     {
         $from = new Age(10);
         $to = new Age(18);
@@ -38,7 +38,7 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_with_just_a_from()
+    public function it_should_be_creatable_with_just_a_from(): void
     {
         $from = new Age(10);
         $range = AgeRange::from($from);
@@ -50,7 +50,7 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_with_just_a_to()
+    public function it_should_be_creatable_with_just_a_to(): void
     {
         $to = new Age(10);
         $range = AgeRange::to($to);
@@ -62,7 +62,7 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_with_from_and_to()
+    public function it_should_be_creatable_with_from_and_to(): void
     {
         $from = new Age(10);
         $to = new Age(18);
@@ -75,7 +75,7 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_with_exactly_one_age()
+    public function it_should_be_creatable_with_exactly_one_age(): void
     {
         $age = new Age(10);
         $range = AgeRange::exactly($age);
@@ -87,7 +87,7 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_with_any_age()
+    public function it_should_be_creatable_with_any_age(): void
     {
         $range = AgeRange::any();
 

@@ -11,7 +11,7 @@ final class InMemoryPopularityRepository implements PopularityRepository
      */
     private $popularityScores = [];
 
-    public function saveScore(string $offerId, Popularity $popularity)
+    public function saveScore(string $offerId, Popularity $popularity): void
     {
         $this->popularityScores[$offerId] = $popularity;
     }

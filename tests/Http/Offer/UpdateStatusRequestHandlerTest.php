@@ -37,7 +37,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
      * @test
      * @dataProvider validDataProvider
      */
-    public function it_does_not_throw_when_given_valid_data(string $offerType, $data, UpdateStatus $expectedCommand): void
+    public function it_does_not_throw_when_given_valid_data(string $offerType, object $data, UpdateStatus $expectedCommand): void
     {
         $this->requestHandler->handle(
             (new Psr7RequestBuilder())
@@ -190,6 +190,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
     /**
      * @test
      * @dataProvider invalidDataProvider
+     * @param array|object $data
      */
     public function it_throws_an_api_problem_when_given_invalid_data(string $offerType, $data, array $expectedSchemaErrors): void
     {

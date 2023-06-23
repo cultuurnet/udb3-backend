@@ -155,7 +155,7 @@ class CdbXMLImporter
     /**
      * @param \stdClass $jsonLD
      */
-    private function importTerms(\CultureFeed_Cdb_Item_Base $actor, $jsonLD)
+    private function importTerms(\CultureFeed_Cdb_Item_Base $actor, $jsonLD): void
     {
         $themeBlacklist = [];
         $categories = [];

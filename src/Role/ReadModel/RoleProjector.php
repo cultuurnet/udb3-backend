@@ -14,10 +14,7 @@ class RoleProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var DocumentRepository
-     */
-    protected $repository;
+    protected DocumentRepository $repository;
 
     /**
      * Projector constructor.
@@ -27,10 +24,7 @@ class RoleProjector implements EventListener
         $this->repository = $repository;
     }
 
-    /**
-     * @param string $uuid
-     */
-    protected function saveNewDocument($uuid, callable $fn)
+    protected function saveNewDocument(string $uuid, callable $fn): void
     {
         $document = $this
             ->newDocument($uuid)
@@ -39,11 +33,7 @@ class RoleProjector implements EventListener
         $this->repository->save($document);
     }
 
-    /**
-     * @param string $uuid
-     * @return JsonDocument
-     */
-    protected function loadDocumentFromRepositoryByUuid($uuid)
+    protected function loadDocumentFromRepositoryByUuid(string $uuid): JsonDocument
     {
         try {
             $document = $this->repository->fetch($uuid);
@@ -54,11 +44,7 @@ class RoleProjector implements EventListener
         return $document;
     }
 
-    /**
-     * @param string $uuid
-     * @return JsonDocument
-     */
-    protected function newDocument($uuid)
+    protected function newDocument(string $uuid): JsonDocument
     {
         $document = new JsonDocument($uuid);
 

@@ -87,7 +87,7 @@ final class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
-            ->when(function (Label $label) {
+            ->when(function (Label $label): void {
                 $label->makeInvisible();
                 $label->makeVisible();
             })
@@ -153,7 +153,7 @@ final class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadePublic($this->uuid, $this->name)])
-            ->when(function (Label $label) {
+            ->when(function (Label $label): void {
                 $label->makePrivate();
                 $label->makePublic();
             })
@@ -231,7 +231,7 @@ final class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new Excluded($this->uuid)])
-            ->when(function (Label $label) {
+            ->when(function (Label $label): void {
                 $label->include();
                 $label->exclude();
             })
@@ -275,7 +275,7 @@ final class LabelTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
-            ->when(function (Label $label) {
+            ->when(function (Label $label): void {
                 $label->exclude();
                 $label->include();
             })

@@ -15,20 +15,13 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class CreatePlaceJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var CreatePlaceDataValidator
-     */
-    private $validator;
+    private CreatePlaceDataValidator $validator;
 
-    /**
-     * @var MajorInfoJSONDeserializer
-     */
-    private $majorInfoJSONDeserializer;
+    private MajorInfoJSONDeserializer $majorInfoJSONDeserializer;
 
     public function __construct()
     {
-        $assoc = true;
-        parent::__construct($assoc);
+        parent::__construct(true);
 
         $this->validator = new CreatePlaceDataValidator();
 
@@ -36,10 +29,9 @@ class CreatePlaceJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @return CreatePlace
      * @throws DataValidationException
      */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): CreatePlace
     {
         /** @var array $deserializedData */
         $deserializedData = parent::deserialize($data);

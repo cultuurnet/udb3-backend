@@ -41,7 +41,7 @@ class AbstractPublishedTest extends TestCase
     /**
      * @test
      */
-    public function it_derives_from_abstract_event()
+    public function it_derives_from_abstract_event(): void
     {
         $this->assertTrue(is_subclass_of(
             $this->abstractPublished,
@@ -52,7 +52,7 @@ class AbstractPublishedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_item_id()
+    public function it_stores_an_item_id(): void
     {
         $this->assertEquals(
             $this->itemId,
@@ -63,7 +63,7 @@ class AbstractPublishedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_publication_date()
+    public function it_stores_an_publication_date(): void
     {
         $this->assertEquals(
             $this->publicationDate,
@@ -74,7 +74,7 @@ class AbstractPublishedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $expectedArray = [
             'item_id' => $this->itemId,

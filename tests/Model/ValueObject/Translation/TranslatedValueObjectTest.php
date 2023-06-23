@@ -11,7 +11,7 @@ class TranslatedValueObjectTest extends TestCase
     /**
      * @test
      */
-    public function it_should_only_accept_the_supported_value_object_type_as_original_value()
+    public function it_should_only_accept_the_supported_value_object_type_as_original_value(): void
     {
         $className = MockValueObjectString::class;
         $invalidClassName = MockValueObjectInteger::class;
@@ -25,7 +25,7 @@ class TranslatedValueObjectTest extends TestCase
     /**
      * @test
      */
-    public function it_should_start_with_one_language_and_value_and_be_translatable()
+    public function it_should_start_with_one_language_and_value_and_be_translatable(): void
     {
         $nl = new Language('nl');
         $fr = new Language('fr');
@@ -47,7 +47,7 @@ class TranslatedValueObjectTest extends TestCase
     /**
      * @test
      */
-    public function it_should_only_accept_the_supported_value_object_type_as_translation()
+    public function it_should_only_accept_the_supported_value_object_type_as_translation(): void
     {
         $nl = new Language('nl');
         $nlValue = new MockValueObjectString('foo');
@@ -65,7 +65,7 @@ class TranslatedValueObjectTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_able_to_remove_a_translation()
+    public function it_should_be_able_to_remove_a_translation(): void
     {
         $nl = new Language('nl');
         $fr = new Language('fr');
@@ -89,7 +89,7 @@ class TranslatedValueObjectTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_be_able_to_remove_the_original_language()
+    public function it_should_not_be_able_to_remove_the_original_language(): void
     {
         $nl = new Language('nl');
         $fr = new Language('fr');
@@ -112,7 +112,7 @@ class TranslatedValueObjectTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_original_language()
+    public function it_should_return_the_original_language(): void
     {
         $nl = new Language('nl');
         $nlValue = new MockValueObjectString('foo');
@@ -125,7 +125,7 @@ class TranslatedValueObjectTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_all_languages()
+    public function it_should_return_all_languages(): void
     {
         $nl = new Language('nl');
         $fr = new Language('fr');
@@ -146,7 +146,7 @@ class TranslatedValueObjectTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_all_languages_without_the_original_language()
+    public function it_should_return_all_languages_without_the_original_language(): void
     {
         $nl = new Language('nl');
         $fr = new Language('fr');

@@ -6,12 +6,9 @@ namespace CultuurNet\UDB3\Offer\Events;
 
 abstract class AbstractOrganizerEvent extends AbstractEvent
 {
-    /**
-     * @var string
-     */
-    protected $organizerId;
+    protected string $organizerId;
 
-    final public function __construct(string $id, $organizerId)
+    final public function __construct(string $id, string $organizerId)
     {
         parent::__construct($id);
         $this->organizerId = $organizerId;

@@ -10,13 +10,8 @@ class EmailAddress
 {
     use IsString;
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
-        $this->guardString($value);
-
         if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
             throw new \InvalidArgumentException('Given string is not a valid e-mail address.');
         }

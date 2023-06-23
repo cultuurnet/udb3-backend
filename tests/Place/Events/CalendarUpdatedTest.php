@@ -65,7 +65,7 @@ class CalendarUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_event_id()
+    public function it_stores_an_event_id(): void
     {
         $this->assertEquals($this->placeId, $this->calendarUpdated->getItemId());
     }
@@ -73,7 +73,7 @@ class CalendarUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_calendar()
+    public function it_stores_a_calendar(): void
     {
         $this->assertEquals($this->calendar, $this->calendarUpdated->getCalendar());
     }
@@ -81,7 +81,7 @@ class CalendarUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $this->assertEquals(
             $this->calendarUpdatedAsArray,
@@ -92,7 +92,7 @@ class CalendarUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $this->assertEquals(
             $this->calendarUpdated,

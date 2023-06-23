@@ -26,7 +26,7 @@ class OfferType extends Enum
         return new self('Place');
     }
 
-    public static function fromCaseInsensitiveValue($value): OfferType
+    public static function fromCaseInsensitiveValue(string $value): OfferType
     {
         return new self(ucfirst(strtolower($value)));
     }

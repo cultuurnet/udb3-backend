@@ -1,5 +1,7 @@
 parameters:
-	level: 5
+	level: 6
+	checkMissingIterableValueType: false
+	checkGenericClassInNonGenericObjectType: false
 	paths:
 		- app
 		- src
@@ -14,3 +16,4 @@ parameters:
 	excludePaths:
 		- tests/Event/Productions/SimilarEventsRepositoryTest.php
 		- tests/Http/Productions/SuggestProductionRequestHandlerTest.php
+		- tests/Offer/Commands/Moderation/AbstractModerationCommandTestBase.php

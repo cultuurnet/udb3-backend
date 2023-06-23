@@ -19,7 +19,7 @@ class ImagesImportedFromUDB2Test extends TestCase
     /**
      * @test
      */
-    public function it_should_be_serializable_and_deserializable_when_collection_is_not_empty()
+    public function it_should_be_serializable_and_deserializable_when_collection_is_not_empty(): void
     {
         $images = ImageCollection::fromArray([
             new Image(
@@ -41,7 +41,7 @@ class ImagesImportedFromUDB2Test extends TestCase
     /**
      * @test
      */
-    public function it_should_be_serializable_and_deserializable_when_collection_is_empty()
+    public function it_should_be_serializable_and_deserializable_when_collection_is_empty(): void
     {
         $images = new ImageCollection();
 

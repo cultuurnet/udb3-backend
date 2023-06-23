@@ -29,7 +29,7 @@ class ConsumeCommand extends Command
         $this->heartBeat = $heartBeat;
     }
 
-    private function handleSignal(OutputInterface $output, $signal): void
+    private function handleSignal(OutputInterface $output, int $signal): void
     {
         $output->writeln('Signal received, halting.');
         exit;
@@ -37,7 +37,7 @@ class ConsumeCommand extends Command
 
     private function registerSignalHandlers(OutputInterface $output): void
     {
-        $handler = function ($signal) use ($output) {
+        $handler = function ($signal) use ($output): void {
             $this->handleSignal($output, $signal);
         };
 

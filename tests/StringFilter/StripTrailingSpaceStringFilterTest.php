@@ -14,7 +14,7 @@ class StripTrailingSpaceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_strips_trailing_spaces()
+    public function it_strips_trailing_spaces(): void
     {
         $original = "    Hello!   \n Goodbye!  \n\n\nHello again!";
         $expected = "    Hello!\n Goodbye!\n\n\nHello again!";
@@ -24,19 +24,10 @@ class StripTrailingSpaceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_strips_trailing_tabs()
+    public function it_strips_trailing_tabs(): void
     {
         $original = "    \tHello!\t   \n Goodbye!  \n\n\nHello again!";
         $expected = "    \tHello!\n Goodbye!\n\n\nHello again!";
         $this->assertFilterValue($expected, $original);
-    }
-
-    /**
-     * @test
-     */
-    public function it_only_filters_strings()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->filter->filter(12345);
     }
 }

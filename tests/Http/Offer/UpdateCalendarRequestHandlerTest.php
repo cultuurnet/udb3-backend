@@ -48,7 +48,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
      * @test
      * @dataProvider validEventDataProvider
      */
-    public function it_does_not_throw_when_given_valid_event_data($data, UpdateCalendar $expectedCommand): void
+    public function it_does_not_throw_when_given_valid_event_data(object $data, UpdateCalendar $expectedCommand): void
     {
         $this->updateCalendarRequestHandler->handle(
             (new Psr7RequestBuilder())
@@ -486,6 +486,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     /**
      * @test
      * @dataProvider invalidEventDataProvider
+     * @param array|object $data
      */
     public function it_throws_an_api_problem_when_given_invalid_event_data($data, array $expectedSchemaErrors): void
     {
@@ -762,7 +763,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
      * @test
      * @dataProvider validPlaceDataProvider
      */
-    public function it_does_not_throw_when_given_valid_place_data($data, UpdateCalendar $expectedCommand): void
+    public function it_does_not_throw_when_given_valid_place_data(object $data, UpdateCalendar $expectedCommand): void
     {
         $this->updateCalendarRequestHandler->handle(
             (new Psr7RequestBuilder())
@@ -946,6 +947,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     /**
      * @test
      * @dataProvider invalidPlaceDataProvider
+     * @param array|object $data
      */
     public function it_throws_an_api_problem_when_given_invalid_place_data($data, array $expectedSchemaErrors): void
     {

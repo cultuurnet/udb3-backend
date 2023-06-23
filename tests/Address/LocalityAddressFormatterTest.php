@@ -12,7 +12,7 @@ class LocalityAddressFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_formats_addresses()
+    public function it_formats_addresses(): void
     {
         $formatter = new LocalityAddressFormatter();
 

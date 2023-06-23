@@ -19,7 +19,7 @@ class SimpleDeserializerLocatorTest extends TestCase
         $this->deserializerLocator = new SimpleDeserializerLocator();
     }
 
-    public function testGivesBackDeserializerThatWasRegistered()
+    public function testGivesBackDeserializerThatWasRegistered(): void
     {
         /** @var DeserializerInterface $firstDeserializer */
         $firstDeserializer = $this->createMock(DeserializerInterface::class);
@@ -51,7 +51,7 @@ class SimpleDeserializerLocatorTest extends TestCase
         );
     }
 
-    public function testThrowsExceptionWhenDeserializerCanNotBeFound()
+    public function testThrowsExceptionWhenDeserializerCanNotBeFound(): void
     {
         $this->expectException(DeserializerNotFoundException::class);
 

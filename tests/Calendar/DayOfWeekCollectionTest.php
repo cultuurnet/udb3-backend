@@ -23,7 +23,7 @@ class DayOfWeekCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_gets_constructed_as_an_empty_collection()
+    public function it_gets_constructed_as_an_empty_collection(): void
     {
         $daysOfWeekCollection = new DayOfWeekCollection();
 
@@ -33,7 +33,7 @@ class DayOfWeekCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_constructed_with_a_single_day_of_the_week()
+    public function it_can_be_constructed_with_a_single_day_of_the_week(): void
     {
         $daysOfWeekCollection = new DayOfWeekCollection(
             DayOfWeek::WEDNESDAY()
@@ -50,7 +50,7 @@ class DayOfWeekCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_constructed_with_a_multiple_day_of_the_week()
+    public function it_can_be_constructed_with_a_multiple_day_of_the_week(): void
     {
         $daysOfWeekCollection = new DayOfWeekCollection(
             DayOfWeek::WEDNESDAY(),
@@ -69,7 +69,7 @@ class DayOfWeekCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_adding_more_days_of_the_week()
+    public function it_allows_adding_more_days_of_the_week(): void
     {
         $this->dayOfWeekCollection->addDayOfWeek(DayOfWeek::FRIDAY());
 
@@ -85,7 +85,7 @@ class DayOfWeekCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_only_adds_unique_days()
+    public function it_only_adds_unique_days(): void
     {
         $this->dayOfWeekCollection->addDayOfWeek(DayOfWeek::FRIDAY());
         $this->dayOfWeekCollection->addDayOfWeek(DayOfWeek::FRIDAY());
@@ -102,7 +102,7 @@ class DayOfWeekCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized()
+    public function it_can_be_serialized(): void
     {
         $this->dayOfWeekCollection->addDayOfWeek(DayOfWeek::MONDAY());
 
@@ -118,7 +118,7 @@ class DayOfWeekCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_deserialized()
+    public function it_can_be_deserialized(): void
     {
         $this->dayOfWeekCollection->addDayOfWeek(DayOfWeek::MONDAY());
 
@@ -136,7 +136,7 @@ class DayOfWeekCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_built_in_serialize()
+    public function it_allows_built_in_serialize(): void
     {
         $serialized = serialize($this->dayOfWeekCollection);
 

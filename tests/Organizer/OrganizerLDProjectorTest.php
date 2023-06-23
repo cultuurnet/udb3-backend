@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Repository\Repository;
+use Broadway\Serializer\Serializable;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Address\Locality;
@@ -418,7 +419,7 @@ final class OrganizerLDProjectorTest extends TestCase
      * @test
      * @dataProvider addressUpdatesDataProvider
      */
-    public function it_handles_address_updated($currentJson, $expectedJson): void
+    public function it_handles_address_updated(string $currentJson, string $expectedJson): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
@@ -1189,13 +1190,15 @@ final class OrganizerLDProjectorTest extends TestCase
             ->with(new JsonDocument($organizerId, $expectedOrganizerJson));
     }
 
-
+    /**
+     * @param Serializable|ActorEvent $organizerEvent
+     */
     private function createDomainMessage($organizerEvent): DomainMessage
     {
         if ($organizerEvent instanceof ActorEvent) {
             $id = $organizerEvent->getActorId();
         } else {
-            $id = $organizerEvent->getOrganizerId();
+            $id = $organizerEvent->getOrganizerId(); //@phpstan-ignore-line
         }
 
         return new DomainMessage(

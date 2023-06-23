@@ -16,20 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractFireProjectedToJSONLDCommand extends Command
 {
-    /**
-     * @var EventBus
-     */
-    private $eventBus;
+    private EventBus $eventBus;
 
-    /**
-     * @var DocumentEventFactory
-     */
-    private $organizerEventFactory;
+    private DocumentEventFactory $organizerEventFactory;
 
-    /**
-     * @var DocumentEventFactory
-     */
-    private $placeEventFactory;
+    private DocumentEventFactory $placeEventFactory;
 
     public function __construct(EventBus $eventBus, DocumentEventFactory $organizerEventFactory, DocumentEventFactory $placeEventFactory)
     {
@@ -52,7 +43,7 @@ abstract class AbstractFireProjectedToJSONLDCommand extends Command
         callable $callback,
         InputInterface $input,
         OutputInterface $output
-    ) {
+    ): void {
         ReplayFlaggingMiddleware::startReplayMode();
         $callback($this->eventBus, $input, $output);
         ReplayFlaggingMiddleware::stopReplayMode();

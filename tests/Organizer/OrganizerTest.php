@@ -104,7 +104,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->addLabel(new Label(new LabelName('foo')));
                 }
             )
@@ -129,7 +129,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->importLabels(
                         new Labels(
                             new Label(
@@ -197,7 +197,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) use ($labels) {
+                function (Organizer $organizer) use ($labels): void {
                     $organizer->importLabels($labels);
                     $organizer->importLabels($labels);
                 }
@@ -231,7 +231,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->removeLabel('invalid;label');
                     $organizer->removeLabel("newline\r\nLabel");
                 }
@@ -292,7 +292,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([$this->organizerCreatedWithUniqueWebsite])
             ->when(
-                function (Organizer $organizer) use ($initialAddress, $updatedAddress, $language) {
+                function (Organizer $organizer) use ($initialAddress, $updatedAddress, $language): void {
                     $organizer->updateAddress($initialAddress, $language);
 
                     // Update the address twice with the same value so we can
@@ -347,7 +347,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     // Remove the address twice with the same value so we can
                     // test it doesn't get recorded the second time.
                     $organizer->removeAddress();
@@ -379,7 +379,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([$this->organizerCreatedWithUniqueWebsite])
             ->when(
-                function (Organizer $organizer) use ($emptyContactPoint, $initialContactPoint, $updatedContactPoint) {
+                function (Organizer $organizer) use ($emptyContactPoint, $initialContactPoint, $updatedContactPoint): void {
                     // Should NOT record an event.
                     $organizer->updateContactPoint($emptyContactPoint);
 
@@ -422,7 +422,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateContactPoint(
                         new ContactPoint(
                             new TelephoneNumbers(),
@@ -455,7 +455,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateWebsite(new Url('http://www.stuk.be'));
                     $organizer->updateWebsite(new Url('http://www.hetdepot.be'));
                 }
@@ -489,7 +489,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateWebsite(new Url('http://www.hetdepot.be'));
                 }
             )
@@ -516,7 +516,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateTitle(
                         new Title('STUK'),
                         new Language('en')
@@ -576,7 +576,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateTitle(
                         new Title('Pièce'),
                         new Language('fr')
@@ -620,7 +620,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     $organizerCreated,
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateDescription(
                         new Description('Description of the organizer'),
                         new Language('en')
@@ -643,7 +643,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         'en'
                     ),
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateDescription(
                         new Description('Description of the organizer'),
                         new Language('en')
@@ -661,7 +661,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         'en'
                     ),
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateDescription(
                         new Description('Beschrijving van de organisatie'),
                         new Language('nl')
@@ -679,7 +679,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     $organizerCreated,
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateDescription(
                         new Description('Description of the organizer'),
                         new Language('en')
@@ -736,7 +736,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         'en'
                     ),
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->deleteDescription(new Language('en'));
                 },
                 [
@@ -752,7 +752,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         'en'
                     ),
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->deleteDescription(new Language('fr'));
                 },
                 [
@@ -762,7 +762,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     $organizerCreated,
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->deleteDescription(new Language('fr'));
                 },
                 [
@@ -797,7 +797,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     $organizerCreated,
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->addImage(
                         new Image(
                             new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
@@ -828,7 +828,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         'publiq'
                     ),
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->addImage(
                         new Image(
                             new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
@@ -852,7 +852,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         'publiq'
                     ),
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->addImage(
                         new Image(
                             new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
@@ -910,7 +910,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $organizerCreated,
                     $imageAdded,
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateImage(
                         new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                         new Language('en'),
@@ -933,7 +933,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $organizerCreated,
                     $imageAdded,
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateImage(
                         new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                         new Language('nl'),
@@ -956,7 +956,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $organizerCreated,
                     $imageAdded,
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateImage(
                         new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                         new Language('nl'),
@@ -979,7 +979,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $organizerCreated,
                     $imageAdded,
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateImage(
                         new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                         new Language('en'),
@@ -1002,7 +1002,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $organizerCreated,
                     $imageAdded,
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateImage(
                         new UUID('f0515293-4e39-4679-9f39-5406dddfb234'),
                         new Language('en'),
@@ -1018,7 +1018,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $organizerCreated,
                     $imageAdded,
                 ],
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateImage(
                         new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                         new Language('nl'),
@@ -1233,7 +1233,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) use ($addressFr, $addressEn) {
+                function (Organizer $organizer) use ($addressFr, $addressEn): void {
                     $organizer->updateAddress(
                         $addressFr,
                         new Language('fr')
@@ -1284,7 +1284,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->updateTitle(
                         new Title('DE Studio'),
                         new Language('nl')
@@ -1318,7 +1318,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->delete();
                 }
             )
@@ -1341,7 +1341,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->delete();
                     $organizer->delete();
                 }
@@ -1365,7 +1365,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Organizer $organizer) {
+                function (Organizer $organizer): void {
                     $organizer->changeOwner('5314f3fd-69fd-4650-8c87-0e7b0b5c0dd3');
                 }
             )

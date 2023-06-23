@@ -24,7 +24,7 @@ class LabelJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_a_valid_label()
+    public function it_can_deserialize_a_valid_label(): void
     {
         $json = new StringLiteral('{"label": "test-label"}');
         $label = $this->deserializer->deserialize($json);
@@ -34,7 +34,7 @@ class LabelJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_no_label_is_found()
+    public function it_throws_an_exception_when_no_label_is_found(): void
     {
         $json = new StringLiteral('{"foo": "bar"}');
 

@@ -38,7 +38,7 @@ class CachedGeocodingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_cached_coordinates_if_possible()
+    public function it_returns_cached_coordinates_if_possible(): void
     {
         $address = 'Wetstraat 1, 1000 Brussel, BE';
 
@@ -62,7 +62,7 @@ class CachedGeocodingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_also_caches_when_no_coordinates_were_found()
+    public function it_also_caches_when_no_coordinates_were_found(): void
     {
         $address = 'Eikelberg (achter de bibliotheek), 8340 Sijsele (Damme), BE';
 

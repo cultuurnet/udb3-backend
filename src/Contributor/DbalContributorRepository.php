@@ -59,7 +59,7 @@ final class DbalContributorRepository implements ContributorRepository
     public function updateContributors(UUID $id, EmailAddresses $emailAddresses, ItemType $itemType): void
     {
         $this->connection->transactional(
-            function (Connection $connection) use ($id, $emailAddresses, $itemType) {
+            function (Connection $connection) use ($id, $emailAddresses, $itemType): void {
                 $connection
                     ->delete(
                         self::TABLE,

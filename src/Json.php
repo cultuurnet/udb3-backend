@@ -36,7 +36,7 @@ final class Json
      * @throws JsonException
      *   If the JSON could not be decoded, for example because the syntax is invalid.
      */
-    public static function decode(string $data)
+    public static function decode(string $data) // @phpstan-ignore-line
     {
         return json_decode($data, false, self::$depth, JSON_THROW_ON_ERROR);
     }
@@ -52,7 +52,7 @@ final class Json
      * @throws JsonException
      *   If the JSON could not be decoded, for example because the syntax is invalid.
      */
-    public static function decodeAssociatively(string $data)
+    public static function decodeAssociatively(string $data) // @phpstan-ignore-line
     {
         return json_decode($data, true, self::$depth, JSON_THROW_ON_ERROR);
     }

@@ -12,20 +12,11 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractGeoCoordinatesProcessManager implements EventListener
 {
-    /**
-     * @var CommandBus
-     */
-    protected $commandBus;
+    protected CommandBus $commandBus;
 
-    /**
-     * @var CultureFeedAddressFactoryInterface
-     */
-    protected $addressFactory;
+    protected CultureFeedAddressFactoryInterface $addressFactory;
 
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
+    protected LoggerInterface $logger;
 
     public function __construct(
         CommandBus $commandBus,
@@ -37,8 +28,7 @@ abstract class AbstractGeoCoordinatesProcessManager implements EventListener
         $this->logger = $logger;
     }
 
-    abstract protected function getEventHandlers();
-
+    abstract protected function getEventHandlers(): array;
 
     public function handle(DomainMessage $domainMessage): void
     {

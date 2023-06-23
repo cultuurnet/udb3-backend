@@ -26,7 +26,7 @@ class OfferLocatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_the_location_of_an_offer_to_its_metadata_as_id()
+    public function it_should_add_the_location_of_an_offer_to_its_metadata_as_id(): void
     {
         $this->iriGenerator
             ->method('iri')
@@ -50,7 +50,7 @@ class OfferLocatorTest extends TestCase
         }
     }
 
-    private function createDomainEventStream()
+    private function createDomainEventStream(): DomainEventStream
     {
         $m1 = DomainMessage::recordNow('id', 42, Metadata::kv('bar', 1337), 'payload');
         $m2 = DomainMessage::recordNow('id', 42, Metadata::kv('bar', 1337), 'payload');

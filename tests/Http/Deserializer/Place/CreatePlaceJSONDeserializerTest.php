@@ -21,7 +21,7 @@ class CreatePlaceJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize_create_place_with_main_language_info()
+    public function it_can_serialize_create_place_with_main_language_info(): void
     {
         $createPlaceAsJson = file_get_contents(__DIR__ . '/../samples/place-create-with-main-language.json');
 

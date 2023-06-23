@@ -77,7 +77,7 @@ class TabularDataEventFormatter
         return $columns;
     }
 
-    public function formatEvent($event): array
+    public function formatEvent(string $event): array
     {
         $event = Json::decode($event);
         $includedProperties = $this->includedProperties;
@@ -137,7 +137,7 @@ class TabularDataEventFormatter
         return $row;
     }
 
-    protected function expandMultiColumnProperties($properties): array
+    protected function expandMultiColumnProperties(array $properties): array
     {
         $expandedProperties = [];
 
@@ -196,7 +196,7 @@ class TabularDataEventFormatter
         return $expandedProperties;
     }
 
-    protected function includedOrDefaultProperties($include): array
+    protected function includedOrDefaultProperties(?array $include): array
     {
         if ($include) {
             $properties = $this->expandMultiColumnProperties($include);
@@ -717,7 +717,7 @@ class TabularDataEventFormatter
         }, $priceInfo));
     }
 
-    private function formatTariff($tariff, string $language): string
+    private function formatTariff(\stdClass $tariff, string $language): string
     {
         $price = (float) $tariff->price;
 
@@ -742,7 +742,7 @@ class TabularDataEventFormatter
         };
     }
 
-    private function parseEventIdFromUrl($event): string
+    private function parseEventIdFromUrl(stdClass $event): string
     {
         $eventUri = $event->{'@id'};
         $uriParts = explode('/', $eventUri);

@@ -113,7 +113,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.amqp-listen-uitpas',
             function () use ($container) {
-                $heartBeat = static function () use ($container) {
+                $heartBeat = static function () use ($container): void {
                     $db = $container->get('dbal_connection');
                     $db->query('SELECT 1')->execute();
                 };
@@ -130,7 +130,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.amqp-listen-rdf',
             function () use ($container) {
-                $heartBeat = static function () use ($container) {
+                $heartBeat = static function () use ($container): void {
                     $db = $container->get('dbal_connection');
                     $db->query('SELECT 1')->execute();
                 };

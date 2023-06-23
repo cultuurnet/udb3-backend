@@ -42,7 +42,6 @@ final class MoneyFactoryTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given value should be an int, string, float, double. Got boolean instead.');
 
-        // @phpstan-ignore-next-line
         MoneyFactory::create(true, new Currency('EUR'));
     }
 

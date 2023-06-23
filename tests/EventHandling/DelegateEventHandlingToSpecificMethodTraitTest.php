@@ -45,7 +45,7 @@ class DelegateEventHandlingToSpecificMethodTraitTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_known_event()
+    public function it_handles_known_event(): void
     {
         $domainMessage = $this->createDomainMessage(
             new MockLabelAdded()
@@ -61,7 +61,7 @@ class DelegateEventHandlingToSpecificMethodTraitTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_handle_event_of_the_wrong_parameter_type()
+    public function it_does_not_handle_event_of_the_wrong_parameter_type(): void
     {
         $domainMessage = $this->createDomainMessage(
             new MockLabelUpdated()
@@ -77,7 +77,7 @@ class DelegateEventHandlingToSpecificMethodTraitTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_handle_event_when_apply_method_has_parameter_missing()
+    public function it_does_not_handle_event_when_apply_method_has_parameter_missing(): void
     {
         $domainMessage = $this->createDomainMessage(
             new MockLabelRemoved()
@@ -93,7 +93,7 @@ class DelegateEventHandlingToSpecificMethodTraitTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_handle_abstract_event()
+    public function it_does_not_handle_abstract_event(): void
     {
         $domainMessage = $this->createDomainMessage(
             new MockTitleTranslated()
@@ -107,9 +107,9 @@ class DelegateEventHandlingToSpecificMethodTraitTest extends TestCase
     }
 
     /**
-     * @return DomainMessage
+     * @param MockTitleTranslated|MockLabelRemoved|MockLabelUpdated|MockLabelAdded $payload
      */
-    private function createDomainMessage($payload)
+    private function createDomainMessage($payload): DomainMessage
     {
         return new DomainMessage(
             'id',

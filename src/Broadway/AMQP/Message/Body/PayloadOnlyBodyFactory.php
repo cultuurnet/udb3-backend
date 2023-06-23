@@ -10,10 +10,7 @@ use Broadway\Serializer\SerializationException;
 
 class PayloadOnlyBodyFactory implements BodyFactoryInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function createBody(DomainMessage $domainMessage)
+    public function createBody(DomainMessage $domainMessage): string
     {
         $this->guardSerializable($domainMessage->getPayload());
 
@@ -25,7 +22,7 @@ class PayloadOnlyBodyFactory implements BodyFactoryInterface
     /**
      * @throws SerializationException
      */
-    private function guardSerializable($object)
+    private function guardSerializable(object $object): void
     {
         if (!$object instanceof Serializable) {
             throw new SerializationException(

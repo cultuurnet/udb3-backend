@@ -13,7 +13,7 @@ class SavedSearchTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized_to_json()
+    public function it_can_be_serialized_to_json(): void
     {
         $savedSearch = new SavedSearch(
             new StringLiteral('In Leuven'),
@@ -32,7 +32,7 @@ class SavedSearchTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_serialize_an_empty_id_property()
+    public function it_does_not_serialize_an_empty_id_property(): void
     {
         $savedSearch = new SavedSearch(
             new StringLiteral('In Leuven'),

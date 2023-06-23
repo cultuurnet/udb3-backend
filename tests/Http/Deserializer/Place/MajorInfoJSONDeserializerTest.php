@@ -20,7 +20,7 @@ class MajorInfoJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize_major_info()
+    public function it_can_serialize_major_info(): void
     {
         $majorInfoAsJson = file_get_contents(__DIR__ . '/../samples/place-major-info.json');
 

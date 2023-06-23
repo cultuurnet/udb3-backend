@@ -27,7 +27,7 @@ class EntireDomainMessageBodyFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_body_from_entire_domain_message()
+    public function it_creates_body_from_entire_domain_message(): void
     {
         $domainMessage = new DomainMessage(
             'F68E71A1-DBB0-4542-AEE5-BD937E095F74',
@@ -57,7 +57,7 @@ class EntireDomainMessageBodyFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_serialization_exception_when_payload_is_not_serializable()
+    public function it_throws_serialization_exception_when_payload_is_not_serializable(): void
     {
         $this->expectException(SerializationException::class);
         $this->expectExceptionMessage(

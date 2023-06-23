@@ -15,13 +15,13 @@ class Version20200526130622 extends AbstractMigration
     /**
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $schema->dropTable('my_organizers');
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // Copied from Version20180823080123::up()
         $table = $schema->createTable('my_organizers');

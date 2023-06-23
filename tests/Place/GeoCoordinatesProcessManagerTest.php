@@ -73,7 +73,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     public function it_dispatches_a_geocoding_command_when_an_address_change_is_suspected(
         DomainMessage $event,
         UpdateGeoCoordinatesFromAddress $expectedCommand
-    ) {
+    ): void {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
             ->with($expectedCommand);
@@ -88,7 +88,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
      */
     public function it_does_not_dispatch_a_geocoding_command_when_a_cdbxml_import_or_update_is_missing_an_address(
         DomainMessage $event
-    ) {
+    ): void {
         $this->commandBus->expects($this->never())
             ->method('dispatch');
 
@@ -98,7 +98,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_dispatch_a_geocoding_command_when_an_address_is_translated()
+    public function it_should_not_dispatch_a_geocoding_command_when_an_address_is_translated(): void
     {
         $event = DomainMessage::recordNow(
             '4b735422-2bf3-4241-aabb-d70609d2d1d3',
@@ -125,7 +125,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_an_error_and_dispatches_no_command_when_a_cdbxml_import_or_update_has_an_invalid_address()
+    public function it_logs_an_error_and_dispatches_no_command_when_a_cdbxml_import_or_update_has_an_invalid_address(): void
     {
         $domainMessage = DomainMessage::recordNow(
             '318F2ACB-F612-6F75-0037C9C29F44087A',

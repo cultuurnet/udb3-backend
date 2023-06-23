@@ -11,7 +11,7 @@ class TimeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_combine_an_hour_and_minute()
+    public function it_should_combine_an_hour_and_minute(): void
     {
         $hour = new Hour(12);
         $minute = new Minute(24);

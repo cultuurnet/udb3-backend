@@ -12,7 +12,7 @@ class WebsiteLinkTest extends TestCase
     /**
      * @test
      */
-    public function it_should_have_a_url_and_a_label()
+    public function it_should_have_a_url_and_a_label(): void
     {
         $url = new Url('https://google.com');
         $label = new TranslatedWebsiteLabel(new Language('nl'), new WebsiteLabel('Google'));
@@ -25,7 +25,7 @@ class WebsiteLinkTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_url()
+    public function it_should_return_a_copy_with_an_updated_url(): void
     {
         $url = new Url('https://google.com');
         $label = new TranslatedWebsiteLabel(new Language('nl'), new WebsiteLabel('Google'));
@@ -42,7 +42,7 @@ class WebsiteLinkTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_label()
+    public function it_should_return_a_copy_with_an_updated_label(): void
     {
         $url = new Url('https://google.com');
         $label = new TranslatedWebsiteLabel(new Language('nl'), new WebsiteLabel('Google'));

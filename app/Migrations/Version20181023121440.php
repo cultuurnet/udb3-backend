@@ -14,7 +14,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20181023121440 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->createTable('saved_searches_sapi2');
 
@@ -38,7 +38,7 @@ class Version20181023121440 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('saved_searches_sapi2');
     }

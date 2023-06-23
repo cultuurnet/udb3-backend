@@ -38,7 +38,7 @@ class LabelRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_label_added_to_role_event()
+    public function it_handles_label_added_to_role_event(): void
     {
         $labelAdded = new LabelAdded(
             new UUID('4f7eb061-109e-42af-9e51-96efc3b862dd'),
@@ -59,7 +59,7 @@ class LabelRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_label_removed_from_role_event()
+    public function it_handles_label_removed_from_role_event(): void
     {
         $labelRemoved = new LabelRemoved(
             new UUID('9efd4336-b892-4d49-a631-91c0b744d630'),
@@ -80,7 +80,7 @@ class LabelRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_role_deleted()
+    public function it_handles_role_deleted(): void
     {
         $roleDeleted = new RoleDeleted(new UUID('b951a2c0-6a5b-4867-8888-e53c3152d5fa'));
         $domainMessage = $this->createDomainMessage($roleDeleted);

@@ -56,7 +56,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_permission_to_the_user_identified_by_the_createdby_element_for_places_imported_from_udb2_actor()
+    public function it_adds_permission_to_the_user_identified_by_the_createdby_element_for_places_imported_from_udb2_actor(): void
     {
         $cdbXml = file_get_contents(__DIR__ . '/../../actor.xml');
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2');
@@ -93,7 +93,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_add_any_permissions_for_actor_places_imported_from_udb2_with_unresolvable_createdby_value()
+    public function it_does_not_add_any_permissions_for_actor_places_imported_from_udb2_with_unresolvable_createdby_value(): void
     {
         $cdbXml = file_get_contents(__DIR__ . '/../../actor.xml');
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2');
@@ -124,7 +124,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_add_permission_to_the_user_that_created_a_place()
+    public function it_add_permission_to_the_user_that_created_a_place(): void
     {
         $userId = new StringLiteral('user-id');
         $placeId = new StringLiteral('place-id');

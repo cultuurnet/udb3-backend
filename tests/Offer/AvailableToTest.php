@@ -20,7 +20,7 @@ class AvailableToTest extends TestCase
     public function it_creates_available_to_from_calendars(
         Calendar $calendar,
         \DateTimeInterface $expectedAvailableTo
-    ) {
+    ): void {
         $availableTo = AvailableTo::createFromCalendar($calendar);
 
         $this->assertEquals(

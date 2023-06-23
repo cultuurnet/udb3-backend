@@ -9,7 +9,7 @@ class MockTrimmed
     use IsString;
     use Trims;
 
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $value = $this->trim($value);
         $this->setValue($value);

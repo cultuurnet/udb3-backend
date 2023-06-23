@@ -37,27 +37,27 @@ class OfferMetadataProjector implements EventListener
         $this->apiKeyConsumerMapping = $apiKeyConsumerMapping;
     }
 
-    public function applyEventCreated(EventCreated $eventCreated, DomainMessage $domainMessage)
+    public function applyEventCreated(EventCreated $eventCreated, DomainMessage $domainMessage): void
     {
         $this->projectMetadataForOffer($eventCreated->getEventId(), $domainMessage->getMetadata());
     }
 
-    public function applyPlaceCreated(PlaceCreated $placeCreated, DomainMessage $domainMessage)
+    public function applyPlaceCreated(PlaceCreated $placeCreated, DomainMessage $domainMessage): void
     {
         $this->projectMetadataForOffer($placeCreated->getPlaceId(), $domainMessage->getMetadata());
     }
 
-    public function applyEventCopied(EventCopied $eventCopied, DomainMessage $domainMessage)
+    public function applyEventCopied(EventCopied $eventCopied, DomainMessage $domainMessage): void
     {
         $this->projectMetadataForOffer($eventCopied->getItemId(), $domainMessage->getMetadata());
     }
 
-    public function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImportedFromUDB2, DomainMessage $domainMessage)
+    public function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImportedFromUDB2, DomainMessage $domainMessage): void
     {
         $this->projectMetadataForOffer($eventImportedFromUDB2->getEventId(), $domainMessage->getMetadata());
     }
 
-    public function applyPlaceImportedFromUDB2(PlaceImportedFromUDB2 $placeImportedFromUDB2, DomainMessage $domainMessage)
+    public function applyPlaceImportedFromUDB2(PlaceImportedFromUDB2 $placeImportedFromUDB2, DomainMessage $domainMessage): void
     {
         $this->projectMetadataForOffer($placeImportedFromUDB2->getActorId(), $domainMessage->getMetadata());
     }

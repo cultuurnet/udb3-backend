@@ -136,7 +136,7 @@ class ResqueCommandBusTest extends TestCase
             );
 
         $this->commandBus->setContext($context);
-        $this->commandBus->setContext(null);
+        $this->commandBus->setContext();
     }
 }
 

@@ -33,7 +33,7 @@ class AbstractUpdateTypicalAgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $typicalAgeRange = $this->updateTypicalAgeRange->getTypicalAgeRange();
         $expectedTypicalAgeRange = AgeRange::fromString('3-12');

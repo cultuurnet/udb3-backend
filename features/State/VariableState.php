@@ -23,7 +23,7 @@ final class VariableState
         return $variable;
     }
 
-    public function getVariable(string $key)
+    public function getVariable(string $key): string
     {
         return $this->variables[$key];
     }

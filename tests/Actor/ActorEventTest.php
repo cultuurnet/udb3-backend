@@ -11,12 +11,11 @@ class ActorEventTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $expectedSerializedValue
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         MockActorEvent $actorEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $actorEvent->serialize()
@@ -26,19 +25,18 @@ class ActorEventTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $serializedValue
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array $serializedValue,
         MockActorEvent $expectedActorEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedActorEvent,
             MockActorEvent::deserialize($serializedValue)
         );
     }
 
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $expectedId = 'actor_id';
         $mockActorEvent = new MockActorEvent('actor_id');
@@ -46,7 +44,7 @@ class ActorEventTest extends TestCase
         $this->assertEquals($expectedId, $mockActorEvent->getActorId());
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'mockActorEvent' => [

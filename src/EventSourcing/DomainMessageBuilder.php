@@ -11,21 +11,13 @@ use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidFactoryInterface;
 
-/**
- * Helper class for building domain messages, to be used in automated tests.
- */
 class DomainMessageBuilder
 {
     private ?string $userId = null;
     private ?string $id = null;
     private ?int $playhead = null;
     private ?DateTime $recordedOn = null;
-
-    /**
-     * @var null|bool
-     */
-    private $forReplay;
-
+    private ?bool $forReplay = false;
     private UuidFactoryInterface $uuidFactory;
 
     public function __construct(UuidFactoryInterface $uuidFactory = null)
@@ -72,10 +64,7 @@ class DomainMessageBuilder
         return $this;
     }
 
-    /**
-     * @return \Broadway\Domain\DomainMessage
-     */
-    public function create($payload)
+    public function create(object $payload): DomainMessage
     {
         $finalMetaData = new Metadata();
 

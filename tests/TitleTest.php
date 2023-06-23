@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class TitleTest extends TestCase
 {
-    public function emptyStringValues()
+    public function emptyStringValues(): array
     {
         return [
             [''],
@@ -21,9 +21,8 @@ class TitleTest extends TestCase
     /**
      * @test
      * @dataProvider emptyStringValues()
-     * @param string $emptyStringValue
      */
-    public function it_can_not_be_empty($emptyStringValue)
+    public function it_can_not_be_empty(string $emptyStringValue): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Title can not be empty.');
@@ -33,7 +32,7 @@ class TitleTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_title()
+    public function it_should_be_creatable_from_an_udb3_model_title(): void
     {
         $udb3ModelTitle = new Udb3ModelTitle('foo bar');
 

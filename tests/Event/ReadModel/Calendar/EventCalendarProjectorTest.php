@@ -47,7 +47,7 @@ class EventCalendarProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_saves_the_calendar_periods_from_events_imported_from_udb2()
+    public function it_saves_the_calendar_periods_from_events_imported_from_udb2(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2('samples/event_with_calendar_periods.cdbxml.xml');
         $this->repositoryExpectsCalendarToBeSaved('someId', $this->getPeriodList());
@@ -57,7 +57,7 @@ class EventCalendarProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_saves_the_calendar_periods_from_events_updated_from_udb2()
+    public function it_saves_the_calendar_periods_from_events_updated_from_udb2(): void
     {
         $event = $this->cdbXMLEventFactory->eventUpdatedFromUDB2('samples/event_with_calendar_periods.cdbxml.xml');
         $this->repositoryExpectsCalendarToBeSaved('someId', $this->getPeriodList());
@@ -67,7 +67,7 @@ class EventCalendarProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_saves_the_calendar_timestamps_from_events_imported_from_udb2()
+    public function it_saves_the_calendar_timestamps_from_events_imported_from_udb2(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2('samples/event_with_calendar_timestamps.cdbxml.xml');
         $this->repositoryExpectsCalendarToBeSaved('someId', $this->getTimestampList());
@@ -77,7 +77,7 @@ class EventCalendarProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_saves_the_calendar_timestamps_from_events_updated_from_udb2()
+    public function it_saves_the_calendar_timestamps_from_events_updated_from_udb2(): void
     {
         $event = $this->cdbXMLEventFactory->eventUpdatedFromUDB2('samples/event_with_calendar_timestamps.cdbxml.xml');
         $this->repositoryExpectsCalendarToBeSaved('someId', $this->getTimestampList());
@@ -130,7 +130,7 @@ class EventCalendarProjectorTest extends TestCase
     /**
      * @param string $id
      */
-    private function repositoryExpectsCalendarToBeSaved($id, Calendar $calendar)
+    private function repositoryExpectsCalendarToBeSaved($id, Calendar $calendar): void
     {
         $this->repository->expects($this->once())
             ->method('save')

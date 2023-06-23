@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FireProjectedToJSONLDCommand extends AbstractFireProjectedToJSONLDCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('fire-projected-to-jsonld')
@@ -36,7 +36,7 @@ class FireProjectedToJSONLDCommand extends AbstractFireProjectedToJSONLDCommand
                 EventBus $eventBus,
                 InputInterface $input,
                 OutputInterface $output
-            ) {
+            ): void {
                 $type = $input->getArgument('type');
 
                 $domainMessageBuilder = new DomainMessageBuilder();

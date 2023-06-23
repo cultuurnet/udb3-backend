@@ -33,7 +33,7 @@ class EventFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_an_iri_based_on_the_id_when_creating_the_event()
+    public function it_adds_an_iri_based_on_the_id_when_creating_the_event(): void
     {
         $id = '1';
         $iri = 'event/1';

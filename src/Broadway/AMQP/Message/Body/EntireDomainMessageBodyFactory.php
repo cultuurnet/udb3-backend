@@ -10,10 +10,7 @@ use Broadway\Serializer\SerializationException;
 
 class EntireDomainMessageBodyFactory implements BodyFactoryInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function createBody(DomainMessage $domainMessage)
+    public function createBody(DomainMessage $domainMessage): string
     {
         $this->guardSerializable($domainMessage->getMetadata());
         $this->guardSerializable($domainMessage->getPayload());
@@ -32,7 +29,7 @@ class EntireDomainMessageBodyFactory implements BodyFactoryInterface
     /**
      * @throws SerializationException
      */
-    private function guardSerializable($object)
+    private function guardSerializable(object $object): void
     {
         if (!$object instanceof Serializable) {
             throw new SerializationException(

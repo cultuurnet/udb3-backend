@@ -59,16 +59,19 @@ abstract class AbstractConsumer implements ConsumerInterface
         $this->registerConsumeCallback();
     }
 
-    abstract protected function handle($deserializedMessage, array $context);
+    /**
+     * @param null|object|string $deserializedMessage
+     */
+    abstract protected function handle($deserializedMessage, array $context): void;
 
-    private function delayIfNecessary()
+    private function delayIfNecessary(): void
     {
         if ($this->delay > 0) {
             sleep($this->delay);
         }
     }
 
-    public function consume(AMQPMessage $message)
+    public function consume(AMQPMessage $message): void
     {
         $context = [];
 
@@ -153,7 +156,7 @@ abstract class AbstractConsumer implements ConsumerInterface
         }
     }
 
-    private function declareQueue()
+    private function declareQueue(): void
     {
         $this->channel->queue_declare(
             $this->queueName,
@@ -170,7 +173,7 @@ abstract class AbstractConsumer implements ConsumerInterface
         );
     }
 
-    private function registerConsumeCallback()
+    private function registerConsumeCallback(): void
     {
         $this->channel->basic_consume(
             $this->queueName,

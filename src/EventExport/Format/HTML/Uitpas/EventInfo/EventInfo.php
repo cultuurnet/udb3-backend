@@ -8,34 +8,30 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 
 class EventInfo
 {
-    /**
-     * @var array
-     */
-    protected $prices;
+    protected array $prices;
 
     /**
      * @var EventAdvantage[]
      */
-    protected $advantages;
+    protected array $advantages;
 
     /**
      * @var string[]
      */
-    protected $promotions;
+    protected array $promotions;
 
     /**
-     * @param array            $prices
      * @param EventAdvantage[] $advantages
-     * @param string[]         $promotions
+     * @param string[] $promotions
      */
-    public function __construct($prices, $advantages, $promotions)
+    public function __construct(array $prices, array $advantages, array $promotions)
     {
         $this->prices = $prices;
         $this->advantages = $advantages;
         $this->promotions = $promotions;
     }
 
-    public function getPrices()
+    public function getPrices(): array
     {
         return $this->prices;
     }
@@ -43,7 +39,7 @@ class EventInfo
     /**
      * @return EventAdvantage[]
      */
-    public function getAdvantages()
+    public function getAdvantages(): array
     {
         return $this->advantages;
     }
@@ -51,7 +47,7 @@ class EventInfo
     /**
      * @return string[]
      */
-    public function getPromotions()
+    public function getPromotions(): array
     {
         return $this->promotions;
     }

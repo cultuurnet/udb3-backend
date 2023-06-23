@@ -35,7 +35,7 @@ class LabelRolesWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_inserts_a_label_and_related_role()
+    public function it_inserts_a_label_and_related_role(): void
     {
         $labelId = new UUID('bc579c8e-cc4a-4c21-abb2-a7d63b5f820f');
         $roleId = new UUID('2fd60f5c-8d0f-4efd-a005-128636a5530b');
@@ -57,7 +57,7 @@ class LabelRolesWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_a_label_and_related_role()
+    public function it_removes_a_label_and_related_role(): void
     {
         $labelId1 = new UUID('b18215d5-2d66-45e1-ae5d-1316a3b40897');
         $labelId2 = new UUID('72bffc2b-d784-403c-97b5-ef4f74decd5b');
@@ -89,7 +89,7 @@ class LabelRolesWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_a_role_and_all_related_labels()
+    public function it_removes_a_role_and_all_related_labels(): void
     {
         $labelId1 = new UUID('d5f8236b-f252-4d62-984b-e956dc2da15f');
         $labelId2 = new UUID('8b04e55d-08de-491c-9387-59c24197d42d');
@@ -115,7 +115,7 @@ class LabelRolesWriteRepositoryTest extends TestCase
     }
 
 
-    private function insertLabelRole(UUID $labelId, UUID $roleId)
+    private function insertLabelRole(UUID $labelId, UUID $roleId): void
     {
         $this->connection->insert(
             $this->labelRolesTableName,

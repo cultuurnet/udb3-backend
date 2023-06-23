@@ -27,7 +27,7 @@ class Version20160607134416 extends AbstractMigration
     public const RELATION_ID_COLUMN = 'relationId';
 
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->createJsonRepository($schema);
 
@@ -35,7 +35,7 @@ class Version20160607134416 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable(self::LABELS_JSON_TABLE);
 
@@ -43,7 +43,7 @@ class Version20160607134416 extends AbstractMigration
     }
 
 
-    private function createJsonRepository(Schema $schema)
+    private function createJsonRepository(Schema $schema): void
     {
         $table = $schema->createTable(self::LABELS_JSON_TABLE);
 
@@ -77,7 +77,7 @@ class Version20160607134416 extends AbstractMigration
     }
 
 
-    private function createRelationsRepository(Schema $schema)
+    private function createRelationsRepository(Schema $schema): void
     {
         $table = $schema->createTable(self::LABELS_RELATIONS_TABLE);
 

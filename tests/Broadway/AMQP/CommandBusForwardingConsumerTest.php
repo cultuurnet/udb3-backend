@@ -85,7 +85,7 @@ final class CommandBusForwardingConsumerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_dispatch_the_message_on_the_command_bus()
+    public function it_can_dispatch_the_message_on_the_command_bus(): void
     {
         $expectedCommand = new \stdClass();
         $expectedCommand->foo = 'bar';

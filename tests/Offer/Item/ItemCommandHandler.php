@@ -24,85 +24,82 @@ use CultuurNet\UDB3\Offer\OfferCommandHandler;
 
 class ItemCommandHandler extends OfferCommandHandler
 {
-    protected function getAddImageClassName()
+    protected function getAddImageClassName(): string
     {
         return AddImage::class;
     }
 
-    protected function getUpdateImageClassName()
+    protected function getUpdateImageClassName(): string
     {
         return UpdateImage::class;
     }
 
-    protected function getRemoveImageClassName()
+    protected function getRemoveImageClassName(): string
     {
         return RemoveImage::class;
     }
 
-    protected function getSelectMainImageClassName()
+    protected function getSelectMainImageClassName(): string
     {
         return SelectMainImage::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getImportImagesClassName()
+    protected function getImportImagesClassName(): string
     {
         return ImportImages::class;
     }
 
-    protected function getUpdateDescriptionClassName()
+    protected function getUpdateDescriptionClassName(): string
     {
         return UpdateDescription::class;
     }
 
-    protected function getUpdateTypicalAgeRangeClassName()
+    protected function getUpdateTypicalAgeRangeClassName(): string
     {
         return UpdateTypicalAgeRange::class;
     }
 
-    protected function getDeleteTypicalAgeRangeClassName()
+    protected function getDeleteTypicalAgeRangeClassName(): string
     {
         return DeleteTypicalAgeRange::class;
     }
 
-    protected function getDeleteCurrentOrganizerClassName()
+    protected function getDeleteCurrentOrganizerClassName(): string
     {
         return DeleteCurrentOrganizer::class;
     }
 
-    protected function getUpdateContactPointClassName()
+    protected function getUpdateContactPointClassName(): string
     {
         return UpdateContactPoint::class;
     }
 
-    protected function getUpdateBookingInfoClassName()
+    protected function getUpdateBookingInfoClassName(): string
     {
         return UpdateBookingInfo::class;
     }
 
-    protected function getPublishClassName()
+    protected function getPublishClassName(): string
     {
         return Publish::class;
     }
 
-    protected function getApproveClassName()
+    protected function getApproveClassName(): string
     {
         return Approve::class;
     }
 
-    protected function getRejectClassName()
+    protected function getRejectClassName(): string
     {
         return Reject::class;
     }
 
-    protected function getFlagAsDuplicateClassName()
+    protected function getFlagAsDuplicateClassName(): string
     {
         return FlagAsDuplicate::class;
     }
 
-    protected function getFlagAsInappropriateClassName()
+    protected function getFlagAsInappropriateClassName(): string
     {
         return FlagAsInappropriate::class;
     }

@@ -12,7 +12,7 @@ class ThemeUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_serializable()
+    public function it_should_be_serializable(): void
     {
         $event = new ThemeUpdated(
             '9B70683A-5ABF-4A21-80CE-D3A1C0C7BCC2',

@@ -14,23 +14,16 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class ContactPointJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var ContactPointDataValidator
-     */
-    private $validator;
+    private ContactPointDataValidator $validator;
 
     public function __construct()
     {
-        $assoc = true;
-        parent::__construct($assoc);
+        parent::__construct(true);
 
         $this->validator = new ContactPointDataValidator();
     }
 
-    /**
-     * @return ContactPoint
-     */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): ContactPoint
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);

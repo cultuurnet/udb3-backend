@@ -15,20 +15,13 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class CreateEventJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var CreateEventDataValidator
-     */
-    private $validator;
+    private CreateEventDataValidator $validator;
 
-    /**
-     * @var MajorInfoJSONDeserializer
-     */
-    private $majorInfoJSONDeserializer;
+    private MajorInfoJSONDeserializer $majorInfoJSONDeserializer;
 
     public function __construct()
     {
-        $assoc = true;
-        parent::__construct($assoc);
+        parent::__construct(true);
 
         $this->validator = new CreateEventDataValidator();
 
@@ -36,10 +29,9 @@ class CreateEventJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @return CreateEvent
      * @throws DataValidationException
      */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): CreateEvent
     {
         /** @var array $deserializedData */
         $deserializedData = parent::deserialize($data);

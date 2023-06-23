@@ -6,16 +6,13 @@ namespace CultuurNet\UDB3\Media\Serialization;
 
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class MediaObjectSerializer
 {
-    /**
-     * @var IriGeneratorInterface
-     */
-    protected $iriGenerator;
-
+    protected IriGeneratorInterface $iriGenerator;
 
     public function __construct(
         IriGeneratorInterface $iriGenerator
@@ -23,6 +20,9 @@ class MediaObjectSerializer
         $this->iriGenerator = $iriGenerator;
     }
 
+    /**
+     * @param Image|MediaObject $mediaObject
+     */
     public function serialize($mediaObject): array
     {
         if ($mediaObject instanceof Image) {

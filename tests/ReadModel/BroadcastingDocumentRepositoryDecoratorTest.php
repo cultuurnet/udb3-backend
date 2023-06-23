@@ -46,7 +46,7 @@ class BroadcastingDocumentRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_broadcasts_when_a_document_is_saved()
+    public function it_broadcasts_when_a_document_is_saved(): void
     {
         $document = new JsonDocument('some-document-id', '{"nice":"body"}');
 

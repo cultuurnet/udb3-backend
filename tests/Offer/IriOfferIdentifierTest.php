@@ -26,7 +26,7 @@ class IriOfferIdentifierTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized_and_unserialized()
+    public function it_can_be_serialized_and_unserialized(): void
     {
         $serialized = serialize($this->identifier);
         $unserialized = unserialize($serialized);
@@ -37,7 +37,7 @@ class IriOfferIdentifierTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_all_properties()
+    public function it_returns_all_properties(): void
     {
         $this->assertEquals(new Url('http://du.de/place/1'), $this->identifier->getIri());
         $this->assertEquals('1', $this->identifier->getId());

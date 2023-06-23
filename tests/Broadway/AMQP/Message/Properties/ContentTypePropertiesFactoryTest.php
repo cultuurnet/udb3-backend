@@ -33,8 +33,9 @@ class ContentTypePropertiesFactoryTest extends TestCase
     /**
      * @test
      * @dataProvider contentTypeDataProvider
+     * @param DummyEvent|DummyEventNotSerializable $payload
      */
-    public function it_determines_content_type_by_payload_class($payload, string $expectedContentType)
+    public function it_determines_content_type_by_payload_class($payload, string $expectedContentType): void
     {
         $domainMessage = new DomainMessage(
             '097c36dc-6019-44e2-b6e0-c57d32d8f97c',

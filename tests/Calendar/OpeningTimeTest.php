@@ -35,7 +35,7 @@ class OpeningTimeTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_hour()
+    public function it_stores_an_hour(): void
     {
         $this->assertEquals(
             $this->hour,
@@ -46,7 +46,7 @@ class OpeningTimeTest extends TestCase
     /**
      * @test
      */
-    public function it_store_minutes()
+    public function it_store_minutes(): void
     {
         $this->assertEquals(
             $this->minute,
@@ -57,7 +57,7 @@ class OpeningTimeTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_constructed_from_a_native_date_time()
+    public function it_can_be_constructed_from_a_native_date_time(): void
     {
         $openingTime = OpeningTime::fromNativeDateTime(
             \DateTime::createFromFormat('H:i', '9:30')
@@ -69,7 +69,7 @@ class OpeningTimeTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_constructed_from_a_native_string()
+    public function it_can_be_constructed_from_a_native_string(): void
     {
         $openingTime = OpeningTime::fromNativeString('9:30');
 
@@ -79,7 +79,7 @@ class OpeningTimeTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_converted_to_a_native_string()
+    public function it_can_be_converted_to_a_native_string(): void
     {
         $this->assertEquals(
             '09:30',
@@ -95,7 +95,7 @@ class OpeningTimeTest extends TestCase
     /**
      * @test
      */
-    public function it_can_compare_with_other_opening_time()
+    public function it_can_compare_with_other_opening_time(): void
     {
         $sameOpeningTime = new OpeningTime(new Hour(9), new Minute(30));
         $differentOpeningTime = new OpeningTime(new Hour(10), new Minute(30));

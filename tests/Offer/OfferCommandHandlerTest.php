@@ -113,7 +113,7 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_approve_command_on_ready_for_validation_item()
+    public function it_handles_approve_command_on_ready_for_validation_item(): void
     {
         $this->scenario
             ->withAggregateId($this->id)
@@ -130,7 +130,7 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_flag_as_duplicate_command_on_ready_for_validation_item()
+    public function it_handles_flag_as_duplicate_command_on_ready_for_validation_item(): void
     {
         $this->scenario
             ->withAggregateId($this->id)
@@ -147,7 +147,7 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_flag_as_inappropriate_command_on_ready_for_validation_item()
+    public function it_handles_flag_as_inappropriate_command_on_ready_for_validation_item(): void
     {
         $this->scenario
             ->withAggregateId($this->id)
@@ -164,7 +164,7 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_reject_command_on_ready_for_validation_item()
+    public function it_handles_reject_command_on_ready_for_validation_item(): void
     {
         $reason = new StringLiteral('reject reason');
 
@@ -183,7 +183,7 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_delete_current_organizer_commands()
+    public function it_handles_delete_current_organizer_commands(): void
     {
         $this->scenario
             ->withAggregateId($this->id)

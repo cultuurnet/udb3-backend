@@ -20,7 +20,7 @@ class PDFWebArchiveFileFormat extends WebArchiveFileFormat implements FileFormat
     private ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
     public function __construct(
-        $princeXMLBinaryPath,
+        string $princeXMLBinaryPath,
         WebArchiveTemplate $template,
         string $brand,
         string $logo,

@@ -11,7 +11,7 @@ class AgeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_never_be_lower_than_zero()
+    public function it_should_never_be_lower_than_zero(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given integer should be greater or equal to zero. Got -1 instead.');
@@ -22,7 +22,7 @@ class AgeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_integer()
+    public function it_should_return_an_integer(): void
     {
         $age = new Age(10);
         $this->assertEquals(10, $age->toInteger());
@@ -31,7 +31,7 @@ class AgeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_allowed_to_be_zero()
+    public function it_should_be_allowed_to_be_zero(): void
     {
         $age = new Age(0);
         $this->assertEquals(0, $age->toInteger());

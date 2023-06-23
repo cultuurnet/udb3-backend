@@ -15,7 +15,7 @@ class DeliveryModePropertiesFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_sets_delivery_mode_based_on_the_injected_mode()
+    public function it_sets_delivery_mode_based_on_the_injected_mode(): void
     {
         $domainMessage = new DomainMessage(
             'af2e7491-9e40-45e0-8a09-22b5c4f3e366',

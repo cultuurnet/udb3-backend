@@ -9,9 +9,8 @@ class MockNotEmptyString
     use IsString;
     use IsNotEmpty;
 
-    public function __construct($value)
+    public function __construct(string $value)
     {
-        $this->guardString($value);
         $this->guardNotEmpty($value);
         $this->setValue($value);
     }

@@ -28,7 +28,7 @@ class NotEmptyPropertiesDataValidator implements DataValidatorInterface
     /**
      * @throws DataValidationException
      */
-    public function validate(array $data)
+    public function validate(array $data): void
     {
         $errors = [];
 

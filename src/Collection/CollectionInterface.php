@@ -26,7 +26,7 @@ interface CollectionInterface extends \IteratorAggregate
     public function with($item);
 
     /**
-     * @param string $key
+     * @param string|int $key
      *   Key to use for the new item. If not provided, the item will be added
      *   to the end of the Collection.
      * @param mixed $item
@@ -71,12 +71,10 @@ interface CollectionInterface extends \IteratorAggregate
      * @param mixed $item
      *   Item to check if it's present in the collection.
      *
-     * @return bool
-     *
      * @throws \InvalidArgumentException
      *   When the provided item is of an incorrect type.
      */
-    public function contains($item);
+    public function contains($item): bool;
 
     /**
      * @param string $key
@@ -88,13 +86,13 @@ interface CollectionInterface extends \IteratorAggregate
      * @throws CollectionKeyNotFoundException
      *   When the provided key is not present in the Collection.
      */
-    public function getByKey($key);
+    public function getByKey(string $key);
 
     /**
      * @param mixed $item
      *   Item to get the key for.
      *
-     * @return string
+     * @return string|int
      *   Key corresponding to the provided item.
      *
      * @throws \InvalidArgumentException
@@ -109,19 +107,19 @@ interface CollectionInterface extends \IteratorAggregate
      * @return array
      *   List of all keys in the Collection.
      */
-    public function getKeys();
+    public function getKeys(): array;
 
     /**
      * @return int
      *   Number of items in the Collection.
      */
-    public function length();
+    public function length(): int;
 
     /**
      * @return array
      *   Array of items in the Collection.
      */
-    public function toArray();
+    public function toArray(): array;
 
     /**
      * @param array $items

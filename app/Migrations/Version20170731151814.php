@@ -14,7 +14,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20170731151814 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->getIndexTable($schema)
             ->changeColumn(
@@ -63,7 +63,7 @@ class Version20170731151814 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->getIndexTable($schema)
             ->dropPrimaryKey();

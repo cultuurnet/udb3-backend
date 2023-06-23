@@ -22,7 +22,7 @@ class UpdateTypicalAgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_is_possible_to_instantiate_the_command_with_parameters()
+    public function it_is_possible_to_instantiate_the_command_with_parameters(): void
     {
         $expectedTypicalAgeRange = new UpdateTypicalAgeRange('id', AgeRange::fromString('1-14'));
 

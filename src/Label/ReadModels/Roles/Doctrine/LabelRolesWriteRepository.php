@@ -22,8 +22,7 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
         $this->labelRolesTableName = $labelRolesTableName;
     }
 
-
-    public function insertLabelRole(UUID $labelId, UUID $roleId)
+    public function insertLabelRole(UUID $labelId, UUID $roleId): void
     {
         $this->connection->insert(
             $this->labelRolesTableName,
@@ -34,8 +33,7 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
         );
     }
 
-
-    public function removeLabelRole(UUID $labelId, UUID $roleId)
+    public function removeLabelRole(UUID $labelId, UUID $roleId): void
     {
         $this->connection->delete(
             $this->labelRolesTableName,
@@ -46,8 +44,7 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
         );
     }
 
-
-    public function removeRole(UUID $roleId)
+    public function removeRole(UUID $roleId): void
     {
         $this->connection->delete(
             $this->labelRolesTableName,

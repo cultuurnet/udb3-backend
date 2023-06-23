@@ -30,7 +30,7 @@ class LabelFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_will_create_label_for_known_publishers_case_insensitively()
+    public function it_will_create_label_for_known_publishers_case_insensitively(): void
     {
         $labelFactory = new LabelFactory(
             [
@@ -46,7 +46,7 @@ class LabelFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_will_throw_an_exception_for_unknown_publishers()
+    public function it_will_throw_an_exception_for_unknown_publishers(): void
     {
         $labelFactory = new LabelFactory(
             [

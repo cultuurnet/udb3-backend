@@ -24,7 +24,7 @@ class TitleJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_a_valid_title()
+    public function it_can_deserialize_a_valid_title(): void
     {
         $json = new StringLiteral('{"title": "Lorem ipsum"}');
         $expected = new Title('Lorem ipsum');
@@ -35,7 +35,7 @@ class TitleJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_with_optional_property_name()
+    public function it_can_deserialize_with_optional_property_name(): void
     {
         $deserializer = new TitleJSONDeserializer(false, new StringLiteral('name'));
 
@@ -49,7 +49,7 @@ class TitleJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_a_title_is_missing()
+    public function it_throws_an_exception_when_a_title_is_missing(): void
     {
         $json = new StringLiteral('{"foo": "bar"}');
 

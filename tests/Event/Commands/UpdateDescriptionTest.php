@@ -27,7 +27,7 @@ class UpdateDescriptionTest extends TestCase
     /**
      * @test
      */
-    public function it_is_possible_to_instantiate_the_command_with_parameters()
+    public function it_is_possible_to_instantiate_the_command_with_parameters(): void
     {
         $expectedUpdateDescription = new UpdateDescription(
             'id',

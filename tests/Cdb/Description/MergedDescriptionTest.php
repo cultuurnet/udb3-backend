@@ -20,7 +20,7 @@ class MergedDescriptionTest extends TestCase
         $shortDescription,
         $longDescription,
         $expectedMergedDescription
-    ) {
+    ): void {
         $shortDescription = new ShortDescription($shortDescription);
         $longDescription = new LongDescription($longDescription);
 

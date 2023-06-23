@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Label\Events\AbstractEvent;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
@@ -454,7 +455,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    private function createDomainMessage(string $id, $payload): DomainMessage
+    private function createDomainMessage(string $id, AbstractEvent $payload): DomainMessage
     {
         return new DomainMessage(
             $id,

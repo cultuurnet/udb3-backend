@@ -8,7 +8,6 @@ interface CommandValidatorInterface
 {
     /**
      * @throws \Exception
-     * @return void
      */
-    public function validate($command);
+    public function validate(object $command): void;
 }

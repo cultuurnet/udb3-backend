@@ -9,12 +9,12 @@ class StripSourceStringFilterTest extends StringFilterTest
     /**
      * {@inheritdoc}
      */
-    protected $filterClass = StripSourceStringFilter::class;
+    protected string $filterClass = StripSourceStringFilter::class;
 
     /**
      * @test
      */
-    public function it_strips_the_source_element_from_between_other_html_tags()
+    public function it_strips_the_source_element_from_between_other_html_tags(): void
     {
         // @codingStandardsIgnoreStart
         $source_element = '<p class="uiv-source">Bron: <a href="http://www.uitinvlaanderen.be/agenda/e/fleuramour-passion-for-flowers/c2950cd0-d9e6-49f8-99fc-cffa4f004a20">UiTinVlaanderen.be</a></p>';
@@ -35,7 +35,7 @@ class StripSourceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_strips_the_source_element_from_between_text_and_plain_text()
+    public function it_strips_the_source_element_from_between_text_and_plain_text(): void
     {
         // @codingStandardsIgnoreStart
         $source_element = '<p class="uiv-source">Bron: <a href="http://www.uitinvlaanderen.be/agenda/e/fleuramour-passion-for-flowers/c2950cd0-d9e6-49f8-99fc-cffa4f004a20">UiTinVlaanderen.be</a></p>';
@@ -56,7 +56,7 @@ class StripSourceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_strips_the_source_element_from_between_a_tag_and_plain_text()
+    public function it_strips_the_source_element_from_between_a_tag_and_plain_text(): void
     {
         // @codingStandardsIgnoreStart
         $source_element = '<p class="uiv-source">Bron: <a href="http://www.uitinvlaanderen.be/agenda/e/fleuramour-passion-for-flowers/c2950cd0-d9e6-49f8-99fc-cffa4f004a20">UiTinVlaanderen.be</a></p>';
@@ -77,7 +77,7 @@ class StripSourceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_strips_the_source_element_from_between_a_plain_text()
+    public function it_strips_the_source_element_from_between_a_plain_text(): void
     {
         // @codingStandardsIgnoreStart
         $source_element = '<p class="uiv-source">Bron: <a href="http://www.uitinvlaanderen.be/agenda/e/fleuramour-passion-for-flowers/c2950cd0-d9e6-49f8-99fc-cffa4f004a20">UiTinVlaanderen.be</a></p>';
@@ -97,21 +97,12 @@ class StripSourceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_ignores_empty_strings()
+    public function it_ignores_empty_strings(): void
     {
         // In the past passing an empty string to StripSourceStringFilter
         // would cause a notice. If the test doesn't fail on this notice,
         // it does not occur anymore.
         $this->filter('');
         $this->expectNotToPerformAssertions();
-    }
-
-    /**
-     * @test
-     */
-    public function it_only_filters_strings()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->filter->filter(12345);
     }
 }

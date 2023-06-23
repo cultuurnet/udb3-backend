@@ -13,7 +13,7 @@ class LanguagesTest extends TestCase
     /**
      * @test
      */
-    public function it_should_filter_out_duplicates()
+    public function it_should_filter_out_duplicates(): void
     {
         $given = [
             new Language('nl'),

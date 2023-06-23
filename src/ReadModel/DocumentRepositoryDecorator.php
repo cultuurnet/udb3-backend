@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\ReadModel;
 
 abstract class DocumentRepositoryDecorator implements DocumentRepository
 {
-    /**
-     * @var DocumentRepository
-     */
-    protected $decoratedRepository;
+    protected DocumentRepository $decoratedRepository;
 
     public function __construct(DocumentRepository $repository)
     {
@@ -21,12 +18,12 @@ abstract class DocumentRepositoryDecorator implements DocumentRepository
         return $this->decoratedRepository->fetch($id, $includeMetadata);
     }
 
-    public function save(JsonDocument $readModel): void
+    public function save(JsonDocument $document): void
     {
-        $this->decoratedRepository->save($readModel);
+        $this->decoratedRepository->save($document);
     }
 
-    public function remove($id): void
+    public function remove(string $id): void
     {
         $this->decoratedRepository->remove($id);
     }

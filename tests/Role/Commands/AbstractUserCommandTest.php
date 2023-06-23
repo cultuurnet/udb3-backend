@@ -39,7 +39,7 @@ class AbstractUserCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals($this->uuid, $this->abstractUserCommand->getUuid());
     }
@@ -47,7 +47,7 @@ class AbstractUserCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_user_id()
+    public function it_stores_a_user_id(): void
     {
         $this->assertEquals(
             $this->userId,

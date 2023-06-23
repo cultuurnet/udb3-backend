@@ -15,7 +15,7 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class Version20161220092125 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->getTable('events');
         $this->removeEventsByType($table, new StringLiteral('CultuurNet.UDB3.UsedLabelsMemory.Created'));
@@ -23,12 +23,12 @@ class Version20161220092125 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
     }
 
 
-    private function removeEventsByType(Table $table, StringLiteral $eventType)
+    private function removeEventsByType(Table $table, StringLiteral $eventType): void
     {
         $builder = new QueryBuilder($this->connection);
 

@@ -108,7 +108,7 @@ final class BulkLabelCommandHandlerTest extends TestCase
             ->method('search')
             ->with($this->query)
             ->willReturnCallback(
-                function () {
+                function (): \Traversable {
                     yield from $this->itemIdentifiers;
                 }
             );

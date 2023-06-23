@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Label\ReadModels;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
@@ -47,25 +48,25 @@ abstract class AbstractProjector implements EventListener
         }
     }
 
-    abstract public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata);
+    abstract public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata): void;
 
-    abstract public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata);
+    abstract public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata): void;
 
-    abstract public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata);
+    abstract public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata): void;
 
-    private function isLabelAdded($payload): bool
+    private function isLabelAdded(Serializable $payload): bool
     {
         return ($payload instanceof OfferAbstractLabelAdded ||
             $payload instanceof OrganizerLabelAdded);
     }
 
-    private function isLabelRemoved($payload): bool
+    private function isLabelRemoved(Serializable $payload): bool
     {
         return ($payload instanceof OfferAbstractLabelRemoved ||
             $payload instanceof OrganizerLabelRemoved);
     }
 
-    private function isLabelsImported($payload): bool
+    private function isLabelsImported(Serializable $payload): bool
     {
         return ($payload instanceof AbstractLabelsImported ||
             $payload instanceof LabelsImported);

@@ -10,7 +10,7 @@ abstract class TranslatedValueObject
 
     private array $translations;
 
-    public function __construct(Language $originalLanguage, $originalValueObject)
+    public function __construct(Language $originalLanguage, object $originalValueObject)
     {
         $this->guardValueObjectClassName($originalValueObject);
 
@@ -26,7 +26,7 @@ abstract class TranslatedValueObject
     /**
      * @return static
      */
-    public function withTranslation(Language $language, $translation)
+    public function withTranslation(Language $language, object $translation)
     {
         $this->guardValueObjectClassName($translation);
 
@@ -52,7 +52,7 @@ abstract class TranslatedValueObject
     /**
      * @throws \OutOfBoundsException
      */
-    public function getTranslation(Language $language)
+    public function getTranslation(Language $language): object
     {
         $languageCode = $language->getCode();
 
@@ -91,11 +91,11 @@ abstract class TranslatedValueObject
         );
     }
 
-    private function guardValueObjectClassName($valueObject): void
+    private function guardValueObjectClassName(object $valueObject): void
     {
         $className = $this->getValueObjectClassName();
         if (!($valueObject instanceof $className)) {
-            $actualClassName = is_scalar($valueObject) ? gettype($valueObject) : get_class($valueObject);
+            $actualClassName = get_class($valueObject);
             throw new \InvalidArgumentException("The given object is a {$actualClassName}, expected {$className}.");
         }
     }

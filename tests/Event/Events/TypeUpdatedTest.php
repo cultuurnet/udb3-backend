@@ -12,7 +12,7 @@ class TypeUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_serializable()
+    public function it_should_be_serializable(): void
     {
         $event = new TypeUpdated(
             '89491DC9-9C33-4145-ABB4-AEB33FD93CB6',

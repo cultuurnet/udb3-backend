@@ -9,20 +9,14 @@ class CombinedStringFilter implements StringFilterInterface
     /**
      * @var StringFilterInterface[]
      */
-    protected $filters = [];
+    protected array $filters = [];
 
-    /**
-     * @param StringFilterInterface $filter
-     */
-    public function addFilter($filter)
+    public function addFilter(StringFilterInterface $filter): void
     {
         $this->filters[] = $filter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function filter($string)
+    public function filter(string $string): string
     {
         foreach ($this->filters as $filter) {
             $string = $filter->filter($string);

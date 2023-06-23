@@ -11,21 +11,21 @@ class MockLDProjector
     use DelegateEventHandlingToSpecificMethodTrait;
 
 
-    public function applyMockLabelAdded(MockLabelAdded $labelAdded)
+    public function applyMockLabelAdded(MockLabelAdded $labelAdded): void
     {
     }
 
 
-    public function applyMockLabelUpdated(MockLabelUpdatedWrongType $labelUpdated)
+    public function applyMockLabelUpdated(MockLabelUpdatedWrongType $labelUpdated): void
     {
     }
 
-    public function applyMockLabelRemoved()
+    public function applyMockLabelRemoved(): void
     {
     }
 
 
-    public function applyMockTitleTranslated(AbstractMockTitleTranslated $translated)
+    public function applyMockTitleTranslated(AbstractMockTitleTranslated $translated): void
     {
     }
 }

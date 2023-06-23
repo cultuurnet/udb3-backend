@@ -452,7 +452,7 @@ class HTMLEventFormatterTest extends TestCase
     public function it_optionally_enriches_events_with_uitpas_info(
         array $priceData,
         array $advantagesData,
-        $promotionsData
+        array $promotionsData
     ): void {
         $eventWithoutImage = $this->getJSONEventFromFile('event_without_image.json');
 

@@ -13,7 +13,7 @@ class HasTaaliconenTest extends TestCase
     /**
      * @test
      */
-    public function it_checks_if_an_event_has_taaliconen()
+    public function it_checks_if_an_event_has_taaliconen(): void
     {
         $event = $this->getEventLdFromFile('event_with_all_icon_labels.json');
         $this->assertTrue((new Has1Taalicoon())->isSatisfiedBy($event));

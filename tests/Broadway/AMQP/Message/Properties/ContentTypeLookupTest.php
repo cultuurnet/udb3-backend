@@ -19,7 +19,7 @@ class ContentTypeLookupTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_the_content_type_when_added_to_the_mapping()
+    public function it_can_return_the_content_type_when_added_to_the_mapping(): void
     {
         $this->contentTypeLookup = $this->contentTypeLookup->withContentType(
             DummyEvent::class,
@@ -35,7 +35,7 @@ class ContentTypeLookupTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_runtime_exception_when_setting_the_same_content_type()
+    public function it_throws_runtime_exception_when_setting_the_same_content_type(): void
     {
         $contentTypeLookup = $this->contentTypeLookup->withContentType(
             DummyEvent::class,
@@ -53,7 +53,7 @@ class ContentTypeLookupTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_a_runtime_exception_when_the_content_type_cannot_be_found()
+    public function it_throws_a_runtime_exception_when_the_content_type_cannot_be_found(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(

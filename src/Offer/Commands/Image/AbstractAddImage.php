@@ -11,7 +11,7 @@ abstract class AbstractAddImage extends AbstractCommand
 {
     protected UUID $imageId;
 
-    public function __construct($itemId, UUID $imageId)
+    public function __construct(string $itemId, UUID $imageId)
     {
         parent::__construct($itemId);
         $this->imageId = $imageId;

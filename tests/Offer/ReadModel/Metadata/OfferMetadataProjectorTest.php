@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\Metadata;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
@@ -255,7 +256,7 @@ class OfferMetadataProjectorTest extends TestCase
     }
 
     protected function project(
-        $event,
+        Serializable $event,
         Metadata $metadata
     ): void {
         $this->projector->handle(

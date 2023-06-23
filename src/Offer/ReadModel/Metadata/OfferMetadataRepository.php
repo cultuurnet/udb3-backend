@@ -17,7 +17,7 @@ class OfferMetadataRepository extends AbstractDBALRepository
         parent::__construct($connection, self::TABLE);
     }
 
-    public function get(string $offerId)
+    public function get(string $offerId): OfferMetadata
     {
         $result = $this->getConnection()
             ->createQueryBuilder()
@@ -47,7 +47,6 @@ class OfferMetadataRepository extends AbstractDBALRepository
             return false;
         }
     }
-
 
     public function save(OfferMetadata $offerMetadata): void
     {

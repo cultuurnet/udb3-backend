@@ -10,7 +10,7 @@ use Money\Money;
 final class MoneyFactory
 {
     /**
-     * @param string|int|float $price
+     * @param string|int|float|mixed $price
      */
     public static function create(
         $price,
@@ -33,6 +33,7 @@ final class MoneyFactory
 
     /**
      * @throws \InvalidArgumentException
+     * @param string|int|float|mixed $value
      */
     private static function guard($value): void
     {

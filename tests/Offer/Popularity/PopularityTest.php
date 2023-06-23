@@ -34,6 +34,7 @@ class PopularityTest extends TestCase
     /**
      * @test
      * @dataProvider inValidTypeProvider
+     * @param int|string|float $value
      */
     public function it_throws_on_invalid_types_if_strict_types_is_enabled($value): void
     {

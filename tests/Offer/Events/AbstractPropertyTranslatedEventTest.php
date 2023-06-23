@@ -40,7 +40,7 @@ class AbstractPropertyTranslatedEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_instantiated_With_properties()
+    public function it_can_be_instantiated_With_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedLanguage = new Language('en');
@@ -55,7 +55,7 @@ class AbstractPropertyTranslatedEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedLanguage = new Language('en');
@@ -74,7 +74,7 @@ class AbstractPropertyTranslatedEventTest extends TestCase
     public function it_can_be_serialized_to_an_array(
         array $expectedSerializedValue,
         MockAbstractPropertyTranslatedEvent $propertyTranslatedEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $propertyTranslatedEvent->serialize()
@@ -88,7 +88,7 @@ class AbstractPropertyTranslatedEventTest extends TestCase
     public function it_can_deserialize_an_array(
         array $serializedValue,
         MockAbstractPropertyTranslatedEvent $expectedPropertyTranslatedEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedPropertyTranslatedEvent,
             MockAbstractPropertyTranslatedEvent::deserialize($serializedValue)

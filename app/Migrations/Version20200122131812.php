@@ -15,7 +15,7 @@ class Version20200122131812 extends AbstractMigration
     /**
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE event_permission_readmodel MODIFY COLUMN user_id VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE organizer_permission_readmodel MODIFY COLUMN user_id VARCHAR(255) NOT NULL');
@@ -26,7 +26,7 @@ class Version20200122131812 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
     }
 }

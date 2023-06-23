@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
@@ -23,15 +24,9 @@ use PHPUnit\Framework\TestCase;
 
 class RelocateEventToCanonicalPlaceTest extends TestCase
 {
-    /**
-     * @var RelocateEventToCanonicalPlace
-     */
-    private $processManager;
+    private RelocateEventToCanonicalPlace $processManager;
 
-    /**
-     * @var TraceableCommandBus
-     */
-    private $commandBus;
+    private TraceableCommandBus $commandBus;
 
     /**
      * @var CanonicalPlaceRepository | MockObject
@@ -132,7 +127,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
         );
     }
 
-    private function broadcastNow($event)
+    private function broadcastNow(Serializable $event): void
     {
         $this->processManager->handle(
             DomainMessage::recordNow(

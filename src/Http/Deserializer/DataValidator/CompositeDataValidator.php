@@ -57,7 +57,7 @@ class CompositeDataValidator implements DataValidatorInterface
     /**
      * @throws DataValidationException
      */
-    public function validate(array $data)
+    public function validate(array $data): void
     {
         $errors = [];
 
@@ -140,7 +140,7 @@ class CompositeDataValidator implements DataValidatorInterface
      * @param string $validationMessage
      * @param array $errors
      */
-    private function storeFieldErrorMessage($fieldName, $validationMessage, &$errors)
+    private function storeFieldErrorMessage($fieldName, $validationMessage, &$errors): void
     {
         if (!isset($errors[$fieldName]) || $this->overwriteErrorMessages) {
             $errors[$fieldName] = $validationMessage;

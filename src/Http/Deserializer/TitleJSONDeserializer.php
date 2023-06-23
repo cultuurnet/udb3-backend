@@ -15,17 +15,10 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class TitleJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var StringLiteral
-     */
-    private $propertyName;
+    private ?StringLiteral $propertyName;
 
-    /**
-     * TitleJSONDeserializer constructor.
-     * @param bool $assoc
-     */
     public function __construct(
-        $assoc = false,
+        bool $assoc = false,
         StringLiteral $propertyName = null
     ) {
         parent::__construct($assoc);
@@ -37,10 +30,7 @@ class TitleJSONDeserializer extends JSONDeserializer
         $this->propertyName = $propertyName;
     }
 
-    /**
-     * @return Title
-     */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): Title
     {
         $data = parent::deserialize($data);
 

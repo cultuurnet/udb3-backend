@@ -72,7 +72,7 @@ class CopyEventRequestHandlerTest extends TestCase
      * @test
      * @dataProvider validEventDataProvider
      */
-    public function it_does_not_throw_when_given_valid_event_data($data, CopyEvent $expectedCommand): void
+    public function it_does_not_throw_when_given_valid_event_data(object $data, CopyEvent $expectedCommand): void
     {
         $response = $this->copyEventRequestHandler->handle(
             (new Psr7RequestBuilder())
@@ -631,6 +631,7 @@ class CopyEventRequestHandlerTest extends TestCase
     /**
      * @test
      * @dataProvider invalidEventDataProvider
+     * @param array|object $data
      */
     public function it_throws_an_api_problem_when_given_invalid_event_data($data, array $expectedSchemaErrors): void
     {

@@ -24,7 +24,7 @@ class UrlJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize_a_valid_url()
+    public function it_can_serialize_a_valid_url(): void
     {
         $json = new StringLiteral('{"url":"http://www.depot.be"}');
 
@@ -39,7 +39,7 @@ class UrlJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_url_is_missing()
+    public function it_throws_an_exception_when_url_is_missing(): void
     {
         $json = new StringLiteral('{"foo":"http://www.depot.be"}');
 
@@ -52,7 +52,7 @@ class UrlJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_url_is_invalid()
+    public function it_throws_an_exception_when_url_is_invalid(): void
     {
         $json = new StringLiteral('{"url":"http:/www.depot.be"}');
 

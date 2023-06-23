@@ -49,7 +49,7 @@ class AbstractUpdateBookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $bookingInfo = $this->updateBookingInfo->getBookingInfo();
         $expectedBookingInfo = new BookingInfo(

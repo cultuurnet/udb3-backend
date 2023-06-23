@@ -26,10 +26,7 @@ class PurgeModelCommand extends Command
         'offer_metadata',
     ];
 
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -37,7 +34,7 @@ class PurgeModelCommand extends Command
         $this->connection = $connection;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('purge')->setDescription('Purge all read models');
     }

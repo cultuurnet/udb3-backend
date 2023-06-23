@@ -504,7 +504,7 @@ class Event extends Offer
         }
     }
 
-    protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged
+    protected function createOwnerChangedEvent(string $newOwnerId): AbstractOwnerChanged
     {
         return new OwnerChanged($this->eventId, $newOwnerId);
     }

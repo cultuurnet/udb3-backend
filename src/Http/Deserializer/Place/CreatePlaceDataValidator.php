@@ -29,7 +29,7 @@ class CreatePlaceDataValidator implements DataValidatorInterface
     /**
      * @inheritdoc
      */
-    public function validate(array $data)
+    public function validate(array $data): void
     {
         $this->validator->validate($data);
     }

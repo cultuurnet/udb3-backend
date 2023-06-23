@@ -10,16 +10,9 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 class NotificationMailer implements NotificationMailerInterface
 {
-    /**
-     * @var \Swift_Mailer
-     */
-    private $mailer;
+    private \Swift_Mailer $mailer;
 
-    /**
-     * @var MessageFactoryInterface
-     */
-    private $messageFactory;
-
+    private MessageFactoryInterface $messageFactory;
 
     public function __construct(
         \Swift_Mailer $mailer,
@@ -32,7 +25,7 @@ class NotificationMailer implements NotificationMailerInterface
     public function sendNotificationMail(
         EmailAddress $address,
         EventExportResult $eventExportResult
-    ) {
+    ): void {
         $message = $this->messageFactory->createMessageFor($address, $eventExportResult);
 
         $sent = $this->mailer->send($message);

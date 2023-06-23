@@ -14,7 +14,7 @@ class GeoCoordinatesUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized_and_deserialized()
+    public function it_can_be_serialized_and_deserialized(): void
     {
         $expectedEvent = new GeoCoordinatesUpdated(
             'f281bc85-3ee4-43a7-b42d-a8982ec9bbc4',

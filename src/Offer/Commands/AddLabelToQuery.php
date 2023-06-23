@@ -12,23 +12,17 @@ class AddLabelToQuery implements AsyncCommand
 {
     use AsyncCommandTrait;
 
-    /**
-     * @var string
-     */
-    protected $query;
+    protected string $query;
 
     protected Label $label;
 
-    public function __construct($query, Label $label)
+    public function __construct(string $query, Label $label)
     {
         $this->query = $query;
         $this->label = $label;
     }
 
-    /**
-     * @return string
-     */
-    public function getQuery()
+    public function getQuery(): string
     {
         return $this->query;
     }

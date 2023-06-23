@@ -11,7 +11,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_accept_a_list_of_values_and_return_an_array_later()
+    public function it_should_accept_a_list_of_values_and_return_an_array_later(): void
     {
         $values = [
             new MockString('foo'),
@@ -28,7 +28,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_only_accept_objects_as_values()
+    public function it_should_only_accept_objects_as_values(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Value for key 0 is not an object.');
@@ -46,7 +46,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_accept_an_array_of_values_and_return_the_same_array_later()
+    public function it_should_accept_an_array_of_values_and_return_the_same_array_later(): void
     {
         $values = [
             new MockString('foo'),
@@ -63,7 +63,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_be_iterable()
+    public function it_should_be_iterable(): void
     {
         $values = [
             new MockString('foo'),
@@ -85,7 +85,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_be_countable()
+    public function it_should_be_countable(): void
     {
         $values = [
             new MockString('foo'),
@@ -105,7 +105,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_be_able_to_check_if_the_collection_is_empty_or_not()
+    public function it_should_be_able_to_check_if_the_collection_is_empty_or_not(): void
     {
         $values = [
             new MockString('foo'),
@@ -124,7 +124,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_be_able_to_tell_if_a_given_value_exists_within_the_collection()
+    public function it_should_be_able_to_tell_if_a_given_value_exists_within_the_collection(): void
     {
         $values = [
             new MockString('foo'),
@@ -146,7 +146,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_filter_with_a_given_callback()
+    public function it_should_filter_with_a_given_callback(): void
     {
         $values = [
             new MockString('foo'),
@@ -173,7 +173,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_return_a_value_by_index()
+    public function it_should_return_a_value_by_index(): void
     {
         $values = [
             new MockString('foo'),
@@ -193,7 +193,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_no_value_exists_at_the_given_index()
+    public function it_should_throw_an_exception_if_no_value_exists_at_the_given_index(): void
     {
         $values = [
             new MockString('foo'),
@@ -212,7 +212,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_return_the_first_value_or_null_if_the_collection_is_empty()
+    public function it_should_return_the_first_value_or_null_if_the_collection_is_empty(): void
     {
         $values = [
             new MockString('foo'),
@@ -231,7 +231,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_return_the_last_value_or_null_if_the_collection_is_empty()
+    public function it_should_return_the_last_value_or_null_if_the_collection_is_empty(): void
     {
         $values = [
             new MockString('foo'),
@@ -250,7 +250,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_append_each_new_value_to_a_copy()
+    public function it_should_append_each_new_value_to_a_copy(): void
     {
         $initial = new MockCollection(new MockString('foo'));
         $second = $initial->with(new MockString('bar'));

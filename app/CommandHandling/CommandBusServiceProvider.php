@@ -121,7 +121,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                 );
 
                 $commandBus->beforeFirstDispatch(
-                    function (CommandBus $commandBus) use ($container) {
+                    function (CommandBus $commandBus) use ($container): void {
                         $commandBus->subscribe(
                             new EventCommandHandler(
                                 $container->get('event_repository'),

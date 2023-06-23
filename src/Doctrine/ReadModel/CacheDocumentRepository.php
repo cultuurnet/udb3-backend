@@ -66,7 +66,7 @@ final class CacheDocumentRepository implements DocumentRepository
         }
     }
 
-    public function remove($id): void
+    public function remove(string $id): void
     {
         $this->cache->delete($id);
     }

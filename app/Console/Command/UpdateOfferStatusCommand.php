@@ -101,7 +101,7 @@ class UpdateOfferStatusCommand extends AbstractCommand
         return 0;
     }
 
-    private function askForQuery($input, $output): string
+    private function askForQuery(InputInterface $input, OutputInterface $output): string
     {
         $question = new Question("Provide SAPI 3 query for {$this->getPluralOfferType()} to update\n");
         return $this->getHelper('question')->ask($input, $output, $question);

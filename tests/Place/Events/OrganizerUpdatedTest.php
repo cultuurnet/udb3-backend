@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class OrganizerUpdatedTest extends TestCase
 {
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             [
@@ -31,7 +31,7 @@ class OrganizerUpdatedTest extends TestCase
     public function it_can_be_serialized_to_an_array(
         array $expectedSerializedValue,
         OrganizerUpdated $organizerUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $organizerUpdated->serialize()
@@ -45,7 +45,7 @@ class OrganizerUpdatedTest extends TestCase
     public function it_can_be_deserialized_from_an_array(
         array $serializedValue,
         OrganizerUpdated $expectedOrganizerUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedOrganizerUpdated,
             OrganizerUpdated::deserialize($serializedValue)

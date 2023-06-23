@@ -19,20 +19,11 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     public const UUID_COLUMN = 'uuid_col';
     public const UNIQUE_COLUMN = 'unique_col';
 
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var string
-     */
-    private $uniqueTableName;
+    private string $uniqueTableName;
 
-    /**
-     * @var UniqueConstraintService
-     */
-    private $uniqueConstraintService;
+    private UniqueConstraintService $uniqueConstraintService;
 
     public function __construct(
         EventStore $dbalEventStore,
@@ -102,7 +93,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
      */
     private function processUniqueConstraint(
         DomainMessage $domainMessage
-    ) {
+    ): void {
         if ($this->uniqueConstraintService->hasUniqueConstraint($domainMessage)) {
             $uniqueValue = $this->uniqueConstraintService->getUniqueConstraintValue($domainMessage);
 

@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class PointCollectingSpecificationTest extends TestCase
 {
-    /**
-     * @var PointCollectingSpecification
-     */
-    protected $specification;
+    protected PointCollectingSpecification $specification;
 
     public function setUp(): void
     {
@@ -23,12 +20,12 @@ class PointCollectingSpecificationTest extends TestCase
      * @test
      * @dataProvider satisfyingEventProvider
      */
-    public function it_is_satisfied_by_events_with_points(Event $event)
+    public function it_is_satisfied_by_events_with_points(Event $event): void
     {
         $this->assertTrue($this->specification->isSatisfiedBy($event));
     }
 
-    public function satisfyingEventProvider()
+    public function satisfyingEventProvider(): array
     {
         $factory = new EventFactory();
         return [
@@ -51,12 +48,12 @@ class PointCollectingSpecificationTest extends TestCase
      * @test
      * @dataProvider unsatisfyingEventProvider
      */
-    public function it_is_unsatisfied_by_events_without_points(Event $event)
+    public function it_is_unsatisfied_by_events_without_points(Event $event): void
     {
         $this->assertFalse($this->specification->isSatisfiedBy($event));
     }
 
-    public function unsatisfyingEventProvider()
+    public function unsatisfyingEventProvider(): array
     {
         $factory = new EventFactory();
         return [

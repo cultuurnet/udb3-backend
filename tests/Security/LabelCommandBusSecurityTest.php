@@ -63,7 +63,7 @@ class LabelCommandBusSecurityTest extends TestCase
     /**
      * @test
      */
-    public function it_delegates_is_authorized_to_decoratee_when_not_label_security_command()
+    public function it_delegates_is_authorized_to_decoratee_when_not_label_security_command(): void
     {
         $translateTitle = new UpdateTitle(
             'cc9b975b-80e3-47db-ae77-8a930e453232',
@@ -83,7 +83,7 @@ class LabelCommandBusSecurityTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_only_use_labels_he_is_allowed_to_use()
+    public function a_user_can_only_use_labels_he_is_allowed_to_use(): void
     {
         $this->labelReadRepository->method('canUseLabel')
             ->willReturn(true);

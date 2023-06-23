@@ -30,31 +30,31 @@ class UserPermissionsProjector implements EventListener
     }
 
 
-    public function applyRoleDeleted(RoleDeleted $roleDeleted)
+    public function applyRoleDeleted(RoleDeleted $roleDeleted): void
     {
         $this->repository->removeRole($roleDeleted->getUuid());
     }
 
 
-    public function applyUserAdded(UserAdded $userAdded)
+    public function applyUserAdded(UserAdded $userAdded): void
     {
         $this->repository->addUserRole($userAdded->getUserId(), $userAdded->getUuid());
     }
 
 
-    public function applyUserRemoved(UserRemoved $userRemoved)
+    public function applyUserRemoved(UserRemoved $userRemoved): void
     {
         $this->repository->removeUserRole($userRemoved->getUserId(), $userRemoved->getUuid());
     }
 
 
-    public function applyPermissionAdded(PermissionAdded $permissionAdded)
+    public function applyPermissionAdded(PermissionAdded $permissionAdded): void
     {
         $this->repository->addRolePermission($permissionAdded->getUuid(), $permissionAdded->getPermission());
     }
 
 
-    public function applyPermissionRemoved(PermissionRemoved $permissionRemoved)
+    public function applyPermissionRemoved(PermissionRemoved $permissionRemoved): void
     {
         $this->repository->removeRolePermission($permissionRemoved->getUuid(), $permissionRemoved->getPermission());
     }

@@ -39,7 +39,7 @@ class ValidatingCommandBusDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_validate_each_command_before_dispatching_it_to_the_decoratee()
+    public function it_should_validate_each_command_before_dispatching_it_to_the_decoratee(): void
     {
         $command1 = (object) ['do' => 'something 1'];
         $command2 = (object) ['do' => 'something 2'];
@@ -69,7 +69,7 @@ class ValidatingCommandBusDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_delegate_subscriptions_to_the_decoratee()
+    public function it_should_delegate_subscriptions_to_the_decoratee(): void
     {
         /* @var CommandHandler $handler */
         $handler = $this->createMock(CommandHandler::class);
@@ -84,7 +84,7 @@ class ValidatingCommandBusDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_dispatch_on_validate_exception()
+    public function it_does_not_dispatch_on_validate_exception(): void
     {
         $command = (object) ['do' => 'something'];
 

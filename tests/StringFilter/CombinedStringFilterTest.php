@@ -11,7 +11,7 @@ class CombinedStringFilterTest extends TestCase
     /**
      * @test
      */
-    public function test_it_calls_added_string_filters()
+    public function test_it_calls_added_string_filters(): void
     {
         $combinedFilter = new CombinedStringFilter();
 

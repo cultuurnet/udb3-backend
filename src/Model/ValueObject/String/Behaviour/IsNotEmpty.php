@@ -8,9 +8,6 @@ trait IsNotEmpty
 {
     private function guardNotEmpty(string $value): void
     {
-        /* @var IsString $this */
-        $this->guardString($value);
-
         if (strlen($value) === 0) {
             throw new \InvalidArgumentException('Given string should not be empty.');
         }

@@ -8,8 +8,5 @@ use Broadway\Domain\DomainMessage;
 
 interface BodyFactoryInterface
 {
-    /**
-     * @return string
-     */
-    public function createBody(DomainMessage $domainMessage);
+    public function createBody(DomainMessage $domainMessage): string;
 }

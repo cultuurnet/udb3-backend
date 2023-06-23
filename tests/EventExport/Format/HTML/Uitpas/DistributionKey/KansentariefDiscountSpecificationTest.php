@@ -10,25 +10,13 @@ use PHPUnit\Framework\TestCase;
 
 class KansentariefDiscountSpecificationTest extends TestCase
 {
-    /**
-     * @var KansentariefDiscountSpecification
-     */
-    protected $specification;
+    protected KansentariefDiscountSpecification $specification;
 
-    /**
-     * @var DistributionKeyConditionFactory
-     */
-    protected $conditionFactory;
+    protected DistributionKeyConditionFactory $conditionFactory;
 
-    /**
-     * @var DistributionKeyFactory
-     */
-    protected $keyFactory;
+    protected DistributionKeyFactory $keyFactory;
 
-    /**
-     * @var array
-     */
-    protected $cardSystems;
+    protected array $cardSystems;
 
     public function setUp(): void
     {
@@ -39,12 +27,12 @@ class KansentariefDiscountSpecificationTest extends TestCase
      * @test
      * @dataProvider satisfyingDistributionKeyProvider
      */
-    public function it_is_satisfied_by_a_key_with_kansarm_condition(CultureFeed_Uitpas_DistributionKey $key)
+    public function it_is_satisfied_by_a_key_with_kansarm_condition(CultureFeed_Uitpas_DistributionKey $key): void
     {
         $this->assertTrue($this->specification->isSatisfiedBy($key));
     }
 
-    public function satisfyingDistributionKeyProvider()
+    public function satisfyingDistributionKeyProvider(): array
     {
         $data = [];
 
@@ -109,12 +97,12 @@ class KansentariefDiscountSpecificationTest extends TestCase
      * @test
      * @dataProvider unsatisfyingDistributionKeyProvider
      */
-    public function it_is_unsatisfied_by_a_key_without_kansarm_condition(CultureFeed_Uitpas_DistributionKey $key)
+    public function it_is_unsatisfied_by_a_key_without_kansarm_condition(CultureFeed_Uitpas_DistributionKey $key): void
     {
         $this->assertFalse($this->specification->isSatisfiedBy($key));
     }
 
-    public function unsatisfyingDistributionKeyProvider()
+    public function unsatisfyingDistributionKeyProvider(): array
     {
         $conditionFactory = new DistributionKeyConditionFactory();
         $keyFactory = new DistributionKeyFactory();

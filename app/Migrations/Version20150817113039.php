@@ -15,7 +15,7 @@ class Version20150817113039 extends AbstractMigration
     /**
      * @inheritdoc
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->createTable('index_readmodel');
 
@@ -54,7 +54,7 @@ class Version20150817113039 extends AbstractMigration
     /**
      * @inheritdoc
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('index_readmodel');
     }

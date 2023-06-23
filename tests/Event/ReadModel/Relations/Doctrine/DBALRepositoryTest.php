@@ -42,7 +42,7 @@ class DBALRepositoryTest extends TestCase
      * @param array $expectedData
      * @param string $tableName
      */
-    private function assertTableData($expectedData, $tableName)
+    private function assertTableData($expectedData, $tableName): void
     {
         $expectedData = array_values($expectedData);
 
@@ -60,7 +60,7 @@ class DBALRepositoryTest extends TestCase
      * @param string $tableName
      * @param array $rows
      */
-    private function insertTableData($tableName, $rows)
+    private function insertTableData($tableName, $rows): void
     {
         $q = $this->getConnection()->createQueryBuilder();
 
@@ -93,7 +93,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_the_organizer_linked_to_an_event_when_a_relation_already_exists()
+    public function it_updates_the_organizer_linked_to_an_event_when_a_relation_already_exists(): void
     {
         $existingData[] = (object)[
             'event' => 'event-id',
@@ -117,7 +117,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_new_organizer_relation_when_an_event_has_no_existing_relations()
+    public function it_creates_a_new_organizer_relation_when_an_event_has_no_existing_relations(): void
     {
         $eventId = 'event-id';
         $organizerId = 'organizer-id';
@@ -135,7 +135,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_existing_relations_when_removing_an_event_organizer()
+    public function it_updates_existing_relations_when_removing_an_event_organizer(): void
     {
         $existingData[] = (object)[
             'event' => 'event-id',
@@ -158,7 +158,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_remove_all_relations_for_a_given_event()
+    public function it_should_remove_all_relations_for_a_given_event(): void
     {
         $existingData = [
             (object)[
@@ -188,7 +188,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_get_all_events_located_at_place()
+    public function it_should_get_all_events_located_at_place(): void
     {
         $existingData = [
             (object)[
@@ -213,7 +213,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_related_place_of_an_event()
+    public function it_can_get_related_place_of_an_event(): void
     {
         $eventId = 'e201cea1-4a79-4834-9501-b28a92900fa1';
         $organizerId = '3a4abf90-1859-49de-a667-b713c81aad28';
@@ -236,7 +236,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_when_event_has_no_related_place()
+    public function it_returns_null_when_event_has_no_related_place(): void
     {
         $eventId = 'e201cea1-4a79-4834-9501-b28a92900fa1';
         $organizerId = '3a4abf90-1859-49de-a667-b713c81aad28';
@@ -259,7 +259,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_related_organizer_of_an_event()
+    public function it_can_get_related_organizer_of_an_event(): void
     {
         $eventId = 'e201cea1-4a79-4834-9501-b28a92900fa1';
         $organizerId = '3a4abf90-1859-49de-a667-b713c81aad28';
@@ -282,7 +282,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_when_event_has_no_related_organizer()
+    public function it_returns_null_when_event_has_no_related_organizer(): void
     {
         $eventId = 'e201cea1-4a79-4834-9501-b28a92900fa1';
         $organizerId = null;

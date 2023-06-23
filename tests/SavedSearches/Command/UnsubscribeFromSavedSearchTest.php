@@ -12,7 +12,7 @@ class UnsubscribeFromSavedSearchTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_stored_data()
+    public function it_returns_the_stored_data(): void
     {
         $userId = new StringLiteral('some-user-id');
         $searchId = new StringLiteral('some-search-id');

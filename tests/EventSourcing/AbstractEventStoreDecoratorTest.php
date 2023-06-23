@@ -34,7 +34,7 @@ class AbstractEventStoreDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_load_on_event_store()
+    public function it_calls_load_on_event_store(): void
     {
         $id = 'id';
 
@@ -49,7 +49,7 @@ class AbstractEventStoreDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_domain_event_stream_from_load()
+    public function it_returns_domain_event_stream_from_load(): void
     {
         $id = '$id';
         $expectedStream = new DomainEventStream(['a', 'b']);
@@ -66,7 +66,7 @@ class AbstractEventStoreDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_append_on_event_store()
+    public function it_calls_append_on_event_store(): void
     {
         $id = 'id';
         $eventStream = new DomainEventStream([]);

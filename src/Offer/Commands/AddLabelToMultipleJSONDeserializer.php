@@ -19,11 +19,7 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class AddLabelToMultipleJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var DeserializerInterface
-     */
-    private $offerIdentifierDeserializer;
-
+    private DeserializerInterface $offerIdentifierDeserializer;
 
     public function __construct(DeserializerInterface $offerIdentifierDeserializer)
     {
@@ -32,12 +28,9 @@ class AddLabelToMultipleJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     *
-     * @return AddLabelToMultiple
-     *
      * @throws NotWellFormedException
      */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): AddLabelToMultiple
     {
         $data = parent::deserialize($data);
 

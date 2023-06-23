@@ -30,7 +30,7 @@ class EventExportResult
     /**
      * @param string $url
      */
-    private function setUrl($url)
+    private function setUrl($url): void
     {
         $this->url = $url;
     }

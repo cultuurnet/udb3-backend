@@ -17,7 +17,7 @@ class ImageCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_should_remember_the_main_image()
+    public function it_should_remember_the_main_image(): void
     {
         $mainImage = new Image(
             new UUID('7eae46b4-050b-4e8e-b796-c9b011b7279f'),
@@ -35,7 +35,7 @@ class ImageCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_first_image_as_main_when_set_explicitly()
+    public function it_should_return_the_first_image_as_main_when_set_explicitly(): void
     {
         $image = new Image(
             new UUID('8c52f555-426b-46c6-87e5-31f2033c851a'),
@@ -53,7 +53,7 @@ class ImageCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_main_image_when_empty()
+    public function it_should_return_a_main_image_when_empty(): void
     {
         $this->assertEquals(null, (new ImageCollection())->getMain());
     }
@@ -61,7 +61,7 @@ class ImageCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_find_an_image_based_on_uuid()
+    public function it_can_find_an_image_based_on_uuid(): void
     {
         $uuid = new UUID('eed32a8c-cd07-4ade-93a2-7751d33c820c');
 

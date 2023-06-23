@@ -10,7 +10,7 @@ class Has2Taaliconen implements EventSpecificationInterface
 {
     use Labelable;
 
-    public function isSatisfiedBy($eventLd)
+    public function isSatisfiedBy(\stdClass $eventLd): bool
     {
         return $this->hasLabel($eventLd, new StringLiteral('twee taaliconen'));
     }

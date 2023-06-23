@@ -18,19 +18,10 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class FacilitiesJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @var OfferFacilityResolverInterface
-     */
-    private $facilityResolver;
+    private OfferFacilityResolverInterface $facilityResolver;
 
-    /**
-     * @var DataValidatorInterface
-     */
-    private $validator;
+    private DataValidatorInterface $validator;
 
-    /**
-     * FacilitiesJSONDeserializer constructor.
-     */
     public function __construct(OfferFacilityResolverInterface $facilityResolver)
     {
         parent::__construct(true);
@@ -43,7 +34,7 @@ class FacilitiesJSONDeserializer extends JSONDeserializer
      * @throws DataValidationException
      * @return Facility[]
      */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): array
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);

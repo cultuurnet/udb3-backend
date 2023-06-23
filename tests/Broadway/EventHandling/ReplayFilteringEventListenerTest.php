@@ -32,7 +32,7 @@ class ReplayFilteringEventListenerTest extends TestCase
     /**
      * @test
      */
-    public function it_ignores_domain_messages_that_do_not_satisfy_the_specification()
+    public function it_ignores_domain_messages_that_do_not_satisfy_the_specification(): void
     {
         $domainMessage = DomainMessage::recordNow(
             '44ba2574-aa50-4765-a0e5-38b046a13357',
@@ -51,7 +51,7 @@ class ReplayFilteringEventListenerTest extends TestCase
     /**
      * @test
      */
-    public function it_delegates_event_handling_to_its_decoratee_if_the_domain_message_satisfies_the_specification()
+    public function it_delegates_event_handling_to_its_decoratee_if_the_domain_message_satisfies_the_specification(): void
     {
         $domainMessage = DomainMessage::recordNow(
             '44ba2574-aa50-4765-a0e5-38b046a13357',

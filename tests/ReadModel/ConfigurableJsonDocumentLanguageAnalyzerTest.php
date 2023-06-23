@@ -28,7 +28,7 @@ class ConfigurableJsonDocumentLanguageAnalyzerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_list_of_all_languages_found_on_multilingual_fields()
+    public function it_should_return_a_list_of_all_languages_found_on_multilingual_fields(): void
     {
         $data = [
             'id' => '919c7904-ecfa-440c-92d0-ae912213c615',
@@ -67,7 +67,7 @@ class ConfigurableJsonDocumentLanguageAnalyzerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_list_of_languages_found_on_every_one_multilingual_field()
+    public function it_should_return_a_list_of_languages_found_on_every_one_multilingual_field(): void
     {
         $data = [
             'id' => '919c7904-ecfa-440c-92d0-ae912213c615',
@@ -104,7 +104,7 @@ class ConfigurableJsonDocumentLanguageAnalyzerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_ignore_missing_properties()
+    public function it_should_ignore_missing_properties(): void
     {
         $data = [
             'id' => '919c7904-ecfa-440c-92d0-ae912213c615',

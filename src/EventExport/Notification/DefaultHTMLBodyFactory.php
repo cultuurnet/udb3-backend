@@ -8,7 +8,7 @@ use CultuurNet\UDB3\EventExport\EventExportResult;
 
 class DefaultHTMLBodyFactory implements BodyFactoryInterface
 {
-    public function getBodyFor(EventExportResult $eventExportResult)
+    public function getBodyFor(EventExportResult $eventExportResult): string
     {
         $url = $eventExportResult->getUrl();
 

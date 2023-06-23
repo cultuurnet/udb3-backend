@@ -9,7 +9,7 @@ use Doctrine\DBAL\Schema\Schema;
 
 class Version20200602134547 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->createTable('productions');
         $table->addColumn(
@@ -49,7 +49,7 @@ class Version20200602134547 extends AbstractMigration
         $table->addIndex(['name'], 'idx_search_name', ['fulltext']);
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('productions');
     }

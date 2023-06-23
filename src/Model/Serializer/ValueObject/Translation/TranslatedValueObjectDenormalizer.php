@@ -50,7 +50,6 @@ abstract class TranslatedValueObjectDenormalizer implements DenormalizerInterfac
         $originalLanguage = new Language($originalLanguageKey);
         $originalValue = $this->createValueObject($data[$originalLanguageKey]);
 
-        // @phpstan-ignore-next-line
         $translated = $this->createTranslatedValueObject($originalLanguage, $originalValue);
 
         foreach ($data as $languageKey => $valueTranslation) {
@@ -68,12 +67,13 @@ abstract class TranslatedValueObjectDenormalizer implements DenormalizerInterfac
     }
 
     /**
-     * @param string $originalValue
+     * @param object $originalValue
      * @return TranslatedValueObject
      */
     abstract protected function createTranslatedValueObject(Language $originalLanguage, $originalValue);
 
     /**
+     * @param string|array $value
      * @return object
      */
     abstract protected function createValueObject($value);

@@ -309,7 +309,7 @@ class Place extends Offer
         return $this->canonicalPlaceId;
     }
 
-    public function updateWithCdbXml($cdbXml, $cdbXmlNamespaceUri): void
+    public function updateWithCdbXml(string $cdbXml, string $cdbXmlNamespaceUri): void
     {
         ActorItemFactory::createActorFromCdbXml($cdbXmlNamespaceUri, $cdbXml);
 
@@ -322,7 +322,7 @@ class Place extends Offer
         );
     }
 
-    protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged
+    protected function createOwnerChangedEvent(string $newOwnerId): AbstractOwnerChanged
     {
         return new OwnerChanged($this->placeId, $newOwnerId);
     }

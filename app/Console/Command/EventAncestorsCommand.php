@@ -25,7 +25,7 @@ class EventAncestorsCommand extends AbstractCommand
         $this->eventStore = $eventStore;
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('event:ancestors')

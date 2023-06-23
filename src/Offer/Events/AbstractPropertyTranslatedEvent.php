@@ -8,12 +8,9 @@ use CultuurNet\UDB3\Language;
 
 abstract class AbstractPropertyTranslatedEvent extends AbstractEvent
 {
-    /**
-     * @var Language
-     */
-    protected $language;
+    protected Language $language;
 
-    public function __construct($itemId, Language $language)
+    public function __construct(string $itemId, Language $language)
     {
         $this->language = $language;
         parent::__construct($itemId);
@@ -27,7 +24,7 @@ abstract class AbstractPropertyTranslatedEvent extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'language' => (string)$this->language->getCode(),
+            'language' => $this->language->getCode(),
         ];
     }
 }

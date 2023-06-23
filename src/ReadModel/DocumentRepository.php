@@ -11,7 +11,7 @@ interface DocumentRepository
      */
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument;
 
-    public function save(JsonDocument $readModel): void;
+    public function save(JsonDocument $document): void;
 
-    public function remove($id): void;
+    public function remove(string $id): void;
 }

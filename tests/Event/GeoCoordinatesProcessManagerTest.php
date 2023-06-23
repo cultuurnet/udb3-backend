@@ -53,7 +53,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_event_imported_from_udb2_with_dummy_location()
+    public function it_handles_event_imported_from_udb2_with_dummy_location(): void
     {
         $domainMessage = DomainMessage::recordNow(
             'e3604613-af01-4d2b-8cee-13ab61b89651',
@@ -86,7 +86,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_event_updated_from_udb2_with_dummy_location()
+    public function it_handles_event_updated_from_udb2_with_dummy_location(): void
     {
         $domainMessage = DomainMessage::recordNow(
             'e3604613-af01-4d2b-8cee-13ab61b89651',
@@ -119,7 +119,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_handle_event_without_physical_address()
+    public function it_does_not_handle_event_without_physical_address(): void
     {
         $domainMessage = DomainMessage::recordNow(
             'e3604613-af01-4d2b-8cee-13ab61b89651',
@@ -141,7 +141,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_handle_event_with_location()
+    public function it_does_not_handle_event_with_location(): void
     {
         $domainMessage = DomainMessage::recordNow(
             'e3604613-af01-4d2b-8cee-13ab61b89651',
@@ -163,7 +163,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_handle_event_with_external_location()
+    public function it_does_not_handle_event_with_external_location(): void
     {
         $domainMessage = DomainMessage::recordNow(
             'e3604613-af01-4d2b-8cee-13ab61b89651',
@@ -185,7 +185,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_parse_exception_for_event_without_location()
+    public function it_throws_parse_exception_for_event_without_location(): void
     {
         $domainMessage = DomainMessage::recordNow(
             'e3604613-af01-4d2b-8cee-13ab61b89651',
@@ -206,7 +206,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_parse_exception_for_event_without_address()
+    public function it_throws_parse_exception_for_event_without_address(): void
     {
         $domainMessage = DomainMessage::recordNow(
             'e3604613-af01-4d2b-8cee-13ab61b89651',

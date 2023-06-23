@@ -9,7 +9,7 @@ use Doctrine\DBAL\Schema\Schema;
 
 class Version20180711095920 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->createTable('organizer_permission_readmodel');
 
@@ -28,7 +28,7 @@ class Version20180711095920 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
     }

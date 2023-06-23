@@ -12,20 +12,11 @@ use Doctrine\DBAL\DBALException;
 
 class ProductionCommandHandler extends Udb3CommandHandler
 {
-    /**
-     * @var ProductionRepository
-     */
-    private $productionRepository;
+    private ProductionRepository $productionRepository;
 
-    /**
-     * @var SkippedSimilarEventsRepository
-     */
-    private $skippedSimilarEventsRepository;
+    private SkippedSimilarEventsRepository $skippedSimilarEventsRepository;
 
-    /**
-     * @var DocumentRepository
-     */
-    private $eventRepository;
+    private DocumentRepository $eventRepository;
 
     public function __construct(
         ProductionRepository $productionRepository,
@@ -107,7 +98,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
         $this->skippedSimilarEventsRepository->add($command->getEventPair());
     }
 
-    private function assertEventCanBeAddedToProduction(string $eventId)
+    private function assertEventCanBeAddedToProduction(string $eventId): void
     {
         try {
             $this->eventRepository->fetch($eventId);
@@ -116,7 +107,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
         }
     }
 
-    private function assertEventCanBeRemovedFromProduction(string $eventId, ProductionId $productionId)
+    private function assertEventCanBeRemovedFromProduction(string $eventId, ProductionId $productionId): void
     {
         try {
             $this->eventRepository->fetch($eventId);

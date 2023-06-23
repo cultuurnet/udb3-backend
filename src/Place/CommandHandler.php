@@ -27,135 +27,96 @@ use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
-/**
- * Commandhandler for places.
- */
 class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @return string
-     */
-    protected function getAddImageClassName()
+    protected function getAddImageClassName(): string
     {
         return AddImage::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getUpdateImageClassName()
+    protected function getUpdateImageClassName(): string
     {
         return UpdateImage::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getRemoveImageClassName()
+    protected function getRemoveImageClassName(): string
     {
         return RemoveImage::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getSelectMainImageClassName()
+    protected function getSelectMainImageClassName(): string
     {
         return SelectMainImage::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getImportImagesClassName()
+    protected function getImportImagesClassName(): string
     {
         return ImportImages::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getUpdateDescriptionClassName()
+    protected function getUpdateDescriptionClassName(): string
     {
         return UpdateDescription::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getUpdateTypicalAgeRangeClassName()
+    protected function getUpdateTypicalAgeRangeClassName(): string
     {
         return UpdateTypicalAgeRange::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getDeleteTypicalAgeRangeClassName()
+    protected function getDeleteTypicalAgeRangeClassName(): string
     {
         return DeleteTypicalAgeRange::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getDeleteCurrentOrganizerClassName()
+    protected function getDeleteCurrentOrganizerClassName(): string
     {
         return DeleteCurrentOrganizer::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getUpdateContactPointClassName()
+    protected function getUpdateContactPointClassName(): string
     {
         return UpdateContactPoint::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getUpdateBookingInfoClassName()
+    protected function getUpdateBookingInfoClassName(): string
     {
         return UpdateBookingInfo::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getUpdatePriceInfoClassName()
+    protected function getUpdatePriceInfoClassName(): string
     {
         return UpdatePriceInfo::class;
     }
 
-    protected function getPublishClassName()
+    protected function getPublishClassName(): string
     {
         return Publish::class;
     }
 
-    protected function getApproveClassName()
+    protected function getApproveClassName(): string
     {
         return Approve::class;
     }
 
-    protected function getRejectClassName()
+    protected function getRejectClassName(): string
     {
         return Reject::class;
     }
 
-    protected function getFlagAsDuplicateClassName()
+    protected function getFlagAsDuplicateClassName(): string
     {
         return FlagAsDuplicate::class;
     }
 
-    protected function getFlagAsInappropriateClassName()
+    protected function getFlagAsInappropriateClassName(): string
     {
         return FlagAsInappropriate::class;
     }
 
-    protected function handleUpdateAddress(UpdateAddress $updateAddress)
+    protected function handleUpdateAddress(UpdateAddress $updateAddress): void
     {
         /** @var Place $place */
         $place = $this->offerRepository->load($updateAddress->getItemId());
@@ -166,7 +127,7 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
     /**
      * Handle an update the major info command.
      */
-    public function handleUpdateMajorInfo(UpdateMajorInfo $updateMajorInfo)
+    public function handleUpdateMajorInfo(UpdateMajorInfo $updateMajorInfo): void
     {
 
         /** @var Place $place */

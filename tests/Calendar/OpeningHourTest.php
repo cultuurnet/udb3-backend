@@ -71,7 +71,7 @@ class OpeningHourTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_opens_time()
+    public function it_stores_an_opens_time(): void
     {
         $this->assertEquals(
             $this->opens,
@@ -82,7 +82,7 @@ class OpeningHourTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_closes_time()
+    public function it_stores_a_closes_time(): void
     {
         $this->assertEquals(
             $this->closes,
@@ -93,7 +93,7 @@ class OpeningHourTest extends TestCase
     /**
      * @test
      */
-    public function it_can_compare_on_hours()
+    public function it_can_compare_on_hours(): void
     {
         $sameOpeningHour = new OpeningHour(
             new OpeningTime(new Hour(9), new Minute(30)),
@@ -118,7 +118,7 @@ class OpeningHourTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_weekdays()
+    public function it_stores_weekdays(): void
     {
         $this->assertEquals(
             $this->dayOfWeekCollection,
@@ -129,7 +129,7 @@ class OpeningHourTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $this->assertEquals(
             $this->openingHour,
@@ -140,7 +140,7 @@ class OpeningHourTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $this->assertEquals(
             $this->openingHourAsArray,

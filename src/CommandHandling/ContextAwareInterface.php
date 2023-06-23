@@ -8,5 +8,5 @@ use Broadway\Domain\Metadata;
 
 interface ContextAwareInterface
 {
-    public function setContext(Metadata $context = null): void;
+    public function setContext(?Metadata $context = null): void;
 }

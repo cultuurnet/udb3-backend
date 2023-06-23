@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Geocoding\Coordinate;
 
 class Latitude extends Coordinate
 {
-    public function __construct($value)
+    public function __construct(float $value)
     {
         parent::__construct($value);
 

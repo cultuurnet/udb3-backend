@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class NewlineToBreakTagStringFilterTest extends StringFilterTest
 {
-    /**
-     * @return NewlineToBreakTagStringFilter
-     */
-    protected function getFilter()
+    protected function getFilter(): StringFilterInterface
     {
         return new NewlineToBreakTagStringFilter();
     }
@@ -17,7 +14,7 @@ class NewlineToBreakTagStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_converts_newlines_to_break_tags()
+    public function it_converts_newlines_to_break_tags(): void
     {
         $original = "Hello\nworld!\nGoodbye!";
         $expected = 'Hello<br />world!<br />Goodbye!';
@@ -27,7 +24,7 @@ class NewlineToBreakTagStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_converts_newlines_to_break_tags_without_closing_tag()
+    public function it_converts_newlines_to_break_tags_without_closing_tag(): void
     {
         $original = "Hello\nworld!\nGoodbye!";
         $expected = 'Hello<br>world!<br>Goodbye!';
@@ -41,19 +38,10 @@ class NewlineToBreakTagStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_converts_consecutive_newlines_to_consecutive_break_tags()
+    public function it_converts_consecutive_newlines_to_consecutive_break_tags(): void
     {
         $original = "Hello\n\nworld!";
         $expected = 'Hello<br /><br />world!';
         $this->assertFilterValue($expected, $original);
-    }
-
-    /**
-     * @test
-     */
-    public function it_only_filters_strings()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->filter->filter(12345);
     }
 }

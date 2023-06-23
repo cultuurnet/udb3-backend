@@ -42,9 +42,9 @@ final class HTMLFileWriterTest extends TestCase
      * @dataProvider twigCustomTemplateProvider
      */
     public function it_can_use_a_customized_twig_environment_and_template(
-        $template,
-        $variables,
-        $fileWithExpectedContent
+        string $template,
+        array $variables,
+        string $fileWithExpectedContent
     ): void {
         $events = [];
 

@@ -14,7 +14,7 @@ class EmailAddressTest extends TestCase
      *
      * @param string $email
      */
-    public function it_should_accept_a_valid_email_address($email)
+    public function it_should_accept_a_valid_email_address($email): void
     {
         $emailAddress = new EmailAddress($email);
         $this->assertEquals($email, $emailAddress->toString());
@@ -38,7 +38,7 @@ class EmailAddressTest extends TestCase
      *
      * @param string $email
      */
-    public function it_should_reject_an_invalid_email_address($email)
+    public function it_should_reject_an_invalid_email_address($email): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given string is not a valid e-mail address.');

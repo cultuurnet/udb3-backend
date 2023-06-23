@@ -27,7 +27,7 @@ class ClassNameEventSpecificationTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_true_when_class_name_matches()
+    public function it_returns_true_when_class_name_matches(): void
     {
         $classNameEventFilter = new ClassNameEventSpecification(
             new StringLiteral(LabelAdded::class),
@@ -40,7 +40,7 @@ class ClassNameEventSpecificationTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_false_when_class_name_does_not_match()
+    public function it_returns_false_when_class_name_does_not_match(): void
     {
         $classNameEventFilter = new ClassNameEventSpecification(
             new StringLiteral(LabelRemoved::class)

@@ -53,7 +53,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_permission_to_the_user_identified_by_the_createdby_element_for_events_imported_from_udb2()
+    public function it_adds_permission_to_the_user_identified_by_the_createdby_element_for_events_imported_from_udb2(): void
     {
         $cdbXml = file_get_contents(__DIR__ . '/../../samples/event_with_photo.cdbxml.xml');
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2');
@@ -90,7 +90,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_add_any_permissions_for_events_imported_from_udb2_with_unresolvable_createdby_value()
+    public function it_does_not_add_any_permissions_for_events_imported_from_udb2_with_unresolvable_createdby_value(): void
     {
         $cdbXml = file_get_contents(__DIR__ . '/../../samples/event_with_photo.cdbxml.xml');
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2');
@@ -121,7 +121,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_add_permission_to_the_user_that_created_an_event()
+    public function it_add_permission_to_the_user_that_created_an_event(): void
     {
         $userId = new StringLiteral('user-id');
         $eventId = new StringLiteral('event-id');
@@ -159,7 +159,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_add_permission_to_the_user_that_copied_an_event()
+    public function it_add_permission_to_the_user_that_copied_an_event(): void
     {
         $userId = 'user-id';
         $eventId = 'event-id';

@@ -47,4 +47,12 @@ trait AuthorizationSteps
     {
         $this->requestState->setJwt('');
     }
+
+    /**
+     * @Given I am not using an UiTID v1 API key
+     */
+    public function iAmNotUsingAnUitidV1ApiKey(): void
+    {
+        $this->requestState->setApiKey('');
+    }
 }

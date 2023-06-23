@@ -17,7 +17,7 @@ class AgeRangeTest extends TestCase
     public function it_should_create_ranges_from_strings(
         $ageRangeString,
         AgeRange $expectedRange
-    ) {
+    ): void {
         $ageRange = AgeRange::fromString($ageRangeString);
 
         $this->assertEquals($expectedRange, $ageRange);
@@ -31,7 +31,7 @@ class AgeRangeTest extends TestCase
         string $ageRangeString,
         AgeRange $expectedRange,
         string $expectedAgeRangeString
-    ) {
+    ): void {
         $actualAgeRangeString = (string) $expectedRange;
 
         $this->assertEquals($expectedAgeRangeString, $actualAgeRangeString);
@@ -111,7 +111,7 @@ class AgeRangeTest extends TestCase
         $ageRangeString,
         $exception,
         $exceptionMessage
-    ) {
+    ): void {
         $this->expectException($exception);
         $this->expectExceptionMessage($exceptionMessage);
         AgeRange::fromString($ageRangeString);
@@ -174,7 +174,7 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_expects_from_age_to_not_exceed_to_age()
+    public function it_expects_from_age_to_not_exceed_to_age(): void
     {
         $this->expectException(InvalidAgeRangeException::class);
         new AgeRange(new Age(9), new Age(5));
@@ -183,7 +183,7 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_provide_access_to_from_and_to_age()
+    public function it_should_provide_access_to_from_and_to_age(): void
     {
         $ageRange = new AgeRange(new Age(0), new Age(18));
 
@@ -205,7 +205,7 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_can_compare_age_ranges()
+    public function it_can_compare_age_ranges(): void
     {
         $typicalAgeRange = new AgeRange(new Age(8), new Age(11));
         $sameAgeRange = new AgeRange(new Age(8), new Age(11));
@@ -220,7 +220,7 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_a_restricted_udb3_model_age_range()
+    public function it_should_be_creatable_from_a_restricted_udb3_model_age_range(): void
     {
         $udb3ModelAgeRange = new \CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange(
             new \CultuurNet\UDB3\Model\ValueObject\Audience\Age(8),
@@ -236,7 +236,7 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_open_udb3_model_age_range()
+    public function it_should_be_creatable_from_an_open_udb3_model_age_range(): void
     {
         $udb3ModelAgeRange = new \CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange();
 
