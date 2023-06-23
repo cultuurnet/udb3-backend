@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\InMemoryExcludedLabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
@@ -30,7 +29,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
     private string $labelRolesTableName;
 
-    private StringLiteral $userRolesTableName;
+    private string $userRolesTableName;
 
     protected function setUp(): void
     {
@@ -44,9 +43,9 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             $this->getConnection()->getSchemaManager()
         );
 
-        $this->userRolesTableName = new StringLiteral('user_roles');
+        $this->userRolesTableName = 'user_roles';
         $schemaConfigurator = new PermissionsSchemaConfigurator(
-            $this->userRolesTableName,
+            new StringLiteral($this->userRolesTableName),
             new StringLiteral('role_permissions')
         );
         $schemaConfigurator->configure(
@@ -57,13 +56,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             $this->getConnection(),
             $this->getTableName(),
             $this->labelRolesTableName,
-            $this->userRolesTableName->toNative(),
-            new InMemoryExcludedLabelsRepository(
-                [
-                    '67dcd2a0-5301-4747-a956-3741420efd52',
-                    '5d6efb46-835c-413f-a62b-fa764c68a33f',
-                ]
-            )
+            $this->userRolesTableName
         );
 
         $this->entityByUuid = new Entity(
@@ -332,6 +325,22 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
+    public function it_filters_excluded_labels_if_suggestions_is_true(): void
+    {
+        $search = new Query(
+            'excluded',
+            null,
+            null,
+            null,
+            true
+        );
+        $entities = $this->dbalReadRepository->search($search);
+        $this->assertEquals([], $entities);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_get_total_items_of_search(): void
     {
         $search = new Query('lab');
@@ -440,7 +449,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     private function insertUserRole(string $userId, UUID $roleId): void
     {
         $this->getConnection()->insert(
-            $this->userRolesTableName->toNative(),
+            $this->userRolesTableName,
             [
                 PermissionsSchemaConfigurator::USER_ID_COLUMN => $userId,
                 PermissionsSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),

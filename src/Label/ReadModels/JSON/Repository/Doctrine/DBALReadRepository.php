@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ExcludedLabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
@@ -23,20 +22,16 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
     private string $userRolesTableName;
 
-    private ExcludedLabelsRepository $excludedLabelsRepository;
-
     public function __construct(
         Connection $connection,
         string $tableName,
         string $labelRolesTableName,
-        string $userRolesTableName,
-        ExcludedLabelsRepository $excludedLabelsRepository
+        string $userRolesTableName
     ) {
         parent::__construct($connection, $tableName);
 
         $this->labelRolesTableName = $labelRolesTableName;
         $this->userRolesTableName = $userRolesTableName;
-        $this->excludedLabelsRepository = $excludedLabelsRepository;
     }
 
     public function getByUuid(UUID $uuid): ?Entity
@@ -147,24 +142,8 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             );
 
         if ($query->isSuggestion()) {
-            // LabelName::REGEX_SUGGESTIONS is incompatible with MySQL used on acc, test, prod
-            $queryBuilder->andWhere('name REGEXP \'^[a-zA-Z\d_\-]{2,50}$\'');
-
             $queryBuilder->andWhere(SchemaConfigurator::EXCLUDED_COLUMN . ' = :excluded')
                 ->setParameter(':excluded', 0);
-
-            $excludedLabels = $this->excludedLabelsRepository->getAll();
-            if (!empty($excludedLabels)) {
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->notIn(
-                        SchemaConfigurator::UUID_COLUMN,
-                        array_map(
-                            fn (string $label) => '"' . $label . '"',
-                            $excludedLabels
-                        )
-                    )
-                );
-            }
         }
 
         if ($query->getUserId()) {
@@ -287,12 +266,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             $name,
             $visibility,
             $privacy,
-            $this->isExcluded($uuid, $excluded)
+            $excluded
         );
-    }
-
-    private function isExcluded(UUID $uuid, bool $excluded): bool
-    {
-        return $excluded || \in_array($uuid->toString(), $this->excludedLabelsRepository->getAll(), true);
     }
 }
