@@ -74,10 +74,19 @@ trait ResponseSteps
      */
     public function theJsonResponseAtShouldInclude(string $jsonPath, string $value): void
     {
-        assertStringContainsString(
-            $value,
-            $this->responseState->getValueOnPath($jsonPath)
-        );
+        $actual = $this->responseState->getValueOnPath($jsonPath);
+
+        if (is_array($actual)) {
+            assertContains(
+                $this->variableState->replaceVariables($value),
+                $actual
+            );
+        } else {
+            assertStringContainsString(
+                $this->variableState->replaceVariables($value),
+                $actual
+            );
+        }
     }
 
     /**
@@ -85,10 +94,19 @@ trait ResponseSteps
      */
     public function theJsonResponseAtShouldInclude2(string $jsonPath, PyStringNode $value): void
     {
-        assertContains(
-            Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
-            $this->responseState->getValueOnPath($jsonPath)
-        );
+        $actual = $this->responseState->getValueOnPath($jsonPath);
+
+        if (is_array($actual)) {
+            assertContains(
+                Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
+                $actual
+            );
+        } else {
+            assertStringContainsString(
+                $this->variableState->replaceVariables($value->getRaw()),
+                $actual
+            );
+        }
     }
 
     /**
@@ -116,6 +134,14 @@ trait ResponseSteps
             $nrOfEntries,
             count($this->responseState->getValueOnPath($jsonPath))
         );
+    }
+
+    /**
+     * @Then the JSON response at :jsonPath should have :nrOfEntries entry
+     */
+    public function theJsonResponseAtShouldHaveEntry(string $jsonPath, int $nrOfEntries): void
+    {
+        $this->theJsonResponseAtShouldHaveEntries($jsonPath, $nrOfEntries);
     }
 
     /**
