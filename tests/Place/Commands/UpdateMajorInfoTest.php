@@ -41,7 +41,7 @@ class UpdateMajorInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_correct_property_values()
+    public function it_returns_the_correct_property_values(): void
     {
         $expectedId = 'id';
         $expectedTitle = new Title('title');

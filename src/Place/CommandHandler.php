@@ -166,7 +166,7 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
     /**
      * Handle an update the major info command.
      */
-    public function handleUpdateMajorInfo(UpdateMajorInfo $updateMajorInfo)
+    public function handleUpdateMajorInfo(UpdateMajorInfo $updateMajorInfo): void
     {
 
         /** @var Place $place */

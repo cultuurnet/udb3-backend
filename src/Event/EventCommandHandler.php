@@ -55,7 +55,7 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
     /**
      * Handle an update the major info command.
      */
-    public function handleUpdateMajorInfo(UpdateMajorInfo $updateMajorInfo)
+    public function handleUpdateMajorInfo(UpdateMajorInfo $updateMajorInfo): void
     {
         /** @var Event $event */
         $event = $this->offerRepository->load($updateMajorInfo->getItemId());
@@ -72,7 +72,7 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
     }
 
 
-    public function handleUpdateLocation(UpdateLocation $updateLocation)
+    public function handleUpdateLocation(UpdateLocation $updateLocation): void
     {
         /** @var Event $event */
         $event = $this->offerRepository->load($updateLocation->getItemId());

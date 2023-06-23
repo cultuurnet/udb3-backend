@@ -11,7 +11,7 @@ class CopyrightHolderTest extends TestCase
     /**
      * @test
      */
-    public function it_should_trim_the_given_value()
+    public function it_should_trim_the_given_value(): void
     {
         $original = ' Publiq  ';
         $expected = 'Publiq';
@@ -25,7 +25,7 @@ class CopyrightHolderTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_be_empty()
+    public function it_should_not_be_empty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given string should not be empty.');
@@ -36,7 +36,7 @@ class CopyrightHolderTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_be_smaller_than_2_chars()
+    public function it_should_not_be_smaller_than_2_chars(): void
     {
         $shortCopyrightHolder = '1';
 
@@ -49,7 +49,7 @@ class CopyrightHolderTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_be_bigger_than_250_chars()
+    public function it_should_not_be_bigger_than_250_chars(): void
     {
         $longCopyrightHolder = str_repeat('0123456789', 26);
 

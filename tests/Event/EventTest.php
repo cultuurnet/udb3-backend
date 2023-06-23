@@ -349,7 +349,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Event $event) use ($facilities) {
+                function (Event $event) use ($facilities): void {
                     $event->updateFacilities($facilities);
                 }
             )
@@ -386,7 +386,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Event $event) use ($contactPoint) {
+                function (Event $event) use ($contactPoint): void {
                     $event->updateContactPoint($contactPoint);
                 }
             )
@@ -423,7 +423,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Event $event) use ($calendar) {
+                function (Event $event) use ($calendar): void {
                     $event->updateCalendar($calendar);
                 }
             )
@@ -456,7 +456,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Event $event) use ($typicalAgeRange, $otherTypicalAgeRange) {
+                function (Event $event) use ($typicalAgeRange, $otherTypicalAgeRange): void {
                     $event->updateTypicalAgeRange($typicalAgeRange);
                     $event->updateTypicalAgeRange($otherTypicalAgeRange);
                 }
@@ -487,7 +487,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->deleteTypicalAgeRange();
                 }
             )
@@ -524,7 +524,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Event $event) use ($bookingInfo) {
+                function (Event $event) use ($bookingInfo): void {
                     $event->updateBookingInfo($bookingInfo);
                 }
             )
@@ -899,7 +899,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->addLabel(new Label(new LabelName('foo')));
                     $event->addLabel(new Label(new LabelName('bar')));
                 }
@@ -920,7 +920,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->addLabel(new Label(new LabelName('foo')));
                     $event->addLabel(new Label(new LabelName('foo')));
                 }
@@ -940,7 +940,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->addLabel(new Label(new LabelName('Foo')));
                     $event->addLabel(new Label(new LabelName('foo')));
                     $event->addLabel(new Label(new LabelName('België')));
@@ -967,7 +967,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new EventImportedFromUDB2($eventId, $xmlData, $xmlNamespace),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->addLabel(new Label(new LabelName('kunst')));
                     $event->addLabel(new Label(new LabelName('tentoonstelling')));
                     $event->addLabel(new Label(new LabelName('brugge')));
@@ -995,7 +995,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new EventImportedFromUDB2($eventId, $xmlData, $xmlNamespace),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     // Do an import with 3 pre-existing labels with different visibility, 2 same labels, and 3 missing/
                     // removed labels that should be kept (since they were not added via a JSON import before).
                     $event->importLabels(
@@ -1091,7 +1091,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given($givens)
             ->when(
-                function (Event $event) use ($label) {
+                function (Event $event) use ($label): void {
                     $event->removeLabel($label->getName()->toString());
                 }
             )
@@ -1167,7 +1167,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given($givens)
             ->when(
-                function (Event $event) use ($label) {
+                function (Event $event) use ($label): void {
                     $event->removeLabel($label->getName()->toString());
                 }
             )
@@ -1208,7 +1208,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Event $event) use ($image) {
+                function (Event $event) use ($image): void {
                     $event->addImage(
                         $image
                     );
@@ -1251,7 +1251,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Event $event) use ($image) {
+                function (Event $event) use ($image): void {
                     $event->removeImage(
                         $image
                     );
@@ -1297,7 +1297,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Event $event) use ($image) {
+                function (Event $event) use ($image): void {
                     $event->removeImage(
                         $image
                     );
@@ -1323,7 +1323,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Event $event) use ($oldLocationId, $newLocationId) {
+                function (Event $event) use ($oldLocationId, $newLocationId): void {
                     $event->updateLocation($oldLocationId);
                     $event->updateLocation($newLocationId);
                     $event->updateLocation($newLocationId);
@@ -1357,7 +1357,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Event $event) use ($locationId) {
+                function (Event $event) use ($locationId): void {
                     $event->updateLocation($locationId);
                 }
             )
@@ -1412,7 +1412,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Event $event) use ($newLocationId) {
+                function (Event $event) use ($newLocationId): void {
                     $event->updateLocation($newLocationId);
                 }
             )
@@ -1439,7 +1439,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
             ])
             ->when(
-                function (Event $event) use ($audiences) {
+                function (Event $event) use ($audiences): void {
                     foreach ($audiences as $audience) {
                         $event->updateAudience($audience);
                     }
@@ -1516,7 +1516,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new LocationUpdated($eventId, new LocationId($dummyLocationId)),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->updateAudience(new Audience(AudienceType::everyone()));
                 }
             )
@@ -1681,7 +1681,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->updateTitle(
                         new LegacyLanguage('en'),
                         new Title('some representative title')
@@ -1702,7 +1702,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->updateCalendar(
                         new Calendar(CalendarType::PERMANENT())
                     );
@@ -1722,7 +1722,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->updateAudience(
                         new Audience(AudienceType::everyone())
                     );
@@ -1742,7 +1742,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->updateContactPoint(
                         new ContactPoint()
                     );
@@ -1762,7 +1762,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEventWithTheme(),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->updateBookingInfo(
                         new BookingInfo()
                     );
@@ -1780,7 +1780,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
             ->given([$this->getCreationEvent()])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->updateUiTPASPrices(
                         new Tariffs(
                             new Tariff(
@@ -1847,7 +1847,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->updateUiTPASPrices(
                         new Tariffs(
                             new Tariff(
@@ -1892,7 +1892,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 ),
             ])
             ->when(
-                function (Event $event) {
+                function (Event $event): void {
                     $event->updateUiTPASPrices(
                         new Tariffs(
                             new Tariff(

@@ -18,7 +18,7 @@ class Version20160817112023 extends AbstractMigration
     public const ROLE_ID_COLUMN = 'role_id';
 
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $userRoleTable = $schema->createTable(
             LabelServiceProvider::LABEL_ROLES_TABLE
@@ -41,7 +41,7 @@ class Version20160817112023 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable(LabelServiceProvider::LABEL_ROLES_TABLE);
     }

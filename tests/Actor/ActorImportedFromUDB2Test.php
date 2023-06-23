@@ -14,12 +14,11 @@ class ActorImportedFromUDB2Test extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $expectedSerializedValue
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         ActorImportedFromUDB2 $actorImportedFromUDB2
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $actorImportedFromUDB2->serialize()
@@ -29,12 +28,11 @@ class ActorImportedFromUDB2Test extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $serializedValue
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array $serializedValue,
         ActorImportedFromUDB2 $expectedActorImportedFromUDB2
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedActorImportedFromUDB2,
             ActorImportedFromUDB2::deserialize($serializedValue)
@@ -44,7 +42,7 @@ class ActorImportedFromUDB2Test extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $expectedCdbXml = 'cdbxml';
         $expectedCdbXmlNamespace = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
@@ -59,7 +57,7 @@ class ActorImportedFromUDB2Test extends TestCase
         $this->assertEquals($expectedCdbXmlNamespace, $actorImportedFromUDB2->getCdbXmlNamespaceUri());
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'actorImportedFromUDB2' => [

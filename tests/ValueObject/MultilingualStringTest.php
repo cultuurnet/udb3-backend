@@ -58,7 +58,7 @@ class MultilingualStringTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_original_language_and_string()
+    public function it_returns_the_original_language_and_string(): void
     {
         $this->assertEquals($this->originalLanguage, $this->multilingualString->getOriginalLanguage());
         $this->assertEquals($this->originalString, $this->multilingualString->getOriginalString());
@@ -67,7 +67,7 @@ class MultilingualStringTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_all_translations()
+    public function it_returns_all_translations(): void
     {
         $this->assertEquals($this->translations, $this->multilingualString->getTranslations());
     }
@@ -75,7 +75,7 @@ class MultilingualStringTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_all_translations_including_the_original_language__string()
+    public function it_returns_all_translations_including_the_original_language__string(): void
     {
         $expected = [
             'nl' => new StringLiteral(
@@ -95,7 +95,7 @@ class MultilingualStringTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_allow_translations_of_the_original_language()
+    public function it_does_not_allow_translations_of_the_original_language(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Can not translate to original language.');
@@ -116,7 +116,7 @@ class MultilingualStringTest extends TestCase
         Language $preferredLanguage,
         array $fallbackLanguages,
         StringLiteral $expected = null
-    ) {
+    ): void {
         $actual = $this->multilingualString->getStringForLanguage($preferredLanguage, ...$fallbackLanguages);
         $this->assertEquals($expected, $actual);
     }
@@ -153,7 +153,7 @@ class MultilingualStringTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_serializable_and_deserializable()
+    public function it_should_be_serializable_and_deserializable(): void
     {
         $expected = [
             'nl' => 'Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu',
@@ -172,7 +172,7 @@ class MultilingualStringTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_createable_from_an_udb3_model_translated_value_object()
+    public function it_should_be_createable_from_an_udb3_model_translated_value_object(): void
     {
         $given = new TranslatedTariffName(
             new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('nl'),
@@ -198,7 +198,7 @@ class MultilingualStringTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_creating_from_an_unsupported_udb3_model()
+    public function it_should_throw_an_exception_when_creating_from_an_unsupported_udb3_model(): void
     {
         $given = new TranslatedAddress(
             new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('nl'),

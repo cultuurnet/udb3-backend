@@ -56,7 +56,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
     }
 
-    private function factorOfferCreated($id): EventCreated
+    private function factorOfferCreated(string $id): EventCreated
     {
         return new EventCreated(
             $id,

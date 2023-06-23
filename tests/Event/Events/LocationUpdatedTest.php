@@ -49,7 +49,7 @@ class LocationUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_event_id()
+    public function it_stores_an_event_id(): void
     {
         $this->assertEquals($this->eventId, $this->locationUpdated->getItemId());
     }
@@ -57,7 +57,7 @@ class LocationUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_location_id()
+    public function it_stores_a_location_id(): void
     {
         $this->assertEquals($this->locationId, $this->locationUpdated->getLocationId());
     }
@@ -65,7 +65,7 @@ class LocationUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $this->assertEquals(
             $this->locationUpdatedAsArray,
@@ -76,7 +76,7 @@ class LocationUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $this->assertEquals(
             $this->locationUpdated,

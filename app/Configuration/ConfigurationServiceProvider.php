@@ -8,6 +8,7 @@ use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use League\Container\Argument\Literal\StringArgument;
+use League\Container\DefinitionContainerInterface;
 
 final class ConfigurationServiceProvider extends AbstractServiceProvider
 {
@@ -46,7 +47,7 @@ final class ConfigurationServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function getConfiguration($container): array
+    private function getConfiguration(DefinitionContainerInterface $container): array
     {
         $config = file_exists(__DIR__ . '/../../config.php') ? require __DIR__ . '/../../config.php' : [];
 

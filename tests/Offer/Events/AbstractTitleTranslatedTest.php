@@ -42,7 +42,7 @@ class AbstractTitleTranslatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_instantiated_With_properties()
+    public function it_can_be_instantiated_With_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedLanguage = new Language('en');
@@ -59,7 +59,7 @@ class AbstractTitleTranslatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedLanguage = new Language('en');
@@ -81,7 +81,7 @@ class AbstractTitleTranslatedTest extends TestCase
     public function it_can_be_serialized_to_an_array(
         array $expectedSerializedValue,
         TitleTranslated $titleTranslated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $titleTranslated->serialize()
@@ -95,7 +95,7 @@ class AbstractTitleTranslatedTest extends TestCase
     public function it_can_deserialize_an_array(
         array $serializedValue,
         TitleTranslated $expectedTitleTranslated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedTitleTranslated,
             TitleTranslated::deserialize($serializedValue)

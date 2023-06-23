@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class TabularDataEventFormatterTest extends TestCase
 {
-    private function getJSONEventFromFile($fileName)
+    private function getJSONEventFromFile(string $fileName): string
     {
         return file_get_contents(__DIR__ . '/../../samples/' . $fileName);
     }
@@ -569,7 +569,7 @@ class TabularDataEventFormatterTest extends TestCase
      * @test
      * @dataProvider audienceTypesAndToegang
      */
-    public function it_should_export_audience_type_as_toegang($event, $toegang): void
+    public function it_should_export_audience_type_as_toegang(string $event, string $toegang): void
     {
         $includedProperties = ['id', 'audience'];
 

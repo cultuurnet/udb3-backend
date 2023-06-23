@@ -18,7 +18,7 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
         \CultureFeed_Cdb_Data_ContactInfo $contactInfo,
         \CultureFeed_Cdb_Data_Price $price = null,
         \CultureFeed_Cdb_Data_Calendar_BookingPeriod $bookingPeriod = null
-    ) {
+    ): void {
         $bookingInfo = [];
 
         if ($price) {
@@ -83,7 +83,7 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
     public function importContactPoint(
         \stdClass $jsonLD,
         \CultureFeed_Cdb_Data_ContactInfo $contactInfo
-    ) {
+    ): void {
         $notForReservations = function ($item) {
             /** @var \CultureFeed_Cdb_Data_Url|\CultureFeed_Cdb_Data_Phone|\CultureFeed_Cdb_Data_Mail $item */
             return !$item->isForReservations();

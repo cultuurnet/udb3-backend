@@ -23,7 +23,7 @@ class EventThemeResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_should_resolve_themes_by_matching_id()
+    public function it_should_resolve_themes_by_matching_id(): void
     {
         $resolvedTheme = $this->themeResolver->byId(new StringLiteral('0.52.0.0.0'));
         $expectedTheme = new Theme('0.52.0.0.0', 'Circus');
@@ -34,7 +34,7 @@ class EventThemeResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_resolve_a_theme_when_id_is_unknown()
+    public function it_should_not_resolve_a_theme_when_id_is_unknown(): void
     {
         $this->expectExceptionMessage('Unknown event theme id: 182.0.0.1');
         $this->themeResolver->byId(new StringLiteral('182.0.0.1'));

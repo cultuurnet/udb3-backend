@@ -11,7 +11,7 @@ class CategoriesTest extends TestCase
     /**
      * @test
      */
-    public function it_should_filter_duplicate_terms()
+    public function it_should_filter_duplicate_terms(): void
     {
         $terms = [
             new Category(

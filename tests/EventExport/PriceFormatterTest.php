@@ -17,14 +17,14 @@ class PriceFormatterTest extends TestCase
      * @test
      * @dataProvider priceData
      */
-    public function it_rounds_prices($decimals, $price, $expected)
+    public function it_rounds_prices(int $decimals, float $price, string $expected): void
     {
         $formatter = new PriceFormatter($decimals);
         $formatted = $formatter->format($price);
         $this->assertEquals($expected, $formatted);
     }
 
-    public function priceData()
+    public function priceData(): array
     {
         return [
             // Zero significant decimals.
@@ -61,14 +61,18 @@ class PriceFormatterTest extends TestCase
      * @test
      * @dataProvider customSeparatorData()
      */
-    public function it_has_customizable_separators($decimalPoint, $thousandsSeparator, $original, $expected)
-    {
+    public function it_has_customizable_separators(
+        string $decimalPoint,
+        string $thousandsSeparator,
+        float $original,
+        string $expected
+    ): void {
         $formatter = new PriceFormatter(2, $decimalPoint, $thousandsSeparator);
         $formatted = $formatter->format($original);
         $this->assertEquals($expected, $formatted);
     }
 
-    public function customSeparatorData()
+    public function customSeparatorData(): array
     {
         return [
             ['.', ',', 1000000.66, '1,000,000.66'],
@@ -81,7 +85,7 @@ class PriceFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_zero_with_a_label_if_enabled()
+    public function it_replaces_zero_with_a_label_if_enabled(): void
     {
         // Free label disabled by default.
         $formatter = new PriceFormatter();

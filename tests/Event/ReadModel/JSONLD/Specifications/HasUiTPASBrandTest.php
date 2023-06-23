@@ -13,7 +13,7 @@ class HasUiTPASBrandTest extends TestCase
     /**
      * @test
      */
-    public function it_brands_events_with_label_UiTPAS_as_UiTPAS()
+    public function it_brands_events_with_label_UiTPAS_as_UiTPAS(): void
     {
         $event = $this->getEventLdFromFile('event_with_all_icon_labels.json');
         $this->assertFalse((new HasUiTPASBrand())->isSatisfiedBy($event));

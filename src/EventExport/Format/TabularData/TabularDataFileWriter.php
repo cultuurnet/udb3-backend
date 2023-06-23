@@ -44,7 +44,7 @@ class TabularDataFileWriter implements FileWriterInterface
     /**
      * {@inheritdoc}
      */
-    public function write($filePath, $events)
+    public function write($filePath, $events): void
     {
         $tabularDataFileWriter = $this->openFileWriter($filePath);
 

@@ -35,7 +35,7 @@ class AbstractDescriptionUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_instantiated_With_properties()
+    public function it_can_be_instantiated_With_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedDescription = new Description('Description');
@@ -50,7 +50,7 @@ class AbstractDescriptionUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedDescription = new Description('Description');
@@ -69,7 +69,7 @@ class AbstractDescriptionUpdatedTest extends TestCase
     public function it_can_be_serialized_to_an_array(
         array $expectedSerializedValue,
         DescriptionUpdated $descriptionUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $descriptionUpdated->serialize()
@@ -83,7 +83,7 @@ class AbstractDescriptionUpdatedTest extends TestCase
     public function it_can_deserialize_an_array(
         array $serializedValue,
         DescriptionUpdated $expectedDescriptionUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedDescriptionUpdated,
             DescriptionUpdated::deserialize($serializedValue)

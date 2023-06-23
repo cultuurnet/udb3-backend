@@ -23,7 +23,7 @@ class EventItemFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_an_event_object_from_cdbxml()
+    public function it_creates_an_event_object_from_cdbxml(): void
     {
         $expected = new \CultureFeed_Cdb_Item_Event();
         $expected->setCdbId('d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');

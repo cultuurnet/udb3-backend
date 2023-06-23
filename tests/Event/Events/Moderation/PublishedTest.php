@@ -39,7 +39,7 @@ class PublishedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $publishedAsArray = [
             'item_id' => $this->itemId,

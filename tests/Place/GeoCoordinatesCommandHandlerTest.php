@@ -69,7 +69,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_creates_coordinates_from_an_address_and_updates_them_on_the_given_place()
+    public function it_creates_coordinates_from_an_address_and_updates_them_on_the_given_place(): void
     {
         $id = 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
 
@@ -113,7 +113,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_has_a_fallback_to_locality_when_full_address_has_null_coordinates()
+    public function it_has_a_fallback_to_locality_when_full_address_has_null_coordinates(): void
     {
         $id = 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
 

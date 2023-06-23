@@ -14,7 +14,7 @@ class OfferUpdateTest extends TestCase
     /**
      * @test
      */
-    public function it_should_remove_all_existing_opening_hours_when_we_update_the_calendar()
+    public function it_should_remove_all_existing_opening_hours_when_we_update_the_calendar(): void
     {
         $calendar = new Calendar(CalendarType::PERMANENT());
 

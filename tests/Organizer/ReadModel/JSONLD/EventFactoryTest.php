@@ -34,7 +34,7 @@ class EventFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_an_organizer_projected_to_json_ld_event_with_the_organizer_id()
+    public function it_creates_an_organizer_projected_to_json_ld_event_with_the_organizer_id(): void
     {
         $id = '0be365fb-d897-410d-81e5-b1bdcad63639';
         $expectedEvent = new OrganizerProjectedToJSONLD($id, 'organizers/' . $id);

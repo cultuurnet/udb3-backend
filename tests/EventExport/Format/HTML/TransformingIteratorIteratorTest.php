@@ -11,7 +11,7 @@ class TransformingIteratorIteratorTest extends TestCase
     /**
      * @test
      */
-    public function it_passes_each_iterated_item_through_a_callback()
+    public function it_passes_each_iterated_item_through_a_callback(): void
     {
         $items = [
             2,

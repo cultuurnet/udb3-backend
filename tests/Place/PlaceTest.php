@@ -50,11 +50,9 @@ class PlaceTest extends AggregateRootScenarioTestCase
         return Place::class;
     }
 
-    private function getCdbXML($filename)
+    private function getCdbXML(string $filename): string
     {
-        return file_get_contents(
-            __DIR__ . $filename
-        );
+        return file_get_contents(__DIR__ . $filename);
     }
 
     /**
@@ -82,7 +80,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) use ($facilities) {
+                function (Place $place) use ($facilities): void {
                     $place->updateFacilities($facilities);
                 }
             )
@@ -112,7 +110,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) {
+                function (Place $place): void {
                     $place->updateFacilities([]);
                 }
             )
@@ -149,7 +147,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) use ($contactPoint) {
+                function (Place $place) use ($contactPoint): void {
                     $place->updateContactPoint($contactPoint);
                 }
             )
@@ -186,7 +184,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) use ($calendar) {
+                function (Place $place) use ($calendar): void {
                     $place->updateCalendar($calendar);
                 }
             )
@@ -223,7 +221,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) use ($priceInfo) {
+                function (Place $place) use ($priceInfo): void {
                     $place->updatePriceInfo($priceInfo);
                 }
             )
@@ -260,7 +258,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) use ($updatedAddress, $language) {
+                function (Place $place) use ($updatedAddress, $language): void {
                     $place->updateAddress($updatedAddress, $language);
                 }
             )
@@ -295,7 +293,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) use ($address, $translatedAddress) {
+                function (Place $place) use ($address, $translatedAddress): void {
                     $place->updateAddress($address, new Language('nl'));
                     $place->updateAddress($translatedAddress, new Language('en'));
                     $place->updateAddress($translatedAddress, new Language('en'));
@@ -329,7 +327,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) use ($typicalAgeRange, $otherTypicalAgeRange) {
+                function (Place $place) use ($typicalAgeRange, $otherTypicalAgeRange): void {
                     $place->updateTypicalAgeRange($typicalAgeRange);
                     $place->updateTypicalAgeRange($otherTypicalAgeRange);
                 }
@@ -363,7 +361,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) {
+                function (Place $place): void {
                     $place->deleteTypicalAgeRange();
                 }
             )
@@ -401,7 +399,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) use ($bookingInfo) {
+                function (Place $place) use ($bookingInfo): void {
                     $place->updateBookingInfo($bookingInfo);
                 }
             )
@@ -438,7 +436,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) use ($updatedAddress, $language) {
+                function (Place $place) use ($updatedAddress, $language): void {
                     $place->updateAddress($updatedAddress, $language);
                 }
             )
@@ -498,7 +496,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) {
+                function (Place $place): void {
                     $place->addLabel(new Label(new LabelName('Toevlalocatie')));
                 }
             )
@@ -541,7 +539,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 $this->createPlaceCreatedEvent(),
             ])
             ->when(
-                function (Place $place) {
+                function (Place $place): void {
                     $place->updateTitle(
                         new Language('nl'),
                         new Title('Test place')
@@ -562,7 +560,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 $this->createPlaceCreatedEvent(),
             ])
             ->when(
-                function (Place $place) {
+                function (Place $place): void {
                     $place->updateCalendar(
                         new Calendar(CalendarType::PERMANENT())
                     );
@@ -582,7 +580,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 $this->createPlaceCreatedEvent(),
             ])
             ->when(
-                function (Place $place) {
+                function (Place $place): void {
                     $place->updateContactPoint(
                         new ContactPoint()
                     );
@@ -602,7 +600,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 $this->createPlaceCreatedEvent(),
             ])
             ->when(
-                function (Place $place) {
+                function (Place $place): void {
                     $place->updateBookingInfo(
                         new BookingInfo()
                     );

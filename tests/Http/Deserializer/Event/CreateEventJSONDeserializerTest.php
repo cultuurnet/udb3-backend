@@ -17,7 +17,7 @@ class CreateEventJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize_create_event_with_main_language()
+    public function it_can_serialize_create_event_with_main_language(): void
     {
         $createEventAsJson = file_get_contents(__DIR__ . '/../samples/event-create-with-main-language.json');
 

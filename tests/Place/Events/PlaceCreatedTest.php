@@ -81,7 +81,7 @@ class PlaceCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_place_id()
+    public function it_stores_a_place_id(): void
     {
         $this->assertEquals('id', $this->placeCreated->getPlaceId());
     }
@@ -89,7 +89,7 @@ class PlaceCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_place_title()
+    public function it_stores_a_place_title(): void
     {
         $this->assertEquals(new Title('title'), $this->placeCreated->getTitle());
     }
@@ -97,7 +97,7 @@ class PlaceCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_place_address()
+    public function it_stores_a_place_address(): void
     {
         $this->assertEquals($this->address, $this->placeCreated->getAddress());
     }
@@ -105,7 +105,7 @@ class PlaceCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_place_calendar()
+    public function it_stores_a_place_calendar(): void
     {
         $this->assertEquals(
             new Calendar(CalendarType::PERMANENT()),
@@ -116,7 +116,7 @@ class PlaceCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_place_publication_date()
+    public function it_stores_a_place_publication_date(): void
     {
         $this->assertEquals(
             $this->publicationDate,
@@ -131,7 +131,7 @@ class PlaceCreatedTest extends TestCase
     public function it_can_be_serialized_into_an_array(
         array $expectedSerializedValue,
         PlaceCreated $placeCreated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $placeCreated->serialize()
@@ -145,14 +145,14 @@ class PlaceCreatedTest extends TestCase
     public function it_can_be_deserialized_from_an_array(
         array $serializedValue,
         PlaceCreated $expectedPlaceCreated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedPlaceCreated,
             PlaceCreated::deserialize($serializedValue)
         );
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             [

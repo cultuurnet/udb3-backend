@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class ConsecutiveBlockOfTextStringFilterTest extends StringFilterTest
 {
-    /**
-     * @return ConsecutiveBlockOfTextStringFilter
-     */
-    protected function getFilter()
+    protected function getFilter(): StringFilterInterface
     {
         return new ConsecutiveBlockOfTextStringFilter();
     }
@@ -17,7 +14,7 @@ class ConsecutiveBlockOfTextStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_only_filters_strings()
+    public function it_only_filters_strings(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->filter->filter(12345);
@@ -26,7 +23,7 @@ class ConsecutiveBlockOfTextStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_formats_string_as_a_consecutive_single_line_of_text()
+    public function it_formats_string_as_a_consecutive_single_line_of_text(): void
     {
         $this->assertFilterValue(
             file_get_contents(__DIR__ . '/text_consecutive_block.txt'),

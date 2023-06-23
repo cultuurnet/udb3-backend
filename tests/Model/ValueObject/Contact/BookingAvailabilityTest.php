@@ -11,7 +11,7 @@ class BookingAvailabilityTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_from_takes_place_after_to()
+    public function it_should_throw_an_exception_if_from_takes_place_after_to(): void
     {
         $from = \DateTimeImmutable::createFromFormat('d-m-Y', '18-01-2018');
         $to = \DateTimeImmutable::createFromFormat('d-m-Y', '01-01-2018');
@@ -25,7 +25,7 @@ class BookingAvailabilityTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_with_just_a_from_date()
+    public function it_should_be_creatable_with_just_a_from_date(): void
     {
         $from = \DateTimeImmutable::createFromFormat('d-m-Y', '01-01-2018');
         $availability = BookingAvailability::from($from);
@@ -35,7 +35,7 @@ class BookingAvailabilityTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_with_just_a_to_date()
+    public function it_should_be_creatable_with_just_a_to_date(): void
     {
         $to = \DateTimeImmutable::createFromFormat('d-m-Y', '18-01-2018');
         $availability = BookingAvailability::to($to);
@@ -45,7 +45,7 @@ class BookingAvailabilityTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_with_both_a_from_and_to_date()
+    public function it_should_be_creatable_with_both_a_from_and_to_date(): void
     {
         $from = \DateTimeImmutable::createFromFormat('d-m-Y', '01-01-2018');
         $to = \DateTimeImmutable::createFromFormat('d-m-Y', '18-01-2018');

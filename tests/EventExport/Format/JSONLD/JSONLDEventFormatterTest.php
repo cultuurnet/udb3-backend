@@ -21,13 +21,9 @@ class JSONLDEventFormatterTest extends TestCase
         $this->calendarSummaryRepository->method('get')->willReturn('Vrijdag');
     }
 
-    private function getJSONEventFromFile($fileName)
+    private function getJSONEventFromFile(string $fileName): string
     {
-        $jsonEvent = file_get_contents(
-            __DIR__ . '/../../samples/' . $fileName
-        );
-
-        return $jsonEvent;
+        return file_get_contents(__DIR__ . '/../../samples/' . $fileName);
     }
 
     /**

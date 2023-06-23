@@ -27,7 +27,7 @@ class EventTypeDataValidator implements DataValidatorInterface
     /**
      * @throws DataValidationException
      */
-    public function validate(array $data)
+    public function validate(array $data): void
     {
         $this->requiredFieldsValidator->validate($data);
     }

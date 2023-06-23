@@ -11,7 +11,7 @@ class CalendarTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_have_exactly_four_values()
+    public function it_should_have_exactly_four_values(): void
     {
         $single = CalendarType::single();
         $multiple = CalendarType::multiple();

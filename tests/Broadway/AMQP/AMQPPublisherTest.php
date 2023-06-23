@@ -83,7 +83,7 @@ class AMQPPublisherTest extends TestCase
     /**
      * @test
      */
-    public function it_does_publish_a_domain_message_when_specification_is_satisfied()
+    public function it_does_publish_a_domain_message_when_specification_is_satisfied(): void
     {
         $this->expectSpecificationIsSatisfied();
 
@@ -102,7 +102,7 @@ class AMQPPublisherTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_publish_a_domain_message_when_specification_is_not_satisfied()
+    public function it_does_not_publish_a_domain_message_when_specification_is_not_satisfied(): void
     {
         $this->expectSpecificationIsNotSatisfied();
 
@@ -115,7 +115,7 @@ class AMQPPublisherTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_runtime_exception_when_payload_is_not_serializable()
+    public function it_throws_runtime_exception_when_payload_is_not_serializable(): void
     {
         $this->expectSpecificationIsSatisfied();
 
@@ -141,7 +141,7 @@ class AMQPPublisherTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_a_message_when_publishing()
+    public function it_logs_a_message_when_publishing(): void
     {
         $this->expectSpecificationIsSatisfied();
 
@@ -162,7 +162,7 @@ class AMQPPublisherTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_a_message_when_specification_is_not_satisfied()
+    public function it_logs_a_message_when_specification_is_not_satisfied(): void
     {
         $this->expectSpecificationIsNotSatisfied();
 
@@ -178,14 +178,14 @@ class AMQPPublisherTest extends TestCase
         $this->amqpPublisher->handle($this->domainMessage);
     }
 
-    private function expectSpecificationIsSatisfied()
+    private function expectSpecificationIsSatisfied(): void
     {
         $this->specification->expects($this->any())
             ->method('isSatisfiedBy')
             ->willReturn(true);
     }
 
-    private function expectSpecificationIsNotSatisfied()
+    private function expectSpecificationIsNotSatisfied(): void
     {
         $this->specification->expects($this->any())
             ->method('isSatisfiedBy')

@@ -32,7 +32,7 @@ class NotificationMailer implements NotificationMailerInterface
     public function sendNotificationMail(
         EmailAddress $address,
         EventExportResult $eventExportResult
-    ) {
+    ): void {
         $message = $this->messageFactory->createMessageFor($address, $eventExportResult);
 
         $sent = $this->mailer->send($message);

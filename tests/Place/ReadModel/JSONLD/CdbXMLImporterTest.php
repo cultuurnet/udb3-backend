@@ -98,7 +98,7 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_imports_the_publication_info()
+    public function it_imports_the_publication_info(): void
     {
         $jsonPlace = $this->createJsonPlaceFromCdbXml('place_with_long_description.cdbxml.xml');
 
@@ -112,7 +112,7 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_copy_over_a_known_workflow_status()
+    public function it_should_copy_over_a_known_workflow_status(): void
     {
         $jsonPlace = $this->createJsonPlaceFromCdbXml('place_with_long_description.cdbxml.xml');
 
@@ -122,7 +122,7 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_sets_all_ages_as_default()
+    public function it_sets_all_ages_as_default(): void
     {
         $jsonPlace = $this->createJsonPlaceFromCdbXml('place_with_long_description.cdbxml.xml');
 
@@ -132,7 +132,7 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_mark_a_place_as_ready_for_validation_when_importing_without_a_workflow_status()
+    public function it_should_mark_a_place_as_ready_for_validation_when_importing_without_a_workflow_status(): void
     {
         $jsonPlace = $this->createJsonPlaceFromCdbXml('place_with_image.cdbxml.xml');
 
@@ -142,7 +142,7 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_the_workflow_status_is_unknown()
+    public function it_throws_an_exception_when_the_workflow_status_is_unknown(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->createJsonPlaceFromCdbXml('place_with_unknown_workflow_status.cdbxml.xml');
@@ -151,7 +151,7 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_place_without_week_scheme()
+    public function it_handles_place_without_week_scheme(): void
     {
         $jsonPlace = $this->createJsonPlaceFromCdbXmlWithWeekScheme('place_no_week_scheme.xml');
         $this->assertEquals('permanent', $jsonPlace->calendarType);
@@ -160,7 +160,7 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_place_with_week_scheme()
+    public function it_handles_place_with_week_scheme(): void
     {
         $jsonPlace = $this->createJsonPlaceFromCdbXmlWithWeekScheme('place_with_week_scheme.xml');
         $this->assertEquals('permanent', $jsonPlace->calendarType);
@@ -185,7 +185,7 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_place_with_week_scheme_no_hours()
+    public function it_handles_place_with_week_scheme_no_hours(): void
     {
         $jsonPlace = $this->createJsonPlaceFromCdbXmlWithWeekScheme('place_with_week_scheme_no_hours.xml');
         $this->assertEquals('permanent', $jsonPlace->calendarType);
@@ -206,7 +206,7 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_place_with_week_scheme_no_closing_hours()
+    public function it_handles_place_with_week_scheme_no_closing_hours(): void
     {
         $jsonPlace = $this->createJsonPlaceFromCdbXmlWithWeekScheme('place_with_week_scheme_no_closing_hours.xml');
         $this->assertEquals('permanent', $jsonPlace->calendarType);
@@ -233,7 +233,7 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_place_with_week_scheme_missing_closing_hours()
+    public function it_handles_place_with_week_scheme_missing_closing_hours(): void
     {
         $jsonPlace = $this->createJsonPlaceFromCdbXmlWithWeekScheme('place_with_week_scheme_missing_closing_hours.xml');
         $this->assertEquals('permanent', $jsonPlace->calendarType);
@@ -269,7 +269,7 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_places_with_contact_info()
+    public function it_handles_places_with_contact_info(): void
     {
         $jsonPlace = $this->createJsonPlaceFromCdbXml('place_with_contact_info.xml', '3.3');
 

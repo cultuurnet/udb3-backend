@@ -15,7 +15,7 @@ abstract class AbstractCsvImportCommand extends AbstractCommand
     private const CSV_FILE_ARG = 'csv_file';
     private const CSV_DELIMETER_OPT = 'csv_delimiter';
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->addArgument(

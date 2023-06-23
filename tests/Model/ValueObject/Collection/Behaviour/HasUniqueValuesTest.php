@@ -11,7 +11,7 @@ class HasUniqueValuesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_duplicate_values_are_given_via_the_constructor()
+    public function it_should_throw_an_exception_if_duplicate_values_are_given_via_the_constructor(): void
     {
         $values = [
             new MockString('foo'),

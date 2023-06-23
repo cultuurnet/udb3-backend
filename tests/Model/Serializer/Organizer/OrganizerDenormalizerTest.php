@@ -47,7 +47,7 @@ class OrganizerDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_organizer_data_with_only_the_required_properties()
+    public function it_should_denormalize_organizer_data_with_only_the_required_properties(): void
     {
         $organizerData = [
             '@id' => 'https://io.uitdatabank.be/organizer/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -76,7 +76,7 @@ class OrganizerDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_organizer_data_with_a_url()
+    public function it_should_denormalize_organizer_data_with_a_url(): void
     {
         $organizerData = [
             '@id' => 'https://io.uitdatabank.be/organizer/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -107,7 +107,7 @@ class OrganizerDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_organizer_data_with_title_translations()
+    public function it_should_denormalize_organizer_data_with_title_translations(): void
     {
         $organizerData = [
             '@id' => 'https://io.uitdatabank.be/organizer/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -142,7 +142,7 @@ class OrganizerDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_organizer_data_with_optional_properties()
+    public function it_should_denormalize_organizer_data_with_optional_properties(): void
     {
         $organizerData = [
             '@id' => 'https://io.uitdatabank.be/organizer/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -268,7 +268,7 @@ class OrganizerDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_trying_to_denormalize_to_an_unsupported_class()
+    public function it_should_throw_an_exception_when_trying_to_denormalize_to_an_unsupported_class(): void
     {
         $this->expectException(UnsupportedException::class);
         $this->denormalizer->denormalize([], ImmutableEvent::class);
@@ -277,7 +277,7 @@ class OrganizerDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_trying_to_denormalize_data_that_is_not_an_array()
+    public function it_should_throw_an_exception_when_trying_to_denormalize_data_that_is_not_an_array(): void
     {
         $this->expectException(UnsupportedException::class);
         $this->denormalizer->denormalize(new \stdClass(), ImmutableOrganizer::class);
@@ -286,7 +286,7 @@ class OrganizerDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_support_denormalization_to_immutable_organizer()
+    public function it_should_support_denormalization_to_immutable_organizer(): void
     {
         $this->assertTrue(
             $this->denormalizer->supportsDenormalization([], ImmutableOrganizer::class)

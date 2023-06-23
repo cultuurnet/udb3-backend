@@ -11,10 +11,7 @@ use SocketIO\Emitter;
 
 class SocketIOEmitterHandlerTest extends TestCase
 {
-    /**
-     * @var SocketIOEmitterHandler
-     */
-    protected $handler;
+    protected SocketIOEmitterHandler $handler;
 
     /**
      * @var Emitter|MockObject
@@ -34,14 +31,11 @@ class SocketIOEmitterHandlerTest extends TestCase
         $this->handler = new SocketIOEmitterHandler($this->emitter);
     }
 
-    /**
-     * @return array Record
-     */
     protected function getRecord(
-        $level = Logger::WARNING,
-        $message = 'test',
-        $context = []
-    ) {
+        int $level = Logger::WARNING,
+        string $message = 'test',
+        array $context = []
+    ): array {
         return [
             'message' => $message,
             'context' => $context,
@@ -74,7 +68,7 @@ class SocketIOEmitterHandlerTest extends TestCase
 
 class TestRedisClientDouble
 {
-    public function publish()
+    public function publish(): void
     {
     }
 }

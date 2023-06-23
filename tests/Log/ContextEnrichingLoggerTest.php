@@ -14,7 +14,7 @@ class ContextEnrichingLoggerTest extends TestCase
     /**
      * @test
      */
-    public function it_passes_additional_context_to_the_decorated_logger()
+    public function it_passes_additional_context_to_the_decorated_logger(): void
     {
         /** @var LoggerInterface|MockObject $decoratedLogger */
         $decoratedLogger = $this->createMock(LoggerInterface::class);

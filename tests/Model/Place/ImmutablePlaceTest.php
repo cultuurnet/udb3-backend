@@ -43,7 +43,7 @@ class ImmutablePlaceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_the_list_of_categories_is_empty_and_it_is_not_a_dummy_location()
+    public function it_should_throw_an_exception_if_the_list_of_categories_is_empty_and_it_is_not_a_dummy_location(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Categories should not be empty (eventtype required).');
@@ -61,7 +61,7 @@ class ImmutablePlaceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_an_unsupported_calendar_is_injected()
+    public function it_should_throw_an_exception_if_an_unsupported_calendar_is_injected(): void
     {
         $calendar = new SingleSubEventCalendar(
             new SubEvent(
@@ -90,7 +90,7 @@ class ImmutablePlaceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_injected_address()
+    public function it_should_return_the_injected_address(): void
     {
         $address = $this->getAddress();
         $place = $this->getPlace();
@@ -101,7 +101,7 @@ class ImmutablePlaceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_address()
+    public function it_should_return_a_copy_with_an_updated_address(): void
     {
         $address = $this->getAddress();
         $updatedAddress = $address->withTranslation(
@@ -125,7 +125,7 @@ class ImmutablePlaceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_coordinates_by_default()
+    public function it_should_return_no_coordinates_by_default(): void
     {
         $this->assertNull($this->getPlace()->getGeoCoordinates());
     }
@@ -133,7 +133,7 @@ class ImmutablePlaceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_updated_coordinates()
+    public function it_should_return_a_copy_with_updated_coordinates(): void
     {
         $coordinates = new Coordinates(
             new Latitude(45.123),
@@ -150,7 +150,7 @@ class ImmutablePlaceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_without_coordinates()
+    public function it_should_return_a_copy_without_coordinates(): void
     {
         $coordinates = new Coordinates(
             new Latitude(45.123),
@@ -167,7 +167,7 @@ class ImmutablePlaceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_be_nil_location_by_default()
+    public function it_should_not_be_nil_location_by_default(): void
     {
         $this->assertFalse($this->getPlace()->isNilLocation());
     }
@@ -175,7 +175,7 @@ class ImmutablePlaceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_able_to_create_nil_locations()
+    public function it_should_be_able_to_create_nil_locations(): void
     {
         $nilLocation = ImmutablePlace::createNilLocation();
 

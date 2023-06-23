@@ -26,7 +26,7 @@ class RecordedOnTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_from_a_domain_message()
+    public function it_can_be_created_from_a_domain_message(): void
     {
         $domainMessage = new DomainMessage(
             'uuid',
@@ -45,7 +45,7 @@ class RecordedOnTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_from_a_broadway_datetime()
+    public function it_can_be_created_from_a_broadway_datetime(): void
     {
         $dateTime = DateTime::fromString('2018-01-16T12:13:33Z');
 
@@ -58,7 +58,7 @@ class RecordedOnTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_recorded_on_date_time()
+    public function it_stores_a_recorded_on_date_time(): void
     {
         $this->assertTrue(
             DateTime::fromString('2018-01-16T12:13:33Z')->equals(
@@ -70,7 +70,7 @@ class RecordedOnTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_converted_to_a_string()
+    public function it_can_be_converted_to_a_string(): void
     {
         $this->assertEquals(
             '2018-01-16T12:13:33+00:00',

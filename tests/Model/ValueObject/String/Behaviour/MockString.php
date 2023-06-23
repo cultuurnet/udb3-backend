@@ -8,7 +8,7 @@ class MockString
 {
     use IsString;
 
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $this->setValue($value);
     }

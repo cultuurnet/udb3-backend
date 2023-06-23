@@ -12,7 +12,7 @@ class DefaultHTMLBodyFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_html_body_message_with_download_link()
+    public function it_returns_a_html_body_message_with_download_link(): void
     {
         $eventExportResult = new EventExportResult('http://google.be');
         $defaultHTMLBodyFactory = new DefaultHTMLBodyFactory();

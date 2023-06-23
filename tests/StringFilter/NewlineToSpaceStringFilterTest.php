@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class NewlineToSpaceStringFilterTest extends StringFilterTest
 {
-    /**
-     * @return NewlineToSpaceStringFilter
-     */
-    protected function getFilter()
+    protected function getFilter(): StringFilterInterface
     {
         return new NewlineToSpaceStringFilter();
     }
@@ -17,7 +14,7 @@ class NewlineToSpaceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_converts_newlines_to_spaces()
+    public function it_converts_newlines_to_spaces(): void
     {
         $original = "Hello\nworld!\nGoodbye!";
         $expected = 'Hello world! Goodbye!';
@@ -27,7 +24,7 @@ class NewlineToSpaceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_converts_consecutive_newlines_to_a_single_space()
+    public function it_converts_consecutive_newlines_to_a_single_space(): void
     {
         $original = "Hello\n\nworld!";
         $expected = 'Hello world!';
@@ -37,7 +34,7 @@ class NewlineToSpaceStringFilterTest extends StringFilterTest
     /**
      * @test
      */
-    public function it_only_filters_strings()
+    public function it_only_filters_strings(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->filter->filter(12345);

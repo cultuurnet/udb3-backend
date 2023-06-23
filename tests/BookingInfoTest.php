@@ -19,7 +19,7 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_can_compare()
+    public function it_can_compare(): void
     {
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
@@ -58,7 +58,7 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_a_complete_udb3_model_booking_info()
+    public function it_should_be_creatable_from_a_complete_udb3_model_booking_info(): void
     {
         $udb3ModelBookingInfo = new \CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo(
             new WebsiteLink(
@@ -96,7 +96,7 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_empty_udb3_model_booking_info()
+    public function it_should_be_creatable_from_an_empty_udb3_model_booking_info(): void
     {
         $udb3ModelBookingInfo = new \CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo();
 
@@ -109,7 +109,7 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_null_for_empty_properties()
+    public function it_should_return_null_for_empty_properties(): void
     {
         $bookingInfo = new BookingInfo();
 
@@ -158,7 +158,7 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize_and_deserialize_partial_booking_info()
+    public function it_can_serialize_and_deserialize_partial_booking_info(): void
     {
         $phone = '044/444444';
         $email = 'info@publiq.be';
@@ -187,7 +187,7 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_ignores_obsolete_properties_when_deserializing()
+    public function it_ignores_obsolete_properties_when_deserializing(): void
     {
         $data = [
             'url' => 'https://www.publiq.be',

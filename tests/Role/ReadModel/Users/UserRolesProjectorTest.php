@@ -66,7 +66,7 @@ class UserRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_projection_when_document_found_on_user_added_event()
+    public function it_updates_projection_when_document_found_on_user_added_event(): void
     {
         // The role uuid to which the user will be added.
         $newRoleUuid = new UUID('715b5044-eb82-4b60-be0b-f8febf86d84d');
@@ -122,7 +122,7 @@ class UserRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_projection_when_document_not_found_on_user_added_event()
+    public function it_updates_projection_when_document_not_found_on_user_added_event(): void
     {
         $userAdded = new UserAdded(
             new UUID('3fb2cc47-890b-4926-be6f-96b68980ca63'),
@@ -165,7 +165,7 @@ class UserRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_projection_on_user_removed_event()
+    public function it_updates_projection_on_user_removed_event(): void
     {
         $userRemoved = new UserRemoved(
             new UUID('742d3294-d1c8-49fb-b4fc-98519494c877'),
@@ -196,7 +196,7 @@ class UserRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_projection_on_role_details_projected_event()
+    public function it_updates_projection_on_role_details_projected_event(): void
     {
         $roleDetailsProjectedToJSONLD = new RoleDetailsProjectedToJSONLD(
             new UUID('d41cfafb-484d-4852-9de4-bb981a1b55f0')
@@ -260,7 +260,7 @@ class UserRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_update_projection_when_role_details_not_found_on_user_added_event()
+    public function it_does_not_update_projection_when_role_details_not_found_on_user_added_event(): void
     {
         $userAdded = new UserAdded(
             new UUID('c0bb7336-1b09-46c0-a585-f5d81f16da2c'),
@@ -288,7 +288,7 @@ class UserRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_update_projection_when_document_not_found_on_user_removed_event()
+    public function it_does_not_update_projection_when_document_not_found_on_user_removed_event(): void
     {
         $userRemoved = new UserRemoved(
             new UUID('54fc75c8-c6b1-412a-aba9-1189bcb45cac'),
@@ -313,7 +313,7 @@ class UserRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_update_projection_when_role_details_not_found_on_role_details_projected_event()
+    public function it_does_not_update_projection_when_role_details_not_found_on_role_details_projected_event(): void
     {
         $roleDetailsProjectedToJSONLD = new RoleDetailsProjectedToJSONLD(
             new UUID('1e7ae3d7-9a15-4013-8164-f16643121fdc')
@@ -342,7 +342,7 @@ class UserRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_update_projection_when_role_users_not_found_on_role_details_projected_event()
+    public function it_does_not_update_projection_when_role_users_not_found_on_role_details_projected_event(): void
     {
         $roleDetailsProjectedToJSONLD = new RoleDetailsProjectedToJSONLD(
             new UUID('d61fd8d6-00f9-47ea-94b5-40d48e605504')

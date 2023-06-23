@@ -40,7 +40,7 @@ class CompositePropertiesFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_combines_properties_from_all_injected_property_factories()
+    public function it_combines_properties_from_all_injected_property_factories(): void
     {
         $domainMessage = new DomainMessage(
             '7a8ccbc5-d802-46c8-b9ec-7a286bc7653b',

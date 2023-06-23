@@ -23,7 +23,7 @@ class ActorItemFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_an_actor_object_from_cdbxml()
+    public function it_creates_an_actor_object_from_cdbxml(): void
     {
         $expected = new \CultureFeed_Cdb_Item_Actor();
         $expected->setCdbId('404EE8DE-E828-9C07-FE7D12DC4EB24480');

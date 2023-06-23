@@ -10,17 +10,14 @@ use PHPUnit\Framework\TestCase;
 
 class KansentariefForOtherCardSystemsSpecificationTest extends TestCase
 {
-    /**
-     * @var KansentariefForOtherCardSystemsSpecification
-     */
-    protected $specification;
+    protected KansentariefForOtherCardSystemsSpecification $specification;
 
     public function setUp(): void
     {
         $this->specification = new KansentariefForOtherCardSystemsSpecification();
     }
 
-    public function satisfyingDistributionKeysProvider()
+    public function satisfyingDistributionKeysProvider(): array
     {
         $conditionFactory = new DistributionKeyConditionFactory();
         $keyFactory = new DistributionKeyFactory();
@@ -78,16 +75,13 @@ class KansentariefForOtherCardSystemsSpecificationTest extends TestCase
      */
     public function it_is_satisfied_by_a_kansarm_in_at_least_one_cardsystem_condition(
         CultureFeed_Uitpas_DistributionKey $key
-    ) {
+    ): void {
         $this->assertTrue(
             $this->specification->isSatisfiedBy($key)
         );
     }
 
-    /**
-     * @return array
-     */
-    public function nonSatisfyingDistributionKeysProvider()
+    public function nonSatisfyingDistributionKeysProvider(): array
     {
         $conditionFactory = new DistributionKeyConditionFactory();
         $keyFactory = new DistributionKeyFactory();
@@ -129,7 +123,7 @@ class KansentariefForOtherCardSystemsSpecificationTest extends TestCase
                         $conditionFactory->buildCondition(
                             Condition::DEFINITION_PRICE,
                             Condition::OPERATOR_LESS_THAN,
-                            7
+                            '7'
                         ),
                     ]
                 ),
@@ -145,7 +139,7 @@ class KansentariefForOtherCardSystemsSpecificationTest extends TestCase
      */
     public function it_is_not_satisfied_by_other_distribution_key_conditions(
         CultureFeed_Uitpas_DistributionKey $key
-    ) {
+    ): void {
         $this->assertFalse(
             $this->specification->isSatisfiedBy($key)
         );

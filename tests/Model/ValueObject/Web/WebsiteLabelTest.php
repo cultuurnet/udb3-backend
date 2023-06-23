@@ -11,7 +11,7 @@ class WebsiteLabelTest extends TestCase
     /**
      * @test
      */
-    public function it_should_reject_empty_values()
+    public function it_should_reject_empty_values(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new WebsiteLabel('');

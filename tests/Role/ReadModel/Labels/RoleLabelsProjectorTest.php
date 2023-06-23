@@ -62,7 +62,7 @@ class RoleLabelsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_projection_with_empty_list_of_labels_on_role_created_event()
+    public function it_creates_projection_with_empty_list_of_labels_on_role_created_event(): void
     {
         $roleCreated = new RoleCreated(
             new UUID('ce35c40f-4d86-4057-bbc0-6cd3fb12e65c'),
@@ -85,7 +85,7 @@ class RoleLabelsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_projection_on_role_deleted_event()
+    public function it_removes_projection_on_role_deleted_event(): void
     {
         $roleDeleted = new RoleDeleted(
             new UUID('50acf32b-6b72-424e-abde-a84e7c974af3')
@@ -106,7 +106,7 @@ class RoleLabelsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_projection_with_label_details_on_label_added_event()
+    public function it_updates_projection_with_label_details_on_label_added_event(): void
     {
         $labelAdded = new LabelAdded(
             new UUID('4e1dd8ec-670a-492f-ae1e-0a107d120898'),
@@ -147,7 +147,7 @@ class RoleLabelsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_label_details_from_projection_on_label_removed_event()
+    public function it_removes_label_details_from_projection_on_label_removed_event(): void
     {
         $labelRemoved = new LabelRemoved(
             new UUID('935fe4ab-7560-407d-b8bc-ae3fc7f97f46'),
@@ -192,7 +192,7 @@ class RoleLabelsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_projections_with_label_details_on_label_details_projected_to_json_ld()
+    public function it_updates_projections_with_label_details_on_label_details_projected_to_json_ld(): void
     {
         $labelProjected = new LabelDetailsProjectedToJSONLD(
             new UUID('6ef7028c-a5e6-454d-8732-75cbdc481508')
@@ -290,7 +290,7 @@ class RoleLabelsProjectorTest extends TestCase
     }
 
 
-    private function mockLabelJsonGet(UUID $uuid, Entity $entity)
+    private function mockLabelJsonGet(UUID $uuid, Entity $entity): void
     {
         $this->labelJsonRepository
             ->method('getByUuid')

@@ -44,7 +44,7 @@ final class EventBusForwardingConsumer extends AbstractConsumer
     }
 
 
-    protected function handle($deserializedMessage, array $context)
+    protected function handle($deserializedMessage, array $context): void
     {
         // If the deserializer did not return a DomainMessage yet, then
         // consider the returned value as the payload, and wrap it in a

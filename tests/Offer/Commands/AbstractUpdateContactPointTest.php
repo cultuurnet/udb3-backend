@@ -43,7 +43,7 @@ class AbstractUpdateContactPointTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $contactPoint = $this->updateContactPoint->getContactPoint();
         $expectedContactPoint = new ContactPoint(

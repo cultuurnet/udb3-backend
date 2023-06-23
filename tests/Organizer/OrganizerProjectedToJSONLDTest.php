@@ -11,7 +11,7 @@ class OrganizerProjectedToJSONLDTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized_and_deserialized()
+    public function it_can_be_serialized_and_deserialized(): void
     {
         $event = new OrganizerProjectedToJSONLD(
             '064469b2-ee5d-4987-86af-fedc822b1a32',

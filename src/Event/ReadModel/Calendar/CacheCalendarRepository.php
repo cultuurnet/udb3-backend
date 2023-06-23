@@ -35,7 +35,7 @@ class CacheCalendarRepository implements CalendarRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function save($id, Calendar $calendar)
+    public function save($id, Calendar $calendar): void
     {
         $calendar = serialize($calendar);
         $this->cache->save($id, $calendar, 0);

@@ -23,7 +23,7 @@ class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_list_of_all_languages_found_on_multilingual_fields()
+    public function it_should_return_a_list_of_all_languages_found_on_multilingual_fields(): void
     {
         $data = [
             '@id' => 'https://io.uitdatabank.be/organizers/919c7904-ecfa-440c-92d0-ae912213c615',
@@ -59,7 +59,7 @@ class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_list_of_languages_found_on_every_one_multilingual_field()
+    public function it_should_return_a_list_of_languages_found_on_every_one_multilingual_field(): void
     {
         $data = [
             '@id' => 'https://io.uitdatabank.be/events/919c7904-ecfa-440c-92d0-ae912213c615',
@@ -102,7 +102,7 @@ class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_polyfill_name_projections_from_strings_to_multilingual_projections()
+    public function it_should_polyfill_name_projections_from_strings_to_multilingual_projections(): void
     {
         $data = [
             '@id' => 'https://io.uitdatabank.be/events/919c7904-ecfa-440c-92d0-ae912213c615',
@@ -125,7 +125,7 @@ class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_polyfill_address_projections_from_a_single_object_to_multilingual_projections()
+    public function it_should_polyfill_address_projections_from_a_single_object_to_multilingual_projections(): void
     {
         $data = [
             '@id' => 'https://io.uitdatabank.be/organizers/919c7904-ecfa-440c-92d0-ae912213c615',

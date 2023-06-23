@@ -6,28 +6,21 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class StripHtmlStringFilterTest extends StringFilterTest
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected $filterClass = StripHtmlStringFilter::class;
+    protected string $filterClass = StripHtmlStringFilter::class;
 
     /**
      * @test
-     *
      * @dataProvider htmlStringDataProvider
      */
-    public function it_converts_html_strings_to_plain_text($original, $expected)
+    public function it_converts_html_strings_to_plain_text(string $original, string $expected): void
     {
         $this->assertFilterValue($expected, $original);
     }
 
     /**
      * Provides test data for converting paragraphs and breaks into newlines.
-     *
-     * @return array
-     *   Array of arrays, each individual array contains all arguments for the test method.
      */
-    public function htmlStringDataProvider()
+    public function htmlStringDataProvider(): array
     {
         $single_newline = 'Line 1.' . PHP_EOL . 'Line 2.';
         $double_newline = 'Line 1.' . PHP_EOL . PHP_EOL . 'Line 2.';

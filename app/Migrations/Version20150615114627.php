@@ -12,7 +12,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20150615114627 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         // @see \CultuurNet\UDB3\Variations\ReadModel\Search\Doctrine\DBALRepository
         $table = $schema->createTable('event_variation_search_index');
@@ -50,7 +50,7 @@ class Version20150615114627 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('event_variation_search_index');
     }

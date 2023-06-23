@@ -165,7 +165,7 @@ class ResultsGeneratorTest extends TestCase
         $this->logger->expects($this->any())
             ->method('error')
             ->willReturnCallback(
-                function ($type, $data) use (&$actualLogs) {
+                function ($type, $data) use (&$actualLogs): void {
                     $this->assertEquals('query_duplicate_event', $type);
 
                     $error = $data['error'];

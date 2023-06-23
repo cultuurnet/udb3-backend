@@ -27,7 +27,7 @@ class EventIDParserTest extends TestCase
      * @param string $url
      * @param string $uuid
      */
-    public function it_should_return_an_event_id_from_the_given_event_url($url, $uuid)
+    public function it_should_return_an_event_id_from_the_given_event_url($url, $uuid): void
     {
         $url = new Url($url);
         $expected = new UUID($uuid);
@@ -67,7 +67,7 @@ class EventIDParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_no_uuid_could_be_found_in_the_given_url()
+    public function it_should_throw_an_exception_if_no_uuid_could_be_found_in_the_given_url(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -78,7 +78,7 @@ class EventIDParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_no_event_uuid_could_be_found_in_the_given_url()
+    public function it_should_throw_an_exception_if_no_event_uuid_could_be_found_in_the_given_url(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

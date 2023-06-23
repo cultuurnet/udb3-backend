@@ -11,7 +11,7 @@ final class MarkedAsCanonicalTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_serializable_and_deserializable()
+    public function it_should_be_serializable_and_deserializable(): void
     {
         $event = new MarkedAsCanonical(
             'a9088117-5ec8-4117-8ce0-5ce27e685055',

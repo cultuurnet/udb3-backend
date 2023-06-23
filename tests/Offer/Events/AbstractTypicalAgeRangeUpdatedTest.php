@@ -36,7 +36,7 @@ class AbstractTypicalAgeRangeUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_instantiated_With_properties()
+    public function it_can_be_instantiated_With_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedTypicalAgeRange = new AgeRange(new Age(3), new Age(12));
@@ -51,7 +51,7 @@ class AbstractTypicalAgeRangeUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedTypicalAgeRange = new AgeRange(new Age(3), new Age(12));
@@ -70,7 +70,7 @@ class AbstractTypicalAgeRangeUpdatedTest extends TestCase
     public function it_can_be_serialized_to_an_array(
         array $expectedSerializedValue,
         TypicalAgeRangeUpdated $typicalAgeRangeUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $typicalAgeRangeUpdated->serialize()
@@ -84,7 +84,7 @@ class AbstractTypicalAgeRangeUpdatedTest extends TestCase
     public function it_can_deserialize_an_array(
         array $serializedValue,
         TypicalAgeRangeUpdated $expectedTypicalAgeRangeUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedTypicalAgeRangeUpdated,
             TypicalAgeRangeUpdated::deserialize($serializedValue)

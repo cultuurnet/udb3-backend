@@ -33,7 +33,7 @@ class JSONLDMainLanguageQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_no_document_can_be_found_for_the_given_cdbid()
+    public function it_should_throw_an_exception_if_no_document_can_be_found_for_the_given_cdbid(): void
     {
         $id = '03f5dfde-de64-426e-9a0f-5a2f249b0be5';
         $this->documentRepository
@@ -48,7 +48,7 @@ class JSONLDMainLanguageQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_mainLanguage_defined_on_the_document_for_the_given_cdbid()
+    public function it_should_return_the_mainLanguage_defined_on_the_document_for_the_given_cdbid(): void
     {
         $cdbid = '24bc748b-f138-4512-a377-2fef5a6cc42f';
         $this->expectDocumentWithJsonLd($cdbid, ['mainLanguage' => 'en']);
@@ -62,7 +62,7 @@ class JSONLDMainLanguageQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_fallback_language_if_the_document_for_the_given_cdbid_has_no_mainLanguage()
+    public function it_should_return_the_fallback_language_if_the_document_for_the_given_cdbid_has_no_mainLanguage(): void
     {
         $cdbid = '24bc748b-f138-4512-a377-2fef5a6cc42f';
         $this->expectDocumentWithJsonLd($cdbid, []);
@@ -76,7 +76,7 @@ class JSONLDMainLanguageQueryTest extends TestCase
     /**
      * @param string $cdbid
      */
-    private function expectDocumentWithJsonLd($cdbid, array $data)
+    private function expectDocumentWithJsonLd($cdbid, array $data): void
     {
         $document = new JsonDocument($cdbid, json_encode($data));
 

@@ -36,7 +36,7 @@ class DBALResourceOwnerRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_add_and_query_offer_permissions()
+    public function it_can_add_and_query_offer_permissions(): void
     {
         $johnDoe = new StringLiteral('abc');
         $editableByJohnDoe = [
@@ -78,7 +78,7 @@ class DBALResourceOwnerRepositoryTest extends TestCase
     /**
      * @param string $key
      */
-    private function markEditable(StringLiteral $eventId, $key, StringLiteral $userId)
+    private function markEditable(StringLiteral $eventId, $key, StringLiteral $userId): void
     {
         $this->repository->markResourceEditableByUser($eventId, $userId);
     }
@@ -86,7 +86,7 @@ class DBALResourceOwnerRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_silently_ignores_adding_duplicate_permissions()
+    public function it_silently_ignores_adding_duplicate_permissions(): void
     {
         $johnDoe = new StringLiteral('abc');
         $editableByJohnDoe = [

@@ -31,7 +31,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_constructor_properties()
+    public function it_should_return_the_constructor_properties(): void
     {
         $organizer = $this->getOrganizer();
 
@@ -44,7 +44,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_has_optional_url_property()
+    public function it_has_optional_url_property(): void
     {
         $organizer = new ImmutableOrganizer(
             $this->getId(),
@@ -61,7 +61,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_name()
+    public function it_should_return_a_copy_with_an_updated_name(): void
     {
         $name = $this->getTitle();
         $updatedName = $name->withTranslation(
@@ -80,7 +80,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_url()
+    public function it_should_return_a_copy_with_an_updated_url(): void
     {
         $url = $this->getUrl();
         $updatedUrl = new Url('https://www.google.com');
@@ -96,7 +96,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_address_by_default()
+    public function it_should_return_no_address_by_default(): void
     {
         $this->assertNull($this->getOrganizer()->getAddress());
     }
@@ -104,7 +104,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_address()
+    public function it_should_return_a_copy_with_an_updated_address(): void
     {
         $address = new TranslatedAddress(
             new Language('nl'),
@@ -127,7 +127,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_without_an_address()
+    public function it_should_return_a_copy_without_an_address(): void
     {
         $address = new TranslatedAddress(
             new Language('nl'),
@@ -150,7 +150,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_coordinates_by_default()
+    public function it_should_return_no_coordinates_by_default(): void
     {
         $this->assertNull($this->getOrganizer()->getGeoCoordinates());
     }
@@ -158,7 +158,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_updated_coordinates()
+    public function it_should_return_a_copy_with_updated_coordinates(): void
     {
         $coordinates = new Coordinates(
             new Latitude(50.8793916),
@@ -176,7 +176,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_without_coordinates()
+    public function it_should_return_a_copy_without_coordinates(): void
     {
         $coordinates = new Coordinates(
             new Latitude(50.8793916),
@@ -194,7 +194,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_empty_list_of_labels_by_default()
+    public function it_should_return_an_empty_list_of_labels_by_default(): void
     {
         $this->assertEquals(new Labels(), $this->getOrganizer()->getLabels());
     }
@@ -202,7 +202,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_updated_labels()
+    public function it_should_return_a_copy_with_updated_labels(): void
     {
         $labels = new Labels(
             new Label(new LabelName('foo'), true),
@@ -220,7 +220,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_empty_contact_point_by_default()
+    public function it_should_return_an_empty_contact_point_by_default(): void
     {
         $this->assertEquals(new ContactPoint(), $this->getOrganizer()->getContactPoint());
     }
@@ -228,7 +228,7 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_contact_point()
+    public function it_should_return_a_copy_with_an_updated_contact_point(): void
     {
         $contactPoint = new ContactPoint();
         $updatedContactPoint = $contactPoint->withTelephoneNumbers(

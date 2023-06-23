@@ -7,9 +7,9 @@ namespace CultuurNet\UDB3\Steps;
 trait EventSteps
 {
     /**
-     * @Given I create a minimal permanent event and save the :arg1 as :arg2
+     * @Given I create a minimal permanent event and save the :jsonPath as :variableName
      */
-    public function iCreateAMinimalPermanentEventAndSaveTheAs($jsonPath, $variableName): void
+    public function iCreateAMinimalPermanentEventAndSaveTheAs(string $jsonPath, string $variableName): void
     {
         $response = $this->getHttpClient()->postJSON(
             $this->requestState->getBaseUrl() . '/events',

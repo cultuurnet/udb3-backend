@@ -15,7 +15,7 @@ class MediaObjectReferenceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_with_a_media_object_id()
+    public function it_should_be_creatable_with_a_media_object_id(): void
     {
         $id = new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
         $description = new Description('Some image description');
@@ -39,7 +39,7 @@ class MediaObjectReferenceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_with_an_embedded_media_object()
+    public function it_should_be_creatable_with_an_embedded_media_object(): void
     {
         $id = new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
         $type = MediaObjectType::imageObject();
@@ -69,7 +69,7 @@ class MediaObjectReferenceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_description()
+    public function it_should_return_a_copy_with_an_updated_description(): void
     {
         $id = new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
         $description = new Description('Some image description');
@@ -94,7 +94,7 @@ class MediaObjectReferenceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_copyright_holder()
+    public function it_should_return_a_copy_with_an_updated_copyright_holder(): void
     {
         $id = new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
         $description = new Description('Some image description');

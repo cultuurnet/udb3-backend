@@ -112,7 +112,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
-            ->when(function (Role $role) use ($uuid, $name) {
+            ->when(function (Role $role) use ($uuid, $name): void {
                 $role->rename(
                     $uuid,
                     $name
@@ -132,7 +132,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
-            ->when(function (Role $role) use ($uuid, $permission) {
+            ->when(function (Role $role) use ($uuid, $permission): void {
                 $role->addPermission(
                     $uuid,
                     $permission
@@ -152,7 +152,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated, new PermissionAdded($this->uuid, Permission::aanbodBewerken())])
-            ->when(function (Role $role) use ($uuid, $permission) {
+            ->when(function (Role $role) use ($uuid, $permission): void {
                 $role->addPermission(
                     $uuid,
                     $permission
@@ -172,7 +172,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated, $this->permissionAdded])
-            ->when(function (Role $role) use ($uuid, $permission) {
+            ->when(function (Role $role) use ($uuid, $permission): void {
                 $role->removePermission(
                     $uuid,
                     $permission
@@ -192,7 +192,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
-            ->when(function (Role $role) use ($uuid, $permission) {
+            ->when(function (Role $role) use ($uuid, $permission): void {
                 $role->removePermission(
                     $uuid,
                     $permission
@@ -209,7 +209,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
-            ->when(function (Role $role) {
+            ->when(function (Role $role): void {
                 $role->addConstraint($this->query);
             })
             ->then([$this->constraintAdded]);
@@ -226,7 +226,7 @@ class RoleTest extends AggregateRootScenarioTestCase
                 $this->roleCreated,
                 $this->constraintAdded,
             ])
-            ->when(function (Role $role) {
+            ->when(function (Role $role): void {
                 $role->addConstraint($this->query);
             })
             ->then([]);
@@ -240,7 +240,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
-            ->when(function (Role $role) {
+            ->when(function (Role $role): void {
                 $role->updateConstraint($this->query);
             })
             ->then([]);
@@ -257,7 +257,7 @@ class RoleTest extends AggregateRootScenarioTestCase
                 $this->roleCreated,
                 $this->constraintAdded,
             ])
-            ->when(function (Role $role) {
+            ->when(function (Role $role): void {
                 $role->updateConstraint($this->updatedQuery);
             })
             ->then([$this->constraintUpdated]);
@@ -275,7 +275,7 @@ class RoleTest extends AggregateRootScenarioTestCase
                 $this->constraintAdded,
                 $this->constraintUpdated,
             ])
-            ->when(function (Role $role) {
+            ->when(function (Role $role): void {
                 $role->updateConstraint($this->updatedQuery);
             })
             ->then([]);
@@ -292,7 +292,7 @@ class RoleTest extends AggregateRootScenarioTestCase
                 $this->roleCreated,
                 $this->constraintAdded,
             ])
-            ->when(function (Role $role) {
+            ->when(function (Role $role): void {
                 $role->removeConstraint();
             })
             ->then([$this->constraintRemoved]);
@@ -308,7 +308,7 @@ class RoleTest extends AggregateRootScenarioTestCase
             ->given([
                 $this->roleCreated,
             ])
-            ->when(function (Role $role) {
+            ->when(function (Role $role): void {
                 $role->removeConstraint();
             })
             ->then([]);

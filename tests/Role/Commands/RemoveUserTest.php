@@ -27,7 +27,7 @@ class RemoveUserTest extends TestCase
     /**
      * @test
      */
-    public function it_extends_an_abstract_user_command()
+    public function it_extends_an_abstract_user_command(): void
     {
         $this->assertTrue(is_subclass_of(
             $this->removeUser,

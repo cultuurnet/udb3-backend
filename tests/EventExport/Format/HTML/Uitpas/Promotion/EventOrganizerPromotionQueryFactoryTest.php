@@ -40,7 +40,7 @@ class EventOrganizerPromotionQueryFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_query_options_with_cashing_period_that_matches_event()
+    public function it_creates_query_options_with_cashing_period_that_matches_event(): void
     {
         $eventCalendar = new CultureFeed_Uitpas_Calendar();
         $today = new \DateTimeImmutable();
@@ -75,7 +75,7 @@ class EventOrganizerPromotionQueryFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_a_calendar_with_periods()
+    public function it_handles_a_calendar_with_periods(): void
     {
         $eventCalendar = new CultureFeed_Uitpas_Calendar();
 
@@ -110,7 +110,7 @@ class EventOrganizerPromotionQueryFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_uses_the_system_time_if_other_event_calendar_than_periods_or_timestamps()
+    public function it_uses_the_system_time_if_other_event_calendar_than_periods_or_timestamps(): void
     {
         $eventCalendar = new CultureFeed_Uitpas_Calendar();
 

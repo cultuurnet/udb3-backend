@@ -90,7 +90,7 @@ class PriceFormatter
     /**
      * @param int $significantDecimals
      */
-    public function setSignificantDecimals($significantDecimals)
+    public function setSignificantDecimals($significantDecimals): void
     {
         $this->significantDecimals = $significantDecimals;
     }
@@ -98,7 +98,7 @@ class PriceFormatter
     /**
      * @param string $decimalPoint
      */
-    public function setDecimalPoint($decimalPoint)
+    public function setDecimalPoint($decimalPoint): void
     {
         $this->decimalPoint = $decimalPoint;
     }
@@ -106,7 +106,7 @@ class PriceFormatter
     /**
      * @param string $thousandsSeparator
      */
-    public function setThousandsSeparator($thousandsSeparator)
+    public function setThousandsSeparator($thousandsSeparator): void
     {
         $this->thousandsSeparator = $thousandsSeparator;
     }
@@ -114,7 +114,7 @@ class PriceFormatter
     /**
      * @param string $freeLabel
      */
-    public function useFreeLabel($freeLabel)
+    public function useFreeLabel($freeLabel): void
     {
         $this->setFreeLabel($freeLabel);
         $this->enableFreeLabel();
@@ -123,17 +123,17 @@ class PriceFormatter
     /**
      * @param string $freeLabel
      */
-    public function setFreeLabel($freeLabel)
+    public function setFreeLabel($freeLabel): void
     {
         $this->freeLabel = $freeLabel;
     }
 
-    public function enableFreeLabel()
+    public function enableFreeLabel(): void
     {
         $this->useFreeLabel = true;
     }
 
-    public function disableFreeLabel()
+    public function disableFreeLabel(): void
     {
         $this->useFreeLabel = false;
     }

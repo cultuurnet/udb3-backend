@@ -49,7 +49,7 @@ class TruncateStringFilter implements StringFilterInterface
     /**
      * @param int $maxLength
      */
-    public function setMaxLength($maxLength)
+    public function setMaxLength($maxLength): void
     {
         $this->maxLength = $maxLength;
     }
@@ -57,7 +57,7 @@ class TruncateStringFilter implements StringFilterInterface
     /**
      * @param bool $toggle
      */
-    public function addEllipsis($toggle = true)
+    public function addEllipsis($toggle = true): void
     {
         $this->addEllipsis = $toggle;
     }
@@ -65,7 +65,7 @@ class TruncateStringFilter implements StringFilterInterface
     /**
      * @param bool $toggle
      */
-    public function spaceBeforeEllipsis($toggle = true)
+    public function spaceBeforeEllipsis($toggle = true): void
     {
         $this->spaceBeforeEllipsis = $toggle;
     }
@@ -73,7 +73,7 @@ class TruncateStringFilter implements StringFilterInterface
     /**
      * @param int $minWordSafeLength
      */
-    public function turnOnWordSafe($minWordSafeLength = 1)
+    public function turnOnWordSafe($minWordSafeLength = 1): void
     {
         $this->wordSafe = true;
         $this->minWordSafeLength = $minWordSafeLength;
@@ -82,7 +82,7 @@ class TruncateStringFilter implements StringFilterInterface
     /**
      * When turned on, the filter will try not to truncate in the middle of a sentence.
      */
-    public function beSentenceFriendly()
+    public function beSentenceFriendly(): void
     {
         $this->sentenceFriendly = true;
     }

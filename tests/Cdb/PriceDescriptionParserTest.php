@@ -26,7 +26,7 @@ class PriceDescriptionParserTest extends TestCase
     /**
      * @test
      */
-    public function it_parses_valid_description_into_price_key_value_pairs()
+    public function it_parses_valid_description_into_price_key_value_pairs(): void
     {
         $description = 'Basistarief: 12,50 €; Met kinderen: 20,00 €; Senioren: 30,00 €';
 
@@ -44,7 +44,7 @@ class PriceDescriptionParserTest extends TestCase
     /**
      * @test
      */
-    public function it_ignores_invalid_descriptions()
+    public function it_ignores_invalid_descriptions(): void
     {
         $description = 'Met kinderen € 20, Gratis voor grootouders';
 
@@ -54,7 +54,7 @@ class PriceDescriptionParserTest extends TestCase
     /**
      * @test
      */
-    public function it_ignores_invalid_prices()
+    public function it_ignores_invalid_prices(): void
     {
         $description = 'Met kinderen: € 0,20,0';
 
@@ -64,7 +64,7 @@ class PriceDescriptionParserTest extends TestCase
     /**
      * @test
      */
-    public function it_ignores_all_prices_when_at_least_one_is_invalid()
+    public function it_ignores_all_prices_when_at_least_one_is_invalid(): void
     {
         // Only the last price is invalid.
         $description = 'Basistarief: 12,50 €; Met kinderen: 20,00 €; Senioren 30,00 €';

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class CallableIriGeneratorTest extends TestCase
 {
-    public function testUsesResultOfCallable()
+    public function testUsesResultOfCallable(): void
     {
         $baseUrl = 'http://example.com/';
         $fn = function ($id) use ($baseUrl) {

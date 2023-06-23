@@ -2,23 +2,14 @@
 
 declare(strict_types=1);
 
-namespace test\Event\Events;
+namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
-use CultuurNet\UDB3\Event\Events\CalendarUpdated;
-use CultuurNet\UDB3\Event\Events\DummyLocationUpdated;
-use CultuurNet\UDB3\Event\Events\ExternalIdLocationUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
-use CultuurNet\UDB3\Event\Events\EventDeleted;
-use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
-use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
-use CultuurNet\UDB3\Event\Events\TitleTranslated;
-use CultuurNet\UDB3\Event\Events\TitleUpdated;
-use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
@@ -63,7 +54,7 @@ final class EventImportedFromUDB2Test extends TestCase
      * @dataProvider serializationDataProvider
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         EventImportedFromUDB2 $eventImportedFromUDB2
     ): void {
         $this->assertEquals(
@@ -77,9 +68,9 @@ final class EventImportedFromUDB2Test extends TestCase
      * @dataProvider serializationDataProvider
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array $serializedValue,
         EventImportedFromUDB2 $expectedEventImportedFromUDB2
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedEventImportedFromUDB2,
             EventImportedFromUDB2::deserialize($serializedValue)

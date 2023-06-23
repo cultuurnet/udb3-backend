@@ -181,7 +181,7 @@ final class EventExportServiceTest extends TestCase
         $this->resultsGenerator->expects($this->any())
             ->method('search')
             ->willReturnCallback(
-                function () {
+                function (): Traversable {
                     yield from $this->searchResults;
                 }
             );
@@ -209,7 +209,7 @@ final class EventExportServiceTest extends TestCase
         $fileWriter->expects($this->once())
             ->method('write')
             ->willReturnCallback(
-                function ($tmpPath, Traversable $events) {
+                function ($tmpPath, Traversable $events): void {
                     $contents = iterator_to_array($events);
                     $contents = array_map(function ($content) {
                         return Json::decode($content);
@@ -222,7 +222,7 @@ final class EventExportServiceTest extends TestCase
         return $fileFormat;
     }
 
-    private function forceUuidGeneratorToReturn($uuid): void
+    private function forceUuidGeneratorToReturn(string $uuid): void
     {
         $this->uuidGenerator->expects($this->any())
             ->method('generate')
@@ -432,9 +432,9 @@ final class EventExportServiceTest extends TestCase
      * @dataProvider exportParametersDataProvider
      */
     public function it_logs_items_that_can_not_be_found_by_the_event_service(
-        $fileFormat,
-        $query,
-        $selection
+        FileFormatInterface $fileFormat,
+        EventExportQuery $query,
+        array $selection
     ): void {
         $unavailableEventIds = [4, 7, 16];
 

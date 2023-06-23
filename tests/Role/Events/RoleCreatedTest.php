@@ -40,7 +40,7 @@ class RoleCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_extends_an_event()
+    public function it_extends_an_event(): void
     {
         $this->assertTrue(is_subclass_of(
             $this->roleCreated,
@@ -51,7 +51,7 @@ class RoleCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals($this->uuid, $this->roleCreated->getUuid());
     }
@@ -59,7 +59,7 @@ class RoleCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_name()
+    public function it_stores_a_name(): void
     {
         $this->assertEquals($this->name, $this->roleCreated->getName());
     }
@@ -67,7 +67,7 @@ class RoleCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $created = RoleCreated::deserialize($this->createdAsArray());
 
@@ -77,7 +77,7 @@ class RoleCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $createdAsArray = $this->roleCreated->serialize();
 

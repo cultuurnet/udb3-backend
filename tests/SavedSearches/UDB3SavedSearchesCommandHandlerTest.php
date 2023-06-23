@@ -33,7 +33,7 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_handle_subscribe_to_saved_search_commands()
+    public function it_can_handle_subscribe_to_saved_search_commands(): void
     {
         $userId = new StringLiteral('some-user-id');
         $name = new StringLiteral('My very first saved search!');
@@ -55,7 +55,7 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_handle_unsubscribe_from_saved_search_commands()
+    public function it_can_handle_unsubscribe_from_saved_search_commands(): void
     {
         $userId = new StringLiteral('some-user-id');
         $searchId = new StringLiteral('some-search-id');

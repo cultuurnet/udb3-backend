@@ -40,7 +40,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_place_organizer_relation()
+    public function it_stores_a_place_organizer_relation(): void
     {
         $expectedRelations = [
             ['place' => 'placeId', 'organizer' => 'organizerId'],
@@ -55,7 +55,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_a_relation_based_on_place_id()
+    public function it_removes_a_relation_based_on_place_id(): void
     {
         $storedRelations = $this->seedPlaceRelations($this->repository);
 
@@ -71,7 +71,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_gets_all_places_based_on_organizer()
+    public function it_gets_all_places_based_on_organizer(): void
     {
         $this->seedPlaceRelations($this->repository);
         $actualPlaces = $this->repository->getPlacesOrganizedByOrganizer('organizerId2');

@@ -57,7 +57,7 @@ final class MetadataServiceProvider extends AbstractServiceProvider
                 $dispatcher = new CallableEventDispatcher();
                 $dispatcher->addListener(
                     ResqueCommandBus::EVENT_COMMAND_CONTEXT_SET,
-                    function ($context) use ($container) {
+                    function ($context) use ($container): void {
                         // Overwrite the context based on the context stored with the resque command being executed.
                         $container->addShared(
                             'context',

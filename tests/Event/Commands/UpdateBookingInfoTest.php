@@ -35,7 +35,7 @@ class UpdateBookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_is_possible_to_instantiate_the_command_with_parameters()
+    public function it_is_possible_to_instantiate_the_command_with_parameters(): void
     {
         $expectedUpdateBookingInfo = new UpdateBookingInfo(
             'id',

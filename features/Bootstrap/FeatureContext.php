@@ -70,7 +70,7 @@ final class FeatureContext implements Context
     /**
      * @Transform :url
      */
-    public function replaceUrl($url): string
+    public function replaceUrl(string $url): string
     {
         return $this->variableState->replaceVariables($url);
     }
@@ -78,7 +78,7 @@ final class FeatureContext implements Context
     /**
      * @Transform :id
      */
-    public function replaceId($id): string
+    public function replaceId(string $id): string
     {
         return $this->variableState->replaceVariables($id);
     }

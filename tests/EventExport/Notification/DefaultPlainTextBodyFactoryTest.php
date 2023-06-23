@@ -12,7 +12,7 @@ class DefaultPlainTextBodyFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_plain_text_body_message_with_download_link()
+    public function it_returns_a_plain_text_body_message_with_download_link(): void
     {
         $eventExportResult = new EventExportResult('http://google.be');
         $defaultPlainTextBodyFactory = new DefaultPlainTextBodyFactory();

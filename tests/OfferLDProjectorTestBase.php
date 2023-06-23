@@ -42,7 +42,8 @@ abstract class OfferLDProjectorTestBase extends TestCase
      */
     protected $organizerService;
 
-    public function __construct($name, array $data, $dataName, $eventNamespace)
+
+    public function __construct(?string $name, array $data, $dataName, string $eventNamespace)
     {
         parent::__construct($name, $data, $dataName);
 

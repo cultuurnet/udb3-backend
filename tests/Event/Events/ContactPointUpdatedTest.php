@@ -12,12 +12,11 @@ class ContactPointUpdatedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $expectedSerializedValue
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         ContactPointUpdated $contactPointUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $contactPointUpdated->serialize()
@@ -27,19 +26,18 @@ class ContactPointUpdatedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $serializedValue
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array $serializedValue,
         ContactPointUpdated $expectedContactPointUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedContactPointUpdated,
             ContactPointUpdated::deserialize($serializedValue)
         );
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'contactPointUpdated' => [

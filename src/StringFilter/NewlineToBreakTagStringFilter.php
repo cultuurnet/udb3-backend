@@ -26,7 +26,7 @@ class NewlineToBreakTagStringFilter implements StringFilterInterface
     /**
      * @param bool $closeTag
      */
-    public function closeTag($closeTag = true)
+    public function closeTag($closeTag = true): void
     {
         $this->closeTag = $closeTag;
     }

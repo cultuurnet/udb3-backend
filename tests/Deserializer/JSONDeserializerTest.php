@@ -29,7 +29,7 @@ class JSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function itThrowsANotWellFormedExceptionForInvalidJson()
+    public function itThrowsANotWellFormedExceptionForInvalidJson(): void
     {
         $this->expectException(NotWellFormedException::class);
         $this->expectExceptionMessage('Invalid JSON');
@@ -46,7 +46,7 @@ class JSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function itCanDeserializeToAnObject()
+    public function itCanDeserializeToAnObject(): void
     {
         $jsonString = new StringLiteral(
             '{"key1":"value1","key2":{"key3":"value3"}}'
@@ -62,7 +62,7 @@ class JSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function itCanDeserializeToAnAssociativeArray()
+    public function itCanDeserializeToAnAssociativeArray(): void
     {
         $jsonString = new StringLiteral(
             '{"key1":"value1","key2":{"key3":"value3"}}'

@@ -9,7 +9,7 @@ class MockTrimmedRight
     use IsString;
     use Trims;
 
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $value = $this->trimRight($value);
         $this->setValue($value);

@@ -8,7 +8,7 @@ class DifferentMockInteger
 {
     use IsInteger;
 
-    public function __construct($value)
+    public function __construct(int $value)
     {
         $this->setValue($value);
     }

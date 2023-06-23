@@ -46,7 +46,7 @@ class AbstractUpdateTitleTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $title = $this->updateTitleCommand->getTitle();
         $expectedTitle = new Title('This is the event title update.');
@@ -62,7 +62,7 @@ class AbstractUpdateTitleTest extends TestCase
     /**
      * @test
      */
-    public function it_should_keep_track_of_the_title_language()
+    public function it_should_keep_track_of_the_title_language(): void
     {
         $this->assertEquals(new Language('en'), $this->updateTitleCommand->getLanguage());
     }

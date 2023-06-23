@@ -20,9 +20,9 @@ class MediaObjectCreatedTest extends TestCase
      * @dataProvider serializationDataProvider
      */
     public function it_should_include_all_properties_when_serializing(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         MediaObjectCreated $mediaObjectCreated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $mediaObjectCreated->serialize()
@@ -34,16 +34,16 @@ class MediaObjectCreatedTest extends TestCase
      * @dataProvider serializationDataProvider
      */
     public function it_should_set_all_the_properties_when_deserializing(
-        $serializedValue,
+        array $serializedValue,
         MediaObjectCreated $expectedMediaObjectCreated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedMediaObjectCreated,
             MediaObjectCreated::deserialize($serializedValue)
         );
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'creationEvent' => [
@@ -70,7 +70,7 @@ class MediaObjectCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_should_default_to_dutch_when_deserializing_event_data_without_language()
+    public function it_should_default_to_dutch_when_deserializing_event_data_without_language(): void
     {
         $eventData = [
             'media_object_id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
@@ -95,7 +95,7 @@ class MediaObjectCreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_create_a_media_object_from_serialized_data_with_invalid_length_copyright_holder()
+    public function it_can_create_a_media_object_from_serialized_data_with_invalid_length_copyright_holder(): void
     {
         $eventData = [
             'media_object_id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',

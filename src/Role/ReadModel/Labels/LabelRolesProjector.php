@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
 
 class LabelRolesProjector extends RoleProjector
 {
-    public function applyLabelAdded(LabelAdded $labelAdded)
+    public function applyLabelAdded(LabelAdded $labelAdded): void
     {
         $document = $this->getDocument($labelAdded->getLabelId());
 
@@ -28,7 +28,7 @@ class LabelRolesProjector extends RoleProjector
     }
 
 
-    public function applyLabelRemoved(LabelRemoved $labelRemoved)
+    public function applyLabelRemoved(LabelRemoved $labelRemoved): void
     {
         $document = $this->getDocument($labelRemoved->getLabelId());
 
@@ -41,7 +41,7 @@ class LabelRolesProjector extends RoleProjector
     }
 
 
-    public function applyCreated(LabelCreated $labelCreated)
+    public function applyCreated(LabelCreated $labelCreated): void
     {
         $document = $this->createNewDocument($labelCreated->getUuid());
         $this->repository->save($document);

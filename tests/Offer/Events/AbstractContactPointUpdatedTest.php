@@ -39,7 +39,7 @@ class AbstractContactPointUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_instantiated_With_properties()
+    public function it_can_be_instantiated_With_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedContactPoint = new ContactPoint(
@@ -58,7 +58,7 @@ class AbstractContactPointUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedContactPoint = new ContactPoint(
@@ -81,7 +81,7 @@ class AbstractContactPointUpdatedTest extends TestCase
     public function it_can_be_serialized_to_an_array(
         array $expectedSerializedValue,
         ContactPointUpdated $contactPointUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $contactPointUpdated->serialize()
@@ -95,7 +95,7 @@ class AbstractContactPointUpdatedTest extends TestCase
     public function it_can_deserialize_an_array(
         array $serializedValue,
         ContactPointUpdated $expectedContactPointUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedContactPointUpdated,
             ContactPointUpdated::deserialize($serializedValue)

@@ -12,8 +12,8 @@ use Broadway\EventSourcing\EventStreamDecorator;
 class DummyEventStreamDecorator implements EventStreamDecorator
 {
     public function decorateForWrite(
-        $aggregateType,
-        $aggregateIdentifier,
+        string $aggregateType,
+        string $aggregateIdentifier,
         DomainEventStream $eventStream
     ): DomainEventStream {
         $messages = [];

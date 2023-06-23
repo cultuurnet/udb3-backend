@@ -224,6 +224,7 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
     /**
      * @test
      * @dataProvider invalidBodyDataProvider
+     * @param array|object $bodyData
      */
     public function it_throws_on_invalid_body_data(string $offerType, $bodyData, SchemaError ...$expectedSchemaErrors): void
     {

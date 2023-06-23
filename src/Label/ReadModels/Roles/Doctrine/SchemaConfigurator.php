@@ -20,7 +20,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
         $this->labelRolesTableName = $labelRolesTableName;
     }
 
-    public function configure(AbstractSchemaManager $schemaManager)
+    public function configure(AbstractSchemaManager $schemaManager): void
     {
         $schema = $schemaManager->createSchema();
 

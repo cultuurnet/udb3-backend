@@ -63,7 +63,7 @@ trait OfferCommandHandlerTestTrait
     /**
      * @test
      */
-    public function it_can_update_booking_info_of_an_offer()
+    public function it_can_update_booking_info_of_an_offer(): void
     {
         $id = '1';
         $bookingInfo = new BookingInfo('https://www.publiq.be');
@@ -84,7 +84,7 @@ trait OfferCommandHandlerTestTrait
     /**
      * @test
      */
-    public function it_can_update_contact_point_of_an_offer()
+    public function it_can_update_contact_point_of_an_offer(): void
     {
         $id = '1';
         $contactPoint = new ContactPoint(['016102030']);
@@ -105,7 +105,7 @@ trait OfferCommandHandlerTestTrait
     /**
      * @test
      */
-    public function it_can_update_description_of_an_offer()
+    public function it_can_update_description_of_an_offer(): void
     {
         $id = '1';
         $description = new Description('foo');
@@ -126,7 +126,7 @@ trait OfferCommandHandlerTestTrait
     /**
      * @test
      */
-    public function it_can_add_an_image_to_an_offer()
+    public function it_can_add_an_image_to_an_offer(): void
     {
         $id = '1';
         $imageId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
@@ -160,7 +160,7 @@ trait OfferCommandHandlerTestTrait
     /**
      * @test
      */
-    public function it_can_remove_an_image_from_an_offer()
+    public function it_can_remove_an_image_from_an_offer(): void
     {
         $id = '1';
         $image = new Image(
@@ -192,7 +192,7 @@ trait OfferCommandHandlerTestTrait
     /**
      * @test
      */
-    public function it_can_update_an_image_of_an_offer()
+    public function it_can_update_an_image_of_an_offer(): void
     {
         $itemId = '1';
         $mediaObjectId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
@@ -241,7 +241,7 @@ trait OfferCommandHandlerTestTrait
     /**
      * @test
      */
-    public function it_can_import_images()
+    public function it_can_import_images(): void
     {
         $itemId = '1';
 
@@ -374,7 +374,7 @@ trait OfferCommandHandlerTestTrait
     /**
      * @test
      */
-    public function it_can_update_typical_agerange_of_an_offer()
+    public function it_can_update_typical_agerange_of_an_offer(): void
     {
         $id = '1';
         $ageRange = new AgeRange(null, new Age(18));
@@ -395,7 +395,7 @@ trait OfferCommandHandlerTestTrait
     /**
      * @test
      */
-    public function it_can_delete_typical_agerange_of_an_offer()
+    public function it_can_delete_typical_agerange_of_an_offer(): void
     {
         $id = '1';
         $commandClass = $this->getCommandClass('DeleteTypicalAgeRange');

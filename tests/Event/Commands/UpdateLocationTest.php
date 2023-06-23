@@ -40,7 +40,7 @@ class UpdateLocationTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_event_id()
+    public function it_stores_an_event_id(): void
     {
         $this->assertEquals($this->eventId, $this->updateLocation->getItemId());
     }
@@ -48,7 +48,7 @@ class UpdateLocationTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_location()
+    public function it_stores_a_location(): void
     {
         $this->assertEquals($this->locationId, $this->updateLocation->getLocationId());
     }

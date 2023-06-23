@@ -12,12 +12,9 @@ use PDO;
 
 trait DBALTestConnectionTrait
 {
-    /**
-     * @var Connection|null
-     */
-    private $connection;
+    private ?Connection $connection = null;
 
-    protected function initializeConnection()
+    protected function initializeConnection(): void
     {
         if (!class_exists('PDO')) {
             $this->markTestSkipped('PDO is required to run this test.');

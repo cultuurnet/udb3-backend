@@ -47,7 +47,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_instantiated_without_external_id_mapping_services()
+    public function it_can_be_instantiated_without_external_id_mapping_services(): void
     {
         $cdbIdExtractor = new EventCdbIdExtractor();
         $this->assertInstanceOf(EventCdbIdExtractor::class, $cdbIdExtractor);
@@ -56,7 +56,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_if_the_event_has_no_location()
+    public function it_returns_null_if_the_event_has_no_location(): void
     {
         $cdbEvent = new \CultureFeed_Cdb_Item_Event();
         $this->assertNull($this->cdbIdExtractor->getRelatedPlaceCdbId($cdbEvent));
@@ -65,7 +65,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_if_the_event_has_no_organiser()
+    public function it_returns_null_if_the_event_has_no_organiser(): void
     {
         $cdbEvent = new \CultureFeed_Cdb_Item_Event();
         $this->assertNull($this->cdbIdExtractor->getRelatedOrganizerCdbId($cdbEvent));
@@ -74,7 +74,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_cdbid_attribute_if_the_related_location_has_one_on_its_label()
+    public function it_returns_the_cdbid_attribute_if_the_related_location_has_one_on_its_label(): void
     {
         $locationCdbId = 'bd9768b5-598a-43a3-9acc-bd7c4b3092f8';
 
@@ -92,7 +92,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_cdbid_attribute_if_the_related_organiser_has_one_on_its_label()
+    public function it_returns_the_cdbid_attribute_if_the_related_organiser_has_one_on_its_label(): void
     {
         $organiserCdbId = 'bd9768b5-598a-43a3-9acc-bd7c4b3092f8';
 
@@ -108,7 +108,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_cdbid_derived_from_the_external_id_if_the_related_location_has_one_on_its_label()
+    public function it_returns_a_cdbid_derived_from_the_external_id_if_the_related_location_has_one_on_its_label(): void
     {
         $locationExternalId = 'external-id-1';
         $locationCdbId = '9434513c-0f86-4085-83ac-dc4b64b44185';
@@ -127,7 +127,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_cdbid_derived_from_the_external_id_if_the_related_organiser_has_one_on_its_label()
+    public function it_returns_a_cdbid_derived_from_the_external_id_if_the_related_organiser_has_one_on_its_label(): void
     {
         $organiserExternalId = 'external-id-1';
         $organiserCdbId = '46573cf5-d279-4baf-8ad4-9e7d7f312100';
@@ -144,7 +144,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_cdbid_attribute_if_the_related_location_has_one_on_its_actor()
+    public function it_returns_the_cdbid_attribute_if_the_related_location_has_one_on_its_actor(): void
     {
         $locationCdbId = 'bd9768b5-598a-43a3-9acc-bd7c4b3092f8';
 
@@ -165,7 +165,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_cdbid_attribute_if_the_related_organiser_has_one_on_its_actor()
+    public function it_returns_the_cdbid_attribute_if_the_related_organiser_has_one_on_its_actor(): void
     {
         $organiserCdbId = '46573cf5-d279-4baf-8ad4-9e7d7f312100';
 
@@ -184,7 +184,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_cdbid_derived_from_the_external_id_if_the_related_location_has_one_on_its_actor()
+    public function it_returns_a_cdbid_derived_from_the_external_id_if_the_related_location_has_one_on_its_actor(): void
     {
         $locationExternalId = 'external-id-1';
         $locationCdbId = '9434513c-0f86-4085-83ac-dc4b64b44185';
@@ -206,7 +206,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_cdbid_derived_from_the_external_id_if_the_related_organiser_has_one_on_its_actor()
+    public function it_returns_a_cdbid_derived_from_the_external_id_if_the_related_organiser_has_one_on_its_actor(): void
     {
         $organiserExternalId = 'external-id-1';
         $organiserCdbId = '46573cf5-d279-4baf-8ad4-9e7d7f312100';
@@ -226,7 +226,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_if_the_event_has_a_location_without_cdbid_or_external_id_on_label_or_actor()
+    public function it_returns_null_if_the_event_has_a_location_without_cdbid_or_external_id_on_label_or_actor(): void
     {
         $cdbLocation = new \CultureFeed_Cdb_Data_Location(
             new \CultureFeed_Cdb_Data_Address()
@@ -241,7 +241,7 @@ class EventCdbIdExtractorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_if_the_event_has_an_organiser_without_cdbid_or_external_id_on_label_or_actor()
+    public function it_returns_null_if_the_event_has_an_organiser_without_cdbid_or_external_id_on_label_or_actor(): void
     {
         $cdbOrganiser = new \CultureFeed_Cdb_Data_Organiser();
 

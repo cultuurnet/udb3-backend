@@ -42,7 +42,7 @@ class RoleLabelsProjector extends RoleProjector
     }
 
 
-    public function applyLabelAdded(LabelAdded $labelAdded)
+    public function applyLabelAdded(LabelAdded $labelAdded): void
     {
         $document = $this->getDocument($labelAdded->getUuid());
 
@@ -59,7 +59,7 @@ class RoleLabelsProjector extends RoleProjector
     }
 
 
-    public function applyLabelRemoved(LabelRemoved $labelRemoved)
+    public function applyLabelRemoved(LabelRemoved $labelRemoved): void
     {
         $document = $this->getDocument($labelRemoved->getUuid());
 
@@ -76,7 +76,7 @@ class RoleLabelsProjector extends RoleProjector
     }
 
 
-    public function applyLabelDetailsProjectedToJSONLD(LabelDetailsProjectedToJSONLD $labelDetailsProjectedToJSONLD)
+    public function applyLabelDetailsProjectedToJSONLD(LabelDetailsProjectedToJSONLD $labelDetailsProjectedToJSONLD): void
     {
         $labelId = $labelDetailsProjectedToJSONLD->getUuid()->toString();
         try {
@@ -100,14 +100,14 @@ class RoleLabelsProjector extends RoleProjector
     }
 
 
-    public function applyRoleCreated(RoleCreated $roleCreated)
+    public function applyRoleCreated(RoleCreated $roleCreated): void
     {
         $document = $this->createNewDocument($roleCreated->getUuid());
         $this->repository->save($document);
     }
 
 
-    public function applyRoleDeleted(RoleDeleted $roleDeleted)
+    public function applyRoleDeleted(RoleDeleted $roleDeleted): void
     {
         $this->repository->remove($roleDeleted->getUuid()->toString());
     }

@@ -15,12 +15,11 @@ class BookingInfoUpdatedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $expectedSerializedValue
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         BookingInfoUpdated $bookingInfoUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $bookingInfoUpdated->serialize()
@@ -30,19 +29,18 @@ class BookingInfoUpdatedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $serializedValue
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array $serializedValue,
         BookingInfoUpdated $expectedBookingInfoUpdated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedBookingInfoUpdated,
             BookingInfoUpdated::deserialize($serializedValue)
         );
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'bookingInfoUpdated' => [

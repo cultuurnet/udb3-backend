@@ -9,14 +9,11 @@ class IsNotEmptyTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider stringValueProvider
-     *
-     * @param string $stringValue
-     * @param bool $expectException
      */
     public function it_should_throw_an_exception_if_an_empty_string_is_given(
-        $stringValue,
-        $expectException
-    ) {
+        string $stringValue,
+        bool $expectException
+    ): void {
         if ($expectException) {
             $this->expectException(\InvalidArgumentException::class);
             $this->expectExceptionMessage('Given string should not be empty.');
@@ -29,7 +26,7 @@ class IsNotEmptyTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function stringValueProvider()
+    public function stringValueProvider(): array
     {
         return [
             [

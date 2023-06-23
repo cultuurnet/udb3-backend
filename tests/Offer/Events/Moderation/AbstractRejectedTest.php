@@ -42,7 +42,7 @@ class AbstractRejectedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_item_id()
+    public function it_stores_an_item_id(): void
     {
         $this->assertEquals(
             $this->itemId,
@@ -53,7 +53,7 @@ class AbstractRejectedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_reason()
+    public function it_stores_a_reason(): void
     {
         $this->assertEquals(
             $this->reason,
@@ -64,7 +64,7 @@ class AbstractRejectedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $expectedArray = [
             'item_id' => $this->itemId,

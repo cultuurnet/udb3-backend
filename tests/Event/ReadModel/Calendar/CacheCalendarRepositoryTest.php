@@ -35,7 +35,7 @@ class CacheCalendarRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_a_calendar_from_cache()
+    public function it_can_get_a_calendar_from_cache(): void
     {
         $serialized = serialize($this->calendar);
 
@@ -54,7 +54,7 @@ class CacheCalendarRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_non_existing_calendars()
+    public function it_handles_non_existing_calendars(): void
     {
         $cache = new ArrayCache();
         $repository = new CacheCalendarRepository($cache);
@@ -65,7 +65,7 @@ class CacheCalendarRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_save_a_calendar_to_cache()
+    public function it_can_save_a_calendar_to_cache(): void
     {
         $cache = new ArrayCache();
         $repository = new CacheCalendarRepository($cache);

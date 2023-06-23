@@ -12,7 +12,7 @@ class DescriptionTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_description()
+    public function it_should_be_creatable_from_an_udb3_model_description(): void
     {
         $udb3ModelDescription = new Udb3ModelDescription('foo bar');
 

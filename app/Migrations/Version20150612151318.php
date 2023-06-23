@@ -12,7 +12,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20150612151318 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         // @see \Broadway\EventStore\DBALEventStore
         $table = $schema->createTable('variations');
@@ -30,7 +30,7 @@ class Version20150612151318 extends AbstractMigration
     }
 
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('variations');
     }

@@ -89,7 +89,7 @@ class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_address()
+    public function it_should_return_an_address(): void
     {
         $expected = new \CultuurNet\UDB3\Address\Address(
             new \CultuurNet\UDB3\Address\Street('Henegouwenkaai 41-43'),
@@ -104,7 +104,7 @@ class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_address_translations()
+    public function it_should_return_address_translations(): void
     {
         $expected = [
             'fr' => new \CultuurNet\UDB3\Address\Address(

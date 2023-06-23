@@ -11,7 +11,7 @@ class EventNotFoundExceptionTest extends TestCase
     /**
      * @test
      */
-    public function it_has_the_HTTP_NOT_FOUND_status_code_by_default()
+    public function it_has_the_HTTP_NOT_FOUND_status_code_by_default(): void
     {
         $exception = new EventNotFoundException();
 

@@ -23,7 +23,7 @@ class MediaObjectTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_be_created()
+    public function it_can_be_created(): void
     {
         $fileId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
         $fileType = new MIMEType('image/png');
@@ -63,7 +63,7 @@ class MediaObjectTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_should_keep_track_of_media_object_meta_data()
+    public function it_should_keep_track_of_media_object_meta_data(): void
     {
         $mediaObject = MediaObject::create(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
