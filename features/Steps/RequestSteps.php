@@ -19,6 +19,14 @@ trait RequestSteps
     }
 
     /**
+     * @Given I accept :type
+     */
+    public function IAccept(string $type): void
+    {
+        $this->requestState->setAcceptHeader($type);
+    }
+
+    /**
      * @Given I set the JSON request payload from :fileName
      */
     public function iSetTheJsonRequestPayloadFrom(string $fileName): void
