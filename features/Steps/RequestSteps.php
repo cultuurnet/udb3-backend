@@ -19,6 +19,14 @@ trait RequestSteps
     }
 
     /**
+     * @Given I send :type
+     */
+    public function iSend(string $type): void
+    {
+        $this->requestState->setContentTypeHeader($type);
+    }
+
+    /**
      * @Given I accept :type
      */
     public function iAccept(string $type): void
