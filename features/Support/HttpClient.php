@@ -20,15 +20,22 @@ final class HttpClient
         string $acceptHeader,
         string $baseUrl
     ) {
-        $headers = [
-            'Authorization' => 'Bearer ' . $jwt,
-            'x-api-key' => $apiKey,
-            'Content-Type' => $contentTypeHeader,
-            'Accept' => $acceptHeader,
-        ];
+        $headers = [];
 
-        if (empty($jwt)) {
-            unset($headers['Authorization']);
+        if (!empty($jwt)) {
+            $headers['Authorization'] = 'Bearer ' . $jwt;
+        }
+
+        if (!empty($apiKey)) {
+            $headers['x-api-key'] = $apiKey;
+        }
+
+        if (!empty($contentTypeHeader)) {
+            $headers['Content-Type'] = $contentTypeHeader;
+        }
+
+        if (!empty($acceptHeader)) {
+            $headers['Accept'] = $acceptHeader;
         }
 
         $this->client = new Client([
