@@ -12,7 +12,7 @@ trait EventSteps
     public function iCreateAMinimalPermanentEventAndSaveTheAs(string $jsonPath, string $variableName): void
     {
         $response = $this->getHttpClient()->postJSON(
-            $this->requestState->getBaseUrl() . '/events',
+            '/events',
             $this->fixtures->loadJson('/events/event-minimal-permanent.json', $this->variableState)
         );
         $this->responseState->setResponse($response);

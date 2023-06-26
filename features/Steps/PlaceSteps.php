@@ -227,7 +227,7 @@ trait PlaceSteps
     private function createPlace(string $endpoint, string $json, string $jsonPath, string $variableName): void
     {
         $response = $this->getHttpClient()->postJSON(
-            $this->requestState->getBaseUrl() . $endpoint,
+            $endpoint,
             $json
         );
         $this->responseState->setResponse($response);
