@@ -70,6 +70,28 @@ trait ResponseSteps
     }
 
     /**
+     * @Then the JSON response should include:
+     */
+    public function theJsonResponseShouldInclude(PyStringNode $value): void
+    {
+        assertStringContainsString(
+            $this->variableState->replaceVariables($value->getRaw()),
+            $this->responseState->getContent()
+        );
+    }
+
+    /**
+     * @Then the JSON response at should include :value
+     */
+    public function theJsonResponseAtShouldInclude3($value)
+    {
+        assertStringContainsString(
+            $this->variableState->replaceVariables($value),
+            $this->responseState->getContent()
+        );
+    }
+
+    /**
      * @Then the JSON response at :url should include :value
      */
     public function theJsonResponseAtShouldInclude(string $jsonPath, string $value): void
