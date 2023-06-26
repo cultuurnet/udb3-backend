@@ -210,6 +210,17 @@ trait ResponseSteps
     }
 
     /**
+     * @Then I keep the JSON response as :variableName
+     */
+    public function iKeepTheJsonResponseAs(string $variableName): void
+    {
+        $this->variableState->setVariable(
+            $variableName,
+            $this->responseState->getContent()
+        );
+    }
+
+    /**
      * @Then the RDF response should match :fileName
      */
     public function theRdfResponseShouldMatch(string $fileName): void
