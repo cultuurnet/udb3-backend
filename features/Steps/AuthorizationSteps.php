@@ -67,7 +67,7 @@ trait AuthorizationSteps
                 'client_secret' => $this->config['clients']['jwt_provider_v2']['client_secret'],
                 'grant_type' => 'password',
                 'audience' => 'https://api.publiq.be',
-                'scope' => 'openid profile email'
+                'scope' => 'openid profile email',
             ])
         );
         $this->responseState->setResponse($response);
@@ -118,7 +118,7 @@ trait AuthorizationSteps
                 'client_secret' => $this->config['clients'][$clientName]['client_secret'],
                 'grant_type' => 'password',
                 'audience' => 'https://api.publiq.be',
-                'scope' => 'profile email'
+                'scope' => 'profile email',
             ])
         );
         $this->responseState->setResponse($response);
