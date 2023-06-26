@@ -21,7 +21,7 @@ trait RequestSteps
     /**
      * @Given I accept :type
      */
-    public function IAccept(string $type): void
+    public function iAccept(string $type): void
     {
         $this->requestState->setAcceptHeader($type);
     }
