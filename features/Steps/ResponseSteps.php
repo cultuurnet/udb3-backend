@@ -83,7 +83,7 @@ trait ResponseSteps
     /**
      * @Then the JSON response at should include :value
      */
-    public function theJsonResponseAtShouldInclude3($value)
+    public function theJsonResponseAtShouldInclude3(string $value): void
     {
         assertStringContainsString(
             $this->variableState->replaceVariables($value),
