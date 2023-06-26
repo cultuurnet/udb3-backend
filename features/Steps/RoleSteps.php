@@ -33,14 +33,6 @@ trait RoleSteps
         }
     }
 
-    /**
-     * @Then I remove all roles for the current user
-     */
-    public function iRemoveAllRolesForTheCurrentUser(): void
-    {
-        throw new PendingException();
-    }
-
     private function createRole(string $name): void
     {
         $response = $this->getHttpClient()->postJSON(
