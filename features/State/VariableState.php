@@ -23,6 +23,16 @@ final class VariableState
         return $variable;
     }
 
+    public function setRandomEmail(string $key): string
+    {
+        $name = $this->generateRandomVariable(10);
+        $domain = $this->generateRandomVariable(5);
+        $variable = $name . '@' . $domain . '.com';
+
+        $this->variables[$key] = $variable;
+        return $variable;
+    }
+
     public function getVariable(string $key): string
     {
         return $this->variables[$key];
