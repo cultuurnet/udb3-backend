@@ -18,6 +18,15 @@ trait AuthorizationSteps
     }
 
     /**
+     * @Given I am using the Search API v3 base URL
+     */
+    public function iAmUsingTheSearchApiVBaseUrl()
+    {
+        $this->variableState->setVariable('baseUrl', $this->config['base_url_sapi3']);
+        $this->requestState->setBaseUrl($this->config['base_url_sapi3']);
+    }
+
+    /**
      * @Given I am using the RDF base URL
      */
     public function iAmUsingTheRDFBaseURL(): void
@@ -74,8 +83,6 @@ trait AuthorizationSteps
 
         $idToken = $this->responseState->getJsonContent()['id_token'];
         $this->requestState->setJwt($idToken);
-
-        $this->iAmUsingTheUDB3BaseURL();
     }
 
     /**
@@ -143,5 +150,21 @@ trait AuthorizationSteps
     public function iAmNotUsingAnUitidV1ApiKey(): void
     {
         $this->requestState->setApiKey('');
+    }
+
+    /**
+     * @Given I am using a x-client-id header for client :clientId
+     */
+    public function iAmUsingAXClientIdHeaderForClient(string $clientId): void
+    {
+        $this->requestState->setClientId($this->config['clients'][$clientId]['client_id']);
+    }
+
+    /**
+     * @Given I am not using a x-client-id header
+     */
+    public function iAmNotUsingAXClientIdHeader(): void
+    {
+        $this->requestState->setClientId('');
     }
 }
