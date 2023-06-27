@@ -20,7 +20,7 @@ trait AuthorizationSteps
     /**
      * @Given I am using the Search API v3 base URL
      */
-    public function iAmUsingTheSearchApiVBaseUrl()
+    public function iAmUsingTheSearchApiVBaseUrl(): void
     {
         $this->variableState->setVariable('baseUrl', $this->config['base_url_sapi3']);
         $this->requestState->setBaseUrl($this->config['base_url_sapi3']);
