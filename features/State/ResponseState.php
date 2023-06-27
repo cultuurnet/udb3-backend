@@ -54,6 +54,11 @@ final class ResponseState
         return $this->jsonContent;
     }
 
+    public function getTotalItems(): int
+    {
+        return $this->jsonContent['totalItems'] ?? 0;
+    }
+
     /**
      * @return mixed|null
      */
