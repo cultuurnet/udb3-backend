@@ -29,4 +29,12 @@ trait UtilitySteps
     {
         $this->variableState->setRandomEmail($variableName);
     }
+
+    /**
+     * @Given I wait :seconds seconds
+     */
+    public function iWaitSeconds(int $seconds): void
+    {
+        sleep($seconds);
+    }
 }
