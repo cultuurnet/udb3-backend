@@ -146,4 +146,48 @@ trait RequestSteps
             }
         } while ($this->responseState->getContent() !== 'complete' && $elapsedTime++ < 5);
     }
+
+    /**
+     * @Given I wait for the place with url :url to be indexed
+     */
+    public function iWaitForThePlaceWithUrlToBeIndexed(string $url): void
+    {
+        $this->waitForItemWithUrlToBeIndex($url);
+    }
+
+    /**
+     * @Given I wait for the event with url :url to be indexed
+     */
+    public function iWaitForTheEventWithUrlToBeIndexed(string $url): void
+    {
+        $this->waitForItemWithUrlToBeIndex($url);
+    }
+
+    /**
+     * @Given I wait for the organizer with url :url to be indexed
+     */
+    public function iWaitForTheOrganizerWithUrlToBeIndexed(string $url): void
+    {
+        $this->waitForItemWithUrlToBeIndex($url);
+    }
+
+    private function waitForItemWithUrlToBeIndex(string $url): void
+    {
+        $url = $this->variableState->replaceVariables($url);
+
+        $pathSegments = explode('/', $url);
+        $segmentCount = count($pathSegments);
+        $id = $pathSegments[$segmentCount - 1];
+        $item = $pathSegments[$segmentCount - 2];
+
+        $elapsedTime = 0;
+        do {
+            $response = $this->getHttpClient()->get('/' . $item . '/?disableDefaultFilters=true&id=' . $id);
+            $this->responseState->setResponse($response);
+            if ($this->responseState->getTotalItems() != 1) {
+                sleep(1);
+                $elapsedTime++;
+            }
+        } while ($this->responseState->getTotalItems() != 1 && $elapsedTime++ < 5);
+    }
 }
