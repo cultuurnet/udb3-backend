@@ -11,15 +11,25 @@ trait EventSteps
      */
     public function iCreateAMinimalPermanentEventAndSaveTheAs(string $jsonPath, string $variableName): void
     {
-        $response = $this->getHttpClient()->postJSON(
+        $this->createPlace(
             '/events',
-            $this->fixtures->loadJson('/events/event-minimal-permanent.json', $this->variableState)
+            $this->fixtures->loadJson('/events/event-minimal-permanent.json', $this->variableState),
+            $jsonPath,
+            $variableName
         );
-        $this->responseState->setResponse($response);
+    }
 
-        $this->theResponseStatusShouldBe(201);
-        $this->theResponseBodyShouldBeValidJson();
-        $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
+    /**
+     * @Given I create an event from :fileName and save the :jsonPath as :variableName
+     */
+    public function iCreateAnEventFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName): void
+    {
+        $this->createEvent(
+            '/events',
+            $this->fixtures->loadJson($fileName, $this->variableState),
+            $jsonPath,
+            $variableName
+        );
     }
 
     /**
@@ -33,5 +43,18 @@ trait EventSteps
 
         $this->theResponseStatusShouldBe(200);
         $this->theResponseBodyShouldBeValidJson();
+    }
+
+    private function createEvent(string $endpoint, string $json, string $jsonPath, string $variableName): void
+    {
+        $response = $this->getHttpClient()->postJSON(
+            $endpoint,
+            $json
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseStatusShouldBe(201);
+        $this->theResponseBodyShouldBeValidJson();
+        $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
     }
 }
