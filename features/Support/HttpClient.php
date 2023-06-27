@@ -16,6 +16,7 @@ final class HttpClient
     public function __construct(
         string $jwt,
         string $apiKey,
+        string $clientId,
         string $contentTypeHeader,
         string $acceptHeader,
         string $baseUrl
@@ -36,6 +37,10 @@ final class HttpClient
 
         if (!empty($acceptHeader)) {
             $headers['Accept'] = $acceptHeader;
+        }
+
+        if (!empty($clientId)) {
+            $headers['X-Client-Id'] = $clientId;
         }
 
         $this->client = new Client([
