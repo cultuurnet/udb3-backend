@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use CultuurNet\UDB3\Json;
+
 trait AuthorizationSteps
 {
     /**
@@ -25,6 +27,15 @@ trait AuthorizationSteps
     }
 
     /**
+     * @Given I am using the UiTiD base URL
+     */
+    public function iAmUsingTheUiTiDBaseURL(): void
+    {
+        $this->variableState->setVariable('baseUrl', $this->config['base_url_uitid']);
+        $this->requestState->setBaseUrl($this->config['base_url_uitid']);
+    }
+
+    /**
      * @Given I am using an UiTID v1 API key of consumer :consumerName
      */
     public function iAmUsingAnUitidV1ApiKeyOfConsumer(string $consumerName): void
@@ -38,6 +49,84 @@ trait AuthorizationSteps
     public function iAmAuthorizedAsJwtProviderV1User(string $userName): void
     {
         $this->requestState->setJwt($this->config['users']['uitid_v1'][$userName]['jwt']);
+    }
+
+    /**
+     * @Given I am authorized as JWT provider v2 user :userName
+     */
+    public function iAmAuthorizedAsJwtProviderV2User(string $userName): void
+    {
+        $this->iAmUsingTheUiTiDBaseURL();
+
+        $response = $this->getHttpClient()->postJSON(
+            '/oauth/token',
+            Json::encode([
+                'username' => $this->config['users']['uitid_v2'][$userName]['username'],
+                'password' => $this->config['users']['uitid_v2'][$userName]['password'],
+                'client_id' => $this->config['clients']['jwt_provider_v2']['client_id'],
+                'client_secret' => $this->config['clients']['jwt_provider_v2']['client_secret'],
+                'grant_type' => 'password',
+                'audience' => 'https://api.publiq.be',
+                'scope' => 'openid profile email',
+            ])
+        );
+        $this->responseState->setResponse($response);
+
+        $idToken = $this->responseState->getJsonContent()['id_token'];
+        $this->requestState->setJwt($idToken);
+
+        $this->iAmUsingTheUDB3BaseURL();
+    }
+
+    /**
+     * @Given I am authorized with an Auth0 client access token for :clientName
+     */
+    public function iAmAuthorizedWithAnAuthClientAccessTokenFor(string $clientName): void
+    {
+        $this->iAmUsingTheUiTiDBaseURL();
+
+        $response = $this->getHttpClient()->postJSON(
+            '/oauth/token',
+            Json::encode([
+                'client_id' => $this->config['clients'][$clientName]['client_id'],
+                'client_secret' => $this->config['clients'][$clientName]['client_secret'],
+                'grant_type' => 'client_credentials',
+                'audience' => 'https://api.publiq.be',
+            ])
+        );
+        $this->responseState->setResponse($response);
+
+        $idToken = $this->responseState->getJsonContent()['access_token'];
+        $this->requestState->setJwt($idToken);
+
+        $this->iAmUsingTheUDB3BaseURL();
+    }
+
+    /**
+     * @Given I am authorized with an Auth0 user access token for :userName via client :clientName
+     */
+    public function iAmAuthorizedWithAnAuthUserAccessTokenForViaClient(string $userName, string $clientName): void
+    {
+        $this->iAmUsingTheUiTiDBaseURL();
+
+        $response = $this->getHttpClient()->postJSON(
+            '/oauth/token',
+            Json::encode([
+                'username' => $this->config['users']['uitid_v2'][$userName]['username'],
+                'password' => $this->config['users']['uitid_v2'][$userName]['password'],
+                'client_id' => $this->config['clients'][$clientName]['client_id'],
+                'client_secret' => $this->config['clients'][$clientName]['client_secret'],
+                'grant_type' => 'password',
+                'audience' => 'https://api.publiq.be',
+                'scope' => 'profile email',
+            ])
+        );
+        $this->responseState->setResponse($response);
+
+        $idToken = $this->responseState->getJsonContent()['access_token'];
+        $this->requestState->setJwt($idToken);
+
+        $this->iAmUsingTheUDB3BaseURL();
     }
 
     /**

@@ -37,7 +37,7 @@ trait LabelSteps
     private function createLabel(string $name, bool $visible, bool $public): void
     {
         $response = $this->getHttpClient()->postJSON(
-            $this->requestState->getBaseUrl() . '/labels',
+            '/labels',
             $this->variableState->replaceVariables(
                 Json::encode([
                     'name' => $name,

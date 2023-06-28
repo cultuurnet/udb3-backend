@@ -105,7 +105,7 @@ trait OrganizerSteps
     private function createOrganizer(string $endpoint, string $json, string $jsonPath, string $variableName): void
     {
         $response = $this->getHttpClient()->postJSON(
-            $this->requestState->getBaseUrl() . $endpoint,
+            $endpoint,
             $json
         );
         $this->responseState->setResponse($response);

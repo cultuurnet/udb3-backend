@@ -114,7 +114,7 @@ trait RequestSteps
     public function iUploadFromPathTo(string $fileKey, string $filePath, string $endpoint): void
     {
         $response = $this->getHttpClient()->postMultipart(
-            $this->requestState->getBaseUrl() . $endpoint,
+            $endpoint,
             $this->requestState->getForm(),
             $fileKey,
             $filePath,
