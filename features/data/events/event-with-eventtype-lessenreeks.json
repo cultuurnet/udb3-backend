@@ -1,0 +1,28 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Lessenreeks"
+  },
+  "terms": [
+    {
+      "id": "0.3.1.0.0",
+      "label": "Lessenreeks",
+      "domain": "eventtype"
+    },
+    {
+      "id": "1.51.12.0.0",
+      "label": "Omnisport en andere",
+      "domain": "theme"
+    }
+  ],
+  "location": {
+    "@id": "%{placeUrl}"
+  },
+  "calendarType": "single",
+  "subEvent": [
+    {
+      "startDate": "2021-05-17T08:00:00+00:00",
+      "endDate": "2021-05-18T22:00:00+00:00"
+    }
+  ]
+}
