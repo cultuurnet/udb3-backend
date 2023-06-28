@@ -236,6 +236,18 @@ trait ResponseSteps
     }
 
     /**
+     * @Then the JSON response at :jsonPath is an online location
+     */
+    public function theJsonResponseAtIsAnOnlineLocation(string $jsonPath): void
+    {
+        assertEquals(
+            $this->requestState->getBaseUrl() . '/place/' . '00000000-0000-0000-0000-000000000000',
+            $this->responseState->getValueOnPath($jsonPath)
+        );
+    }
+
+
+    /**
      * @Then show me the unparsed response
      */
     public function showMeTheUnparsedResponse(): void
