@@ -1,0 +1,46 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Permanent event"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "location": {
+    "@id": "https://io-test.uitdatabank.be/places/b99a3137-5591-4b9b-868d-bbd6a129c23b"
+  },
+  "priceInfo": [
+    {
+      "category": "base",
+      "name": {
+        "nl": "Basistarief",
+        "fr": "Tarif de base",
+        "en": "Base tariff",
+        "de": "Basisrate"
+      },
+      "price": 60,
+      "priceCurrency": "EUR"
+    },
+    {
+      "category": "tariff",
+      "name": {
+        "nl": "Reductie"
+      },
+      "price": 30,
+      "priceCurrency": "EUR"
+    },
+    {
+      "category": "tariff",
+      "name": {
+        "nl": "Reductie"
+      },
+      "price": 50,
+      "priceCurrency": "EUR"
+    }
+  ],
+  "calendarType": "permanent"
+}
