@@ -1,0 +1,43 @@
+{
+  "mainLanguage": "nl",
+  "name": "Multiple calendar event",
+  "type": {
+    "id": "0.50.4.0.0",
+    "label": "Concert",
+    "domain": "eventtype"
+  },
+  "theme": {
+    "id": "1.8.2.0.0",
+    "label": "Jazz en blues",
+    "domain": "theme"
+  },
+  "location": {
+    "id": "%{uuid_place}",
+    "name": "Cafe Den Hemel",
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Scherpenheuvel-Zichem",
+      "postalCode": "3271",
+      "streetAddress": "Hoornblaas 107"
+    }
+  },
+  "calendar": {
+    "calendarType": "multiple",
+    "timeSpans": [
+      {
+        "start": "2018-05-05T18:00:00.000Z",
+        "end": "2018-05-05T21:00:00.000Z",
+        "bookingAvailability": {
+          "type": "Available"
+        }
+      },
+      {
+        "start": "2018-05-06T18:00:00.000Z",
+        "end": "2018-05-06T21:00:00.000Z",
+        "bookingAvailability": {
+          "type": "Available"
+        }
+      }
+    ]
+  }
+}
