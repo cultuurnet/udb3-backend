@@ -33,6 +33,17 @@ trait EventSteps
     }
 
     /**
+     * @When I update the event at :url from :fileName
+     */
+    public function iUpdateTheEventAtFrom(string $url, string $fileName): void
+    {
+        $this->getHttpClient()->putJSON(
+            $url,
+            $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState)
+        );
+    }
+
+    /**
      * @Given I get the event at :url
      */
     public function iGetTheEventAt(string $url): void
