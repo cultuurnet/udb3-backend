@@ -1,0 +1,50 @@
+{
+  "@context": "/contexts/event",
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Multiple calendar with unavailable sub events"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "theme": {
+    "id": "1.8.2.0.0",
+    "label": "Jazz en blues",
+    "domain": "theme"
+  },
+  "location": {
+    "@id": "%{baseUrl}/places/%{uuid_place}"
+  },
+  "calendarType": "multiple",
+  "startDate": "2018-05-05T18:00:00+01:00",
+  "endDate": "2018-05-06T21:00:00+01:00",
+  "bookingAvailability": {
+    "type": "Available"
+  },
+  "subEvent": [
+    {
+      "startDate": "2018-05-05T18:00:00+01:00",
+      "endDate": "2018-05-05T21:00:00+01:00",
+      "bookingAvailability": {
+        "type": "Unavailable"
+      },
+      "status": {
+        "type": "Unavailable"
+      }
+    },
+    {
+      "startDate": "2018-05-06T18:00:00+01:00",
+      "endDate": "2018-05-06T21:00:00+01:00",
+      "bookingAvailability": {
+        "type": "Unavailable"
+      },
+      "status": {
+        "type": "Unavailable"
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "mainLanguage": "nl",
+  "name": "name example",
+  "type": {
+    "id": "0.50.4.0.0",
+    "label": "Concert",
+    "domain": "eventtype"
+  },
+  "theme": {
+    "id": "1.8.2.0.0",
+    "label": "Jazz en blues",
+    "domain": "theme"
+  },
+  "location": {
+    "id": "%{uuid_place}"
+  },
+  "address":{
+    "addressCountry":"BE",
+    "addressLocality":"",
+    "postalCode":"",
+    "streetAddress":""
+  },
+  "calendar": {
+    "calendarType": "permanent"
+  }
+}
