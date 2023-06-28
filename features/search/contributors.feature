@@ -17,7 +17,6 @@ Feature: Test the Search API v3 contributors
     """
     And I send a PUT request to "%{organizerUrl}/contributors"
     And I send a GET request to "%{organizerUrl}"
-    And show me the unparsed response
     And I am using the Search API v3 base URL
     And I wait 2 seconds
     When I send a GET request to "/organizers" with parameters:
