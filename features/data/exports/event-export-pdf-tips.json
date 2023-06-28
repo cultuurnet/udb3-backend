@@ -1,0 +1,18 @@
+{
+  "customizations": {
+    "brand": "uit",
+    "footer": "Meer tips op www.uitinvlaanderen.be",
+    "logo": "https://udb3-export-logo.s3.amazonaws.com/uit.svg",
+    "publisher": "publiq vzw",
+    "subtitle": "5 meeneemtips",
+    "template": "tips",
+    "title": "Test export PDF tipsrapport"
+  },
+  "include": [],
+  "order": {},
+  "perDay": false,
+  "query": "_type:event AND creator:7a583ed3-cbc1-481d-93b1-d80fff0174dd AND workflowStatus:(\"APPROVED\" OR \"READY_FOR_VALIDATION\")",
+  "selection": [
+    "%{baseUrl}/event/%{uuid_testevent_export}"
+  ]
+}
