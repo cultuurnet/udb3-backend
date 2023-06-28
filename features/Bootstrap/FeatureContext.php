@@ -70,6 +70,7 @@ final class FeatureContext implements Context
     public static function beforeSuite(BeforeSuiteScope $scope): void
     {
         // TODO: Create test labels if needed
+        // TODO: Create roles if needed
     }
 
     /**
