@@ -24,7 +24,7 @@ final class ResponseState
         try {
             $this->jsonContent = Json::decodeAssociatively($this->content);
             $this->validJson = true;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->validJson = false;
         }
     }
