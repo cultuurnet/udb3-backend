@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractLabelsImported;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded as OrganizerLabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved as OrganizerLabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
+use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 
 abstract class AbstractProjector implements EventListener
 {
@@ -54,19 +55,28 @@ abstract class AbstractProjector implements EventListener
 
     abstract public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata): void;
 
-    private function isLabelAdded(Serializable $payload): bool
+    /**
+     * @param Serializable|EventCardSystemsUpdated $payload
+     */
+    private function isLabelAdded($payload): bool
     {
         return ($payload instanceof OfferAbstractLabelAdded ||
             $payload instanceof OrganizerLabelAdded);
     }
 
-    private function isLabelRemoved(Serializable $payload): bool
+    /**
+     * @param Serializable|EventCardSystemsUpdated $payload
+     */
+    private function isLabelRemoved($payload): bool
     {
         return ($payload instanceof OfferAbstractLabelRemoved ||
             $payload instanceof OrganizerLabelRemoved);
     }
 
-    private function isLabelsImported(Serializable $payload): bool
+    /**
+     * @param Serializable|EventCardSystemsUpdated $payload
+     */
+    private function isLabelsImported($payload): bool
     {
         return ($payload instanceof AbstractLabelsImported ||
             $payload instanceof LabelsImported);
