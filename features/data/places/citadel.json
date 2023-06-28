@@ -1,0 +1,64 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "en": "Citadel",
+    "fr": "Citadelle",
+    "nl": "Citadel"
+  },
+  "address": {
+    "nl": {
+      "addressCountry": "BE",
+      "addressLocality": "Diest",
+      "postalCode": "3290",
+      "streetAddress": "Leuvensestraat 90-92"
+    }
+  },
+  "contactPoint": {
+    "email": [
+      "info@test.be",
+      "contact@test.be"
+    ],
+    "phone": [
+      "002345678900",
+      "003188987689"
+    ],
+    "url": [
+      "https://www.t3.com"
+    ]
+  },
+  "description": {
+    "nl": "Dit is de beschrijving",
+    "fr": "C'est la description",
+    "en": "This is a description"
+  },
+  "calendarType": "permanent",
+  "openingHours": [
+    {
+      "closes": "16:30",
+      "dayOfWeek": [
+        "monday",
+        "saturday",
+        "sunday"
+      ],
+      "opens": "10:00"
+    }
+  ],
+  "priceInfo": [
+    {
+      "category": "base",
+      "name": {
+        "nl": "Basistarief",
+        "fr": "Tarif de base",
+        "en": "Base tariff"
+      },
+      "price": 11,
+      "priceCurrency": "EUR"
+    }
+  ],
+  "terms": [
+    {
+      "id": "0.14.0.0.0"
+    }
+  ],
+  "typicalAgeRange": "-"
+}
