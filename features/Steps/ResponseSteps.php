@@ -11,6 +11,7 @@ use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
 use function PHPUnit\Framework\assertNull;
 use function PHPUnit\Framework\assertStringContainsString;
+use function PHPUnit\Framework\assertStringNotContainsString;
 use function PHPUnit\Framework\assertTrue;
 
 trait ResponseSteps
@@ -81,12 +82,12 @@ trait ResponseSteps
     }
 
     /**
-     * @Then the JSON response at should include :value
+     * @Then the JSON response should not include:
      */
-    public function theJsonResponseAtShouldInclude3(string $value): void
+    public function theJsonResponseShouldNotInclude(PyStringNode $value): void
     {
-        assertStringContainsString(
-            $this->variableState->replaceVariables($value),
+        assertStringNotContainsString(
+            $this->variableState->replaceVariables($value->getRaw()),
             $this->responseState->getContent()
         );
     }
@@ -97,6 +98,9 @@ trait ResponseSteps
     public function theJsonResponseAtShouldInclude(string $jsonPath, string $value): void
     {
         $actual = $this->responseState->getValueOnPath($jsonPath);
+        if ($jsonPath == '/') {
+            $actual = $this->responseState->getContent();
+        }
 
         if (is_array($actual)) {
             assertContains(
@@ -206,6 +210,17 @@ trait ResponseSteps
         $this->variableState->setVariable(
             $variableName,
             $this->responseState->getValueOnPath($jsonPath)
+        );
+    }
+
+    /**
+     * @Then I keep the JSON response as :variableName
+     */
+    public function iKeepTheJsonResponseAs(string $variableName): void
+    {
+        $this->variableState->setVariable(
+            $variableName,
+            $this->responseState->getContent()
         );
     }
 

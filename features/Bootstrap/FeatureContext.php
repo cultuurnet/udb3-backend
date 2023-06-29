@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Steps\OrganizerSteps;
 use CultuurNet\UDB3\Steps\PlaceSteps;
 use CultuurNet\UDB3\Steps\RequestSteps;
 use CultuurNet\UDB3\Steps\ResponseSteps;
+use CultuurNet\UDB3\Steps\RoleSteps;
 use CultuurNet\UDB3\Steps\UtilitySteps;
 use CultuurNet\UDB3\Support\Fixtures;
 use CultuurNet\UDB3\Support\HttpClient;
@@ -31,6 +32,7 @@ final class FeatureContext implements Context
     use OrganizerSteps;
     use PlaceSteps;
     use LabelSteps;
+    use RoleSteps;
 
     private array $config;
     private Fixtures $fixtures;

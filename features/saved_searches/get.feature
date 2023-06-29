@@ -16,4 +16,4 @@ Feature: Test the UDB3 saved searches API
     When I send a GET request to "/saved-searches/v3"
     Then the response status should be "200"
     And the response body should be valid JSON
-    And the JSON response at should include "%{name}"
+    And the JSON response at "/" should include "%{name}"
