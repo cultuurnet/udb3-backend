@@ -9,6 +9,7 @@ final class RequestState
     private string $baseUrl = '';
     private string $apiKey = '';
     private string $jwt = '';
+    private string $clientId = '';
 
     private string $acceptHeader = '';
     private string $contentTypeHeader = '';
@@ -34,6 +35,16 @@ final class RequestState
     public function setApiKey(string $apiKey): void
     {
         $this->apiKey = $apiKey;
+    }
+
+    public function getClientId(): string
+    {
+        return $this->clientId;
+    }
+
+    public function setClientId(string $clientId): void
+    {
+        $this->clientId = $clientId;
     }
 
     public function getJwt(): string

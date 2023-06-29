@@ -21,4 +21,20 @@ trait UtilitySteps
     {
         $this->variableState->setRandomVariable($variableName, $nrOfCharacters);
     }
+
+    /**
+     * @Given I create a random email and keep it as :variableName
+     */
+    public function iCreateARandomEmailAndKeepItAs(string $variableName): void
+    {
+        $this->variableState->setRandomEmail($variableName);
+    }
+
+    /**
+     * @Given I wait :seconds seconds
+     */
+    public function iWaitSeconds(int $seconds): void
+    {
+        sleep($seconds);
+    }
 }

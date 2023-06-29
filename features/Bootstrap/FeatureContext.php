@@ -57,6 +57,7 @@ final class FeatureContext implements Context
         return new HttpClient(
             $this->requestState->getJwt(),
             $this->requestState->getApiKey(),
+            $this->requestState->getClientId(),
             $this->requestState->getContentTypeHeader(),
             $this->requestState->getAcceptHeader(),
             $this->requestState->getBaseUrl()
