@@ -1,0 +1,101 @@
+{
+    "bookingInfo": {
+    "availabilityEnds": "2019-12-30T01:02:03+01:00",
+    "availabilityStarts": "2018-12-30T01:02:03+01:00",
+    "email": "test@test.com",
+    "phone": "123",
+    "url": "https://www.test.com",
+    "urlLabel": {
+      "nl": "Reserveer plaatsen",
+      "fr": "Réservez des places",
+      "en": "Reserve places",
+      "de": "Platzieren Sie eine Reservierung"
+    }
+  },
+  "contactPoint": {
+    "email": [
+      "info@test.be",
+      "contact@test.be"
+    ],
+    "phone": [
+      "002345678900",
+      "003188987689"
+    ],
+    "url": [
+      "https://www.t3.com"
+    ]
+  },
+  "description": {
+    "nl": "Dit is de beschrijving",
+    "fr": "C'est la description",
+    "en": "This is a description"
+  },
+  "location": {
+    "@id": "%{baseUrl}/place/%{uuid_place_citadel}"
+  },
+  "mainLanguage": "nl",
+  "name": {
+    "en": "Guided tour of the Citadel",
+    "nl": "Begeleide rondleiding in de Citadel",
+    "fr": "Visite guidée de la citadelle"
+  },
+  "priceInfo": [
+    {
+      "category": "base",
+      "name": {
+        "nl": "Basistarief",
+        "fr": "Tarif de base",
+        "en": "Base tariff"
+      },
+      "price": 11,
+      "priceCurrency": "EUR"
+    },
+    {
+      "category": "tariff",
+      "name": {
+        "nl": "Senioren",
+        "fr": "Aînés",
+        "en": "Elderly"
+      },
+      "price": 6,
+      "priceCurrency": "EUR"
+    }
+  ],
+  "calendarType": "multiple",
+  "startDate": "2020-04-01T14:45:00+01:00",
+  "endDate": "2020-06-01T18:45:00+01:00",
+  "subEvent": [
+    {
+      "@type": "Event",
+      "endDate": "2020-04-01T18:45:00+01:00",
+      "startDate": "2020-04-01T14:45:00+01:00"
+    },
+    {
+      "@type": "Event",
+      "endDate": "2020-05-01T18:45:00+01:00",
+      "startDate": "2020-05-01T14:45:00+01:00"
+    },
+    {
+      "@type": "Event",
+      "endDate": "2020-06-01T18:45:00+01:00",
+      "startDate": "2020-06-01T14:45:00+01:00"
+    }
+  ],
+  "terms": [
+    {
+      "id": "0.7.0.0.0"
+    }
+  ],
+  "typicalAgeRange": "3-15",
+  "audience": {
+    "audienceType": "everyone"
+    },
+  "labels": [
+    "label1",
+    "label2"
+  ],
+  "hiddenLabels": [
+    "hiddenLabel1",
+    "hiddenLabel2"
+  ]
+}
