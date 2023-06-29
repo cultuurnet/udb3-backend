@@ -1,0 +1,36 @@
+{
+  "@context": "/contexts/event",
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Permanent calendar with videos"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "theme": {
+    "id": "1.8.2.0.0",
+    "label": "Jazz en blues",
+    "domain": "theme"
+  },
+  "location": {
+    "@id": "%{baseUrl}/places/%{uuid_place}"
+  },
+  "calendarType": "permanent",
+  "startDate": "2018-05-05T18:00:00+01:00",
+  "endDate": "2018-05-06T21:00:00+01:00",
+  "videos": [
+    {
+      "url": "https://vimeo.com/98765432",
+      "language": "nl"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=cEItmb_a20D",
+      "language": "nl",
+      "copyrightHolder": "publiq"
+    }
+  ]
+}

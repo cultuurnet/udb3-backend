@@ -1,0 +1,19 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Permanent event"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "location": {
+    "@id": "https://io-test.uitdatabank.be/places/00000000-0000-0000-0000-000000000000"
+  },
+  "calendarType": "permanent",
+  "attendanceMode": "online",
+  "onlineUrl": "https://www.madewithlove.be/livestream"
+}

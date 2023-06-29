@@ -1,0 +1,18 @@
+{
+  "customizations": {
+    "brand": "uit",
+    "footer": "Meer info op www.uitinvlaanderen.be",
+    "logo": "https://udb3-export-logo.s3.amazonaws.com/uit.svg",
+    "publisher": "publiq vzw",
+    "subtitle": "Meeneemtips",
+    "template": "map",
+    "title": "Test export PDF mapview"
+  },
+  "include": [],
+  "order": {},
+  "perDay": false,
+  "query": "_type:event AND creator:7a583ed3-cbc1-481d-93b1-d80fff0174dd AND workflowStatus:(\"APPROVED\" OR \"READY_FOR_VALIDATION\")",
+  "selection": [
+    "%{baseUrl}/event/165df6a4-1fc7-4eda-ae3a-6980f6d5b369"
+  ]
+}

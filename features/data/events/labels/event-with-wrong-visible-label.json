@@ -1,0 +1,26 @@
+{
+  "@context": "/contexts/event",
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Event with public labels"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "theme": {
+    "id": "1.8.2.0.0",
+    "label": "Jazz en blues",
+    "domain": "theme"
+  },
+  "location": {
+    "@id": "%{baseUrl}/places/%{uuid_place}"
+  },
+  "calendarType": "permanent",
+  "labels": [
+    "public-invisible"
+  ]
+}

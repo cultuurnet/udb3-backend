@@ -1,0 +1,31 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Permanent event"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "location": {
+    "@id": "%{placeUrl}"
+  },
+  "calendarType": "permanent",
+  "mediaObject": [
+    {
+      "@id": "%{baseUrl}/images/%{imageId1}",
+      "description": "OVERWRITTEN DESCRIPTION",
+      "copyrightHolder": "OVERWRITTEN COPYRIGHTHOLDER",
+      "inLanguage": "de"
+    },
+    {
+      "id": "%{imageId2}",
+      "description": "OVERWRITTEN DESCRIPTION 2",
+      "copyrightHolder": "OVERWRITTEN COPYRIGHTHOLDER 2",
+      "inLanguage": "fr"
+    }
+  ]
+}

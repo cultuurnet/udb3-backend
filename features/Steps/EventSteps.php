@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use CultuurNet\UDB3\Json;
+
 trait EventSteps
 {
     /**
@@ -33,6 +35,17 @@ trait EventSteps
     }
 
     /**
+     * @When I update the event at :url from :fileName
+     */
+    public function iUpdateTheEventAtFrom(string $url, string $fileName): void
+    {
+        $this->getHttpClient()->putJSON(
+            $url,
+            $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState)
+        );
+    }
+
+    /**
      * @Given I get the event at :url
      */
     public function iGetTheEventAt(string $url): void
@@ -43,6 +56,126 @@ trait EventSteps
 
         $this->theResponseStatusShouldBe(200);
         $this->theResponseBodyShouldBeValidJson();
+    }
+
+    /**
+     * @When I delete the event at :url
+     */
+    public function iDeleteTheEventAt(string $url): void
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->delete($url)
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I publish the event at :url
+     */
+    public function iPublishTheEventAt(string $url): void
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->putJSON(
+                $url . '/workflow-status',
+                Json::encode(['workflowStatus' => 'READY_FOR_VALIDATION'])
+            )
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I publish the event at :url with availableFrom :availableFrom
+     */
+    public function iPublishTheEventAtWithAvailableFrom(string $url, string $availableFrom): void
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->putJSON(
+                $url . '/workflow-status',
+                Json::encode([
+                    'workflowStatus' => 'READY_FOR_VALIDATION',
+                    'availableFrom' => $availableFrom,
+                ])
+            )
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I publish the event via legacy PATCH at :url
+     */
+    public function iPublishTheEventViaLegacyPatchAt(string $url): void
+    {
+        $this->requestState->setContentTypeHeader('application/ld+json;domain-model=Publish');
+
+        $this->responseState->setResponse(
+            $this->getHttpClient()->patchJSON($url, '')
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I approve the event at :url
+     */
+    public function iApproveTheEventAt(string $url): void
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->putJSON(
+                $url . '/workflow-status',
+                Json::encode(['workflowStatus' => 'APPROVED'])
+            )
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I approve the event via legacy PATCH at :url
+     */
+    public function iApproveTheEventViaLegacyPatchAt(string $url): void
+    {
+        $this->requestState->setContentTypeHeader('application/ld+json;domain-model=Approve');
+
+        $this->responseState->setResponse(
+            $this->getHttpClient()->patchJSON($url, '')
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I reject the event at :url with reason :reason
+     */
+    public function iRejectTheEventWithReason(string $url, string $reason): void
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->putJSON(
+                $url . '/workflow-status',
+                Json::encode([
+                    'workflowStatus' => 'REJECTED',
+                    'reason' => $reason,
+                ])
+            )
+        );
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I reject the event via legacy PATCH at :url with reason :reason
+     */
+    public function iRejectTheEventViaLegacyPatchAtWithReason(string $url, string $reason): void
+    {
+        $this->requestState->setContentTypeHeader('application/ld+json;domain-model=Reject');
+
+        $this->responseState->setResponse(
+            $this->getHttpClient()->patchJSON($url, Json::encode(['reason' => $reason]))
+        );
+
+        $this->theResponseStatusShouldBe(204);
     }
 
     private function createEvent(string $endpoint, string $json, string $jsonPath, string $variableName): void
