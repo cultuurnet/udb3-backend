@@ -1,0 +1,64 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "en": "Mill House",
+    "fr": "Maison de la Moulin",
+    "nl": "Aangepaste naam"
+  },
+  "address": {
+    "nl": {
+      "addressCountry": "BE",
+      "addressLocality": "Molenstede",
+      "postalCode": "3294",
+      "streetAddress": "Dorpsstraat 45"
+    }
+  },
+  "contactPoint": {
+    "email": [
+      "info@test.be",
+      "contact@test.be"
+    ],
+    "phone": [
+      "002345678900",
+      "003188987689"
+    ],
+    "url": [
+      "https://www.t3.com"
+    ]
+  },
+  "description": {
+    "nl": "Dit is de beschrijving - Molenhuis",
+    "fr": "C'est la description- Molenhuis",
+    "en": "This is a description - Molenhuis"
+  },
+  "calendarType": "permanent",
+  "openingHours": [
+    {
+      "closes": "16:30",
+      "dayOfWeek": [
+        "monday",
+        "saturday",
+        "sunday"
+      ],
+      "opens": "10:00"
+    }
+  ],
+  "priceInfo": [
+    {
+      "category": "base",
+      "name": {
+        "nl": "Basistarief",
+        "fr": "Tarif de base",
+        "en": "Base tariff"
+      },
+      "price": 11,
+      "priceCurrency": "EUR"
+    }
+  ],
+  "terms": [
+    {
+      "id": "Yf4aZBfsUEu2NsQqsprngw"
+    }
+  ],
+  "typicalAgeRange": "-"
+}

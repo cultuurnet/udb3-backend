@@ -1,0 +1,64 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "en": "Meeting Center De Hemmekes",
+    "fr": "Centre de réunion De Hemmekes",
+    "nl": "Ontmoetingscentrum De Hemmekes"
+  },
+  "address": {
+    "nl": {
+      "addressCountry": "BE",
+      "addressLocality": "Zichem",
+      "postalCode": "3271",
+      "streetAddress": "Ernest Claesstraat 34"
+    }
+  },
+  "contactPoint": {
+    "email": [
+      "info@test.be",
+      "contact@test.be"
+    ],
+    "phone": [
+      "002345678900",
+      "003188987689"
+    ],
+    "url": [
+      "https://www.t3.com"
+    ]
+  },
+  "description": {
+    "nl": "Dit is de beschrijving - Hemmekes",
+    "fr": "C'est la description- Hemmekes",
+    "en": "This is a description - Hemmekes"
+  },
+  "calendarType": "permanent",
+  "openingHours": [
+    {
+      "closes": "16:30",
+      "dayOfWeek": [
+        "monday",
+        "saturday",
+        "sunday"
+      ],
+      "opens": "10:00"
+    }
+  ],
+  "priceInfo": [
+    {
+      "category": "base",
+      "name": {
+        "nl": "Basistarief",
+        "fr": "Tarif de base",
+        "en": "Base tariff"
+      },
+      "price": 11,
+      "priceCurrency": "EUR"
+    }
+  ],
+  "terms": [
+    {
+      "id": "Yf4aZBfsUEu2NsQqsprngw"
+    }
+  ],
+  "typicalAgeRange": "-"
+}
