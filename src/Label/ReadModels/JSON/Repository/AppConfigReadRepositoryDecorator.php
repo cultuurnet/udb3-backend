@@ -48,7 +48,7 @@ final class AppConfigReadRepositoryDecorator implements ReadRepositoryInterface
         }
 
         $labels = $config['labels'] ?? [];
-        return in_array($name, $labels);
+        return in_array(strtolower($name), array_map('strtolower', $labels));
     }
 
     public function search(Query $query): array
