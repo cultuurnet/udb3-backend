@@ -134,7 +134,7 @@ final class AppConfigReadRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_true_if_the_decorator_returns_false_but_the_client_has_the_label_in_a_different_case_in_the_config(): void
+    public function it_returns_true_if_the__client_has_the_label_in_a_different_case_in_the_config(): void
     {
         $userId = 'clientWithLabels@clients';
         $label = 'PRIVATElABEL';
