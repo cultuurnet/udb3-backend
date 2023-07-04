@@ -130,4 +130,21 @@ final class AppConfigReadRepositoryDecoratorTest extends TestCase
         $canUseLabel = $this->appConfigReadRepositoryDecorator->canUseLabel($userId, $label);
         $this->assertTrue($canUseLabel);
     }
+
+    /**
+     * @test
+     */
+    public function it_returns_true_if_the__client_has_the_label_in_a_different_case_in_the_config(): void
+    {
+        $userId = 'clientWithLabels@clients';
+        $label = 'PRIVATElABEL';
+
+        $this->decoratee->expects($this->once())
+            ->method('canUseLabel')
+            ->with($userId, $label)
+            ->willReturn(false);
+
+        $canUseLabel = $this->appConfigReadRepositoryDecorator->canUseLabel($userId, $label);
+        $this->assertTrue($canUseLabel);
+    }
 }
