@@ -24,7 +24,6 @@ final class GeopuntAddressParser implements AddressParser, LoggerAwareInterface
 
     public function __construct(
         ?ClientInterface $httpClient = null,
-        ?string $apiUrlV4 = 'https://loc.geopunt.be/v4'
         ?string $apiUrlV4 = 'https://geo.api.vlaanderen.be/geolocation/v4'
     ) {
         $this->httpClient = $httpClient ?? new Client();
