@@ -62,6 +62,10 @@ final class VideoNormalizer implements NormalizerInterface
      */
     public function normalize($video, $format = null, array $context = []): array
     {
+        if (! $video instanceof Video) {
+            throw new \InvalidArgumentException('Expected video object, got '. get_class($video));
+        }
+
         $platformData = $this->getPlatformData($video->getUrl());
         $videoArray = [
             'id' => $video->getId(),
