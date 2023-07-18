@@ -15,6 +15,8 @@ final class VideoNormalizer implements NormalizerInterface
 {
     private const YOUTUBE_EMBED = 'https://www.youtube.com/embed/';
 
+    private const YOUTUBE_SHORT = 'https://www.youtube.com/shorts/';
+
     private const YOUTUBE_NAME = 'YouTube';
 
     private const VIMEO_EMBED = 'https://player.vimeo.com/video/';
@@ -22,6 +24,10 @@ final class VideoNormalizer implements NormalizerInterface
     private const VIMEO_NAME = 'Vimeo';
 
     private array $videoPlatforms = [
+        13 => [
+            'embed' => self::YOUTUBE_SHORT,
+            'name' => self::YOUTUBE_NAME,
+        ],
         5 => [
             'embed' => self::YOUTUBE_EMBED,
             'name' => self::YOUTUBE_NAME,
