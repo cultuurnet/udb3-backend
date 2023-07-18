@@ -8,12 +8,15 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class VideoNormalizer implements NormalizerInterface
 {
     private const YOUTUBE_EMBED = 'https://www.youtube.com/embed/';
+
+    private const YOUTUBE_SHORT = 'https://www.youtube.com/shorts/';
 
     private const YOUTUBE_NAME = 'YouTube';
 
@@ -22,10 +25,11 @@ final class VideoNormalizer implements NormalizerInterface
     private const VIMEO_NAME = 'Vimeo';
 
     private array $videoPlatforms = [
+        // This index is the group number from the matching regexp from Video::REGEX
         5 => [
             'embed' => self::YOUTUBE_EMBED,
             'name' => self::YOUTUBE_NAME,
-            ],
+        ],
         7 => [
             'embed' => self::VIMEO_EMBED,
             'name' => self::VIMEO_NAME,
@@ -36,6 +40,10 @@ final class VideoNormalizer implements NormalizerInterface
         ],
         11 => [
             'embed' => self::YOUTUBE_EMBED,
+            'name' => self::YOUTUBE_NAME,
+        ],
+        13 => [
+            'embed' => self::YOUTUBE_SHORT,
             'name' => self::YOUTUBE_NAME,
         ],
     ];
@@ -55,6 +63,10 @@ final class VideoNormalizer implements NormalizerInterface
      */
     public function normalize($video, $format = null, array $context = []): array
     {
+        if (!$video instanceof Video) {
+            throw new InvalidArgumentException('Expected video object, got ' . get_class($video));
+        }
+
         $platformData = $this->getPlatformData($video->getUrl());
         $videoArray = [
             'id' => $video->getId(),
@@ -90,7 +102,7 @@ final class VideoNormalizer implements NormalizerInterface
         );
 
         foreach ($this->videoPlatforms as $videoPlatformIndex => $videoPlatformData) {
-            if (isset($matches[$videoPlatformIndex]) && !empty($matches[$videoPlatformIndex])) {
+            if (!empty($matches[$videoPlatformIndex])) {
                 return [
                     'embed' => $videoPlatformData['embed'],
                     'name' => $videoPlatformData['name'],
