@@ -79,6 +79,20 @@ final class VideoNormalizerTest extends TestCase
                     'copyrightHolder' => 'Droits d\'auteur gérés par YouTube',
                 ],
             ],
+            'video_from_youtube_short' => [
+                new Video(
+                    '91c75325-3830-4000-b580-5778b2de4548',
+                    new Url('https://www.youtube.com/shorts/ViOS7SeT0HE'),
+                    new Language('fr')
+                ),
+                [
+                    'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                    'url' => 'https://www.youtube.com/shorts/ViOS7SeT0HE',
+                    'embedUrl' => 'https://www.youtube.com/shorts/ViOS7SeT0HE',
+                    'language' => 'fr',
+                    'copyrightHolder' => 'Droits d\'auteur gérés par YouTube',
+                ],
+            ],
             'video_from_youtube_url_shortener' => [
                 new Video(
                     '91c75325-3830-4000-b580-5778b2de4548',
