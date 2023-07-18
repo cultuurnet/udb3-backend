@@ -101,7 +101,7 @@ final class VideoNormalizer implements NormalizerInterface
         );
 
         foreach ($this->videoPlatforms as $videoPlatformIndex => $videoPlatformData) {
-            if (isset($matches[$videoPlatformIndex]) && !empty($matches[$videoPlatformIndex])) {
+            if (!empty($matches[$videoPlatformIndex])) {
                 return [
                     'embed' => $videoPlatformData['embed'],
                     'name' => $videoPlatformData['name'],
