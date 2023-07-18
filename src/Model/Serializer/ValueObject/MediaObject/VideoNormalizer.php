@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -62,8 +63,8 @@ final class VideoNormalizer implements NormalizerInterface
      */
     public function normalize($video, $format = null, array $context = []): array
     {
-        if (! $video instanceof Video) {
-            throw new \InvalidArgumentException('Expected video object, got '. get_class($video));
+        if (!$video instanceof Video) {
+            throw new InvalidArgumentException('Expected video object, got ' . get_class($video));
         }
 
         $platformData = $this->getPlatformData($video->getUrl());
