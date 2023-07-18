@@ -24,14 +24,11 @@ final class VideoNormalizer implements NormalizerInterface
     private const VIMEO_NAME = 'Vimeo';
 
     private array $videoPlatforms = [
-        13 => [
-            'embed' => self::YOUTUBE_SHORT,
-            'name' => self::YOUTUBE_NAME,
-        ],
+        // This index is the group number from the matching regexp from Video::REGEX
         5 => [
             'embed' => self::YOUTUBE_EMBED,
             'name' => self::YOUTUBE_NAME,
-            ],
+        ],
         7 => [
             'embed' => self::VIMEO_EMBED,
             'name' => self::VIMEO_NAME,
@@ -42,6 +39,10 @@ final class VideoNormalizer implements NormalizerInterface
         ],
         11 => [
             'embed' => self::YOUTUBE_EMBED,
+            'name' => self::YOUTUBE_NAME,
+        ],
+        13 => [
+            'embed' => self::YOUTUBE_SHORT,
             'name' => self::YOUTUBE_NAME,
         ],
     ];
