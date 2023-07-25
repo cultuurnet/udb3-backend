@@ -54,6 +54,7 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
      */
     public function it_handles_updating_the_booking_info_of_an_offer(
         string $offerType,
+        string $url,
         AbstractUpdateBookingInfo $updateBookingInfo
     ): void {
         $updateBookingInfoRequest = $this->psr7RequestBuilder
@@ -62,7 +63,7 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray(
                 [
                     'bookingInfo' => [
-                        'url' => 'https://www.publiq.be/',
+                        'url' => $url,
                         'urlLabel' => ['nl' => 'Publiq vzw'],
                         'phone' => '02/1232323',
                         'email' => 'info@publiq.be',
@@ -90,8 +91,20 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
 
     public function offerTypeDataProvider(): array
     {
-        $bookingInfo = new BookingInfo(
-            'https://www.publiq.be/',
+        $basicUrl = 'https://www.publiq.be/';
+        $specialCharactersUrl = 'https://publiq-vzw.com/Inschrijven.aspx?ReservatieCat=2#/inschrijven/activiteiten';
+
+        $bookingInfoBasicUrl = new BookingInfo(
+            $basicUrl,
+            new MultilingualString(new Language('nl'), new StringLiteral('Publiq vzw')),
+            '02/1232323',
+            'info@publiq.be',
+            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2023-01-01T00:00:00+01:00'),
+            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2028-01-31T23:59:59+01:00')
+        );
+
+        $bookingInfoSpecialCharactersUrl = new BookingInfo(
+            $specialCharactersUrl,
             new MultilingualString(new Language('nl'), new StringLiteral('Publiq vzw')),
             '02/1232323',
             'info@publiq.be',
@@ -102,16 +115,34 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
         return [
             [
                 'offerType' => 'events',
+                'url' => $basicUrl,
                 'updateBookingInfo' => new EventUpdateBookingInfo(
                     self::OFFER_ID,
-                    $bookingInfo
+                    $bookingInfoBasicUrl
                 ),
             ],
             [
                 'offerType' => 'places',
+                'url' => $basicUrl,
                 'updateBookingInfo' => new PlaceUpdateBookingInfo(
                     self::OFFER_ID,
-                    $bookingInfo
+                    $bookingInfoBasicUrl
+                ),
+            ],
+            [
+                'offerType' => 'events',
+                'url' => $specialCharactersUrl,
+                'updateBookingInfo' => new EventUpdateBookingInfo(
+                    self::OFFER_ID,
+                    $bookingInfoSpecialCharactersUrl
+                ),
+            ],
+            [
+                'offerType' => 'places',
+                'url' => $specialCharactersUrl,
+                'updateBookingInfo' => new PlaceUpdateBookingInfo(
+                    self::OFFER_ID,
+                    $bookingInfoSpecialCharactersUrl
                 ),
             ],
         ];
@@ -179,7 +210,7 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             'schemaErrors' => [
                 new SchemaError(
                     '/url',
-                    'The string should match pattern: ^http[s]?:\/\/\w'
+                    'The string should match pattern: ^https?:\/\/[\w\-\.]+\.\w{2,}(\/.*)?$'
                 ),
             ],
         ];

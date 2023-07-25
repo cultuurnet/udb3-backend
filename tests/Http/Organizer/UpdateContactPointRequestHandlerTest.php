@@ -216,7 +216,7 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/url/0', 'The string should match pattern: ^http[s]?:\/\/\w')
+                new SchemaError('/url/0', 'The string should match pattern: ^https?:\/\/[\w\-\.]+\.\w{2,}(\/.*)?$')
             ),
             fn () => $this->updateContactPointRequestHandler->handle($updateUrlRequest)
         );

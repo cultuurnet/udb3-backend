@@ -248,7 +248,7 @@ Feature: Test the UDB3 events API
       "status":400,
       "schemaErrors": [
         {
-          "error": "The string should match pattern: ^http[s]?:\\/\\/\\w",
+          "error": "The string should match pattern: ^https?:\\/\\/[\\w\\-\\.]+\\.\\w{2,}(\\/.*)?$",
           "jsonPointer": "/url"
         }
       ]
