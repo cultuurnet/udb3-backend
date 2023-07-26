@@ -4,6 +4,7 @@ Feature: Test the UDB3 labels API
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And labels test data is available
 
   Scenario: Get single label by name
     When I create a label with a random name of 10 characters
