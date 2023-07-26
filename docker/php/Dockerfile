@@ -27,3 +27,6 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+
+RUN pecl install xdebug-3.1.5 && docker-php-ext-enable xdebug
+COPY xdebug.ini $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
