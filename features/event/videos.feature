@@ -1,4 +1,4 @@
-Feature: Test place videos property
+Feature: Test event videos property
  # All different videos formats (youtube, youtube shorts, embeds, ...) are tested in the place/videos.features, so we only test one version here.
   Background:
     Given I am using the UDB3 base URL
