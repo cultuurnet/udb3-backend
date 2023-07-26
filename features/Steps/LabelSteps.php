@@ -34,6 +34,58 @@ trait LabelSteps
         );
     }
 
+    /**
+     * @Given labels test data is available
+     */
+    public function labelsTestDataIsAvailable(): void
+    {
+        // Create "public-visible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
+        $this->createLabel('public-visible', true, true);
+        $this->getLabel('public-visible');
+        $uuid = $this->responseState->getJsonContent()['uuid'];
+        $this->patchLabel($uuid, 'MakePublic');
+        $this->patchLabel($uuid, 'MakeVisible');
+
+        // Create "public-invisible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
+        $this->createLabel('public-invisible', false, true);
+        $this->getLabel('public-invisible');
+        $uuid = $this->responseState->getJsonContent()['uuid'];
+        $this->patchLabel($uuid, 'MakePublic');
+        $this->patchLabel($uuid, 'MakeInvisible');
+
+        // Create "private-visible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
+        $this->createLabel('private-visible', true, false);
+        $this->getLabel('private-visible');
+        $uuid = $this->responseState->getJsonContent()['uuid'];
+        $this->patchLabel($uuid, 'MakePrivate');
+        $this->patchLabel($uuid, 'MakeVisible');
+
+        // Create "private-invisible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
+        $this->createLabel('private-invisible', false, false);
+        $this->getLabel('private-invisible');
+        $uuid = $this->responseState->getJsonContent()['uuid'];
+        $this->patchLabel($uuid, 'MakePrivate');
+        $this->patchLabel($uuid, 'MakeInvisible');
+
+        // Create "special_label" if it doesn't exist yet
+        $this->createLabel('special_label', true, true);
+
+        // Create "special-label" if it doesn't exist yet
+        $this->createLabel('special-label', true, true);
+
+        // Create "special_label#" if it doesn't exist yet and exclude it because of invalid #
+        $this->createLabel('special_label#', true, true);
+        $this->getLabel('special_label#');
+        $uuid = $this->responseState->getJsonContent()['uuid'];
+        $this->patchLabel($uuid, 'Exclude');
+
+        // Create "special_label*" if it doesn't exist yet and exclude it because of invalid #
+        $this->createLabel('special_label*', true, true);
+        $this->getLabel('special_label*');
+        $uuid = $this->responseState->getJsonContent()['uuid'];
+        $this->patchLabel($uuid, 'Exclude');
+    }
+
     private function createLabel(string $name, bool $visible, bool $public): void
     {
         $response = $this->getHttpClient()->postJSON(
