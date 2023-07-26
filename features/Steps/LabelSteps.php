@@ -50,4 +50,27 @@ trait LabelSteps
 
         $this->theResponseBodyShouldBeValidJson();
     }
+
+    private function getLabel(string $name): void
+    {
+        $response = $this->getHttpClient()->get(
+            '/labels/' . urlencode($name)
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseBodyShouldBeValidJson();
+    }
+
+    private function patchLabel(string $uuid, string $command): void
+    {
+        $response = $this->getHttpClient()->patchJSON(
+            '/labels/' . $uuid,
+            $this->variableState->replaceVariables(
+                Json::encode([
+                    'command' => $command,
+                ])
+            )
+        );
+        $this->responseState->setResponse($response);
+    }
 }
