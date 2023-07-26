@@ -1733,6 +1733,54 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_invalid_organizer_reference(): void
+    {
+        $eventData = [
+            '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Event',
+            '@context' => '/contexts/event',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.be/place/dbe91250-4e4b-495c-b692-3da9563b0d52',
+            ],
+            'organizer' => [
+                '@id' => 'Invalid id',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.1',
+                ],
+            ],
+        ];
+
+        $expected = new ImmutableEvent(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ),
+            new PermanentCalendar(new OpeningHours()),
+            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.1.0.1')
+                )
+            )
+        );
+
+        $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_when_trying_to_denormalize_to_an_unsupported_class(): void
     {
         $this->expectException(UnsupportedException::class);
