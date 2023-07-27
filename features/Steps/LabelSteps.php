@@ -35,6 +35,22 @@ trait LabelSteps
     }
 
     /**
+     * @Given I patch the label :labelId with command :command
+     */
+    public function patchLabel(string $uuid, string $command): void
+    {
+        $response = $this->getHttpClient()->patchJSON(
+            '/labels/' . $uuid,
+            $this->variableState->replaceVariables(
+                Json::encode([
+                    'command' => $command,
+                ])
+            )
+        );
+        $this->responseState->setResponse($response);
+    }
+
+    /**
      * @Given labels test data is available
      */
     public function labelsTestDataIsAvailable(): void
@@ -130,18 +146,5 @@ trait LabelSteps
         $this->responseState->setResponse($response);
 
         $this->theResponseBodyShouldBeValidJson();
-    }
-
-    private function patchLabel(string $uuid, string $command): void
-    {
-        $response = $this->getHttpClient()->patchJSON(
-            '/labels/' . $uuid,
-            $this->variableState->replaceVariables(
-                Json::encode([
-                    'command' => $command,
-                ])
-            )
-        );
-        $this->responseState->setResponse($response);
     }
 }
