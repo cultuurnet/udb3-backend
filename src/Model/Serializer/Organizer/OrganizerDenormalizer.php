@@ -137,6 +137,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
         );
 
         $organizer = $this->denormalizeDescription($data, $organizer);
+        $organizer = $this->denormalizeEducationalDescription($data, $organizer);
         $organizer = $this->denormalizeAddress($data, $organizer);
         $organizer = $this->denormalizeLabels($data, $organizer);
         $organizer = $this->denormalizeContactPoint($data, $organizer);
@@ -152,6 +153,19 @@ class OrganizerDenormalizer implements DenormalizerInterface
             /* @var TranslatedDescription $description */
             $description = $this->descriptionDenormalizer->denormalize($data['description'], TranslatedDescription::class);
             $organizer = $organizer->withDescription($description);
+        }
+        return $organizer;
+    }
+
+    private function denormalizeEducationalDescription(array $data, ImmutableOrganizer $organizer): ImmutableOrganizer
+    {
+        if (isset($data['educationalDescription'])) {
+            /* @var TranslatedDescription $educationalDescription */
+            $educationalDescription = $this->descriptionDenormalizer->denormalize(
+                $data['educationalDescription'],
+                TranslatedDescription::class
+            );
+            $organizer = $organizer->withEducationalDescription($educationalDescription);
         }
         return $organizer;
     }
