@@ -35,9 +35,9 @@ trait LabelSteps
     }
 
     /**
-     * @Given I patch the label :labelId with command :command
+     * @Given I patch the label :labelId with :command
      */
-    public function patchLabel(string $uuid, string $command): void
+    public function iPatchTheLabelWith(string $uuid, string $command): void
     {
         $response = $this->getHttpClient()->patchJSON(
             '/labels/' . $uuid,
