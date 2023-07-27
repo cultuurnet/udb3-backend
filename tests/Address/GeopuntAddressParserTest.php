@@ -14,16 +14,18 @@ use Psr\Http\Client\ClientInterface;
 
 class GeopuntAddressParserTest extends TestCase
 {
-    /** @var ClientInterface&MockObject  */
+    /** @var ClientInterface&MockObject */
     private ClientInterface $httpClient;
     private GeopuntAddressParser $geopuntAddressParser;
     private TestLogger $logger;
     private TestLogger $expectedLogs;
 
+    private string $baseUrl = 'http://www.test.be/';
+
     protected function setUp(): void
     {
         $this->httpClient = $this->createMock(ClientInterface::class);
-        $this->geopuntAddressParser = new GeopuntAddressParser($this->httpClient);
+        $this->geopuntAddressParser = new GeopuntAddressParser($this->baseUrl, $this->httpClient);
 
         $this->logger = new TestLogger();
         $this->geopuntAddressParser->setLogger($this->logger);
@@ -40,7 +42,7 @@ class GeopuntAddressParserTest extends TestCase
 
         $expectedRequest = new Request(
             'GET',
-            'https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
+            $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
         );
 
         $mockResponseData = [
@@ -67,7 +69,7 @@ class GeopuntAddressParserTest extends TestCase
             'Leuven'
         );
 
-        $this->expectedLogs->info('GET https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Leuven","Zipcode":"3000","Thoroughfarename":"Martelarenplein","Housenumber":"12"}]}');
+        $this->expectedLogs->info('GET ' . $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Leuven","Zipcode":"3000","Thoroughfarename":"Martelarenplein","Housenumber":"12"}]}');
         $this->expectedLogs->info('Successfully parsed response body.');
 
         $actualParsedAddress = $this->geopuntAddressParser->parse($address);
@@ -85,7 +87,7 @@ class GeopuntAddressParserTest extends TestCase
 
         $expectedRequest = new Request(
             'GET',
-            'https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
+            $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
         );
 
         $mockResponseData = [
@@ -112,7 +114,7 @@ class GeopuntAddressParserTest extends TestCase
             'Leuven'
         );
 
-        $this->expectedLogs->info('GET https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Leuven","Zipcode":"3000","Thoroughfarename":"Martelarenplein","Housenumber":null}]}');
+        $this->expectedLogs->info('GET ' . $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Leuven","Zipcode":"3000","Thoroughfarename":"Martelarenplein","Housenumber":null}]}');
         $this->expectedLogs->info('Successfully parsed response body.');
 
         $actualParsedAddress = $this->geopuntAddressParser->parse($address);
@@ -130,7 +132,7 @@ class GeopuntAddressParserTest extends TestCase
 
         $expectedRequest = new Request(
             'GET',
-            'https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
+            $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
         );
 
         $mockResponse = new Response(200, [], '{{}');
@@ -140,9 +142,8 @@ class GeopuntAddressParserTest extends TestCase
             ->with($expectedRequest)
             ->willReturn($mockResponse);
 
-        $this->expectedLogs->info('GET https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {{}');
+        $this->expectedLogs->info('GET ' . $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {{}');
         $this->expectedLogs->error('Caught \JsonException while decoding response body.', ['message' => 'Syntax error']);
-
         $actualParsedAddress = $this->geopuntAddressParser->parse($address);
 
         $this->assertNull($actualParsedAddress);
@@ -158,7 +159,7 @@ class GeopuntAddressParserTest extends TestCase
 
         $expectedRequest = new Request(
             'GET',
-            'https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
+            $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
         );
 
         $mockResponse = new Response(200, [], '{}');
@@ -168,7 +169,7 @@ class GeopuntAddressParserTest extends TestCase
             ->with($expectedRequest)
             ->willReturn($mockResponse);
 
-        $this->expectedLogs->info('GET https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {}');
+        $this->expectedLogs->info('GET ' . $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {}');
         $this->expectedLogs->error(
             'Response body did not match the expected JSON schema. Did the API introduce a breaking change?',
             [
@@ -195,12 +196,12 @@ class GeopuntAddressParserTest extends TestCase
 
         $expectedRequest = new Request(
             'GET',
-            'https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
+            $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
         );
 
         $mockResponseData = [
             'LocationResult' => [
-                (object) [],
+                (object)[],
             ],
         ];
         $mockResponse = new Response(200, [], Json::encode($mockResponseData));
@@ -210,7 +211,7 @@ class GeopuntAddressParserTest extends TestCase
             ->with($expectedRequest)
             ->willReturn($mockResponse);
 
-        $this->expectedLogs->info('GET https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {"LocationResult":[{}]}');
+        $this->expectedLogs->info('GET ' . $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {"LocationResult":[{}]}');
         $this->expectedLogs->error(
             'Response body did not match the expected JSON schema. Did the API introduce a breaking change?',
             [
@@ -237,7 +238,7 @@ class GeopuntAddressParserTest extends TestCase
 
         $expectedRequest = new Request(
             'GET',
-            'https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
+            $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
         );
 
         $mockResponseData = [
@@ -257,7 +258,7 @@ class GeopuntAddressParserTest extends TestCase
             ->with($expectedRequest)
             ->willReturn($mockResponse);
 
-        $this->expectedLogs->info('GET https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":8,"Zipcode":null,"Thoroughfarename":false,"Housenumber":[]}]}');
+        $this->expectedLogs->info('GET ' . $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":8,"Zipcode":null,"Thoroughfarename":false,"Housenumber":[]}]}');
         $this->expectedLogs->error(
             'Response body did not match the expected JSON schema. Did the API introduce a breaking change?',
             [
@@ -292,7 +293,7 @@ class GeopuntAddressParserTest extends TestCase
 
         $expectedRequest = new Request(
             'GET',
-            'https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
+            $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE'
         );
 
         $mockResponseData = [
@@ -305,7 +306,7 @@ class GeopuntAddressParserTest extends TestCase
             ->with($expectedRequest)
             ->willReturn($mockResponse);
 
-        $this->expectedLogs->info('GET https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {"LocationResult":[]}');
+        $this->expectedLogs->info('GET ' . $this->baseUrl . 'Location?q=Martelarenplein%201,%203000%20Leuven,%20BE responded with status code 200 and body {"LocationResult":[]}');
         $this->expectedLogs->info('Response body did not contain any array items inside "LocationResult" property. Either the address is not located in Belgium, or it is not recognized as an official address.');
 
         $actualParsedAddress = $this->geopuntAddressParser->parse($address);
@@ -323,7 +324,7 @@ class GeopuntAddressParserTest extends TestCase
 
         $expectedRequest = new Request(
             'GET',
-            'https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE'
+            $this->baseUrl . 'Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE'
         );
 
         $mockResponseData = [
@@ -344,7 +345,7 @@ class GeopuntAddressParserTest extends TestCase
             ->with($expectedRequest)
             ->willReturn($mockResponse);
 
-        $this->expectedLogs->info('GET https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Bruxelles","Zipcode":null,"Thoroughfarename":"Marguerite Durassquare","Housenumber":null}]}');
+        $this->expectedLogs->info('GET ' . $this->baseUrl . 'Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Bruxelles","Zipcode":null,"Thoroughfarename":"Marguerite Durassquare","Housenumber":null}]}');
         $this->expectedLogs->info('Successfully parsed response body.');
 
         $expectedParsedAddress = new ParsedAddress(
@@ -369,7 +370,7 @@ class GeopuntAddressParserTest extends TestCase
 
         $expectedRequest = new Request(
             'GET',
-            'https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE'
+            $this->baseUrl . 'Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE'
         );
 
         $mockResponseData = [
@@ -390,7 +391,7 @@ class GeopuntAddressParserTest extends TestCase
             ->with($expectedRequest)
             ->willReturn($mockResponse);
 
-        $this->expectedLogs->info('GET https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Bruxelles","Zipcode":"1000","Thoroughfarename":null,"Housenumber":null}]}');
+        $this->expectedLogs->info('GET ' . $this->baseUrl . 'Location?q=Marguerite%20Durassquare,%201000%20Brussel,%20BE responded with status code 200 and body {"LocationResult":[{"Municipality":"Bruxelles","Zipcode":"1000","Thoroughfarename":null,"Housenumber":null}]}');
         $this->expectedLogs->info('Successfully parsed response body.');
 
         $expectedParsedAddress = new ParsedAddress(
