@@ -11,6 +11,9 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\Place;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
@@ -28,12 +31,15 @@ final class RdfProjector implements EventListener
 {
     private GraphRepository $graphRepository;
     private IriGeneratorInterface $iriGenerator;
+    private IriGeneratorInterface $termsIriGenerator;
     private DocumentRepository $documentRepository;
     private DenormalizerInterface $placeDenormalizer;
     private AddressParser $addressParser;
 
     private const TYPE_LOCATIE = 'dcterms:Location';
     private const TYPE_GEOMETRIE = 'locn:Geometry';
+
+    private const PROPERTY_LOCATIE_TYPE = 'dcterms:type';
 
     private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
@@ -43,12 +49,14 @@ final class RdfProjector implements EventListener
     public function __construct(
         GraphRepository $graphRepository,
         IriGeneratorInterface $iriGenerator,
+        IriGeneratorInterface $termsIriGenerator,
         DocumentRepository $documentRepository,
         DenormalizerInterface $placeDenormalizer,
         AddressParser $addressParser
     ) {
         $this->graphRepository = $graphRepository;
         $this->iriGenerator = $iriGenerator;
+        $this->termsIriGenerator = $termsIriGenerator;
         $this->documentRepository = $documentRepository;
         $this->placeDenormalizer = $placeDenormalizer;
         $this->addressParser = $addressParser;
@@ -79,6 +87,8 @@ final class RdfProjector implements EventListener
 
         $this->setTitle($resource, $place->getTitle());
 
+        $this->setTerms($resource, $place->getTerms());
+
         (new AddressEditor($this->addressParser))->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $place->getAddress());
 
         if ($place->getGeoCoordinates()) {
@@ -106,6 +116,17 @@ final class RdfProjector implements EventListener
                 self::PROPERTY_LOCATIE_NAAM,
                 new Literal($translatedTitle->getTranslation($language)->toString(), $language->toString())
             );
+        }
+    }
+
+    private function setTerms(Resource $resource, Categories $terms): void
+    {
+        foreach ($terms as $term) {
+            /** @var Category $term */
+            if ($term->getDomain()->sameAs(new CategoryDomain('eventtype'))) {
+                $terms = $this->termsIriGenerator->iri($term->getId()->toString());
+                $resource->set(self::PROPERTY_LOCATIE_TYPE, new Resource($terms));
+            }
         }
     }
 
