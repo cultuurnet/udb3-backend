@@ -48,6 +48,8 @@ trait LabelSteps
             )
         );
         $this->responseState->setResponse($response);
+
+        $this->theResponseStatusShouldBe(204);
     }
 
     /**
