@@ -30,6 +30,7 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
             fn (): RdfProjector => new RdfProjector(
                 $graphStoreRepository,
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['placesRdfBaseUri']),
+                RdfServiceProvider::createIriGenerator($this->container->get('config')['taxonomy']['terms']),
                 $this->container->get('place_jsonld_repository'),
                 new PlaceDenormalizer(),
                 $this->container->get(AddressParser::class)
