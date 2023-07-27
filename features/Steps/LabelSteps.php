@@ -43,10 +43,11 @@ trait LabelSteps
         $this->getLabel('public-visible');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('public-visible', true, true);
+        } else {
+            $uuid = $this->responseState->getJsonContent()['uuid'];
+            $this->patchLabel($uuid, 'MakePublic');
+            $this->patchLabel($uuid, 'MakeVisible');
         }
-        $uuid = $this->responseState->getJsonContent()['uuid'];
-        $this->patchLabel($uuid, 'MakePublic');
-        $this->patchLabel($uuid, 'MakeVisible');
 
         // Create "public-invisible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
         $this->getLabel('public-invisible');
