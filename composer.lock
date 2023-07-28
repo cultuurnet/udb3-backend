@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6105232432b318a6e4001a7cbf5a56ee",
+    "content-hash": "c09dd645f4b24c8e7346ceeacceefd87",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5629,7 +5629,7 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-uitdatabank/revert-regex",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
@@ -5641,6 +5641,7 @@
                 "reference": "8c845bddd1fe9d66929746b73ceafdb7f7cf1079",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5655,7 +5656,7 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/uitdatabank/revert-regex"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
             "time": "2023-07-28T09:40:51+00:00"
         },
