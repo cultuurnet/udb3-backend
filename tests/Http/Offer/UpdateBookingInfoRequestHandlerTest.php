@@ -210,7 +210,7 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             'schemaErrors' => [
                 new SchemaError(
                     '/url',
-                    'The string should match pattern: ^https?:\/\/[\w\-\.]+\.\w{2,}(\/.*)?$'
+                    'The string should match pattern: ^http[s]?:\/\/\w'
                 ),
             ],
         ];
