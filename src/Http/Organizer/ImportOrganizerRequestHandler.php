@@ -26,12 +26,14 @@ use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\DeleteDescription;
+use CultuurNet\UDB3\Organizer\Commands\DeleteEducationalDescription;
 use CultuurNet\UDB3\Organizer\Commands\ImportImages;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateDescription;
+use CultuurNet\UDB3\Organizer\Commands\UpdateEducationalDescription;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Organizer as OrganizerAggregate;
@@ -146,6 +148,26 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
         }
         foreach ($descriptionCommands as $descriptionCommand) {
             $commands[] = $descriptionCommand;
+        }
+
+        $educationalDescription = $data->getEducationalDescription();
+        $educationalDescriptionCommands = [
+            'nl' => new DeleteEducationalDescription($organizerId, new Language('nl')),
+            'fr' => new DeleteEducationalDescription($organizerId, new Language('fr')),
+            'de' => new DeleteEducationalDescription($organizerId, new Language('de')),
+            'en' => new DeleteEducationalDescription($organizerId, new Language('en')),
+        ];
+        if ($educationalDescription) {
+            foreach ($educationalDescription->getLanguages() as $language) {
+                $educationalDescriptionCommands[$language->getCode()] = new UpdateEducationalDescription(
+                    $organizerId,
+                    $educationalDescription->getTranslation($language),
+                    $language
+                );
+            }
+        }
+        foreach ($educationalDescriptionCommands as $educationalDescriptionCommand) {
+            $commands[] = $educationalDescriptionCommand;
         }
 
         $address = $data->getAddress();

@@ -15,6 +15,7 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
         '$.name',
         '$.address',
         '$.description',
+        '$.educationalDescription',
     ];
 
     private const PLACE_TRANSLATABLE_FIELDS = [

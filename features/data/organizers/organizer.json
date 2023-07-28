@@ -24,6 +24,12 @@
     "de": "German description",
     "en": "English description"
   },
+  "educationalDescription": {
+    "nl": "Dutch educational description",
+    "fr": "French educational description",
+    "de": "German educational description",
+    "en": "English educational description"
+  },
   "labels":["public-visible"],
   "hiddenLabels":["public-invisible"],
   "contactPoint": {

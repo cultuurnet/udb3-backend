@@ -34,6 +34,8 @@ use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
+use CultuurNet\UDB3\Organizer\Events\EducationalDescriptionDeleted;
+use CultuurNet\UDB3\Organizer\Events\EducationalDescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
@@ -394,6 +396,86 @@ final class OrganizerLDProjectorTest extends TestCase
 
         $domainMessage = $this->createDomainMessage(
             new DescriptionDeleted($organizerId, 'en')
+        );
+
+        $this->expectSave($organizerId, 'organizer_without_description.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_educational_description_updated(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, 'organizer.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new EducationalDescriptionUpdated(
+                $organizerId,
+                'Educational description of the organizer',
+                'en'
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_updated_educational_description.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_educational_description_translated(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, 'organizer_with_updated_educational_description.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new EducationalDescriptionUpdated(
+                $organizerId,
+                'Description educatif de l\'organisation',
+                'fr'
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_translated_educational_description.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_deleting_a_translated_educational_description(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, 'organizer_with_translated_educational_description.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new EducationalDescriptionDeleted($organizerId, 'fr')
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_updated_educational_description.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_deleting_an_educational_description(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, 'organizer_with_updated_educational_description.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new EducationalDescriptionDeleted($organizerId, 'en')
         );
 
         $this->expectSave($organizerId, 'organizer_without_description.json');

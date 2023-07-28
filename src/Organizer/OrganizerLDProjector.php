@@ -33,6 +33,8 @@ use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
+use CultuurNet\UDB3\Organizer\Events\EducationalDescriptionDeleted;
+use CultuurNet\UDB3\Organizer\Events\EducationalDescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
@@ -341,6 +343,34 @@ class OrganizerLDProjector implements EventListener
 
         if (empty((array) $jsonLD->description)) {
             unset($jsonLD->description);
+        }
+
+        return $document->withBody($jsonLD);
+    }
+
+    private function applyEducationalDescriptionUpdated(EducationalDescriptionUpdated $educationalDescriptionUpdated): JsonDocument
+    {
+        $document = $this->repository->fetch($educationalDescriptionUpdated->getOrganizerId());
+        $jsonLD = $document->getBody();
+
+        if (!isset($jsonLD->educationalDescription)) {
+            $jsonLD->educationalDescription = new stdClass();
+        }
+
+        $jsonLD->educationalDescription->{$educationalDescriptionUpdated->getLanguage()} = $educationalDescriptionUpdated->getEducationalDescription();
+
+        return $document->withBody($jsonLD);
+    }
+
+    private function applyEducationalDescriptionDeleted(EducationalDescriptionDeleted $educationalDescriptionDeleted): JsonDocument
+    {
+        $document = $this->repository->fetch($educationalDescriptionDeleted->getOrganizerId());
+        $jsonLD = $document->getBody();
+
+        unset($jsonLD->educationalDescription->{$educationalDescriptionDeleted->getLanguage()});
+
+        if (empty((array) $jsonLD->educationalDescription)) {
+            unset($jsonLD->educationalDescription);
         }
 
         return $document->withBody($jsonLD);
