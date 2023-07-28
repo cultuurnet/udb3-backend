@@ -78,7 +78,7 @@ Feature: Test organizer url property
      "status": 400,
      "schemaErrors": [
         {
-          "error": "The string should match pattern: ^https?:\\/\\/[\\w\\-\\.]+\\.\\w{2,}(\\/.*)?$",
+          "error": "The string should match pattern: ^http[s]?:\\/\\/\\w",
           "jsonPointer": "/url"
         }
       ]

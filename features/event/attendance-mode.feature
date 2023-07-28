@@ -454,7 +454,7 @@ Feature: Test event attendanceMode property
     {
       "schemaErrors": [
         {
-          "error": "The string should match pattern: ^https?:\\/\\/[\\w\\-\\.]+\\.\\w{2,}(\\/.*)?$",
+          "error": "The string should match pattern: ^http[s]?:\\/\\/\\w",
           "jsonPointer": "/onlineUrl"
         }
       ],
