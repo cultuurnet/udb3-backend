@@ -73,6 +73,24 @@ Feature: Test creating organizers
       ]
     }
     """
+    And the JSON response at "description" should be:
+    """
+    {
+      "nl": "Dutch description",
+      "fr": "French description",
+      "de": "German description",
+      "en": "English description"
+    }
+    """
+    And the JSON response at "educationalDescription" should be:
+    """
+    {
+      "nl": "Dutch educational description",
+      "fr": "French educational description",
+      "de": "German educational description",
+      "en": "English educational description"
+    }
+    """
 
   @bugfix # https://jira.uitdatabank.be/browse/III-4669
   Scenario: Create a new organizer with all properties and remove them with null values or empty lists in the JSON
@@ -203,5 +221,23 @@ Feature: Test creating organizers
         "https://www.publiq.be",
         "https://www.madewithlove.be"
       ]
+    }
+    """
+    And the JSON response at "description" should be:
+    """
+    {
+      "nl": "Dutch description",
+      "fr": "French description",
+      "de": "German description",
+      "en": "English description"
+    }
+    """
+    And the JSON response at "educationalDescription" should be:
+    """
+    {
+      "nl": "Dutch educational description",
+      "fr": "French educational description",
+      "de": "German educational description",
+      "en": "English educational description"
     }
     """
