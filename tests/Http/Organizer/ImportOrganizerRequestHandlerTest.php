@@ -1237,6 +1237,51 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new SchemaError('/description/en', 'The string should match pattern: \S'),
                 ],
             ],
+            'educational_description_missing_value_for_mainLanguage' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'educationalDescription' => [
+                        'fr' => 'Parlez-vous français?',
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/educationalDescription', 'A value in the mainLanguage (nl) is required.'),
+                ],
+            ],
+            'educational_description_empty_value' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'educationalDescription' => [
+                        'nl' => '',
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/educationalDescription/nl', 'Minimum string length is 1, found 0'),
+                ],
+            ],
+            'educational_description_whitespace' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'educationalDescription' => [
+                        'nl' => '   ',
+                        'fr' => '   ',
+                        'de' => '   ',
+                        'en' => '   ',
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/educationalDescription/nl', 'The string should match pattern: \S'),
+                    new SchemaError('/educationalDescription/fr', 'The string should match pattern: \S'),
+                    new SchemaError('/educationalDescription/de', 'The string should match pattern: \S'),
+                    new SchemaError('/educationalDescription/en', 'The string should match pattern: \S'),
+                ],
+            ],
             'images_missing_id' => [
                 'given' => [
                     'mainLanguage' => 'nl',
