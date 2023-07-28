@@ -3,7 +3,7 @@
 # setup config & key files
 DIR="../appconfig/files/udb3/docker/udb3-backend/"
 if [ -d "$DIR" ]; then
-  cp "$DIR"/* .
+  cp -R "$DIR"/* .
   # needed because it is hidden
   cp "$DIR"/.env .
 else
