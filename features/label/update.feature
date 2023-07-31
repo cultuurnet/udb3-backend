@@ -9,7 +9,7 @@ Feature: Test the UDB3 labels API
   Scenario: Make label invisible
     Given I create a label with a random name of 10 characters
     And I keep the value of the JSON response at "uuid" as "uuid"
-    When I patch the label "%{uuid}" with "MakeInvisible"
+    When I patch the label with id "%{uuid}" and command "MakeInvisible"
     And I send a GET request to "/labels/%{uuid}"
     Then the response status should be "200"
     And the JSON response at "visibility" should be "invisible"
@@ -17,7 +17,7 @@ Feature: Test the UDB3 labels API
   Scenario: Make label visible
     Given I create an invisible label with a random name of 10 characters
     And I keep the value of the JSON response at "uuid" as "uuid"
-    When I patch the label "%{uuid}" with "MakeVisible"
+    When I patch the label with id "%{uuid}" and command "MakeVisible"
     And I send a GET request to "/labels/%{uuid}"
     Then the response status should be "200"
     And the JSON response at "visibility" should be "visible"
@@ -25,7 +25,7 @@ Feature: Test the UDB3 labels API
   Scenario: Make label private
     Given I create a label with a random name of 10 characters
     And I keep the value of the JSON response at "uuid" as "uuid"
-    When I patch the label "%{uuid}" with "MakePrivate"
+    When I patch the label with id "%{uuid}" and command "MakePrivate"
     And I send a GET request to "/labels/%{uuid}"
     Then the response status should be "200"
     And the JSON response at "privacy" should be "private"
@@ -33,8 +33,8 @@ Feature: Test the UDB3 labels API
   Scenario: Make label public
     Given I create a label with a random name of 10 characters
     And I keep the value of the JSON response at "uuid" as "uuid"
-    And I patch the label "%{uuid}" with "MakePrivate"
-    When I patch the label "%{uuid}" with "MakePublic"
+    And I patch the label with id "%{uuid}" and command "MakePrivate"
+    When I patch the label with id "%{uuid}" and command "MakePublic"
     And I send a GET request to "/labels/%{uuid}"
     Then the response status should be "200"
     And the JSON response at "privacy" should be "public"
@@ -42,7 +42,7 @@ Feature: Test the UDB3 labels API
   Scenario: Exclude a label
     Given I create a label with a random name of 10 characters
     And I keep the value of the JSON response at "uuid" as "uuid"
-    When I patch the label "%{uuid}" with "Exclude"
+    When I patch the label with id "%{uuid}" and command "Exclude"
     And I send a GET request to "/labels/%{uuid}"
     Then the response status should be "200"
     And the JSON response at "excluded" should be true
@@ -50,8 +50,8 @@ Feature: Test the UDB3 labels API
   Scenario: Include an excluded label
     Given I create a label with a random name of 10 characters
     And I keep the value of the JSON response at "uuid" as "uuid"
-    And I patch the label "%{uuid}" with "Exclude"
-    When I patch the label "%{uuid}" with "Include"
+    And I patch the label with id "%{uuid}" and command "Exclude"
+    When I patch the label with id "%{uuid}" and command "Include"
     And I send a GET request to "/labels/%{uuid}"
     Then the response status should be "200"
     And the JSON response at "excluded" should be false
