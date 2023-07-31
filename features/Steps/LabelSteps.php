@@ -22,9 +22,9 @@ trait LabelSteps
     }
 
     /**
-     * @When I patch the label :id with :command
+     * @When I patch the label with id :id and command :command
      */
-    public function iPatchTheLabelWith(string $id, string $command): void
+    public function iPatchTheLabelWithIdAndCommand(string $id, string $command): void
     {
         $response = $this->getHttpClient()->patchJSON(
             '/labels/' . $id,
