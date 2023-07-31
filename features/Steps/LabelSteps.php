@@ -62,8 +62,8 @@ trait LabelSteps
             $this->createLabel('public-visible', true, true);
         } else {
             $uuid = $this->responseState->getJsonContent()['uuid'];
-            $this->iPatchTheLabelWith($uuid, 'MakePublic');
-            $this->iPatchTheLabelWith($uuid, 'MakeVisible');
+            $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakePublic');
+            $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakeVisible');
         }
 
         // Create "public-invisible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
@@ -72,8 +72,8 @@ trait LabelSteps
             $this->createLabel('public-invisible', false, true);
         }
         $uuid = $this->responseState->getJsonContent()['uuid'];
-        $this->iPatchTheLabelWith($uuid, 'MakePublic');
-        $this->iPatchTheLabelWith($uuid, 'MakeInvisible');
+        $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakePublic');
+        $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakeInvisible');
 
         // Create "private-visible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
         $this->getLabel('private-visible');
@@ -81,8 +81,8 @@ trait LabelSteps
             $this->createLabel('private-visible', true, false);
         }
         $uuid = $this->responseState->getJsonContent()['uuid'];
-        $this->iPatchTheLabelWith($uuid, 'MakePrivate');
-        $this->iPatchTheLabelWith($uuid, 'MakeVisible');
+        $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakePrivate');
+        $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakeVisible');
 
         // Create "private-invisible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
         $this->getLabel('private-invisible');
@@ -90,8 +90,8 @@ trait LabelSteps
             $this->createLabel('private-invisible', false, false);
         }
         $uuid = $this->responseState->getJsonContent()['uuid'];
-        $this->iPatchTheLabelWith($uuid, 'MakePrivate');
-        $this->iPatchTheLabelWith($uuid, 'MakeInvisible');
+        $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakePrivate');
+        $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakeInvisible');
 
         // Create "special_label" if it doesn't exist yet
         $this->getLabel('special_label');
@@ -111,7 +111,7 @@ trait LabelSteps
             $this->createLabel('special_label#', true, true);
         }
         $uuid = $this->responseState->getJsonContent()['uuid'];
-        $this->iPatchTheLabelWith($uuid, 'Exclude');
+        $this->iPatchTheLabelWithIdAndCommand($uuid, 'Exclude');
 
         // Create "special_label*" if it doesn't exist yet and exclude it because of invalid #
         $this->getLabel('special_label*');
@@ -119,7 +119,7 @@ trait LabelSteps
             $this->createLabel('special_label*', true, true);
         }
         $uuid = $this->responseState->getJsonContent()['uuid'];
-        $this->iPatchTheLabelWith($uuid, 'Exclude');
+        $this->iPatchTheLabelWithIdAndCommand($uuid, 'Exclude');
     }
 
     private function createLabel(string $name, bool $visible, bool $public): void
