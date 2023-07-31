@@ -27,8 +27,7 @@ trait LabelSteps
     public function iPatchTheLabelWith(string $id, string $command): void
     {
         $response = $this->getHttpClient()->patchJSON(
-            '/labels/' . $id
-            ,
+            '/labels/' . $id,
             Json::encode([
                 'command' => $command,
             ])
