@@ -9,31 +9,17 @@ Feature: Test the UDB3 labels API
   Scenario: Make label invisible
     Given I create a label with a random name of 10 characters
     And I keep the value of the JSON response at "uuid" as "uuid"
-
-    When I set the JSON request payload to:
-    """
-    { "command": "MakeInvisible" }
-    """
-    And I send a PATCH request to "/labels/%{uuid}"
-
-    Then the response status should be "204"
+    When I patch the label "%{uuid}" with "MakeInvisible"
     And I send a GET request to "/labels/%{uuid}"
-    And the response status should be "200"
+    Then the response status should be "200"
     And the JSON response at "visibility" should be "invisible"
 
   Scenario: Make label visible
     Given I create an invisible label with a random name of 10 characters
     And I keep the value of the JSON response at "uuid" as "uuid"
-
-    When I set the JSON request payload to:
-    """
-    { "command": "MakeVisible" }
-    """
-    And I send a PATCH request to "/labels/%{uuid}"
-
-    Then the response status should be "204"
+    When I patch the label "%{uuid}" with "MakeVisible"
     And I send a GET request to "/labels/%{uuid}"
-    And the response status should be "200"
+    Then the response status should be "200"
     And the JSON response at "visibility" should be "visible"
 
   Scenario: Make label private
