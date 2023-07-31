@@ -22,14 +22,13 @@ trait LabelSteps
     }
 
     /**
-     * @When I patch the label :uuid with :command
+     * @When I patch the label :id with :command
      */
-    public function iPatchTheLabelWith(string $uuid, string $command): void
+    public function iPatchTheLabelWith(string $id, string $command): void
     {
         $response = $this->getHttpClient()->patchJSON(
-            $this->variableState->replaceVariables(
-                '/labels/' . $uuid
-            ),
+            '/labels/' . $id
+            ,
             Json::encode([
                 'command' => $command,
             ])
