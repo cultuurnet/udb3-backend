@@ -40,7 +40,7 @@ final class RdfServiceProvider extends AbstractServiceProvider
             function (): AddressParser {
                 $logger = LoggerFactory::create($this->getContainer(), LoggerName::forService('geopunt'));
 
-                $parser = new GeopuntAddressParser();
+                $parser = new GeopuntAddressParser($this->container->get('config')['geopuntAddressParser']['url'] ?? '');
                 $parser->setLogger($logger);
 
                 $parser = new CachingAddressParser($parser, $this->container->get('cache')('geopunt_addresses'));
