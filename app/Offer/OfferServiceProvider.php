@@ -426,7 +426,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             DeleteDescriptionHandler::class,
-            fn () => new DeleteDescriptionHandler($container->get('offer_repository'))
+            fn () => new DeleteDescriptionHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(
