@@ -27,6 +27,8 @@ class ImmutableOrganizer implements Organizer
 
     private ?TranslatedDescription $description = null;
 
+    private ?TranslatedDescription $educationalDescription = null;
+
     private ?TranslatedAddress $address = null;
 
     private ?Coordinates $coordinates = null;
@@ -103,6 +105,18 @@ class ImmutableOrganizer implements Organizer
     {
         $c = clone $this;
         $c->description = $description;
+        return $c;
+    }
+
+    public function getEducationalDescription(): ?TranslatedDescription
+    {
+        return $this->educationalDescription;
+    }
+
+    public function withEducationalDescription(TranslatedDescription $educationalDescription): ImmutableOrganizer
+    {
+        $c = clone $this;
+        $c->educationalDescription = $educationalDescription;
         return $c;
     }
 

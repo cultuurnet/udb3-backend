@@ -33,6 +33,8 @@ use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
+use CultuurNet\UDB3\Organizer\Events\EducationalDescriptionDeleted;
+use CultuurNet\UDB3\Organizer\Events\EducationalDescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
 use CultuurNet\UDB3\Organizer\Events\ImageUpdated;
@@ -764,6 +766,183 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ],
                 function (Organizer $organizer): void {
                     $organizer->deleteDescription(new Language('fr'));
+                },
+                [
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider updateEducationalDescriptionDataProvider
+     */
+    public function it_can_update_an_educational_description(array $given, callable $update, array $then): void
+    {
+        $this->scenario
+            ->given($given)
+            ->when(fn (Organizer $organizer) => $update($organizer))
+            ->then($then);
+    }
+
+    public function updateEducationalDescriptionDataProvider(): array
+    {
+        $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
+            'ae3aab28-6351-489e-a61c-c48aec0a77df',
+            'en',
+            'https://www.publiq.be',
+            'publiq'
+        );
+
+        return [
+            'Set initial educational description' => [
+                [
+                    $organizerCreated,
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->updateEducationalDescription(
+                        new Description('Educational description of the organizer'),
+                        new Language('en')
+                    );
+                },
+                [
+                    new EducationalDescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Educational description of the organizer',
+                        'en'
+                    ),
+                ],
+            ],
+            'Try update with same educational description' => [
+                [
+                    $organizerCreated,
+                    new EducationalDescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Educational description of the organizer',
+                        'en'
+                    ),
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->updateEducationalDescription(
+                        new Description('Educational description of the organizer'),
+                        new Language('en')
+                    );
+                },
+                [
+                ],
+            ],
+            'Translate educational description' => [
+                [
+                    $organizerCreated,
+                    new EducationalDescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Educational description of the organizer',
+                        'en'
+                    ),
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->updateEducationalDescription(
+                        new Description('Educatieve beschrijving van de organisatie'),
+                        new Language('nl')
+                    );
+                },
+                [
+                    new EducationalDescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Educatieve beschrijving van de organisatie',
+                        'nl'
+                    ),
+                ],
+            ],
+            'Various educational description updates' => [
+                [
+                    $organizerCreated,
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->updateEducationalDescription(
+                        new Description('Educational description of the organizer'),
+                        new Language('en')
+                    );
+                    $organizer->updateEducationalDescription(
+                        new Description('Educatieve beschrijving van de organisatie'),
+                        new Language('nl')
+                    );
+                },
+                [
+                    new EducationalDescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Educational description of the organizer',
+                        'en'
+                    ),
+                    new EducationalDescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Educatieve beschrijving van de organisatie',
+                        'nl'
+                    ),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider deleteEducationalDescriptionDataProvider
+     */
+    public function it_can_delete_an_educational_description(array $given, callable $delete, array $then): void
+    {
+        $this->scenario
+            ->given($given)
+            ->when(fn (Organizer $organizer) => $delete($organizer))
+            ->then($then);
+    }
+
+    public function deleteEducationalDescriptionDataProvider(): array
+    {
+        $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
+            'ae3aab28-6351-489e-a61c-c48aec0a77df',
+            'en',
+            'https://www.publiq.be',
+            'publiq'
+        );
+
+        return [
+            'Delete existing educational description' => [
+                [
+                    $organizerCreated,
+                    new EducationalDescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Educational description of the organizer',
+                        'en'
+                    ),
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->deleteEducationalDescription(new Language('en'));
+                },
+                [
+                    new EducationalDescriptionDeleted('ae3aab28-6351-489e-a61c-c48aec0a77df', 'en'),
+                ],
+            ],
+            'Try deleting non-existing educational description' => [
+                [
+                    $organizerCreated,
+                    new EducationalDescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Educational description of the organizer',
+                        'en'
+                    ),
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->deleteEducationalDescription(new Language('fr'));
+                },
+                [
+                ],
+            ],
+            'Try deleting when no educational description available' => [
+                [
+                    $organizerCreated,
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->deleteEducationalDescription(new Language('fr'));
                 },
                 [
                 ],

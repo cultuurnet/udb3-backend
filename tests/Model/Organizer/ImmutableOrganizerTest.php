@@ -20,7 +20,9 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -75,6 +77,39 @@ class ImmutableOrganizerTest extends TestCase
         $this->assertNotEquals($organizer, $updatedOrganizer);
         $this->assertEquals($name, $organizer->getName());
         $this->assertEquals($updatedName, $updatedOrganizer->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_a_description(): void
+    {
+        $description = new TranslatedDescription(new Language('en'), new Description('This is a description.'));
+
+        $organizer = $this->getOrganizer();
+        $updatedOrganizer = $organizer->withDescription($description);
+
+        $this->assertNotEquals($organizer, $updatedOrganizer);
+        $this->assertNull($organizer->getDescription());
+        $this->assertEquals($description, $updatedOrganizer->getDescription());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_educational_description(): void
+    {
+        $educationalDescription = new TranslatedDescription(
+            new Language('en'),
+            new Description('This is an educational description.')
+        );
+
+        $organizer = $this->getOrganizer();
+        $updatedOrganizer = $organizer->withEducationalDescription($educationalDescription);
+
+        $this->assertNotEquals($organizer, $updatedOrganizer);
+        $this->assertNull($organizer->getEducationalDescription());
+        $this->assertEquals($educationalDescription, $updatedOrganizer->getEducationalDescription());
     }
 
     /**
