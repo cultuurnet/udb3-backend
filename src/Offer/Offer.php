@@ -35,6 +35,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractContactPointUpdated;
+use CultuurNet\UDB3\Offer\Events\AbstractDescriptionDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractDescriptionTranslated;
 use CultuurNet\UDB3\Offer\Events\AbstractDescriptionUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractFacilitiesUpdated;
@@ -73,6 +74,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
 use CultuurNet\UDB3\StringLiteral;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description as Udb3ModelDescription;
 
 abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggregateRoot
 {
@@ -311,7 +313,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
 
         // For each added label fire a LabelAdded event.
-        /** @var Label $label*/
+        /** @var Label $label */
         foreach ($addedLabels->toArray() as $label) {
             $this->apply($this->createLabelAddedEvent($label->getName()->toString(), $label->isVisible()));
         }
@@ -351,6 +353,15 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
             $this->apply($event);
         }
+    }
+
+    public function deleteDescription(Language $language): void
+    {
+        if (!isset($this->descriptions[$language->getCode()])) {
+            return;
+        }
+
+        $this->apply($this->createDescriptionDeletedEvent($language));
     }
 
     public function updateCalendar(Calendar $calendar): void
@@ -492,7 +503,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
         $this->importedLabelNames = array_filter(
             $this->importedLabelNames,
-            fn (string $importedLabelName) => $importedLabelName !== $labelRemoved->getLabelName()
+            fn(string $importedLabelName) => $importedLabelName !== $labelRemoved->getLabelName()
         );
     }
 
@@ -514,6 +525,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     {
         $mainLanguageCode = $this->mainLanguage->getCode();
         $this->descriptions[$mainLanguageCode] = $descriptionUpdated->getDescription();
+    }
+
+    protected function applyDescriptionDeleted(AbstractDescriptionDeleted $descriptionDeleted): void
+    {
+        unset($this->descriptions[$descriptionDeleted->getLanguage()->getCode()]);
     }
 
     protected function applyDescriptionTranslated(AbstractDescriptionTranslated $descriptionTranslated): void
@@ -645,7 +661,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public function addVideo(Video $video): void
     {
         $videosWithSameId = $this->videos->filter(
-            fn (Video $currentVideo) => $currentVideo->getId() === $video->getId()
+            fn(Video $currentVideo) => $currentVideo->getId() === $video->getId()
         );
 
         if ($videosWithSameId->isEmpty()) {
@@ -653,10 +669,14 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function updateVideo(string $videoId, ?Url $url, ?Language $language, ?CopyrightHolder $copyrightHolder): void
-    {
+    public function updateVideo(
+        string $videoId,
+        ?Url $url,
+        ?Language $language,
+        ?CopyrightHolder $copyrightHolder
+    ): void {
         $videosWithSameId = $this->videos->filter(
-            fn (Video $currentVideo) => $currentVideo->getId() === $videoId
+            fn(Video $currentVideo) => $currentVideo->getId() === $videoId
         );
 
         if ($videosWithSameId->count() !== 1) {
@@ -688,7 +708,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public function deleteVideo(string $videoID): void
     {
         $videosWithSameId = $this->videos->filter(
-            fn (Video $video) => $video->getId() === $videoID
+            fn(Video $video) => $video->getId() === $videoID
         );
 
         if (!$videosWithSameId->isEmpty()) {
@@ -698,7 +718,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function importVideos(VideoCollection $importVideos): void
     {
-        $videoCompareIds = static fn (Video $v1, Video $v2) => strcmp($v1->getId(), $v2->getId());
+        $videoCompareIds = static fn(Video $v1, Video $v2) => strcmp($v1->getId(), $v2->getId());
 
         $newVideos = array_udiff(
             $importVideos->toArray(),
@@ -960,14 +980,15 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected function applyVideoDeleted(AbstractVideoDeleted $videoDeleted): void
     {
         $this->videos = $this->videos->filter(
-            fn (Video $video) => $video->getId() !== $videoDeleted->getVideoId()
+            fn(Video $video) => $video->getId() !== $videoDeleted->getVideoId()
         );
     }
 
     protected function applyVideoUpdated(AbstractVideoEvent $videoUpdated): void
     {
         $videos = array_map(
-            static fn (Video $video) => $video->getId() === $videoUpdated->getVideo()->getId() ? $videoUpdated->getVideo() : $video,
+            static fn(Video $video
+            ) => $video->getId() === $videoUpdated->getVideo()->getId() ? $videoUpdated->getVideo() : $video,
             $this->videos->toArray()
         );
 
@@ -1023,9 +1044,15 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createLabelsImportedEvent(Labels $labels): AbstractLabelsImported;
 
-    abstract protected function createTitleTranslatedEvent(LegacyLanguage $language, Title $title): AbstractTitleTranslated;
+    abstract protected function createTitleTranslatedEvent(
+        LegacyLanguage $language,
+        Title $title
+    ): AbstractTitleTranslated;
 
-    abstract protected function createDescriptionTranslatedEvent(LegacyLanguage $language, Description $description): AbstractDescriptionTranslated;
+    abstract protected function createDescriptionTranslatedEvent(
+        LegacyLanguage $language,
+        Description $description
+    ): AbstractDescriptionTranslated;
 
     abstract protected function createImageAddedEvent(Image $image): AbstractImageAdded;
 
@@ -1052,9 +1079,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createDescriptionUpdatedEvent(Description $description): AbstractDescriptionUpdated;
 
+    abstract protected function createDescriptionDeletedEvent(Language $language): AbstractDescriptionDeleted;
+
     abstract protected function createCalendarUpdatedEvent(Calendar $calendar): AbstractCalendarUpdated;
 
-    abstract protected function createTypicalAgeRangeUpdatedEvent(AgeRange $typicalAgeRange): AbstractTypicalAgeRangeUpdated;
+    abstract protected function createTypicalAgeRangeUpdatedEvent(AgeRange $typicalAgeRange
+    ): AbstractTypicalAgeRangeUpdated;
 
     abstract protected function createTypicalAgeRangeDeletedEvent(): AbstractTypicalAgeRangeDeleted;
 
@@ -1064,13 +1094,15 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createContactPointUpdatedEvent(ContactPoint $contactPoint): AbstractContactPointUpdated;
 
-    abstract protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates): AbstractGeoCoordinatesUpdated;
+    abstract protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates
+    ): AbstractGeoCoordinatesUpdated;
 
     abstract protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo): AbstractBookingInfoUpdated;
 
     abstract protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo): AbstractPriceInfoUpdated;
 
-    abstract protected function createAvailableFromUpdatedEvent(DateTimeInterface $availableFrom): AbstractAvailableFromUpdated;
+    abstract protected function createAvailableFromUpdatedEvent(DateTimeInterface $availableFrom
+    ): AbstractAvailableFromUpdated;
 
     abstract protected function createPublishedEvent(\DateTimeInterface $publicationDate): AbstractPublished;
 

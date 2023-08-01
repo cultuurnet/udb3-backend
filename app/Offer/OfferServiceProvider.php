@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteTypicalAgeRangeRequestHandler;
@@ -54,6 +55,7 @@ use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteDescriptionHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\DeleteOfferHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
@@ -131,6 +133,8 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdateContactPointRequestHandler::class,
             UpdateTitleRequestHandler::class,
             UpdateDescriptionRequestHandler::class,
+            DeleteDescriptionRequestHandler::class,
+            DeleteDescriptionHandler::class,
             UpdateAvailableFromRequestHandler::class,
             GetHistoryRequestHandler::class,
             GetPermissionsForCurrentUserRequestHandler::class,
@@ -413,6 +417,16 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             UpdateDescriptionRequestHandler::class,
             fn () => new UpdateDescriptionRequestHandler($container->get('event_command_bus'))
+        );
+
+        $container->addShared(
+            DeleteDescriptionRequestHandler::class,
+            fn () => new DeleteDescriptionRequestHandler($container->get('event_command_bus'), $container)
+        );
+
+        $container->addShared(
+            DeleteDescriptionHandler::class,
+            fn () => new DeleteDescriptionHandler($container->get('offer_repository'))
         );
 
         $container->addShared(

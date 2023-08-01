@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\FacilitiesUpdated;
@@ -1847,6 +1848,34 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->then([
                 new DescriptionTranslated($itemId, $language, $description),
+            ]);
+    }
+
+    /**
+     * @test
+     * @group DeleteDescriptionOffer
+     */
+    public function it_should_delete_the_description_for_a_specified_language(): void
+    {
+        $itemId = '81598b26-68f3-424c-85e0-29293fd92723';
+        $language = new Language('nl');
+
+        $this->scenario
+            ->withAggregateId($itemId)
+            ->given(
+                [
+                    new ItemCreated($itemId),
+                    new DescriptionDeleted($itemId, new Language('nl')),
+                ]
+            )
+            ->when(
+                function (Item $item) use ($language): void {
+                    $item->updateDescription(new \CultuurNet\UDB3\Description('test'), LegacyLanguage::fromUdb3ModelLanguage($language));
+                    $item->deleteDescription($language);
+                }
+            )
+            ->then([
+                new DescriptionDeleted($itemId, $language),
             ]);
     }
 
