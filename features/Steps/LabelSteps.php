@@ -110,16 +110,12 @@ trait LabelSteps
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('special_label#', true, true);
         }
-        $uuid = $this->responseState->getJsonContent()['uuid'];
-        $this->iPatchTheLabelWithIdAndCommand($uuid, 'Exclude');
 
         // Create "special_label*" if it doesn't exist yet and exclude it because of invalid #
         $this->getLabel('special_label*');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('special_label*', true, true);
         }
-        $uuid = $this->responseState->getJsonContent()['uuid'];
-        $this->iPatchTheLabelWithIdAndCommand($uuid, 'Exclude');
     }
 
     private function createLabel(string $name, bool $visible, bool $public): void
