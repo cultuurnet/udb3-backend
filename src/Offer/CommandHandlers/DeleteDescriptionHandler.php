@@ -24,7 +24,6 @@ final class DeleteDescriptionHandler implements CommandHandler
 
     public function handle($command): void
     {
-        die('stop');
         if (!$command instanceof DeleteDescription) {
             return;
         }

@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractContactPointUpdated;
+use CultuurNet\UDB3\Offer\Events\AbstractDescriptionDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractDescriptionTranslated;
 use CultuurNet\UDB3\Offer\Events\AbstractDescriptionUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
@@ -693,6 +694,23 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $mainLanguage = isset($offerLd->mainLanguage) ? $offerLd->mainLanguage : 'nl';
         $offerLd->description->{$mainLanguage} = $descriptionUpdated->getDescription()->toNative();
+
+        return $document->withBody($offerLd);
+    }
+
+    protected function applyDescriptionDeleted(
+        AbstractDescriptionDeleted $descriptionDeleted
+    ): JsonDocument {
+        $this->logger->error('Start deleting description');
+        file_put_contents('/var/www/html/log/projector.txt','start applyDescriptionDeleted', FILE_APPEND);
+        $document = $this->loadDocumentFromRepository($descriptionDeleted);
+
+        $offerLd = $document->getBody();
+
+        $langKey = $descriptionDeleted->getLanguage();
+      unset($offerLd->description);
+        //unset($offerLd->description->nl);
+
 
         return $document->withBody($offerLd);
     }
