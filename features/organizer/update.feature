@@ -23,6 +23,15 @@ Feature: Test updating organizers via complete overwrite
       "en": "English description"
     }
     """
+    And the JSON response at "educationalDescription" should be:
+    """
+    {
+      "nl": "Dutch educational description",
+      "fr": "French educational description",
+      "de": "German educational description",
+      "en": "English educational description"
+    }
+    """
     And the JSON response at "address" should be:
     """
     {
@@ -78,6 +87,15 @@ Feature: Test updating organizers via complete overwrite
       "fr": "French description UPDATED",
       "de": "German description UPDATED",
       "en": "English description UPDATED"
+    }
+    """
+    And the JSON response at "educationalDescription" should be:
+    """
+    {
+      "nl": "Dutch educational description UPDATED",
+      "fr": "French educational description UPDATED",
+      "de": "German educational description UPDATED",
+      "en": "English educational description UPDATED"
     }
     """
     And the JSON response at "address" should be:
@@ -138,6 +156,15 @@ Feature: Test updating organizers via complete overwrite
       "fr": "French description",
       "de": "German description",
       "en": "English description"
+    }
+    """
+    And the JSON response at "educationalDescription" should be:
+    """
+    {
+      "nl": "Dutch educational description",
+      "fr": "French educational description",
+      "de": "German educational description",
+      "en": "English educational description"
     }
     """
     And the JSON response at "address" should be:
