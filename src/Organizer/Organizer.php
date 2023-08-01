@@ -33,6 +33,8 @@ use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
+use CultuurNet\UDB3\Organizer\Events\EducationalDescriptionDeleted;
+use CultuurNet\UDB3\Organizer\Events\EducationalDescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
@@ -68,6 +70,11 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
      * @var string[]
      */
     private array $description = [];
+
+    /**
+     * @var string[]
+     */
+    private array $educationalDescription = [];
 
     /**
      * @var Address[]|null
@@ -203,16 +210,38 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
 
     public function deleteDescription(Language $language): void
     {
-        if ($this->descriptionCanBeDeleted($language)) {
+        if (isset($this->description[$language->toString()])) {
             $this->apply(
                 new DescriptionDeleted($this->actorId, $language->toString())
             );
         }
     }
 
-    private function descriptionCanBeDeleted(Language $language): bool
+    public function updateEducationalDescription(Description $educationalDescription, Language $language): void
     {
-        return isset($this->description[$language->toString()]);
+        if ($this->educationalDescriptionCanBeUpdated($educationalDescription, $language)) {
+            $this->apply(
+                new EducationalDescriptionUpdated(
+                    $this->actorId,
+                    $educationalDescription->toString(),
+                    $language->toString()
+                )
+            );
+        }
+    }
+
+    private function educationalDescriptionCanBeUpdated(Description $educationalDescription, Language $language): bool
+    {
+        return !isset($this->educationalDescription[$language->toString()]) || $educationalDescription->toString() !== $this->educationalDescription[$language->toString()];
+    }
+
+    public function deleteEducationalDescription(Language $language): void
+    {
+        if (isset($this->educationalDescription[$language->toString()])) {
+            $this->apply(
+                new EducationalDescriptionDeleted($this->actorId, $language->toString())
+            );
+        }
     }
 
     public function updateAddress(
@@ -612,6 +641,16 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
     protected function applyDescriptionDeleted(DescriptionDeleted $descriptionDeleted): void
     {
         unset($this->description[$descriptionDeleted->getLanguage()]);
+    }
+
+    protected function applyEducationalDescriptionUpdated(EducationalDescriptionUpdated $educationalDescriptionUpdated): void
+    {
+        $this->educationalDescription[$educationalDescriptionUpdated->getLanguage()] = $educationalDescriptionUpdated->getEducationalDescription();
+    }
+
+    protected function applyEducationalDescriptionDeleted(EducationalDescriptionDeleted $educationalDescriptionDeleted): void
+    {
+        unset($this->educationalDescription[$educationalDescriptionDeleted->getLanguage()]);
     }
 
     protected function applyAddressUpdated(AddressUpdated $addressUpdated): void

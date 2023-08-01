@@ -16,6 +16,7 @@ class OrganizerJsonDocumentLanguageAnalyzer extends ConfigurableJsonDocumentLang
                 'name',
                 'address',
                 'description',
+                'educationalDescription',
             ]
         );
     }
