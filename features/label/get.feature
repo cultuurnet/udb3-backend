@@ -4,6 +4,7 @@ Feature: Test the UDB3 labels API
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And labels test data is available
 
   Scenario: Get single label by name
     When I create a label with a random name of 10 characters
@@ -33,11 +34,7 @@ Feature: Test the UDB3 labels API
     And I keep the value of the JSON response at "uuid" as "uuid"
     And I send a GET request to "/labels/%{uuid}"
     And I keep the value of the JSON response at "name" as "name"
-    And I set the JSON request payload to:
-    """
-    { "command": "Exclude" }
-    """
-    And I send a PATCH request to "/labels/%{uuid}"
+    And I patch the label with id "%{uuid}" and command "Exclude"
     And I send a GET request to "/labels/" with parameters:
       | limit      | 10      |
       | query      | %{name} |
@@ -50,11 +47,7 @@ Feature: Test the UDB3 labels API
     And I keep the value of the JSON response at "uuid" as "uuid"
     And I send a GET request to "/labels/%{uuid}"
     And I keep the value of the JSON response at "name" as "name"
-    And I set the JSON request payload to:
-    """
-    { "command": "Exclude" }
-    """
-    And I send a PATCH request to "/labels/%{uuid}"
+    And I patch the label with id "%{uuid}" and command "Exclude"
     And I send a GET request to "/labels/" with parameters:
       | limit      | 10      |
       | query      | %{name} |
