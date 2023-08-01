@@ -113,7 +113,7 @@ Feature: Test the curator API
 
     When I send a GET request to "/news-articles/%{articleId}"
     Then the response status should be "200"
-    And the JSON response at "url" should be "https://www.publiq.be/blog/caf%%C3%%A9/%{name}"
+    And the JSON response at "url" should be "https://www.publiq.be/blog/caf%C3%A9/%{name}"
 
   Scenario: Create a news article with an existing url and about
     Given I set the JSON request payload to:
