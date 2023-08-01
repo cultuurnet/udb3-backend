@@ -98,7 +98,7 @@ Feature: Test the curator API
       "about": "17284745-7bcf-461a-aad0-d3ad54880e75",
       "publisher": "BUZZ",
       "publisherLogo": "https://www.buzz.be/img/favicon.png",
-      "url": "https://www.buzz.be/blog/caf%C3%A9/%{name}"
+      "url": "https://www.buzz.be/blog/café/%{name}"
     }
     """
     When I send a PUT request to "/news-articles/%{articleId}"
