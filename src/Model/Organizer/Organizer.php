@@ -27,6 +27,8 @@ interface Organizer
 
     public function getDescription(): ?TranslatedDescription;
 
+    public function getEducationalDescription(): ?TranslatedDescription;
+
     public function getAddress(): ?TranslatedAddress;
 
     public function getGeoCoordinates(): ?Coordinates;

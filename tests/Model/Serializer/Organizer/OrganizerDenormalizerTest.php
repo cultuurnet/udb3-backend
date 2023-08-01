@@ -22,7 +22,9 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -154,6 +156,14 @@ class OrganizerDenormalizerTest extends TestCase
                 'en' => 'Example title',
                 'fr' => 'Titre de l\'exemple',
             ],
+            'description' => [
+                'nl' => 'Dit is een beschrijving',
+                'en' => 'This is a description',
+            ],
+            'educationalDescription' => [
+                'nl' => 'Dit is een educatieve beschrijving',
+                'en' => 'This is an educational description',
+            ],
             'url' => 'https://www.publiq.be',
             'address' => [
                 'nl' => [
@@ -227,6 +237,24 @@ class OrganizerDenormalizerTest extends TestCase
                         new Locality('Bruxelles'),
                         new CountryCode('BE')
                     )
+                )
+            )
+            ->withDescription(
+                (new TranslatedDescription(
+                    new Language('nl'),
+                    new Description('Dit is een beschrijving')
+                ))->withTranslation(
+                    new Language('en'),
+                    new Description('This is a description')
+                )
+            )
+            ->withEducationalDescription(
+                (new TranslatedDescription(
+                    new Language('nl'),
+                    new Description('Dit is een educatieve beschrijving')
+                ))->withTranslation(
+                    new Language('en'),
+                    new Description('This is an educational description')
                 )
             )
             ->withLabels(

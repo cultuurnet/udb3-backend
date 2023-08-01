@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ChangeOwnerHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteDescriptionHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\DeleteEducationalDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ImportImagesHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler;
@@ -23,6 +24,7 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContributorsHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateEducationalDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
@@ -42,6 +44,8 @@ final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
             UpdateTitleHandler::class,
             UpdateDescriptionHandler::class,
             DeleteDescriptionHandler::class,
+            UpdateEducationalDescriptionHandler::class,
+            DeleteEducationalDescriptionHandler::class,
             UpdateAddressHandler::class,
             RemoveAddressHandler::class,
             UpdateWebsiteHandler::class,
@@ -120,6 +124,20 @@ final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
             DeleteDescriptionHandler::class,
             function () use ($container) {
                 return new DeleteDescriptionHandler($container->get('organizer_repository'));
+            }
+        );
+
+        $container->addShared(
+            UpdateEducationalDescriptionHandler::class,
+            function () use ($container) {
+                return new UpdateEducationalDescriptionHandler($container->get('organizer_repository'));
+            }
+        );
+
+        $container->addShared(
+            DeleteEducationalDescriptionHandler::class,
+            function () use ($container) {
+                return new DeleteEducationalDescriptionHandler($container->get('organizer_repository'));
             }
         );
 

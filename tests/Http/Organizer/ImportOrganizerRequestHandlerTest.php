@@ -44,12 +44,14 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Commands\DeleteDescription;
+use CultuurNet\UDB3\Organizer\Commands\DeleteEducationalDescription;
 use CultuurNet\UDB3\Organizer\Commands\ImportImages;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateDescription;
+use CultuurNet\UDB3\Organizer\Commands\UpdateEducationalDescription;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Organizer;
@@ -159,6 +161,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($organizerId, new Language('fr')),
             new DeleteDescription($organizerId, new Language('de')),
             new DeleteDescription($organizerId, new Language('en')),
+            new DeleteEducationalDescription($organizerId, new Language('nl')),
+            new DeleteEducationalDescription($organizerId, new Language('fr')),
+            new DeleteEducationalDescription($organizerId, new Language('de')),
+            new DeleteEducationalDescription($organizerId, new Language('en')),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
             new ImportImages($organizerId, new Images()),
@@ -217,6 +223,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($organizerId, new Language('fr')),
             new DeleteDescription($organizerId, new Language('de')),
             new DeleteDescription($organizerId, new Language('en')),
+            new DeleteEducationalDescription($organizerId, new Language('nl')),
+            new DeleteEducationalDescription($organizerId, new Language('fr')),
+            new DeleteEducationalDescription($organizerId, new Language('de')),
+            new DeleteEducationalDescription($organizerId, new Language('en')),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
             new ImportImages($organizerId, new Images()),
@@ -232,6 +242,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
         $actualCommands = $this->commandBus->getRecordedCommands();
 
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals($expectedCommands, $actualCommands);
     }
 
     /**
@@ -271,6 +282,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($organizerId, new Language('fr')),
             new DeleteDescription($organizerId, new Language('de')),
             new DeleteDescription($organizerId, new Language('en')),
+            new DeleteEducationalDescription($organizerId, new Language('nl')),
+            new DeleteEducationalDescription($organizerId, new Language('fr')),
+            new DeleteEducationalDescription($organizerId, new Language('de')),
+            new DeleteEducationalDescription($organizerId, new Language('en')),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
             new ImportImages($organizerId, new Images()),
@@ -313,6 +328,12 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     'fr' => 'French description',
                     'de' => 'German description',
                     'en' => 'English description',
+                ],
+                'educationalDescription' => [
+                    'nl' => 'Dutch educational description',
+                    'fr' => 'French educational description',
+                    'de' => 'German educational description',
+                    'en' => 'English educational description',
                 ],
                 'address' => [
                     'nl' => [
@@ -377,6 +398,26 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new UpdateDescription(
                 $id,
                 new Description('English description'),
+                new Language('en')
+            ),
+            new UpdateEducationalDescription(
+                $id,
+                new Description('Dutch educational description'),
+                new Language('nl')
+            ),
+            new UpdateEducationalDescription(
+                $id,
+                new Description('French educational description'),
+                new Language('fr')
+            ),
+            new UpdateEducationalDescription(
+                $id,
+                new Description('German educational description'),
+                new Language('de')
+            ),
+            new UpdateEducationalDescription(
+                $id,
+                new Description('English educational description'),
                 new Language('en')
             ),
             new UpdateAddress(
@@ -476,6 +517,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($id, new Language('fr')),
             new DeleteDescription($id, new Language('de')),
             new DeleteDescription($id, new Language('en')),
+            new DeleteEducationalDescription($id, new Language('nl')),
+            new DeleteEducationalDescription($id, new Language('fr')),
+            new DeleteEducationalDescription($id, new Language('de')),
+            new DeleteEducationalDescription($id, new Language('en')),
             new RemoveAddress($id),
             new ImportLabels($id, new Labels()),
             new ImportImages($id, new Images()),
@@ -568,6 +613,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($id, new Language('fr')),
             new DeleteDescription($id, new Language('de')),
             new DeleteDescription($id, new Language('en')),
+            new DeleteEducationalDescription($id, new Language('nl')),
+            new DeleteEducationalDescription($id, new Language('fr')),
+            new DeleteEducationalDescription($id, new Language('de')),
+            new DeleteEducationalDescription($id, new Language('en')),
             new RemoveAddress($id),
             new ImportLabels($id, new Labels()),
             new ImportImages(
@@ -653,6 +702,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($organizerId, new Language('fr')),
             new DeleteDescription($organizerId, new Language('de')),
             new DeleteDescription($organizerId, new Language('en')),
+            new DeleteEducationalDescription($organizerId, new Language('nl')),
+            new DeleteEducationalDescription($organizerId, new Language('fr')),
+            new DeleteEducationalDescription($organizerId, new Language('de')),
+            new DeleteEducationalDescription($organizerId, new Language('en')),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
             new ImportImages($organizerId, new Images()),
@@ -729,6 +782,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($id, new Language('fr')),
             new DeleteDescription($id, new Language('de')),
             new DeleteDescription($id, new Language('en')),
+            new DeleteEducationalDescription($id, new Language('nl')),
+            new DeleteEducationalDescription($id, new Language('fr')),
+            new DeleteEducationalDescription($id, new Language('de')),
+            new DeleteEducationalDescription($id, new Language('en')),
             new UpdateAddress(
                 $id,
                 new Address(
@@ -1178,6 +1235,51 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new SchemaError('/description/fr', 'The string should match pattern: \S'),
                     new SchemaError('/description/de', 'The string should match pattern: \S'),
                     new SchemaError('/description/en', 'The string should match pattern: \S'),
+                ],
+            ],
+            'educational_description_missing_value_for_mainLanguage' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'educationalDescription' => [
+                        'fr' => 'Parlez-vous français?',
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/educationalDescription', 'A value in the mainLanguage (nl) is required.'),
+                ],
+            ],
+            'educational_description_empty_value' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'educationalDescription' => [
+                        'nl' => '',
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/educationalDescription/nl', 'Minimum string length is 1, found 0'),
+                ],
+            ],
+            'educational_description_whitespace' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'educationalDescription' => [
+                        'nl' => '   ',
+                        'fr' => '   ',
+                        'de' => '   ',
+                        'en' => '   ',
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/educationalDescription/nl', 'The string should match pattern: \S'),
+                    new SchemaError('/educationalDescription/fr', 'The string should match pattern: \S'),
+                    new SchemaError('/educationalDescription/de', 'The string should match pattern: \S'),
+                    new SchemaError('/educationalDescription/en', 'The string should match pattern: \S'),
                 ],
             ],
             'images_missing_id' => [
