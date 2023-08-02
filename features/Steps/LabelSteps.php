@@ -42,7 +42,6 @@ trait LabelSteps
      */
     public function iCreateALabelWithName(string $name): void
     {
-        var_dump($this->variableState->replaceVariables($name));
         $this->createLabel(
             $this->variableState->replaceVariables($name),
             true,
