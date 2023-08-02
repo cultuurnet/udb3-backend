@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use Behat\Gherkin\Node\PyStringNode;
 use CultuurNet\UDB3\Json;
 
 trait RoleSteps
@@ -31,6 +32,32 @@ trait RoleSteps
         foreach ($roles as $role) {
             $this->deleteARoleForUser($role['uuid'], $userId);
         }
+    }
+
+    /**
+     * @Given roles test data is available
+     */
+    public function rolesTestDataIsAvailable(): void
+    {
+        // Create role "Scherpenheuvel Validatoren"
+        $this->createRole('Scherpenheuvel validatoren');
+        $uuidRoleScherpenheuvel = $this->responseState->getJsonContent()['roleId'];
+        $this->variableState->setVariable(
+            'uuid_role_scherpenheuvel',
+            $uuidRoleScherpenheuvel
+        );
+        $this->iSetTheJsonRequestPayloadTo(new PyStringNode(['{"query": "regions:nis-24134"}'], 0));
+        $this->iSendAPostRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/constraints/');
+        $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_BEWERKEN');
+        $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_VERWIJDEREN');
+        $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_MODEREREN');
+        $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorScherpenheuvel@cultuurnet.be');
+        $uuidValidatorScherpenheuvel = $this->responseState->getJsonContent()['uuid'];
+        $this->variableState->setVariable(
+            'uuid_validator_scherpenheuvel',
+            $uuidValidatorScherpenheuvel
+        );
+        $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/users/' . $uuidValidatorScherpenheuvel);
     }
 
     private function createRole(string $name): void
