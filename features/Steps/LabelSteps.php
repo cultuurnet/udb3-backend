@@ -37,6 +37,18 @@ trait LabelSteps
         $this->theResponseStatusShouldBe(204);
     }
 
+    /**
+     * @When I create a label with name :name
+     */
+    public function iCreateALabelWithName(string $name): void
+    {
+        var_dump($this->variableState->replaceVariables($name));
+        $this->createLabel(
+            $this->variableState->replaceVariables($name),
+            true,
+            true
+        );
+    }
 
     /**
      * @Given I create an invisible label with a random name of :nrOfCharacters characters
@@ -50,6 +62,8 @@ trait LabelSteps
             true
         );
     }
+
+    /**
 
     /**
      * @Given labels test data is available

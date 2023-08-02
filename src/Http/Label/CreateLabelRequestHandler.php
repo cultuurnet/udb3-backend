@@ -9,7 +9,6 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\Commands\Create;
-use CultuurNet\UDB3\Label\Commands\ExcludeLabel;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -44,10 +43,6 @@ final class CreateLabelRequestHandler implements RequestHandlerInterface
                 new Privacy($body['privacy'])
             )
         );
-
-        if (!preg_match(LabelName::REGEX_SUGGESTIONS, $body['name'])) {
-            $this->commandBus->dispatch(new ExcludeLabel($uuid));
-        }
 
         return new JsonResponse(['uuid' => $uuid->toString()]);
     }

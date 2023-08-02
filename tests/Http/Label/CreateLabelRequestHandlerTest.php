@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Label\Commands\Create;
-use CultuurNet\UDB3\Label\Commands\ExcludeLabel;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -95,9 +94,6 @@ final class CreateLabelRequestHandlerTest extends TestCase
                     new LabelName('#test-label-invalid'),
                     Visibility::INVISIBLE(),
                     Privacy::PRIVACY_PRIVATE()
-                ),
-                new ExcludeLabel(
-                    new UUID('9714108c-dddc-4105-a736-2e32632999f4')
                 ),
             ],
             $this->commandBus->getRecordedCommands()
