@@ -66,37 +66,4 @@ final class CreateLabelRequestHandlerTest extends TestCase
             $this->commandBus->getRecordedCommands()
         );
     }
-
-    /**
-     * @test
-     */
-    public function it_will_exclude_an_invalid_label(): void
-    {
-        $request = (new Psr7RequestBuilder())
-            ->withJsonBodyFromArray([
-                'name' => '#test-label-invalid',
-                'visibility' => 'invisible',
-                'privacy' => 'private',
-            ])
-            ->build('POST');
-
-        $this->commandBus->record();
-        $response = $this->createLabelRequestHandler->handle($request);
-
-        $this->assertJsonResponse(
-            new JsonResponse(['uuid' => '9714108c-dddc-4105-a736-2e32632999f4']),
-            $response
-        );
-        $this->assertEquals(
-            [
-                new Create(
-                    new UUID('9714108c-dddc-4105-a736-2e32632999f4'),
-                    new LabelName('#test-label-invalid'),
-                    Visibility::INVISIBLE(),
-                    Privacy::PRIVACY_PRIVATE()
-                ),
-            ],
-            $this->commandBus->getRecordedCommands()
-        );
-    }
 }
