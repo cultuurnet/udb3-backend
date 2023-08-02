@@ -166,6 +166,33 @@ final class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_creates_an_invalid_label_as_excluded(): void
+    {
+        $uuid = new UUID('0f893a61-fb77-47b6-9c8d-e4e631afa9b3');
+
+        $this->scenario
+            ->when(
+                fn () => Label::create(
+                    $uuid,
+                    'labelName#$',
+                    Visibility::VISIBLE(),
+                    Privacy::PRIVACY_PUBLIC()
+                )
+            )
+            ->then([
+                new Created(
+                    $uuid,
+                    'labelName#$',
+                    Visibility::VISIBLE(),
+                    Privacy::PRIVACY_PUBLIC()
+                ),
+                new Excluded($uuid),
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_does_not_make_a_label_public_when_already_public(): void
     {
         $this->scenario

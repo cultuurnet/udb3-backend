@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 final class Label extends EventSourcedAggregateRoot
 {
@@ -47,6 +48,10 @@ final class Label extends EventSourcedAggregateRoot
             $visibility,
             $privacy
         ));
+
+        if (!preg_match(LabelName::REGEX_SUGGESTIONS, $name)) {
+            $label->exclude();
+        }
 
         return $label;
     }
