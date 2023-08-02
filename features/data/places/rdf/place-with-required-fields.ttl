@@ -4,6 +4,8 @@
                 "2023-06-09T07:21:58+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
         <http://purl.org/dc/terms/modified>
                 "2023-06-09T07:21:58+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://purl.org/dc/terms/type>
+                <https://taxonomy-test.uitdatabank.be/terms/Yf4aZBfsUEu2NsQqsprngw> ;
         <http://www.w3.org/ns/adms#identifier>
                 [ a       <http://www.w3.org/ns/adms#Identifier> ;
                   <http://purl.org/dc/terms/creator>
