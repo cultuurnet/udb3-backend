@@ -47,6 +47,7 @@ class RdfProjectorTest extends TestCase
         $this->rdfProjector = new RdfProjector(
             $this->graphRepository,
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
             $this->documentRepository,
             new PlaceDenormalizer(),
             $addressParser
@@ -88,6 +89,7 @@ class RdfProjectorTest extends TestCase
             'terms' => [
                 [
                     'id' => '8.48.0.0.0',
+                    'domain' => 'eventtype',
                 ],
             ],
             'name' => [
@@ -128,6 +130,7 @@ class RdfProjectorTest extends TestCase
             'terms' => [
                 [
                     'id' => '8.48.0.0.0',
+                    'domain' => 'eventtype',
                 ],
             ],
             'name' => [
@@ -190,6 +193,7 @@ class RdfProjectorTest extends TestCase
             'terms' => [
                 [
                     'id' => '8.48.0.0.0',
+                    'domain' => 'eventtype',
                 ],
             ],
             'name' => [
@@ -236,6 +240,7 @@ class RdfProjectorTest extends TestCase
             'terms' => [
                 [
                     'id' => '8.48.0.0.0',
+                    'domain' => 'eventtype',
                 ],
             ],
             'name' => [
@@ -304,6 +309,7 @@ class RdfProjectorTest extends TestCase
             'terms' => [
                 [
                     'id' => '8.48.0.0.0',
+                    'domain' => 'eventtype',
                 ],
             ],
             'name' => [

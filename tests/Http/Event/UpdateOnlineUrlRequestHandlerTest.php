@@ -94,7 +94,7 @@ final class UpdateOnlineUrlRequestHandlerTest extends TestCase
                 [
                     'onlineUrl' => 'rtp://www.publiq.be/livestream',
                 ],
-                new SchemaError('/onlineUrl', 'The string should match pattern: ^https?:\/\/[\w\-\.]+\.\w{2,}(\/.*)?$'),
+                new SchemaError('/onlineUrl', 'The string should match pattern: ^http[s]?:\/\/\w'),
             ],
         ];
     }

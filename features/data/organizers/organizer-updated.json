@@ -24,6 +24,12 @@
     "de": "German description UPDATED",
     "en": "English description UPDATED"
   },
+  "educationalDescription": {
+    "nl": "Dutch educational description UPDATED",
+    "fr": "French educational description UPDATED",
+    "de": "German educational description UPDATED",
+    "en": "English educational description UPDATED"
+  },
   "labels":["foo-updated"],
   "hiddenLabels":["public-invisible"],
   "contactPoint": {

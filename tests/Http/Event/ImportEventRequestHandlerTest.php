@@ -3028,7 +3028,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/onlineUrl',
-                'The string should match pattern: ^https?:\/\/[\w\-\.]+\.\w{2,}(\/.*)?$'
+                'The string should match pattern: ^http[s]?:\/\/\w'
             ),
         ];
 
@@ -5909,7 +5909,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/videos/0/url',
-                'The string should match pattern: ^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*))|(youtu\.be\/([^\/#&?]*))|(youtube.com/embed/([^\/#&?]*)))'
+                'The string should match pattern: ^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*))|(youtu\.be\/([^\/#&?]*))|(youtube.com/embed/([^\/#&?]*))|(youtube.com/shorts/([^\/#&?]*)))'
             ),
         ];
 

@@ -98,7 +98,7 @@ Feature: Test the curator API
       "about": "17284745-7bcf-461a-aad0-d3ad54880e75",
       "publisher": "BUZZ",
       "publisherLogo": "https://www.buzz.be/img/favicon.png",
-      "url": "https://www.buzz.be/blog/caf%C3%A9/%{name}"
+      "url": "https://www.buzz.be/blog/café/%{name}"
     }
     """
     When I send a PUT request to "/news-articles/%{articleId}"
@@ -113,7 +113,7 @@ Feature: Test the curator API
       "about": "17284745-7bcf-461a-aad0-d3ad54880e75",
       "publisher": "BUZZ",
       "publisherLogo": "https://www.buzz.be/img/favicon.png",
-      "url": "https://www.buzz.be/blog/café/%{name}",
+      "url": "https://www.buzz.be/blog/caf%C3%A9/%{name}",
       "id": "%{articleId}"
     }
     """
@@ -122,7 +122,7 @@ Feature: Test the curator API
     When I send a GET request to "/news-articles/%{articleId}"
     Then the response status should be "200"
     And the JSON response at "headline" should be "publiq wint opnieuw API award"
-    And the JSON response at "url" should be "https://www.buzz.be/blog/caf%%C3%%A9/%{name}"
+    And the JSON response at "url" should be "https://www.buzz.be/blog/caf%C3%A9/%{name}"
 
   Scenario: Update a non-existing news article
     Given I set the JSON request payload to:
