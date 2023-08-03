@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\DeleteDescription;
-use CultuurNet\UDB3\Offer\Events\AbstractDescriptionDeleted;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
@@ -41,44 +40,44 @@ class DeleteDescriptionHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      * @group deleteDescriptionOffer
-     * @dataProvider deleteDescriptionProvider
      */
-    public function it_handles_delete_of_a_description(
-        EventCreated $offer,
-        DescriptionTranslated $description,
-        AbstractDescriptionDeleted $descriptionDeleted
-    ): void {
-        $offerId = self::OFFER_ID;
-
+    public function it_handles_delete_of_a_description(): void
+    {
         $this->scenario
-            ->withAggregateId($offerId)
+            ->withAggregateId(self::OFFER_ID)
             ->given(
                 [
-                    $offer,
-                    $description,
+                    $this->getEventCreated(self::OFFER_ID),
+                    new DescriptionTranslated(
+                        'id',
+                        LegacyLanguage::fromUdb3ModelLanguage(new Language('nl')),
+                        new Description('test')
+                    ),
                 ]
             )
             ->when(new DeleteDescription(self::OFFER_ID, new Language('nl')))
             ->then(
                 [
-                    $descriptionDeleted,
+                    new DescriptionDeleted(self::OFFER_ID, new Language('nl')),
                 ]
             );
     }
 
-    public function deleteDescriptionProvider(): array
+    /**
+     * @test
+     * @group deleteDescriptionOffer
+     */
+    public function it_handles_delete_of_a_description_but_there_is_no_description(): void
     {
-        return [
-            [
-                $this->getEventCreated(self::OFFER_ID),
-                new DescriptionTranslated(
-                    'id',
-                    LegacyLanguage::fromUdb3ModelLanguage(new Language('nl')),
-                    new Description('test')
-                ),
-                new DescriptionDeleted(self::OFFER_ID, new Language('nl')),
-            ],
-        ];
+        $this->scenario
+            ->withAggregateId(self::OFFER_ID)
+            ->given(
+                [
+                    $this->getEventCreated(self::OFFER_ID),
+                ]
+            )
+            ->when(new DeleteDescription(self::OFFER_ID, new Language('nl')))
+            ->then([]);
     }
 
     private function getEventCreated(string $eventId): EventCreated
