@@ -668,12 +668,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function updateVideo(
-        string $videoId,
-        ?Url $url,
-        ?Language $language,
-        ?CopyrightHolder $copyrightHolder
-    ): void {
+    public function updateVideo(string $videoId, ?Url $url, ?Language $language, ?CopyrightHolder $copyrightHolder): void
+    {
         $videosWithSameId = $this->videos->filter(
             fn (Video $currentVideo) => $currentVideo->getId() === $videoId
         );
