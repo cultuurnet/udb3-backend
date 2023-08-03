@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Title;
 
 class DeleteDescriptionHandlerTest extends CommandHandlerScenarioTestCase
 {
-    const OFFER_ID = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
+    public const OFFER_ID = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): DeleteDescriptionHandler
     {
@@ -56,13 +56,13 @@ class DeleteDescriptionHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $offer,
-                    $description
+                    $description,
                 ]
             )
             ->when(new DeleteDescription(self::OFFER_ID, new Language('nl')))
             ->then(
                 [
-                    $descriptionDeleted
+                    $descriptionDeleted,
                 ]
             );
     }
@@ -78,7 +78,7 @@ class DeleteDescriptionHandlerTest extends CommandHandlerScenarioTestCase
                     new Description('test')
                 ),
                 new DescriptionDeleted(self::OFFER_ID, new Language('nl')),
-            ]
+            ],
         ];
     }
 

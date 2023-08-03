@@ -56,9 +56,9 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\Item;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use CultuurNet\UDB3\StringLiteral;
 
 class OfferTest extends AggregateRootScenarioTestCase
 {
@@ -1867,11 +1867,11 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId, LegacyLanguage::fromUdb3ModelLanguage($language)),
-                    new DescriptionUpdated('my-id', new LegacyDescription('test'))
+                    new DescriptionUpdated('my-id', new LegacyDescription('test')),
                 ]
             )
             ->when(
-                fn(Item $item) => $item->deleteDescription($language)
+                fn (Item $item) => $item->deleteDescription($language)
             )
             ->then([
                 new DescriptionDeleted($itemId, $language),
@@ -1895,11 +1895,15 @@ class OfferTest extends AggregateRootScenarioTestCase
                 [
                     new ItemCreated($itemId, LegacyLanguage::fromUdb3ModelLanguage($language)),
                     new DescriptionUpdated('my-id', new LegacyDescription('test')),
-                    new DescriptionTranslated('my-id', LegacyLanguage::fromUdb3ModelLanguage($differentLanguage), new LegacyDescription('test')),
+                    new DescriptionTranslated(
+                        'my-id',
+                        LegacyLanguage::fromUdb3ModelLanguage($differentLanguage),
+                        new LegacyDescription('test')
+                    ),
                 ]
             )
             ->when(
-                fn(Item $item) => $item->deleteDescription($differentLanguage)
+                fn (Item $item) => $item->deleteDescription($differentLanguage)
             )
             ->then([
                 new DescriptionDeleted($itemId, $differentLanguage),
@@ -1922,12 +1926,16 @@ class OfferTest extends AggregateRootScenarioTestCase
                 [
                     new ItemCreated($itemId, LegacyLanguage::fromUdb3ModelLanguage($language)),
                     new DescriptionUpdated('my-id', new LegacyDescription('test')),
-                    new DescriptionTranslated('my-id', LegacyLanguage::fromUdb3ModelLanguage($differentLanguage), new LegacyDescription('test')),
+                    new DescriptionTranslated(
+                        'my-id',
+                        LegacyLanguage::fromUdb3ModelLanguage($differentLanguage),
+                        new LegacyDescription('test')
+                    ),
                     new DescriptionDeleted($itemId, $differentLanguage),
                 ]
             )
             ->when(
-                fn(Item $item) => $item->deleteDescription($differentLanguage)
+                fn (Item $item) => $item->deleteDescription($differentLanguage)
             )
             ->then([]);
     }

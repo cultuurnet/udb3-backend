@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\DeleteDescription;
-use CultuurNet\UDB3\Offer\OfferType;
 use PHPUnit\Framework\TestCase;
 
 final class DeleteDescriptionRequestHandlerTest extends TestCase
@@ -82,7 +81,7 @@ final class DeleteDescriptionRequestHandlerTest extends TestCase
                     self::OFFER_ID,
                     new Language('nl'),
                 ),
-            ]
+            ],
         ];
     }
 }

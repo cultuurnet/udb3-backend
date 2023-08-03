@@ -24,7 +24,7 @@ abstract class AbstractDescriptionDeleted extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-                'language' => $this->language->toString()
+                'language' => $this->language->toString(),
             ];
     }
 

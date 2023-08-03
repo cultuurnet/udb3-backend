@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\CommandHandlers;
@@ -19,7 +20,7 @@ final class DeleteDescriptionHandler implements CommandHandler
     public function __construct(OfferRepository $offerRepository)
     {
         $this->offerRepository = $offerRepository;
-        $this->logger = new NullLogger;
+        $this->logger = new NullLogger();
     }
 
     public function handle($command): void
@@ -31,7 +32,7 @@ final class DeleteDescriptionHandler implements CommandHandler
         try {
             $offer = $this->offerRepository->load($command->getItemId());
         } catch (EventStreamNotFoundException $e) {
-            $this->logger->debug(sprintf("Failed to delete description: %s", $e->getMessage()));
+            $this->logger->debug(sprintf('Failed to delete description: %s', $e->getMessage()));
             return;
         }
 

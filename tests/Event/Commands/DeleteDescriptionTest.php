@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\DeleteDescription;
-use CultuurNet\UDB3\Offer\OfferType;
 use PHPUnit\Framework\TestCase;
 
 class DeleteDescriptionTest extends TestCase
