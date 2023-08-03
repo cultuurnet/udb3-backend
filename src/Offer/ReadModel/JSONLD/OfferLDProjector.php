@@ -276,7 +276,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $offerLD = $document->getBody();
 
         $oldTerms = property_exists($offerLD, 'terms') ? $offerLD->terms : [];
-        $newTerm = (object) $category->serialize();
+        $newTerm = (object)$category->serialize();
 
         $newTerms = array_filter(
             $oldTerms,
@@ -556,8 +556,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $document = $this->loadDocumentFromRepository($titleTranslated);
 
         $offerLd = $document->getBody();
-        $offerLd->name->{$titleTranslated->getLanguage()->getCode(
-        )} = $titleTranslated->getTitle()->toNative();
+        $offerLd->name->{$titleTranslated->getLanguage()->getCode()} = $titleTranslated->getTitle()->toNative();
 
         return $document->withBody($offerLd);
     }
@@ -728,7 +727,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $document = $this->loadDocumentFromRepository($typicalAgeRangeUpdated);
 
         $offerLd = $document->getBody();
-        $offerLd->typicalAgeRange = (string) $typicalAgeRangeUpdated->getTypicalAgeRange();
+        $offerLd->typicalAgeRange = (string)$typicalAgeRangeUpdated->getTypicalAgeRange();
 
         return $document->withBody($offerLd);
     }

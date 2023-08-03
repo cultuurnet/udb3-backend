@@ -502,7 +502,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
         $this->importedLabelNames = array_filter(
             $this->importedLabelNames,
-            fn(string $importedLabelName) => $importedLabelName !== $labelRemoved->getLabelName()
+            fn (string $importedLabelName) => $importedLabelName !== $labelRemoved->getLabelName()
         );
     }
 
@@ -660,7 +660,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public function addVideo(Video $video): void
     {
         $videosWithSameId = $this->videos->filter(
-            fn(Video $currentVideo) => $currentVideo->getId() === $video->getId()
+            fn (Video $currentVideo) => $currentVideo->getId() === $video->getId()
         );
 
         if ($videosWithSameId->isEmpty()) {
@@ -675,7 +675,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         ?CopyrightHolder $copyrightHolder
     ): void {
         $videosWithSameId = $this->videos->filter(
-            fn(Video $currentVideo) => $currentVideo->getId() === $videoId
+            fn (Video $currentVideo) => $currentVideo->getId() === $videoId
         );
 
         if ($videosWithSameId->count() !== 1) {
@@ -707,7 +707,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public function deleteVideo(string $videoID): void
     {
         $videosWithSameId = $this->videos->filter(
-            fn(Video $video) => $video->getId() === $videoID
+            fn (Video $video) => $video->getId() === $videoID
         );
 
         if (!$videosWithSameId->isEmpty()) {
@@ -717,7 +717,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function importVideos(VideoCollection $importVideos): void
     {
-        $videoCompareIds = static fn(Video $v1, Video $v2) => strcmp($v1->getId(), $v2->getId());
+        $videoCompareIds = static fn (Video $v1, Video $v2) => strcmp($v1->getId(), $v2->getId());
 
         $newVideos = array_udiff(
             $importVideos->toArray(),
@@ -979,15 +979,14 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected function applyVideoDeleted(AbstractVideoDeleted $videoDeleted): void
     {
         $this->videos = $this->videos->filter(
-            fn(Video $video) => $video->getId() !== $videoDeleted->getVideoId()
+            fn (Video $video) => $video->getId() !== $videoDeleted->getVideoId()
         );
     }
 
     protected function applyVideoUpdated(AbstractVideoEvent $videoUpdated): void
     {
         $videos = array_map(
-            static fn(Video $video
-            ) => $video->getId() === $videoUpdated->getVideo()->getId() ? $videoUpdated->getVideo() : $video,
+            static fn (Video $video) => $video->getId() === $videoUpdated->getVideo()->getId() ? $videoUpdated->getVideo() : $video,
             $this->videos->toArray()
         );
 
@@ -1082,8 +1081,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createCalendarUpdatedEvent(Calendar $calendar): AbstractCalendarUpdated;
 
-    abstract protected function createTypicalAgeRangeUpdatedEvent(AgeRange $typicalAgeRange
-    ): AbstractTypicalAgeRangeUpdated;
+    abstract protected function createTypicalAgeRangeUpdatedEvent(AgeRange $typicalAgeRange): AbstractTypicalAgeRangeUpdated;
 
     abstract protected function createTypicalAgeRangeDeletedEvent(): AbstractTypicalAgeRangeDeleted;
 
@@ -1093,15 +1091,13 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createContactPointUpdatedEvent(ContactPoint $contactPoint): AbstractContactPointUpdated;
 
-    abstract protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates
-    ): AbstractGeoCoordinatesUpdated;
+    abstract protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates): AbstractGeoCoordinatesUpdated;
 
     abstract protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo): AbstractBookingInfoUpdated;
 
     abstract protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo): AbstractPriceInfoUpdated;
 
-    abstract protected function createAvailableFromUpdatedEvent(DateTimeInterface $availableFrom
-    ): AbstractAvailableFromUpdated;
+    abstract protected function createAvailableFromUpdatedEvent(DateTimeInterface $availableFrom): AbstractAvailableFromUpdated;
 
     abstract protected function createPublishedEvent(\DateTimeInterface $publicationDate): AbstractPublished;
 
