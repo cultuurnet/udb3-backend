@@ -25,12 +25,10 @@ final class DeleteDescriptionRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
 
-        $event = new DeleteDescription(
+        $this->commandBus->dispatch(new DeleteDescription(
             $routeParameters->getOfferId(),
             $routeParameters->getLanguage()
-        );
-
-        $this->commandBus->dispatch($event);
+        ));
 
         return new NoContentResponse();
     }

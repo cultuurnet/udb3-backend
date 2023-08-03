@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -16,7 +15,6 @@ use PHPUnit\Framework\TestCase;
 final class DeleteDescriptionRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
-    use AssertApiProblemTrait;
 
     private const OFFER_ID = 'd2a039e9-f4d6-4080-ae33-a106b5d3d47b';
 
@@ -44,7 +42,7 @@ final class DeleteDescriptionRequestHandlerTest extends TestCase
      */
     public function it_handles_deleting_the_description_of_an_offer(
         string $offerType,
-        DeleteDescription $event
+        DeleteDescription $command
     ): void {
         $eventRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
@@ -55,7 +53,7 @@ final class DeleteDescriptionRequestHandlerTest extends TestCase
         $response = $this->eventRequestHandler->handle($eventRequest);
 
         $this->assertEquals(
-            [$event],
+            [$command],
             $this->commandBus->getRecordedCommands()
         );
 
