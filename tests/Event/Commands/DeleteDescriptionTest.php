@@ -12,7 +12,7 @@ class DeleteDescriptionTest extends TestCase
 {
     private const ID = '5e36d2f2-b5de-4f5e-81b3-a129d996e9b6';
 
-    protected DeleteDescription $deleteDescription;
+    private DeleteDescription $deleteDescription;
 
     public function setUp(): void
     {
