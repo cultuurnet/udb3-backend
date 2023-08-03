@@ -674,7 +674,7 @@ class OfferLDProjectorTest extends TestCase
 
     /**
      * @test
-     * @group deleteDescriptionOffer
+     * @group DeleteDescriptionOffer
      */
     public function it_projects_the_removal_of_the_description_when_last_language(): void
     {

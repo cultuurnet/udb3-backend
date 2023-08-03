@@ -1854,7 +1854,7 @@ class OfferTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
-     * @group DeleteDescriptionOffer
+     * @group deleteDescriptionOffer
      * Test for only 1 language
      */
     public function it_does_delete_the_description_for_the_main_language(): void
@@ -1880,7 +1880,7 @@ class OfferTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
-     * @group DeleteDescriptionOffer
+     * @group deleteDescriptionOffer
      * Test for 2 languages
      */
     public function it_does_delete_the_description_for_the_different_language(): void
@@ -1912,7 +1912,7 @@ class OfferTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
-     * @group DeleteDescriptionOffer
+     * @group deleteDescriptionOffer
      */
     public function it_does_not_delete_the_description_twice(): void
     {
