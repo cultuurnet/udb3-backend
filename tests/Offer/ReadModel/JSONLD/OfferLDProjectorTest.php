@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Offer\Item\Events\AvailableFromUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\Image\ImagesImportedFromUDB2;
@@ -620,6 +621,88 @@ class OfferLDProjectorTest extends TestCase
                 'description' => (object)[
                     'nl' => 'Omschrijving',
                     'en' => 'English description',
+                ],
+                'modified' => $this->recordedOn->toString(),
+                'playhead' => 1,
+            ],
+            $body
+        );
+    }
+
+    /**
+     * @test
+     * @group deleteDescriptionOffer
+     */
+    public function it_projects_the_removal_of_the_description(): void
+    {
+        $descriptionDeleted = new DescriptionDeleted(
+            'foo',
+            new Language('nl'),
+        );
+
+        $initialDocument = new JsonDocument(
+            'foo',
+            Json::encode([
+                'name' => [
+                    'nl'=> 'Titel',
+                ],
+                'description' => [
+                    'nl' => 'Omschrijving',
+                    'fr' => 'Le description',
+                ],
+            ])
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $body = $this->project($descriptionDeleted, 'foo', null, $this->recordedOn->toBroadwayDateTime());
+
+        $this->assertEquals(
+            (object)[
+                'name' => (object)[
+                    'nl'=> 'Titel',
+                ],
+                'description' => (object)[
+                    'fr' => 'Le description',
+                ],
+                'modified' => $this->recordedOn->toString(),
+                'playhead' => 1,
+            ],
+            $body
+        );
+    }
+
+    /**
+     * @test
+     * @group deleteDescriptionOffer
+     */
+    public function it_projects_the_removal_of_the_description_when_last_language(): void
+    {
+        $descriptionDeleted = new DescriptionDeleted(
+            'foo',
+            new Language('nl'),
+        );
+
+        $initialDocument = new JsonDocument(
+            'foo',
+            Json::encode([
+                'name' => [
+                    'nl'=> 'Titel',
+                ],
+                'description' => [
+                    'nl' => 'Omschrijving',
+                ],
+            ])
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $body = $this->project($descriptionDeleted, 'foo', null, $this->recordedOn->toBroadwayDateTime());
+
+        $this->assertEquals(
+            (object)[
+                'name' => (object)[
+                    'nl'=> 'Titel',
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,

@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\CalendarUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Place\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\FacilitiesUpdated;
@@ -439,6 +440,11 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     protected function getDescriptionUpdatedClassName(): string
     {
         return DescriptionUpdated::class;
+    }
+
+    protected function getDescriptionDeletedClassName(): string
+    {
+        return DescriptionDeleted::class;
     }
 
     protected function getCalendarUpdatedClassName(): string

@@ -19,7 +19,6 @@ class DeleteDescriptionTest extends TestCase
     {
         $this->deleteDescription = new DeleteDescription(
             self::ID,
-            OfferType::event(),
             new Language('nl')
         );
     }
@@ -31,7 +30,6 @@ class DeleteDescriptionTest extends TestCase
     public function it_is_possible_to_instantiate_the_command_with_parameters(): void
     {
         $this->assertEquals(self::ID, $this->deleteDescription->getItemId());
-        $this->assertEquals(OfferType::event(), $this->deleteDescription->getOfferType());
         $this->assertEquals(new Language('nl'), $this->deleteDescription->getLanguage());
     }
 }

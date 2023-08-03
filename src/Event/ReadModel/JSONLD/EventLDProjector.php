@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Event\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
@@ -670,6 +671,11 @@ class EventLDProjector extends OfferLDProjector implements
     protected function getDescriptionUpdatedClassName(): string
     {
         return DescriptionUpdated::class;
+    }
+
+    protected function getDescriptionDeletedClassName(): string
+    {
+        return DescriptionDeleted::class;
     }
 
     protected function getCalendarUpdatedClassName(): string

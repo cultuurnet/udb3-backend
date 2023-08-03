@@ -421,7 +421,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             DeleteDescriptionRequestHandler::class,
-            fn () => new DeleteDescriptionRequestHandler($container->get('event_command_bus'), $container)
+            fn () => new DeleteDescriptionRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(

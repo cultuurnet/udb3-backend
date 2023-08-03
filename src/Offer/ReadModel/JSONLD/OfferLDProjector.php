@@ -236,6 +236,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     abstract protected function getDescriptionUpdatedClassName(): string;
 
+    abstract protected function getDescriptionDeletedClassName(): string;
+
     abstract protected function getCalendarUpdatedClassName(): string;
 
     abstract protected function getTypicalAgeRangeUpdatedClassName(): string;
@@ -701,16 +703,21 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     protected function applyDescriptionDeleted(
         AbstractDescriptionDeleted $descriptionDeleted
     ): JsonDocument {
-        $this->logger->error('Start deleting description');
-        file_put_contents('/var/www/html/log/projector.txt','start applyDescriptionDeleted', FILE_APPEND);
         $document = $this->loadDocumentFromRepository($descriptionDeleted);
 
         $offerLd = $document->getBody();
 
-        $langKey = $descriptionDeleted->getLanguage();
-      unset($offerLd->description);
-        //unset($offerLd->description->nl);
+        if(!isset($offerLd->description)) {
+            return $document;
+        }
 
+        $langKey = $descriptionDeleted->getLanguage()->toString();
+        unset($offerLd->description->{$langKey});
+
+        // Remove description if description is empty, last language was deleted
+        if (count((array)$offerLd->description) === 0) {
+            unset($offerLd->description);
+        }
 
         return $document->withBody($offerLd);
     }

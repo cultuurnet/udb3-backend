@@ -9,23 +9,16 @@ use CultuurNet\UDB3\Offer\OfferType;
 final class DeleteDescription extends AbstractCommand
 {
     private Language $language;
-    private OfferType $offerType;
 
-    public function __construct(string $offerId, OfferType $offerType, Language $language)
+    public function __construct(string $offerId, Language $language)
     {
         parent::__construct($offerId);
 
-        $this->offerType = $offerType;
         $this->language = $language;
     }
 
     public function getLanguage(): Language
     {
         return $this->language;
-    }
-
-    public function getOfferType(): OfferType
-    {
-        return $this->offerType;
     }
 }

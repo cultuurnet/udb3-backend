@@ -56,9 +56,7 @@ final class DeleteDescriptionRequestHandlerTest extends TestCase
         $response = $this->eventRequestHandler->handle($eventRequest);
 
         $this->assertEquals(
-            [
-                $event,
-            ],
+            [$event],
             $this->commandBus->getRecordedCommands()
         );
 
@@ -75,7 +73,6 @@ final class DeleteDescriptionRequestHandlerTest extends TestCase
                 'offerType' => 'events',
                 'event' => new DeleteDescription(
                     self::OFFER_ID,
-                    OfferType::event(),
                     new Language('nl'),
                 ),
             ],
@@ -83,7 +80,6 @@ final class DeleteDescriptionRequestHandlerTest extends TestCase
                 'offerType' => 'places',
                 'event' => new DeleteDescription(
                     self::OFFER_ID,
-                    OfferType::place(),
                     new Language('nl'),
                 ),
             ]

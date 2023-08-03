@@ -29,7 +29,7 @@ final class DeleteDescriptionHandler implements CommandHandler
         }
 
         try {
-            $offer = $this->offerRepository->load($command->getItemId(), $command->getOfferType());
+            $offer = $this->offerRepository->load($command->getItemId());
         } catch (EventStreamNotFoundException $e) {
             $this->logger->debug(sprintf("Failed to delete description: %s", $e->getMessage()));
             return;

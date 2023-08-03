@@ -42,13 +42,9 @@ class OfferRepository implements Repository
         }
     }
 
-    public function load($id, OfferType $type = null): Offer
+    public function load($id): Offer
     {
         try {
-            if ($type !== null && $type === OfferType::place()) {
-                throw new AggregateNotFoundException();
-            }
-
             /** @var Event $event */
             $event = $this->eventRepository->load($id);
             return $event;
