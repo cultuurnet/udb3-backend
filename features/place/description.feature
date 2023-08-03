@@ -49,3 +49,38 @@ Feature: Test place description property
     """
     ""
     """
+
+  Scenario: Delete the last description of a place
+    When I set the JSON request payload to:
+    """
+    { "description": "Beschrijving" }
+    """
+    And I send a PUT request to "%{placeUrl}/description/nl"
+    Then the response status should be "204"
+    When I send a DELETE request to "%{placeUrl}/description/nl"
+    Then the response status should be "204"
+    And I send a GET request to "%{placeUrl}"
+    Then the response status should be "200"
+    And the JSON response should not have "description"
+
+  Scenario: Delete a description of a place, with one description left
+    When I set the JSON request payload to:
+    """
+    { "description": "Le description" }
+    """
+    And I send a PUT request to "%{placeUrl}/description/fr"
+    Then the response status should be "204"
+    When I set the JSON request payload to:
+    """
+    { "description": "Beschrijving" }
+    """
+    And I send a PUT request to "%{placeUrl}/description/nl"
+    Then the response status should be "204"
+    When I send a DELETE request to "%{placeUrl}/description/nl"
+    Then the response status should be "204"
+    And I send a GET request to "%{placeUrl}"
+    Then the response status should be "200"
+    And the JSON response at "description" should be:
+    """
+    {"fr": "Le description"}
+    """

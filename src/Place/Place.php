@@ -32,6 +32,7 @@ use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\CalendarUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Place\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\FacilitiesUpdated;
@@ -72,6 +73,7 @@ use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use CultuurNet\UDB3\StringLiteral;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3Language;
 
 class Place extends Offer
 {
@@ -409,6 +411,11 @@ class Place extends Offer
     protected function createDescriptionUpdatedEvent(Description $description): DescriptionUpdated
     {
         return new DescriptionUpdated($this->placeId, $description);
+    }
+
+    protected function createDescriptionDeletedEvent(Udb3Language $language): DescriptionDeleted
+    {
+        return new DescriptionDeleted($this->placeId, $language);
     }
 
     protected function createCalendarUpdatedEvent(Calendar $calendar): CalendarUpdated

@@ -32,6 +32,7 @@ use CultuurNet\UDB3\Http\Offer\AddLabelToMultipleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelToQueryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteDescriptionRequestHandler as DeleteDescriptionOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteOrganizerRequestHandler as DeleteOfferOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteTypicalAgeRangeRequestHandler;
@@ -361,6 +362,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
         $router->post('/{offerType:events|places}/{offerId}/{language}/title/', UpdateTitleRequestHandler::class);
 
         $router->put('/{offerType:events|places}/{offerId}/description/{language}/', UpdateDescriptionRequestHandler::class);
+        $router->delete('/{offerType:events|places}/{offerId}/description/{language}/', DeleteDescriptionOfferRequestHandler::class);
 
         $router->put('/{offerType:events|places}/{offerId}/available-from/', UpdateAvailableFromRequestHandler::class);
 

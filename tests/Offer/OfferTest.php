@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Offer;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
@@ -25,6 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\FacilitiesUpdated;
@@ -54,9 +56,9 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\Item;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use CultuurNet\UDB3\StringLiteral;
 
 class OfferTest extends AggregateRootScenarioTestCase
 {
@@ -1805,7 +1807,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_ignore_a_description_update_that_does_not_change_the_existing_descriptions(): void
     {
         $itemId = '169f0526-8754-4791-a33b-7a13275881b9';
-        $description = new \CultuurNet\UDB3\Description('Een beschrijving');
+        $description = new LegacyDescription('Een beschrijving');
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1829,7 +1831,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_translate_the_description_when_updating_with_a_foreign_language(): void
     {
         $itemId = '81598b26-68f3-424c-85e0-29293fd92723';
-        $description = new \CultuurNet\UDB3\Description('La description');
+        $description = new LegacyDescription('La description');
         $language = new LegacyLanguage('fr');
 
         $this->scenario
@@ -1837,7 +1839,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId),
-                    new DescriptionUpdated($itemId, new \CultuurNet\UDB3\Description('Een beschrijving')),
+                    new DescriptionUpdated($itemId, new LegacyDescription('Een beschrijving')),
                 ]
             )
             ->when(
@@ -1848,6 +1850,94 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then([
                 new DescriptionTranslated($itemId, $language, $description),
             ]);
+    }
+
+    /**
+     * @test
+     * @group deleteDescriptionOffer
+     * Test for only 1 language
+     */
+    public function it_does_delete_the_description_for_the_main_language(): void
+    {
+        $itemId = '81598b26-68f3-424c-85e0-29293fd92723';
+        $language = new Language('nl');
+
+        $this->scenario
+            ->withAggregateId($itemId)
+            ->given(
+                [
+                    new ItemCreated($itemId, LegacyLanguage::fromUdb3ModelLanguage($language)),
+                    new DescriptionUpdated('my-id', new LegacyDescription('test')),
+                ]
+            )
+            ->when(
+                fn (Item $item) => $item->deleteDescription($language)
+            )
+            ->then([
+                new DescriptionDeleted($itemId, $language),
+            ]);
+    }
+
+    /**
+     * @test
+     * @group deleteDescriptionOffer
+     * Test for 2 languages
+     */
+    public function it_does_delete_the_description_for_the_different_language(): void
+    {
+        $itemId = '81598b26-68f3-424c-85e0-29293fd92723';
+        $language = new Language('nl');
+        $differentLanguage = new Language('fr');
+
+        $this->scenario
+            ->withAggregateId($itemId)
+            ->given(
+                [
+                    new ItemCreated($itemId, LegacyLanguage::fromUdb3ModelLanguage($language)),
+                    new DescriptionUpdated('my-id', new LegacyDescription('test')),
+                    new DescriptionTranslated(
+                        'my-id',
+                        LegacyLanguage::fromUdb3ModelLanguage($differentLanguage),
+                        new LegacyDescription('test')
+                    ),
+                ]
+            )
+            ->when(
+                fn (Item $item) => $item->deleteDescription($differentLanguage)
+            )
+            ->then([
+                new DescriptionDeleted($itemId, $differentLanguage),
+            ]);
+    }
+
+    /**
+     * @test
+     * @group deleteDescriptionOffer
+     */
+    public function it_does_not_delete_the_description_twice(): void
+    {
+        $itemId = '81598b26-68f3-424c-85e0-29293fd92723';
+        $language = new Language('nl');
+        $differentLanguage = new Language('fr');
+
+        $this->scenario
+            ->withAggregateId($itemId)
+            ->given(
+                [
+                    new ItemCreated($itemId, LegacyLanguage::fromUdb3ModelLanguage($language)),
+                    new DescriptionUpdated('my-id', new LegacyDescription('test')),
+                    new DescriptionTranslated(
+                        'my-id',
+                        LegacyLanguage::fromUdb3ModelLanguage($differentLanguage),
+                        new LegacyDescription('test')
+                    ),
+                    new DescriptionDeleted($itemId, $differentLanguage),
+                ]
+            )
+            ->when(
+                fn (Item $item) => $item->deleteDescription($differentLanguage)
+            )
+            ->then([]);
     }
 
     /**

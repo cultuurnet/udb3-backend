@@ -21,10 +21,10 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -35,6 +35,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractContactPointUpdated;
+use CultuurNet\UDB3\Offer\Events\AbstractDescriptionDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractDescriptionTranslated;
 use CultuurNet\UDB3\Offer\Events\AbstractDescriptionUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractFacilitiesUpdated;
@@ -68,11 +69,11 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractPublished;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
-use CultuurNet\UDB3\StringLiteral;
 
 abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggregateRoot
 {
@@ -311,7 +312,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
 
         // For each added label fire a LabelAdded event.
-        /** @var Label $label*/
+        /** @var Label $label */
         foreach ($addedLabels->toArray() as $label) {
             $this->apply($this->createLabelAddedEvent($label->getName()->toString(), $label->isVisible()));
         }
@@ -351,6 +352,15 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
             $this->apply($event);
         }
+    }
+
+    public function deleteDescription(Language $language): void
+    {
+        if (!isset($this->descriptions[$language->getCode()])) {
+            return;
+        }
+
+        $this->apply($this->createDescriptionDeletedEvent($language));
     }
 
     public function updateCalendar(Calendar $calendar): void
@@ -514,6 +524,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     {
         $mainLanguageCode = $this->mainLanguage->getCode();
         $this->descriptions[$mainLanguageCode] = $descriptionUpdated->getDescription();
+    }
+
+    protected function applyDescriptionDeleted(AbstractDescriptionDeleted $descriptionDeleted): void
+    {
+        unset($this->descriptions[$descriptionDeleted->getLanguage()->getCode()]);
     }
 
     protected function applyDescriptionTranslated(AbstractDescriptionTranslated $descriptionTranslated): void
@@ -1023,9 +1038,15 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createLabelsImportedEvent(Labels $labels): AbstractLabelsImported;
 
-    abstract protected function createTitleTranslatedEvent(LegacyLanguage $language, Title $title): AbstractTitleTranslated;
+    abstract protected function createTitleTranslatedEvent(
+        LegacyLanguage $language,
+        Title $title
+    ): AbstractTitleTranslated;
 
-    abstract protected function createDescriptionTranslatedEvent(LegacyLanguage $language, Description $description): AbstractDescriptionTranslated;
+    abstract protected function createDescriptionTranslatedEvent(
+        LegacyLanguage $language,
+        Description $description
+    ): AbstractDescriptionTranslated;
 
     abstract protected function createImageAddedEvent(Image $image): AbstractImageAdded;
 
@@ -1051,6 +1072,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createTitleUpdatedEvent(Title $title): AbstractTitleUpdated;
 
     abstract protected function createDescriptionUpdatedEvent(Description $description): AbstractDescriptionUpdated;
+
+    abstract protected function createDescriptionDeletedEvent(Language $language): AbstractDescriptionDeleted;
 
     abstract protected function createCalendarUpdatedEvent(Calendar $calendar): AbstractCalendarUpdated;
 
