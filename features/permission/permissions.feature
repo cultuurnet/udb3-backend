@@ -192,30 +192,30 @@ Feature: Test the permissions in UDB3
 
   Scenario: add private label to event WITH permission - validator_diest
     Given I am authorized as JWT provider v1 user "validator_diest"
-    When I send a PUT request to "/events/%{uuid_event_rondleiding}/labels/private-visible"
+    When I send a PUT request to "/events/%{uuid_event_rondleiding}/labels/private-diest"
     Then the response status should be "204"
     When I send a GET request to "/events/%{uuid_event_rondleiding}"
     Then the JSON response at "labels" should be:
     """
-    ["label1","label2","private-visible"]
+    ["label1","label2","private-diest"]
     """
 
   Scenario: add private label to place WITH permission - validator_diest
     Given I am authorized as JWT provider v1 user "validator_diest"
-    When I send a PUT request to "/places/%{uuid_place_citadel}/labels/private-visible"
+    When I send a PUT request to "/places/%{uuid_place_citadel}/labels/private-diest"
     Then the response status should be "204"
    When I send a GET request to "/places/%{uuid_place_citadel}"
    Then the JSON response at "labels" should be:
    """
-   ["private-visible"]
+   ["private-diest"]
    """
 
   Scenario: add private label to event WITHOUT permission - validator_scherpenheuvel
     Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
-    When I send a PUT request to "/events/%{uuid_event_rondleiding}/labels/private-visible"
+    When I send a PUT request to "/events/%{uuid_event_rondleiding}/labels/private-diest"
     Then the response status should be "403"
 
   Scenario: add private label to place WITHOUT permission - validator_scherpenheuvel
     Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
-    When I send a PUT request to "/places/%{uuid_place_molenhuis}/labels/private-visible"
+    When I send a PUT request to "/places/%{uuid_place_molenhuis}/labels/private-diest"
     Then the response status should be "403"

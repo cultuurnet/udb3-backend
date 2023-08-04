@@ -137,6 +137,15 @@ final class FeatureContext implements Context
         if ($fc->responseState->getStatusCode() === 404) {
             $fc->createLabel('special_label*', true, true);
         }
+
+        // Create "private-diest" if it doesn't exist yet
+        $fc->getLabel('private-diest');
+        if ($fc->responseState->getStatusCode() === 404) {
+            $fc->createLabel('private-diest', true, false);
+        }
+        $uuidLabelDiest = $fc->responseState->getJsonContent()['uuid'];
+        $fc->iPatchTheLabelWithIdAndCommand($uuidLabelDiest, 'MakePrivate');
+
         // Create roles if needed
         // Reset roles on test users
         $fc->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorDiest@cultuurnet.be');
@@ -171,7 +180,7 @@ final class FeatureContext implements Context
             $uuidRoleDiest = $fc->responseState->getJsonContent()['roleId'];
         }
         $fc->variableState->setVariable(
-            'uuid_role_scherpenheuvel',
+            'uuid_role_diest',
             $uuidRoleDiest
         );
         $fc->iSetTheJsonRequestPayloadTo(new PyStringNode(['{ "query": "(regions:nis-24020 OR labels:UiTinMijnRegio)" }'], 0));
@@ -180,9 +189,7 @@ final class FeatureContext implements Context
         $fc->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_VERWIJDEREN');
         $fc->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_MODEREREN');
         $fc->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/users/' . $uuidValidatorDiest);
-        $fc->getLabel('private-visible');
-        $uuidLabel = $fc->responseState->getJsonContent()['uuid'];
-        $fc->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/labels/' . $uuidLabel);
+        $fc->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/labels/' . $uuidLabelDiest);
 
         // Create role "Scherpenheuvel Validatoren"
         $fc->iSearchForARoleWithNameAndSaveTheIdAs('Scherpenheuvel validatoren');
