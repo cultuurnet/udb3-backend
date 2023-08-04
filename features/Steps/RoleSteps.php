@@ -52,9 +52,60 @@ trait RoleSteps
      */
     public function rolesTestDataIsAvailable(): void
     {
+        // Reset roles on test users
+        $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorDiest@cultuurnet.be');
+        $uuidValidatorDiest = $this->responseState->getJsonContent()['uuid'];
+        $this->variableState->setVariable(
+            'uuid_validator_diest',
+            $uuidValidatorDiest
+        );
+        $this->iRemoveAllRolesForUserWithId($uuidValidatorDiest);
+
+        $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorScherpenheuvel@cultuurnet.be');
+        $uuidValidatorScherpenheuvel = $this->responseState->getJsonContent()['uuid'];
+        $this->variableState->setVariable(
+            'uuid_validator_scherpenheuvel',
+            $uuidValidatorScherpenheuvel
+        );
+        $this->iRemoveAllRolesForUserWithId($uuidValidatorScherpenheuvel);
+        $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorPVB@cultuurnet.be');
+        $uuidValidatorPvb = $this->responseState->getJsonContent()['uuid'];
+        $this->variableState->setVariable(
+            'uuid_validator_pvb',
+            $uuidValidatorPvb
+        );
+        $this->iRemoveAllRolesForUserWithId($uuidValidatorPvb);
+
+        // Create role "Diest Validatoren"
+        $this->iSearchForARoleWithNameAndSaveTheIdAs('Diest validatoren');
+        if (sizeof($this->responseState->getJsonContent()['member']) > 0) {
+            $uuidRoleDiest = $this->responseState->getJsonContent()['member'][0]['uuid'];
+        } else {
+            $this->createRole('Diest validatoren');
+            $uuidRoleDiest = $this->responseState->getJsonContent()['roleId'];
+        }
+        $this->variableState->setVariable(
+            'uuid_role_scherpenheuvel',
+            $uuidRoleDiest
+        );
+        $this->iSetTheJsonRequestPayloadTo(new PyStringNode(['{ "query": "(regions:nis-24020 OR labels:UiTinMijnRegio)" }'], 0));
+        $this->iSendAPostRequestTo('/roles/' . $uuidRoleDiest . '/constraints/');
+        $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_BEWERKEN');
+        $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_VERWIJDEREN');
+        $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_MODEREREN');
+        $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/users/' . $uuidValidatorDiest);
+        $this->getLabel('private-visible');
+        $uuidLabel = $this->responseState->getJsonContent()['uuid'];
+        $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/labels/' . $uuidLabel);
+
         // Create role "Scherpenheuvel Validatoren"
-        $this->createRole('Scherpenheuvel validatoren');
-        $uuidRoleScherpenheuvel = $this->responseState->getJsonContent()['roleId'];
+        $this->iSearchForARoleWithNameAndSaveTheIdAs('Scherpenheuvel validatoren');
+        if (sizeof($this->responseState->getJsonContent()['member']) > 0) {
+            $uuidRoleScherpenheuvel = $this->responseState->getJsonContent()['member'][0]['uuid'];
+        } else {
+            $this->createRole('Scherpenheuvel validatoren');
+            $uuidRoleScherpenheuvel = $this->responseState->getJsonContent()['roleId'];
+        }
         $this->variableState->setVariable(
             'uuid_role_scherpenheuvel',
             $uuidRoleScherpenheuvel
@@ -64,13 +115,26 @@ trait RoleSteps
         $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_BEWERKEN');
         $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_VERWIJDEREN');
         $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_MODEREREN');
-        $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorScherpenheuvel@cultuurnet.be');
-        $uuidValidatorScherpenheuvel = $this->responseState->getJsonContent()['uuid'];
-        $this->variableState->setVariable(
-            'uuid_validator_scherpenheuvel',
-            $uuidValidatorScherpenheuvel
-        );
         $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/users/' . $uuidValidatorScherpenheuvel);
+
+        // Create role "Vlaams-Brabant validatoren"
+        $this->iSearchForARoleWithNameAndSaveTheIdAs('Provincie Vlaams-Brabant validatoren');
+        if (sizeof($this->responseState->getJsonContent()['member']) > 0) {
+            $uuidRolePvb = $this->responseState->getJsonContent()['member'][0]['uuid'];
+        } else {
+            $this->createRole('Provincie Vlaams-Brabant validatoren');
+            $uuidRolePvb = $this->responseState->getJsonContent()['roleId'];
+        }
+        $this->variableState->setVariable(
+            'uuid_role_pvb',
+            $uuidRolePvb
+        );
+        $this->iSetTheJsonRequestPayloadTo(new PyStringNode(['{ "query": "regions:nis-20001" }'], 0));
+        $this->iSendAPostRequestTo('/roles/' . $uuidRolePvb . '/constraints/');
+        $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_BEWERKEN');
+        $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_VERWIJDEREN');
+        $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_MODEREREN');
+        $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/users/' . $uuidValidatorPvb);
     }
 
     private function createRole(string $name): void
