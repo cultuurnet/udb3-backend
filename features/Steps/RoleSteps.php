@@ -10,6 +10,19 @@ use CultuurNet\UDB3\Json;
 trait RoleSteps
 {
     /**
+     * @When I search for a role with name :name
+     */
+    public function iSearchForARoleWithNameAndSaveTheIdAs(string $name): void
+    {
+        $response = $this->getHttpClient()->get(
+            '/roles?query=' . $name,
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseStatusShouldBe(200);
+    }
+
+    /**
      * @Given I create a role with a random name of :nrOfCharacters characters
      */
     public function iCreateARoleWithARandomNameOfCharacters(int $nrOfCharacters): void
