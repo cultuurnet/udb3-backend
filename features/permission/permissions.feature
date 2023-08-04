@@ -4,6 +4,9 @@ Feature: Test the permissions in UDB3
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I send and accept "application/json"
+    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And labels test data is available
+    And roles test data is available
     And I am authorized as JWT provider v1 user "invoerder_lgm"
     And I create a place from "places/molenhuis.json" and save the "id" as "uuid_place_molenhuis"
 
@@ -219,3 +222,6 @@ Feature: Test the permissions in UDB3
     Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
     When I send a PUT request to "/places/%{uuid_place_molenhuis}/labels/private-visible"
     Then the response status should be "403"
+
+  Scenario: temp test
+    Given I am authorized as JWT provider v1 user "invoerder_dfm"
