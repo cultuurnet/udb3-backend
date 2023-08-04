@@ -126,13 +126,13 @@ final class FeatureContext implements Context
             $fc->createLabel('special-label', true, true);
         }
 
-        // Create "special_label#" if it doesn't exist yet and exclude it because of invalid #
+        // Create "special_label#" if it doesn't exist yet
         $fc->getLabel('special_label#');
         if ($fc->responseState->getStatusCode() === 404) {
             $fc->createLabel('special_label#', true, true);
         }
 
-        // Create "special_label*" if it doesn't exist yet and exclude it because of invalid #
+        // Create "special_label*" if it doesn't exist yet
         $fc->getLabel('special_label*');
         if ($fc->responseState->getStatusCode() === 404) {
             $fc->createLabel('special_label*', true, true);
