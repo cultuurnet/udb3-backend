@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Offer\Item\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\CalendarUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\FacilitiesUpdated;
@@ -128,6 +129,11 @@ class ItemLDProjector extends OfferLDProjector
     protected function getDescriptionUpdatedClassName(): string
     {
         return DescriptionUpdated::class;
+    }
+
+    protected function getDescriptionDeletedClassName(): string
+    {
+        return DescriptionDeleted::class;
     }
 
     protected function getCalendarUpdatedClassName(): string

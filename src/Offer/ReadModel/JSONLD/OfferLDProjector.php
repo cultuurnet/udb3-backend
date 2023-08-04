@@ -15,14 +15,15 @@ use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractContactPointUpdated;
+use CultuurNet\UDB3\Offer\Events\AbstractDescriptionDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractDescriptionTranslated;
 use CultuurNet\UDB3\Offer\Events\AbstractDescriptionUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
@@ -38,8 +39,8 @@ use CultuurNet\UDB3\Offer\Events\AbstractTitleUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Offer\Events\AbstractVideoEvent;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoDeleted;
+use CultuurNet\UDB3\Offer\Events\AbstractVideoEvent;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageAdded;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageRemoved;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesEvent;
@@ -235,6 +236,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     abstract protected function getDescriptionUpdatedClassName(): string;
 
+    abstract protected function getDescriptionDeletedClassName(): string;
+
     abstract protected function getCalendarUpdatedClassName(): string;
 
     abstract protected function getTypicalAgeRangeUpdatedClassName(): string;
@@ -273,7 +276,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $offerLD = $document->getBody();
 
         $oldTerms = property_exists($offerLD, 'terms') ? $offerLD->terms : [];
-        $newTerm = (object) $category->serialize();
+        $newTerm = (object)$category->serialize();
 
         $newTerms = array_filter(
             $oldTerms,
@@ -553,8 +556,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $document = $this->loadDocumentFromRepository($titleTranslated);
 
         $offerLd = $document->getBody();
-        $offerLd->name->{$titleTranslated->getLanguage()->getCode(
-        )} = $titleTranslated->getTitle()->toNative();
+        $offerLd->name->{$titleTranslated->getLanguage()->getCode()} = $titleTranslated->getTitle()->toNative();
 
         return $document->withBody($offerLd);
     }
@@ -697,13 +699,35 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
+    protected function applyDescriptionDeleted(
+        AbstractDescriptionDeleted $descriptionDeleted
+    ): JsonDocument {
+        $document = $this->loadDocumentFromRepository($descriptionDeleted);
+
+        $offerLd = $document->getBody();
+
+        if (!isset($offerLd->description)) {
+            return $document;
+        }
+
+        $langKey = $descriptionDeleted->getLanguage()->toString();
+        unset($offerLd->description->{$langKey});
+
+        // Remove description if description is empty, last language was deleted
+        if (count((array)$offerLd->description) === 0) {
+            unset($offerLd->description);
+        }
+
+        return $document->withBody($offerLd);
+    }
+
     protected function applyTypicalAgeRangeUpdated(
         AbstractTypicalAgeRangeUpdated $typicalAgeRangeUpdated
     ): JsonDocument {
         $document = $this->loadDocumentFromRepository($typicalAgeRangeUpdated);
 
         $offerLd = $document->getBody();
-        $offerLd->typicalAgeRange = (string) $typicalAgeRangeUpdated->getTypicalAgeRange();
+        $offerLd->typicalAgeRange = (string)$typicalAgeRangeUpdated->getTypicalAgeRange();
 
         return $document->withBody($offerLd);
     }
@@ -900,7 +924,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 $organizerId
             );
 
-            return (array) json_decode($organizerJSONLD);
+            return (array)json_decode($organizerJSONLD);
         } catch (EntityNotFoundException $e) {
             // In case the place can not be found at the moment, just add its ID
             return [
