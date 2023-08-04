@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class UpdateEducationalDescriptionDenormalizerTest extends TestCase
 {
-    const DESCRIPTION = 'value';
+    private const DESCRIPTION = 'value';
     private string $id;
     private Language $mainLanguage;
     private UpdateEducationalDescriptionDenormalizer $denormalizer;

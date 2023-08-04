@@ -22,9 +22,9 @@ final class UpdateEducationalDescriptionDenormalizer implements DenormalizerInte
         $this->language = $language;
     }
 
-    public function denormalize($data, $class='', $format = null, array $context = []): UpdateEducationalDescription
+    public function denormalize($data, $class = '', $format = null, array $context = []): UpdateEducationalDescription
     {
-        if(!isset($data['educationalDescription'])) {
+        if (!isset($data['educationalDescription'])) {
             throw new InvalidArgumentException('Missing required parameter educationalDescription');
         }
 

@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Organizer\Commands\UpdateDescription;
 use CultuurNet\UDB3\Organizer\Commands\UpdateEducationalDescription;
 use PHPUnit\Framework\TestCase;
 
