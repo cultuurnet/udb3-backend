@@ -5,7 +5,7 @@ Feature: Test updating organizers via complete overwrite
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     And I send and accept "application/json"
-    
+
   Scenario: Update an organizer with extra fields via complete overwrite
     Given I create a minimal organizer and save the "url" as "organizerUrl"
     When I update the organizer at "%{organizerUrl}" from "organizers/organizer.json"
@@ -223,5 +223,46 @@ Feature: Test updating organizers via complete overwrite
       "phone": [],
       "email": [],
       "url": []
+    }
+    """
+
+  Scenario: Creating a new educational description
+    Given I create a minimal organizer and save the "url" as "organizerUrl"
+    And I keep the value of the JSON response at "id" as "organizerId"
+    Given I set the JSON request payload to:
+    """
+    {
+        "educationalDescription": "Nederlandse update"
+    }
+    """
+    When I send a PUT request to "/organizers/%{organizerId}/educational-description/nl"
+    Then the response status should be "204"
+    And I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "educationalDescription" should be:
+    """
+    {
+        "nl": "Nederlandse update"
+    }
+    """
+
+  Scenario: Update an existing educational description
+    Given I create an organizer from "organizers/organizer.json" and save the "url" as "organizerUrl"
+    And I keep the value of the JSON response at "id" as "organizerId"
+    Given I set the JSON request payload to:
+    """
+    {
+        "educationalDescription": "Nederlandse update"
+    }
+    """
+    When I send a PUT request to "/organizers/%{organizerId}/educational-description/nl"
+    Then the response status should be "204"
+    And I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "educationalDescription" should be:
+    """
+    {
+        "nl": "Nederlandse update",
+        "fr": "French educational description",
+        "de": "German educational description",
+        "en": "English educational description"
     }
     """
