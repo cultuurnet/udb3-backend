@@ -220,6 +220,3 @@ Feature: Test the permissions in UDB3
     Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
     When I send a PUT request to "/places/%{uuid_place_molenhuis}/labels/private-visible"
     Then the response status should be "403"
-
-  Scenario: temp test
-    Given I am authorized as JWT provider v1 user "invoerder_dfm"
