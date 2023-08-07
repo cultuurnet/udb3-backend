@@ -63,7 +63,7 @@ trait LabelSteps
     }
 
     /**
-     * @Given Labels test data is available
+     * @Given labels test data is available
      */
     public function labelsTestDataIsAvailable(): void
     {

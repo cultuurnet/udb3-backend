@@ -8,8 +8,8 @@ Feature: Setup the initial data
 
   @init
   Scenario: Setup Labels Data
-    Given Labels test data is available
+    Given labels test data is available
 
   @init
   Scenario: Setup Roles Data
-    Given Roles test data is available
+    Given roles test data is available

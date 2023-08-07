@@ -48,7 +48,7 @@ trait RoleSteps
     }
 
     /**
-     * @Given Roles test data is available
+     * @Given roles test data is available
      */
     public function rolesTestDataIsAvailable(): void
     {
