@@ -30,6 +30,9 @@ test-filter:
 test-group:
 	docker exec -it php.uitdatabank composer test -- --group=$(group)
 
+features-init:
+	docker exec -it php.uitdatabank composer test-features -- --tags @init
+
 test-features:
 	docker exec -it php.uitdatabank composer test-features
 
