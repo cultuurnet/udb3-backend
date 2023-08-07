@@ -55,3 +55,21 @@ Feature: Test updating organizers via complete overwrite
         "en": "English educational description"
     }
     """
+
+  Scenario: Delete an educational description
+    Given I create an organizer from "organizers/organizer.json" and save the "url" as "organizerUrl"
+    When I send a DELETE request to "%{organizerUrl}/educational-description/nl"
+    Then the response status should be "204"
+    And I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "educationalDescription" should be:
+    """
+    {
+        "fr": "French educational description",
+        "de": "German educational description",
+        "en": "English educational description"
+    }
+    """
+
+  Scenario: Fail to delete an educational description on an organisation that does not exist
+    When I send a DELETE request to "organizers/39171e0b-7b9f-4b28-b2f4-bae8abba1a39/educational-description/nl"
+    Then the response status should be "404"
