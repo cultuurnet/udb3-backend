@@ -62,34 +62,10 @@ trait LabelSteps
         );
     }
 
-    private function createLabel(string $name, bool $visible, bool $public): void
-    {
-        $response = $this->getHttpClient()->postJSON(
-            '/labels',
-            $this->variableState->replaceVariables(
-                Json::encode([
-                    'name' => $name,
-                    'visibility' => $visible ? 'visible' : 'invisible',
-                    'privacy' => $public ? 'public' : 'private',
-                ])
-            )
-        );
-        $this->responseState->setResponse($response);
-
-        $this->theResponseBodyShouldBeValidJson();
-    }
-
-    private function getLabel(string $name): void
-    {
-        $response = $this->getHttpClient()->get(
-            '/labels/' . urlencode($name)
-        );
-        $this->responseState->setResponse($response);
-
-        $this->theResponseBodyShouldBeValidJson();
-    }
-
-    private function labelsTestDataIsAvailable(): void
+    /**
+     * @Given Labels test data is available
+     */
+    public function labelsTestDataIsAvailable(): void
     {
         // Create test labels if needed
         // Create "public-visible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
@@ -152,5 +128,32 @@ trait LabelSteps
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('special_label*', true, true);
         }
+    }
+
+    private function createLabel(string $name, bool $visible, bool $public): void
+    {
+        $response = $this->getHttpClient()->postJSON(
+            '/labels',
+            $this->variableState->replaceVariables(
+                Json::encode([
+                    'name' => $name,
+                    'visibility' => $visible ? 'visible' : 'invisible',
+                    'privacy' => $public ? 'public' : 'private',
+                ])
+            )
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseBodyShouldBeValidJson();
+    }
+
+    private function getLabel(string $name): void
+    {
+        $response = $this->getHttpClient()->get(
+            '/labels/' . urlencode($name)
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseBodyShouldBeValidJson();
     }
 }
