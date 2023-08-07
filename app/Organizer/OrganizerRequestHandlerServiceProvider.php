@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteEducationalDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
@@ -46,6 +47,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             UpdateDescriptionRequestHandler::class,
             DeleteDescriptionRequestHandler::class,
             UpdateEducationalDescriptionRequestHandler::class,
+            DeleteEducationalDescriptionRequestHandler::class,
             UpdateAddressRequestHandler::class,
             DeleteAddressRequestHandler::class,
             UpdateUrlRequestHandler::class,
@@ -119,6 +121,13 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             UpdateEducationalDescriptionRequestHandler::class,
             function () use ($container) {
                 return new UpdateEducationalDescriptionRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            DeleteEducationalDescriptionRequestHandler::class,
+            function () use ($container) {
+                return new DeleteEducationalDescriptionRequestHandler($container->get('event_command_bus'));
             }
         );
 
