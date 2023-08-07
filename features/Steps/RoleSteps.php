@@ -47,46 +47,11 @@ trait RoleSteps
         }
     }
 
-    private function createRole(string $name): void
+    /**
+     * @Given Roles test data is available
+     */
+    public function rolesTestDataIsAvailable(): void
     {
-        $response = $this->getHttpClient()->postJSON(
-            '/roles',
-            $this->variableState->replaceVariables(
-                Json::encode([
-                    'name' => $name,
-                ])
-            )
-        );
-        $this->responseState->setResponse($response);
-
-        $this->theResponseBodyShouldBeValidJson();
-        $this->theResponseStatusShouldBe(201);
-    }
-
-    private function getRolesForUser(string $userId): void
-    {
-        $response = $this->getHttpClient()->get(
-            '/users/' . $userId . '/roles',
-        );
-        $this->responseState->setResponse($response);
-
-        $this->theResponseBodyShouldBeValidJson();
-        $this->theResponseStatusShouldBe(200);
-    }
-
-    private function deleteARoleForUser(string $roleId, string $userId): void
-    {
-        $response = $this->getHttpClient()->delete(
-            '/roles/' . $roleId . '/users/' . $userId,
-        );
-        $this->responseState->setResponse($response);
-
-        $this->theResponseStatusShouldBe(204);
-    }
-
-    private function rolesTestDataIsAvailable(): void
-    {
-        // Create roles if needed
         // Reset roles on test users
         $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorDiest@cultuurnet.be');
         $uuidValidatorDiest = $this->responseState->getJsonContent()['uuid'];
@@ -151,5 +116,42 @@ trait RoleSteps
         $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_VERWIJDEREN');
         $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_MODEREREN');
         $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/users/' . $uuidValidatorPvb);
+    }
+
+    private function createRole(string $name): void
+    {
+        $response = $this->getHttpClient()->postJSON(
+            '/roles',
+            $this->variableState->replaceVariables(
+                Json::encode([
+                    'name' => $name,
+                ])
+            )
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseBodyShouldBeValidJson();
+        $this->theResponseStatusShouldBe(201);
+    }
+
+    private function getRolesForUser(string $userId): void
+    {
+        $response = $this->getHttpClient()->get(
+            '/users/' . $userId . '/roles',
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseBodyShouldBeValidJson();
+        $this->theResponseStatusShouldBe(200);
+    }
+
+    private function deleteARoleForUser(string $roleId, string $userId): void
+    {
+        $response = $this->getHttpClient()->delete(
+            '/roles/' . $roleId . '/users/' . $userId,
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseStatusShouldBe(204);
     }
 }
