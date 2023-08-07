@@ -34,7 +34,9 @@ test-features-init:
 	docker exec -it php.uitdatabank composer test-features -- --tags @init
 
 test-features:
-	docker exec -it php.uitdatabank composer test-features
+	docker exec -it php.uitdatabank composer test-features  -- --tags "~@init"
+
+test-features-all: features-init test-features
 
 migrate:
 	docker exec -it php.uitdatabank ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
