@@ -150,25 +150,14 @@ final class FeatureContext implements Context
         // Reset roles on test users
         $fc->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorDiest@cultuurnet.be');
         $uuidValidatorDiest = $fc->responseState->getJsonContent()['uuid'];
-        $fc->variableState->setVariable(
-            'uuid_validator_diest',
-            $uuidValidatorDiest
-        );
         $fc->iRemoveAllRolesForUserWithId($uuidValidatorDiest);
 
         $fc->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorScherpenheuvel@cultuurnet.be');
         $uuidValidatorScherpenheuvel = $fc->responseState->getJsonContent()['uuid'];
-        $fc->variableState->setVariable(
-            'uuid_validator_scherpenheuvel',
-            $uuidValidatorScherpenheuvel
-        );
         $fc->iRemoveAllRolesForUserWithId($uuidValidatorScherpenheuvel);
+
         $fc->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorPVB@cultuurnet.be');
         $uuidValidatorPvb = $fc->responseState->getJsonContent()['uuid'];
-        $fc->variableState->setVariable(
-            'uuid_validator_pvb',
-            $uuidValidatorPvb
-        );
         $fc->iRemoveAllRolesForUserWithId($uuidValidatorPvb);
 
         // Create role "Diest Validatoren"
@@ -179,10 +168,6 @@ final class FeatureContext implements Context
             $fc->createRole('Diest validatoren');
             $uuidRoleDiest = $fc->responseState->getJsonContent()['roleId'];
         }
-        $fc->variableState->setVariable(
-            'uuid_role_diest',
-            $uuidRoleDiest
-        );
         $fc->iSetTheJsonRequestPayloadTo(new PyStringNode(['{ "query": "(regions:nis-24020 OR labels:UiTinMijnRegio)" }'], 0));
         $fc->iSendAPostRequestTo('/roles/' . $uuidRoleDiest . '/constraints/');
         $fc->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_BEWERKEN');
@@ -199,10 +184,6 @@ final class FeatureContext implements Context
             $fc->createRole('Scherpenheuvel validatoren');
             $uuidRoleScherpenheuvel = $fc->responseState->getJsonContent()['roleId'];
         }
-        $fc->variableState->setVariable(
-            'uuid_role_scherpenheuvel',
-            $uuidRoleScherpenheuvel
-        );
         $fc->iSetTheJsonRequestPayloadTo(new PyStringNode(['{"query": "regions:nis-24134"}'], 0));
         $fc->iSendAPostRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/constraints/');
         $fc->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_BEWERKEN');
@@ -218,10 +199,6 @@ final class FeatureContext implements Context
             $fc->createRole('Provincie Vlaams-Brabant validatoren');
             $uuidRolePvb = $fc->responseState->getJsonContent()['roleId'];
         }
-        $fc->variableState->setVariable(
-            'uuid_role_pvb',
-            $uuidRolePvb
-        );
         $fc->iSetTheJsonRequestPayloadTo(new PyStringNode(['{ "query": "regions:nis-20001" }'], 0));
         $fc->iSendAPostRequestTo('/roles/' . $uuidRolePvb . '/constraints/');
         $fc->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_BEWERKEN');
