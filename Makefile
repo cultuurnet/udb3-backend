@@ -36,6 +36,9 @@ test-features-init:
 test-features:
 	docker exec -it php.uitdatabank composer test-features  -- --tags "~@init"
 
+test-features-filter:
+	docker exec -it php.uitdatabank composer test-features -- $(path)
+
 test-features-all: test-features-init test-features
 
 migrate:
