@@ -35,7 +35,7 @@ final class UpdateEducationalDescriptionRequestHandlerTest extends TestCase
      * @test
      * @group educationalDescription
      */
-    public function it_handles_updating_description(): void
+    public function it_handles_updating_educational_description(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
