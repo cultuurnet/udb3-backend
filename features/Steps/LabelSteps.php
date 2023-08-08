@@ -87,7 +87,7 @@ trait LabelSteps
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('private-visible', true, false);
             $uuid = $this->responseState->getJsonContent()['uuid'];
-            $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakeVisible');
+            $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakePrivate');
         }
 
         // Create "private-invisible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
