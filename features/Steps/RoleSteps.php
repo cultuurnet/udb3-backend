@@ -52,19 +52,6 @@ trait RoleSteps
      */
     public function rolesTestDataIsAvailable(): void
     {
-        // Reset roles on test users
-        $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorDiest@cultuurnet.be');
-        $uuidValidatorDiest = $this->responseState->getJsonContent()['uuid'];
-        $this->iRemoveAllRolesForUserWithId($uuidValidatorDiest);
-
-        $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorScherpenheuvel@cultuurnet.be');
-        $uuidValidatorScherpenheuvel = $this->responseState->getJsonContent()['uuid'];
-        $this->iRemoveAllRolesForUserWithId($uuidValidatorScherpenheuvel);
-
-        $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorPVB@cultuurnet.be');
-        $uuidValidatorPvb = $this->responseState->getJsonContent()['uuid'];
-        $this->iRemoveAllRolesForUserWithId($uuidValidatorPvb);
-
         // Create role "Diest Validatoren"
         $this->iSearchForARoleWithNameAndSaveTheIdAs('Diest validatoren');
         if (sizeof($this->responseState->getJsonContent()['member']) === 0) {
@@ -75,6 +62,8 @@ trait RoleSteps
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_BEWERKEN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_VERWIJDEREN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_MODEREREN');
+            $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorDiest@cultuurnet.be');
+            $uuidValidatorDiest = $this->responseState->getJsonContent()['uuid'];
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/users/' . $uuidValidatorDiest);
             $this->getLabel('private-diest');
             if ($this->responseState->getStatusCode() === 404) {
@@ -95,6 +84,8 @@ trait RoleSteps
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_BEWERKEN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_VERWIJDEREN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_MODEREREN');
+            $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorScherpenheuvel@cultuurnet.be');
+            $uuidValidatorScherpenheuvel = $this->responseState->getJsonContent()['uuid'];
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/users/' . $uuidValidatorScherpenheuvel);
         }
 
@@ -108,6 +99,8 @@ trait RoleSteps
             $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_BEWERKEN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_VERWIJDEREN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_MODEREREN');
+            $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorPVB@cultuurnet.be');
+            $uuidValidatorPvb = $this->responseState->getJsonContent()['uuid'];
             $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/users/' . $uuidValidatorPvb);
         }
     }
