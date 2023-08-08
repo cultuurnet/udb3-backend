@@ -10,9 +10,10 @@ use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
+use CultuurNet\UDB3\Console\Command\ConvertDescriptionToEducationalDescriptionForCultuurkuur;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
-use CultuurNet\UDB3\Console\Command\ExcludeLabel;
 use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
+use CultuurNet\UDB3\Console\Command\ExcludeLabel;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
@@ -39,6 +40,9 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
+use CultuurNet\UDB3\Search\EventsSapi3SearchService;
+use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
+use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
@@ -78,6 +82,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:remove-label',
         'console.offer:import-auto-classification-labels',
         'console.article:replace-publisher',
+        'console.organizer:cultuurkuur:convert-educational-description',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -178,9 +183,9 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'console.place:geocode',
-            fn () =>  new GeocodePlaceCommand(
+            fn () => new GeocodePlaceCommand(
                 $container->get('event_command_bus'),
-                $container->get('sapi3_search_service_places'),
+                $container->get(PlacesSapi3SearchService::class),
                 $container->get('place_jsonld_repository')
             )
         );
@@ -189,7 +194,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.event:geocode',
             fn () => new GeocodeEventCommand(
                 $container->get('event_command_bus'),
-                $container->get('sapi3_search_service_events'),
+                $container->get(EventsSapi3SearchService::class),
                 $container->get('event_jsonld_repository')
             )
         );
@@ -198,7 +203,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.organizer:geocode',
             fn () => new GeocodeOrganizerCommand(
                 $container->get('event_command_bus'),
-                $container->get('sapi3_search_service_organizers'),
+                $container->get(OrganizersSapi3SearchService::class),
                 $container->get('organizer_jsonld_repository')
             )
         );
@@ -269,7 +274,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new UpdateOfferStatusCommand(
                 OfferType::event(),
                 $container->get('event_command_bus'),
-                $container->get('sapi3_search_service_events')
+                $container->get(EventsSapi3SearchService::class)
             )
         );
 
@@ -278,7 +283,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new UpdateOfferStatusCommand(
                 OfferType::place(),
                 $container->get('event_command_bus'),
-                $container->get('sapi3_search_service_places')
+                $container->get(PlacesSapi3SearchService::class)
             )
         );
 
@@ -286,7 +291,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.event:booking-availability:update',
             fn () => new UpdateBookingAvailabilityCommand(
                 $container->get('event_command_bus'),
-                $container->get('sapi3_search_service_events')
+                $container->get(EventsSapi3SearchService::class)
             )
         );
 
@@ -294,7 +299,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.event:attendanceMode:update',
             fn () => new UpdateEventsAttendanceMode(
                 $container->get('event_command_bus'),
-                $container->get('sapi3_search_service_events')
+                $container->get(EventsSapi3SearchService::class)
             )
         );
 
@@ -353,7 +358,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.place:facilities:remove',
             fn () => new RemoveFacilitiesFromPlace(
                 $container->get('event_command_bus'),
-                $container->get('sapi3_search_service_places')
+                $container->get(PlacesSapi3SearchService::class)
             )
         );
 
@@ -381,6 +386,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.article:replace-publisher',
             fn () => new ReplaceNewsArticlePublisher($container->get('dbal_connection'))
+        );
+
+        $container->addShared(
+            'console.organizer:cultuurkuur:convert-educational-description',
+            fn () => new ConvertDescriptionToEducationalDescriptionForCultuurkuur(
+                $container->get('event_command_bus'),
+                $container->get(OrganizersSapi3SearchService::class),
+            )
         );
     }
 }

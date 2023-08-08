@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ChangeOwnerHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\ConvertDescriptionToEducationalDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteEducationalDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler;
@@ -46,6 +47,7 @@ final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
             DeleteDescriptionHandler::class,
             UpdateEducationalDescriptionHandler::class,
             DeleteEducationalDescriptionHandler::class,
+            ConvertDescriptionToEducationalDescriptionHandler::class,
             UpdateAddressHandler::class,
             RemoveAddressHandler::class,
             UpdateWebsiteHandler::class,
@@ -138,6 +140,13 @@ final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
             DeleteEducationalDescriptionHandler::class,
             function () use ($container) {
                 return new DeleteEducationalDescriptionHandler($container->get('organizer_repository'));
+            }
+        );
+
+        $container->addShared(
+            ConvertDescriptionToEducationalDescriptionHandler::class,
+            function () use ($container) {
+                return new ConvertDescriptionToEducationalDescriptionHandler($container->get('organizer_repository'));
             }
         );
 
