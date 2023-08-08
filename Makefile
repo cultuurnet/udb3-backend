@@ -30,16 +30,16 @@ test-filter:
 test-group:
 	docker exec -it php.uitdatabank composer test -- --group=$(group)
 
-test-features-init:
-	docker exec -it php.uitdatabank composer test-features -- --tags @init
+features-init:
+	docker exec -it php.uitdatabank composer features -- --tags @init
 
-test-features:
-	docker exec -it php.uitdatabank composer test-features  -- --tags "~@init"
+features:
+	docker exec -it php.uitdatabank composer features  -- --tags "~@init"
 
-test-features-filter:
-	docker exec -it php.uitdatabank composer test-features -- $(path)
+features-filter:
+	docker exec -it php.uitdatabank composer features -- $(path)
 
-test-features-all: test-features-init test-features
+features-all: features-init features
 
 migrate:
 	docker exec -it php.uitdatabank ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
