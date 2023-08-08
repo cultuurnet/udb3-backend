@@ -631,7 +631,11 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
 
-        $offerLd->bookingInfo = $bookingInfoUpdated->getBookingInfo()->toJsonLd();
+        if (empty($bookingInfoUpdated->getBookingInfo()->toJsonLd())) {
+            unset($offerLd->bookingInfo);
+        } else {
+            $offerLd->bookingInfo = $bookingInfoUpdated->getBookingInfo()->toJsonLd();
+        }
 
         return $document->withBody($offerLd);
     }

@@ -67,6 +67,18 @@ class BookingInfoUpdatedTest extends TestCase
                     )
                 ),
             ],
+            'bookingInfoDeleted' => [
+                [
+                    'item_id' => 'foo',
+                    'bookingInfo' => [
+
+                    ],
+                ],
+                new BookingInfoUpdated(
+                    'foo',
+                    new BookingInfo()
+                ),
+            ],
         ];
     }
 }
