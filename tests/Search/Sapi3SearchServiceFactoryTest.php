@@ -35,7 +35,7 @@ class Sapi3SearchServiceFactoryTest extends TestCase
      * @test
      * @dataProvider dataProvider
      */
-    public function it_returns_event_search_service($expectedClass, $searchService): void
+    public function it_returns_event_search_service(string $expectedClass, SearchServiceInterface $searchService): void
     {
         $this->assertInstanceOf($expectedClass, $searchService);
     }
@@ -45,10 +45,10 @@ class Sapi3SearchServiceFactoryTest extends TestCase
         $this->setUp();
 
         return [
-            [Sapi3EventsSearchService::class, Sapi3SearchServiceFactory::createEventsSearchService($this->container)],
-            [Sapi3PlacesSearchService::class, Sapi3SearchServiceFactory::createPlacesSearchService($this->container)],
-            [Sapi3OffersSearchService::class, Sapi3SearchServiceFactory::createOffersSearchService($this->container)],
-            [Sapi3OrganizersSearchService::class, Sapi3SearchServiceFactory::createOrganizerSearchService($this->container)],
+            [EventsSapi3SearchService::class, SearchSapi3ServiceFactory::createEventsSearchService($this->container)],
+            [PlacesSapi3SearchService::class, SearchSapi3ServiceFactory::createPlacesSearchService($this->container)],
+            [OffersSapi3SearchService::class, SearchSapi3ServiceFactory::createOffersSearchService($this->container)],
+            [OrganizersSapi3SearchService::class, SearchSapi3ServiceFactory::createOrganizerSearchService($this->container)],
         ];
     }
 }

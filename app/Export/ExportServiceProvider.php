@@ -21,7 +21,7 @@ use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Search\ResultsGenerator;
-use CultuurNet\UDB3\Search\Sapi3EventsSearchService;
+use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use Psr\Log\LoggerAwareInterface;
 use Twig_Environment;
 use Twig_Extensions_Extension_Text;
@@ -64,7 +64,7 @@ final class ExportServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'event_export_service',
             function () use ($container): EventExportService {
-                $searchService = $container->get(Sapi3EventsSearchService::class);
+                $searchService = $container->get(EventsSapi3SearchService::class);
 
                 $logger = LoggerFactory::create($container, LoggerName::forResqueWorker('event-export'));
                 if ($searchService instanceof LoggerAwareInterface) {

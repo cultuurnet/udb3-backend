@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Offer\Commands\AddLabelToMultipleJSONDeserializer;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\Search\Sapi3OffersSearchService;
+use CultuurNet\UDB3\Search\OffersSapi3SearchService;
 
 final class BulkLabelOfferServiceProvider extends AbstractServiceProvider
 {
@@ -32,7 +32,7 @@ final class BulkLabelOfferServiceProvider extends AbstractServiceProvider
             'bulk_label_offer_command_handler',
             function () use ($container) {
                 $searchResultsGenerator = new ResultsGenerator(
-                    $container->get(Sapi3OffersSearchService::class)
+                    $container->get(OffersSapi3SearchService::class)
                 );
                 $searchResultsGenerator->setLogger(
                     LoggerFactory::create($container, LoggerName::forResqueWorker('bulk-label-offer', 'search'))

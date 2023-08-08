@@ -11,10 +11,10 @@ final class Sapi3SearchServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
-            Sapi3OffersSearchService::class,
-            Sapi3EventsSearchService::class,
-            Sapi3PlacesSearchService::class,
-            Sapi3OrganizersSearchService::class,
+            OffersSapi3SearchService::class,
+            EventsSapi3SearchService::class,
+            PlacesSapi3SearchService::class,
+            OrganizersSapi3SearchService::class,
         ];
     }
 
@@ -23,30 +23,30 @@ final class Sapi3SearchServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->addShared(
-            Sapi3OffersSearchService::class,
+            OffersSapi3SearchService::class,
             function () use ($container) {
-                return Sapi3SearchServiceFactory::createOffersSearchService($container);
+                return SearchSapi3ServiceFactory::createOffersSearchService($container);
             }
         );
 
         $container->addShared(
-            Sapi3EventsSearchService::class,
+            EventsSapi3SearchService::class,
             function () use ($container) {
-                return Sapi3SearchServiceFactory::createEventsSearchService($container);
+                return SearchSapi3ServiceFactory::createEventsSearchService($container);
             }
         );
 
         $container->addShared(
-            Sapi3PlacesSearchService::class,
+            PlacesSapi3SearchService::class,
             function () use ($container) {
-                return Sapi3SearchServiceFactory::createPlacesSearchService($container);
+                return SearchSapi3ServiceFactory::createPlacesSearchService($container);
             }
         );
 
         $container->addShared(
-            Sapi3OrganizersSearchService::class,
+            OrganizersSapi3SearchService::class,
             function () use ($container) {
-                return Sapi3SearchServiceFactory::createOrganizerSearchService($container);
+                return SearchSapi3ServiceFactory::createOrganizerSearchService($container);
             }
         );
     }

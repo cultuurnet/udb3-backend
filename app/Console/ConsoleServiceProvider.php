@@ -39,9 +39,9 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
-use CultuurNet\UDB3\Search\Sapi3EventsSearchService;
-use CultuurNet\UDB3\Search\Sapi3OrganizersSearchService;
-use CultuurNet\UDB3\Search\Sapi3PlacesSearchService;
+use CultuurNet\UDB3\Search\EventsSapi3SearchService;
+use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
+use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
@@ -181,9 +181,9 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'console.place:geocode',
-            fn () =>  new GeocodePlaceCommand(
+            fn () => new GeocodePlaceCommand(
                 $container->get('event_command_bus'),
-                $container->get(Sapi3PlacesSearchService::class),
+                $container->get(PlacesSapi3SearchService::class),
                 $container->get('place_jsonld_repository')
             )
         );
@@ -192,7 +192,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.event:geocode',
             fn () => new GeocodeEventCommand(
                 $container->get('event_command_bus'),
-                $container->get(Sapi3EventsSearchService::class),
+                $container->get(EventsSapi3SearchService::class),
                 $container->get('event_jsonld_repository')
             )
         );
@@ -201,7 +201,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.organizer:geocode',
             fn () => new GeocodeOrganizerCommand(
                 $container->get('event_command_bus'),
-                $container->get(Sapi3OrganizersSearchService::class),
+                $container->get(OrganizersSapi3SearchService::class),
                 $container->get('organizer_jsonld_repository')
             )
         );
@@ -272,7 +272,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new UpdateOfferStatusCommand(
                 OfferType::event(),
                 $container->get('event_command_bus'),
-                $container->get(Sapi3EventsSearchService::class)
+                $container->get(EventsSapi3SearchService::class)
             )
         );
 
@@ -281,7 +281,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new UpdateOfferStatusCommand(
                 OfferType::place(),
                 $container->get('event_command_bus'),
-                $container->get(Sapi3PlacesSearchService::class)
+                $container->get(PlacesSapi3SearchService::class)
             )
         );
 
@@ -289,7 +289,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.event:booking-availability:update',
             fn () => new UpdateBookingAvailabilityCommand(
                 $container->get('event_command_bus'),
-                $container->get(Sapi3EventsSearchService::class)
+                $container->get(EventsSapi3SearchService::class)
             )
         );
 
@@ -297,7 +297,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.event:attendanceMode:update',
             fn () => new UpdateEventsAttendanceMode(
                 $container->get('event_command_bus'),
-                $container->get(Sapi3EventsSearchService::class)
+                $container->get(EventsSapi3SearchService::class)
             )
         );
 
@@ -356,7 +356,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.place:facilities:remove',
             fn () => new RemoveFacilitiesFromPlace(
                 $container->get('event_command_bus'),
-                $container->get(Sapi3PlacesSearchService::class)
+                $container->get(PlacesSapi3SearchService::class)
             )
         );
 

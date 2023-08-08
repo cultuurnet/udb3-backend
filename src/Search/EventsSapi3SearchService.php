@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-final class Sapi3EventsSearchService extends Sapi3SearchService
+final class EventsSapi3SearchService extends Sapi3SearchService
 {
 }
