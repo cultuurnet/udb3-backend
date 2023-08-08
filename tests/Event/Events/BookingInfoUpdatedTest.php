@@ -70,9 +70,7 @@ class BookingInfoUpdatedTest extends TestCase
             'bookingInfoDeleted' => [
                 [
                     'item_id' => 'foo',
-                    'bookingInfo' => [
-
-                    ],
+                    'bookingInfo' => [],
                 ],
                 new BookingInfoUpdated(
                     'foo',
