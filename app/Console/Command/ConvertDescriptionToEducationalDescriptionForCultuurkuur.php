@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractCommand
 {
-    private const QUERY_LABEL = 'labels:cultuurkuur';
+    private const QUERY_LABEL = 'labels:cultuurkuur_organizer';
     private const BATCH_SIZE = 100;
 
     private OrganizersSapi3SearchService $searchService;
