@@ -1,4 +1,4 @@
-.PHONY: up down install ci stan cs cs-fix test migrate config init
+.PHONY: up down install ci stan cs cs-fix test migrate config init features
 
 up:
 	docker-compose up -d
