@@ -39,8 +39,6 @@ features:
 features-filter:
 	docker exec -it php.uitdatabank composer features -- $(path)
 
-features-all: features-init features
-
 migrate:
 	docker exec -it php.uitdatabank ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
 
