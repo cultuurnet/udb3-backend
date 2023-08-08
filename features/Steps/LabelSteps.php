@@ -67,42 +67,37 @@ trait LabelSteps
      */
     public function labelsTestDataIsAvailable(): void
     {
-        // Create "public-visible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
+        // Create test labels if needed
+        // Create "public-visible" if it doesn't exist yet
         $this->getLabel('public-visible');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('public-visible', true, true);
-        } else {
-            $uuid = $this->responseState->getJsonContent()['uuid'];
-            $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakePublic');
-            $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakeVisible');
         }
 
-        // Create "public-invisible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
+        // Create "public-invisible" if it doesn't exist yet and set the right visibility
         $this->getLabel('public-invisible');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('public-invisible', false, true);
+            $uuid = $this->responseState->getJsonContent()['uuid'];
+            $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakeInvisible');
         }
-        $uuid = $this->responseState->getJsonContent()['uuid'];
-        $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakePublic');
-        $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakeInvisible');
 
-        // Create "private-visible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
+        // Create "private-visible" if it doesn't exist yet and set the right privacy
         $this->getLabel('private-visible');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('private-visible', true, false);
+            $uuid = $this->responseState->getJsonContent()['uuid'];
+            $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakePrivate');
         }
-        $uuid = $this->responseState->getJsonContent()['uuid'];
-        $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakePrivate');
-        $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakeVisible');
 
-        // Create "private-invisible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
+        // Create "private-invisible" if it doesn't exist yet and set the right privacy and visibility
         $this->getLabel('private-invisible');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('private-invisible', false, false);
+            $uuid = $this->responseState->getJsonContent()['uuid'];
+            $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakePrivate');
+            $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakeInvisible');
         }
-        $uuid = $this->responseState->getJsonContent()['uuid'];
-        $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakePrivate');
-        $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakeInvisible');
 
         // Create "special_label" if it doesn't exist yet
         $this->getLabel('special_label');
@@ -116,13 +111,13 @@ trait LabelSteps
             $this->createLabel('special-label', true, true);
         }
 
-        // Create "special_label#" if it doesn't exist yet and exclude it because of invalid #
+        // Create "special_label#" if it doesn't exist yet
         $this->getLabel('special_label#');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('special_label#', true, true);
         }
 
-        // Create "special_label*" if it doesn't exist yet and exclude it because of invalid #
+        // Create "special_label*" if it doesn't exist yet
         $this->getLabel('special_label*');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('special_label*', true, true);
