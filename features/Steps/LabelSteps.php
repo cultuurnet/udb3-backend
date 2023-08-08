@@ -68,13 +68,13 @@ trait LabelSteps
     public function labelsTestDataIsAvailable(): void
     {
         // Create test labels if needed
-        // Create "public-visible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
+        // Create "public-visible" if it doesn't exist yet
         $this->getLabel('public-visible');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('public-visible', true, true);
         }
 
-        // Create "public-invisible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
+        // Create "public-invisible" if it doesn't exist yet and set the right visibility
         $this->getLabel('public-invisible');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('public-invisible', false, true);
@@ -82,7 +82,7 @@ trait LabelSteps
             $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakeInvisible');
         }
 
-        // Create "private-visible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
+        // Create "private-visible" if it doesn't exist yet and set the right privacy
         $this->getLabel('private-visible');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('private-visible', true, false);
@@ -90,7 +90,7 @@ trait LabelSteps
             $this->iPatchTheLabelWithIdAndCommand($uuid, 'MakePrivate');
         }
 
-        // Create "private-invisible" if it doesn't exist yet and (re)set the right privacy and visibility in case its needed
+        // Create "private-invisible" if it doesn't exist yet and set the right privacy and visibility
         $this->getLabel('private-invisible');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('private-invisible', false, false);
