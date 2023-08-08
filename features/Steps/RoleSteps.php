@@ -73,49 +73,43 @@ trait RoleSteps
         $uuidLabelDiest = $this->responseState->getJsonContent()['uuid'];
         $this->iPatchTheLabelWithIdAndCommand($uuidLabelDiest, 'MakePrivate');
         $this->iSearchForARoleWithNameAndSaveTheIdAs('Diest validatoren');
-        if (sizeof($this->responseState->getJsonContent()['member']) > 0) {
-            $uuidRoleDiest = $this->responseState->getJsonContent()['member'][0]['uuid'];
-        } else {
+        if (sizeof($this->responseState->getJsonContent()['member']) === 0) {
             $this->createRole('Diest validatoren');
             $uuidRoleDiest = $this->responseState->getJsonContent()['roleId'];
+            $this->iSetTheJsonRequestPayloadTo(new PyStringNode(['{ "query": "(regions:nis-24020 OR labels:UiTinMijnRegio)" }'], 0));
+            $this->iSendAPostRequestTo('/roles/' . $uuidRoleDiest . '/constraints/');
+            $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_BEWERKEN');
+            $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_VERWIJDEREN');
+            $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_MODEREREN');
+            $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/users/' . $uuidValidatorDiest);
+            $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/labels/' . $uuidLabelDiest);
         }
-        $this->iSetTheJsonRequestPayloadTo(new PyStringNode(['{ "query": "(regions:nis-24020 OR labels:UiTinMijnRegio)" }'], 0));
-        $this->iSendAPostRequestTo('/roles/' . $uuidRoleDiest . '/constraints/');
-        $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_BEWERKEN');
-        $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_VERWIJDEREN');
-        $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_MODEREREN');
-        $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/users/' . $uuidValidatorDiest);
-        $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/labels/' . $uuidLabelDiest);
 
         // Create role "Scherpenheuvel Validatoren"
         $this->iSearchForARoleWithNameAndSaveTheIdAs('Scherpenheuvel validatoren');
-        if (sizeof($this->responseState->getJsonContent()['member']) > 0) {
-            $uuidRoleScherpenheuvel = $this->responseState->getJsonContent()['member'][0]['uuid'];
-        } else {
+        if (sizeof($this->responseState->getJsonContent()['member']) === 0) {
             $this->createRole('Scherpenheuvel validatoren');
             $uuidRoleScherpenheuvel = $this->responseState->getJsonContent()['roleId'];
+            $this->iSetTheJsonRequestPayloadTo(new PyStringNode(['{"query": "regions:nis-24134"}'], 0));
+            $this->iSendAPostRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/constraints/');
+            $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_BEWERKEN');
+            $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_VERWIJDEREN');
+            $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_MODEREREN');
+            $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/users/' . $uuidValidatorScherpenheuvel);
         }
-        $this->iSetTheJsonRequestPayloadTo(new PyStringNode(['{"query": "regions:nis-24134"}'], 0));
-        $this->iSendAPostRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/constraints/');
-        $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_BEWERKEN');
-        $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_VERWIJDEREN');
-        $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_MODEREREN');
-        $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/users/' . $uuidValidatorScherpenheuvel);
 
         // Create role "Vlaams-Brabant validatoren"
         $this->iSearchForARoleWithNameAndSaveTheIdAs('Provincie Vlaams-Brabant validatoren');
-        if (sizeof($this->responseState->getJsonContent()['member']) > 0) {
-            $uuidRolePvb = $this->responseState->getJsonContent()['member'][0]['uuid'];
-        } else {
+        if (sizeof($this->responseState->getJsonContent()['member']) === 0) {
             $this->createRole('Provincie Vlaams-Brabant validatoren');
             $uuidRolePvb = $this->responseState->getJsonContent()['roleId'];
+            $this->iSetTheJsonRequestPayloadTo(new PyStringNode(['{ "query": "regions:nis-20001" }'], 0));
+            $this->iSendAPostRequestTo('/roles/' . $uuidRolePvb . '/constraints/');
+            $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_BEWERKEN');
+            $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_VERWIJDEREN');
+            $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_MODEREREN');
+            $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/users/' . $uuidValidatorPvb);
         }
-        $this->iSetTheJsonRequestPayloadTo(new PyStringNode(['{ "query": "regions:nis-20001" }'], 0));
-        $this->iSendAPostRequestTo('/roles/' . $uuidRolePvb . '/constraints/');
-        $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_BEWERKEN');
-        $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_VERWIJDEREN');
-        $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_MODEREREN');
-        $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/users/' . $uuidValidatorPvb);
     }
 
     private function createRole(string $name): void
