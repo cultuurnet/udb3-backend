@@ -66,12 +66,6 @@ trait RoleSteps
         $this->iRemoveAllRolesForUserWithId($uuidValidatorPvb);
 
         // Create role "Diest Validatoren"
-        $this->getLabel('private-diest');
-        if ($this->responseState->getStatusCode() === 404) {
-            $this->createLabel('private-diest', true, false);
-            $uuidLabelDiest = $this->responseState->getJsonContent()['uuid'];
-            $this->iPatchTheLabelWithIdAndCommand($uuidLabelDiest, 'MakePrivate');
-        }
         $this->iSearchForARoleWithNameAndSaveTheIdAs('Diest validatoren');
         if (sizeof($this->responseState->getJsonContent()['member']) === 0) {
             $this->createRole('Diest validatoren');
@@ -82,7 +76,13 @@ trait RoleSteps
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_VERWIJDEREN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_MODEREREN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/users/' . $uuidValidatorDiest);
-            $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/labels/' . $uuidLabelDiest);
+            $this->getLabel('private-diest');
+            if ($this->responseState->getStatusCode() === 404) {
+                $this->createLabel('private-diest', true, false);
+                $uuidLabelDiest = $this->responseState->getJsonContent()['uuid'];
+                $this->iPatchTheLabelWithIdAndCommand($uuidLabelDiest, 'MakePrivate');
+                $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/labels/' . $uuidLabelDiest);
+            }
         }
 
         // Create role "Scherpenheuvel Validatoren"
