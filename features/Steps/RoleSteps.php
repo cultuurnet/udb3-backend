@@ -12,7 +12,7 @@ trait RoleSteps
     /**
      * @When I search for a role with name :name
      */
-    public function iSearchForARoleWithNameAndSaveTheIdAs(string $name): void
+    public function iSearchForARoleWithName(string $name): void
     {
         $response = $this->getHttpClient()->get(
             '/roles?query=' . $name,
@@ -53,7 +53,7 @@ trait RoleSteps
     public function rolesTestDataIsAvailable(): void
     {
         // Create role "Diest Validatoren"
-        $this->iSearchForARoleWithNameAndSaveTheIdAs('Diest validatoren');
+        $this->iSearchForARoleWithName('Diest validatoren');
         if (sizeof($this->responseState->getJsonContent()['member']) === 0) {
             $this->createRole('Diest validatoren');
             $uuidRoleDiest = $this->responseState->getJsonContent()['roleId'];
@@ -75,7 +75,7 @@ trait RoleSteps
         }
 
         // Create role "Scherpenheuvel Validatoren"
-        $this->iSearchForARoleWithNameAndSaveTheIdAs('Scherpenheuvel validatoren');
+        $this->iSearchForARoleWithName('Scherpenheuvel validatoren');
         if (sizeof($this->responseState->getJsonContent()['member']) === 0) {
             $this->createRole('Scherpenheuvel validatoren');
             $uuidRoleScherpenheuvel = $this->responseState->getJsonContent()['roleId'];
@@ -90,7 +90,7 @@ trait RoleSteps
         }
 
         // Create role "Vlaams-Brabant validatoren"
-        $this->iSearchForARoleWithNameAndSaveTheIdAs('Provincie Vlaams-Brabant validatoren');
+        $this->iSearchForARoleWithName('Provincie Vlaams-Brabant validatoren');
         if (sizeof($this->responseState->getJsonContent()['member']) === 0) {
             $this->createRole('Provincie Vlaams-Brabant validatoren');
             $uuidRolePvb = $this->responseState->getJsonContent()['roleId'];
