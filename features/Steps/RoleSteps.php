@@ -69,9 +69,9 @@ trait RoleSteps
         $this->getLabel('private-diest');
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('private-diest', true, false);
+            $uuidLabelDiest = $this->responseState->getJsonContent()['uuid'];
+            $this->iPatchTheLabelWithIdAndCommand($uuidLabelDiest, 'MakePrivate');
         }
-        $uuidLabelDiest = $this->responseState->getJsonContent()['uuid'];
-        $this->iPatchTheLabelWithIdAndCommand($uuidLabelDiest, 'MakePrivate');
         $this->iSearchForARoleWithNameAndSaveTheIdAs('Diest validatoren');
         if (sizeof($this->responseState->getJsonContent()['member']) === 0) {
             $this->createRole('Diest validatoren');
