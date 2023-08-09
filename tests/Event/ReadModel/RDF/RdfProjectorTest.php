@@ -77,6 +77,7 @@ class RdfProjectorTest extends TestCase
             'location' => [
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -117,6 +118,7 @@ class RdfProjectorTest extends TestCase
             'description' => [
                 'nl' => 'Dit is het laatste concert van Faith no more',
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -160,6 +162,7 @@ class RdfProjectorTest extends TestCase
                 'fr' => 'Ceci est le dernier concert de Foi non plus',
                 'en' => 'This is the last concert of Faith no more',
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -199,6 +202,7 @@ class RdfProjectorTest extends TestCase
             'location' => [
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -238,6 +242,7 @@ class RdfProjectorTest extends TestCase
             'location' => [
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -287,6 +292,7 @@ class RdfProjectorTest extends TestCase
             'location' => [
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -325,6 +331,7 @@ class RdfProjectorTest extends TestCase
             'location' => [
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -363,6 +370,7 @@ class RdfProjectorTest extends TestCase
             'location' => [
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -401,6 +409,7 @@ class RdfProjectorTest extends TestCase
             'location' => [
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -439,6 +448,7 @@ class RdfProjectorTest extends TestCase
             'location' => [
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -478,6 +488,7 @@ class RdfProjectorTest extends TestCase
             'location' => [
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -533,6 +544,7 @@ class RdfProjectorTest extends TestCase
                     ],
                 ],
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -600,6 +612,7 @@ class RdfProjectorTest extends TestCase
                     ],
                 ],
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -657,6 +670,7 @@ class RdfProjectorTest extends TestCase
                     ],
                 ],
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));

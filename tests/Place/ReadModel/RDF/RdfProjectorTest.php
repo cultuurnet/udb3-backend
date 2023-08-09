@@ -103,6 +103,7 @@ class RdfProjectorTest extends TestCase
                     'addressCountry' => 'BE',
                 ],
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
@@ -151,6 +152,7 @@ class RdfProjectorTest extends TestCase
                     'addressCountry' => 'BE',
                 ],
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
@@ -211,6 +213,7 @@ class RdfProjectorTest extends TestCase
                 'latitude' => 50.879,
                 'longitude' => 4.6997,
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
@@ -254,6 +257,7 @@ class RdfProjectorTest extends TestCase
                     'addressCountry' => 'BE',
                 ],
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
@@ -323,6 +327,7 @@ class RdfProjectorTest extends TestCase
                     'addressCountry' => 'BE',
                 ],
             ],
+            'created' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
