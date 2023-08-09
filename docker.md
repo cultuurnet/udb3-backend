@@ -21,16 +21,14 @@ Login to the management console on http://host.docker.internal:15672/ with usern
 
 ### Acceptance tests
 
-To make the acceptance tests work with Docker, you'll need to change the `base_url`, `search_api_base_url` and `online_location_url` inside `config.yml` of the acceptance test repository.
-
-Give them the same value as the `url` from the modified `config.php` from `udb3-backend`, in this example `http://host.docker.internal:8000`
-
-For search we need to use port `9000`
-
+To run the acceptance tests, you should first setup the data.
+This can be done with:
 ```
-base_url: 'http://host.docker.internal:8000'
-online_location_url: 'http://host.docker.internal:8000/place/00000000-0000-0000-0000-000000000000'
-search_api_base_url: 'http://host.docker.internal:9000'
+$ make feature-init
+```
+You can run the actual acceptance tests with:
+```
+$ make feature
 ```
 
 ## Start
