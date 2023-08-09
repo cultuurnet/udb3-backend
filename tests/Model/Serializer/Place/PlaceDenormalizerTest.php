@@ -971,6 +971,128 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_place_with_invalid_organizer_id(): void
+    {
+        $placeData = [
+            '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Place',
+            '@context' => '/contexts/place',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.1',
+                ],
+            ],
+            'organizer' => [
+                '@id' => 'Invalid id',
+            ],
+        ];
+
+        $expected = new ImmutablePlace(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ),
+            new PermanentCalendar(new OpeningHours()),
+            new TranslatedAddress(
+                new Language('nl'),
+                new Address(
+                    new Street('Henegouwenkaai 41-43'),
+                    new PostalCode('1080'),
+                    new Locality('Brussel'),
+                    new CountryCode('BE')
+                )
+            ),
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.1.0.1')
+                )
+            )
+        );
+
+        $actual = $this->denormalizer->denormalize($placeData, ImmutablePlace::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_place_with_organizer_with_missing_id(): void
+    {
+        $placeData = [
+            '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Place',
+            '@context' => '/contexts/place',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.1',
+                ],
+            ],
+            'organizer' => [
+                'id' => 'https://io.uitdatabank.be/organizers/236f736e-5308-4c3a-94f3-da0bd768da7d',
+            ],
+        ];
+
+        $expected = new ImmutablePlace(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ),
+            new PermanentCalendar(new OpeningHours()),
+            new TranslatedAddress(
+                new Language('nl'),
+                new Address(
+                    new Street('Henegouwenkaai 41-43'),
+                    new PostalCode('1080'),
+                    new Locality('Brussel'),
+                    new CountryCode('BE')
+                )
+            ),
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.1.0.1')
+                )
+            )
+        );
+
+        $actual = $this->denormalizer->denormalize($placeData, ImmutablePlace::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_when_trying_to_denormalize_to_an_unsupported_class(): void
     {
         $this->expectException(UnsupportedException::class);
