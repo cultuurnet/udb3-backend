@@ -53,3 +53,10 @@ To execute all CI tasks, run the following command:
 ```
 $ make ci
 ```
+
+### Frontend (WIP)
+
+You can connect the docker backend with the [udb3-frontend](https://github.com/cultuurnet/udb3-frontend), 
+by using the `.env` file from https://github.com/cultuurnet/appconfig/blob/main/files/udb3/docker/udb3-frontend/.env.
+
+More info about starting can be found in the [README](https://github.com/cultuurnet/udb3-frontend/blob/main/README.md) of [udb3-frontend](https://github.com/cultuurnet/udb3-frontend).
