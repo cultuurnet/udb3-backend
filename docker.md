@@ -21,7 +21,7 @@ Login to the management console on http://host.docker.internal:15672/ with usern
 
 ### Acceptance tests
 
-To run the acceptance tests, you should first setup the data.
+To run the acceptance tests for the very first time you need to initialize test data. This required test data contains several fixed labels and roles which are used by various acceptance tests.
 This can be done with:
 ```
 $ make feature-init
