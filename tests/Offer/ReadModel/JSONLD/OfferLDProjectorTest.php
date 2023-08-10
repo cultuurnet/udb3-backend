@@ -7,7 +7,9 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -24,6 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
+use CultuurNet\UDB3\Offer\Item\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Item\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
@@ -2347,5 +2350,36 @@ class OfferLDProjectorTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_remove_bookinginfo_when_array_is_empty()
+    {
+        $id = 'e56e8eb6-dcd7-47e7-8106-8a149f1d241b';
+
+        $initialDocument = new JsonDocument(
+            $id,
+            Json::encode(
+                [
+                    'name' => ['nl' => 'Foo'],
+                    'bookingInfo' => [
+                        ''
+                    ],
+                ]
+            )
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $expectedBody = (object) [
+            'name' => (object) ['nl' => 'Foo'],
+        ];
+
+        $event = new BookingInfoUpdated($id, new BookingInfo('http://www.google.be/'));
+
+        $body = $this->project($event, $id, null, $this->recordedOn->toBroadwayDateTime());
+        $this->assertEquals($expectedBody, $body);
     }
 }
