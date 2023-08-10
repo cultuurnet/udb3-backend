@@ -320,4 +320,24 @@ class OrganizerDenormalizerTest extends TestCase
             $this->denormalizer->supportsDenormalization([], ImmutableOrganizer::class)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_when_id_is_missing(): void
+    {
+        $organizerData = [
+            '@type' => 'Organizer',
+            '@context' => '/contexts/organizer',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+        ];
+
+        $this->expectException(UnsupportedException::class);
+        $this->expectExceptionMessage('Organizer data should contain an @id property.');
+
+        $this->denormalizer->denormalize($organizerData, ImmutableOrganizer::class);
+    }
 }
