@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
@@ -23,8 +24,10 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Offer\Item\Events\AvailableFromUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\FacilitiesUpdated;
@@ -51,7 +54,6 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD\ItemLDProjector;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
@@ -61,6 +63,7 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentNullEnricher;
 use CultuurNet\UDB3\RecordedOn;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
@@ -71,7 +74,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use stdClass;
-use CultuurNet\UDB3\StringLiteral;
 
 class OfferLDProjectorTest extends TestCase
 {
@@ -2347,5 +2349,82 @@ class OfferLDProjectorTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_remove_bookinginfo_when_array_is_empty(): void
+    {
+        $id = 'e56e8eb6-dcd7-47e7-8106-8a149f1d241b';
+
+        $initialDocument = new JsonDocument(
+            $id,
+            Json::encode(
+                [
+                    'name' => ['nl' => 'Foo'],
+                    'bookingInfo' => [
+
+                    ],
+                ]
+            )
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $expectedBody = (object)[
+            'name' => (object)['nl' => 'Foo'],
+            'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
+        ];
+
+        $event = new BookingInfoUpdated($id, new BookingInfo());
+
+        $body = $this->project($event, $id, null, $this->recordedOn->toBroadwayDateTime());
+        $this->assertEquals($expectedBody, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_update_bookinginfo(): void
+    {
+        $id = 'e56e8eb6-dcd7-47e7-8106-8a149f1d241b';
+
+        $initialDocument = new JsonDocument(
+            $id,
+            Json::encode(
+                [
+                    'name' => ['nl' => 'Foo'],
+                    'bookingInfo' => [
+
+                    ],
+                ]
+            )
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $expectedBody = (object)[
+            'name' => (object)['nl' => 'Foo'],
+            'bookingInfo' => (object)[
+                'phone' => '0471123456',
+                'email' => 'test@test.be',
+                'url' => 'http://www.google.be',
+                'urlLabel' => (object)['nl' => 'Dit is een booking info event'],
+            ],
+            'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
+        ];
+
+        $event = new BookingInfoUpdated($id, new BookingInfo(
+            'http://www.google.be',
+            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('Dit is een booking info event')),
+            '0471123456',
+            'test@test.be'
+        ));
+
+        $body = $this->project($event, $id, null, $this->recordedOn->toBroadwayDateTime());
+        $this->assertEquals($expectedBody, $body);
     }
 }

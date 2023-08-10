@@ -40,6 +40,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = $this->removeThemes($document);
         $document = $this->removeMainImageWhenMediaObjectIsEmpty($document);
         $document = $this->removeActorType($document);
+        $document = $this->removeBookingInfoWhenEmpty($document);
         return $this->fixDuplicateLabelVisibility($document);
     }
 
@@ -294,6 +295,23 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                         fn ($terms) => $terms['domain'] !== 'actortype'
                     )
                 );
+
+                return $json;
+            }
+        );
+    }
+
+    private function removeBookingInfoWhenEmpty(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                if (!isset($json['bookingInfo']) || !is_array($json['bookingInfo'])) {
+                    return $json;
+                }
+
+                if ($json['bookingInfo'] === []) {
+                    unset($json['bookingInfo']);
+                }
 
                 return $json;
             }
