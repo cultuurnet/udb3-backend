@@ -108,3 +108,16 @@ Feature: Test place bookingInfo property
       """
       "The place with id \"0680f399-7768-4ba0-b33a-d4d15c21282e\" was not found."
       """
+
+  Scenario: Delete place booking info (with put)
+    Given I create a place from "places/place-with-all-fields.json" and save the "url" as "placeUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "bookingInfo": {}
+    }
+    """
+    And I send a PUT request to "%{placeUrl}/booking-info"
+    Then the response status should be "204"
+    When I get the place at "%{placeUrl}"
+    And the JSON response should not have "bookingInfo"

@@ -254,3 +254,16 @@ Feature: Test the UDB3 events API
       ]
     }
     """
+
+  Scenario: Delete event booking info (with put)
+    Given I create an event from "events/event-with-bookinginfo.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "bookingInfo": {}
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/booking-info"
+    Then the response status should be "204"
+    When I get the event at "%{eventUrl}"
+    And the JSON response should not have "bookingInfo"
