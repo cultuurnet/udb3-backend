@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Address\AddressParser;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
@@ -72,13 +73,15 @@ final class RdfProjector implements EventListener
         $graph = new Graph($iri);
         $resource = $graph->resource($iri);
 
+        $placeData = $this->fetchPlaceData($domainMessage);
+        $place = $this->getPlace($placeData);
+
         GraphEditor::for($graph)->setGeneralProperties(
             $iri,
             self::TYPE_LOCATIE,
+            DateTimeFactory::fromISO8601($placeData['created'])->format(DateTime::ATOM),
             $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
         );
-
-        $place = $this->getPlace($domainMessage);
 
         (new WorkflowStatusEditor())->setWorkflowStatus($resource, $place->getWorkflowStatus());
         if ($place->getAvailableFrom()) {
@@ -98,14 +101,19 @@ final class RdfProjector implements EventListener
         $this->graphRepository->save($iri, $graph);
     }
 
-    private function getPlace(DomainMessage $domainMessage): Place
+    private function fetchPlaceData(DomainMessage $domainMessage): array
     {
-        /** @var PlaceProjectedToJSONLD $placeProjected */
-        $placeProjected = $domainMessage->getPayload();
-        $jsonDocument = $this->documentRepository->fetch($placeProjected->getItemId());
+        /** @var PlaceProjectedToJSONLD $placeProjectedToJSONLD */
+        $placeProjectedToJSONLD = $domainMessage->getPayload();
+        $jsonDocument = $this->documentRepository->fetch($placeProjectedToJSONLD->getItemId());
 
+        return $jsonDocument->getAssocBody();
+    }
+
+    private function getPlace(array $placeData): Place
+    {
         /** @var ImmutablePlace $place */
-        $place = $this->placeDenormalizer->denormalize($jsonDocument->getAssocBody(), ImmutablePlace::class);
+        $place = $this->placeDenormalizer->denormalize($placeData, ImmutablePlace::class);
         return $place;
     }
 
