@@ -2354,7 +2354,7 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_remove_bookinginfo_when_array_is_empty()
+    public function it_should_remove_bookinginfo_when_array_is_empty(): void
     {
         $id = 'e56e8eb6-dcd7-47e7-8106-8a149f1d241b';
 
@@ -2387,7 +2387,7 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_bookinginfo()
+    public function it_should_update_bookinginfo(): void
     {
         $id = 'e56e8eb6-dcd7-47e7-8106-8a149f1d241b';
 
@@ -2411,7 +2411,7 @@ class OfferLDProjectorTest extends TestCase
                 'phone' => '0471123456',
                 'email' => 'test@test.be',
                 'url' => 'http://www.google.be',
-                'urlLabel' => (object)['nl' => 'Dit is een booking info event']
+                'urlLabel' => (object)['nl' => 'Dit is een booking info event'],
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
