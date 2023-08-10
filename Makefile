@@ -1,4 +1,4 @@
-.PHONY: up down install ci stan cs cs-fix test migrate config init
+.PHONY: up down install ci stan cs cs-fix test migrate config init feature
 
 up:
 	docker-compose up -d
@@ -30,8 +30,14 @@ test-filter:
 test-group:
 	docker exec -it php.uitdatabank composer test -- --group=$(group)
 
-test-features:
-	docker exec -it php.uitdatabank composer test-features
+feature-init:
+	docker exec -it php.uitdatabank composer feature -- --tags @init
+
+feature:
+	docker exec -it php.uitdatabank composer feature  -- --tags "~@init"
+
+feature-filter:
+	docker exec -it php.uitdatabank composer feature -- $(path)
 
 migrate:
 	docker exec -it php.uitdatabank ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
