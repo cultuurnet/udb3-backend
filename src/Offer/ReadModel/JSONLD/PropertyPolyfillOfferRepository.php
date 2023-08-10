@@ -17,9 +17,6 @@ use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 
 final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 {
-    // All fields that contain arrays but can be null, should be removed when array is empty
-    private const FILTERED_NULL_LABELS = ['labels', 'hiddenLabels', 'bookingInfo'];
-
     private ReadRepositoryInterface $labelReadRepository;
 
     private OfferType $offerType;
@@ -43,6 +40,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = $this->removeThemes($document);
         $document = $this->removeMainImageWhenMediaObjectIsEmpty($document);
         $document = $this->removeActorType($document);
+        $document = $this->removeBookingInfoWhenEmpty($document);
         return $this->fixDuplicateLabelVisibility($document);
     }
 
@@ -238,9 +236,8 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                     return $json;
                 };
 
-                foreach (self::FILTERED_NULL_LABELS as $filteredNullLabel) {
-                    $json = $filterNullLabels($json, $filteredNullLabel);
-                }
+                $json = $filterNullLabels($json, 'labels');
+                $json = $filterNullLabels($json, 'hiddenLabels');
 
                 return $json;
             }
@@ -298,6 +295,23 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                         fn ($terms) => $terms['domain'] !== 'actortype'
                     )
                 );
+
+                return $json;
+            }
+        );
+    }
+
+    private function removeBookingInfoWhenEmpty(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                if (!isset($json['bookingInfo']) || !is_array($json['bookingInfo'])) {
+                    return $json;
+                }
+
+                if ($json['bookingInfo'] === []) {
+                    unset($json['bookingInfo']);
+                }
 
                 return $json;
             }
