@@ -20,8 +20,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractCommand
 {
-    private const OPTION_FORCED = 'force';
-
     private const QUERY_LABEL = 'labels:cultuurkuur_organizer';
     private const BATCH_SIZE = 100;
 
@@ -44,13 +42,7 @@ class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractC
     {
         $this
             ->setName('organizer:convert-educational-description')
-            ->setDescription('Take the description of the cultuurkuur organizers and move it to educational description')
-            ->addOption(
-                self::OPTION_FORCED,
-                null,
-                InputOption::VALUE_NONE,
-                'Do not ask for confirmation.'
-            );
+            ->setDescription('Take the description of the cultuurkuur organizers and move it to educational description');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -106,10 +98,6 @@ class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractC
 
     private function askConfirmation(InputInterface $input, OutputInterface $output): bool
     {
-        if ($input->getOption(self::OPTION_FORCED)) {
-            return true;
-        }
-
         return $this
             ->getHelper('question')
             ->ask(
