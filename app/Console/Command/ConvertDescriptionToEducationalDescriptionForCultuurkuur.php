@@ -57,6 +57,10 @@ class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractC
             try {
                 $organisation = $this->repository->fetch($organizerId)->getBody();
 
+                if (!property_exists($organisation, 'description')) {
+                    continue;
+                }
+
                 foreach ($organisation->description as $lang => $description) {
                     $this->commandBus->dispatch(new UpdateEducationalDescription(
                         $organizerId,
