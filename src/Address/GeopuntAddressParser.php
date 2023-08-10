@@ -26,7 +26,7 @@ final class GeopuntAddressParser implements AddressParser, LoggerAwareInterface
         string $apiUrlV4,
         ?ClientInterface $httpClient = null
     ) {
-        $this->httpClient = $httpClient ?? new Client();
+        $this->httpClient = $httpClient ?? Client::createWithConfig(['http_errors' => false]);
         $this->apiUrlV4 = new Uri(rtrim($apiUrlV4, '/'));
         $this->logger = new NullLogger();
     }
