@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Address\AddressParser;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Event\Event;
@@ -90,13 +91,15 @@ final class RdfProjector implements EventListener
         $graph = new Graph($iri);
         $resource = $graph->resource($iri);
 
+        $eventData = $this->fetchEventData($domainMessage);
+        $event = $this->getEvent($eventData);
+
         GraphEditor::for($graph)->setGeneralProperties(
             $iri,
             self::TYPE_ACTIVITEIT,
+            DateTimeFactory::fromISO8601($eventData['created'])->format(DateTime::ATOM),
             $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
         );
-
-        $event = $this->getEvent($domainMessage);
 
         $this->setTitle($resource, $event->getTitle());
 
@@ -116,14 +119,19 @@ final class RdfProjector implements EventListener
         $this->graphRepository->save($iri, $graph);
     }
 
-    private function getEvent(DomainMessage $domainMessage): Event
+    private function fetchEventData(DomainMessage $domainMessage): array
     {
         /** @var EventProjectedToJSONLD $eventProjectedToJSONLD */
         $eventProjectedToJSONLD = $domainMessage->getPayload();
         $jsonDocument = $this->documentRepository->fetch($eventProjectedToJSONLD->getItemId());
 
+        return $jsonDocument->getAssocBody();
+    }
+
+    private function getEvent(array $eventData): Event
+    {
         /** @var ImmutableEvent $event */
-        $event = $this->eventDenormalizer->denormalize($jsonDocument->getAssocBody(), ImmutableEvent::class);
+        $event = $this->eventDenormalizer->denormalize($eventData, ImmutableEvent::class);
         return $event;
     }
 
