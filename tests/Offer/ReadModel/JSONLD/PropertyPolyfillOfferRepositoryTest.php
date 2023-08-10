@@ -130,6 +130,16 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_should_polyfill_a_bookinfo_removed(): void
+    {
+        $this
+            ->given(['bookingInfo' => []])
+            ->assertReturnedDocumentDoesNotContainKey('bookingInfo');
+    }
+
+    /**
+     * @test
      * @dataProvider statusProvider
      */
     public function it_should_not_change_status_if_already_set_with_correct_format(array $status): void

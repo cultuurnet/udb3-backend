@@ -17,6 +17,9 @@ use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 
 final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 {
+    // All fields that contain arrays but can be null, should be removed when array is empty
+    private const FILTERED_NULL_LABELS = ['labels', 'hiddenLabels', 'bookingInfo'];
+
     private ReadRepositoryInterface $labelReadRepository;
 
     private OfferType $offerType;
@@ -235,8 +238,9 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                     return $json;
                 };
 
-                $json = $filterNullLabels($json, 'labels');
-                $json = $filterNullLabels($json, 'hiddenLabels');
+                foreach (self::FILTERED_NULL_LABELS as $filteredNullLabel) {
+                    $json = $filterNullLabels($json, $filteredNullLabel);
+                }
 
                 return $json;
             }
