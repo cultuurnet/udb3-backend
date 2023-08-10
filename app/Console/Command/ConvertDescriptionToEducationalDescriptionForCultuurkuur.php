@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Search\ResultsGenerator;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractCommand
 {
@@ -51,11 +52,20 @@ class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractC
         $count = $generator->count(self::QUERY_LABEL);
 
         $output->writeln(sprintf('Found %d organisations with the label Cultuurkuur', $count));
+
+        if (!$this->askConfirmation($input, $output)) {
+            return 1;
+        }
+
         $progressBar = new ProgressBar($output, $count);
 
         foreach ($organisations as $organizerId => $itemIdentifier) {
             try {
                 $organisation = $this->repository->fetch($organizerId)->getBody();
+
+                if (!property_exists($organisation, 'description')) {
+                    continue;
+                }
 
                 foreach ($organisation->description as $lang => $description) {
                     $this->commandBus->dispatch(new UpdateEducationalDescription(
@@ -83,5 +93,16 @@ class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractC
             ['created' => 'asc'],
             self::BATCH_SIZE
         );
+    }
+
+    private function askConfirmation(InputInterface $input, OutputInterface $output): bool
+    {
+        return $this
+            ->getHelper('question')
+            ->ask(
+                $input,
+                $output,
+                new ConfirmationQuestion('Are you sure you want to continue? (Yes/No) ', false)
+            );
     }
 }
