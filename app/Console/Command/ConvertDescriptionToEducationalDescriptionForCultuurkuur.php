@@ -14,10 +14,14 @@ use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractCommand
 {
+    private const OPTION_FORCED = 'force';
+
     private const QUERY_LABEL = 'labels:cultuurkuur_organizer';
     private const BATCH_SIZE = 100;
 
@@ -40,7 +44,13 @@ class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractC
     {
         $this
             ->setName('organizer:convert-educational-description')
-            ->setDescription('Take the description of the cultuurkuur organizers and move it to educational description');
+            ->setDescription('Take the description of the cultuurkuur organizers and move it to educational description')
+            ->addOption(
+                self::OPTION_FORCED,
+                null,
+                InputOption::VALUE_NONE,
+                'Do not ask for confirmation.'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -51,6 +61,11 @@ class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractC
         $count = $generator->count(self::QUERY_LABEL);
 
         $output->writeln(sprintf('Found %d organisations with the label Cultuurkuur', $count));
+
+        if (!$this->askConfirmation($input, $output)) {
+            return 1;
+        }
+
         $progressBar = new ProgressBar($output, $count);
 
         foreach ($organisations as $organizerId => $itemIdentifier) {
@@ -87,5 +102,16 @@ class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractC
             ['created' => 'asc'],
             self::BATCH_SIZE
         );
+    }
+
+    private function askConfirmation(InputInterface $input, OutputInterface $output): bool
+    {
+        return $this
+            ->getHelper('question')
+            ->ask(
+                $input,
+                $output,
+                new ConfirmationQuestion('Are you sure you want to continue? (Yes/No) ' , false)
+            );
     }
 }
