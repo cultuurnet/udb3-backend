@@ -110,6 +110,10 @@ class OrganizerDenormalizer implements DenormalizerInterface
             throw new UnsupportedException('Organizer data should be an associative array.');
         }
 
+        if (!isset($data['@id'])) {
+            throw new UnsupportedException('Organizer data should contain an @id property.');
+        }
+
         $idUrl = new Url($data['@id']);
         $id = $this->organizerIDParser->fromUrl($idUrl);
 
