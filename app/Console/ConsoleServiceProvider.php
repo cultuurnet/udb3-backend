@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Console\Command\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueLabels;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
@@ -82,7 +83,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:remove-label',
         'console.offer:import-auto-classification-labels',
         'console.article:replace-publisher',
-        'console.organizer:cultuurkuur:convert-educational-description',
+        'console.organizer:convert-educational-description',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -389,10 +390,11 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            'console.organizer:cultuurkuur:convert-educational-description',
+            'console.organizer:convert-educational-description',
             fn () => new ConvertDescriptionToEducationalDescriptionForCultuurkuur(
                 $container->get('event_command_bus'),
                 $container->get(OrganizersSapi3SearchService::class),
+                new CacheDocumentRepository($container->get('organizer_jsonld_cache'))
             )
         );
     }
