@@ -106,12 +106,16 @@ class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractC
 
     private function askConfirmation(InputInterface $input, OutputInterface $output): bool
     {
+        if ($input->getOption(self::OPTION_FORCED)) {
+            return true;
+        }
+
         return $this
             ->getHelper('question')
             ->ask(
                 $input,
                 $output,
-                new ConfirmationQuestion('Are you sure you want to continue? (Yes/No) ' , false)
+                new ConfirmationQuestion('Are you sure you want to continue? (Yes/No) ', false)
             );
     }
 }
