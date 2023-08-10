@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
+use CultuurNet\UDB3\Console\Command\ConvertDescriptionToEducationalDescriptionForCultuurkuur;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
@@ -81,6 +82,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:remove-label',
         'console.offer:import-auto-classification-labels',
         'console.article:replace-publisher',
+        'console.organizer:cultuurkuur:convert-educational-description',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -384,6 +386,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.article:replace-publisher',
             fn () => new ReplaceNewsArticlePublisher($container->get('dbal_connection'))
+        );
+
+        $container->addShared(
+            'console.organizer:cultuurkuur:convert-educational-description',
+            fn () => new ConvertDescriptionToEducationalDescriptionForCultuurkuur(
+                $container->get('event_command_bus'),
+                $container->get(OrganizersSapi3SearchService::class),
+            )
         );
     }
 }

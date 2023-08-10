@@ -545,6 +545,13 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         }
     }
 
+    public function convertDescriptionToEducationalDescription(): void
+    {
+        foreach ($this->description as $language => $description) {
+            $this->apply(new EducationalDescriptionUpdated($this->actorId, $description, $language));
+        }
+    }
+
     protected function applyOwnerChanged(OwnerChanged $ownerChanged): void
     {
         $this->ownerId = $ownerChanged->getNewOwnerId();
