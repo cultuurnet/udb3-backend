@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\UpdateEducationalDescription;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\ResultsGenerator;
@@ -53,15 +54,18 @@ class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractC
         $progressBar = new ProgressBar($output, $count);
 
         foreach ($organisations as $organizerId => $itemIdentifier) {
-            $org = $this->repository->fetch($organizerId);
-            $org = $org->getBody();
+            try {
+                $organisation = $this->repository->fetch($organizerId)->getBody();
 
-            foreach ($org->description as $lang => $description) {
-                $this->commandBus->dispatch(new UpdateEducationalDescription(
-                    $organizerId,
-                    new Description($description),
-                    new Language($lang),
-                ));
+                foreach ($organisation->description as $lang => $description) {
+                    $this->commandBus->dispatch(new UpdateEducationalDescription(
+                        $organizerId,
+                        new Description($description),
+                        new Language($lang),
+                    ));
+                }
+            } catch (DocumentDoesNotExist $e) {
+                $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
             }
 
             $progressBar->advance();
