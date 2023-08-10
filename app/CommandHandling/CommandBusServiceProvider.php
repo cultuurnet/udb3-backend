@@ -196,7 +196,6 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\DeleteDescriptionHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateEducationalDescriptionHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\DeleteEducationalDescriptionHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\ConvertDescriptionToEducationalDescriptionHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler::class));

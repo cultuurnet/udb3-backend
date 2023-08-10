@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Organizer\Commands\ConvertDescriptionToEducationalDescription;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Organizer\Commands\UpdateEducationalDescription;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -18,20 +21,24 @@ class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractC
     private const BATCH_SIZE = 100;
 
     private OrganizersSapi3SearchService $searchService;
+    private DocumentRepository $repository;
 
     public function __construct(
         CommandBus $commandBus,
-        OrganizersSapi3SearchService $searchService
+        OrganizersSapi3SearchService $searchService,
+        DocumentRepository $repository
     ) {
         parent::__construct($commandBus);
 
         $this->searchService = $searchService;
+        $this->commandBus = $commandBus;
+        $this->repository = $repository;
     }
 
     protected function configure(): void
     {
         $this
-            ->setName('organizer:cultuurkuur:convert-educational-description')
+            ->setName('organizer:convert-educational-description')
             ->setDescription('Take the description of the cultuurkuur organizers and move it to educational description');
     }
 
@@ -46,9 +53,16 @@ class ConvertDescriptionToEducationalDescriptionForCultuurkuur extends AbstractC
         $progressBar = new ProgressBar($output, $count);
 
         foreach ($organisations as $organizerId => $itemIdentifier) {
-            $this->commandBus->dispatch(new ConvertDescriptionToEducationalDescription(
-                $organizerId
-            ));
+            $org = $this->repository->fetch($organizerId);
+            $org = $org->getBody();
+
+            foreach ($org->description as $lang => $description) {
+                $this->commandBus->dispatch(new UpdateEducationalDescription(
+                    $organizerId,
+                    new Description($description),
+                    new Language($lang),
+                ));
+            }
 
             $progressBar->advance();
         }
