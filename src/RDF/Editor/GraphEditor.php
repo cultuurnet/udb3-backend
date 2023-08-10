@@ -36,34 +36,23 @@ final class GraphEditor
     public function setGeneralProperties(
         string $resourceIri,
         string $type,
-        string $recordedOn
+        string $createdOn,
+        string $modifiedOn
     ): self {
         $resource = $this->graph->resource($resourceIri);
 
-        // Set the rdf:type property, but only if it is not set before to avoid needlessly shifting it to the end of the
-        // list of properties in the serialized Turtle data, since set() and setType() actually do a delete() followed
-        // by add().
-        if ($resource->type() !== $type) {
-            $resource->setType($type);
-        }
+        $resource->setType($type);
 
-        // Set the dcterms:created property if not set yet.
-        // (Otherwise it would constantly update like dcterms:modified).
-        if (!$resource->hasProperty(self::PROPERTY_AANGEMAAKT_OP)) {
-            $resource->set(
-                self::PROPERTY_AANGEMAAKT_OP,
-                new Literal($recordedOn, null, 'xsd:dateTime')
-            );
-        }
-
-        // Always update the dcterms:modified property since it should change on every update to the resource.
         $resource->set(
-            self::PROPERTY_LAATST_AANGEPAST,
-            new Literal($recordedOn, null, 'xsd:dateTime')
+            self::PROPERTY_AANGEMAAKT_OP,
+            new Literal($createdOn, null, 'xsd:dateTime')
         );
 
-        // Add an adms:Indentifier if not set yet. Like rdf:type we only do this once to avoid needlessly shifting it
-        // to the end of the properties in the serialized Turtle data.
+        $resource->set(
+            self::PROPERTY_LAATST_AANGEPAST,
+            new Literal($modifiedOn, null, 'xsd:dateTime')
+        );
+
         if (!$resource->hasProperty(self::PROPERTY_IDENTIFICATOR)) {
             $identificator = $this->graph->newBNode();
             $identificator->setType(self::TYPE_IDENTIFICATOR);
