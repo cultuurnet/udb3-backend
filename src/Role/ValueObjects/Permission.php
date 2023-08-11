@@ -14,6 +14,7 @@ class Permission extends Enum
             'Aanbod bewerken',
             'Aanbod modereren',
             'Aanbod verwijderen',
+            'Aanbod historiek',
             'Organisaties beheren',
             'Organisaties bewerken',
             'Gebruikers beheren',
@@ -45,6 +46,11 @@ class Permission extends Enum
     public static function aanbodVerwijderen(): Permission
     {
         return new self('Aanbod verwijderen');
+    }
+
+    public static function aanbodHistoriek(): Permission
+    {
+        return new self('Aanbod historiek');
     }
 
     public static function organisatiesBeheren(): Permission

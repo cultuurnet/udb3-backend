@@ -33,6 +33,7 @@ class GetPermissionsRequestHandlerTest extends TestCase
             'AANBOD_BEWERKEN',
             'AANBOD_MODEREREN',
             'AANBOD_VERWIJDEREN',
+            'AANBOD_HISTORIEK',
             'ORGANISATIES_BEHEREN',
             'ORGANISATIES_BEWERKEN',
             'GEBRUIKERS_BEHEREN',

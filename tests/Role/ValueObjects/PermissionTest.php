@@ -20,6 +20,7 @@ class PermissionTest extends TestCase
                 Permission::aanbodBewerken()->toString(),
                 Permission::aanbodModereren()->toString(),
                 Permission::aanbodVerwijderen()->toString(),
+                Permission::aanbodHistoriek()->toString(),
                 Permission::organisatiesBeheren()->toString(),
                 Permission::organisatiesBewerken()->toString(),
                 Permission::gebruikersBeheren()->toString(),
