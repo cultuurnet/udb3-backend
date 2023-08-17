@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
@@ -33,7 +35,8 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['taxonomy']['terms']),
                 $this->container->get('place_jsonld_repository'),
                 new PlaceDenormalizer(),
-                $this->container->get(AddressParser::class)
+                $this->container->get(AddressParser::class),
+                LoggerFactory::create($this->getContainer(), LoggerName::forService('rdf'))
             )
         );
     }
