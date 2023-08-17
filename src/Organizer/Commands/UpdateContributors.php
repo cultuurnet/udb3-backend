@@ -32,6 +32,6 @@ final class UpdateContributors implements AuthorizableCommand
 
     public function getPermission(): Permission
     {
-        return Permission::aanbodBewerken();
+        return Permission::organisatiesBewerken();
     }
 }
