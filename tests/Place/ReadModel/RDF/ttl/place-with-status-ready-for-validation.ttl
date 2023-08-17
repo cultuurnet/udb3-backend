@@ -2,6 +2,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek/#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix locn: <http://www.w3.org/ns/locn#> .
 
@@ -11,7 +12,12 @@
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
-    skos:notation "https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri
+    skos:notation "https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri ;
+    generiek:gestructureerdeIdentificator [
+      a generiek:gestructureerdeIdentificator ;
+      generiek:naamruimte "https://mock.data.publiq.be/places/" ;
+      generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea"
+    ]
   ] ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/ready-for-validation> ;
   locn:locatorName "Voorbeeld titel"@nl ;
