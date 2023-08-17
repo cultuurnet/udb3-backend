@@ -14,7 +14,7 @@
   adms:identifier [
     a adms:Identifier ;
     skos:notation "https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri ;
-    generiek:GestructureerdeIdentificator [
+    generiek:gestructureerdeIdentificator [
       a generiek:GestructureerdeIdentificator ;
       generiek:naamruimte "https://mock.data.publiq.be/places/" ;
       generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea"

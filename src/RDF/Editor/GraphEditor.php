@@ -21,6 +21,7 @@ final class GraphEditor
 
     private const PROPERTY_IDENTIFICATOR_NOTATION = 'skos:notation';
 
+    private const PROPERTY_STRUCTURED_IDENTIFICATOR = 'generiek:gestructureerdeIdentificator';
     private const PROPERTY_NAAMRUIMTE = 'generiek:naamruimte';
     private const PROPERTY_LOKALE_IDENTIFICATOR = 'generiek:lokaleIdentificator';
 
@@ -51,15 +52,14 @@ final class GraphEditor
         $identifier = $this->graph->newBNode();
         $identifier->setType(self::TYPE_IDENTIFICATOR);
         $identifier->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($resourceIri, null, 'xsd:anyUri'));
+        $resource->add(self::PROPERTY_IDENTIFICATOR, $identifier);
 
         list($namespace, $localIdentifier) = $this->splitIdentifier($resourceIri);
         $structuredIdentifier = $this->graph->newBNode();
         $structuredIdentifier->setType(self::TYPE_STRUCTURED_IDENTIFICATOR);
         $structuredIdentifier->add(self::PROPERTY_NAAMRUIMTE, new Literal($namespace));
         $structuredIdentifier->add(self::PROPERTY_LOKALE_IDENTIFICATOR, new Literal($localIdentifier));
-        $identifier->add(self::TYPE_STRUCTURED_IDENTIFICATOR, $structuredIdentifier);
-
-        $resource->add(self::PROPERTY_IDENTIFICATOR, $identifier);
+        $identifier->add(self::PROPERTY_STRUCTURED_IDENTIFICATOR, $structuredIdentifier);
 
         return $this;
     }
