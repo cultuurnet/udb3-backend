@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\RDF\Editor;
 
 use EasyRdf\Graph;
 use EasyRdf\Literal;
-use EasyRdf\Resource;
 
 final class GraphEditor
 {
@@ -20,8 +19,6 @@ final class GraphEditor
     private const PROPERTY_LAATST_AANGEPAST = 'dcterms:modified';
 
     private const PROPERTY_IDENTIFICATOR_NOTATION = 'skos:notation';
-    private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR = 'dcterms:creator';
-    private const PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT = 'https://fixme.com/example/dataprovider/publiq';
 
     private function __construct(Graph $graph)
     {
@@ -57,7 +54,6 @@ final class GraphEditor
             $identificator = $this->graph->newBNode();
             $identificator->setType(self::TYPE_IDENTIFICATOR);
             $identificator->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($resourceIri, null, 'xsd:anyUri'));
-            $identificator->add(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR, new Resource(self::PROPERTY_IDENTIFICATOR_TOEGEKEND_DOOR_AGENT));
             $resource->add(self::PROPERTY_IDENTIFICATOR, $identificator);
         }
 
