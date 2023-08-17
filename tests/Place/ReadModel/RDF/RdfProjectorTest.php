@@ -26,7 +26,9 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTime;
 use EasyRdf\Serialiser\Turtle;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 class RdfProjectorTest extends TestCase
 {
@@ -36,6 +38,11 @@ class RdfProjectorTest extends TestCase
 
     private RdfProjector $rdfProjector;
 
+    /**
+     * @var LoggerInterface|MockObject
+     */
+    private $logger;
+
     private array $expectedParsedAddresses;
 
     protected function setUp(): void
@@ -43,6 +50,7 @@ class RdfProjectorTest extends TestCase
         $this->graphRepository = new InMemoryGraphRepository();
         $this->documentRepository = new InMemoryDocumentRepository();
         $addressParser = $this->createMock(AddressParser::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->rdfProjector = new RdfProjector(
             $this->graphRepository,
@@ -50,7 +58,8 @@ class RdfProjectorTest extends TestCase
             new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
             $this->documentRepository,
             new PlaceDenormalizer(),
-            $addressParser
+            $addressParser,
+            $this->logger
         );
 
         $addressParser->expects($this->any())
@@ -73,6 +82,30 @@ class RdfProjectorTest extends TestCase
                 '3000',
                 'Leuven'
             )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_invalid_json(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $place = [
+            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
+        ];
+
+        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with('Unable to project place d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
+
+        $this->project(
+            $placeId,
+            [
+                new PlaceProjectedToJSONLD($placeId, 'https://mock.io.uitdatabank.be/places/' . $placeId),
+            ]
         );
     }
 

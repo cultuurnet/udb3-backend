@@ -1777,7 +1777,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_invalid_organizer_reference(): void
+    public function it_throws_on_invalid_organizer_reference(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -1801,31 +1801,15 @@ class EventDenormalizerTest extends TestCase
             ],
         ];
 
-        $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
-            new Language('nl'),
-            new TranslatedTitle(
-                new Language('nl'),
-                new Title('Titel voorbeeld')
-            ),
-            new PermanentCalendar(new OpeningHours()),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
-            new Categories(
-                new Category(
-                    new CategoryID('0.50.1.0.1')
-                )
-            )
-        );
+        $this->expectException(\InvalidArgumentException::class);
 
-        $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
-
-        $this->assertEquals($expected, $actual);
+        $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
     }
 
     /**
      * @test
      */
-    public function it_handles_missing_organizer_reference_id(): void
+    public function it_throws_on_missing_organizer_reference_id(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -1849,25 +1833,9 @@ class EventDenormalizerTest extends TestCase
             ],
         ];
 
-        $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
-            new Language('nl'),
-            new TranslatedTitle(
-                new Language('nl'),
-                new Title('Titel voorbeeld')
-            ),
-            new PermanentCalendar(new OpeningHours()),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
-            new Categories(
-                new Category(
-                    new CategoryID('0.50.1.0.1')
-                )
-            )
-        );
+        $this->expectException(\InvalidArgumentException::class);
 
-        $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
-
-        $this->assertEquals($expected, $actual);
+        $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
     }
 
     /**

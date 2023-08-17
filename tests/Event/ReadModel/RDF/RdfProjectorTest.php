@@ -22,6 +22,7 @@ use DateTime;
 use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 class RdfProjectorTest extends TestCase
 {
@@ -36,12 +37,19 @@ class RdfProjectorTest extends TestCase
      */
     private $addressParser;
 
+    /**
+     * @var LoggerInterface|MockObject
+     */
+    private $logger;
+
     protected function setUp(): void
     {
         $this->graphRepository = new InMemoryGraphRepository();
         $this->documentRepository = new InMemoryDocumentRepository();
 
         $this->addressParser = $this->createMock(AddressParser::class);
+
+        $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->rdfProjector = new RdfProjector(
             $this->graphRepository,
@@ -50,7 +58,33 @@ class RdfProjectorTest extends TestCase
             new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
             $this->documentRepository,
             new EventDenormalizer(),
-            $this->addressParser
+            $this->addressParser,
+            $this->logger
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_invalid_json(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with('Unable to project event d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
         );
     }
 
