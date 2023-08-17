@@ -26,6 +26,7 @@ use DateTime;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class RdfProjector implements EventListener
@@ -36,6 +37,7 @@ final class RdfProjector implements EventListener
     private DocumentRepository $documentRepository;
     private DenormalizerInterface $placeDenormalizer;
     private AddressParser $addressParser;
+    private LoggerInterface $logger;
 
     private const TYPE_LOCATIE = 'dcterms:Location';
     private const TYPE_GEOMETRIE = 'locn:Geometry';
@@ -53,7 +55,8 @@ final class RdfProjector implements EventListener
         IriGeneratorInterface $termsIriGenerator,
         DocumentRepository $documentRepository,
         DenormalizerInterface $placeDenormalizer,
-        AddressParser $addressParser
+        AddressParser $addressParser,
+        LoggerInterface $logger
     ) {
         $this->graphRepository = $graphRepository;
         $this->iriGenerator = $iriGenerator;
@@ -61,6 +64,7 @@ final class RdfProjector implements EventListener
         $this->documentRepository = $documentRepository;
         $this->placeDenormalizer = $placeDenormalizer;
         $this->addressParser = $addressParser;
+        $this->logger = $logger;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -69,12 +73,25 @@ final class RdfProjector implements EventListener
             return;
         }
 
-        $iri = $this->iriGenerator->iri($domainMessage->getPayload()->getItemId());
+        $placeId = $domainMessage->getPayload()->getItemId();
+        $iri = $this->iriGenerator->iri($placeId);
         $graph = new Graph($iri);
         $resource = $graph->resource($iri);
 
         $placeData = $this->fetchPlaceData($domainMessage);
-        $place = $this->getPlace($placeData);
+        try {
+            $place = $this->getPlace($placeData);
+        } catch (\Exception $exception) {
+            $this->logger->error(
+                'Unable to project place ' . $placeId . ' with invalid JSON to RDF.',
+                [
+                    'id' => $placeId,
+                    'type' => 'place',
+                    'exception' => $exception,
+                ]
+            );
+            return;
+        }
 
         GraphEditor::for($graph)->setGeneralProperties(
             $iri,

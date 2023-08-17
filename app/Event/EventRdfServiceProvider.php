@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
@@ -34,7 +36,8 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['taxonomy']['terms']),
                 $this->container->get('event_jsonld_repository'),
                 new EventDenormalizer(),
-                $this->container->get(AddressParser::class)
+                $this->container->get(AddressParser::class),
+                LoggerFactory::create($this->getContainer(), LoggerName::forService('rdf'))
             )
         );
     }
