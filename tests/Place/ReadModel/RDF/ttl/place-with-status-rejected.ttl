@@ -11,8 +11,7 @@
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
-    skos:notation "https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri ;
-    dcterms:creator <https://fixme.com/example/dataprovider/publiq>
+    skos:notation "https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri
   ] ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/rejected> ;
   locn:locatorName "Voorbeeld titel"@nl ;
