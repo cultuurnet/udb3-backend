@@ -12,7 +12,7 @@ final class GraphEditor
     private Graph $graph;
 
     private const TYPE_IDENTIFICATOR = 'adms:Identifier';
-    private const TYPE_STRUCTURED_IDENTIFICATOR = 'generiek:gestructureerdeIdentificator';
+    private const TYPE_STRUCTURED_IDENTIFICATOR = 'generiek:GestructureerdeIdentificator';
 
     private const PROPERTY_IDENTIFICATOR = 'adms:identifier';
 
