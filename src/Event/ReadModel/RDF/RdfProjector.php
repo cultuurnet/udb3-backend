@@ -34,6 +34,7 @@ use DateTime;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class RdfProjector implements EventListener
@@ -45,6 +46,7 @@ final class RdfProjector implements EventListener
     private DocumentRepository $documentRepository;
     private DenormalizerInterface $eventDenormalizer;
     private AddressParser $addressParser;
+    private LoggerInterface $logger;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
     private const TYPE_SPACE_TIME = 'cidoc:E92_Spacetime_Volume';
@@ -70,7 +72,8 @@ final class RdfProjector implements EventListener
         IriGeneratorInterface $termsIriGenerator,
         DocumentRepository $documentRepository,
         DenormalizerInterface $eventDenormalizer,
-        AddressParser $addressParser
+        AddressParser $addressParser,
+        LoggerInterface $logger
     ) {
         $this->graphRepository = $graphRepository;
         $this->eventsIriGenerator = $eventsIriGenerator;
@@ -79,6 +82,7 @@ final class RdfProjector implements EventListener
         $this->documentRepository = $documentRepository;
         $this->eventDenormalizer = $eventDenormalizer;
         $this->addressParser = $addressParser;
+        $this->logger = $logger;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -87,12 +91,25 @@ final class RdfProjector implements EventListener
             return;
         }
 
-        $iri = $this->eventsIriGenerator->iri($domainMessage->getPayload()->getItemId());
+        $eventId = $domainMessage->getPayload()->getItemId();
+        $iri = $this->eventsIriGenerator->iri($eventId);
         $graph = new Graph($iri);
         $resource = $graph->resource($iri);
 
         $eventData = $this->fetchEventData($domainMessage);
-        $event = $this->getEvent($eventData);
+        try {
+            $event = $this->getEvent($eventData);
+        } catch (\Exception $exception) {
+            $this->logger->error(
+                'Unable to project event ' . $eventId . ' with invalid JSON to RDF.',
+                [
+                    'id' => $eventId,
+                    'type' => 'event',
+                    'exception' => $exception,
+                ]
+            );
+            return;
+        }
 
         GraphEditor::for($graph)->setGeneralProperties(
             $iri,
