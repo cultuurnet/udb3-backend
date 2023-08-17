@@ -1,0 +1,111 @@
+{
+  "@context": "/contexts/event",
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Event met alle velden",
+    "en": "Event with all fields"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    },
+    {
+      "id": "1.8.3.1.0",
+      "label": "Pop en rock",
+      "domain": "theme"
+    }
+  ],
+  "location": {
+    "@id": "%{baseUrl}/places/%{uuid_place}"
+  },
+  "calendarType": "multiple",
+  "startDate": "2021-05-17T08:00:00+00:00",
+  "endDate": "2021-05-18T22:00:00+00:00",
+  "status": {
+    "type": "Available",
+    "reason": {
+      "nl": "Nederlandse reden",
+      "en": "English reason"
+    }
+  },
+  "subEvent": [
+    {
+      "id": 0,
+      "startDate": "2021-05-17T08:00:00+00:00",
+      "endDate": "2021-05-17T22:00:00+00:00",
+      "status": {
+        "type": "Unavailable",
+        "reason": {
+          "nl": "Nederlandse reden onbeschikbaar",
+          "en": "English reason unavailable"
+        }
+      },
+      "bookingAvailability": {
+        "type": "Unavailable"
+      }
+    },
+    {
+      "id": 1,
+      "startDate": "2021-05-18T08:00:00+00:00",
+      "endDate": "2021-05-18T22:00:00+00:00",
+      "status": {
+        "type": "Available",
+        "reason": {
+          "nl": "Nederlandse reden",
+          "en": "English reason"
+        }
+      },
+      "bookingAvailability": {
+        "type": "Available"
+      }
+    }
+  ],
+  "typicalAgeRange": "6-12",
+  "description": {
+    "nl": "Nederlandse beschrijving",
+    "en": "English description"
+  },
+  "priceInfo": [
+    {
+      "category": "base",
+      "price": 10.5,
+      "priceCurrency": "EUR",
+      "name": {
+        "nl": "Basistarief",
+        "fr": "Tarif de base",
+        "en": "Base tariff",
+        "de": "Basisrate"
+      }
+    }
+  ],
+  "contactPoint": {
+    "phone": [
+      "string"
+    ],
+    "email": [
+      "info@example.com"
+    ],
+    "url": [
+      "https://www.example.com"
+    ]
+  },
+  "bookingInfo": {
+    "phone": "string",
+    "email": "info@example.com",
+    "url": "https://www.example.com",
+    "urlLabel": {
+      "nl": "Nederlandse beschrijving",
+      "en": "English description"
+    },
+    "availabilityStarts": "2021-05-17T22:00:00+00:00",
+    "availabilityEnds": "2021-05-17T22:00:00+00:00"
+  },
+  "labels": [
+    "public-visible"
+  ],
+  "hiddenLabels": [
+    "public-invisible"
+  ]
+}
