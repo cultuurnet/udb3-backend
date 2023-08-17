@@ -221,15 +221,11 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     protected function denormalizeOrganizerReference(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['organizer'])) {
-            try {
-                $organizerReference = $this->organizerReferenceDenormalizer->denormalize(
-                    $data['organizer'],
-                    OrganizerReference::class
-                );
-                $offer = $offer->withOrganizerReference($organizerReference);
-            } catch (\InvalidArgumentException $ex) {
-                return $offer;
-            }
+            $organizerReference = $this->organizerReferenceDenormalizer->denormalize(
+                $data['organizer'],
+                OrganizerReference::class
+            );
+            $offer = $offer->withOrganizerReference($organizerReference);
         }
 
         return $offer;
