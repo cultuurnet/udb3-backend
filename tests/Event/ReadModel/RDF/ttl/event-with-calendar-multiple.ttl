@@ -3,6 +3,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek/#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix m8g: <http://data.europa.eu/m8g/> .
@@ -13,7 +14,12 @@
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
-    skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri
+    skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri ;
+    generiek:gestructureerdeIdentificator [
+      a generiek:gestructureerdeIdentificator ;
+      generiek:naamruimte "https://mock.data.publiq.be/events/" ;
+      generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea"
+    ]
   ] ;
   dcterms:title "Faith no more"@nl ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
