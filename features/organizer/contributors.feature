@@ -213,7 +213,7 @@ Feature: Test the UDB3 organizers contributors endpoint
     ]
     """
 
-  Scenario: Users should be able to edit organizers when they are a contributor
+  Scenario: Users should be able to edit organizers when they are an admin
     Given I set the JSON request payload to:
     """
     [
@@ -222,7 +222,6 @@ Feature: Test the UDB3 organizers contributors endpoint
     ]
     """
     And I send a PUT request to "%{organizerUrl}/contributors"
-    And I am authorized as JWT provider v1 user "invoerder_dfm"
     And I set the JSON request payload to:
     """
     {
@@ -233,3 +232,26 @@ Feature: Test the UDB3 organizers contributors endpoint
     Then the response status should be "204"
     And I get the organizer at "%{organizerUrl}"
     And the JSON response at "name/nl" should be "Contributor updated title"
+
+  Scenario: Users should be able to edit organizers when they are a contributor
+    Given I am authorized as JWT provider v1 user "invoerder_dfm"
+    And I send and accept "application/json"
+    And I create a minimal organizer and save the "url" as "organizerUrl"
+    Given I set the JSON request payload to:
+    """
+    [
+      "stan.vertessen+DFM@cultuurnet.be",
+      "test@example.com"
+    ]
+    """
+    And I send a PUT request to "%{organizerUrl}/contributors"
+    Then the response status should be "204"
+    And I send a GET request to "%{organizerUrl}/contributors"
+    Then the response status should be "200"
+    And the JSON response should be:
+    """
+    [
+      "stan.vertessen+DFM@cultuurnet.be",
+      "test@example.com"
+    ]
+    """
