@@ -8,10 +8,15 @@
                 <https://taxonomy-test.uitdatabank.be/terms/Yf4aZBfsUEu2NsQqsprngw> ;
         <http://www.w3.org/ns/adms#identifier>
                 [ a       <http://www.w3.org/ns/adms#Identifier> ;
-                  <http://purl.org/dc/terms/creator>
-                          <https://fixme.com/example/dataprovider/publiq> ;
                   <http://www.w3.org/2004/02/skos/core#notation>
-                          "http://host.docker.internal:8080/places/%{placeId}"^^<http://www.w3.org/2001/XMLSchema#anyUri>
+                          "http://host.docker.internal:8080/places/%{placeId}"^^<http://www.w3.org/2001/XMLSchema#anyUri> ;
+                  <https://data.vlaanderen.be/ns/generiek/#gestructureerdeIdentificator>
+                          [ a       <https://data.vlaanderen.be/ns/generiek/#GestructureerdeIdentificator> ;
+                            <https://data.vlaanderen.be/ns/generiek/#lokaleIdentificator>
+                                    "%{placeId}" ;
+                            <https://data.vlaanderen.be/ns/generiek/#naamruimte>
+                                    "http://host.docker.internal:8080/places/"
+                          ]
                 ] ;
         <http://www.w3.org/ns/locn#address>
                 [ a       <http://www.w3.org/ns/locn#Address> ;
