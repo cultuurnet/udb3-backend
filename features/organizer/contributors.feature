@@ -241,8 +241,17 @@ Feature: Test the UDB3 organizers contributors endpoint
     """
     [
       "stan.vertessen+DFM@cultuurnet.be",
-      "information@example.com"
+      "test@example.com"
     ]
     """
     And I send a PUT request to "%{organizerUrl}/contributors"
     Then the response status should be "204"
+    And I send a GET request to "%{organizerUrl}/contributors"
+    Then the response status should be "200"
+    And the JSON response should be:
+    """
+    [
+      "stan.vertessen+DFM@cultuurnet.be",
+      "test@example.com"
+    ]
+    """
