@@ -89,10 +89,7 @@ Feature: Test the UDB3 events API
       "url": []
     }
     """
-    And the JSON response at "bookingInfo" should be:
-    """
-    []
-    """
+    And the JSON response should not have "bookingInfo"
     # Note that description and priceInfo cannot be removed via complete overwrite once set currently
     And the JSON response should have "description"
     And the JSON response should have "priceInfo"
