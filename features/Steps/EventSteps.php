@@ -59,6 +59,18 @@ trait EventSteps
     }
 
     /**
+     * @When I get the RDF of event with id :id
+     */
+    public function iGetTheRdfOfEventWithId(string $id): void
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->getWithTimeout('/events/' . $id)
+        );
+
+        $this->theResponseStatusShouldBe(200);
+    }
+
+    /**
      * @When I delete the event at :url
      */
     public function iDeleteTheEventAt(string $url): void
