@@ -105,7 +105,7 @@ final class CalendarSummaryWithFormatterRepositoryTest extends TestCase
                 'format' => Format::xs(),
             ],
             [
-                'result' => '23 sep - 7 okt',
+                'result' => 'Vr 23 sep - vr 7 okt',
                 'contentType' => ContentType::plain(),
                 'format' => Format::sm(),
             ],
@@ -129,7 +129,7 @@ final class CalendarSummaryWithFormatterRepositoryTest extends TestCase
                 'format' => Format::xs(),
             ],
             [
-                'result' => '<span class="cf-date">23 sep</span> <span class="cf-to cf-meta">-</span> <span class="cf-date">7 okt</span>',
+                'result' => '<span class="cf-weekday cf-meta">Vr</span> <span class="cf-date">23 sep</span> <span class="cf-to cf-meta">-</span> <span class="cf-weekday cf-meta">vr</span> <span class="cf-date">7 okt</span>',
                 'contentType' => ContentType::html(),
                 'format' => Format::sm(),
             ],
