@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c09dd645f4b24c8e7346ceeacceefd87",
+    "content-hash": "ade1f874983d7c58b61e2aad23b3394d",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -775,16 +775,16 @@
         },
         {
             "name": "cultuurnet/calendar-summary-v3",
-            "version": "v4.0.3",
+            "version": "v4.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "bdd97cd998301bcb0468e44e24b864466f3fc60f"
+                "reference": "80e07464d081471242e6c8f45176eb4d8d6a06fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/bdd97cd998301bcb0468e44e24b864466f3fc60f",
-                "reference": "bdd97cd998301bcb0468e44e24b864466f3fc60f",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/80e07464d081471242e6c8f45176eb4d8d6a06fc",
+                "reference": "80e07464d081471242e6c8f45176eb4d8d6a06fc",
                 "shasum": ""
             },
             "require": {
@@ -821,9 +821,9 @@
             "description": "Library to convert cultuurnet dates to a readable summary",
             "support": {
                 "issues": "https://github.com/cultuurnet/calendar-summary-v3/issues",
-                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.0.3"
+                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.0.4"
             },
-            "time": "2023-01-03T07:49:10+00:00"
+            "time": "2023-08-22T07:41:30+00:00"
         },
         {
             "name": "cultuurnet/cdb",
