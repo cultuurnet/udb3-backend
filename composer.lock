@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "308de1b3b649aa063a8762f607015e3d",
+    "content-hash": "ade1f874983d7c58b61e2aad23b3394d",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -775,16 +775,16 @@
         },
         {
             "name": "cultuurnet/calendar-summary-v3",
-            "version": "dev-III-5703-days-in-single-and-multiple",
+            "version": "v4.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "14e48d7d447755c46ebc643c58ea111ea1e91e98"
+                "reference": "80e07464d081471242e6c8f45176eb4d8d6a06fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/14e48d7d447755c46ebc643c58ea111ea1e91e98",
-                "reference": "14e48d7d447755c46ebc643c58ea111ea1e91e98",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/80e07464d081471242e6c8f45176eb4d8d6a06fc",
+                "reference": "80e07464d081471242e6c8f45176eb4d8d6a06fc",
                 "shasum": ""
             },
             "require": {
@@ -821,9 +821,9 @@
             "description": "Library to convert cultuurnet dates to a readable summary",
             "support": {
                 "issues": "https://github.com/cultuurnet/calendar-summary-v3/issues",
-                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/III-5703-days-in-single-and-multiple"
+                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.0.4"
             },
-            "time": "2023-08-18T14:40:53+00:00"
+            "time": "2023-08-22T07:41:30+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -11153,7 +11153,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "chrisboulton/php-resque": 20,
-        "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/culturefeed-php": 20,
         "doctrine/migrations": 20,
         "publiq/udb3-json-schemas": 20
