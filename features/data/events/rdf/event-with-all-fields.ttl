@@ -14,11 +14,11 @@
                 [ a       <http://www.w3.org/ns/adms#Identifier> ;
                   <http://www.w3.org/2004/02/skos/core#notation>
                           "http://host.docker.internal:8080/events/%{eventId}"^^<http://www.w3.org/2001/XMLSchema#anyUri> ;
-                  <https://data.vlaanderen.be/ns/generiek/#gestructureerdeIdentificator>
-                          [ a       <https://data.vlaanderen.be/ns/generiek/#GestructureerdeIdentificator> ;
-                            <https://data.vlaanderen.be/ns/generiek/#lokaleIdentificator>
+                  <https://data.vlaanderen.be/ns/generiek#gestructureerdeIdentificator>
+                          [ a       <https://data.vlaanderen.be/ns/generiek#GestructureerdeIdentificator> ;
+                            <https://data.vlaanderen.be/ns/generiek#lokaleIdentificator>
                                     "%{eventId}" ;
-                            <https://data.vlaanderen.be/ns/generiek/#naamruimte>
+                            <https://data.vlaanderen.be/ns/generiek#naamruimte>
                                     "http://host.docker.internal:8080/events/"
                           ]
                 ] ;
