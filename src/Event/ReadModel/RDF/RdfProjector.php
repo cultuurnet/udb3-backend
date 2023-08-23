@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
+use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -128,6 +129,7 @@ final class RdfProjector implements EventListener
         }
 
         $this->setCalendarWithLocation($resource, $event->getCalendar(), $event->getPlaceReference());
+        (new OpeningHoursEditor())->setOpeningHours($resource, $event->getCalendar());
 
         if ($event->getDescription()) {
             $this->setDescription($resource, $event->getDescription());
