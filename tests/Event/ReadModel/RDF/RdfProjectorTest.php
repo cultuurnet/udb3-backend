@@ -104,6 +104,10 @@ class RdfProjectorTest extends TestCase
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
                 ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
             ],
             'name' => [
                 'nl' => 'Faith no more',
@@ -141,6 +145,10 @@ class RdfProjectorTest extends TestCase
                 [
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
                 ],
             ],
             'name' => [
@@ -182,6 +190,10 @@ class RdfProjectorTest extends TestCase
                 [
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
                 ],
             ],
             'name' => [
@@ -244,6 +256,10 @@ class RdfProjectorTest extends TestCase
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
                 ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
             ],
             'name' => [
                 'nl' => 'Faith no more',
@@ -283,6 +299,10 @@ class RdfProjectorTest extends TestCase
                 [
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
                 ],
             ],
             'name' => [
@@ -350,6 +370,10 @@ class RdfProjectorTest extends TestCase
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
                 ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
             ],
             'name' => [
                 'nl' => 'Faith no more',
@@ -389,6 +413,10 @@ class RdfProjectorTest extends TestCase
                 [
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
                 ],
             ],
             'name' => [
@@ -440,6 +468,10 @@ class RdfProjectorTest extends TestCase
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
                 ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
             ],
             'name' => [
                 'nl' => 'Faith no more',
@@ -478,6 +510,10 @@ class RdfProjectorTest extends TestCase
                 [
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
                 ],
             ],
             'name' => [
@@ -518,6 +554,10 @@ class RdfProjectorTest extends TestCase
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
                 ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
             ],
             'name' => [
                 'nl' => 'Faith no more',
@@ -556,6 +596,10 @@ class RdfProjectorTest extends TestCase
                 [
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
                 ],
             ],
             'name' => [
@@ -596,6 +640,10 @@ class RdfProjectorTest extends TestCase
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
                 ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
             ],
             'name' => [
                 'nl' => 'Faith no more',
@@ -635,6 +683,10 @@ class RdfProjectorTest extends TestCase
                 [
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
                 ],
             ],
             'name' => [
@@ -684,6 +736,10 @@ class RdfProjectorTest extends TestCase
                 [
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
                 ],
             ],
             'name' => [
@@ -753,6 +809,10 @@ class RdfProjectorTest extends TestCase
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
                 ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
             ],
             'name' => [
                 'nl' => 'Faith no more',
@@ -810,6 +870,10 @@ class RdfProjectorTest extends TestCase
                 [
                     'id' => '0.50.4.0.0',
                     'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
                 ],
             ],
             'name' => [
