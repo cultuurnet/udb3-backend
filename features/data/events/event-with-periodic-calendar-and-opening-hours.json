@@ -1,0 +1,42 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Single calendar event"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    },
+    {
+      "id": "1.8.3.1.0",
+      "label": "Pop en rock",
+      "domain": "theme"
+    }
+  ],
+  "location": {
+    "@id": "%{baseUrl}/places/%{uuid_place}"
+  },
+  "calendarType": "periodic",
+  "startDate": "2021-05-17T08:00:00+00:00",
+  "endDate": "2021-05-18T22:00:00+00:00",
+  "openingHours": [
+    {
+      "opens": "10:00",
+      "closes": "16:00",
+      "dayOfWeek": [
+        "monday",
+        "tuesday"
+      ]
+    },
+    {
+      "opens": "09:00",
+      "closes": "17:00",
+      "dayOfWeek": [
+        "saturday",
+        "sunday"
+      ]
+    }
+  ]
+}

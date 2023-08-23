@@ -1,0 +1,35 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Permanent event"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "location": {
+    "@id": "%{baseUrl}/places/%{uuid_place}"
+  },
+  "calendarType": "permanent",
+  "openingHours": [
+    {
+      "opens": "10:00",
+      "closes": "16:00",
+      "dayOfWeek": [
+        "monday",
+        "tuesday"
+      ]
+    },
+    {
+      "opens": "09:00",
+      "closes": "17:00",
+      "dayOfWeek": [
+        "thursday",
+        "friday"
+      ]
+    }
+  ]
+}
