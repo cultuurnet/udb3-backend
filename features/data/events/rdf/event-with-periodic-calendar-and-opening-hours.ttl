@@ -48,4 +48,6 @@
                           ] ;
                   <http://www.cidoc-crm.org/cidoc-crm/P161_has_spatial_projection>
                           <http://host.docker.internal:8080/places/%{uuid_place}>
-                ] .
+                ] ;
+        <https://data.vlaanderen.be/ns/cultuurparticipatie#thema>
+                <https://taxonomy-test.uitdatabank.be/terms/1.8.3.1.0> .
