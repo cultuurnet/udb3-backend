@@ -17,7 +17,7 @@ final class RdfNamespaces
         RdfNamespace::set('udb', 'https://data.publiq.be/ns/uitdatabank#');
         RdfNamespace::set('adms', 'http://www.w3.org/ns/adms#');
         RdfNamespace::set('locn', 'http://www.w3.org/ns/locn#');
-        RdfNamespace::set('generiek', 'https://data.vlaanderen.be/ns/generiek/#');
+        RdfNamespace::set('generiek', 'https://data.vlaanderen.be/ns/generiek#');
         RdfNamespace::set('geosparql', 'http://www.opengis.net/ont/geosparql#');
         RdfNamespace::set('cidoc', 'http://www.cidoc-crm.org/cidoc-crm/');
         RdfNamespace::set('cpa', 'https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.');

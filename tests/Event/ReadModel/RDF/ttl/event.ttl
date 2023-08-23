@@ -3,7 +3,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix generiek: <https://data.vlaanderen.be/ns/generiek/#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 
