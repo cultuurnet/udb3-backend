@@ -239,7 +239,7 @@ trait ResponseSteps
     /**
      * @Then the RDF response should match :fileName
      */
-    public function     theRdfResponseShouldMatch(string $fileName): void
+    public function theRdfResponseShouldMatch(string $fileName): void
     {
         assertEquals(
             $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
