@@ -214,6 +214,61 @@ class RdfProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_converts_a_permanent_event_with_opening_hours(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'openingHours' => [
+                [
+                    'opens' => '20:00',
+                    'closes' => '23:00',
+                    'dayOfWeek' => [
+                        'monday',
+                        'tuesday',
+                    ],
+                ],
+                [
+                    'opens' => '19:00',
+                    'closes' => '22:00',
+                    'dayOfWeek' => [
+                        'wednesday',
+                    ],
+                ],
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-calendar-permanent-and-opening-hours.ttl'));
+    }
+
+    /**
+     * @test
+     */
     public function it_converts_an_event_with_periodic_calendar(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
@@ -249,6 +304,72 @@ class RdfProjectorTest extends TestCase
         );
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-calendar-periodic.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_periodic_calendar_and_opening_hours(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'periodic',
+            'startDate' => '2020-05-06T20:00:00+01:00',
+            'endDate' => '2023-05-06T23:00:00+01:00',
+            'openingHours' => [
+                [
+                    'opens' => '20:00',
+                    'closes' => '23:00',
+                    'dayOfWeek' => [
+                        'monday',
+                        'tuesday',
+                    ],
+                ],
+                [
+                    'opens' => '19:00',
+                    'closes' => '22:00',
+                    'dayOfWeek' => [
+                        'wednesday',
+                        'thursday',
+                    ],
+                ],
+                [
+                    'opens' => '10:00',
+                    'closes' => '12:30',
+                    'dayOfWeek' => [
+                        'saturday',
+                        'sunday',
+                    ],
+                ],
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-calendar-periodic-and-opening-hours.ttl'));
     }
 
     /**
