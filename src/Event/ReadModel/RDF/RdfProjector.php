@@ -56,6 +56,7 @@ final class RdfProjector implements EventListener
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_TYPE = 'dcterms:type';
+    private const PROPERTY_ACTIVITEIT_THEMA = 'cp:thema';
     private const PROPERTY_ACTVITEIT_LOCATIE = 'prov:atLocation';
     private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
 
@@ -166,11 +167,16 @@ final class RdfProjector implements EventListener
 
     private function setTerms(Resource $resource, Categories $terms): void
     {
+        /** @var Category $term */
         foreach ($terms as $term) {
-            /** @var Category $term */
             if ($term->getDomain()->sameAs(new CategoryDomain('eventtype'))) {
                 $terms = $this->termsIriGenerator->iri($term->getId()->toString());
                 $resource->set(self::PROPERTY_ACTIVITEIT_TYPE, new Resource($terms));
+            }
+
+            if ($term->getDomain()->sameAs(new CategoryDomain('theme'))) {
+                $terms = $this->termsIriGenerator->iri($term->getId()->toString());
+                $resource->set(self::PROPERTY_ACTIVITEIT_THEMA, new Resource($terms));
             }
         }
     }
