@@ -103,6 +103,7 @@ final class RdfProjector implements EventListener
             $event = $this->getEvent($eventData);
         } catch (\Exception $exception) {
             $this->logger->error(
+            $this->logger->warning(
                 'Unable to project event ' . $eventId . ' with invalid JSON to RDF.',
                 [
                     'id' => $eventId,

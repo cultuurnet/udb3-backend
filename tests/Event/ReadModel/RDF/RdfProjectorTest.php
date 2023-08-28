@@ -77,7 +77,7 @@ class RdfProjectorTest extends TestCase
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
         $this->logger->expects($this->once())
-            ->method('error')
+            ->method('warning')
             ->with('Unable to project event d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
 
         $this->project(
