@@ -98,7 +98,7 @@ class RdfProjectorTest extends TestCase
         $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
 
         $this->logger->expects($this->once())
-            ->method('error')
+            ->method('warning')
             ->with('Unable to project place d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
 
         $this->project(
