@@ -15,7 +15,7 @@
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
-    skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyUri ;
+    skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyURI ;
     generiek:gestructureerdeIdentificator [
       a generiek:GestructureerdeIdentificator ;
       generiek:naamruimte "https://mock.data.publiq.be/events/" ;

@@ -51,7 +51,7 @@ final class GraphEditor
 
         $identifier = $this->graph->newBNode();
         $identifier->setType(self::TYPE_IDENTIFICATOR);
-        $identifier->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($resourceIri, null, 'xsd:anyUri'));
+        $identifier->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($resourceIri, null, 'xsd:anyURI'));
         $resource->add(self::PROPERTY_IDENTIFICATOR, $identifier);
 
         list($namespace, $localIdentifier) = $this->splitIdentifier($resourceIri);
