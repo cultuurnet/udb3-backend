@@ -91,9 +91,9 @@ final class RdfServiceProvider extends AbstractServiceProvider
         );
     }
 
-    public static function createGraphStoreRepository(string $baseUri): GraphStoreRepository
+    public static function createGraphStoreRepository(string $baseUri, bool $useDeleteAndInsert): GraphStoreRepository
     {
-        return new GraphStoreRepository(new GraphStore(rtrim($baseUri, '/')));
+        return new GraphStoreRepository(new GraphStore(rtrim($baseUri, '/')), $useDeleteAndInsert);
     }
 
     public static function createIriGenerator(string $baseUri): IriGeneratorInterface

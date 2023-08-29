@@ -24,7 +24,8 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         $graphStoreRepository = RdfServiceProvider::createGraphStoreRepository(
-            $this->container->get('config')['rdf']['placesGraphStoreUrl']
+            $this->container->get('config')['rdf']['placesGraphStoreUrl'],
+            $this->container->get('config')['rdf']['useDeleteAndInsert'] ?? false
         );
 
         $this->container->addShared(
