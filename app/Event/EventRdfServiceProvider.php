@@ -24,7 +24,8 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         $graphStoreRepository = RdfServiceProvider::createGraphStoreRepository(
-            $this->container->get('config')['rdf']['eventsGraphStoreUrl']
+            $this->container->get('config')['rdf']['eventsGraphStoreUrl'],
+            $this->container->get('config')['rdf']['useDeleteAndInsert'] ?? false
         );
 
         $this->container->addShared(
