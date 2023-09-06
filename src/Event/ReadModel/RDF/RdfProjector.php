@@ -19,11 +19,13 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
@@ -52,6 +54,8 @@ final class RdfProjector implements EventListener
     private const TYPE_SPACE_TIME = 'cidoc:E92_Spacetime_Volume';
     private const TYPE_PERIOD = 'm8g:PeriodOfTime';
     private const TYPE_DATE_TIME = 'xsd:dateTime';
+    private const TYPE_VIRTUAL_LOCATION = 'm8g:VirtualLocation';
+    private const TYPE_VIRTUAL_LOCATION_URL = 'xsd:anyURI';
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_TYPE = 'dcterms:type';
@@ -62,6 +66,9 @@ final class RdfProjector implements EventListener
     private const PROPERTY_RUIMTE_TIJD = 'cp:ruimtetijd';
     private const PROPERTY_RUIMTE_TIJD_LOCATION = 'cidoc:P161_has_spatial_projection';
     private const PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE = 'cidoc:P160_has_temporal_projection';
+
+    private const PROPERTY_VIRTUAL_LOCATION = 'm8g:virtualLocation';
+    private const PROPERTY_VIRTUAL_LOCATION_URL = 'schema:url';
 
     private const PROPERTY_PERIOD_START = 'm8g:startTime';
     private const PROPERTY_PERIOD_END = 'm8g:endTime';
@@ -249,6 +256,20 @@ final class RdfProjector implements EventListener
         }
 
         return null;
+    }
+
+    private function setVirtualLocation(Resource $resource, ?Url $onlineUrl): void
+    {
+        $virtualLocationResource = $resource->getGraph()->newBNode([self::TYPE_VIRTUAL_LOCATION]);
+
+        if ($onlineUrl) {
+            $virtualLocationResource->add(
+                self::PROPERTY_VIRTUAL_LOCATION_URL,
+                new Literal($onlineUrl->toString(), null, self::TYPE_VIRTUAL_LOCATION_URL)
+            );
+        }
+
+        $resource->add(self::PROPERTY_VIRTUAL_LOCATION, $virtualLocationResource);
     }
 
     private function setDescription(Resource $resource, TranslatedDescription $translatedDescription): void
