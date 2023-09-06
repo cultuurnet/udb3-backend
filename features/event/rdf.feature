@@ -27,3 +27,10 @@ Feature: Test RDF projection of events
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/event-with-periodic-calendar-and-opening-hours.ttl"
+
+  Scenario: Create an online event with permanent calendar and online url
+    And I create an event from "events/rdf/online-event-with-online-url-and-permanent-calendar.json" and save the "id" as "eventId"
+    And I am using the RDF base URL
+    And I accept "text/turtle"
+    When I get the RDF of event with id "%{eventId}"
+    Then the RDF response should match "events/rdf/online-event-with-online-url-and-permanent-calendar.ttl"
