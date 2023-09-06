@@ -225,10 +225,14 @@ final class RdfProjector implements EventListener
             $spaceTimeResource = $resource->getGraph()->newBNode([self::TYPE_SPACE_TIME]);
             $resource->add(self::PROPERTY_RUIMTE_TIJD, $spaceTimeResource);
 
-            if ($addressResource === null) {
-                $addressResource = $this->setLocation($spaceTimeResource, self::PROPERTY_RUIMTE_TIJD_LOCATION, $placeReference);
+            if ($event->getAttendanceMode()->sameAs(AttendanceMode::online())) {
+                $this->setVirtualLocation($spaceTimeResource, $event->getOnlineUrl());
             } else {
-                $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_LOCATION, $addressResource);
+                if ($addressResource === null) {
+                    $addressResource = $this->setLocation($spaceTimeResource, self::PROPERTY_RUIMTE_TIJD_LOCATION, $placeReference);
+                } else {
+                    $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_LOCATION, $addressResource);
+                }
             }
 
             $calendarTypeResource = $spaceTimeResource->getGraph()->newBNode([self::TYPE_PERIOD]);
