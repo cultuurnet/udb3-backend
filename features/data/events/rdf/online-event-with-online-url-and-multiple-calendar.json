@@ -1,0 +1,33 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Permanent event"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "location": {
+    "@id": "https://io-test.uitdatabank.be/places/00000000-0000-0000-0000-000000000000"
+  },
+  "calendarType": "multiple",
+  "startDate": "2021-05-17T08:00:00+00:00",
+  "endDate": "2021-05-18T22:00:00+00:00",
+  "subEvent": [
+    {
+      "id": 0,
+      "startDate": "2021-05-17T08:00:00+00:00",
+      "endDate": "2021-05-17T22:00:00+00:00"
+    },
+    {
+      "id": 1,
+      "startDate": "2021-05-18T08:00:00+00:00",
+      "endDate": "2021-05-18T22:00:00+00:00"
+    }
+  ],
+  "attendanceMode": "online",
+  "onlineUrl": "https://www.publiq.be/livestream"
+}
