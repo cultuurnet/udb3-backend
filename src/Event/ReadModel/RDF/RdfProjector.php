@@ -193,7 +193,12 @@ final class RdfProjector implements EventListener
         $placeReference = $event->getPlaceReference();
 
         if ($calendar->getType()->sameAs(CalendarType::permanent())) {
-            $this->setLocation($resource, self::PROPERTY_ACTVITEIT_LOCATIE, $placeReference);
+            if ($event->getAttendanceMode()->sameAs(AttendanceMode::online())) {
+                $this->setVirtualLocation($resource, $event->getOnlineUrl());
+            } else {
+                $this->setLocation($resource, self::PROPERTY_ACTVITEIT_LOCATIE, $placeReference);
+            }
+
             return;
         }
 
