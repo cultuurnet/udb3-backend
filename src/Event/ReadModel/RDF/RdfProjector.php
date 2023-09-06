@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -129,7 +128,7 @@ final class RdfProjector implements EventListener
             (new WorkflowStatusEditor())->setAvailableFrom($resource, $event->getAvailableFrom());
         }
 
-        $this->setCalendarWithLocation($resource, $event->getCalendar(), $event->getPlaceReference());
+        $this->setCalendarWithLocation($resource, $event);
         (new OpeningHoursEditor())->setOpeningHours($resource, $event->getCalendar());
 
         if ($event->getDescription()) {
@@ -181,8 +180,11 @@ final class RdfProjector implements EventListener
         }
     }
 
-    private function setCalendarWithLocation(Resource $resource, Calendar $calendar, PlaceReference $placeReference): void
+    private function setCalendarWithLocation(Resource $resource, Event $event): void
     {
+        $calendar = $event->getCalendar();
+        $placeReference = $event->getPlaceReference();
+
         if ($calendar->getType()->sameAs(CalendarType::permanent())) {
             $this->setLocation($resource, self::PROPERTY_ACTVITEIT_LOCATIE, $placeReference);
             return;
