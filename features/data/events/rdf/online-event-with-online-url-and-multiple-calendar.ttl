@@ -1,0 +1,52 @@
+<http://host.docker.internal:8080/events/%{eventId}>
+        a       <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> ;
+        <http://purl.org/dc/terms/created>
+                "2023-09-06T12:26:57+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://purl.org/dc/terms/modified>
+                "2023-09-06T12:26:57+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://purl.org/dc/terms/title>
+                "Permanent event"@nl ;
+        <http://purl.org/dc/terms/type>
+                <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
+        <http://www.w3.org/ns/adms#identifier>
+                [ a       <http://www.w3.org/ns/adms#Identifier> ;
+                  <http://www.w3.org/2004/02/skos/core#notation>
+                          "http://host.docker.internal:8080/events/%{eventId}"^^<http://www.w3.org/2001/XMLSchema#anyURI> ;
+                  <https://data.vlaanderen.be/ns/generiek#gestructureerdeIdentificator>
+                          [ a       <https://data.vlaanderen.be/ns/generiek#GestructureerdeIdentificator> ;
+                            <https://data.vlaanderen.be/ns/generiek#lokaleIdentificator>
+                                    "%{eventId}" ;
+                            <https://data.vlaanderen.be/ns/generiek#naamruimte>
+                                    "http://host.docker.internal:8080/events/"
+                          ]
+                ] ;
+        <https://data.publiq.be/ns/uitdatabank#workflowStatus>
+                <https://data.publiq.be/concepts/workflowStatus/draft> ;
+        <https://data.vlaanderen.be/ns/cultuurparticipatie#ruimtetijd>
+                [ a       <http://www.cidoc-crm.org/cidoc-crm/E92_Spacetime_Volume> ;
+                  <http://data.europa.eu/m8g/virtualLocation>
+                          [ a                         <http://data.europa.eu/m8g/VirtualLocation> ;
+                            <https://schema.org/url>  "https://www.publiq.be/livestream"^^<http://www.w3.org/2001/XMLSchema#anyURI>
+                          ] ;
+                  <http://www.cidoc-crm.org/cidoc-crm/P160_has_temporal_projection>
+                          [ a       <http://data.europa.eu/m8g/PeriodOfTime> ;
+                            <http://data.europa.eu/m8g/endTime>
+                                    "2021-05-17T22:00:00+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+                            <http://data.europa.eu/m8g/startTime>
+                                    "2021-05-17T08:00:00+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime>
+                          ]
+                ] ;
+        <https://data.vlaanderen.be/ns/cultuurparticipatie#ruimtetijd>
+                [ a       <http://www.cidoc-crm.org/cidoc-crm/E92_Spacetime_Volume> ;
+                  <http://data.europa.eu/m8g/virtualLocation>
+                          [ a                         <http://data.europa.eu/m8g/VirtualLocation> ;
+                            <https://schema.org/url>  "https://www.publiq.be/livestream"^^<http://www.w3.org/2001/XMLSchema#anyURI>
+                          ] ;
+                  <http://www.cidoc-crm.org/cidoc-crm/P160_has_temporal_projection>
+                          [ a       <http://data.europa.eu/m8g/PeriodOfTime> ;
+                            <http://data.europa.eu/m8g/endTime>
+                                    "2021-05-18T22:00:00+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+                            <http://data.europa.eu/m8g/startTime>
+                                    "2021-05-18T08:00:00+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime>
+                          ]
+                ] .
