@@ -25,7 +25,7 @@
         <https://data.publiq.be/ns/uitdatabank#workflowStatus>
                 <https://data.publiq.be/concepts/workflowStatus/draft> ;
         <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.beschikbaarheid>
-                [ a       <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.Beschikbaarheid> ;
+                [ a       <https://data.vlaanderen.be/ns/cultuurparticipatie#Beschikbaarheid> ;
                   <https://schema.org/hoursAvailable>
                           [ a                               <https://schema.org/OpeningHoursSpecification> ;
                             <https://schema.org/closes>     "16:00" ;

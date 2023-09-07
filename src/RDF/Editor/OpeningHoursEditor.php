@@ -14,7 +14,7 @@ use EasyRdf\Resource;
 
 final class OpeningHoursEditor
 {
-    private const TYPE_BESCHIKBAARHEID = 'cpa:Beschikbaarheid';
+    private const TYPE_BESCHIKBAARHEID = 'cp:Beschikbaarheid';
     private const TYPE_OPENING_HOURS_SPECIFICATION = 'schema:OpeningHoursSpecification';
 
     private const PROPERTY_BESCHIKBAARHEID = 'cpa:beschikbaarheid';

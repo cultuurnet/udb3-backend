@@ -29,7 +29,7 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
   cpa:beschikbaarheid [
-    a cpa:Beschikbaarheid ;
+    a cp:Beschikbaarheid ;
     schema:hoursAvailable [
       a schema:OpeningHoursSpecification ;
       schema:opens "20:00" ;
