@@ -75,10 +75,7 @@ class DBALResourceOwnerRepositoryTest extends TestCase
         );
     }
 
-    /**
-     * @param string $key
-     */
-    private function markEditable(StringLiteral $eventId, $key, StringLiteral $userId): void
+    private function markEditable(string $eventId, string $key, string $userId): void
     {
         $this->repository->markResourceEditableByUser($eventId, $userId);
     }
@@ -95,9 +92,9 @@ class DBALResourceOwnerRepositoryTest extends TestCase
             new StringLiteral('789'),
         ];
 
-        array_walk($editableByJohnDoe, [$this, 'markEditable'], new StringLiteral($johnDoe));
+        array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
 
-        $this->repository->markResourceEditableByUser(new StringLiteral('456'), new StringLiteral($johnDoe));
+        $this->repository->markResourceEditableByUser('456', $johnDoe);
 
         $this->assertEquals(
             $editableByJohnDoe,

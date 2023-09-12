@@ -66,14 +66,14 @@ class DBALResourceOwnerRepository implements ResourceOwnerRepository, ResourceOw
         return $events;
     }
 
-    public function markResourceEditableByUser(StringLiteral $eventId, StringLiteral $userId): void
+    public function markResourceEditableByUser(string $eventId, string $userId): void
     {
         try {
             $this->connection->insert(
                 $this->tableName->toNative(),
                 [
-                    $this->idField->toNative() => $eventId->toNative(),
-                    'user_id' => $userId->toNative(),
+                    $this->idField->toNative() => $eventId,
+                    'user_id' => $userId,
                 ]
             );
         } catch (UniqueConstraintViolationException $e) {
