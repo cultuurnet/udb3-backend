@@ -20,9 +20,9 @@ final class RdfNamespaces
         RdfNamespace::set('generiek', 'https://data.vlaanderen.be/ns/generiek#');
         RdfNamespace::set('geosparql', 'http://www.opengis.net/ont/geosparql#');
         RdfNamespace::set('cidoc', 'http://www.cidoc-crm.org/cidoc-crm/');
-        RdfNamespace::set('cpa', 'https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.');
         RdfNamespace::set('m8g', 'http://data.europa.eu/m8g/');
         RdfNamespace::set('cp', 'https://data.vlaanderen.be/ns/cultuurparticipatie#');
+        RdfNamespace::set('cpa', 'https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.');
         RdfNamespace::set('cpr', 'https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.');
         RdfNamespace::set('prov', 'http://www.w3.org/ns/prov#');
         RdfNamespace::set('schema', 'https://schema.org/');
