@@ -39,6 +39,7 @@ use CultuurNet\UDB3\Organizer\OrganizerCommandHandlerProvider;
 use CultuurNet\UDB3\Organizer\OrganizerGeoCoordinatesServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider;
+use CultuurNet\UDB3\Organizer\OrganizerRdfServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\Place\PlaceEditingServiceProvider;
@@ -205,6 +206,7 @@ RdfNamespaces::register();
 $container->addServiceProvider(new RdfServiceProvider());
 $container->addServiceProvider(new PlaceRdfServiceProvider());
 $container->addServiceProvider(new EventRdfServiceProvider());
+$container->addServiceProvider(new OrganizerRdfServiceProvider());
 
 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);
