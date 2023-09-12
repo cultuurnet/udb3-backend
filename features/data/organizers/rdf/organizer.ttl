@@ -16,5 +16,7 @@
                                     "http://host.docker.internal:8080/organizers/"
                           ]
                 ] ;
+        <http://xmlns.com/foaf/0.1/homepage>
+                "https://www.%{name}.be" ;
         <https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.naam>
                 "%{name}"@nl .
