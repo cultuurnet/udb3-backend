@@ -7,8 +7,16 @@ namespace CultuurNet\UDB3\Organizer\ReadModel\RDF;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
+use CultuurNet\UDB3\Address\AddressParser;
+use CultuurNet\UDB3\Address\FullAddressFormatter;
+use CultuurNet\UDB3\Address\Locality as LegacyLocality;
+use CultuurNet\UDB3\Address\ParsedAddress;
+use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
+use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
@@ -34,10 +42,13 @@ class RdfProjectorTest extends TestCase
      */
     private $logger;
 
+    private array $expectedParsedAddresses;
+
     protected function setUp(): void
     {
         $this->graphRepository = new InMemoryGraphRepository();
         $this->documentRepository = new InMemoryDocumentRepository();
+        $addressParser = $this->createMock(AddressParser::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->rdfProjector = new RdfProjector(
@@ -45,7 +56,30 @@ class RdfProjectorTest extends TestCase
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/organizers/' . $item),
             $this->documentRepository,
             new OrganizerDenormalizer(),
+            $addressParser,
             $this->logger
+        );
+
+        $addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturnCallback(
+                fn (string $formatted): ?ParsedAddress => $this->expectedParsedAddresses[$formatted] ?? null
+            );
+        $this->expectedParsedAddresses = [];
+
+        $this->expectParsedAddress(
+            new LegacyAddress(
+                new LegacyStreet('Kerkstraat 1'),
+                new LegacyPostalCode('3271'),
+                new LegacyLocality('Zichem (Scherpenheuvel-Zichem)'),
+                new CountryCode('BE')
+            ),
+            new ParsedAddress(
+                'Kerkstraat',
+                '1',
+                '3271',
+                'Zichem (Scherpenheuvel-Zichem)'
+            )
         );
     }
 
@@ -119,6 +153,12 @@ class RdfProjectorTest extends TestCase
         );
 
         $this->assertTurtleData($organizerId, file_get_contents(__DIR__ . '/ttl/organizer-with-address.ttl'));
+    }
+
+    private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void
+    {
+        $formatted = (new FullAddressFormatter())->format($address);
+        $this->expectedParsedAddresses[$formatted] = $parsedAddress;
     }
 
     private function project(string $organizerId, array $events): void

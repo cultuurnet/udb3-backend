@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Organizer\ReadModel\RDF;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
@@ -13,6 +14,7 @@ use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
+use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\GeometryEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -30,24 +32,28 @@ final class RdfProjector implements EventListener
     private IriGeneratorInterface $iriGenerator;
     private DocumentRepository $documentRepository;
     private DenormalizerInterface $organizerDenormalizer;
+    private AddressParser $addressParser;
     private LoggerInterface $logger;
 
     private const TYPE_ORGANISATOR = 'cp:Organisator';
 
     private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
     private const PROPERTY_HOMEPAGE = 'foaf:homepage';
+    private const PROPERTY_LOCATIE_ADRES = 'locn:address';
 
     public function __construct(
         GraphRepository $graphRepository,
         IriGeneratorInterface $iriGenerator,
         DocumentRepository $documentRepository,
         DenormalizerInterface $organizerDenormalizer,
+        AddressParser $addressParser,
         LoggerInterface $logger
     ) {
         $this->graphRepository = $graphRepository;
         $this->iriGenerator = $iriGenerator;
         $this->documentRepository = $documentRepository;
         $this->organizerDenormalizer = $organizerDenormalizer;
+        $this->addressParser = $addressParser;
         $this->logger = $logger;
     }
 
@@ -88,8 +94,14 @@ final class RdfProjector implements EventListener
 
         $this->setHomepage($resource, $organizer->getUrl());
 
+        if ($organizer->getAddress()) {
+            (new AddressEditor($this->addressParser))
+                ->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $organizer->getAddress());
+        }
+
         if ($organizer->getGeoCoordinates()) {
-            (new GeometryEditor())->setCoordinates($resource, $organizer->getGeoCoordinates());
+            (new GeometryEditor())
+                ->setCoordinates($resource, $organizer->getGeoCoordinates());
         }
 
         $this->graphRepository->save($iri, $graph);
