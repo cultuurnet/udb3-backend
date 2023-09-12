@@ -12,3 +12,10 @@ Feature: Test RDF projection of organizers
     And I accept "text/turtle"
     When I get the RDF of organizer with id "%{organizerId}"
     Then the RDF response should match "organizers/rdf/organizer.ttl"
+
+  Scenario: Create an organizer with address
+    Given I create an organizer from "organizers/organizer.json" and save the "id" as "organizerId"
+    And I am using the RDF base URL
+    And I accept "text/turtle"
+    When I get the RDF of organizer with id "%{organizerId}"
+    Then the RDF response should match "organizers/rdf/organizer-with-address.ttl"
