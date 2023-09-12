@@ -7,6 +7,7 @@
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix schema: <https://schema.org/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a cidoc:E7_Activity ;
@@ -25,7 +26,5 @@
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
-  schema:location [
-    a schema:VirtualLocation ;
-    schema:url "https://www.publiq.be/livestream"^^xsd:string
-  ] .
+  schema:location [ a schema:VirtualLocation ] ;
+  prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> .
