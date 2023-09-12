@@ -9,6 +9,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
@@ -54,8 +55,8 @@ final class RdfProjector implements EventListener
     private const TYPE_SPACE_TIME = 'cidoc:E92_Spacetime_Volume';
     private const TYPE_PERIOD = 'm8g:PeriodOfTime';
     private const TYPE_DATE_TIME = 'xsd:dateTime';
-    private const TYPE_VIRTUAL_LOCATION = 'm8g:VirtualLocation';
-    private const TYPE_VIRTUAL_LOCATION_URL = 'xsd:anyURI';
+    private const TYPE_VIRTUAL_LOCATION = 'schema:VirtualLocation';
+    private const TYPE_VIRTUAL_LOCATION_URL = 'xsd:string';
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_TYPE = 'dcterms:type';
@@ -67,7 +68,7 @@ final class RdfProjector implements EventListener
     private const PROPERTY_RUIMTE_TIJD_LOCATION = 'cidoc:P161_has_spatial_projection';
     private const PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE = 'cidoc:P160_has_temporal_projection';
 
-    private const PROPERTY_VIRTUAL_LOCATION = 'm8g:virtualLocation';
+    private const PROPERTY_VIRTUAL_LOCATION = 'schema:location';
     private const PROPERTY_VIRTUAL_LOCATION_URL = 'schema:url';
 
     private const PROPERTY_PERIOD_START = 'm8g:startTime';
@@ -135,6 +136,10 @@ final class RdfProjector implements EventListener
             (new WorkflowStatusEditor())->setAvailableFrom($resource, $event->getAvailableFrom());
         }
 
+        if ($event->getAttendanceMode()->sameAs(AttendanceMode::online())) {
+            $this->setVirtualLocation($resource, $event->getOnlineUrl());
+        }
+
         $this->setCalendarWithLocation($resource, $event);
         (new OpeningHoursEditor())->setOpeningHours($resource, $event->getCalendar());
 
@@ -193,11 +198,7 @@ final class RdfProjector implements EventListener
         $placeReference = $event->getPlaceReference();
 
         if ($calendar->getType()->sameAs(CalendarType::permanent())) {
-            if ($event->getAttendanceMode()->sameAs(AttendanceMode::online())) {
-                $this->setVirtualLocation($resource, $event->getOnlineUrl());
-            } else {
-                $this->setLocation($resource, self::PROPERTY_ACTVITEIT_LOCATIE, $placeReference);
-            }
+            $this->setLocation($resource, self::PROPERTY_ACTVITEIT_LOCATIE, $placeReference);
 
             return;
         }
@@ -225,14 +226,10 @@ final class RdfProjector implements EventListener
             $spaceTimeResource = $resource->getGraph()->newBNode([self::TYPE_SPACE_TIME]);
             $resource->add(self::PROPERTY_RUIMTE_TIJD, $spaceTimeResource);
 
-            if ($event->getAttendanceMode()->sameAs(AttendanceMode::online())) {
-                $this->setVirtualLocation($spaceTimeResource, $event->getOnlineUrl());
+            if ($addressResource === null) {
+                $addressResource = $this->setLocation($spaceTimeResource, self::PROPERTY_RUIMTE_TIJD_LOCATION, $placeReference);
             } else {
-                if ($addressResource === null) {
-                    $addressResource = $this->setLocation($spaceTimeResource, self::PROPERTY_RUIMTE_TIJD_LOCATION, $placeReference);
-                } else {
-                    $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_LOCATION, $addressResource);
-                }
+                $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_LOCATION, $addressResource);
             }
 
             $calendarTypeResource = $spaceTimeResource->getGraph()->newBNode([self::TYPE_PERIOD]);
@@ -252,8 +249,11 @@ final class RdfProjector implements EventListener
     private function setLocation(Resource $resource, string $property, PlaceReference $placeReference): ?Resource
     {
         if ($placeReference->getPlaceId()) {
-            $locationIri = $this->placesIriGenerator->iri($placeReference->getPlaceId()->toString());
-            $resource->set($property, new Resource($locationIri));
+            $locationId = new LocationId($placeReference->getPlaceId()->toString());
+            if (!$locationId->isNilLocation()) {
+                $locationIri = $this->placesIriGenerator->iri($placeReference->getPlaceId()->toString());
+                $resource->set($property, new Resource($locationIri));
+            }
         }
 
         if ($placeReference->getAddress()) {
