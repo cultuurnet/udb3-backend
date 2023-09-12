@@ -48,3 +48,17 @@ Feature: Test RDF projection of events
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/online-event-with-online-url-and-multiple-calendar.ttl"
+
+  Scenario: Create a mixed event with permanent calendar and online url
+    And I create an event from "events/rdf/mixed-event-with-online-url-and-permanent-calendar.json" and save the "id" as "eventId"
+    And I am using the RDF base URL
+    And I accept "text/turtle"
+    When I get the RDF of event with id "%{eventId}"
+    Then the RDF response should match "events/rdf/mixed-event-with-online-url-and-permanent-calendar.ttl"
+
+  Scenario: Create a mixed event with multiple calendar and online url
+    And I create an event from "events/rdf/mixed-event-with-online-url-and-multiple-calendar.json" and save the "id" as "eventId"
+    And I am using the RDF base URL
+    And I accept "text/turtle"
+    When I get the RDF of event with id "%{eventId}"
+    Then the RDF response should match "events/rdf/mixed-event-with-online-url-and-multiple-calendar.ttl"
