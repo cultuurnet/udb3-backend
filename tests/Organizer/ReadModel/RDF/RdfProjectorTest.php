@@ -79,6 +79,48 @@ class RdfProjectorTest extends TestCase
         $this->assertTurtleData($organizerId, file_get_contents(__DIR__ . '/ttl/organizer.ttl'));
     }
 
+    /**
+     * @test
+     */
+    public function it_converts_an_organizer_with_address(): void
+    {
+        $organizerId = '56f1efdb-fe25-44f6-b9d7-4a6a836799d7';
+
+        $organizer = [
+            '@id' => 'https://mock.io.uitdatabank.be/organizers/' . $organizerId,
+            'mainLanguage' => 'nl',
+            'url' => 'https://www.publiq.be',
+            'name' => [
+                'nl' => 'publiq VZW',
+                'en' => 'publiq NPO',
+            ],
+            'address' => [
+                'nl' => [
+                    'addressCountry' => 'BE',
+                    'addressLocality' => 'Zichem (Scherpenheuvel-Zichem)',
+                    'postalCode' => '3271',
+                    'streetAddress' => 'Kerkstraat 1'
+                ]
+            ],
+            'geo' => [
+                'latitude' => 50.9656077,
+                'longitude' => 4.9502035
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($organizerId, json_encode($organizer)));
+
+        $this->project(
+            $organizerId,
+            [
+                new OrganizerProjectedToJSONLD($organizerId, 'https://mock.io.uitdatabank.be/organizer/' . $organizerId),
+            ]
+        );
+
+        $this->assertTurtleData($organizerId, file_get_contents(__DIR__ . '/ttl/organizer-with-address.ttl'));
+    }
+
     private function project(string $organizerId, array $events): void
     {
         $playhead = -1;
