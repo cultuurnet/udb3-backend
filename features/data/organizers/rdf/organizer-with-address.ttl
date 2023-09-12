@@ -16,6 +16,17 @@
                                     "http://host.docker.internal:8080/organizers/"
                           ]
                 ] ;
+        <http://www.w3.org/ns/locn#address>
+                [ a       <http://www.w3.org/ns/locn#Address> ;
+                  <http://www.w3.org/ns/locn#adminUnitL1>
+                          "BE" ;
+                  <http://www.w3.org/ns/locn#fullAddress>
+                          "Henegouwenkaai 41-43, 1080 Brussel, BE"@nl , "Quai du Hainaut 41-43, 1080 Bruxelles, BE"@fr ;
+                  <http://www.w3.org/ns/locn#postName>
+                          "Brussel"@nl , "Bruxelles"@fr ;
+                  <http://www.w3.org/ns/locn#postcode>
+                          "1080"
+                ] ;
         <http://www.w3.org/ns/locn#geometry>
                 [ a       <http://www.w3.org/ns/locn#Geometry> ;
                   <http://www.opengis.net/ont/geosparql#asGML>
