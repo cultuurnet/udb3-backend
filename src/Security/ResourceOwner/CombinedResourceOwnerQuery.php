@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security\ResourceOwner;
 
-use CultuurNet\UDB3\StringLiteral;
-
 class CombinedResourceOwnerQuery implements ResourceOwnerQuery
 {
     /**
@@ -22,7 +20,7 @@ class CombinedResourceOwnerQuery implements ResourceOwnerQuery
         $this->permissionQueries = $permissionQueries;
     }
 
-    public function getEditableResourceIds(StringLiteral $userId): array
+    public function getEditableResourceIds(string $userId): array
     {
         $editableResourceIds = [];
 

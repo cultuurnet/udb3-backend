@@ -48,13 +48,13 @@ class DBALResourceOwnerRepository implements ResourceOwnerRepository, ResourceOw
         $this->idField = $idField;
     }
 
-    public function getEditableResourceIds(StringLiteral $userId): array
+    public function getEditableResourceIds(string $userId): array
     {
         $q = $this->connection->createQueryBuilder();
         $q->select($this->idField->toNative())
             ->from($this->tableName->toNative())
             ->where('user_id = :userId')
-            ->setParameter(':userId', $userId->toNative());
+            ->setParameter(':userId', $userId);
 
         $results = $q->execute();
 

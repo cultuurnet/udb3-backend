@@ -11,5 +11,5 @@ interface ResourceOwnerQuery
     /**
      * @return StringLiteral[] A list of resource ids that the given user can edit.
      */
-    public function getEditableResourceIds(StringLiteral $userId): array;
+    public function getEditableResourceIds(string $userId): array;
 }

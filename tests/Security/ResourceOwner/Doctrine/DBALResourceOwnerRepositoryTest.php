@@ -38,13 +38,13 @@ class DBALResourceOwnerRepositoryTest extends TestCase
      */
     public function it_can_add_and_query_offer_permissions(): void
     {
-        $johnDoe = new StringLiteral('abc');
+        $johnDoe = 'abc';
         $editableByJohnDoe = [
             new StringLiteral('123'),
             new StringLiteral('456'),
             new StringLiteral('789'),
         ];
-        $janeDoe = new StringLiteral('def');
+        $janeDoe = 'def';
         $editableByJaneDoe = [
             new StringLiteral('101112'),
             new StringLiteral('131415'),
@@ -61,8 +61,8 @@ class DBALResourceOwnerRepositoryTest extends TestCase
             $this->repository->getEditableResourceIds($janeDoe)
         );
 
-        array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
-        array_walk($editableByJaneDoe, [$this, 'markEditable'], $janeDoe);
+        array_walk($editableByJohnDoe, [$this, 'markEditable'], new StringLiteral($johnDoe));
+        array_walk($editableByJaneDoe, [$this, 'markEditable'], new StringLiteral($janeDoe));
 
         $this->assertEquals(
             $editableByJohnDoe,
@@ -88,16 +88,16 @@ class DBALResourceOwnerRepositoryTest extends TestCase
      */
     public function it_silently_ignores_adding_duplicate_permissions(): void
     {
-        $johnDoe = new StringLiteral('abc');
+        $johnDoe = 'abc';
         $editableByJohnDoe = [
             new StringLiteral('123'),
             new StringLiteral('456'),
             new StringLiteral('789'),
         ];
 
-        array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
+        array_walk($editableByJohnDoe, [$this, 'markEditable'], new StringLiteral($johnDoe));
 
-        $this->repository->markResourceEditableByUser(new StringLiteral('456'), $johnDoe);
+        $this->repository->markResourceEditableByUser(new StringLiteral('456'), new StringLiteral($johnDoe));
 
         $this->assertEquals(
             $editableByJohnDoe,
@@ -110,17 +110,17 @@ class DBALResourceOwnerRepositoryTest extends TestCase
      */
     public function it_updates_the_user_id_if_explicitly_requested(): void
     {
-        $johnDoe = new StringLiteral('abc');
-        $janeDoe = new StringLiteral('def');
+        $johnDoe = 'abc';
+        $janeDoe = 'def';
         $editableByJohnDoe = [
             new StringLiteral('123'),
             new StringLiteral('456'),
             new StringLiteral('789'),
         ];
 
-        array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
+        array_walk($editableByJohnDoe, [$this, 'markEditable'], new StringLiteral($johnDoe));
 
-        $this->repository->markResourceEditableByNewUser(new StringLiteral('456'), $janeDoe);
+        $this->repository->markResourceEditableByNewUser(new StringLiteral('456'), new StringLiteral($janeDoe));
 
         $this->assertEquals(
             [

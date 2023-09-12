@@ -47,7 +47,7 @@ class CombinedResourceOwnerQueryTest extends TestCase
         }
 
         $this->combinedPermissionQuery->getEditableResourceIds(
-            new StringLiteral('userId')
+            'userId'
         );
     }
 
@@ -56,9 +56,7 @@ class CombinedResourceOwnerQueryTest extends TestCase
      */
     public function it_returns_merged_array_from_all_permission_queries(): void
     {
-        $editableOffers = $this->combinedPermissionQuery->getEditableResourceIds(
-            new StringLiteral('userId')
-        );
+        $editableOffers = $this->combinedPermissionQuery->getEditableResourceIds('userId');
 
         $expectedEditableOffers = [
             new StringLiteral('offerId1'),
@@ -81,9 +79,7 @@ class CombinedResourceOwnerQueryTest extends TestCase
             $permissionQueries
         );
 
-        $this->assertEmpty($combinedPermissionQuery->getEditableResourceIds(
-            new StringLiteral('userId')
-        ));
+        $this->assertEmpty($combinedPermissionQuery->getEditableResourceIds('userId'));
     }
 
     /**

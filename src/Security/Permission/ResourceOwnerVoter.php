@@ -28,7 +28,7 @@ class ResourceOwnerVoter implements PermissionVoter
         StringLiteral $userId
     ): bool {
         if (!$this->enableCache) {
-            return in_array($itemId, $this->permissionRepository->getEditableResourceIds($userId));
+            return in_array($itemId, $this->permissionRepository->getEditableResourceIds($userId->toNative()));
         }
 
         $cacheKey = $itemId->toNative() . $userId->toNative();
@@ -36,7 +36,7 @@ class ResourceOwnerVoter implements PermissionVoter
             return $this->cache[$cacheKey];
         }
 
-        $this->cache[$cacheKey] = in_array($itemId, $this->permissionRepository->getEditableResourceIds($userId));
+        $this->cache[$cacheKey] = in_array($itemId, $this->permissionRepository->getEditableResourceIds($userId->toNative()));
 
         return $this->cache[$cacheKey];
     }
