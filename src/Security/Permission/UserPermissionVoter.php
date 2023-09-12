@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\StringLiteral;
 
 class UserPermissionVoter implements PermissionVoter
 {
@@ -21,9 +20,9 @@ class UserPermissionVoter implements PermissionVoter
 
     public function isAllowed(
         Permission $requiredPermission,
-        StringLiteral $itemId,
-        StringLiteral $userId
+        string $itemId,
+        string $userId
     ): bool {
-        return $this->userPermissionsReadRepository->hasPermission($userId->toNative(), $requiredPermission);
+        return $this->userPermissionsReadRepository->hasPermission($userId, $requiredPermission);
     }
 }

@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\UserEmailAddressRepository;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -64,8 +63,8 @@ final class ContributorVoterTest extends TestCase
         $this->assertTrue(
             $this->contributorVoter->isAllowed(
                 Permission::aanbodBewerken(),
-                new StringLiteral($this->itemId),
-                new StringLiteral($this->userId)
+                $this->itemId,
+                $this->userId
             )
         );
     }
@@ -88,8 +87,8 @@ final class ContributorVoterTest extends TestCase
         $this->assertFalse(
             $this->contributorVoter->isAllowed(
                 Permission::aanbodBewerken(),
-                new StringLiteral($this->itemId),
-                new StringLiteral($this->userId)
+                $this->itemId,
+                $this->userId
             )
         );
     }
@@ -110,8 +109,8 @@ final class ContributorVoterTest extends TestCase
         $this->assertFalse(
             $this->contributorVoter->isAllowed(
                 Permission::aanbodBewerken(),
-                new StringLiteral($this->itemId),
-                new StringLiteral($this->userId)
+                $this->itemId,
+                $this->userId
             )
         );
     }

@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\UserEmailAddressRepository;
-use CultuurNet\UDB3\StringLiteral;
 
 final class ContributorVoter implements PermissionVoter
 {
@@ -24,9 +23,9 @@ final class ContributorVoter implements PermissionVoter
         $this->contributorRepository = $contributorRepository;
     }
 
-    public function isAllowed(Permission $permission, StringLiteral $itemId, StringLiteral $userId): bool
+    public function isAllowed(Permission $permission, string $itemId, string $userId): bool
     {
-        $email = $this->userEmailAddressRepository->getEmailForUserId($userId->toNative());
-        return $email && $this->contributorRepository->isContributor(new UUID($itemId->toNative()), $email);
+        $email = $this->userEmailAddressRepository->getEmailForUserId($userId);
+        return $email && $this->contributorRepository->isContributor(new UUID($itemId), $email);
     }
 }

@@ -54,11 +54,11 @@ class Sapi3RoleConstraintVoter implements PermissionVoter
 
     public function isAllowed(
         Permission $permission,
-        StringLiteral $itemId,
-        StringLiteral $userId
+        string $itemId,
+        string $userId
     ): bool {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
-            $userId,
+            new StringLiteral($userId),
             $permission
         );
         if (count($constraints) < 1) {
@@ -67,7 +67,7 @@ class Sapi3RoleConstraintVoter implements PermissionVoter
 
         $query = $this->createQueryFromConstraints(
             $constraints,
-            $itemId
+            new StringLiteral($itemId)
         );
 
         $totalItems = $this->search($query);

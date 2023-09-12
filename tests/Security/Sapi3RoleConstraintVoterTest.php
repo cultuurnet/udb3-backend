@@ -57,12 +57,12 @@ class Sapi3RoleConstraintVoterTest extends TestCase
         int $totalItems,
         bool $expected
     ): void {
-        $userId = new StringLiteral('ff085fed-8500-4dd9-8ac0-459233c642f4');
+        $userId = 'ff085fed-8500-4dd9-8ac0-459233c642f4';
         $permission = Permission::aanbodBewerken();
         $constraints = [
             new StringLiteral('address.\*.postalCode:3000'),
         ];
-        $offerId = new StringLiteral('625a4e74-a1ca-4bee-9e85-39869457d531');
+        $offerId = '625a4e74-a1ca-4bee-9e85-39869457d531';
         $query = '((address.\*.postalCode:3000) AND id:625a4e74-a1ca-4bee-9e85-39869457d531)';
 
         $this->userConstraintsReadRepository->expects($this->once())
@@ -120,9 +120,9 @@ class Sapi3RoleConstraintVoterTest extends TestCase
      */
     public function it_does_not_match_offer_when_user_has_no_matching_constraints(): void
     {
-        $userId = new StringLiteral('ff085fed-8500-4dd9-8ac0-459233c642f4');
+        $userId = 'ff085fed-8500-4dd9-8ac0-459233c642f4';
         $permission = Permission::aanbodBewerken();
-        $offerId = new StringLiteral('625a4e74-a1ca-4bee-9e85-39869457d531');
+        $offerId = '625a4e74-a1ca-4bee-9e85-39869457d531';
 
         $this->userConstraintsReadRepository->expects($this->once())
             ->method('getByUserAndPermission')

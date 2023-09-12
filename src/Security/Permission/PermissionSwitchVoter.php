@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Delegates voting to another voter based on which permission needs checking.
@@ -24,8 +23,8 @@ final class PermissionSwitchVoter implements PermissionVoter
 
     public function isAllowed(
         Permission $permission,
-        StringLiteral $itemId,
-        StringLiteral $userId
+        string $itemId,
+        string $userId
     ): bool {
         if (!isset($this->mapping[$permission->toString()])) {
             return isset($this->defaultVoter) && $this->defaultVoter->isAllowed($permission, $itemId, $userId);
