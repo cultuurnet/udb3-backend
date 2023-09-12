@@ -209,8 +209,8 @@ class ProjectorTest extends TestCase
         $this->repository->expects($this->once())
             ->method('markResourceEditableByNewUser')
             ->with(
-                new StringLiteral($eventId),
-                new StringLiteral($newOwnerId)
+                $eventId,
+                $newOwnerId
             );
 
         $this->projector->handle($domainMessage);

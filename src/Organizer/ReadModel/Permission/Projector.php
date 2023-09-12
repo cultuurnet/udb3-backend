@@ -81,8 +81,8 @@ class Projector implements EventListener
     protected function applyOwnerChanged(OwnerChanged $ownerChanged): void
     {
         $this->permissionRepository->markResourceEditableByNewUser(
-            new StringLiteral($ownerChanged->getOrganizerId()),
-            new StringLiteral($ownerChanged->getNewOwnerId())
+            $ownerChanged->getOrganizerId(),
+            $ownerChanged->getNewOwnerId()
         );
     }
 

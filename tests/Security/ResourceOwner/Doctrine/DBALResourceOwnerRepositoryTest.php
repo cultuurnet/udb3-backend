@@ -117,7 +117,7 @@ class DBALResourceOwnerRepositoryTest extends TestCase
 
         array_walk($editableByJohnDoe, [$this, 'markEditable'], new StringLiteral($johnDoe));
 
-        $this->repository->markResourceEditableByNewUser(new StringLiteral('456'), new StringLiteral($janeDoe));
+        $this->repository->markResourceEditableByNewUser('456', $janeDoe);
 
         $this->assertEquals(
             [

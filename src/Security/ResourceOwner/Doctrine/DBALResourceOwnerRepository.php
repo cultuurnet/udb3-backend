@@ -82,12 +82,12 @@ class DBALResourceOwnerRepository implements ResourceOwnerRepository, ResourceOw
         }
     }
 
-    public function markResourceEditableByNewUser(StringLiteral $eventId, StringLiteral $userId): void
+    public function markResourceEditableByNewUser(string $eventId, string $userId): void
     {
         $this->connection->update(
             $this->tableName->toNative(),
-            ['user_id' => $userId->toNative()],
-            [$this->idField->toNative() => $eventId->toNative()]
+            ['user_id' => $userId],
+            [$this->idField->toNative() => $eventId]
         );
     }
 }
