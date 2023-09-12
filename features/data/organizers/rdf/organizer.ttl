@@ -15,4 +15,6 @@
                             <https://data.vlaanderen.be/ns/generiek#naamruimte>
                                     "http://host.docker.internal:8080/organizers/"
                           ]
-                ] .
+                ] ;
+        <https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.naam>
+                "%{name}"@nl .
