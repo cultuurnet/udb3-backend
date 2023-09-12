@@ -99,12 +99,12 @@ class RdfProjectorTest extends TestCase
                     'addressCountry' => 'BE',
                     'addressLocality' => 'Zichem (Scherpenheuvel-Zichem)',
                     'postalCode' => '3271',
-                    'streetAddress' => 'Kerkstraat 1'
-                ]
+                    'streetAddress' => 'Kerkstraat 1',
+                ],
             ],
             'geo' => [
                 'latitude' => 50.9656077,
-                'longitude' => 4.9502035
+                'longitude' => 4.9502035,
             ],
             'created' => '2023-01-01T12:30:15+01:00',
         ];
