@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer;
 
+use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
@@ -34,6 +35,7 @@ final class OrganizerRdfServiceProvider extends AbstractServiceProvider
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['organizersRdfBaseUri']),
                 $this->container->get('organizer_jsonld_repository'),
                 new OrganizerDenormalizer(),
+                $this->container->get(AddressParser::class),
                 LoggerFactory::create($this->getContainer(), LoggerName::forService('rdf'))
             )
         );
