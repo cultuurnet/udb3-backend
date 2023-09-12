@@ -17,6 +17,8 @@ use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector as EventRdfProjector;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
+use CultuurNet\UDB3\Organizer\ReadModel\RDF\RdfProjector as OrganizerRdfProjector;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector as PlaceRdfProjector;
 use CultuurNet\UDB3\StringLiteral;
@@ -57,6 +59,7 @@ final class RdfServiceProvider extends AbstractServiceProvider
                 if (($this->container->get('config')['rdf']['enabled'] ?? false) === true) {
                     $eventBus->subscribe($this->container->get(PlaceRdfProjector::class));
                     $eventBus->subscribe($this->container->get(EventRdfProjector::class));
+                    $eventBus->subscribe($this->container->get(OrganizerRdfProjector::class));
                 }
 
                 $deserializerLocator = new SimpleDeserializerLocator();
@@ -65,6 +68,8 @@ final class RdfServiceProvider extends AbstractServiceProvider
                         'application/vnd.cultuurnet.udb3-events.event-projected-to-jsonld+json',
                     PlaceProjectedToJSONLD::class =>
                         'application/vnd.cultuurnet.udb3-events.place-projected-to-jsonld+json',
+                    OrganizerProjectedToJSONLD::class =>
+                        'application/vnd.cultuurnet.udb3-events.organizer-projected-to-jsonld+json',
                 ];
                 foreach ($deserializerMapping as $payloadClass => $contentType) {
                     $deserializerLocator->registerDeserializer(
