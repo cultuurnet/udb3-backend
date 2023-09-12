@@ -8,7 +8,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\Place;
@@ -18,6 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
+use CultuurNet\UDB3\RDF\Editor\GeometryEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -40,14 +40,11 @@ final class RdfProjector implements EventListener
     private LoggerInterface $logger;
 
     private const TYPE_LOCATIE = 'dcterms:Location';
-    private const TYPE_GEOMETRIE = 'locn:Geometry';
 
     private const PROPERTY_LOCATIE_TYPE = 'dcterms:type';
 
     private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
-    private const PROPERTY_LOCATIE_GEOMETRIE = 'locn:geometry';
-    private const PROPERTY_GEOMETRIE_GML = 'geosparql:asGML';
 
     public function __construct(
         GraphRepository $graphRepository,
@@ -112,7 +109,7 @@ final class RdfProjector implements EventListener
         (new AddressEditor($this->addressParser))->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $place->getAddress());
 
         if ($place->getGeoCoordinates()) {
-            $this->setCoordinates($resource, $place->getGeoCoordinates());
+            (new GeometryEditor())->setCoordinates($resource, $place->getGeoCoordinates());
         }
 
         $this->graphRepository->save($iri, $graph);
@@ -153,16 +150,5 @@ final class RdfProjector implements EventListener
                 $resource->set(self::PROPERTY_LOCATIE_TYPE, new Resource($terms));
             }
         }
-    }
-
-    private function setCoordinates(Resource $resource, Coordinates $coordinates): void
-    {
-        $gmlTemplate = '<gml:Point srsName=\'http://www.opengis.net/def/crs/OGC/1.3/CRS84\'><gml:coordinates>%s, %s</gml:coordinates></gml:Point>';
-        $gmlCoordinate = sprintf($gmlTemplate, $coordinates->getLongitude()->toFloat(), $coordinates->getLatitude()->toFloat());
-
-        $geometryResource = $resource->getGraph()->newBNode([self::TYPE_GEOMETRIE]);
-        $resource->add(self::PROPERTY_LOCATIE_GEOMETRIE, $geometryResource);
-
-        $geometryResource->set(self::PROPERTY_GEOMETRIE_GML, new Literal($gmlCoordinate, null, 'geosparql:gmlLiteral'));
     }
 }
