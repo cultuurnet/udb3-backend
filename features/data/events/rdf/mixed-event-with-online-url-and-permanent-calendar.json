@@ -1,0 +1,19 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Permanent event"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "location": {
+    "@id": "%{baseUrl}/places/%{uuid_place}"
+  },
+  "calendarType": "permanent",
+  "attendanceMode": "mixed",
+  "onlineUrl": "https://www.publiq.be/livestream"
+}

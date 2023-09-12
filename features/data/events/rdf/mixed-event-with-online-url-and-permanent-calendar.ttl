@@ -1,0 +1,29 @@
+<http://host.docker.internal:8080/events/%{eventId}>
+        a                              <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> ;
+        <http://purl.org/dc/terms/created>
+                "2023-09-11T09:58:57+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://purl.org/dc/terms/modified>
+                "2023-09-11T09:58:58+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://purl.org/dc/terms/title>
+                "Permanent event"@nl ;
+        <http://purl.org/dc/terms/type>
+                <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
+        <http://www.w3.org/ns/adms#identifier>
+                [ a       <http://www.w3.org/ns/adms#Identifier> ;
+                  <http://www.w3.org/2004/02/skos/core#notation>
+                          "http://host.docker.internal:8080/events/%{eventId}"^^<http://www.w3.org/2001/XMLSchema#anyURI> ;
+                  <https://data.vlaanderen.be/ns/generiek#gestructureerdeIdentificator>
+                          [ a       <https://data.vlaanderen.be/ns/generiek#GestructureerdeIdentificator> ;
+                            <https://data.vlaanderen.be/ns/generiek#lokaleIdentificator>
+                                    "%{eventId}" ;
+                            <https://data.vlaanderen.be/ns/generiek#naamruimte>
+                                    "http://host.docker.internal:8080/events/"
+                          ]
+                ] ;
+        <http://www.w3.org/ns/prov#atLocation>
+                <http://host.docker.internal:8080/places/%{uuid_place}> ;
+        <https://data.publiq.be/ns/uitdatabank#workflowStatus>
+                <https://data.publiq.be/concepts/workflowStatus/draft> ;
+        <https://schema.org/location>  [ a                         <https://schema.org/VirtualLocation> ;
+                                         <https://schema.org/url>  "https://www.publiq.be/livestream"
+                                       ] .
