@@ -26,5 +26,6 @@ final class RdfNamespaces
         RdfNamespace::set('cp', 'https://data.vlaanderen.be/ns/cultuurparticipatie#');
         RdfNamespace::set('prov', 'http://www.w3.org/ns/prov#');
         RdfNamespace::set('schema', 'https://schema.org/');
+        RdfNamespace::set('foaf', 'http://xmlns.com/foaf/0.1/');
     }
 }
