@@ -136,7 +136,7 @@ final class RdfProjector implements EventListener
             (new WorkflowStatusEditor())->setAvailableFrom($resource, $event->getAvailableFrom());
         }
 
-        if ($event->getAttendanceMode()->sameAs(AttendanceMode::online())) {
+        if (!$event->getAttendanceMode()->sameAs(AttendanceMode::offline())) {
             $this->setVirtualLocation($resource, $event->getOnlineUrl());
         }
 
