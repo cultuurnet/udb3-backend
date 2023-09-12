@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -33,6 +34,7 @@ final class RdfProjector implements EventListener
     private const TYPE_ORGANISATOR = 'cp:Organisator';
 
     private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
+    private const PROPERTY_HOMEPAGE = 'foaf:homepage';
 
     public function __construct(
         GraphRepository $graphRepository,
@@ -83,6 +85,8 @@ final class RdfProjector implements EventListener
 
         $this->setName($resource, $organizer->getName());
 
+        $this->setHomepage($resource, $organizer->getUrl());
+
         $this->graphRepository->save($iri, $graph);
     }
 
@@ -109,5 +113,10 @@ final class RdfProjector implements EventListener
                 new Literal($translatedTitle->getTranslation($language)->toString(), $language->toString())
             );
         }
+    }
+
+    private function setHomepage(Resource $resource, Url $url): void
+    {
+        $resource->addLiteral(self::PROPERTY_HOMEPAGE, new Literal($url->toString()));
     }
 }
