@@ -23,6 +23,7 @@ final class RdfNamespaces
         RdfNamespace::set('cpa', 'https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.');
         RdfNamespace::set('m8g', 'http://data.europa.eu/m8g/');
         RdfNamespace::set('cp', 'https://data.vlaanderen.be/ns/cultuurparticipatie#');
+        RdfNamespace::set('cpr', 'https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.');
         RdfNamespace::set('prov', 'http://www.w3.org/ns/prov#');
         RdfNamespace::set('schema', 'https://schema.org/');
     }
