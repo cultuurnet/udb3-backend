@@ -59,9 +59,9 @@ class CombinedResourceOwnerQueryTest extends TestCase
         $editableOffers = $this->combinedPermissionQuery->getEditableResourceIds('userId');
 
         $expectedEditableOffers = [
-            new StringLiteral('offerId1'),
-            new StringLiteral('offerId2'),
-            new StringLiteral('offerId3'),
+            'offerId1',
+            'offerId2',
+            'offerId3',
         ];
 
         $this->assertEquals($expectedEditableOffers, $editableOffers);

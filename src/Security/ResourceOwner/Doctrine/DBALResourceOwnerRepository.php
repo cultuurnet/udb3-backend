@@ -60,7 +60,7 @@ class DBALResourceOwnerRepository implements ResourceOwnerRepository, ResourceOw
 
         $events = [];
         while ($id = $results->fetchColumn(0)) {
-            $events[] = new StringLiteral($id);
+            $events[] =$id;
         }
 
         return $events;

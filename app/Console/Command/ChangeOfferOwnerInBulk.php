@@ -54,7 +54,7 @@ class ChangeOfferOwnerInBulk extends AbstractCommand
         $success = 0;
         $errors = 0;
         foreach ($this->permissionQuery->getEditableResourceIds($originalOwnerId) as $editableOffer) {
-            $offerId = $editableOffer->toNative();
+            $offerId = $editableOffer;
             try {
                 $this->commandBus->dispatch(
                     new ChangeOwner(

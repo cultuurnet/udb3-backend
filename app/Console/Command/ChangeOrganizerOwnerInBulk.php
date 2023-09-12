@@ -51,7 +51,7 @@ final class ChangeOrganizerOwnerInBulk extends AbstractCommand
         $success = 0;
         $errors = 0;
         foreach ($this->permissionQuery->getEditableResourceIds($originalOwnerId) as $editableOrganizers) {
-            $organizerId = $editableOrganizers->toNative();
+            $organizerId = $editableOrganizers;
             try {
                 $this->commandBus->dispatch(
                     new ChangeOwner(
