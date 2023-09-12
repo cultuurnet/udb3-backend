@@ -10,12 +10,15 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
+use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
+use EasyRdf\Literal;
+use EasyRdf\Resource;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -28,6 +31,8 @@ final class RdfProjector implements EventListener
     private LoggerInterface $logger;
 
     private const TYPE_ORGANISATOR = 'cp:Organisator';
+
+    private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
 
     public function __construct(
         GraphRepository $graphRepository,
@@ -76,6 +81,8 @@ final class RdfProjector implements EventListener
             $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
         );
 
+        $this->setName($resource, $organizer->getName());
+
         $this->graphRepository->save($iri, $graph);
     }
 
@@ -92,5 +99,15 @@ final class RdfProjector implements EventListener
         /** @var ImmutableOrganizer $organizer */
         $organizer = $this->organizerDenormalizer->denormalize($organizerData, Organizer::class);
         return $organizer;
+    }
+
+    private function setName(Resource $resource, TranslatedTitle $translatedTitle): void
+    {
+        foreach ($translatedTitle->getLanguages() as $language) {
+            $resource->addLiteral(
+                self::PROPERTY_REALISATOR_NAAM,
+                new Literal($translatedTitle->getTranslation($language)->toString(), $language->toString())
+            );
+        }
     }
 }
