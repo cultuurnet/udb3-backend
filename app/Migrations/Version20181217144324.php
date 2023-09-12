@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-class Version20181217144324 extends AbstractMigration
+final class Version20181217144324 extends AbstractMigration
 {
     public const EVENT_STORE_TABLES = [
         'events',

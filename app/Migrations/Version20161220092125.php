@@ -9,10 +9,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
-class Version20161220092125 extends AbstractMigration
+final class Version20161220092125 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
