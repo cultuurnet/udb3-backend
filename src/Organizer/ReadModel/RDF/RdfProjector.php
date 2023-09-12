@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
+use CultuurNet\UDB3\RDF\Editor\GeometryEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -86,6 +87,10 @@ final class RdfProjector implements EventListener
         $this->setName($resource, $organizer->getName());
 
         $this->setHomepage($resource, $organizer->getUrl());
+
+        if ($organizer->getGeoCoordinates()) {
+            (new GeometryEditor())->setCoordinates($resource, $organizer->getGeoCoordinates());
+        }
 
         $this->graphRepository->save($iri, $graph);
     }
