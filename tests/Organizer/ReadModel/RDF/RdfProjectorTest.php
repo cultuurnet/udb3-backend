@@ -61,7 +61,8 @@ class RdfProjectorTest extends TestCase
             'mainLanguage' => 'nl',
             'url' => 'https://www.publiq.be',
             'name' => [
-                'nl' => 'publiq',
+                'nl' => 'publiq VZW',
+                'en' => 'publiq NPO',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
         ];
