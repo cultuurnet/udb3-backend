@@ -8,17 +8,14 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 
-class CombinedResourceOwnerQueryTest extends TestCase
+final class CombinedResourceOwnerQueryTest extends TestCase
 {
     /**
      * @var ResourceOwnerQuery[]|MockObject[]
      */
     private $permissionQueries;
 
-    /**
-     * @var CombinedResourceOwnerQuery
-     */
-    private $combinedPermissionQuery;
+    private CombinedResourceOwnerQuery $combinedPermissionQuery;
 
     protected function setUp(): void
     {

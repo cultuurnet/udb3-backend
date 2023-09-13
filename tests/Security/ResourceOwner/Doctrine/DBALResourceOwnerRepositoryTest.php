@@ -8,7 +8,7 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 
-class DBALResourceOwnerRepositoryTest extends TestCase
+final class DBALResourceOwnerRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
@@ -40,15 +40,15 @@ class DBALResourceOwnerRepositoryTest extends TestCase
     {
         $johnDoe = 'abc';
         $editableByJohnDoe = [
-            new StringLiteral('123'),
-            new StringLiteral('456'),
-            new StringLiteral('789'),
+            '123',
+            '456',
+            '789',
         ];
         $janeDoe = 'def';
         $editableByJaneDoe = [
-            new StringLiteral('101112'),
-            new StringLiteral('131415'),
-            new StringLiteral('456'),
+            '101112',
+            '131415',
+            '456',
         ];
 
         $this->assertEquals(
@@ -61,8 +61,8 @@ class DBALResourceOwnerRepositoryTest extends TestCase
             $this->repository->getEditableResourceIds($janeDoe)
         );
 
-        array_walk($editableByJohnDoe, [$this, 'markEditable'], new StringLiteral($johnDoe));
-        array_walk($editableByJaneDoe, [$this, 'markEditable'], new StringLiteral($janeDoe));
+        array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
+        array_walk($editableByJaneDoe, [$this, 'markEditable'], $janeDoe);
 
         $this->assertEquals(
             $editableByJohnDoe,
@@ -87,9 +87,9 @@ class DBALResourceOwnerRepositoryTest extends TestCase
     {
         $johnDoe = 'abc';
         $editableByJohnDoe = [
-            new StringLiteral('123'),
-            new StringLiteral('456'),
-            new StringLiteral('789'),
+            '123',
+            '456',
+            '789',
         ];
 
         array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
@@ -110,25 +110,25 @@ class DBALResourceOwnerRepositoryTest extends TestCase
         $johnDoe = 'abc';
         $janeDoe = 'def';
         $editableByJohnDoe = [
-            new StringLiteral('123'),
-            new StringLiteral('456'),
-            new StringLiteral('789'),
+            '123',
+            '456',
+            '789',
         ];
 
-        array_walk($editableByJohnDoe, [$this, 'markEditable'], new StringLiteral($johnDoe));
+        array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
 
         $this->repository->markResourceEditableByNewUser('456', $janeDoe);
 
         $this->assertEquals(
             [
-                new StringLiteral('456'),
+                '456',
             ],
             $this->repository->getEditableResourceIds($janeDoe)
         );
         $this->assertEquals(
             [
-                new StringLiteral('123'),
-                new StringLiteral('789'),
+                '123',
+                '789',
             ],
             $this->repository->getEditableResourceIds($johnDoe)
         );

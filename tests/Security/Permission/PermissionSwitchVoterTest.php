@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Security\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
 
-class PermissionSwitchVoterTest extends TestCase
+final class PermissionSwitchVoterTest extends TestCase
 {
     /**
      * @test

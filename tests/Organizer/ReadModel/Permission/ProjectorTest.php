@@ -19,21 +19,16 @@ final class ProjectorTest extends TestCase
      */
     private $repository;
 
-    /**
-     * @var CreatedByToUserIdResolverInterface|MockObject
-     */
-    private $userIdResolver;
-
     private Projector $projector;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(ResourceOwnerRepository::class);
-        $this->userIdResolver = $this->createMock(CreatedByToUserIdResolverInterface::class);
+        $userIdResolver = $this->createMock(CreatedByToUserIdResolverInterface::class);
 
         $this->projector = new Projector(
             $this->repository,
-            $this->userIdResolver
+            $userIdResolver
         );
     }
 

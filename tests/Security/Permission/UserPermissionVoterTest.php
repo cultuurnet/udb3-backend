@@ -6,28 +6,22 @@ namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class UserPermissionVoterTest extends TestCase
 {
-    /**
-     * @var UserPermissionsReadRepositoryInterface|MockObject
-     */
-    private $userPermissionsReadRepository;
-
     private UserPermissionVoter $userPermissionVoter;
 
     private string $userId;
 
     protected function setUp(): void
     {
-        $this->userPermissionsReadRepository = $this->createMock(
+        $userPermissionsReadRepository = $this->createMock(
             UserPermissionsReadRepositoryInterface::class
         );
 
         $this->userId = '7fdc57a4-1bdc-40d3-8441-a7d83528a15c';
-        $this->userPermissionsReadRepository->expects($this->once())
+        $userPermissionsReadRepository->expects($this->once())
             ->method('hasPermission')
             ->willReturnCallback(
                 function (string $userId, Permission $permission) {
@@ -40,7 +34,7 @@ class UserPermissionVoterTest extends TestCase
                 }
             );
 
-        $this->userPermissionVoter = new UserPermissionVoter($this->userPermissionsReadRepository);
+        $this->userPermissionVoter = new UserPermissionVoter($userPermissionsReadRepository);
     }
 
     /**
