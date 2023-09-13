@@ -1083,6 +1083,240 @@ class RdfProjectorTest extends RdfTestCase
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/online-event-with-permanent-calendar.ttl'));
     }
 
+    /**
+     * @test
+     */
+    public function it_converts_mixed_event_with_permanent_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/place/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+            'attendanceMode' => 'mixed',
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/mixed-event-with-permanent-calendar.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_mixed_event_with_single_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'single',
+            'startDate' => '2023-05-06T20:00:00+01:00',
+            'endDate' => '2023-05-06T23:00:00+01:00',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/place/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+            'attendanceMode' => 'mixed',
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/mixed-event-with-single-calendar.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_mixed_event_with_online_url_and_permanent_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/place/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+            'attendanceMode' => 'online',
+            'onlineUrl' => 'https://www.publiq.be/livestream',
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-permanent-calendar.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_mixed_event_with_online_url_and_single_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'single',
+            'startDate' => '2023-05-06T20:00:00+01:00',
+            'endDate' => '2023-05-06T23:00:00+01:00',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/place/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+            'attendanceMode' => 'mixed',
+            'onlineUrl' => 'https://www.publiq.be/livestream',
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-single-calendar.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_mixed_event_with_online_url_and_multiple_calendar(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'single',
+            'startDate' => '2023-05-06T20:00:00+01:00',
+            'endDate' => '2023-05-07T23:00:00+01:00',
+            'subEvent' => [
+                [
+                    'startDate' => '2023-05-06T20:00:00+01:00',
+                    'endDate' => '2023-05-06T23:00:00+01:00',
+                ],
+                [
+                    'startDate' => '2023-05-07T20:00:00+01:00',
+                    'endDate' => '2023-05-07T23:00:00+01:00',
+                ],
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/place/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+            'attendanceMode' => 'mixed',
+            'onlineUrl' => 'https://www.publiq.be/livestream',
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-multiple-calendar.ttl'));
+    }
+
     public function getRdfDataSetName(): string
     {
         return 'events';

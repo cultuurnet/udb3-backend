@@ -6,9 +6,8 @@ namespace CultuurNet\UDB3\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use CultuurNet\UDB3\StringLiteral;
 
-class Version20181217144324 extends AbstractMigration
+final class Version20181217144324 extends AbstractMigration
 {
     public const EVENT_STORE_TABLES = [
         'events',
@@ -32,14 +31,14 @@ class Version20181217144324 extends AbstractMigration
     public function down(Schema $schema): void
     {
         foreach (self::EVENT_STORE_TABLES as $eventStoreTable) {
-            $this->createEventStoreTable($schema, new StringLiteral($eventStoreTable));
+            $this->createEventStoreTable($schema, $eventStoreTable);
         }
     }
 
-    private function createEventStoreTable(Schema $schema, StringLiteral $name): void
+    private function createEventStoreTable(Schema $schema, string $name): void
     {
         // @see \Broadway\EventStore\DBALEventStore
-        $table = $schema->createTable($name->toNative());
+        $table = $schema->createTable($name);
 
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('uuid', 'guid', ['length' => 36]);

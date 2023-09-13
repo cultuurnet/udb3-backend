@@ -1,13 +1,9 @@
 <http://host.docker.internal:8080/events/%{eventId}>
-        a       <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> ;
-        <http://data.europa.eu/m8g/virtualLocation>
-                [ a                         <http://data.europa.eu/m8g/VirtualLocation> ;
-                  <https://schema.org/url>  "https://www.publiq.be/livestream"^^<http://www.w3.org/2001/XMLSchema#anyURI>
-                ] ;
+        a                              <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> ;
         <http://purl.org/dc/terms/created>
-                "2023-09-06T12:16:58+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+                "2023-09-11T09:58:57+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
         <http://purl.org/dc/terms/modified>
-                "2023-09-06T12:16:58+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+                "2023-09-11T09:58:58+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
         <http://purl.org/dc/terms/title>
                 "Permanent event"@nl ;
         <http://purl.org/dc/terms/type>
@@ -25,4 +21,7 @@
                           ]
                 ] ;
         <https://data.publiq.be/ns/uitdatabank#workflowStatus>
-                <https://data.publiq.be/concepts/workflowStatus/draft> .
+                <https://data.publiq.be/concepts/workflowStatus/draft> ;
+        <https://schema.org/location>  [ a                         <https://schema.org/VirtualLocation> ;
+                                         <https://schema.org/url>  "https://www.publiq.be/livestream"
+                                       ] .
