@@ -6,6 +6,8 @@
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix cpr: <https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix geosparql: <http://www.opengis.net/ont/geosparql#> .
 
 <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7>
   a cp:Organisator ;
@@ -21,4 +23,17 @@
     ]
   ] ;
   cpr:naam "publiq VZW"@nl, "publiq NPO"@en ;
-  foaf:homepage "https://www.publiq.be" .
+  foaf:homepage "https://www.publiq.be" ;
+  locn:address [
+    a locn:Address ;
+    locn:adminUnitL1 "BE" ;
+    locn:postcode "3271" ;
+    locn:locatorDesignator "1" ;
+    locn:fullAddress "Kerkstraat 1, 3271 Zichem (Scherpenheuvel-Zichem), BE"@nl ;
+    locn:postName "Zichem (Scherpenheuvel-Zichem)"@nl ;
+    locn:thoroughfare "Kerkstraat"@nl
+  ] ;
+  locn:geometry [
+    a locn:Geometry ;
+    geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>4.9502035, 50.9656077</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral
+  ] .
