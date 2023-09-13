@@ -23,11 +23,6 @@ class RdfProjectorTest extends RdfTestCase
     private DocumentRepository $documentRepository;
 
     /**
-     * @var AddressParser|MockObject
-     */
-    private $addressParser;
-
-    /**
      * @var LoggerInterface|MockObject
      */
     private $logger;
@@ -37,7 +32,17 @@ class RdfProjectorTest extends RdfTestCase
         $this->graphRepository = new InMemoryGraphRepository();
         $this->documentRepository = new InMemoryDocumentRepository();
 
-        $this->addressParser = $this->createMock(AddressParser::class);
+        $addressParser = $this->createMock(AddressParser::class);
+        $addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturn(
+                new ParsedAddress(
+                    'Martelarenlaan',
+                    '1',
+                    '3000',
+                    'Leuven'
+                )
+            );
 
         $this->logger = $this->createMock(LoggerInterface::class);
 
@@ -48,7 +53,7 @@ class RdfProjectorTest extends RdfTestCase
             new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
             $this->documentRepository,
             new EventDenormalizer(),
-            $this->addressParser,
+            $addressParser,
             $this->logger
         );
     }
@@ -707,17 +712,6 @@ class RdfProjectorTest extends RdfTestCase
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
 
-        $this->addressParser->expects($this->any())
-            ->method('parse')
-            ->willReturn(
-                new ParsedAddress(
-                    'Martelarenlaan',
-                    '1',
-                    '3000',
-                    'Leuven'
-                )
-            );
-
         $event = [
             '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
             'mainLanguage' => 'nl',
@@ -766,17 +760,6 @@ class RdfProjectorTest extends RdfTestCase
     public function it_converts_an_event_with_dummy_location_and_multiple_calendar(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
-
-        $this->addressParser->expects($this->any())
-            ->method('parse')
-            ->willReturn(
-                new ParsedAddress(
-                    'Martelarenlaan',
-                    '1',
-                    '3000',
-                    'Leuven'
-                )
-            );
 
         $event = [
             '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
@@ -838,17 +821,6 @@ class RdfProjectorTest extends RdfTestCase
     public function it_converts_an_event_with_dummy_location_and_single_calendar(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
-
-        $this->addressParser->expects($this->any())
-            ->method('parse')
-            ->willReturn(
-                new ParsedAddress(
-                    'Martelarenlaan',
-                    '1',
-                    '3000',
-                    'Leuven'
-                )
-            );
 
         $event = [
             '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
