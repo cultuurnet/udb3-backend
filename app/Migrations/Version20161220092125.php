@@ -8,18 +8,14 @@ use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use CultuurNet\UDB3\StringLiteral;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
-class Version20161220092125 extends AbstractMigration
+final class Version20161220092125 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
         $table = $schema->getTable('events');
-        $this->removeEventsByType($table, new StringLiteral('CultuurNet.UDB3.UsedLabelsMemory.Created'));
-        $this->removeEventsByType($table, new StringLiteral('CultuurNet.UDB3.UsedLabelsMemory.LabelUsed'));
+        $this->removeEventsByType($table, 'CultuurNet.UDB3.UsedLabelsMemory.Created');
+        $this->removeEventsByType($table, 'CultuurNet.UDB3.UsedLabelsMemory.LabelUsed');
     }
 
 
@@ -28,14 +24,14 @@ class Version20161220092125 extends AbstractMigration
     }
 
 
-    private function removeEventsByType(Table $table, StringLiteral $eventType): void
+    private function removeEventsByType(Table $table, string $eventType): void
     {
         $builder = new QueryBuilder($this->connection);
 
         $builder
             ->delete($table->getName())
             ->where('type = ?')
-            ->setParameter(0, (string) $eventType)
+            ->setParameter(0, $eventType)
             ->execute();
     }
 }
