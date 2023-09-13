@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 final class PermissionSwitchVoter implements PermissionVoter
 {
     /**
-     * @var \CultuurNet\UDB3\Security\Permission\PermissionVoter[]
+     * @var PermissionVoter[]
      */
     private array $mapping;
 

@@ -9,14 +9,14 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 class GodUserVoter implements PermissionVoter
 {
     /**
-     * @var array
+     * @var string[]
      */
-    private $godUserIds;
+    private array $godUserIds;
 
     /**
      * @param string[] $godUserIds
      */
-    public function __construct(array $godUserIds)
+    public function __construct(string ...$godUserIds)
     {
         $this->godUserIds = $godUserIds;
     }

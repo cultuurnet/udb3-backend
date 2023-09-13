@@ -11,32 +11,17 @@ use Http\Client\HttpClient;
 use Psr\Http\Message\UriInterface;
 use CultuurNet\UDB3\StringLiteral;
 
-class Sapi3RoleConstraintVoter implements PermissionVoter
+final class Sapi3RoleConstraintVoter implements PermissionVoter
 {
-    /**
-     * @var UserConstraintsReadRepositoryInterface
-     */
-    private $userConstraintsReadRepository;
+    private UserConstraintsReadRepositoryInterface $userConstraintsReadRepository;
 
-    /**
-     * @var UriInterface
-     */
-    private $searchLocation;
+    private UriInterface $searchLocation;
 
-    /**
-     * @var HttpClient
-     */
-    private $httpClient;
+    private HttpClient $httpClient;
 
-    /**
-     * @var string|null
-     */
-    private $apiKey;
+    private ?string $apiKey;
 
-    /**
-     * @var array
-     */
-    private $queryParameters;
+    private array $queryParameters;
 
     public function __construct(
         UserConstraintsReadRepositoryInterface $userConstraintsReadRepository,

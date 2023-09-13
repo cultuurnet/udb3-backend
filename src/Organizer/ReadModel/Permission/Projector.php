@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\StringLiteral;
 
-class Projector implements EventListener
+final class Projector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 

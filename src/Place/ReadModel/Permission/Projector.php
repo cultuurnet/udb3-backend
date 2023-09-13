@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\StringLiteral;
 
-class Projector implements EventListener
+final class Projector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 

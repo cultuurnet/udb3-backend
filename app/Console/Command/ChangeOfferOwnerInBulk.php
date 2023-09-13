@@ -13,12 +13,9 @@ use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
-class ChangeOfferOwnerInBulk extends AbstractCommand
+final class ChangeOfferOwnerInBulk extends AbstractCommand
 {
-    /**
-     * @var ResourceOwnerQuery
-     */
-    private $permissionQuery;
+    private ResourceOwnerQuery $permissionQuery;
 
     public function __construct(
         CommandBus $commandBus,

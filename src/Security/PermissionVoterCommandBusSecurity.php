@@ -6,17 +6,11 @@ namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 
-class PermissionVoterCommandBusSecurity implements CommandBusSecurity
+final class PermissionVoterCommandBusSecurity implements CommandBusSecurity
 {
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var PermissionVoter
-     */
-    private $permissionVoter;
+    private PermissionVoter $permissionVoter;
 
     public function __construct(
         ?string $userId = null,

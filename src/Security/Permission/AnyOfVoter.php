@@ -6,16 +6,13 @@ namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-class AnyOfVoter implements PermissionVoter
+final class AnyOfVoter implements PermissionVoter
 {
     /**
      * @var PermissionVoter[]
      */
-    private $voters;
+    private array $voters;
 
-    /**
-     * @param PermissionVoter[] ...$voters
-     */
     public function __construct(PermissionVoter ...$voters)
     {
         $this->voters = $voters;

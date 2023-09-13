@@ -16,7 +16,7 @@ use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use CultuurNet\UDB3\StringLiteral;
 
-class Projector implements EventListener
+final class Projector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 

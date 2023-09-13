@@ -11,15 +11,9 @@ use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQuery;
 
 final class ChangeOwnerHandler implements CommandHandler
 {
-    /**
-     * @var OfferRepository
-     */
-    private $offerRepository;
+    private OfferRepository $offerRepository;
 
-    /**
-     * @var ResourceOwnerQuery
-     */
-    private $permissionQuery;
+    private ResourceOwnerQuery $permissionQuery;
 
     public function __construct(
         OfferRepository $offerRepository,

@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security\ResourceOwner;
 
-class CombinedResourceOwnerQuery implements ResourceOwnerQuery
+final class CombinedResourceOwnerQuery implements ResourceOwnerQuery
 {
     /**
      * @var ResourceOwnerQuery[]
      */
-    private $permissionQueries;
+    private array $permissionQueries;
 
     /**
-     * CombinedPermissionQuery constructor.
      * @param ResourceOwnerQuery[] $permissionQueries
      */
     public function __construct(array $permissionQueries)
