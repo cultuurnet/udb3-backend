@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 
-use Broadway\Domain\DateTime as BroadwayDateTime;
-use Broadway\Domain\DomainMessage;
-use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Address\FullAddressFormatter;
@@ -19,24 +16,17 @@ use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
-use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
+use CultuurNet\UDB3\RdfTestCase;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use DateTime;
-use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class RdfProjectorTest extends TestCase
+class RdfProjectorTest extends RdfTestCase
 {
-    private GraphRepository $graphRepository;
-
     private DocumentRepository $documentRepository;
-
-    private RdfProjector $rdfProjector;
 
     /**
      * @var LoggerInterface|MockObject
@@ -381,28 +371,8 @@ class RdfProjectorTest extends TestCase
         $this->expectedParsedAddresses[$formatted] = $parsedAddress;
     }
 
-    private function project(string $placeId, array $events): void
+    public function getRdfDataSetName(): string
     {
-        $playhead = -1;
-        $recordedOn = new DateTime('2022-12-31T12:30:15+01:00');
-        foreach ($events as $event) {
-            $playhead++;
-            $recordedOn->modify('+1 day');
-            $domainMessage = new DomainMessage(
-                $placeId,
-                $playhead,
-                new Metadata(),
-                $event,
-                BroadwayDateTime::fromString($recordedOn->format(DateTime::ATOM))
-            );
-            $this->rdfProjector->handle($domainMessage);
-        }
-    }
-
-    private function assertTurtleData(string $placeId, string $expectedTurtleData): void
-    {
-        $uri = 'https://mock.data.publiq.be/places/' . $placeId;
-        $actualTurtleData = (new Turtle())->serialise($this->graphRepository->get($uri), 'turtle');
-        $this->assertEquals(trim($expectedTurtleData), trim($actualTurtleData));
+        return 'places';
     }
 }
