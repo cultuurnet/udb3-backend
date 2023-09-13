@@ -6,17 +6,17 @@ namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-class GodUserVoter implements PermissionVoter
+final class GodUserVoter implements PermissionVoter
 {
     /**
-     * @var string[]
+     * @var array
      */
-    private array $godUserIds;
+    private $godUserIds;
 
     /**
      * @param string[] $godUserIds
      */
-    public function __construct(string ...$godUserIds)
+    public function __construct(array $godUserIds)
     {
         $this->godUserIds = $godUserIds;
     }
