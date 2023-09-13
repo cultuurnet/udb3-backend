@@ -4,30 +4,29 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\ReadModel\RDF;
 
-use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Address\ParsedAddress;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
-use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RdfTestCase;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use Psr\Log\LoggerInterface;
 
 class RdfProjectorTest extends RdfTestCase
 {
-    private DocumentRepository $documentRepository;
-
     protected function setUp(): void
     {
-        $this->graphRepository = new InMemoryGraphRepository();
-        $this->documentRepository = new InMemoryDocumentRepository();
-        $logger = $this->createMock(LoggerInterface::class);
+        parent::setUp();
 
-        $addressParser = $this->createMock(AddressParser::class);
-        $addressParser->expects($this->any())
+        $this->rdfProjector = new RdfProjector(
+            $this->graphRepository,
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/organizers/' . $item),
+            $this->documentRepository,
+            new OrganizerDenormalizer(),
+            $this->addressParser,
+            $this->logger
+        );
+
+        $this->addressParser->expects($this->any())
             ->method('parse')
             ->willReturn(
                 new ParsedAddress(
@@ -37,15 +36,6 @@ class RdfProjectorTest extends RdfTestCase
                     'Zichem (Scherpenheuvel-Zichem)'
                 )
             );
-
-        $this->rdfProjector = new RdfProjector(
-            $this->graphRepository,
-            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/organizers/' . $item),
-            $this->documentRepository,
-            new OrganizerDenormalizer(),
-            $addressParser,
-            $logger
-        );
     }
 
     /**

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
-use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Address\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Locality as LegacyLocality;
 use CultuurNet\UDB3\Address\ParsedAddress;
@@ -16,31 +15,16 @@ use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
-use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RdfTestCase;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use PHPUnit\Framework\MockObject\MockObject;
-use Psr\Log\LoggerInterface;
 
 class RdfProjectorTest extends RdfTestCase
 {
-    private DocumentRepository $documentRepository;
-
-    /**
-     * @var LoggerInterface|MockObject
-     */
-    private $logger;
-
     private array $expectedParsedAddresses;
 
     protected function setUp(): void
     {
-        $this->graphRepository = new InMemoryGraphRepository();
-        $this->documentRepository = new InMemoryDocumentRepository();
-        $addressParser = $this->createMock(AddressParser::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
+        parent::setUp();
 
         $this->rdfProjector = new RdfProjector(
             $this->graphRepository,
@@ -48,11 +32,11 @@ class RdfProjectorTest extends RdfTestCase
             new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
             $this->documentRepository,
             new PlaceDenormalizer(),
-            $addressParser,
+            $this->addressParser,
             $this->logger
         );
 
-        $addressParser->expects($this->any())
+        $this->addressParser->expects($this->any())
             ->method('parse')
             ->willReturnCallback(
                 fn (string $formatted): ?ParsedAddress => $this->expectedParsedAddresses[$formatted] ?? null

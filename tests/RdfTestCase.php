@@ -8,18 +8,39 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\RDF\GraphRepository;
+use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use DateTime;
 use EasyRdf\Serialiser\Turtle;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 abstract class RdfTestCase extends TestCase
 {
     protected GraphRepository $graphRepository;
+    protected DocumentRepository $documentRepository;
+    /** @var AddressParser&MockObject */
+    protected $addressParser;
+    /** @var LoggerInterface&MockObject */
+    protected $logger;
 
     protected EventListener $rdfProjector;
 
     abstract protected function getRdfDataSetName(): string;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->graphRepository = new InMemoryGraphRepository();
+        $this->documentRepository = new InMemoryDocumentRepository();
+        $this->addressParser = $this->createMock(AddressParser::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
+    }
 
     protected function project(string $organizerId, array $events): void
     {

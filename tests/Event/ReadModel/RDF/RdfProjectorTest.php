@@ -4,36 +4,32 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
-use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Address\ParsedAddress;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
-use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
 use CultuurNet\UDB3\RdfTestCase;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use PHPUnit\Framework\MockObject\MockObject;
-use Psr\Log\LoggerInterface;
 
 class RdfProjectorTest extends RdfTestCase
 {
-    private DocumentRepository $documentRepository;
-
-    /**
-     * @var LoggerInterface|MockObject
-     */
-    private $logger;
-
     protected function setUp(): void
     {
-        $this->graphRepository = new InMemoryGraphRepository();
-        $this->documentRepository = new InMemoryDocumentRepository();
+        parent::setUp();
 
-        $addressParser = $this->createMock(AddressParser::class);
-        $addressParser->expects($this->any())
+        $this->rdfProjector = new RdfProjector(
+            $this->graphRepository,
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
+            $this->documentRepository,
+            new EventDenormalizer(),
+            $this->addressParser,
+            $this->logger
+        );
+
+        $this->addressParser->expects($this->any())
             ->method('parse')
             ->willReturn(
                 new ParsedAddress(
@@ -43,19 +39,6 @@ class RdfProjectorTest extends RdfTestCase
                     'Leuven'
                 )
             );
-
-        $this->logger = $this->createMock(LoggerInterface::class);
-
-        $this->rdfProjector = new RdfProjector(
-            $this->graphRepository,
-            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
-            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
-            new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
-            $this->documentRepository,
-            new EventDenormalizer(),
-            $addressParser,
-            $this->logger
-        );
     }
 
     /**
