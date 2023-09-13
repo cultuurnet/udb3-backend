@@ -43,9 +43,7 @@ final class ChangeOwnerHandler implements CommandHandler
         // doesn't pass that info to the applyEventCreated() etc methods.
         $offersOwnedByNewOwner = $this->permissionQuery->getEditableResourceIds($newOwnerId);
 
-        // Don't use strict comparison here in in_array because getEditableOffers() returns StringLiterals. They will
-        // get cast to strings automatically when comparing.
-        if (!in_array($offerId, $offersOwnedByNewOwner, false)) {
+        if (!in_array($offerId, $offersOwnedByNewOwner)) {
             $offer = $this->offerRepository->load($command->getOfferId());
             $offer->changeOwner($command->getNewOwnerId());
             $this->offerRepository->save($offer);
