@@ -1,0 +1,21 @@
+{
+  "mainLanguage":"nl",
+  "name": {
+    "nl": "%{name}"
+  },
+  "url": "https://www.%{name}.be",
+  "contactPoint": {
+    "phone": [
+      "016 10 20 30",
+      "016 99 99 99"
+    ],
+    "email": [
+      "info@publiq.be",
+      "info@madewithlove.be"
+    ],
+    "url": [
+      "https://www.publiq.be",
+      "https://www.madewithlove.be"
+    ]
+  }
+}

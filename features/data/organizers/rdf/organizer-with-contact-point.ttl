@@ -1,0 +1,46 @@
+<http://host.docker.internal:8080/organizers/%{organizerId}>
+        a       <https://data.vlaanderen.be/ns/cultuurparticipatie#Organisator> ;
+        <http://purl.org/dc/terms/created>
+                "2023-09-07T10:22:16+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://purl.org/dc/terms/modified>
+                "2023-09-07T10:22:16+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://www.w3.org/ns/adms#identifier>
+                [ a       <http://www.w3.org/ns/adms#Identifier> ;
+                  <http://www.w3.org/2004/02/skos/core#notation>
+                          "http://host.docker.internal:8080/organizers/%{organizerId}"^^<http://www.w3.org/2001/XMLSchema#anyURI> ;
+                  <https://data.vlaanderen.be/ns/generiek#gestructureerdeIdentificator>
+                          [ a       <https://data.vlaanderen.be/ns/generiek#GestructureerdeIdentificator> ;
+                            <https://data.vlaanderen.be/ns/generiek#lokaleIdentificator>
+                                    "%{organizerId}" ;
+                            <https://data.vlaanderen.be/ns/generiek#naamruimte>
+                                    "http://host.docker.internal:8080/organizers/"
+                          ]
+                ] ;
+        <http://xmlns.com/foaf/0.1/homepage>
+                "https://www.%{name}.be" ;
+        <https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.naam>
+                "%{name}"@nl ;
+        <https://schema.org/contactPoint>
+                [ a                         <https://schema.org/ContactPoint> ;
+                  <https://schema.org/url>  "https://www.publiq.be"
+                ] ;
+        <https://schema.org/contactPoint>
+                [ a                         <https://schema.org/ContactPoint> ;
+                  <https://schema.org/url>  "https://www.madewithlove.be"
+                ] ;
+        <https://schema.org/contactPoint>
+                [ a                           <https://schema.org/ContactPoint> ;
+                  <https://schema.org/email>  "info@publiq.be"
+                ] ;
+        <https://schema.org/contactPoint>
+                [ a                           <https://schema.org/ContactPoint> ;
+                  <https://schema.org/email>  "info@madewithlove.be"
+                ] ;
+        <https://schema.org/contactPoint>
+                [ a                               <https://schema.org/ContactPoint> ;
+                  <https://schema.org/telephone>  "016 10 20 30"
+                ] ;
+        <https://schema.org/contactPoint>
+                [ a                               <https://schema.org/ContactPoint> ;
+                  <https://schema.org/telephone>  "016 99 99 99"
+                ] .
