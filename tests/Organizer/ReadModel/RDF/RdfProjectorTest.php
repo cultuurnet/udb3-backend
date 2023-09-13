@@ -155,6 +155,51 @@ class RdfProjectorTest extends TestCase
         $this->assertTurtleData($organizerId, file_get_contents(__DIR__ . '/ttl/organizer-with-address.ttl'));
     }
 
+    /**
+     * @test
+     */
+    public function it_converts_an_organizer_with_contact_point(): void
+    {
+        $organizerId = '56f1efdb-fe25-44f6-b9d7-4a6a836799d7';
+
+        $organizer = [
+            '@id' => 'https://mock.io.uitdatabank.be/organizers/' . $organizerId,
+            'mainLanguage' => 'nl',
+            'url' => 'https://www.publiq.be',
+            'name' => [
+                'nl' => 'publiq VZW',
+                'en' => 'publiq NPO',
+            ],
+            'contactPoint' => [
+                'url' => [
+                    'https://www.publiq.be',
+                    'https://www.cultuurnet.be',
+                ],
+                'email' => [
+                    'info@publiq.be',
+                    'info@cultuurnet.be',
+                ],
+                'phone' => [
+                    '016 10 20 30',
+                    '016 10 20 40',
+                    '016 99 99 99',
+                ],
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($organizerId, json_encode($organizer)));
+
+        $this->project(
+            $organizerId,
+            [
+                new OrganizerProjectedToJSONLD($organizerId, 'https://mock.io.uitdatabank.be/organizer/' . $organizerId),
+            ]
+        );
+
+        $this->assertTurtleData($organizerId, file_get_contents(__DIR__ . '/ttl/organizer-with-contact-point.ttl'));
+    }
+
     private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void
     {
         $formatted = (new FullAddressFormatter())->format($address);
