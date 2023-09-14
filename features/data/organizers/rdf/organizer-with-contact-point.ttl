@@ -19,4 +19,28 @@
         <http://xmlns.com/foaf/0.1/homepage>
                 "https://www.%{name}.be" ;
         <https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.naam>
-                "%{name}"@nl .
+                "%{name}"@nl ;
+        <https://schema.org/contactPoint>
+                [ a                         <https://schema.org/ContactPoint> ;
+                  <https://schema.org/url>  "https://www.publiq.be"
+                ] ;
+        <https://schema.org/contactPoint>
+                [ a                         <https://schema.org/ContactPoint> ;
+                  <https://schema.org/url>  "https://www.madewithlove.be"
+                ] ;
+        <https://schema.org/contactPoint>
+                [ a                           <https://schema.org/ContactPoint> ;
+                  <https://schema.org/email>  "info@publiq.be"
+                ] ;
+        <https://schema.org/contactPoint>
+                [ a                           <https://schema.org/ContactPoint> ;
+                  <https://schema.org/email>  "info@madewithlove.be"
+                ] ;
+        <https://schema.org/contactPoint>
+                [ a                               <https://schema.org/ContactPoint> ;
+                  <https://schema.org/telephone>  "016 10 20 30"
+                ] ;
+        <https://schema.org/contactPoint>
+                [ a                               <https://schema.org/ContactPoint> ;
+                  <https://schema.org/telephone>  "016 99 99 99"
+                ] .

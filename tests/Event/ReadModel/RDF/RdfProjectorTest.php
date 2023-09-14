@@ -4,52 +4,19 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
-use Broadway\Domain\DateTime as BroadwayDateTime;
-use Broadway\Domain\DomainMessage;
-use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Address\ParsedAddress;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
-use CultuurNet\UDB3\RDF\GraphRepository;
-use CultuurNet\UDB3\RDF\InMemoryGraphRepository;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\RdfTestCase;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use DateTime;
-use EasyRdf\Serialiser\Turtle;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 
-class RdfProjectorTest extends TestCase
+class RdfProjectorTest extends RdfTestCase
 {
-    private GraphRepository $graphRepository;
-
-    private DocumentRepository $documentRepository;
-
-    private RdfProjector $rdfProjector;
-
-    /**
-     * @var AddressParser|MockObject
-     */
-    private $addressParser;
-
-    /**
-     * @var LoggerInterface|MockObject
-     */
-    private $logger;
-
     protected function setUp(): void
     {
-        $this->graphRepository = new InMemoryGraphRepository();
-        $this->documentRepository = new InMemoryDocumentRepository();
-
-        $this->addressParser = $this->createMock(AddressParser::class);
-
-        $this->logger = $this->createMock(LoggerInterface::class);
+        parent::setUp();
 
         $this->rdfProjector = new RdfProjector(
             $this->graphRepository,
@@ -61,6 +28,17 @@ class RdfProjectorTest extends TestCase
             $this->addressParser,
             $this->logger
         );
+
+        $this->addressParser->expects($this->any())
+            ->method('parse')
+            ->willReturn(
+                new ParsedAddress(
+                    'Martelarenlaan',
+                    '1',
+                    '3000',
+                    'Leuven'
+                )
+            );
     }
 
     /**
@@ -717,17 +695,6 @@ class RdfProjectorTest extends TestCase
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
 
-        $this->addressParser->expects($this->any())
-            ->method('parse')
-            ->willReturn(
-                new ParsedAddress(
-                    'Martelarenlaan',
-                    '1',
-                    '3000',
-                    'Leuven'
-                )
-            );
-
         $event = [
             '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
             'mainLanguage' => 'nl',
@@ -776,17 +743,6 @@ class RdfProjectorTest extends TestCase
     public function it_converts_an_event_with_dummy_location_and_multiple_calendar(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
-
-        $this->addressParser->expects($this->any())
-            ->method('parse')
-            ->willReturn(
-                new ParsedAddress(
-                    'Martelarenlaan',
-                    '1',
-                    '3000',
-                    'Leuven'
-                )
-            );
 
         $event = [
             '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
@@ -848,17 +804,6 @@ class RdfProjectorTest extends TestCase
     public function it_converts_an_event_with_dummy_location_and_single_calendar(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
-
-        $this->addressParser->expects($this->any())
-            ->method('parse')
-            ->willReturn(
-                new ParsedAddress(
-                    'Martelarenlaan',
-                    '1',
-                    '3000',
-                    'Leuven'
-                )
-            );
 
         $event = [
             '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
@@ -1372,28 +1317,8 @@ class RdfProjectorTest extends TestCase
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-multiple-calendar.ttl'));
     }
 
-    private function project(string $eventId, array $events): void
+    public function getRdfDataSetName(): string
     {
-        $playhead = -1;
-        $recordedOn = new DateTime('2022-12-31T12:30:15+01:00');
-        foreach ($events as $event) {
-            $playhead++;
-            $recordedOn->modify('+1 day');
-            $domainMessage = new DomainMessage(
-                $eventId,
-                $playhead,
-                new Metadata(),
-                $event,
-                BroadwayDateTime::fromString($recordedOn->format(DateTime::ATOM))
-            );
-            $this->rdfProjector->handle($domainMessage);
-        }
-    }
-
-    private function assertTurtleData(string $eventId, string $expectedTurtleData): void
-    {
-        $uri = 'https://mock.data.publiq.be/events/' . $eventId;
-        $actualTurtleData = (new Turtle())->serialise($this->graphRepository->get($uri), 'turtle');
-        $this->assertEquals(trim($expectedTurtleData), trim($actualTurtleData));
+        return 'events';
     }
 }

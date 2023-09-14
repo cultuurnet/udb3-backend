@@ -6,6 +6,7 @@
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix cpr: <https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix schema: <https://schema.org/> .
 
 <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7>
   a cp:Organisator ;
@@ -21,4 +22,26 @@
     ]
   ] ;
   cpr:naam "publiq VZW"@nl, "publiq NPO"@en ;
-  foaf:homepage "https://www.publiq.be" .
+  foaf:homepage "https://www.publiq.be" ;
+  schema:contactPoint [
+    a schema:ContactPoint ;
+    schema:url "https://www.publiq.be"
+  ], [
+    a schema:ContactPoint ;
+    schema:url "https://www.cultuurnet.be"
+  ], [
+    a schema:ContactPoint ;
+    schema:email "info@publiq.be"
+  ], [
+    a schema:ContactPoint ;
+    schema:email "info@cultuurnet.be"
+  ], [
+    a schema:ContactPoint ;
+    schema:telephone "016 10 20 30"
+  ], [
+    a schema:ContactPoint ;
+    schema:telephone "016 10 20 40"
+  ], [
+    a schema:ContactPoint ;
+    schema:telephone "016 99 99 99"
+  ] .
