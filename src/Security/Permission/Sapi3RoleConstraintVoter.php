@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use GuzzleHttp\Psr7\Request;
 use Http\Client\HttpClient;
 use Psr\Http\Message\UriInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 final class Sapi3RoleConstraintVoter implements PermissionVoter
 {
@@ -52,7 +51,7 @@ final class Sapi3RoleConstraintVoter implements PermissionVoter
 
         $query = $this->createQueryFromConstraints(
             $constraints,
-            new StringLiteral($itemId)
+            $itemId
         );
 
         $totalItems = $this->search($query);
@@ -61,18 +60,18 @@ final class Sapi3RoleConstraintVoter implements PermissionVoter
     }
 
     private function createQueryString(
-        StringLiteral $constraint,
-        StringLiteral $resourceId
+        string $constraint,
+        string $resourceId
     ): string {
-        $constraintStr = '(' . $constraint->toNative() . ')';
-        $resourceIdStr = $resourceId->toNative();
+        $constraintStr = '(' . $constraint . ')';
+        $resourceIdStr = $resourceId;
 
         return '(' . $constraintStr . ' AND id:' . $resourceIdStr . ')';
     }
 
     private function createQueryFromConstraints(
         array $constraints,
-        StringLiteral $resourceId
+        string $resourceId
     ): string {
         $queryString = '';
 
