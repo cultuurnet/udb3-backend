@@ -6,9 +6,6 @@ namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-/**
- * Delegates voting to another voter based on which permission needs checking.
- */
 final class PermissionSwitchVoter implements PermissionVoter
 {
     /**
@@ -16,10 +13,7 @@ final class PermissionSwitchVoter implements PermissionVoter
      */
     private array $mapping;
 
-    /**
-     * @var PermissionVoter|null
-     */
-    private $defaultVoter;
+    private ?PermissionVoter $defaultVoter;
 
     public function isAllowed(
         Permission $permission,
