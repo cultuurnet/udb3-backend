@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Role\ReadModel\Constraints;
 
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -39,7 +38,7 @@ final class AppConfigUserConstraintsReadRepositoryTest extends TestCase
             ->method('getByUserAndPermission')
             ->willReturn(['creator:8033457c-e13e-43eb-9c24-5d03e4741f82']);
 
-        $result = $repository->getByUserAndPermission(new StringLiteral('jkfhsjkfsdhjk@clients'), Permission::aanbodBewerken());
+        $result = $repository->getByUserAndPermission('jkfhsjkfsdhjk@clients', Permission::aanbodBewerken());
 
         $expected = ['creator:8033457c-e13e-43eb-9c24-5d03e4741f82'];
         $this->assertEquals($expected, $result);
@@ -63,7 +62,7 @@ final class AppConfigUserConstraintsReadRepositoryTest extends TestCase
             ->method('getByUserAndPermission')
             ->willReturn(['creator:8033457c-e13e-43eb-9c24-5d03e4741f82']);
 
-        $result = $repository->getByUserAndPermission(new StringLiteral('jkfhsjkfsdhjk@clients'), Permission::aanbodVerwijderen());
+        $result = $repository->getByUserAndPermission('jkfhsjkfsdhjk@clients', Permission::aanbodVerwijderen());
 
         $expected = ['creator:8033457c-e13e-43eb-9c24-5d03e4741f82'];
         $this->assertEquals($expected, $result);
@@ -86,7 +85,7 @@ final class AppConfigUserConstraintsReadRepositoryTest extends TestCase
         $this->databaseRepository->expects($this->never())
             ->method('getByUserAndPermission');
 
-        $result = $repository->getByUserAndPermission(new StringLiteral('jkfhsjkfsdhjk@clients'), Permission::aanbodBewerken());
+        $result = $repository->getByUserAndPermission('jkfhsjkfsdhjk@clients', Permission::aanbodBewerken());
 
         $expected = ['creator:8033457c-e13e-43eb-9c24-5d03e4741f95'];
         $this->assertEquals($expected, $result);

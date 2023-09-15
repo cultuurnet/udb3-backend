@@ -9,17 +9,16 @@ use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as Pe
 use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\SchemaConfigurator as SearchSchemaConfigurator;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Doctrine\DBAL\Connection;
-use CultuurNet\UDB3\StringLiteral;
 
 class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInterface
 {
     private Connection $connection;
 
-    private StringLiteral $userRolesTableName;
+    private string $userRolesTableName;
 
-    private StringLiteral $rolePermissionsTableName;
+    private string $rolePermissionsTableName;
 
-    private StringLiteral $rolesSearchTableName;
+    private string $rolesSearchTableName;
 
     public function __construct(
         Connection $connection,
@@ -28,27 +27,27 @@ class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInte
         string $rolesSearchTableName
     ) {
         $this->connection = $connection;
-        $this->userRolesTableName = new StringLiteral($userRolesTableName);
-        $this->rolePermissionsTableName = new StringLiteral($rolePermissionsTableName);
-        $this->rolesSearchTableName = new StringLiteral($rolesSearchTableName);
+        $this->userRolesTableName = $userRolesTableName;
+        $this->rolePermissionsTableName = $rolePermissionsTableName;
+        $this->rolesSearchTableName = $rolesSearchTableName;
     }
 
     /**
-     * @return StringLiteral[]
+     * @return string[]
      */
     public function getByUserAndPermission(
-        StringLiteral $userId,
+        string $userId,
         Permission $permission
     ): array {
         $userRolesSubQuery = $this->connection->createQueryBuilder()
             ->select(PermissionsSchemaConfigurator::ROLE_ID_COLUMN)
-            ->from($this->userRolesTableName->toNative())
+            ->from($this->userRolesTableName)
             ->where(PermissionsSchemaConfigurator::USER_ID_COLUMN . ' = :userId');
 
         $queryBuilder = $this->connection->createQueryBuilder();
         $userConstraintsQuery = $queryBuilder
             ->select('rs.' . SearchSchemaConfigurator::CONSTRAINT_COLUMN)
-            ->from($this->rolesSearchTableName->toNative(), 'rs')
+            ->from($this->rolesSearchTableName, 'rs')
             ->innerJoin(
                 'rs',
                 sprintf('(%s)', $userRolesSubQuery->getSQL()),
@@ -57,7 +56,7 @@ class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInte
             )
             ->innerJoin(
                 'rs',
-                $this->rolePermissionsTableName->toNative(),
+                $this->rolePermissionsTableName,
                 'rp',
                 'rs.' . SearchSchemaConfigurator::UUID_COLUMN . ' = rp.' . PermissionsSchemaConfigurator::ROLE_ID_COLUMN
             )
@@ -65,13 +64,9 @@ class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInte
             ->andWhere($queryBuilder->expr()->isNotNull(
                 'rs.' . SearchSchemaConfigurator::CONSTRAINT_COLUMN
             ))
-            ->setParameter('userId', $userId->toNative())
+            ->setParameter('userId', $userId)
             ->setParameter('permission', $permission->toString());
 
-        $results = $userConstraintsQuery->execute()->fetchAll(\PDO::FETCH_COLUMN);
-
-        return array_map(function ($constraint) {
-            return new StringLiteral($constraint);
-        }, $results);
+        return $userConstraintsQuery->execute()->fetchAll(\PDO::FETCH_COLUMN);
     }
 }

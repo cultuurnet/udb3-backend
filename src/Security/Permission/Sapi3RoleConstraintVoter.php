@@ -43,7 +43,7 @@ final class Sapi3RoleConstraintVoter implements PermissionVoter
         string $userId
     ): bool {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
-            new StringLiteral($userId),
+            $userId,
             $permission
         );
         if (count($constraints) < 1) {
