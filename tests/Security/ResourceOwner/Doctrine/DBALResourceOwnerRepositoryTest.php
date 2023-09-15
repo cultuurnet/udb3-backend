@@ -12,17 +12,14 @@ final class DBALResourceOwnerRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var DBALResourceOwnerRepository
-     */
-    private $repository;
+    private DBALResourceOwnerRepository $repository;
 
     public function setUp(): void
     {
-        $table = new StringLiteral('event_permission');
-        $idField = new StringLiteral('event_id');
+        $table = 'event_permission';
+        $idField = 'event_id';
 
-        (new SchemaConfigurator($table, $idField))->configure(
+        (new SchemaConfigurator(new StringLiteral($table), new StringLiteral($idField)))->configure(
             $this->getConnection()->getSchemaManager()
         );
 

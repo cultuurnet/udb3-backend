@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Event;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Permission\Projector;
 use CultuurNet\UDB3\Security\ResourceOwner\Doctrine\DBALResourceOwnerRepository;
-use CultuurNet\UDB3\StringLiteral;
 
 final class EventPermissionServiceProvider extends AbstractServiceProvider
 {
@@ -27,9 +26,9 @@ final class EventPermissionServiceProvider extends AbstractServiceProvider
             'event_owner.repository',
             function () use ($container): DBALResourceOwnerRepository {
                 return new DBALResourceOwnerRepository(
-                    new StringLiteral('event_permission_readmodel'),
+                    'event_permission_readmodel',
                     $container->get('dbal_connection'),
-                    new StringLiteral('event_id')
+                    'event_id'
                 );
             }
         );
