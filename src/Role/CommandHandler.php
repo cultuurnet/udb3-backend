@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Role\Commands\RemovePermission;
 use CultuurNet\UDB3\Role\Commands\RemoveUser;
 use CultuurNet\UDB3\Role\Commands\RenameRole;
 use CultuurNet\UDB3\Role\Commands\UpdateConstraint;
-use CultuurNet\UDB3\StringLiteral;
 
 class CommandHandler extends AbstractCommandHandler
 {
@@ -46,7 +45,7 @@ class CommandHandler extends AbstractCommandHandler
 
         $role->rename(
             $renameRole->getUuid(),
-            new StringLiteral($renameRole->getName())
+            $renameRole->getName()
         );
 
         $this->save($role);

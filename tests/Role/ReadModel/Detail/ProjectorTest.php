@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -97,7 +96,7 @@ class ProjectorTest extends TestCase
             $this->name
         );
 
-        $name = new StringLiteral('newRoleName');
+        $name = 'newRoleName';
         $roleRenamed = new RoleRenamed(
             $this->uuid,
             $name
@@ -121,7 +120,7 @@ class ProjectorTest extends TestCase
 
         $json = $document->getBody();
         $json->uuid = $this->uuid->toString();
-        $json->name = $name->toNative();
+        $json->name = $name;
         $json->permissions = [];
 
         $document = $document->withBody($json);

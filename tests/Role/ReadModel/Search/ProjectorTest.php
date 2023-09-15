@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
@@ -64,7 +63,7 @@ class ProjectorTest extends TestCase
     {
         $roleRenamed = new RoleRenamed(
             $this->uuid,
-            new StringLiteral('role_name')
+            'role_name'
         );
 
         $this->repository

@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\StringLiteral;
 
 class RoleTest extends AggregateRootScenarioTestCase
 {
@@ -115,10 +114,10 @@ class RoleTest extends AggregateRootScenarioTestCase
             ->when(function (Role $role) use ($uuid, $name): void {
                 $role->rename(
                     $uuid,
-                    new StringLiteral($name)
+                    $name
                 );
             })
-            ->then([new RoleRenamed($this->uuid, new StringLiteral($this->name))]);
+            ->then([new RoleRenamed($this->uuid, $this->name)]);
     }
 
     /**

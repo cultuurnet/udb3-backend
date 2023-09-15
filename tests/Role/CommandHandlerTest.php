@@ -89,7 +89,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->roleRenamed = new RoleRenamed(
             $this->uuid,
-            new StringLiteral($this->name)
+            $this->name
         );
 
         $this->permissionAdded = new PermissionAdded(

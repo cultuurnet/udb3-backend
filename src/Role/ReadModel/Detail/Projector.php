@@ -36,7 +36,7 @@ class Projector extends RoleProjector
         );
 
         $json = $document->getBody();
-        $json->name = $roleRenamed->getName()->toNative();
+        $json->name = $roleRenamed->getName();
 
         $this->repository->save($document->withBody($json));
     }

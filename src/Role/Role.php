@@ -66,7 +66,7 @@ class Role extends EventSourcedAggregateRoot
 
     public function rename(
         UUID $uuid,
-        StringLiteral $name
+        string $name
     ): void {
         $this->apply(new RoleRenamed($uuid, $name));
     }
@@ -165,8 +165,8 @@ class Role extends EventSourcedAggregateRoot
 
     public function applyRoleRenamed(RoleRenamed $roleRenamed): void
     {
-        if (!$roleRenamed->getName()->isEmpty() && $this->name !== $roleRenamed->getName()->toNative()) {
-            $this->name = $roleRenamed->getName()->toNative();
+        if (!empty($roleRenamed->getName()) && $this->name !== $roleRenamed->getName()) {
+            $this->name = $roleRenamed->getName();
         }
     }
 

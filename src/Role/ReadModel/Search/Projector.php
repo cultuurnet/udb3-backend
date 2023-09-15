@@ -41,7 +41,7 @@ class Projector implements EventListener
     ): void {
         $this->repository->updateName(
             $roleRenamed->getUuid()->toString(),
-            $roleRenamed->getName()->toNative()
+            $roleRenamed->getName()
         );
     }
 
