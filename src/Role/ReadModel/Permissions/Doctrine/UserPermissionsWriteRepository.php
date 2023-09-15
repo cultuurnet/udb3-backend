@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsWriteRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Doctrine\DBAL\Connection;
-use CultuurNet\UDB3\StringLiteral;
 
 class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryInterface
 {
@@ -74,23 +73,23 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         );
     }
 
-    public function addUserRole(StringLiteral $userId, UUID $roleId): void
+    public function addUserRole(string $userId, UUID $roleId): void
     {
         $this->connection->insert(
             $this->userRoleTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
-                SchemaConfigurator::USER_ID_COLUMN => (string) $userId,
+                SchemaConfigurator::USER_ID_COLUMN => $userId,
             ]
         );
     }
 
-    public function removeUserRole(StringLiteral $userId, UUID $roleId): void
+    public function removeUserRole(string $userId, UUID $roleId): void
     {
         $this->connection->delete(
             $this->userRoleTableName,
             [
-                SchemaConfigurator::USER_ID_COLUMN => (string) $userId,
+                SchemaConfigurator::USER_ID_COLUMN => $userId,
                 SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );

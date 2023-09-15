@@ -35,7 +35,6 @@ use CultuurNet\UDB3\Role\Events\UserAdded;
 use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\StringLiteral;
 
 class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -206,7 +205,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_can_add_and_remove_users(): void
     {
-        $userId = new StringLiteral('123456');
+        $userId = '123456';
 
         $this->scenario
             ->withAggregateId($this->uuid->toString())
@@ -216,7 +215,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new AddUser(
                     $this->uuid,
-                    $userId->toNative()
+                    $userId
                 )
             )
             ->then(
@@ -232,7 +231,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new AddUser(
                     $this->uuid,
-                    $userId->toNative()
+                    $userId
                 )
             )
             ->then(
@@ -243,7 +242,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new RemoveUser(
                     $this->uuid,
-                    $userId->toNative()
+                    $userId
                 )
             )
             ->then(
@@ -259,7 +258,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new RemoveUser(
                     $this->uuid,
-                    $userId->toNative()
+                    $userId
                 )
             )
             ->then(

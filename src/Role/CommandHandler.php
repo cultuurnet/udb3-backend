@@ -107,7 +107,7 @@ class CommandHandler extends AbstractCommandHandler
         $role = $this->load($addUser->getUuid());
 
         $role->addUser(
-            $addUser->getUserId()
+            $addUser->getUserId()->toNative()
         );
 
         $this->save($role);
@@ -118,7 +118,7 @@ class CommandHandler extends AbstractCommandHandler
         $role = $this->load($removeUser->getUuid());
 
         $role->removeUser(
-            $removeUser->getUserId()
+            $removeUser->getUserId()->toNative()
         );
 
         $this->save($role);

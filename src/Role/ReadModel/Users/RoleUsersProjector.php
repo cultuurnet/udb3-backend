@@ -18,10 +18,7 @@ use CultuurNet\UDB3\User\UserIdentityResolver;
 
 class RoleUsersProjector extends RoleProjector
 {
-    /**
-     * @var UserIdentityResolver
-     */
-    private $userIdentityResolver;
+    private UserIdentityResolver $userIdentityResolver;
 
     public function __construct(
         DocumentRepository $repository,
@@ -32,20 +29,19 @@ class RoleUsersProjector extends RoleProjector
         $this->userIdentityResolver = $userIdentityResolver;
     }
 
-
     public function applyUserAdded(UserAdded $userAdded): void
     {
         $document = $this->getDocument($userAdded->getUuid());
 
         if ($document) {
             $userIdentityDetail = $this->userIdentityResolver->getUserById(
-                $userAdded->getUserId()->toNative()
+                $userAdded->getUserId()
             );
 
             if ($userIdentityDetail) {
                 $userIdentityDetails = $this->getUserIdentityDetails($document);
 
-                $userKey = $userAdded->getUserId()->toNative();
+                $userKey = $userAdded->getUserId();
                 $userIdentityDetails[$userKey] = $userIdentityDetail;
 
                 $document = $document->withAssocBody($userIdentityDetails);
@@ -55,20 +51,18 @@ class RoleUsersProjector extends RoleProjector
         }
     }
 
-
     public function applyUserRemoved(UserRemoved $userRemoved): void
     {
         $document = $this->getDocument($userRemoved->getUuid());
 
         if ($document) {
             $userIdentityDetails = $this->getUserIdentityDetails($document);
-            unset($userIdentityDetails[$userRemoved->getUserId()->toNative()]);
+            unset($userIdentityDetails[$userRemoved->getUserId()]);
 
             $document = $document->withAssocBody($userIdentityDetails);
             $this->repository->save($document);
         }
     }
-
 
     public function applyRoleCreated(RoleCreated $roleCreated): void
     {
@@ -79,7 +73,6 @@ class RoleUsersProjector extends RoleProjector
             )
         );
     }
-
 
     public function applyRoleDeleted(RoleDeleted $roleDeleted): void
     {
@@ -98,7 +91,7 @@ class RoleUsersProjector extends RoleProjector
     /**
      * @return UserIdentityDetails[]
      */
-    private function getUserIdentityDetails(JsonDocument $document)
+    private function getUserIdentityDetails(JsonDocument $document): array
     {
         return json_decode($document->getRawBody(), true);
     }

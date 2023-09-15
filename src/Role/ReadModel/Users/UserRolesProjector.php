@@ -17,16 +17,9 @@ class UserRolesProjector extends RoleProjector
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var DocumentRepository
-     */
-    private $roleDetailsDocumentRepository;
+    private DocumentRepository $roleDetailsDocumentRepository;
 
-    /**
-     * @var DocumentRepository
-     */
-    private $roleUsersDocumentRepository;
-
+    private DocumentRepository $roleUsersDocumentRepository;
 
     public function __construct(
         DocumentRepository $userRolesDocumentRepository,
@@ -38,10 +31,9 @@ class UserRolesProjector extends RoleProjector
         $this->roleUsersDocumentRepository = $roleUsersDocumentRepository;
     }
 
-
     public function applyUserAdded(UserAdded $userAdded): void
     {
-        $userId = $userAdded->getUserId()->toNative();
+        $userId = $userAdded->getUserId();
         $roleId = $userAdded->getUuid()->toString();
 
         try {
@@ -69,10 +61,9 @@ class UserRolesProjector extends RoleProjector
         $this->repository->save($document);
     }
 
-
     public function applyUserRemoved(UserRemoved $userRemoved): void
     {
-        $userId = $userRemoved->getUserId()->toNative();
+        $userId = $userRemoved->getUserId();
         $roleId = $userRemoved->getUuid()->toString();
 
         try {
@@ -88,7 +79,6 @@ class UserRolesProjector extends RoleProjector
 
         $this->repository->save($document);
     }
-
 
     public function applyRoleDetailsProjectedToJSONLD(RoleDetailsProjectedToJSONLD $roleDetailsProjectedToJSONLD): void
     {

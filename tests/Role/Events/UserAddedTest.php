@@ -6,30 +6,20 @@ namespace CultuurNet\UDB3\Role\Events;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class UserAddedTest extends TestCase
 {
-    /**
-     * @var UserAdded
-     */
-    private $userAdded;
+    private UserAdded $userAdded;
 
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
+    private string $userId;
 
     protected function setUp(): void
     {
         $this->uuid = new UUID('510610a1-ffe0-4e10-a396-7d0cb28e0619');
 
-        $this->userId = new StringLiteral('userId');
+        $this->userId = 'userId';
 
         $this->userAdded = new UserAdded($this->uuid, $this->userId);
     }
@@ -52,7 +42,7 @@ class UserAddedTest extends TestCase
     {
         $userAddedAsArray = [
             AbstractUserEvent::UUID => $this->uuid->toString(),
-            AbstractUserEvent::USER_ID => $this->userId->toNative(),
+            AbstractUserEvent::USER_ID => $this->userId,
         ];
 
         $actualUserAdded = UserAdded::deserialize($userAddedAsArray);

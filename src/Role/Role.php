@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Role\Events\UserAdded;
 use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\StringLiteral;
 
 class Role extends EventSourcedAggregateRoot
 {
@@ -41,7 +40,7 @@ class Role extends EventSourcedAggregateRoot
     private array $labelIds = [];
 
     /**
-     * @var StringLiteral[]
+     * @var string[]
      */
     private array $userIds = [];
 
@@ -136,7 +135,7 @@ class Role extends EventSourcedAggregateRoot
     }
 
     public function addUser(
-        StringLiteral $userId
+        string $userId
     ): void {
         if (!in_array($userId, $this->userIds)) {
             $this->apply(new UserAdded($this->uuid, $userId));
@@ -144,7 +143,7 @@ class Role extends EventSourcedAggregateRoot
     }
 
     public function removeUser(
-        StringLiteral $userId
+        string $userId
     ): void {
         if (in_array($userId, $this->userIds)) {
             $this->apply(new UserRemoved($this->uuid, $userId));
