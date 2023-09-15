@@ -13,7 +13,6 @@ use GuzzleHttp\Psr7\Uri;
 use Http\Client\HttpClient;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class Sapi3RoleConstraintVoterTest extends TestCase
 {
@@ -60,7 +59,7 @@ class Sapi3RoleConstraintVoterTest extends TestCase
         $userId = 'ff085fed-8500-4dd9-8ac0-459233c642f4';
         $permission = Permission::aanbodBewerken();
         $constraints = [
-            new StringLiteral('address.\*.postalCode:3000'),
+            'address.\*.postalCode:3000',
         ];
         $offerId = '625a4e74-a1ca-4bee-9e85-39869457d531';
         $query = '((address.\*.postalCode:3000) AND id:625a4e74-a1ca-4bee-9e85-39869457d531)';
