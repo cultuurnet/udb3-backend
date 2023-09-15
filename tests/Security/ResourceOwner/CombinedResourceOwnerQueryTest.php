@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Security\ResourceOwner;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 final class CombinedResourceOwnerQueryTest extends TestCase
 {
@@ -20,12 +19,12 @@ final class CombinedResourceOwnerQueryTest extends TestCase
     protected function setUp(): void
     {
         $this->permissionQueries[] = $this->createPermissionQuery([
-            new StringLiteral('offerId1'),
-            new StringLiteral('offerId2'),
+            'offerId1',
+            'offerId2',
         ]);
 
         $this->permissionQueries[] = $this->createPermissionQuery([
-            new StringLiteral('offerId3'),
+            'offerId3',
         ]);
 
         $this->combinedPermissionQuery = new CombinedResourceOwnerQuery(
@@ -80,7 +79,7 @@ final class CombinedResourceOwnerQueryTest extends TestCase
     }
 
     /**
-     * @param StringLiteral[] $editableOffers
+     * @param string[] $editableOffers
      * @return ResourceOwnerQuery|MockObject
      */
     private function createPermissionQuery(array $editableOffers)
