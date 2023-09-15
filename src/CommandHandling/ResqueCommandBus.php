@@ -12,7 +12,6 @@ use Psr\Log\LoggerAwareTrait;
 use Broadway\Domain\Metadata;
 use Broadway\EventDispatcher\EventDispatcher;
 use Psr\Log\LoggerInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Command bus decorator for asynchronous processing with PHP-Resque.
@@ -72,7 +71,7 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
             $command instanceof AuthorizableCommand) {
             if (!$this->decoratee->isAuthorized($command)) {
                 throw new CommandAuthorizationException(
-                    new StringLiteral($this->decoratee->getUserId()),
+                    $this->decoratee->getUserId(),
                     $command
                 );
             }
