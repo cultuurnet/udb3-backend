@@ -18,10 +18,10 @@ final class UserPermissionVoter implements PermissionVoter
     }
 
     public function isAllowed(
-        Permission $requiredPermission,
+        Permission $permission,
         string $itemId,
         string $userId
     ): bool {
-        return $this->userPermissionsReadRepository->hasPermission($userId, $requiredPermission);
+        return $this->userPermissionsReadRepository->hasPermission($userId, $permission);
     }
 }
