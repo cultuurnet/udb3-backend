@@ -41,7 +41,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     private UUID $uuid;
 
-    private StringLiteral $name;
+    private string $name;
 
     private Permission $permission;
 
@@ -76,7 +76,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         parent::setUp();
 
         $this->uuid = new UUID('708bae44-9788-4318-8f19-1087da9e5814');
-        $this->name = new StringLiteral('labelName');
+        $this->name = 'labelName';
         $this->permission = Permission::aanbodBewerken();
         $this->query = new Query('category_flandersregion_name:"Regio Aalst"');
         $this->updatedQuery = new Query('category_flandersregion_name:"Regio Brussel"');
@@ -89,7 +89,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->roleRenamed = new RoleRenamed(
             $this->uuid,
-            $this->name
+            new StringLiteral($this->name)
         );
 
         $this->permissionAdded = new PermissionAdded(
@@ -151,7 +151,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given([])
             ->when(new CreateRole(
                 $this->uuid,
-                $this->name->toNative()
+                $this->name
             ))
             ->then([$this->roleCreated]);
     }
@@ -166,7 +166,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given([$this->roleCreated])
             ->when(new RenameRole(
                 $this->uuid,
-                $this->name->toNative()
+                $this->name
             ))
             ->then([$this->roleRenamed]);
     }

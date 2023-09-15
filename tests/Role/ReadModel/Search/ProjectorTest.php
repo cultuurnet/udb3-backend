@@ -46,7 +46,7 @@ class ProjectorTest extends TestCase
     {
         $roleCreated = new RoleCreated(
             $this->uuid,
-            new StringLiteral('role_name')
+            'role_name'
         );
 
         $this->repository

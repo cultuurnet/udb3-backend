@@ -71,7 +71,7 @@ class RoleUsersProjectorTest extends TestCase
     {
         $roleCreated = new RoleCreated(
             new UUID('1be501c0-4e1c-4c92-a97d-33b3839897db'),
-            new StringLiteral('roleName')
+            'roleName'
         );
 
         $domainMessage = $this->createDomainMessage(

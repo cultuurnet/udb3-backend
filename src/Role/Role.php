@@ -26,7 +26,7 @@ class Role extends EventSourcedAggregateRoot
 {
     private UUID $uuid;
 
-    private StringLiteral $name;
+    private string $name;
 
     private ?Query $query = null;
 
@@ -52,7 +52,7 @@ class Role extends EventSourcedAggregateRoot
 
     public static function create(
         UUID $uuid,
-        StringLiteral $name
+        string $name
     ): Role {
         $role = new Role();
 
@@ -165,8 +165,8 @@ class Role extends EventSourcedAggregateRoot
 
     public function applyRoleRenamed(RoleRenamed $roleRenamed): void
     {
-        if (!$roleRenamed->getName()->isEmpty() && !$this->name->sameValueAs($roleRenamed->getName())) {
-            $this->name = $roleRenamed->getName();
+        if (!$roleRenamed->getName()->isEmpty() && $this->name !== $roleRenamed->getName()->toNative()) {
+            $this->name = $roleRenamed->getName()->toNative();
         }
     }
 

@@ -21,9 +21,9 @@ use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
+use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
@@ -36,7 +36,7 @@ class ProjectorTest extends TestCase
 
     private UUID $uuid;
 
-    private StringLiteral $name;
+    private string $name;
 
     private Projector $projector;
 
@@ -45,7 +45,7 @@ class ProjectorTest extends TestCase
         parent::setUp();
 
         $this->uuid = new UUID('49bd503f-0476-4b18-bc67-f48bf3ae8b57');
-        $this->name = new StringLiteral('roleName');
+        $this->name = 'roleName';
 
         $this->query = new Query('city:Leuven');
         $this->repository = $this->createMock(DocumentRepository::class);
@@ -73,7 +73,7 @@ class ProjectorTest extends TestCase
 
         $json = $document->getBody();
         $json->uuid = $this->uuid->toString();
-        $json->name = $this->name->toNative();
+        $json->name = $this->name;
         $json->permissions = [];
 
         $document = $document->withBody($json);
@@ -195,7 +195,7 @@ class ProjectorTest extends TestCase
 
         $json = $document->getBody();
         $json->uuid = $this->uuid->toString();
-        $json->name = $this->name->toNative();
+        $json->name = $this->name;
         $json->permissions = [];
         $json->constraints = new \stdClass();
         $json->constraint = $this->query->toNative();
@@ -237,7 +237,7 @@ class ProjectorTest extends TestCase
 
         $json = $document->getBody();
         $json->uuid = $this->uuid->toString();
-        $json->name = $this->name->toNative();
+        $json->name = $this->name;
         $json->permissions = [];
         $json->constraints = new \stdClass();
         $json->constraint = $constraintUpdated->getQuery()->toNative();
@@ -280,7 +280,7 @@ class ProjectorTest extends TestCase
 
         $json = $document->getBody();
         $json->uuid = $this->uuid->toString();
-        $json->name = $this->name->toNative();
+        $json->name = $this->name;
         $json->permissions = [];
         $json->constraints = new \stdClass();
         $json->constraint = null;
@@ -311,7 +311,7 @@ class ProjectorTest extends TestCase
     {
         $roleCreated = new RoleCreated(
             $this->uuid,
-            new StringLiteral('roleName')
+            'roleName'
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -324,7 +324,7 @@ class ProjectorTest extends TestCase
 
         $json = $document->getBody();
         $json->uuid = $this->uuid->toString();
-        $json->name = $this->name->toNative();
+        $json->name = $this->name;
         $json->permissions = [];
 
         $document = $document->withBody($json);
@@ -345,7 +345,7 @@ class ProjectorTest extends TestCase
     {
         $roleCreated = new RoleCreated(
             $this->uuid,
-            new StringLiteral('roleName')
+            'roleName'
         );
 
         $permission = Permission::aanbodBewerken();
@@ -373,7 +373,7 @@ class ProjectorTest extends TestCase
 
         $json = $document->getBody();
         $json->uuid = $this->uuid->toString();
-        $json->name = $this->name->toNative();
+        $json->name = $this->name;
         $json->permissions = ['AANBOD_BEWERKEN'];
 
         $document = $document->withBody($json);
@@ -431,7 +431,7 @@ class ProjectorTest extends TestCase
 
         $json = $document->getBody();
         $json->uuid = $this->uuid->toString();
-        $json->name = $this->name->toNative();
+        $json->name = $this->name;
         $json->permissions = [];
 
         $document = $document->withBody($json);
@@ -474,7 +474,7 @@ class ProjectorTest extends TestCase
 
         $json = $document->getBody();
         $json->uuid = $this->uuid->toString();
-        $json->name = $this->name->toNative();
+        $json->name = $this->name;
         $json->permissions = [];
 
         return $document->withBody($json);
@@ -486,7 +486,7 @@ class ProjectorTest extends TestCase
 
         $json = $document->getBody();
         $json->uuid = $this->uuid->toString();
-        $json->name = $this->name->toNative();
+        $json->name = $this->name;
         $json->permissions = ['AANBOD_BEWERKEN'];
 
         return $document->withBody($json);
@@ -498,7 +498,7 @@ class ProjectorTest extends TestCase
 
         $json = $document->getBody();
         $json->uuid = $this->uuid->toString();
-        $json->name = $this->name->toNative();
+        $json->name = $this->name;
         $json->permissions = [];
         $json->constraints = new \stdClass();
         $json->constraints->{'v3'} =

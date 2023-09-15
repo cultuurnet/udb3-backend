@@ -31,7 +31,7 @@ class Projector implements EventListener
     ): void {
         $this->repository->save(
             $roleCreated->getUuid()->toString(),
-            $roleCreated->getName()->toNative()
+            $roleCreated->getName()
         );
     }
 

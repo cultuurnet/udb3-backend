@@ -34,7 +34,7 @@ class CommandHandler extends AbstractCommandHandler
     {
         $role = Role::create(
             $createRole->getUuid(),
-            new StringLiteral($createRole->getName())
+            $createRole->getName()
         );
 
         $this->save($role);
