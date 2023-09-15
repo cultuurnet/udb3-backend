@@ -9,9 +9,9 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 final class GodUserVoter implements PermissionVoter
 {
     /**
-     * @var array
+     * @var string[]
      */
-    private $godUserIds;
+    private array $godUserIds;
 
     /**
      * @param string[] $godUserIds
