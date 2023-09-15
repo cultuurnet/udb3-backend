@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
-class CommandAuthorizationException extends \Exception
+final class CommandAuthorizationException extends \Exception
 {
     private string $userId;
 
