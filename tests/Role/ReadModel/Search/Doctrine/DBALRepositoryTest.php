@@ -6,30 +6,20 @@ namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class DBALRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var DBALRepository
-     */
-    private $dbalRepository;
+    private DBALRepository $dbalRepository;
 
-    /**
-     * @var array
-     */
-    private $role;
+    private array $role;
 
-    /**
-     * @var StringLiteral
-     */
-    private $tableName;
+    private string $tableName;
 
     protected function setUp(): void
     {
-        $this->tableName = new StringLiteral('test_roles_search');
+        $this->tableName = 'test_roles_search';
 
         $schemaConfigurator = new SchemaConfigurator($this->tableName);
         $schemaManager = $this->getConnection()->getSchemaManager();
@@ -37,7 +27,7 @@ class DBALRepositoryTest extends TestCase
 
         $this->dbalRepository = new DBALRepository(
             $this->getConnection(),
-            $this->getTableName()
+            $this->tableName
         );
 
         $this->role = [
@@ -68,7 +58,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_a_role_contraint(): void
+    public function it_can_update_a_role_constraint(): void
     {
         $expectedRole = $this->role;
 
@@ -210,10 +200,7 @@ class DBALRepositoryTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    protected function getLastRole()
+    protected function getLastRole(): ?array
     {
         $sql = 'SELECT * FROM ' . $this->tableName;
 
@@ -221,13 +208,5 @@ class DBALRepositoryTest extends TestCase
         $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
         return $rows ? $rows[count($rows) - 1] : null;
-    }
-
-    /**
-     * @return StringLiteral
-     */
-    protected function getTableName()
-    {
-        return $this->tableName;
     }
 }

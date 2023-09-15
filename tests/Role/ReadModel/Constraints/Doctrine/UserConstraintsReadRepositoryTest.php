@@ -52,7 +52,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
         );
 
         $constraintSchemaConfigurator = new SearchSchemaConfigurator(
-            new StringLiteral($this->rolesSearchTableName)
+            $this->rolesSearchTableName
         );
         $constraintSchemaConfigurator->configure(
             $this->getConnection()->getSchemaManager()

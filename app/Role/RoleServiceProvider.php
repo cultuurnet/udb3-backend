@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Role\ReadModel\Labels\RoleLabelsProjector;
 use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository;
 use CultuurNet\UDB3\Role\ReadModel\Users\RoleUsersProjector;
 use CultuurNet\UDB3\Role\ReadModel\Users\UserRolesProjector;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 
 final class RoleServiceProvider extends AbstractServiceProvider
@@ -89,7 +88,7 @@ final class RoleServiceProvider extends AbstractServiceProvider
             'role_search_v3_repository',
             fn () => new DBALRepository(
                 $container->get('dbal_connection'),
-                new StringLiteral(self::ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME)
+                self::ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME
             )
         );
 

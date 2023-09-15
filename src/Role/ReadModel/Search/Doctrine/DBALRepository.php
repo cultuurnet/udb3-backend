@@ -7,15 +7,14 @@ namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
 use Doctrine\DBAL\Connection;
-use CultuurNet\UDB3\StringLiteral;
 
 class DBALRepository implements RepositoryInterface
 {
     protected Connection $connection;
 
-    protected StringLiteral $tableName;
+    protected string $tableName;
 
-    public function __construct(Connection $connection, StringLiteral $tableName)
+    public function __construct(Connection $connection, string $tableName)
     {
         $this->connection = $connection;
         $this->tableName = $tableName;
@@ -27,7 +26,7 @@ class DBALRepository implements RepositoryInterface
         $expr = $this->connection->getExpressionBuilder();
 
         $q
-            ->delete($this->tableName->toNative())
+            ->delete($this->tableName)
             ->where($expr->eq(SchemaConfigurator::UUID_COLUMN, ':role_id'))
             ->setParameter('role_id', $uuid);
         $q->execute();
@@ -37,7 +36,7 @@ class DBALRepository implements RepositoryInterface
     {
         $q = $this->connection->createQueryBuilder();
         $q
-            ->insert($this->tableName->toNative())
+            ->insert($this->tableName)
             ->values(
                 [
                     SchemaConfigurator::UUID_COLUMN => ':role_id',
@@ -59,7 +58,7 @@ class DBALRepository implements RepositoryInterface
         // Results.
         $q
             ->select('uuid', 'name')
-            ->from($this->tableName->toNative())
+            ->from($this->tableName)
             ->orderBy('name', 'ASC')
             ->setMaxResults($limit)
             ->setFirstResult($start);
@@ -77,7 +76,7 @@ class DBALRepository implements RepositoryInterface
         $q
             ->resetQueryParts()
             ->select('COUNT(*) AS total')
-            ->from($this->tableName->toNative());
+            ->from($this->tableName);
 
         if (!empty($query)) {
             $q->where($expr->like('name', ':role_name'));
@@ -95,7 +94,7 @@ class DBALRepository implements RepositoryInterface
         $expr = $this->connection->getExpressionBuilder();
 
         $q
-            ->update($this->tableName->toNative())
+            ->update($this->tableName)
             ->where($expr->eq(SchemaConfigurator::UUID_COLUMN, ':role_id'))
             ->set(SchemaConfigurator::UUID_COLUMN, ':role_id')
             ->set(SchemaConfigurator::NAME_COLUMN, ':role_name')
@@ -110,7 +109,7 @@ class DBALRepository implements RepositoryInterface
         $expr = $this->connection->getExpressionBuilder();
 
         $q
-            ->update($this->tableName->toNative())
+            ->update($this->tableName)
             ->where($expr->eq(SchemaConfigurator::UUID_COLUMN, ':role_id'))
             ->set(SchemaConfigurator::UUID_COLUMN, ':role_id')
             ->set(SchemaConfigurator::CONSTRAINT_COLUMN, ':constraint')

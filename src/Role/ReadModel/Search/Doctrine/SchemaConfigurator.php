@@ -10,7 +10,6 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
-use CultuurNet\UDB3\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
@@ -18,9 +17,9 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     public const NAME_COLUMN = 'name';
     public const CONSTRAINT_COLUMN = 'constraint_query';
 
-    private StringLiteral $tableName;
+    private string $tableName;
 
-    public function __construct(StringLiteral $tableName)
+    public function __construct(string $tableName)
     {
         $this->tableName = $tableName;
     }
@@ -29,16 +28,16 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     {
         $schema = $schemaManager->createSchema();
 
-        if (!$schema->hasTable($this->tableName->toNative())) {
+        if (!$schema->hasTable($this->tableName)) {
             $table = $this->createTable($schema, $this->tableName);
 
             $schemaManager->createTable($table);
         }
     }
 
-    private function createTable(Schema $schema, StringLiteral $tableName): Table
+    private function createTable(Schema $schema, string $tableName): Table
     {
-        $table = $schema->createTable($tableName->toNative());
+        $table = $schema->createTable($tableName);
 
         $table->addColumn(self::UUID_COLUMN, Type::GUID)
             ->setLength(36)
