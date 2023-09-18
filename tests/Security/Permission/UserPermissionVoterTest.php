@@ -6,29 +6,22 @@ namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class UserPermissionVoterTest extends TestCase
 {
-    /**
-     * @var UserPermissionsReadRepositoryInterface|MockObject
-     */
-    private $userPermissionsReadRepository;
-
     private UserPermissionVoter $userPermissionVoter;
 
-    private StringLiteral $userId;
+    private string $userId;
 
     protected function setUp(): void
     {
-        $this->userPermissionsReadRepository = $this->createMock(
+        $userPermissionsReadRepository = $this->createMock(
             UserPermissionsReadRepositoryInterface::class
         );
 
-        $this->userId = new StringLiteral('7fdc57a4-1bdc-40d3-8441-a7d83528a15c');
-        $this->userPermissionsReadRepository->expects($this->once())
+        $this->userId = '7fdc57a4-1bdc-40d3-8441-a7d83528a15c';
+        $userPermissionsReadRepository->expects($this->once())
             ->method('hasPermission')
             ->willReturnCallback(
                 function (string $userId, Permission $permission) {
@@ -36,12 +29,12 @@ class UserPermissionVoterTest extends TestCase
                         Permission::aanbodBewerken()->toString(),
                         Permission::voorzieningenBewerken()->toString(),
                     ];
-                    return $userId === $this->userId->toNative() &&
+                    return $userId === $this->userId &&
                         in_array($permission->toString(), $permissions, true);
                 }
             );
 
-        $this->userPermissionVoter = new UserPermissionVoter($this->userPermissionsReadRepository);
+        $this->userPermissionVoter = new UserPermissionVoter($userPermissionsReadRepository);
     }
 
     /**
@@ -52,7 +45,7 @@ class UserPermissionVoterTest extends TestCase
         $this->assertTrue(
             $this->userPermissionVoter->isAllowed(
                 Permission::voorzieningenBewerken(),
-                new StringLiteral(''),
+                '',
                 $this->userId
             )
         );
@@ -66,7 +59,7 @@ class UserPermissionVoterTest extends TestCase
         $this->assertFalse(
             $this->userPermissionVoter->isAllowed(
                 Permission::gebruikersBeheren(),
-                new StringLiteral(''),
+                '',
                 $this->userId
             )
         );
@@ -80,8 +73,8 @@ class UserPermissionVoterTest extends TestCase
         $this->assertFalse(
             $this->userPermissionVoter->isAllowed(
                 Permission::voorzieningenBewerken(),
-                new StringLiteral(''),
-                new StringLiteral('')
+                '',
+                ''
             )
         );
     }

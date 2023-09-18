@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\StringLiteral;
 
-class GodUserVoter implements PermissionVoter
+final class GodUserVoter implements PermissionVoter
 {
     /**
-     * @var array
+     * @var string[]
      */
-    private $godUserIds;
+    private array $godUserIds;
 
     /**
      * @param string[] $godUserIds
@@ -24,9 +23,9 @@ class GodUserVoter implements PermissionVoter
 
     public function isAllowed(
         Permission $permission,
-        StringLiteral $itemId,
-        StringLiteral $userId
+        string $itemId,
+        string $userId
     ): bool {
-        return in_array($userId->toNative(), $this->godUserIds);
+        return in_array($userId, $this->godUserIds);
     }
 }

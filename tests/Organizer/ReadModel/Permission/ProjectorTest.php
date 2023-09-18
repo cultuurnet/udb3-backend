@@ -9,7 +9,6 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -20,21 +19,16 @@ final class ProjectorTest extends TestCase
      */
     private $repository;
 
-    /**
-     * @var CreatedByToUserIdResolverInterface|MockObject
-     */
-    private $userIdResolver;
-
     private Projector $projector;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(ResourceOwnerRepository::class);
-        $this->userIdResolver = $this->createMock(CreatedByToUserIdResolverInterface::class);
+        $userIdResolver = $this->createMock(CreatedByToUserIdResolverInterface::class);
 
         $this->projector = new Projector(
             $this->repository,
-            $this->userIdResolver
+            $userIdResolver
         );
     }
 
@@ -57,8 +51,8 @@ final class ProjectorTest extends TestCase
         $this->repository->expects($this->once())
             ->method('markResourceEditableByNewUser')
             ->with(
-                new StringLiteral($organizerId),
-                new StringLiteral($newOwnerId)
+                $organizerId,
+                $newOwnerId
             );
 
         $this->projector->handle($domainMessage);

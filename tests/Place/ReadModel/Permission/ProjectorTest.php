@@ -25,17 +25,14 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 
-class ProjectorTest extends TestCase
+final class ProjectorTest extends TestCase
 {
     /**
      * @var ResourceOwnerRepository|MockObject
      */
     private $repository;
 
-    /**
-     * @var Projector
-     */
-    private $projector;
+    private Projector $projector;
 
     /**
      * @var CreatedByToUserIdResolverInterface|MockObject
@@ -183,8 +180,8 @@ class ProjectorTest extends TestCase
         $this->repository->expects($this->once())
             ->method('markResourceEditableByNewUser')
             ->with(
-                new StringLiteral($placeId),
-                new StringLiteral($newOwnerId)
+                $placeId,
+                $newOwnerId
             );
 
         $this->projector->handle($domainMessage);

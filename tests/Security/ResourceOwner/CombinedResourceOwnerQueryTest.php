@@ -6,29 +6,25 @@ namespace CultuurNet\UDB3\Security\ResourceOwner;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
-class CombinedResourceOwnerQueryTest extends TestCase
+final class CombinedResourceOwnerQueryTest extends TestCase
 {
     /**
      * @var ResourceOwnerQuery[]|MockObject[]
      */
     private $permissionQueries;
 
-    /**
-     * @var CombinedResourceOwnerQuery
-     */
-    private $combinedPermissionQuery;
+    private CombinedResourceOwnerQuery $combinedPermissionQuery;
 
     protected function setUp(): void
     {
         $this->permissionQueries[] = $this->createPermissionQuery([
-            new StringLiteral('offerId1'),
-            new StringLiteral('offerId2'),
+            'offerId1',
+            'offerId2',
         ]);
 
         $this->permissionQueries[] = $this->createPermissionQuery([
-            new StringLiteral('offerId3'),
+            'offerId3',
         ]);
 
         $this->combinedPermissionQuery = new CombinedResourceOwnerQuery(
@@ -47,7 +43,7 @@ class CombinedResourceOwnerQueryTest extends TestCase
         }
 
         $this->combinedPermissionQuery->getEditableResourceIds(
-            new StringLiteral('userId')
+            'userId'
         );
     }
 
@@ -56,14 +52,12 @@ class CombinedResourceOwnerQueryTest extends TestCase
      */
     public function it_returns_merged_array_from_all_permission_queries(): void
     {
-        $editableOffers = $this->combinedPermissionQuery->getEditableResourceIds(
-            new StringLiteral('userId')
-        );
+        $editableOffers = $this->combinedPermissionQuery->getEditableResourceIds('userId');
 
         $expectedEditableOffers = [
-            new StringLiteral('offerId1'),
-            new StringLiteral('offerId2'),
-            new StringLiteral('offerId3'),
+            'offerId1',
+            'offerId2',
+            'offerId3',
         ];
 
         $this->assertEquals($expectedEditableOffers, $editableOffers);
@@ -81,13 +75,11 @@ class CombinedResourceOwnerQueryTest extends TestCase
             $permissionQueries
         );
 
-        $this->assertEmpty($combinedPermissionQuery->getEditableResourceIds(
-            new StringLiteral('userId')
-        ));
+        $this->assertEmpty($combinedPermissionQuery->getEditableResourceIds('userId'));
     }
 
     /**
-     * @param StringLiteral[] $editableOffers
+     * @param string[] $editableOffers
      * @return ResourceOwnerQuery|MockObject
      */
     private function createPermissionQuery(array $editableOffers)

@@ -4,25 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
-use CultuurNet\UDB3\StringLiteral;
-
-class CommandAuthorizationException extends \Exception
+final class CommandAuthorizationException extends \Exception
 {
-    private StringLiteral $userId;
+    private string $userId;
 
     private AuthorizableCommand $command;
 
-    /**
-     * CommandAuthorizationException constructor.
-     */
     public function __construct(
-        StringLiteral $userId,
+        string $userId,
         AuthorizableCommand $command
     ) {
         parent::__construct(
             sprintf(
                 'User with id: %s has no permission: "%s" on item: %s when executing command: %s',
-                $userId->toNative(),
+                $userId,
                 $command->getPermission()->toString(),
                 $command->getItemId(),
                 get_class($command)
@@ -34,7 +29,7 @@ class CommandAuthorizationException extends \Exception
         $this->command = $command;
     }
 
-    public function getUserId(): StringLiteral
+    public function getUserId(): string
     {
         return $this->userId;
     }

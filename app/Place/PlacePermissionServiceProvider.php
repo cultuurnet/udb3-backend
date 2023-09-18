@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Place;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Security\ResourceOwner\Doctrine\DBALResourceOwnerRepository;
 use CultuurNet\UDB3\Place\ReadModel\Permission\Projector;
-use CultuurNet\UDB3\StringLiteral;
 
 final class PlacePermissionServiceProvider extends AbstractServiceProvider
 {
@@ -27,9 +26,9 @@ final class PlacePermissionServiceProvider extends AbstractServiceProvider
             'place_owner.repository',
             function () use ($container) {
                 return new DBALResourceOwnerRepository(
-                    new StringLiteral('place_permission_readmodel'),
+                    'place_permission_readmodel',
                     $container->get('dbal_connection'),
-                    new StringLiteral('place_id')
+                    'place_id'
                 );
             }
         );

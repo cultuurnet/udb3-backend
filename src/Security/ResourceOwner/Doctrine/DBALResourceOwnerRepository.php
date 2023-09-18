@@ -8,72 +8,51 @@ use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQuery;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
-use CultuurNet\UDB3\StringLiteral;
 
-class DBALResourceOwnerRepository implements ResourceOwnerRepository, ResourceOwnerQuery
+final class DBALResourceOwnerRepository implements ResourceOwnerRepository, ResourceOwnerQuery
 {
-    /**
-     * @var Connection
-     */
-    protected $connection;
+    private Connection $connection;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $idField;
+    private string $idField;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $tableName;
+    private string $tableName;
 
-    /**
-     * @param StringLiteral $tableName
-     *  The name of the table where the permissions are stored.
-     *
-     * @param Connection $connection
-     *  A database connection.
-     *
-     * @param StringLiteral $idField
-     *  The name of the column that holds the resource identifier.
-     *
-     */
     public function __construct(
-        StringLiteral $tableName,
+        string $tableName,
         Connection $connection,
-        StringLiteral $idField
+        string $idField
     ) {
         $this->tableName = $tableName;
         $this->connection = $connection;
         $this->idField = $idField;
     }
 
-    public function getEditableResourceIds(StringLiteral $userId): array
+    public function getEditableResourceIds(string $userId): array
     {
         $q = $this->connection->createQueryBuilder();
-        $q->select($this->idField->toNative())
-            ->from($this->tableName->toNative())
+        $q->select($this->idField)
+            ->from($this->tableName)
             ->where('user_id = :userId')
-            ->setParameter(':userId', $userId->toNative());
+            ->setParameter(':userId', $userId);
 
         $results = $q->execute();
 
         $events = [];
         while ($id = $results->fetchColumn(0)) {
-            $events[] = new StringLiteral($id);
+            $events[] =$id;
         }
 
         return $events;
     }
 
-    public function markResourceEditableByUser(StringLiteral $eventId, StringLiteral $userId): void
+    public function markResourceEditableByUser(string $resourceId, string $userId): void
     {
         try {
             $this->connection->insert(
-                $this->tableName->toNative(),
+                $this->tableName,
                 [
-                    $this->idField->toNative() => $eventId->toNative(),
-                    'user_id' => $userId->toNative(),
+                    $this->idField => $resourceId,
+                    'user_id' => $userId,
                 ]
             );
         } catch (UniqueConstraintViolationException $e) {
@@ -82,12 +61,12 @@ class DBALResourceOwnerRepository implements ResourceOwnerRepository, ResourceOw
         }
     }
 
-    public function markResourceEditableByNewUser(StringLiteral $eventId, StringLiteral $userId): void
+    public function markResourceEditableByNewUser(string $resourceId, string $userId): void
     {
         $this->connection->update(
-            $this->tableName->toNative(),
-            ['user_id' => $userId->toNative()],
-            [$this->idField->toNative() => $eventId->toNative()]
+            $this->tableName,
+            ['user_id' => $userId],
+            [$this->idField => $resourceId]
         );
     }
 }

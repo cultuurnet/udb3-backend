@@ -52,7 +52,7 @@ final class ApiProblemFactory
                 return ApiProblem::forbidden(
                     sprintf(
                         'User %s has no permission "%s" on resource %s',
-                        $e->getUserId()->toNative(),
+                        $e->getUserId(),
                         $e->getCommand()->getPermission()->toString(),
                         $e->getCommand()->getItemId()
                     )

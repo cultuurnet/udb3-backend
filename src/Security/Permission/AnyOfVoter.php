@@ -5,18 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\StringLiteral;
 
-class AnyOfVoter implements PermissionVoter
+final class AnyOfVoter implements PermissionVoter
 {
     /**
      * @var PermissionVoter[]
      */
-    private $voters;
+    private array $voters;
 
-    /**
-     * @param PermissionVoter[] ...$voters
-     */
     public function __construct(PermissionVoter ...$voters)
     {
         $this->voters = $voters;
@@ -24,8 +20,8 @@ class AnyOfVoter implements PermissionVoter
 
     public function isAllowed(
         Permission $permission,
-        StringLiteral $itemId,
-        StringLiteral $userId
+        string $itemId,
+        string $userId
     ): bool {
         foreach ($this->voters as $voter) {
             if ($voter->isAllowed($permission, $itemId, $userId)) {

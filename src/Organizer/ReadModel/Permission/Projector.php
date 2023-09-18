@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\StringLiteral;
 
-class Projector implements EventListener
+final class Projector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
@@ -52,8 +52,8 @@ class Projector implements EventListener
             }
 
             $this->permissionRepository->markResourceEditableByUser(
-                new StringLiteral($organizerImportedFromUDB2->getActorId()),
-                $ownerId
+                $organizerImportedFromUDB2->getActorId(),
+                $ownerId->toNative()
             );
         }
     }
@@ -81,8 +81,8 @@ class Projector implements EventListener
     protected function applyOwnerChanged(OwnerChanged $ownerChanged): void
     {
         $this->permissionRepository->markResourceEditableByNewUser(
-            new StringLiteral($ownerChanged->getOrganizerId()),
-            new StringLiteral($ownerChanged->getNewOwnerId())
+            $ownerChanged->getOrganizerId(),
+            $ownerChanged->getNewOwnerId()
         );
     }
 
@@ -91,10 +91,10 @@ class Projector implements EventListener
         DomainMessage $domainMessage
     ): void {
         $metadata = $domainMessage->getMetadata()->serialize();
-        $ownerId = new StringLiteral($metadata['user_id']);
+        $ownerId = $metadata['user_id'];
 
         $this->permissionRepository->markResourceEditableByUser(
-            new StringLiteral($organizerId),
+            $organizerId,
             $ownerId
         );
     }

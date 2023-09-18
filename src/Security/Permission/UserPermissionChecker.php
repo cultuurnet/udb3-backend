@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security\Permission;
 
-use CultuurNet\UDB3\StringLiteral;
-
 final class UserPermissionChecker
 {
     private array $permissions;
@@ -24,8 +22,8 @@ final class UserPermissionChecker
         foreach ($this->permissions as $permission) {
             $hasPermission = $this->permissionVoter->isAllowed(
                 $permission,
-                new StringLiteral($resourceId),
-                new StringLiteral($userId)
+                $resourceId,
+                $userId
             );
 
             if ($hasPermission) {
@@ -40,8 +38,8 @@ final class UserPermissionChecker
     {
         return $this->permissionVoter->isAllowed(
             $this->permissions[0],
-            new StringLiteral($offerId),
-            new StringLiteral($userId)
+            $offerId,
+            $userId
         );
     }
 }

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Console\Command;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Organizer\Commands\ChangeOwner;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQuery;
-use CultuurNet\UDB3\StringLiteral;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -51,8 +50,8 @@ final class ChangeOrganizerOwnerInBulk extends AbstractCommand
 
         $success = 0;
         $errors = 0;
-        foreach ($this->permissionQuery->getEditableResourceIds(new StringLiteral($originalOwnerId)) as $editableOrganizers) {
-            $organizerId = $editableOrganizers->toNative();
+        foreach ($this->permissionQuery->getEditableResourceIds($originalOwnerId) as $editableOrganizers) {
+            $organizerId = $editableOrganizers;
             try {
                 $this->commandBus->dispatch(
                     new ChangeOwner(

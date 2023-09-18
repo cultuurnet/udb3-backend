@@ -6,18 +6,17 @@ namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
-class PermissionSwitchVoterTest extends TestCase
+final class PermissionSwitchVoterTest extends TestCase
 {
     /**
      * @test
      */
     public function it_delegates_to_a_voter_responsible_for_the_permission(): void
     {
-        $offerId = new StringLiteral('232');
-        $userId = new StringLiteral('john_doe');
-        $organizerId = new StringLiteral('organizer_abc');
+        $offerId = '232';
+        $userId = 'john_doe';
+        $organizerId = 'organizer_abc';
 
         $a = $this->getMockBuilder(PermissionVoter::class)->getMock();
         $b = $this->getMockBuilder(PermissionVoter::class)->getMock();
@@ -53,8 +52,8 @@ class PermissionSwitchVoterTest extends TestCase
      */
     public function it_can_use_a_default_voter_for_permissions_that_do_not_have_a_specific_voter(): void
     {
-        $offerId = new StringLiteral('232');
-        $userId = new StringLiteral('john_doe');
+        $offerId = '232';
+        $userId = 'john_doe';
 
         $specific = $this->getMockBuilder(PermissionVoter::class)->getMock();
         $default = $this->getMockBuilder(PermissionVoter::class)->getMock();

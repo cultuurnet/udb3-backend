@@ -6,37 +6,22 @@ namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\StringLiteral;
 use GuzzleHttp\Psr7\Request;
 use Http\Client\HttpClient;
 use Psr\Http\Message\UriInterface;
-use CultuurNet\UDB3\StringLiteral;
 
-class Sapi3RoleConstraintVoter implements PermissionVoter
+final class Sapi3RoleConstraintVoter implements PermissionVoter
 {
-    /**
-     * @var UserConstraintsReadRepositoryInterface
-     */
-    private $userConstraintsReadRepository;
+    private UserConstraintsReadRepositoryInterface $userConstraintsReadRepository;
 
-    /**
-     * @var UriInterface
-     */
-    private $searchLocation;
+    private UriInterface $searchLocation;
 
-    /**
-     * @var HttpClient
-     */
-    private $httpClient;
+    private HttpClient $httpClient;
 
-    /**
-     * @var string|null
-     */
-    private $apiKey;
+    private ?string $apiKey;
 
-    /**
-     * @var array
-     */
-    private $queryParameters;
+    private array $queryParameters;
 
     public function __construct(
         UserConstraintsReadRepositoryInterface $userConstraintsReadRepository,
@@ -54,11 +39,11 @@ class Sapi3RoleConstraintVoter implements PermissionVoter
 
     public function isAllowed(
         Permission $permission,
-        StringLiteral $itemId,
-        StringLiteral $userId
+        string $itemId,
+        string $userId
     ): bool {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
-            $userId,
+            new StringLiteral($userId),
             $permission
         );
         if (count($constraints) < 1) {
@@ -76,18 +61,18 @@ class Sapi3RoleConstraintVoter implements PermissionVoter
     }
 
     private function createQueryString(
-        StringLiteral $constraint,
-        StringLiteral $resourceId
+        string $constraint,
+        string $resourceId
     ): string {
-        $constraintStr = '(' . $constraint->toNative() . ')';
-        $resourceIdStr = $resourceId->toNative();
+        $constraintStr = '(' . $constraint . ')';
+        $resourceIdStr = $resourceId;
 
         return '(' . $constraintStr . ' AND id:' . $resourceIdStr . ')';
     }
 
     private function createQueryFromConstraints(
         array $constraints,
-        StringLiteral $resourceId
+        string $resourceId
     ): string {
         $queryString = '';
 

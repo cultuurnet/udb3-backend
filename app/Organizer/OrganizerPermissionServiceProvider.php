@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Organizer;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Organizer\ReadModel\Permission\Projector;
 use CultuurNet\UDB3\Security\ResourceOwner\Doctrine\DBALResourceOwnerRepository;
-use CultuurNet\UDB3\StringLiteral;
 
 final class OrganizerPermissionServiceProvider extends AbstractServiceProvider
 {
@@ -29,9 +28,9 @@ final class OrganizerPermissionServiceProvider extends AbstractServiceProvider
             'organizer_owner.repository',
             function () use ($container) {
                 return new DBALResourceOwnerRepository(
-                    new StringLiteral('organizer_permission_readmodel'),
+                    'organizer_permission_readmodel',
                     $container->get('dbal_connection'),
-                    new StringLiteral('organizer_id')
+                    'organizer_id'
                 );
             }
         );

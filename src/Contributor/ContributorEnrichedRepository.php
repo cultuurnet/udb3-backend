@@ -10,7 +10,6 @@ use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
-use CultuurNet\UDB3\StringLiteral;
 
 final class ContributorEnrichedRepository extends DocumentRepositoryDecorator
 {
@@ -74,8 +73,8 @@ final class ContributorEnrichedRepository extends DocumentRepositoryDecorator
         return $this->currentUserId !== null &&
             $this->permissionVoter->isAllowed(
                 Permission::aanbodBewerken(),
-                new StringLiteral($id),
-                new StringLiteral($this->currentUserId)
+                $id,
+                $this->currentUserId
             );
     }
 }

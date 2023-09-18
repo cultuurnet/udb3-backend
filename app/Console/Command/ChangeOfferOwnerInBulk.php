@@ -12,14 +12,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
-use CultuurNet\UDB3\StringLiteral;
 
-class ChangeOfferOwnerInBulk extends AbstractCommand
+final class ChangeOfferOwnerInBulk extends AbstractCommand
 {
-    /**
-     * @var ResourceOwnerQuery
-     */
-    private $permissionQuery;
+    private ResourceOwnerQuery $permissionQuery;
 
     public function __construct(
         CommandBus $commandBus,
@@ -54,8 +50,8 @@ class ChangeOfferOwnerInBulk extends AbstractCommand
 
         $success = 0;
         $errors = 0;
-        foreach ($this->permissionQuery->getEditableResourceIds(new StringLiteral($originalOwnerId)) as $editableOffer) {
-            $offerId = $editableOffer->toNative();
+        foreach ($this->permissionQuery->getEditableResourceIds($originalOwnerId) as $editableOffer) {
+            $offerId = $editableOffer;
             try {
                 $this->commandBus->dispatch(
                     new ChangeOwner(

@@ -5,22 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
-use CultuurNet\UDB3\StringLiteral;
 
-class PermissionVoterCommandBusSecurity implements CommandBusSecurity
+final class PermissionVoterCommandBusSecurity implements CommandBusSecurity
 {
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var PermissionVoter
-     */
-    private $permissionVoter;
+    private PermissionVoter $permissionVoter;
 
     public function __construct(
-        ?string $userId = null,
+        ?string $userId,
         PermissionVoter $permissionVoter
     ) {
         $this->userId = $userId;
@@ -29,12 +22,11 @@ class PermissionVoterCommandBusSecurity implements CommandBusSecurity
 
     public function isAuthorized(AuthorizableCommand $command): bool
     {
-        $itemId = new StringLiteral($command->getItemId());
-        return $this->currentUserCanEditItem($itemId, $command);
+        return $this->currentUserCanEditItem($command->getItemId(), $command);
     }
 
     private function currentUserCanEditItem(
-        StringLiteral $itemId,
+        string $itemId,
         AuthorizableCommand $command
     ): bool {
         if (!$this->userId) {
@@ -44,7 +36,7 @@ class PermissionVoterCommandBusSecurity implements CommandBusSecurity
         return $this->permissionVoter->isAllowed(
             $command->getPermission(),
             $itemId,
-            new StringLiteral($this->userId)
+            $this->userId
         );
     }
 }

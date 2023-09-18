@@ -8,21 +8,18 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 
-class DBALResourceOwnerRepositoryTest extends TestCase
+final class DBALResourceOwnerRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var DBALResourceOwnerRepository
-     */
-    private $repository;
+    private DBALResourceOwnerRepository $repository;
 
     public function setUp(): void
     {
-        $table = new StringLiteral('event_permission');
-        $idField = new StringLiteral('event_id');
+        $table = 'event_permission';
+        $idField = 'event_id';
 
-        (new SchemaConfigurator($table, $idField))->configure(
+        (new SchemaConfigurator(new StringLiteral($table), new StringLiteral($idField)))->configure(
             $this->getConnection()->getSchemaManager()
         );
 
@@ -38,17 +35,17 @@ class DBALResourceOwnerRepositoryTest extends TestCase
      */
     public function it_can_add_and_query_offer_permissions(): void
     {
-        $johnDoe = new StringLiteral('abc');
+        $johnDoe = 'abc';
         $editableByJohnDoe = [
-            new StringLiteral('123'),
-            new StringLiteral('456'),
-            new StringLiteral('789'),
+            '123',
+            '456',
+            '789',
         ];
-        $janeDoe = new StringLiteral('def');
+        $janeDoe = 'def';
         $editableByJaneDoe = [
-            new StringLiteral('101112'),
-            new StringLiteral('131415'),
-            new StringLiteral('456'),
+            '101112',
+            '131415',
+            '456',
         ];
 
         $this->assertEquals(
@@ -75,10 +72,7 @@ class DBALResourceOwnerRepositoryTest extends TestCase
         );
     }
 
-    /**
-     * @param string $key
-     */
-    private function markEditable(StringLiteral $eventId, $key, StringLiteral $userId): void
+    private function markEditable(string $eventId, string $key, string $userId): void
     {
         $this->repository->markResourceEditableByUser($eventId, $userId);
     }
@@ -88,16 +82,16 @@ class DBALResourceOwnerRepositoryTest extends TestCase
      */
     public function it_silently_ignores_adding_duplicate_permissions(): void
     {
-        $johnDoe = new StringLiteral('abc');
+        $johnDoe = 'abc';
         $editableByJohnDoe = [
-            new StringLiteral('123'),
-            new StringLiteral('456'),
-            new StringLiteral('789'),
+            '123',
+            '456',
+            '789',
         ];
 
         array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
 
-        $this->repository->markResourceEditableByUser(new StringLiteral('456'), $johnDoe);
+        $this->repository->markResourceEditableByUser('456', $johnDoe);
 
         $this->assertEquals(
             $editableByJohnDoe,
@@ -110,28 +104,28 @@ class DBALResourceOwnerRepositoryTest extends TestCase
      */
     public function it_updates_the_user_id_if_explicitly_requested(): void
     {
-        $johnDoe = new StringLiteral('abc');
-        $janeDoe = new StringLiteral('def');
+        $johnDoe = 'abc';
+        $janeDoe = 'def';
         $editableByJohnDoe = [
-            new StringLiteral('123'),
-            new StringLiteral('456'),
-            new StringLiteral('789'),
+            '123',
+            '456',
+            '789',
         ];
 
         array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
 
-        $this->repository->markResourceEditableByNewUser(new StringLiteral('456'), $janeDoe);
+        $this->repository->markResourceEditableByNewUser('456', $janeDoe);
 
         $this->assertEquals(
             [
-                new StringLiteral('456'),
+                '456',
             ],
             $this->repository->getEditableResourceIds($janeDoe)
         );
         $this->assertEquals(
             [
-                new StringLiteral('123'),
-                new StringLiteral('789'),
+                '123',
+                '789',
             ],
             $this->repository->getEditableResourceIds($johnDoe)
         );

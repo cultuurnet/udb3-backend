@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
-use CultuurNet\UDB3\StringLiteral;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -56,8 +55,8 @@ final class GetContributorsRequestHandler implements RequestHandlerInterface
         if (
             !$this->permissionVoter->isAllowed(
                 Permission::aanbodBewerken(),
-                new StringLiteral($offerId),
-                new StringLiteral($this->currentUserId)
+                $offerId,
+                $this->currentUserId
             )
         ) {
             throw ApiProblem::forbidden(
