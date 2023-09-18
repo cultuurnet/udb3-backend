@@ -13,7 +13,6 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Publisher;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Subtitle;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -21,7 +20,7 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
 {
-    public function deserialize(StringLiteral $data): ExportEventsAsPDF
+    public function deserialize(string $data): ExportEventsAsPDF
     {
         $json = parent::deserialize($data);
 

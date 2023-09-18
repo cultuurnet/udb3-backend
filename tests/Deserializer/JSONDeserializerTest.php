@@ -5,19 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Deserializer;
 
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class JSONDeserializerTest extends TestCase
 {
-    /**
-     * @var JSONDeserializer
-     */
-    protected $deserializer;
+    private JSONDeserializer $deserializer;
 
-    /**
-     * @var JSONDeserializer
-     */
-    private $assocDeserializer;
+    private JSONDeserializer $assocDeserializer;
 
     public function setUp(): void
     {
@@ -35,11 +28,9 @@ class JSONDeserializerTest extends TestCase
         $this->expectExceptionMessage('Invalid JSON');
 
         $this->deserializer->deserialize(
-            new StringLiteral(
-                '{
-                  "eventId": "foo"
-                '
-            )
+            '{
+              "eventId": "foo"
+            '
         );
     }
 
@@ -48,9 +39,7 @@ class JSONDeserializerTest extends TestCase
      */
     public function itCanDeserializeToAnObject(): void
     {
-        $jsonString = new StringLiteral(
-            '{"key1":"value1","key2":{"key3":"value3"}}'
-        );
+        $jsonString = '{"key1":"value1","key2":{"key3":"value3"}}';
 
         $actualObject = $this->deserializer->deserialize($jsonString);
 
@@ -64,9 +53,7 @@ class JSONDeserializerTest extends TestCase
      */
     public function itCanDeserializeToAnAssociativeArray(): void
     {
-        $jsonString = new StringLiteral(
-            '{"key1":"value1","key2":{"key3":"value3"}}'
-        );
+        $jsonString = '{"key1":"value1","key2":{"key3":"value3"}}';
 
         $actualArray = $this->assocDeserializer->deserialize($jsonString);
 
@@ -75,10 +62,7 @@ class JSONDeserializerTest extends TestCase
         $this->assertEquals($expectedArray, $actualArray);
     }
 
-    /**
-     * @return \stdClass
-     */
-    private function createExpectedObject()
+    private function createExpectedObject(): \stdClass
     {
         $expectedObject = new \stdClass();
         $expectedObject->key1 = 'value1';
@@ -89,10 +73,7 @@ class JSONDeserializerTest extends TestCase
         return $expectedObject;
     }
 
-    /**
-     * @return array
-     */
-    private function createExpectedArray()
+    private function createExpectedArray(): array
     {
         $expectedArray = [];
         $expectedArray['key1'] = 'value1';

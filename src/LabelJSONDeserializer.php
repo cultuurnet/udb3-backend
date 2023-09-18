@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
  */
 class LabelJSONDeserializer extends JSONDeserializer
 {
-    public function deserialize(StringLiteral $data): Label
+    public function deserialize(string $data): Label
     {
         $data = parent::deserialize($data);
 

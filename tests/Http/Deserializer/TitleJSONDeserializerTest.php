@@ -11,10 +11,7 @@ use CultuurNet\UDB3\StringLiteral;
 
 class TitleJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var TitleJSONDeserializer
-     */
-    private $deserializer;
+    private TitleJSONDeserializer $deserializer;
 
     public function setUp(): void
     {
@@ -26,7 +23,7 @@ class TitleJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_a_valid_title(): void
     {
-        $json = new StringLiteral('{"title": "Lorem ipsum"}');
+        $json = '{"title": "Lorem ipsum"}';
         $expected = new Title('Lorem ipsum');
         $actual = $this->deserializer->deserialize($json);
         $this->assertEquals($expected, $actual);
@@ -39,7 +36,7 @@ class TitleJSONDeserializerTest extends TestCase
     {
         $deserializer = new TitleJSONDeserializer(false, new StringLiteral('name'));
 
-        $json = new StringLiteral('{"name": "Lorem ipsum"}');
+        $json = '{"name": "Lorem ipsum"}';
         $expected = new Title('Lorem ipsum');
 
         $actual = $deserializer->deserialize($json);
@@ -51,7 +48,7 @@ class TitleJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_a_title_is_missing(): void
     {
-        $json = new StringLiteral('{"foo": "bar"}');
+        $json = '{"foo": "bar"}';
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('Missing value for "title".');

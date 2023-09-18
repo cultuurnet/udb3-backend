@@ -69,12 +69,8 @@ class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
         );
     }
 
-    private function getStringFromFile(string $fileName): StringLiteral
+    private function getStringFromFile(string $fileName): string
     {
-        $json = file_get_contents(
-            __DIR__ . '/' . $fileName
-        );
-
-        return new StringLiteral($json);
+        return file_get_contents(__DIR__ . '/' . $fileName);
     }
 }
