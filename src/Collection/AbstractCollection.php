@@ -15,7 +15,7 @@ abstract class AbstractCollection implements CollectionInterface
 {
     protected array $items;
 
-    public function __construct()
+    final public function __construct()
     {
         $this->items = [];
     }
@@ -129,7 +129,6 @@ abstract class AbstractCollection implements CollectionInterface
      */
     public static function fromArray(array $items)
     {
-        /** @phpstan-ignore-next-line */
         $collection = new static();
         foreach ($items as $item) {
             $collection = $collection->with($item);
