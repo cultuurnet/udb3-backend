@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class UserPermissionsProjectorTest extends TestCase
 {
@@ -59,7 +58,7 @@ class UserPermissionsProjectorTest extends TestCase
      */
     public function it_calls_add_user_role_on_user_added_event(): void
     {
-        $userAdded = new UserAdded(new UUID('ae51b740-9d8b-4868-ae15-ecbb2649b8e1'), new StringLiteral('userId'));
+        $userAdded = new UserAdded(new UUID('ae51b740-9d8b-4868-ae15-ecbb2649b8e1'), 'userId');
         $domainMessage = $this->createDomainMessage($userAdded);
 
         $this->userPermissionsWriteRepository->expects($this->once())
@@ -74,7 +73,7 @@ class UserPermissionsProjectorTest extends TestCase
      */
     public function it_calls_remove_user_role_on_user_removed_event(): void
     {
-        $userRemoved = new UserRemoved(new UUID('b3154dd0-3109-4133-9f81-29703e64c803'), new StringLiteral('userId'));
+        $userRemoved = new UserRemoved(new UUID('b3154dd0-3109-4133-9f81-29703e64c803'), 'userId');
         $domainMessage = $this->createDomainMessage($userRemoved);
 
         $this->userPermissionsWriteRepository->expects($this->once())

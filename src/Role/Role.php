@@ -20,13 +20,12 @@ use CultuurNet\UDB3\Role\Events\UserAdded;
 use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\StringLiteral;
 
 class Role extends EventSourcedAggregateRoot
 {
     private UUID $uuid;
 
-    private StringLiteral $name;
+    private string $name;
 
     private ?Query $query = null;
 
@@ -41,7 +40,7 @@ class Role extends EventSourcedAggregateRoot
     private array $labelIds = [];
 
     /**
-     * @var StringLiteral[]
+     * @var string[]
      */
     private array $userIds = [];
 
@@ -52,7 +51,7 @@ class Role extends EventSourcedAggregateRoot
 
     public static function create(
         UUID $uuid,
-        StringLiteral $name
+        string $name
     ): Role {
         $role = new Role();
 
@@ -66,7 +65,7 @@ class Role extends EventSourcedAggregateRoot
 
     public function rename(
         UUID $uuid,
-        StringLiteral $name
+        string $name
     ): void {
         $this->apply(new RoleRenamed($uuid, $name));
     }
@@ -136,7 +135,7 @@ class Role extends EventSourcedAggregateRoot
     }
 
     public function addUser(
-        StringLiteral $userId
+        string $userId
     ): void {
         if (!in_array($userId, $this->userIds)) {
             $this->apply(new UserAdded($this->uuid, $userId));
@@ -144,7 +143,7 @@ class Role extends EventSourcedAggregateRoot
     }
 
     public function removeUser(
-        StringLiteral $userId
+        string $userId
     ): void {
         if (in_array($userId, $this->userIds)) {
             $this->apply(new UserRemoved($this->uuid, $userId));
@@ -165,7 +164,7 @@ class Role extends EventSourcedAggregateRoot
 
     public function applyRoleRenamed(RoleRenamed $roleRenamed): void
     {
-        if (!$roleRenamed->getName()->isEmpty() && !$this->name->sameValueAs($roleRenamed->getName())) {
+        if (!empty($roleRenamed->getName()) && $this->name !== $roleRenamed->getName()) {
             $this->name = $roleRenamed->getName();
         }
     }

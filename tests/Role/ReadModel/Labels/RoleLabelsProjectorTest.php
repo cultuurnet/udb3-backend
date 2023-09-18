@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class RoleLabelsProjectorTest extends TestCase
 {
@@ -66,7 +65,7 @@ class RoleLabelsProjectorTest extends TestCase
     {
         $roleCreated = new RoleCreated(
             new UUID('ce35c40f-4d86-4057-bbc0-6cd3fb12e65c'),
-            new StringLiteral('roleName')
+            'roleName'
         );
 
         $domainMessage = $this->createDomainMessage(

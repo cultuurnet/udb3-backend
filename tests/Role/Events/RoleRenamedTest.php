@@ -6,30 +6,20 @@ namespace CultuurNet\UDB3\Role\Events;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class RoleRenamedTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $name;
+    protected string $name;
 
-    /**
-     * @var RoleRenamed
-     */
-    protected $roleRenamed;
+    protected RoleRenamed $roleRenamed;
 
     protected function setUp(): void
     {
         $this->uuid = new UUID('e97ed374-ca50-4d07-a893-637729341ab3');
 
-        $this->name = new StringLiteral('roleName');
+        $this->name = 'roleName';
 
         $this->roleRenamed = new RoleRenamed(
             $this->uuid,
@@ -84,14 +74,11 @@ class RoleRenamedTest extends TestCase
         $this->assertEquals($this->createdAsArray(), $createdAsArray);
     }
 
-    /**
-     * @return array
-     */
-    protected function createdAsArray()
+    protected function createdAsArray(): array
     {
         return [
             'uuid' => $this->roleRenamed->getUuid()->toString(),
-            'name' => $this->roleRenamed->getName()->toNative(),
+            'name' => $this->roleRenamed->getName(),
         ];
     }
 }

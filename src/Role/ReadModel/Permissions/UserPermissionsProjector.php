@@ -16,19 +16,12 @@ class UserPermissionsProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var UserPermissionsWriteRepositoryInterface
-     */
-    private $repository;
+    private UserPermissionsWriteRepositoryInterface $repository;
 
-    /**
-     * UserPermissionsProjector constructor.
-     */
     public function __construct(UserPermissionsWriteRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
-
 
     public function applyRoleDeleted(RoleDeleted $roleDeleted): void
     {

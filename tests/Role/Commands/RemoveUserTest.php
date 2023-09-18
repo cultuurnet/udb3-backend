@@ -11,17 +11,13 @@ class RemoveUserTest extends TestCase
 {
     private RemoveUser $removeUser;
 
-    private UUID $uuid;
-
-    private string $userId;
-
     protected function setUp(): void
     {
-        $this->uuid = new UUID('67780d64-b401-4040-af1f-5f424e0b7306');
+        $uuid = new UUID('67780d64-b401-4040-af1f-5f424e0b7306');
 
-        $this->userId = 'userId';
+        $userId = 'userId';
 
-        $this->removeUser = new RemoveUser($this->uuid, $this->userId);
+        $this->removeUser = new RemoveUser($uuid, $userId);
     }
 
     /**

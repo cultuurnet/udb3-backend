@@ -22,7 +22,7 @@ class Projector extends RoleProjector
             $roleCreated->getUuid()->toString(),
             function (\stdClass $json) use ($roleCreated) {
                 $json->uuid = $roleCreated->getUuid()->toString();
-                $json->name = $roleCreated->getName()->toNative();
+                $json->name = $roleCreated->getName();
                 $json->permissions = [];
                 return $json;
             }
@@ -36,7 +36,7 @@ class Projector extends RoleProjector
         );
 
         $json = $document->getBody();
-        $json->name = $roleRenamed->getName()->toNative();
+        $json->name = $roleRenamed->getName();
 
         $this->repository->save($document->withBody($json));
     }

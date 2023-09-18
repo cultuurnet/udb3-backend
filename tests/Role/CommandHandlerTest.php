@@ -35,13 +35,12 @@ use CultuurNet\UDB3\Role\Events\UserAdded;
 use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\StringLiteral;
 
 class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     private UUID $uuid;
 
-    private StringLiteral $name;
+    private string $name;
 
     private Permission $permission;
 
@@ -76,7 +75,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         parent::setUp();
 
         $this->uuid = new UUID('708bae44-9788-4318-8f19-1087da9e5814');
-        $this->name = new StringLiteral('labelName');
+        $this->name = 'labelName';
         $this->permission = Permission::aanbodBewerken();
         $this->query = new Query('category_flandersregion_name:"Regio Aalst"');
         $this->updatedQuery = new Query('category_flandersregion_name:"Regio Brussel"');
@@ -151,7 +150,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given([])
             ->when(new CreateRole(
                 $this->uuid,
-                $this->name->toNative()
+                $this->name
             ))
             ->then([$this->roleCreated]);
     }
@@ -166,7 +165,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given([$this->roleCreated])
             ->when(new RenameRole(
                 $this->uuid,
-                $this->name->toNative()
+                $this->name
             ))
             ->then([$this->roleRenamed]);
     }
@@ -206,7 +205,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_can_add_and_remove_users(): void
     {
-        $userId = new StringLiteral('123456');
+        $userId = '123456';
 
         $this->scenario
             ->withAggregateId($this->uuid->toString())
@@ -216,7 +215,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new AddUser(
                     $this->uuid,
-                    $userId->toNative()
+                    $userId
                 )
             )
             ->then(
@@ -232,7 +231,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new AddUser(
                     $this->uuid,
-                    $userId->toNative()
+                    $userId
                 )
             )
             ->then(
@@ -243,7 +242,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new RemoveUser(
                     $this->uuid,
-                    $userId->toNative()
+                    $userId
                 )
             )
             ->then(
@@ -259,7 +258,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new RemoveUser(
                     $this->uuid,
-                    $userId->toNative()
+                    $userId
                 )
             )
             ->then(

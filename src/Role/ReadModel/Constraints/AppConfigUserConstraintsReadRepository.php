@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role\ReadModel\Constraints;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\StringLiteral;
 
 final class AppConfigUserConstraintsReadRepository implements UserConstraintsReadRepositoryInterface
 {
@@ -16,16 +15,15 @@ final class AppConfigUserConstraintsReadRepository implements UserConstraintsRea
 
     private UserConstraintsReadRepositoryInterface $userConstraintsReadRepository;
 
-
     public function __construct(UserConstraintsReadRepositoryInterface $userConstraintsReadRepository, array $clientIdToPermissionsConfig)
     {
         $this->userConstraintsReadRepository = $userConstraintsReadRepository;
         $this->clientIdToPermissionsConfig = $clientIdToPermissionsConfig;
     }
 
-    public function getByUserAndPermission(StringLiteral $userId, Permission $permission): array
+    public function getByUserAndPermission(string $userId, Permission $permission): array
     {
-        $config = $this->clientIdToPermissionsConfig[$userId->toNative()] ?? [];
+        $config = $this->clientIdToPermissionsConfig[$userId] ?? [];
         $permissions = $config['permissions'] ?? [];
         $constraint = $config['sapi3_constraint'] ?? null;
 
@@ -33,6 +31,6 @@ final class AppConfigUserConstraintsReadRepository implements UserConstraintsRea
             return $this->userConstraintsReadRepository->getByUserAndPermission($userId, $permission);
         }
 
-        return [new StringLiteral($constraint)];
+        return [$constraint];
     }
 }

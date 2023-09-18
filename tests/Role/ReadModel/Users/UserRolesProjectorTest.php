@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class UserRolesProjectorTest extends TestCase
 {
@@ -37,10 +36,7 @@ class UserRolesProjectorTest extends TestCase
      */
     private $roleUsersDocumentRepository;
 
-    /**
-     * @var UserRolesProjector
-     */
-    private $userRolesProjector;
+    private UserRolesProjector $userRolesProjector;
 
     protected function setUp(): void
     {
@@ -72,7 +68,7 @@ class UserRolesProjectorTest extends TestCase
         $newRoleUuid = new UUID('715b5044-eb82-4b60-be0b-f8febf86d84d');
         $userAdded = new UserAdded(
             $newRoleUuid,
-            new StringLiteral('userId')
+            'userId'
         );
 
         // The new role details document.
@@ -94,16 +90,16 @@ class UserRolesProjectorTest extends TestCase
         // Which is part from the existing user roles document.
         $roles[$existingRoleUuid->toString()] = $existingRoleDetailsDocument->getBody();
         $this->userRolesDocumentRepository->method('fetch')
-            ->with($userAdded->getUserId()->toNative())
+            ->with($userAdded->getUserId())
             ->willReturn(new JsonDocument(
-                $userAdded->getUserId()->toNative(),
+                $userAdded->getUserId(),
                 json_encode($roles)
             ));
 
         // The resulting user role document with 2 roles.
         $roles[$newRoleUuid->toString()] = $newRoleDetailsDocument->getBody();
         $expectedUserRolesDocument = new JsonDocument(
-            $userAdded->getUserId()->toNative(),
+            $userAdded->getUserId(),
             json_encode($roles)
         );
 
@@ -126,7 +122,7 @@ class UserRolesProjectorTest extends TestCase
     {
         $userAdded = new UserAdded(
             new UUID('3fb2cc47-890b-4926-be6f-96b68980ca63'),
-            new StringLiteral('userId')
+            'userId'
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -147,11 +143,11 @@ class UserRolesProjectorTest extends TestCase
         $this->userRolesDocumentRepository
             ->method('fetch')
             ->with($userAdded->getUserId())
-            ->willThrowException(DocumentDoesNotExist::withId($userAdded->getUserId()->toNative()));
+            ->willThrowException(DocumentDoesNotExist::withId($userAdded->getUserId()));
 
         $roles[$userAdded->getUuid()->toString()] = $roleDetailsDocument->getBody();
         $jsonDocument = new JsonDocument(
-            $userAdded->getUserId()->toNative(),
+            $userAdded->getUserId(),
             json_encode($roles)
         );
 
@@ -169,7 +165,7 @@ class UserRolesProjectorTest extends TestCase
     {
         $userRemoved = new UserRemoved(
             new UUID('742d3294-d1c8-49fb-b4fc-98519494c877'),
-            new StringLiteral('userId')
+            'userId'
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -178,7 +174,7 @@ class UserRolesProjectorTest extends TestCase
         );
 
         $jsonDocument = new JsonDocument(
-            $userRemoved->getUserId()->toNative(),
+            $userRemoved->getUserId(),
             json_encode([$userRemoved->getUuid()->toString()])
         );
 
@@ -264,7 +260,7 @@ class UserRolesProjectorTest extends TestCase
     {
         $userAdded = new UserAdded(
             new UUID('c0bb7336-1b09-46c0-a585-f5d81f16da2c'),
-            new StringLiteral('userId')
+            'userId'
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -292,7 +288,7 @@ class UserRolesProjectorTest extends TestCase
     {
         $userRemoved = new UserRemoved(
             new UUID('54fc75c8-c6b1-412a-aba9-1189bcb45cac'),
-            new StringLiteral('userId')
+            'userId'
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -302,7 +298,7 @@ class UserRolesProjectorTest extends TestCase
 
         $this->userRolesDocumentRepository->method('fetch')
             ->with($userRemoved->getUserId())
-            ->willThrowException(DocumentDoesNotExist::withId($userRemoved->getUserId()->toNative()));
+            ->willThrowException(DocumentDoesNotExist::withId($userRemoved->getUserId()));
 
         $this->userRolesDocumentRepository->expects($this->never())
             ->method('save');

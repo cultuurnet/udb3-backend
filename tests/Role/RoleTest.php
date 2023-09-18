@@ -15,13 +15,12 @@ use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\StringLiteral;
 
 class RoleTest extends AggregateRootScenarioTestCase
 {
     private UUID $uuid;
 
-    private StringLiteral $name;
+    private string $name;
 
     private Permission $permission;
 
@@ -46,7 +45,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         parent::setUp();
 
         $this->uuid = new UUID('05957bcc-fcfc-422b-94f7-d0458f4016e4');
-        $this->name = new StringLiteral('roleName');
+        $this->name = 'roleName';
         $this->permission = Permission::aanbodBewerken();
         $this->query = new Query('category_flandersregion_name:"Regio Aalst"');
         $this->updatedQuery = new Query('category_flandersregion_name:"Regio Brussel"');

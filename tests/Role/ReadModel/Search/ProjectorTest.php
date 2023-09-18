@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
@@ -46,7 +45,7 @@ class ProjectorTest extends TestCase
     {
         $roleCreated = new RoleCreated(
             $this->uuid,
-            new StringLiteral('role_name')
+            'role_name'
         );
 
         $this->repository
@@ -64,7 +63,7 @@ class ProjectorTest extends TestCase
     {
         $roleRenamed = new RoleRenamed(
             $this->uuid,
-            new StringLiteral('role_name')
+            'role_name'
         );
 
         $this->repository
@@ -105,7 +104,7 @@ class ProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('updateConstraint')
-            ->with($constraintAdded->getUuid()->toString(), $constraintAdded->getQuery());
+            ->with($constraintAdded->getUuid()->toString(), $constraintAdded->getQuery()->toNative());
 
         $this->projector->handle($domainMessage);
     }
@@ -123,7 +122,7 @@ class ProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('updateConstraint')
-            ->with($constraintUpdated->getUuid()->toString(), $constraintUpdated->getQuery());
+            ->with($constraintUpdated->getUuid()->toString(), $constraintUpdated->getQuery()->toNative());
 
         $this->projector->handle($domainMessage);
     }

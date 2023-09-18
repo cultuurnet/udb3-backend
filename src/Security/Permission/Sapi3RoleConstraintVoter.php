@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\StringLiteral;
 use GuzzleHttp\Psr7\Request;
 use Http\Client\HttpClient;
 use Psr\Http\Message\UriInterface;
@@ -43,7 +42,7 @@ final class Sapi3RoleConstraintVoter implements PermissionVoter
         string $userId
     ): bool {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
-            new StringLiteral($userId),
+            $userId,
             $permission
         );
         if (count($constraints) < 1) {

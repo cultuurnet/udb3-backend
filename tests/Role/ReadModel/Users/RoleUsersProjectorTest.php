@@ -34,15 +34,9 @@ class RoleUsersProjectorTest extends TestCase
      */
     private $userIdentityResolver;
 
-    /**
-     * @var RoleUsersProjector
-     */
-    private $roleUsersProjector;
+    private RoleUsersProjector $roleUsersProjector;
 
-    /**
-     * @var UserIdentityDetails
-     */
-    private $userIdentityDetail;
+    private UserIdentityDetails $userIdentityDetail;
 
     protected function setUp(): void
     {
@@ -71,7 +65,7 @@ class RoleUsersProjectorTest extends TestCase
     {
         $roleCreated = new RoleCreated(
             new UUID('1be501c0-4e1c-4c92-a97d-33b3839897db'),
-            new StringLiteral('roleName')
+            'roleName'
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -115,7 +109,7 @@ class RoleUsersProjectorTest extends TestCase
     {
         $userAdded = new UserAdded(
             new UUID('e0b91781-7aef-464a-8857-221fb347e279'),
-            new StringLiteral('userId')
+            'userId'
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -152,7 +146,7 @@ class RoleUsersProjectorTest extends TestCase
     {
         $userRemoved = new UserRemoved(
             new UUID('33981daf-91d0-4113-a7f4-655e645d9930'),
-            new StringLiteral('userId')
+            'userId'
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -182,7 +176,7 @@ class RoleUsersProjectorTest extends TestCase
     {
         $userAdded = new UserAdded(
             new UUID('45819178-ac36-4f3d-b12a-4b48cdd442fd'),
-            new StringLiteral('userId')
+            'userId'
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -211,7 +205,7 @@ class RoleUsersProjectorTest extends TestCase
     {
         $userAdded = new UserAdded(
             new UUID('e9fb3606-5ed8-416a-b959-dabe3fa7f437'),
-            new StringLiteral('userId')
+            'userId'
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -243,7 +237,7 @@ class RoleUsersProjectorTest extends TestCase
     {
         $userRemoved = new UserRemoved(
             new UUID('2b78616d-502b-47f4-95cf-b9bef3ad3a05'),
-            new StringLiteral('userId')
+            'userId'
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -273,9 +267,6 @@ class RoleUsersProjectorTest extends TestCase
             ->willReturn($jsonDocument);
     }
 
-    /**
-     * @param UserIdentityDetails $userIdentityDetails
-     */
     private function mockGetUserById(
         StringLiteral $userId,
         UserIdentityDetails $userIdentityDetails = null
@@ -299,10 +290,7 @@ class RoleUsersProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function createEmptyJsonDocument(UUID $uuid)
+    private function createEmptyJsonDocument(UUID $uuid): JsonDocument
     {
         return new JsonDocument(
             $uuid->toString(),
@@ -310,13 +298,10 @@ class RoleUsersProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @return JsonDocument
-     */
     private function createJsonDocumentWithUserIdentityDetail(
         UUID $uuid,
         UserIdentityDetails $userIdentityDetail
-    ) {
+    ): JsonDocument {
         $userIdentityDetails = [];
 
         $key = $userIdentityDetail->getUserId();

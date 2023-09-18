@@ -22,11 +22,11 @@ class UserConstraintsReadRepositoryTest extends TestCase
      */
     private array $roleIds;
 
-    private StringLiteral $userRolesTableName;
+    private string $userRolesTableName;
 
-    private StringLiteral $rolePermissionsTableName;
+    private string $rolePermissionsTableName;
 
-    private StringLiteral $rolesSearchTableName;
+    private string $rolesSearchTableName;
 
     private UserConstraintsReadRepositoryInterface $userConstraintsReadRepository;
 
@@ -39,13 +39,13 @@ class UserConstraintsReadRepositoryTest extends TestCase
             new UUID('09e79125-5982-4a0f-aba6-a28774b84699'),
         ];
 
-        $this->userRolesTableName = new StringLiteral('user_roles');
-        $this->rolePermissionsTableName = new StringLiteral('role_permissions');
-        $this->rolesSearchTableName = new StringLiteral('roles_search');
+        $this->userRolesTableName = 'user_roles';
+        $this->rolePermissionsTableName = 'role_permissions';
+        $this->rolesSearchTableName = 'roles_search';
 
         $permissionSchemaConfigurator = new PermissionSchemaConfigurator(
-            $this->userRolesTableName,
-            $this->rolePermissionsTableName
+            new StringLiteral($this->userRolesTableName),
+            new StringLiteral($this->rolePermissionsTableName)
         );
         $permissionSchemaConfigurator->configure(
             $this->getConnection()->getSchemaManager()
@@ -60,9 +60,9 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
         $this->userConstraintsReadRepository = new UserConstraintsReadRepository(
             $this->getConnection(),
-            $this->userRolesTableName->toNative(),
-            $this->rolePermissionsTableName->toNative(),
-            $this->rolesSearchTableName->toNative()
+            $this->userRolesTableName,
+            $this->rolePermissionsTableName,
+            $this->rolesSearchTableName
         );
 
         $this->seedUserRoles();
@@ -76,13 +76,13 @@ class UserConstraintsReadRepositoryTest extends TestCase
     public function it_returns_constraints_for_a_certain_user_and_permission(): void
     {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
-            new StringLiteral('user1'),
+            'user1',
             Permission::aanbodModereren()
         );
 
         $expectedConstraints = [
-            new StringLiteral('zipCode:1000'),
-            new StringLiteral('zipCode:3000'),
+            'zipCode:1000',
+            'zipCode:3000',
         ];
 
         $this->assertEqualsCanonicalizing($expectedConstraints, $constraints, 'Constraints do not match expected!');
@@ -94,7 +94,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     public function it_returns_empty_array_for_a_missing_user(): void
     {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
-            new StringLiteral('user3'),
+            'user3',
             Permission::aanbodModereren()
         );
 
@@ -107,7 +107,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     public function it_returns_empty_array_for_a_missing_permission(): void
     {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
-            new StringLiteral('user2'),
+            'user2',
             Permission::aanbodBewerken()
         );
 
@@ -116,11 +116,11 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
     private function seedUserRoles(): void
     {
-        $this->insertUserRole(new StringLiteral('user1'), $this->roleIds[0]);
-        $this->insertUserRole(new StringLiteral('user1'), $this->roleIds[1]);
-        $this->insertUserRole(new StringLiteral('user1'), $this->roleIds[2]);
-        $this->insertUserRole(new StringLiteral('user2'), $this->roleIds[2]);
-        $this->insertUserRole(new StringLiteral('user1'), $this->roleIds[3]);
+        $this->insertUserRole('user1', $this->roleIds[0]);
+        $this->insertUserRole('user1', $this->roleIds[1]);
+        $this->insertUserRole('user1', $this->roleIds[2]);
+        $this->insertUserRole('user2', $this->roleIds[2]);
+        $this->insertUserRole('user1', $this->roleIds[3]);
     }
 
     private function seedRolePermissions(): void
@@ -140,19 +140,19 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
     private function seedRolesSearch(): void
     {
-        $this->insertRole($this->roleIds[0], new StringLiteral('Brussel Validatoren'), new StringLiteral('zipCode:1000'));
-        $this->insertRole($this->roleIds[1], new StringLiteral('Antwerpen Validatoren'), new StringLiteral('zipCode:2000'));
-        $this->insertRole($this->roleIds[2], new StringLiteral('Leuven Validatoren'), new StringLiteral('zipCode:3000'));
-        $this->insertRole($this->roleIds[3], new StringLiteral('Geen constraint'), null);
+        $this->insertRole($this->roleIds[0], 'Brussel Validatoren', 'zipCode:1000');
+        $this->insertRole($this->roleIds[1], 'Antwerpen Validatoren', 'zipCode:2000');
+        $this->insertRole($this->roleIds[2], 'Leuven Validatoren', 'zipCode:3000');
+        $this->insertRole($this->roleIds[3], 'Geen constraint', null);
     }
 
 
-    private function insertUserRole(StringLiteral $userId, UUID $roleId): void
+    private function insertUserRole(string $userId, UUID $roleId): void
     {
         $this->getConnection()->insert(
-            $this->userRolesTableName->toNative(),
+            $this->userRolesTableName,
             [
-                PermissionSchemaConfigurator::USER_ID_COLUMN => $userId->toNative(),
+                PermissionSchemaConfigurator::USER_ID_COLUMN => $userId,
                 PermissionSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
@@ -162,7 +162,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     private function insertUserPermission(UUID $roleId, Permission $permission): void
     {
         $this->getConnection()->insert(
-            $this->rolePermissionsTableName->toNative(),
+            $this->rolePermissionsTableName,
             [
                 PermissionSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
                 PermissionSchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
@@ -172,15 +172,15 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
     private function insertRole(
         UUID $roleId,
-        StringLiteral $roleName,
-        StringLiteral $constraint = null
+        string $roleName,
+        ?string $constraint
     ): void {
         $this->getConnection()->insert(
-            $this->rolesSearchTableName->toNative(),
+            $this->rolesSearchTableName,
             [
                 SearchSchemaConfigurator::UUID_COLUMN => $roleId->toString(),
-                SearchSchemaConfigurator::NAME_COLUMN => $roleName->toNative(),
-                SearchSchemaConfigurator::CONSTRAINT_COLUMN => $constraint ? $constraint->toNative() : null,
+                SearchSchemaConfigurator::NAME_COLUMN => $roleName,
+                SearchSchemaConfigurator::CONSTRAINT_COLUMN => $constraint,
             ]
         );
     }
