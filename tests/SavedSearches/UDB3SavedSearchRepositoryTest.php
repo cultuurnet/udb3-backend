@@ -17,10 +17,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var StringLiteral
-     */
-    private $tableName;
+    private string $tableName;
 
     /**
      * @var UuidGeneratorInterface|MockObject
@@ -40,7 +37,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 
         $this->udb3SavedSearchRepository = new UDB3SavedSearchRepository(
             $this->getConnection(),
-            $this->tableName,
+            new StringLiteral($this->tableName),
             $this->uuidGenerator,
             new StringLiteral('6f072ba8-c510-40ac-b387-51f582650e26')
         );
@@ -134,7 +131,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 
     private function createTable(): void
     {
-        $this->tableName = new StringLiteral('saved_searches');
+        $this->tableName = 'saved_searches';
         $schemaConfigurator = new SchemaConfigurator($this->tableName);
 
         $schemaConfigurator->configure(
@@ -149,7 +146,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
     private function getSavedSearches(): array
     {
         $statement = $this->connection->executeQuery(
-            'SELECT * FROM ' . $this->tableName->toNative()
+            'SELECT * FROM ' . $this->tableName
         );
         $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
