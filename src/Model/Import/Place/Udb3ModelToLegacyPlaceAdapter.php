@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Place;
 
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\Import\Offer\Udb3ModelToLegacyOfferAdapter;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 
 /**
  * @deprecated Should no longer be used because all commands should use the VOs from the Model namespace.
@@ -23,12 +23,8 @@ class Udb3ModelToLegacyPlaceAdapter extends Udb3ModelToLegacyOfferAdapter implem
 
     public function getAddress(): Address
     {
-        $address = $this->place->getAddress();
-
-        return Address::fromUdb3ModelAddress(
-            $address->getTranslation(
-                $address->getOriginalLanguage()
-            )
+        return $this->place->getAddress()->getTranslation(
+            $this->place->getAddress()->getOriginalLanguage()
         );
     }
 
@@ -38,9 +34,7 @@ class Udb3ModelToLegacyPlaceAdapter extends Udb3ModelToLegacyOfferAdapter implem
         $addresses = [];
 
         foreach ($translatedAddress->getLanguagesWithoutOriginal() as $language) {
-            $addresses[$language->toString()] = Address::fromUdb3ModelAddress(
-                $translatedAddress->getTranslation($language)
-            );
+            $addresses[$language->toString()] = $this->place->getAddress()->getTranslation($language);
         }
 
         return $addresses;

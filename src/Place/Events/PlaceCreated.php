@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Events;
 
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Place\PlaceEvent;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;

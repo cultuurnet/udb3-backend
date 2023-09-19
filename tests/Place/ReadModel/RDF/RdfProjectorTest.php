@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
+
 use CultuurNet\UDB3\Address\FullAddressFormatter;
-use CultuurNet\UDB3\Address\Locality as LegacyLocality;
 use CultuurNet\UDB3\Address\ParsedAddress;
-use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
-use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
@@ -17,6 +14,11 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\RdfTestCase;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+
 
 class RdfProjectorTest extends RdfTestCase
 {
@@ -44,10 +46,10 @@ class RdfProjectorTest extends RdfTestCase
         $this->expectedParsedAddresses = [];
 
         $this->expectParsedAddress(
-            new LegacyAddress(
-                new LegacyStreet('Martelarenlaan 1'),
-                new LegacyPostalCode('3000'),
-                new LegacyLocality('Leuven'),
+            new Address(
+                new Street('Martelarenlaan 1'),
+                new PostalCode('3000'),
+                new Locality('Leuven'),
                 new CountryCode('BE')
             ),
             new ParsedAddress(
@@ -165,10 +167,10 @@ class RdfProjectorTest extends RdfTestCase
         $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
 
         $this->expectParsedAddress(
-            new LegacyAddress(
-                new LegacyStreet('Martelarenlaan 1'),
-                new LegacyPostalCode('3000'),
-                new LegacyLocality('Louvain'),
+            new Address(
+                new Street('Martelarenlaan 1'),
+                new PostalCode('3000'),
+                new Locality('Louvain'),
                 new CountryCode('BE')
             ),
             new ParsedAddress(
@@ -349,7 +351,7 @@ class RdfProjectorTest extends RdfTestCase
         $this->assertTurtleData($placeId, file_get_contents(__DIR__ . '/ttl/place-with-publication-date.ttl'));
     }
 
-    private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void
+    private function expectParsedAddress(Address $address, ParsedAddress $parsedAddress): void
     {
         $formatted = (new FullAddressFormatter())->format($address);
         $this->expectedParsedAddresses[$formatted] = $parsedAddress;

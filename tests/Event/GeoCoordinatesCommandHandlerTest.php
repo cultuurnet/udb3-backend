@@ -7,42 +7,31 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
-use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\Geocoding\GeocodingService;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\AddressFormatter;
 use CultuurNet\UDB3\Address\FullAddressFormatter;
-use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
+use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
+use CultuurNet\UDB3\Geocoding\GeocodingService;
+use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var AddressFormatter
-     */
-    private $defaultAddressFormatter;
-
-    /**
-     * @var AddressFormatter
-     */
-    private $localityAddressFormatter;
-
     /**
      * @var GeocodingService|MockObject
      */
@@ -55,15 +44,15 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             $eventBus
         );
 
-        $this->defaultAddressFormatter = new FullAddressFormatter();
-        $this->localityAddressFormatter = new LocalityAddressFormatter();
+        $defaultAddressFormatter = new FullAddressFormatter();
+        $localityAddressFormatter = new LocalityAddressFormatter();
 
         $this->geocodingService = $this->createMock(GeocodingService::class);
 
         return new GeoCoordinatesCommandHandler(
             $eventRepository,
-            $this->defaultAddressFormatter,
-            $this->localityAddressFormatter,
+            $defaultAddressFormatter,
+            $localityAddressFormatter,
             $this->geocodingService
         );
     }

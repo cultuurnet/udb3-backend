@@ -48,7 +48,7 @@ final class AddressEditor
             }
 
             $addressFormatter = new FullAddressFormatter();
-            $formattedAddress = $addressFormatter->format(LegacyAddress::fromUdb3ModelAddress($address));
+            $formattedAddress = $addressFormatter->format($address);
             $parsedAddress = $this->addressParser->parse($formattedAddress);
 
             $houseNumber = $parsedAddress ? $parsedAddress->getHouseNumber() : null;

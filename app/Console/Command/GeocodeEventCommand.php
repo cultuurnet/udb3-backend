@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Console\Command;
 
-use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Json;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -53,7 +53,12 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
 
         if (isset($location['address'][$mainLanguage])) {
             try {
-                $address = Address::deserialize($location['address'][$mainLanguage]);
+                $address = new Address(
+                    $location['address'][$mainLanguage]['streetAddress'],
+                    $location['address'][$mainLanguage]['postalCode'],
+                    $location['address'][$mainLanguage]['addressLocality'],
+                    $location['address'][$mainLanguage]['addressCountry']
+                );
             } catch (\Exception $e) {
                 $output->writeln("Skipping {$eventId}. (JSON-LD address for {$mainLanguage} could not be parsed.)");
                 return;
@@ -62,7 +67,12 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
             // The code to importLocation from cdbxml doesn't take into account main language.
             // So a fallback is provided to handle untranslated addresses.
             try {
-                $address = Address::deserialize($location['address']);
+                $address = new Address(
+                    $location['address']['streetAddress'],
+                    $location['address']['postalCode'],
+                    $location['address']['addressLocality'],
+                    $location['address']['addressCountry']
+                );
             } catch (\Exception $e) {
                 $output->writeln("Skipping {$eventId}. (JSON-LD address could not be parsed.");
                 return;

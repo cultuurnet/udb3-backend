@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Commands;
 
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 
 class UpdateAddress extends AbstractCommand
 {

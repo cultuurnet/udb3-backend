@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Events;
 
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Place\PlaceEvent;
 
 final class AddressTranslated extends PlaceEvent
@@ -49,7 +53,12 @@ final class AddressTranslated extends PlaceEvent
     {
         return new static(
             $data['place_id'],
-            Address::deserialize($data['address']),
+            new Address(
+                new Street($data['address']),
+                new PostalCode($data['address']),
+                new Locality($data['address']),
+                new CountryCode($data['address'])
+            ),
             new Language($data['language'])
         );
     }

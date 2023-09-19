@@ -6,7 +6,11 @@ namespace CultuurNet\UDB3\Http\Deserializer\Address;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
-use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 
 /**
  * @deprecated
@@ -35,6 +39,11 @@ class AddressJSONDeserializer extends JSONDeserializer
         // but should be a string. (Documented as Text on schema.org)
         $data['postalCode'] = (string) $data['postalCode'];
 
-        return Address::deserialize($data);
+        return new Address(
+            new Street($data['streetAddress']),
+            new PostalCode($data['postalCode']),
+            new Locality($data['addressLocality']),
+            new CountryCode($data['addressCountry'])
+        );
     }
 }

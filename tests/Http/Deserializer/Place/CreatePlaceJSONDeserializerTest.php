@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use PHPUnit\Framework\TestCase;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 
 class CreatePlaceJSONDeserializerTest extends TestCase
 {

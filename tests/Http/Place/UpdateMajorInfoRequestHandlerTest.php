@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Place;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
@@ -17,6 +13,10 @@ use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 
 class UpdateMajorInfoRequestHandlerTest extends TestCase
 {

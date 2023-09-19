@@ -85,4 +85,24 @@ class Address
             $this->locality->sameAs($other->locality) &&
             $this->countryCode->sameAs($other->countryCode);
     }
+
+    public function serialize(): array
+    {
+        return [
+            'streetAddress' => $this->street->toString(),
+            'postalCode' => $this->postalCode->toString(),
+            'addressLocality' => $this->locality->toString(),
+            'addressCountry' => $this->countryCode->toString(),
+        ];
+    }
+
+    public static function deserialize(array $data): self
+    {
+        return new self(
+            new Street($data['streetAddress']),
+            new PostalCode($data['postalCode']),
+            new Locality($data['addressLocality']),
+            new CountryCode($data['addressCountry']),
+        );
+    }
 }

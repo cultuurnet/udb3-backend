@@ -4,39 +4,23 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Title;
 
 class OrganizerCreationPayload
 {
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
+    private Language $mainLanguage;
 
-    /**
-     * @var Url
-     */
-    private $website;
+    private Url $website;
 
-    /**
-     * @var Title
-     */
-    private $title;
+    private Title $title;
 
-    /**
-     * @var Address
-     */
-    private $address;
+    private Address $address;
 
-    /**
-     * @var ContactPoint
-     */
-    private $contactPoint;
-
+    private ContactPoint $contactPoint;
 
     public function __construct(
         Language $mainLanguage,
@@ -52,42 +36,27 @@ class OrganizerCreationPayload
         $this->contactPoint = $contactPoint;
     }
 
-    /**
-     * @return Language
-     */
-    public function getMainLanguage()
+    public function getMainLanguage(): Language
     {
         return $this->mainLanguage;
     }
 
-    /**
-     * @return Url
-     */
-    public function getWebsite()
+    public function getWebsite(): Url
     {
         return $this->website;
     }
 
-    /**
-     * @return Title
-     */
-    public function getTitle()
+    public function getTitle(): Title
     {
         return $this->title;
     }
 
-    /**
-     * @return Address|null
-     */
-    public function getAddress()
+    public function getAddress(): ?Address
     {
         return $this->address;
     }
 
-    /**
-     * @return ContactPoint|null
-     */
-    public function getContactPoint()
+    public function getContactPoint(): ?ContactPoint
     {
         return $this->contactPoint;
     }

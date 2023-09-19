@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -26,7 +30,12 @@ final class UpdateAddressDenormalizer implements DenormalizerInterface
     {
         return new UpdateAddress(
             $this->placeId,
-            Address::deserialize($data),
+            new Address(
+                new Street($data['streetAddress']),
+                new PostalCode($data['postalCode']),
+                new Locality($data['addressLocality']),
+                new CountryCode($data['addressCountry'])
+            ),
             LegacyLanguage::fromUdb3ModelLanguage($this->language)
         );
     }

@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
@@ -11,18 +16,13 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\AddressFormatter;
 use CultuurNet\UDB3\Address\FullAddressFormatter;
-use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -31,18 +31,13 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var AddressFormatter
-     */
-    private $defaultAddressFormatter;
+    private AddressFormatter $defaultAddressFormatter;
 
-    /**
-     * @var AddressFormatter
-     */
-    private $localityAddressFormatter;
+    private AddressFormatter $localityAddressFormatter;
 
     /**
      * @var GeocodingService|MockObject
+     * III-5812 Change to inline typehint when upgrading to PHP 8
      */
     private $geocodingService;
 

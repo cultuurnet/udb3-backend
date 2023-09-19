@@ -7,12 +7,8 @@ namespace CultuurNet\UDB3\Organizer\ProcessManager;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Organizer\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
@@ -23,6 +19,10 @@ use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 
 class GeoCoordinatesProcessManagerTest extends TestCase
 {

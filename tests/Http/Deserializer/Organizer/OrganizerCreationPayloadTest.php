@@ -4,48 +4,30 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 
 class OrganizerCreationPayloadTest extends TestCase
 {
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
+    private Language $mainLanguage;
 
-    /**
-     * @var Url
-     */
-    private $website;
+    private Url $website;
 
-    /**
-     * @var Title
-     */
-    private $title;
+    private Title $title;
 
-    /**
-     * @var Address
-     */
-    private $address;
+    private Address $address;
 
-    /**
-     * @var ContactPoint
-     */
-    private $contactPoint;
+    private ContactPoint $contactPoint;
 
-    /**
-     * @var OrganizerCreationPayload
-     */
-    private $organizerCreationPayload;
+    private OrganizerCreationPayload $organizerCreationPayload;
 
     protected function setUp(): void
     {

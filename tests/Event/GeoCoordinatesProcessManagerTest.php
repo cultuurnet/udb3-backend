@@ -7,12 +7,7 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
-use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
@@ -20,6 +15,10 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 
 class GeoCoordinatesProcessManagerTest extends TestCase
 {
@@ -28,24 +27,16 @@ class GeoCoordinatesProcessManagerTest extends TestCase
      */
     private $commandBus;
 
-    /**
-     * @var CultureFeedAddressFactoryInterface
-     */
-    private $addressFactory;
-
-    /**
-     * @var GeoCoordinatesProcessManager
-     */
-    private $processManager;
+    private GeoCoordinatesProcessManager $processManager;
 
     public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
-        $this->addressFactory = new CultureFeedAddressFactory();
+        $addressFactory = new CultureFeedAddressFactory();
 
         $this->processManager = new GeoCoordinatesProcessManager(
             $this->commandBus,
-            $this->addressFactory,
+            $addressFactory,
             new NullLogger()
         );
     }

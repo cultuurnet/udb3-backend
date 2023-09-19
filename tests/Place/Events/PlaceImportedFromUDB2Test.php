@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Events;
 
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 
 final class PlaceImportedFromUDB2Test extends TestCase
 {

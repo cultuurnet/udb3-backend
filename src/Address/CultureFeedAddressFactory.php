@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address;
 
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address as Udb3AddressModel;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality as Udb3LocalityModel;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode as Udb3PostalCodeModel;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street as Udb3StreetModel;
 
 class CultureFeedAddressFactory implements CultureFeedAddressFactoryInterface
 {
-    /**
-     * @return Address
-     */
-    public function fromCdbAddress(\CultureFeed_Cdb_Data_Address_PhysicalAddress $cdbAddress)
+    public function fromCdbAddress(\CultureFeed_Cdb_Data_Address_PhysicalAddress $cdbAddress): Udb3AddressModel
     {
         $requiredFields = [
             'street' => $cdbAddress->getStreet(),
@@ -32,11 +33,10 @@ class CultureFeedAddressFactory implements CultureFeedAddressFactoryInterface
             throw new \InvalidArgumentException('The given cdbxml address is missing a ' . $keys);
         }
 
-
-        return new Address(
-            new Street($cdbAddress->getStreet() . ' ' . $cdbAddress->getHouseNumber()),
-            new PostalCode($cdbAddress->getZip()),
-            new Locality($cdbAddress->getCity()),
+        return new Udb3AddressModel(
+            new Udb3StreetModel($cdbAddress->getStreet() . ' ' . $cdbAddress->getHouseNumber()),
+            new Udb3PostalCodeModel($cdbAddress->getZip()),
+            new Udb3LocalityModel($cdbAddress->getCity()),
             new CountryCode($cdbAddress->getCountry())
         );
     }

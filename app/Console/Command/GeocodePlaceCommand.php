@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Console\Command;
 
-use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -46,7 +46,12 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
         }
 
         try {
-            $address = Address::deserialize($jsonLd['address'][$addressLanguage]);
+            $address = new Address(
+                $jsonLd['address'][$addressLanguage]['streetAddress'],
+                $jsonLd['address'][$addressLanguage]['postalCode'],
+                $jsonLd['address'][$addressLanguage]['addressLocality'],
+                $jsonLd['address'][$addressLanguage]['addressCountry']
+            );
         } catch (\Exception $e) {
             $output->writeln("Skipping {$placeId}. (JSON-LD address for {$addressLanguage} could not be parsed.)");
             return;

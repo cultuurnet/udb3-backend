@@ -26,10 +26,7 @@ use PHPUnit\Framework\TestCase;
 
 class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
 {
-    /**
-     * @var Udb3ModelToLegacyPlaceAdapter
-     */
-    private $adapter;
+    private Udb3ModelToLegacyPlaceAdapter $adapter;
 
     public function setUp(): void
     {
@@ -91,10 +88,10 @@ class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
      */
     public function it_should_return_an_address(): void
     {
-        $expected = new \CultuurNet\UDB3\Address\Address(
-            new \CultuurNet\UDB3\Address\Street('Henegouwenkaai 41-43'),
-            new \CultuurNet\UDB3\Address\PostalCode('1080'),
-            new \CultuurNet\UDB3\Address\Locality('Brussel'),
+        $expected = new Address(
+            new Street('Henegouwenkaai 41-43'),
+            new PostalCode('1080'),
+            new Locality('Brussel'),
             new CountryCode('BE')
         );
         $actual = $this->adapter->getAddress();
@@ -107,16 +104,16 @@ class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
     public function it_should_return_address_translations(): void
     {
         $expected = [
-            'fr' => new \CultuurNet\UDB3\Address\Address(
-                new \CultuurNet\UDB3\Address\Street('Quai du Hainaut 41-43'),
-                new \CultuurNet\UDB3\Address\PostalCode('1080'),
-                new \CultuurNet\UDB3\Address\Locality('Bruxelles'),
+            'fr' => new Address(
+                new Street('Quai du Hainaut 41-43'),
+                new PostalCode('1080'),
+                new Locality('Bruxelles'),
                 new CountryCode('BE')
             ),
-            'en' => new \CultuurNet\UDB3\Address\Address(
-                new \CultuurNet\UDB3\Address\Street('Henegouwenkaai 41-43'),
-                new \CultuurNet\UDB3\Address\PostalCode('1080'),
-                new \CultuurNet\UDB3\Address\Locality('Brussels'),
+            'en' => new Address(
+                new Street('Henegouwenkaai 41-43'),
+                new PostalCode('1080'),
+                new Locality('Brussels'),
                 new CountryCode('BE')
             ),
         ];

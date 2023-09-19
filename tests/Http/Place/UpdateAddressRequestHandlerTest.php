@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Place;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -20,6 +16,10 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use Iterator;
 use PHPUnit\Framework\TestCase;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 
 class UpdateAddressRequestHandlerTest extends TestCase
 {

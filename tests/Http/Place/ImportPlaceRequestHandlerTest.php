@@ -7,10 +7,6 @@ namespace CultuurNet\UDB3\Http\Place;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Calendar\DayOfWeek;
@@ -84,6 +80,10 @@ use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 
 final class ImportPlaceRequestHandlerTest extends TestCase
 {
