@@ -11,7 +11,6 @@ use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class UDB3SavedSearchRepositoryTest extends TestCase
 {
@@ -37,9 +36,9 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 
         $this->udb3SavedSearchRepository = new UDB3SavedSearchRepository(
             $this->getConnection(),
-            new StringLiteral($this->tableName),
+            $this->tableName,
             $this->uuidGenerator,
-            new StringLiteral('6f072ba8-c510-40ac-b387-51f582650e26')
+            '6f072ba8-c510-40ac-b387-51f582650e26'
         );
     }
 

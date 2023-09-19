@@ -11,36 +11,23 @@ use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface as SavedSearchReadModelRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface as SavedSearchWriteModelRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use CultuurNet\UDB3\StringLiteral;
 
 class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterface, SavedSearchWriteModelRepositoryInterface
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var StringLiteral
-     */
-    private $tableName;
+    private string $tableName;
 
-    /**
-     * @var UuidGeneratorInterface
-     */
-    private $uuidGenerator;
+    private UuidGeneratorInterface $uuidGenerator;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
+    private string $userId;
 
 
     public function __construct(
         Connection $connection,
-        StringLiteral $tableName,
+        string $tableName,
         UuidGeneratorInterface $uuidGenerator,
-        StringLiteral $userId
+        string $userId
     ) {
         $this->connection = $connection;
         $this->tableName = $tableName;
@@ -54,7 +41,7 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
         QueryString $queryString
     ): void {
         $queryBuilder = $this->connection->createQueryBuilder()
-            ->insert($this->tableName->toNative())
+            ->insert($this->tableName)
             ->values(
                 [
                     SchemaConfigurator::ID => '?',
@@ -80,7 +67,7 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
         string $searchId
     ): void {
         $queryBuilder = $this->connection->createQueryBuilder()
-            ->delete($this->tableName->toNative())
+            ->delete($this->tableName)
             ->where(SchemaConfigurator::USER . ' = ?')
             ->andWhere(SchemaConfigurator::ID . ' = ?')
             ->setParameters(
@@ -100,11 +87,11 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
     {
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select('*')
-            ->from($this->tableName->toNative())
+            ->from($this->tableName)
             ->where(SchemaConfigurator::USER . ' = ?')
             ->setParameters(
                 [
-                    $this->userId->toNative(),
+                    $this->userId,
                 ]
             );
 
