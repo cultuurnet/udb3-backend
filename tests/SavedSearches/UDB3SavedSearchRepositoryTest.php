@@ -83,8 +83,8 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $this->seedSavedSearches();
 
         $this->udb3SavedSearchRepository->delete(
-            new StringLiteral('6f072ba8-c510-40ac-b387-51f582650e26'),
-            new StringLiteral('db4c4690-84fb-4ed9-9a64-fccdd6e29f53')
+            '6f072ba8-c510-40ac-b387-51f582650e26',
+            'db4c4690-84fb-4ed9-9a64-fccdd6e29f53'
         );
 
         $savedSearches = $this->getSavedSearches();

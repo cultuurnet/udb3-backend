@@ -75,12 +75,9 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
         $queryBuilder->execute();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function delete(
-        StringLiteral $userId,
-        StringLiteral $searchId
+        string $userId,
+        string $searchId
     ): void {
         $queryBuilder = $this->connection->createQueryBuilder()
             ->delete($this->tableName->toNative())
@@ -88,8 +85,8 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
             ->andWhere(SchemaConfigurator::ID . ' = ?')
             ->setParameters(
                 [
-                    $userId->toNative(),
-                    $searchId->toNative(),
+                    $userId,
+                    $searchId,
                 ]
             );
 

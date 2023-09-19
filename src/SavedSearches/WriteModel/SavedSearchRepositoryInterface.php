@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SavedSearches\WriteModel;
 
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
-use CultuurNet\UDB3\StringLiteral;
 
 interface SavedSearchRepositoryInterface
 {
@@ -17,7 +16,7 @@ interface SavedSearchRepositoryInterface
 
 
     public function delete(
-        StringLiteral $userId,
-        StringLiteral $searchId
+        string $userId,
+        string $searchId
     ): void;
 }

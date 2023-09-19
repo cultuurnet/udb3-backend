@@ -10,7 +10,6 @@ use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class UDB3SavedSearchesCommandHandlerTest extends TestCase
 {
@@ -65,7 +64,7 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
         $this->savedSearchesRepository->expects($this->once())
             ->method('delete')
             ->with(
-                new StringLiteral($userId),
+                $userId,
                 $searchId
             );
 
