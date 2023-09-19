@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\OfferRepository;
-use CultuurNet\UDB3\Title;
 
 final class UpdateTitleHandler implements CommandHandler
 {
@@ -29,7 +28,7 @@ final class UpdateTitleHandler implements CommandHandler
 
         $offer->updateTitle(
             Language::fromUdb3ModelLanguage($command->getLanguage()),
-            Title::fromUdb3ModelTitle($command->getTitle())
+            $command->getTitle()
         );
 
         $this->offerRepository->save($offer);

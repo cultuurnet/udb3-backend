@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
@@ -70,7 +71,7 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\StringLiteral;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
@@ -320,11 +321,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateTitle(LegacyLanguage $language, Title $title): void
     {
-        if ($this->isTitleChanged($title, $language)) {
+        $legacyTitle = LegacyTitle::fromUdb3ModelTitle($title);
+        if ($this->isTitleChanged($legacyTitle, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
-                $event = $this->createTitleTranslatedEvent($language, $title);
+                $event = $this->createTitleTranslatedEvent($language, $legacyTitle);
             } else {
-                $event = $this->createTitleUpdatedEvent($title);
+                $event = $this->createTitleUpdatedEvent($legacyTitle);
             }
 
             $this->apply($event);
@@ -858,7 +860,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         return false;
     }
 
-    private function isTitleChanged(Title $title, LegacyLanguage $language): bool
+    private function isTitleChanged(LegacyTitle $title, LegacyLanguage $language): bool
     {
         $languageCode = $language->getCode();
 
@@ -1040,7 +1042,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createTitleTranslatedEvent(
         LegacyLanguage $language,
-        Title $title
+        LegacyTitle $title
     ): AbstractTitleTranslated;
 
     abstract protected function createDescriptionTranslatedEvent(
@@ -1069,7 +1071,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createOfferDeletedEvent(): AbstractOfferDeleted;
 
-    abstract protected function createTitleUpdatedEvent(Title $title): AbstractTitleUpdated;
+    abstract protected function createTitleUpdatedEvent(LegacyTitle $title): AbstractTitleUpdated;
 
     abstract protected function createDescriptionUpdatedEvent(Description $description): AbstractDescriptionUpdated;
 

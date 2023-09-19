@@ -51,13 +51,14 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeInterface;
 use Money\Currency;
@@ -84,7 +85,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->event = Event::create(
             'foo',
             new LegacyLanguage('en'),
-            new Title('some representative title'),
+            new LegacyTitle('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d70f5d94-7072-423d-9144-9354cb794c62'),
             new Calendar(CalendarType::PERMANENT())
@@ -96,7 +97,7 @@ class EventTest extends AggregateRootScenarioTestCase
         return new EventCreated(
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
             new LegacyLanguage('en'),
-            new Title('some representative title'),
+            new LegacyTitle('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
             new Calendar(CalendarType::PERMANENT())
@@ -108,7 +109,7 @@ class EventTest extends AggregateRootScenarioTestCase
         return new EventCreated(
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
             new LegacyLanguage('en'),
-            new Title('some representative title'),
+            new LegacyTitle('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('59400d1e-6f98-4da9-ab08-f58adceb7204'),
             new Calendar(CalendarType::PERMANENT()),
@@ -273,7 +274,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $event = Event::create(
             $eventUuid,
             new LegacyLanguage('en'),
-            new Title('some representative title'),
+            new LegacyTitle('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId($locationUuid),
             new Calendar(CalendarType::PERMANENT())
