@@ -8,9 +8,10 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\AbstractCreateCommand;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 
 class CreateEvent extends AbstractCreateCommand
@@ -20,10 +21,7 @@ class CreateEvent extends AbstractCreateCommand
      */
     private $mainLanguage;
 
-    /**
-     * @var Title
-     */
-    private $title;
+    private Title $title;
 
     /**
      * @var EventType
@@ -83,11 +81,11 @@ class CreateEvent extends AbstractCreateCommand
     }
 
     /**
-     * @return Title
+     * @return LegacyTitle
      */
     public function getTitle()
     {
-        return $this->title;
+        return LegacyTitle::fromUdb3ModelTitle($this->title);
     }
 
     /**

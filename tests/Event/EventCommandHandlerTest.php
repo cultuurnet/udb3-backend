@@ -28,9 +28,10 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 
 class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -61,7 +62,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         return new EventCreated(
             $id,
             new Language('nl'),
-            new Title('some representative title'),
+            new LegacyTitle('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(CalendarType::PERMANENT())
@@ -99,7 +100,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($id)
             ->when($command)
-            ->then([new EventCreated($id, $language, $title, $type, $location, $calendar, $theme, $now)]);
+            ->then([new EventCreated($id, $language, LegacyTitle::fromUdb3ModelTitle($title), $type, $location, $calendar, $theme, $now)]);
 
         // reset mocked time
         Chronos::setTestNow();
@@ -128,7 +129,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_can_update_major_info_of_an_event(): void
     {
         $id = '1';
-        $title = new Title('foo');
+        $title = new LegacyTitle('foo');
         $eventType = new EventType('0.50.4.0.0', 'concert');
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
         $calendar = new Calendar(CalendarType::PERMANENT());
@@ -152,7 +153,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         LocationId::setDummyPlaceForEducationIds(['6f87ce4c-bd39-4c5e-92b5-a9f8bdf4aa31']);
 
         $id = '1';
-        $title = new Title('foo');
+        $title = new LegacyTitle('foo');
         $eventType = new EventType('0.50.4.0.0', 'concert');
         $location = new LocationId('6f87ce4c-bd39-4c5e-92b5-a9f8bdf4aa31');
         $calendar = new Calendar(CalendarType::PERMANENT());
