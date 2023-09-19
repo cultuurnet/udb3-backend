@@ -35,7 +35,7 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
      */
     public function it_can_handle_subscribe_to_saved_search_commands(): void
     {
-        $userId = new StringLiteral('some-user-id');
+        $userId = 'some-user-id';
         $name = new StringLiteral('My very first saved search!');
         $query = new QueryString('city:"Leuven"');
 
@@ -57,7 +57,7 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
      */
     public function it_can_handle_unsubscribe_from_saved_search_commands(): void
     {
-        $userId = new StringLiteral('some-user-id');
+        $userId = 'some-user-id';
         $searchId = new StringLiteral('some-search-id');
 
         $unsubscribeFromSavedSearch = new UnsubscribeFromSavedSearch($userId, $searchId);
@@ -65,7 +65,7 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
         $this->savedSearchesRepository->expects($this->once())
             ->method('delete')
             ->with(
-                $userId,
+                new StringLiteral($userId),
                 $searchId
             );
 

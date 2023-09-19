@@ -21,7 +21,7 @@ class SubscribeToSavedSearch extends SavedSearchCommand
 
 
     public function __construct(
-        StringLiteral $userId,
+        string $userId,
         StringLiteral $name,
         QueryString $query
     ) {

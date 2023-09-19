@@ -33,7 +33,7 @@ final class DeleteSavedSearchRequestHandler implements RequestHandlerInterface
         $id = $routeParameters->get('id');
 
         $command = new UnsubscribeFromSavedSearch(
-            new StringLiteral($this->userId),
+            $this->userId,
             new StringLiteral($id)
         );
 

@@ -14,7 +14,7 @@ class UnsubscribeFromSavedSearchTest extends TestCase
      */
     public function it_returns_the_stored_data(): void
     {
-        $userId = new StringLiteral('some-user-id');
+        $userId = 'some-user-id';
         $searchId = new StringLiteral('some-search-id');
 
         $command = new UnsubscribeFromSavedSearch($userId, $searchId);

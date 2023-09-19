@@ -53,7 +53,7 @@ class DeleteSavedSearchRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UnsubscribeFromSavedSearch(
-                    new StringLiteral(self::USER_ID),
+                    self::USER_ID,
                     new StringLiteral(self::SEARCH_ID)
                 ),
             ],

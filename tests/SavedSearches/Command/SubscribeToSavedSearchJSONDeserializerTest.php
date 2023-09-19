@@ -11,16 +11,16 @@ use CultuurNet\UDB3\StringLiteral;
 
 class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 {
-    protected StringLiteral $userId;
+    protected string $userId;
 
     protected SubscribeToSavedSearchJSONDeserializer $deserializer;
 
     public function setUp(): void
     {
-        $this->userId = new StringLiteral('xyx');
+        $this->userId ='xyx';
 
         $this->deserializer = new SubscribeToSavedSearchJSONDeserializer(
-            $this->userId
+            new StringLiteral($this->userId)
         );
     }
 

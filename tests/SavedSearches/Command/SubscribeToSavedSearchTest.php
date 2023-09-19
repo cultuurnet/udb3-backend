@@ -15,7 +15,7 @@ class SubscribeToSavedSearchTest extends TestCase
      */
     public function it_returns_the_stored_data(): void
     {
-        $userId = new StringLiteral('some-user-id');
+        $userId = 'some-user-id';
         $name = new StringLiteral('My very first saved search.');
         $query = new QueryString('city:"Leuven"');
 

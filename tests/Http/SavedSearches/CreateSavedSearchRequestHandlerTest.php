@@ -63,7 +63,7 @@ class CreateSavedSearchRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new SubscribeToSavedSearch(
-                    new StringLiteral(self::USER_ID),
+                    self::USER_ID,
                     new StringLiteral('Avondlessen in Gent'),
                     new QueryString('regions:nis-44021 AND (typicalAgeRange:[18 TO *] AND name.*:Avondlessen)')
                 ),

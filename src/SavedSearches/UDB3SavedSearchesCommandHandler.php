@@ -8,6 +8,7 @@ use Broadway\CommandHandling\SimpleCommandHandler;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface;
+use CultuurNet\UDB3\StringLiteral;
 
 class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
 {
@@ -27,7 +28,7 @@ class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
         $name = $subscribeToSavedSearch->getName();
         $query = $subscribeToSavedSearch->getQuery();
 
-        $this->savedSearchRepository->write($userId, $name, $query);
+        $this->savedSearchRepository->write(new StringLiteral($userId), $name, $query);
     }
 
     public function handleUnsubscribeFromSavedSearch(UnsubscribeFromSavedSearch $unsubscribeFromSavedSearch): void
@@ -35,6 +36,6 @@ class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
         $userId = $unsubscribeFromSavedSearch->getUserId();
         $searchId = $unsubscribeFromSavedSearch->getSearchId();
 
-        $this->savedSearchRepository->delete($userId, $searchId);
+        $this->savedSearchRepository->delete(new StringLiteral($userId), $searchId);
     }
 }

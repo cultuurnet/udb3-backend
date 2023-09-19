@@ -15,7 +15,7 @@ class UnsubscribeFromSavedSearch extends SavedSearchCommand
 
 
     public function __construct(
-        StringLiteral $userId,
+        string $userId,
         StringLiteral $searchId
     ) {
         parent::__construct($userId);
