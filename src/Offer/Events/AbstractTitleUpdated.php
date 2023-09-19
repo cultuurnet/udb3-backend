@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Title as LegacyTitle;
 
 abstract class AbstractTitleUpdated extends AbstractEvent
 {
@@ -17,9 +16,9 @@ abstract class AbstractTitleUpdated extends AbstractEvent
         $this->title = $title;
     }
 
-    public function getTitle(): LegacyTitle
+    public function getTitle(): Title
     {
-        return LegacyTitle::fromUdb3ModelTitle($this->title);
+        return $this->title;
     }
 
     public function serialize(): array

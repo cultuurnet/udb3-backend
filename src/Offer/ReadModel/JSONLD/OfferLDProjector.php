@@ -567,7 +567,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $offerLd = $document->getBody();
         $mainLanguage = isset($offerLd->mainLanguage) ? $offerLd->mainLanguage : 'nl';
 
-        $offerLd->name->{$mainLanguage} = $titleUpdated->getTitle()->toNative();
+        $offerLd->name->{$mainLanguage} = $titleUpdated->getTitle()->toString();
 
         return $document->withBody($offerLd);
     }
