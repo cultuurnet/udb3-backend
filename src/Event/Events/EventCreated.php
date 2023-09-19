@@ -87,7 +87,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         return array_values(
             array_filter(
                 [
-                    new TitleUpdated($this->eventId, $this->title),
+                    new TitleUpdated($this->eventId, $this->title->toUdb3ModelTitle()),
                     new TypeUpdated($this->eventId, $this->eventType),
                     $this->theme ? new ThemeUpdated($this->eventId, $this->theme) : null,
                     new LocationUpdated($this->eventId, $this->location),

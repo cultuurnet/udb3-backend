@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 
 abstract class AbstractTitleUpdated extends AbstractEvent
 {
-    /**
-     * @var Title
-     */
-    protected $title;
+    protected Title $title;
 
     final public function __construct(string $id, Title $title)
     {
@@ -19,15 +17,15 @@ abstract class AbstractTitleUpdated extends AbstractEvent
         $this->title = $title;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): LegacyTitle
     {
-        return $this->title;
+        return LegacyTitle::fromUdb3ModelTitle($this->title);
     }
 
     public function serialize(): array
     {
         return parent::serialize() + [
-            'title' => (string) $this->title,
+            'title' => $this->title->toString(),
         ];
     }
 

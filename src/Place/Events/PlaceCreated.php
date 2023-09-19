@@ -76,7 +76,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
     public function toGranularEvents(): array
     {
         return [
-            new TitleUpdated($this->placeId, $this->title),
+            new TitleUpdated($this->placeId, $this->title->toUdb3ModelTitle()),
             new TypeUpdated($this->placeId, $this->eventType),
             new AddressUpdated($this->placeId, $this->address),
             new CalendarUpdated($this->placeId, $this->calendar),

@@ -62,7 +62,6 @@ use CultuurNet\UDB3\Offer\Item\Events\ImageRemoved;
 use CultuurNet\UDB3\Offer\Item\Events\ImageUpdated;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeInterface;
 use RuntimeException;
 use CultuurNet\UDB3\StringLiteral;
@@ -169,7 +168,7 @@ class Item extends Offer
 
     protected function createTitleUpdatedEvent(Title $title): TitleUpdated
     {
-        return new TitleUpdated($this->id, LegacyTitle::fromUdb3ModelTitle($title));
+        return new TitleUpdated($this->id, $title);
     }
 
     protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated

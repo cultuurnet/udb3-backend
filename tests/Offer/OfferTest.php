@@ -58,7 +58,6 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\Item;
 use CultuurNet\UDB3\StringLiteral;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 
 class OfferTest extends AggregateRootScenarioTestCase
@@ -1735,7 +1734,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId),
-                    new TitleUpdated($itemId, LegacyTitle::fromUdb3ModelTitle($title)),
+                    new TitleUpdated($itemId, $title),
                 ]
             )
             ->when(
@@ -1760,7 +1759,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId),
-                    new TitleUpdated($itemId, new LegacyTitle('Een titel')),
+                    new TitleUpdated($itemId, new Title('Een titel')),
                 ]
             )
             ->when(
@@ -1787,7 +1786,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId),
-                    new TitleUpdated($itemId, new LegacyTitle('Een titel')),
+                    new TitleUpdated($itemId, new Title('Een titel')),
                 ]
             )
             ->when(

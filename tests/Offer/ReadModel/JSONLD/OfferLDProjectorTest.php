@@ -65,7 +65,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentNullEnricher;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\StringLiteral;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -507,7 +506,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $titleUpdatedEvent = new TitleUpdated(
             '5582FCA5-38FD-40A0-B8FB-9FA70AB7ADA3',
-            new LegacyTitle('A cycling adventure')
+            new Title('A cycling adventure')
         );
 
         $initialDocument = new JsonDocument(

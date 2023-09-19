@@ -12,7 +12,6 @@ use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\TestCase;
 
 final class PlaceImportedFromUDB2Test extends TestCase
@@ -45,7 +44,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new LegacyTitle('CC Palethe')),
+                new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new Title('CC Palethe')),
                 new AddressUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Address(
@@ -74,7 +73,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($placeId, new LegacyTitle('CC Palethe')),
+                new TitleUpdated($placeId, new Title('CC Palethe')),
                 new TitleTranslated($placeId, new Language('fr'), new Title('Centre culturel Palethe')),
                 new TitleTranslated($placeId, new Language('de'), new Title('Kulturzentrum Palethe')),
                 new AddressUpdated(
@@ -105,7 +104,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($placeId, new LegacyTitle('CC Palethe')),
+                new TitleUpdated($placeId, new Title('CC Palethe')),
                 new AddressUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Address(
@@ -134,7 +133,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($placeId, new LegacyTitle('CC Palethe')),
+                new TitleUpdated($placeId, new Title('CC Palethe')),
                 new AddressUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Address(
@@ -163,7 +162,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($placeId, new LegacyTitle('cultuurcentrum Tessenderlo/Vismarkt')),
+                new TitleUpdated($placeId, new Title('cultuurcentrum Tessenderlo/Vismarkt')),
             ],
             $placeImportedFromUDB2->toGranularEvents()
         );
@@ -190,7 +189,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
             '3.3' => [
                 '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                 [
-                    new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new LegacyTitle('Bogardenkapel')),
+                    new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new Title('Bogardenkapel')),
                     new AddressUpdated(
                         '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                         new Address(
@@ -210,7 +209,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
             'root_node' => [
                 '782c9792-6067-438d-a246-064bb448f086',
                 [
-                    new TitleUpdated('782c9792-6067-438d-a246-064bb448f086', new LegacyTitle('Bogardenkapel')),
+                    new TitleUpdated('782c9792-6067-438d-a246-064bb448f086', new Title('Bogardenkapel')),
                     new AddressUpdated(
                         '782c9792-6067-438d-a246-064bb448f086',
                         new Address(
