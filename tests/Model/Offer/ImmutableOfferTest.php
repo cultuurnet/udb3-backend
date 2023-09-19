@@ -565,8 +565,9 @@ class ImmutableOfferTest extends TestCase
     {
         $offer = $this->getOffer();
         $calendar = $offer->getCalendar();
+        
+        $this->assertInstanceOf(SingleSubEventCalendar::class, $calendar);
 
-        /** @phpstan-ignore-next-line  */
         $expected = $calendar->getEndDate();
         $actual = $offer->getAvailableTo();
 
