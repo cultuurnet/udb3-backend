@@ -11,11 +11,11 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
-use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
+use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GeometryEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\GraphRepository;
@@ -37,16 +37,10 @@ final class RdfProjector implements EventListener
     private LoggerInterface $logger;
 
     private const TYPE_ORGANISATOR = 'cp:Organisator';
-    private const TYPE_CONTACT_POINT = 'schema:ContactPoint';
 
     private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
     private const PROPERTY_HOMEPAGE = 'foaf:homepage';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
-
-    private const PROPERTY_CONTACT_POINT = 'schema:contactPoint';
-    private const PROPERTY_CONTACT_POINT_URL = 'schema:url';
-    private const PROPERTY_CONTACT_POINT_EMAIL = 'schema:email';
-    private const PROPERTY_CONTACT_POINT_PHONE = 'schema:telephone';
 
     public function __construct(
         GraphRepository $graphRepository,
@@ -112,7 +106,7 @@ final class RdfProjector implements EventListener
         }
 
         if (!$organizer->getContactPoint()->isEmpty()) {
-            $this->setContactPoint($resource, $organizer->getContactPoint());
+            (new ContactPointEditor())->setContactPoint($resource, $organizer->getContactPoint());
         }
 
         $this->graphRepository->save($iri, $graph);
@@ -140,27 +134,6 @@ final class RdfProjector implements EventListener
                 self::PROPERTY_REALISATOR_NAAM,
                 new Literal($translatedTitle->getTranslation($language)->toString(), $language->toString())
             );
-        }
-    }
-
-    private function setContactPoint(Resource $resource, ContactPoint $contactPoint): void
-    {
-        foreach ($contactPoint->getUrls() as $url) {
-            $urlResource = $resource->getGraph()->newBNode([self::TYPE_CONTACT_POINT]);
-            $urlResource->addLiteral(self::PROPERTY_CONTACT_POINT_URL, $url->toString());
-            $resource->add(self::PROPERTY_CONTACT_POINT, $urlResource);
-        }
-
-        foreach ($contactPoint->getEmailAddresses() as $email) {
-            $urlResource = $resource->getGraph()->newBNode([self::TYPE_CONTACT_POINT]);
-            $urlResource->addLiteral(self::PROPERTY_CONTACT_POINT_EMAIL, $email->toString());
-            $resource->add(self::PROPERTY_CONTACT_POINT, $urlResource);
-        }
-
-        foreach ($contactPoint->getTelephoneNumbers() as $phone) {
-            $urlResource = $resource->getGraph()->newBNode([self::TYPE_CONTACT_POINT]);
-            $urlResource->addLiteral(self::PROPERTY_CONTACT_POINT_PHONE, $phone->toString());
-            $resource->add(self::PROPERTY_CONTACT_POINT, $urlResource);
         }
     }
 
