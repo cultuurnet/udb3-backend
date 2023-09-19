@@ -586,9 +586,9 @@ class Event extends Offer
         return new TitleTranslated($this->eventId, $language, LegacyTitle::fromUdb3ModelTitle($title));
     }
 
-    protected function createTitleUpdatedEvent(LegacyTitle $title): TitleUpdated
+    protected function createTitleUpdatedEvent(Title $title): TitleUpdated
     {
-        return new TitleUpdated($this->eventId, $title);
+        return new TitleUpdated($this->eventId, LegacyTitle::fromUdb3ModelTitle($title));
     }
 
     protected function createDescriptionTranslatedEvent(LegacyLanguage $language, Description $description): DescriptionTranslated

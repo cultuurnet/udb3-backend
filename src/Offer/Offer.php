@@ -326,7 +326,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
                 $event = $this->createTitleTranslatedEvent($language, $title);
             } else {
-                $event = $this->createTitleUpdatedEvent($legacyTitle);
+                $event = $this->createTitleUpdatedEvent($title);
             }
 
             $this->apply($event);
@@ -1071,7 +1071,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createOfferDeletedEvent(): AbstractOfferDeleted;
 
-    abstract protected function createTitleUpdatedEvent(LegacyTitle $title): AbstractTitleUpdated;
+    abstract protected function createTitleUpdatedEvent(Title $title): AbstractTitleUpdated;
 
     abstract protected function createDescriptionUpdatedEvent(Description $description): AbstractDescriptionUpdated;
 
