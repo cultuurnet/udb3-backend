@@ -56,8 +56,8 @@ class UDB3SavedSearchRepositoryTest extends TestCase
             ->willReturn('73bf2160-058c-4e4e-bbee-6bcbe9298596');
 
         $this->udb3SavedSearchRepository->write(
-            new StringLiteral('96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc'),
-            new StringLiteral('In Leuven'),
+            '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
+            'In Leuven',
             new QueryString('q=city:leuven')
         );
 
@@ -176,20 +176,20 @@ class UDB3SavedSearchRepositoryTest extends TestCase
             );
 
         $this->udb3SavedSearchRepository->write(
-            new StringLiteral('96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc'),
-            new StringLiteral('In Leuven'),
+            '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
+            'In Leuven',
             new QueryString('q=city:leuven')
         );
 
         $this->udb3SavedSearchRepository->write(
-            new StringLiteral('6f072ba8-c510-40ac-b387-51f582650e26'),
-            new StringLiteral('Permanent in Rotselaar'),
+            '6f072ba8-c510-40ac-b387-51f582650e26',
+            'Permanent in Rotselaar',
             new QueryString('q=city:Rotselaar AND permanent:TRUE')
         );
 
         $this->udb3SavedSearchRepository->write(
-            new StringLiteral('6f072ba8-c510-40ac-b387-51f582650e26'),
-            new StringLiteral('Alles in Tienen'),
+            '6f072ba8-c510-40ac-b387-51f582650e26',
+            'Alles in Tienen',
             new QueryString('q=city:Tienen')
         );
     }

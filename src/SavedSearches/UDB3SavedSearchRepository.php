@@ -48,12 +48,9 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
         $this->userId = $userId;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function write(
-        StringLiteral $userId,
-        StringLiteral $name,
+        string $userId,
+        string $name,
         QueryString $queryString
     ): void {
         $queryBuilder = $this->connection->createQueryBuilder()
@@ -69,8 +66,8 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
             ->setParameters(
                 [
                     $this->uuidGenerator->generate(),
-                    $userId->toNative(),
-                    $name->toNative(),
+                    $userId,
+                    $name,
                     $queryString->toNative(),
                 ]
             );
