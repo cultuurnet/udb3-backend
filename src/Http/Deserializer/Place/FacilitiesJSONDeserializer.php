@@ -34,7 +34,7 @@ class FacilitiesJSONDeserializer extends JSONDeserializer
      * @throws DataValidationException
      * @return Facility[]
      */
-    public function deserialize(StringLiteral $data): array
+    public function deserialize(string $data): array
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);

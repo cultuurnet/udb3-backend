@@ -7,14 +7,10 @@ namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class UrlJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var UrlJSONDeserializer
-     */
-    private $urlJSONDeserializer;
+    private UrlJSONDeserializer $urlJSONDeserializer;
 
     protected function setUp(): void
     {
@@ -26,7 +22,7 @@ class UrlJSONDeserializerTest extends TestCase
      */
     public function it_can_serialize_a_valid_url(): void
     {
-        $json = new StringLiteral('{"url":"http://www.depot.be"}');
+        $json = '{"url":"http://www.depot.be"}';
 
         $actual = $this->urlJSONDeserializer->deserialize($json);
 
@@ -41,7 +37,7 @@ class UrlJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_url_is_missing(): void
     {
-        $json = new StringLiteral('{"foo":"http://www.depot.be"}');
+        $json = '{"foo":"http://www.depot.be"}';
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('Missing value for "url".');
@@ -54,7 +50,7 @@ class UrlJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_url_is_invalid(): void
     {
-        $json = new StringLiteral('{"url":"http:/www.depot.be"}');
+        $json = '{"url":"http:/www.depot.be"}';
 
         $this->expectException(\InvalidArgumentException::class);
 

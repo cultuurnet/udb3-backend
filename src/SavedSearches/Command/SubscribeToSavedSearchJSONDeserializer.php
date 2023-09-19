@@ -23,7 +23,7 @@ class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
         $this->userId = $userId;
     }
 
-    public function deserialize(StringLiteral $data): SubscribeToSavedSearch
+    public function deserialize(string $data): SubscribeToSavedSearch
     {
         $json = parent::deserialize($data);
 

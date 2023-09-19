@@ -13,7 +13,6 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class MajorInfoJSONDeserializerTest extends TestCase
 {
@@ -26,7 +25,7 @@ class MajorInfoJSONDeserializerTest extends TestCase
 
         $majorInfoJSONDeserializer = new MajorInfoJSONDeserializer();
 
-        $majorInfo = $majorInfoJSONDeserializer->deserialize(new StringLiteral($majorInfoAsJson));
+        $majorInfo = $majorInfoJSONDeserializer->deserialize($majorInfoAsJson);
 
         $expectedAddress = new Address(
             new Street('Kerkstraat 1'),

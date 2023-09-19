@@ -30,7 +30,7 @@ class TitleJSONDeserializer extends JSONDeserializer
         $this->propertyName = $propertyName;
     }
 
-    public function deserialize(StringLiteral $data): Title
+    public function deserialize(string $data): Title
     {
         $data = parent::deserialize($data);
 

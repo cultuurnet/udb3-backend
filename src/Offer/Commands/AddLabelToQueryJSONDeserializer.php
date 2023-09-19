@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -16,7 +15,7 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class AddLabelToQueryJSONDeserializer extends JSONDeserializer
 {
-    public function deserialize(StringLiteral $data): AddLabelToQuery
+    public function deserialize(string $data): AddLabelToQuery
     {
         $data = parent::deserialize($data);
 

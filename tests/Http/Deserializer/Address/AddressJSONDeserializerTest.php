@@ -11,14 +11,10 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class AddressJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var AddressJSONDeserializer
-     */
-    private $deserializer;
+    private AddressJSONDeserializer $deserializer;
 
     public function setUp(): void
     {
@@ -30,7 +26,7 @@ class AddressJSONDeserializerTest extends TestCase
      */
     public function it_checks_all_required_fields_are_present(): void
     {
-        $data = new StringLiteral('{}');
+        $data = '{}';
 
         $expectedException = new DataValidationException();
         $expectedException->setValidationMessages(
@@ -55,15 +51,13 @@ class AddressJSONDeserializerTest extends TestCase
      */
     public function it_returns_an_address_object(): void
     {
-        $data = new StringLiteral(
-            json_encode(
-                [
-                    'streetAddress' => 'Wetstraat 1',
-                    'postalCode' => '1000',
-                    'addressLocality' => 'Brussel',
-                    'addressCountry' => 'BE',
-                ]
-            )
+        $data = json_encode(
+            [
+                'streetAddress' => 'Wetstraat 1',
+                'postalCode' => '1000',
+                'addressLocality' => 'Brussel',
+                'addressCountry' => 'BE',
+            ]
         );
 
         $expectedAddress = new Address(

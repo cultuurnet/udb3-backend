@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -15,7 +14,7 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class UrlJSONDeserializer extends JSONDeserializer
 {
-    public function deserialize(StringLiteral $data): Url
+    public function deserialize(string $data): Url
     {
         $data = parent::deserialize($data);
 

@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
-use CultuurNet\UDB3\StringLiteral;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -35,7 +34,7 @@ final class AddLabelFromJsonBodyRequestHandler implements RequestHandlerInterfac
         $offerId = $routeParameters->getOfferId();
         $bodyContent = $request->getBody()->getContents();
         try {
-            $label = $this->labelJsonDeserializer->deserialize(new StringLiteral($bodyContent));
+            $label = $this->labelJsonDeserializer->deserialize($bodyContent);
         } catch (\InvalidArgumentException $exception) {
             throw ApiProblem::bodyInvalidDataWithDetail('The label should match pattern: ^[^;]{2,255}$');
         }

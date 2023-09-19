@@ -33,9 +33,7 @@ final class CreateSavedSearchRequestHandler implements RequestHandlerInterface
             new StringLiteral($this->userId)
         );
 
-        $command = $commandDeserializer->deserialize(
-            new StringLiteral($request->getBody()->getContents())
-        );
+        $command = $commandDeserializer->deserialize($request->getBody()->getContents());
 
         $this->commandBus->dispatch($command);
 
