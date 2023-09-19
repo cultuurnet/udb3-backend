@@ -37,4 +37,9 @@ class Title extends StringLiteral implements \JsonSerializable
         $string = $title->toString();
         return new self($string);
     }
+
+    public function toUdb3ModelTitle(): Udb3ModelTitle
+    {
+        return new Udb3ModelTitle($this->toNative());
+    }
 }
