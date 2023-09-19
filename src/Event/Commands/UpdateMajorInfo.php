@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title as LegacyTitle;
 
 /**
  * Provides a command to update the major info of the event.
@@ -55,12 +54,9 @@ class UpdateMajorInfo extends AbstractCommand
         $this->theme = $theme;
     }
 
-    /**
-     * @return LegacyTitle
-     */
-    public function getTitle()
+    public function getTitle(): Title
     {
-        return LegacyTitle::fromUdb3ModelTitle($this->title);
+        return $this->title;
     }
 
     /**

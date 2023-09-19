@@ -55,7 +55,7 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
         $event = $this->offerRepository->load($updateMajorInfo->getItemId());
 
         $event->updateMajorInfo(
-            $updateMajorInfo->getTitle(),
+            LegacyTitle::fromUdb3ModelTitle($updateMajorInfo->getTitle()),
             $updateMajorInfo->getEventType(),
             $updateMajorInfo->getLocation(),
             $updateMajorInfo->getCalendar(),
