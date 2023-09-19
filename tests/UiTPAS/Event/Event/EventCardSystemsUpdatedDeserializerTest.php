@@ -10,10 +10,7 @@ use CultuurNet\UDB3\StringLiteral;
 
 class EventCardSystemsUpdatedDeserializerTest extends TestCase
 {
-    /**
-     * @var EventCardSystemsUpdatedDeserializer
-     */
-    private $deserializer;
+    private EventCardSystemsUpdatedDeserializer $deserializer;
 
     public function setUp(): void
     {
@@ -41,7 +38,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
             ]
         );
 
-        $event = $this->deserializer->deserialize(new StringLiteral($json));
+        $event = $this->deserializer->deserialize($json);
         $cardSystems = $event->getCardSystems();
 
         $this->assertEquals('48ef34b0-e34a-4a15-9ae2-a5a01f189f90', $event->getId());
@@ -69,7 +66,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
             ]
         );
 
-        $event = $this->deserializer->deserialize(new StringLiteral($json));
+        $event = $this->deserializer->deserialize($json);
         $cardSystems = $event->getCardSystems();
 
         $this->assertEquals('48ef34b0-e34a-4a15-9ae2-a5a01f189f90', $event->getId());
@@ -90,7 +87,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
             ]
         );
 
-        $event = $this->deserializer->deserialize(new StringLiteral($json));
+        $event = $this->deserializer->deserialize($json);
         $cardSystems = $event->getCardSystems();
 
         $this->assertEquals('48ef34b0-e34a-4a15-9ae2-a5a01f189f90', $event->getId());
@@ -110,7 +107,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
             ]
         );
 
-        $this->deserializer->deserialize(new StringLiteral($json));
+        $this->deserializer->deserialize($json);
     }
 
     /**
@@ -126,7 +123,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
             ]
         );
 
-        $this->deserializer->deserialize(new StringLiteral($json));
+        $this->deserializer->deserialize($json);
     }
 
     /**
@@ -143,7 +140,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
             ]
         );
 
-        $this->deserializer->deserialize(new StringLiteral($json));
+        $this->deserializer->deserialize($json);
     }
 
     /**
@@ -164,7 +161,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
             ]
         );
 
-        $this->deserializer->deserialize(new StringLiteral($json));
+        $this->deserializer->deserialize($json);
     }
 
     /**
@@ -185,6 +182,6 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
             ]
         );
 
-        $this->deserializer->deserialize(new StringLiteral($json));
+        $this->deserializer->deserialize($json);
     }
 }

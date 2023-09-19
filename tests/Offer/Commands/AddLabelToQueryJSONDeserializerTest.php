@@ -8,14 +8,10 @@ use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class AddLabelToQueryJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var AddLabelToQueryJSONDeserializer
-     */
-    private $deserializer;
+    private AddLabelToQueryJSONDeserializer $deserializer;
 
     public function setUp(): void
     {
@@ -30,7 +26,7 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
         $expectedLabel = new Label(new LabelName('foo'));
         $expectedQuery = 'city:leuven';
 
-        $json = new StringLiteral('{"label":"foo", "query":"city:leuven"}');
+        $json = '{"label":"foo", "query":"city:leuven"}';
 
         $command = $this->deserializer->deserialize($json);
 
@@ -43,7 +39,7 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_label_is_missing(): void
     {
-        $json = new StringLiteral('{"query": "city:leuven"}');
+        $json = '{"query": "city:leuven"}';
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('Missing value "label".');
@@ -56,7 +52,7 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_label_is_empty(): void
     {
-        $json = new StringLiteral('{"label": "", "query": "city:leuven"}');
+        $json = '{"label": "", "query": "city:leuven"}';
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('Missing value "label".');
@@ -69,7 +65,7 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_query_is_missing(): void
     {
-        $json = new StringLiteral('{"label": "foo"}');
+        $json = '{"label": "foo"}';
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('Missing value "query".');
@@ -82,7 +78,7 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_query_is_empty(): void
     {
-        $json = new StringLiteral('{"label": "foo", "query": ""}');
+        $json = '{"label": "foo", "query": ""}';
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('Missing value "query".');

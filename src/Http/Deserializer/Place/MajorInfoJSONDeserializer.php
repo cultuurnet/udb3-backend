@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Http\Deserializer\Event\EventTypeJSONDeserializer;
 use CultuurNet\UDB3\Title;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -45,22 +44,16 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
     /**
      * @throws DataValidationException
      */
-    public function deserialize(StringLiteral $data): MajorInfo
+    public function deserialize(string $data): MajorInfo
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);
 
-        $type = $this->typeDeserializer->deserialize(
-            new StringLiteral(json_encode($data['type']))
-        );
+        $type = $this->typeDeserializer->deserialize(json_encode($data['type']));
 
-        $address = $this->addressDeserializer->deserialize(
-            new StringLiteral(json_encode($data['address']))
-        );
+        $address = $this->addressDeserializer->deserialize(json_encode($data['address']));
 
-        $calendar = $this->calendarDeserializer->deserialize(
-            new StringLiteral(json_encode($data['calendar']))
-        );
+        $calendar = $this->calendarDeserializer->deserialize(json_encode($data['calendar']));
 
         return new MajorInfo(
             new Title($data['name']),

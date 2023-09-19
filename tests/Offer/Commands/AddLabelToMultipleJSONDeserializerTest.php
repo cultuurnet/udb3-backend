@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use CultuurNet\UDB3\Offer\OfferType;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class AddLabelToMultipleJSONDeserializerTest extends TestCase
 {
@@ -26,10 +25,10 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
         $offerIdentifierDeserializer->expects($this->any())
             ->method('deserialize')
             ->willReturnCallback(
-                function (StringLiteral $id) {
+                function (string $id) {
                     return new IriOfferIdentifier(
                         new Url("http://du.de/event/{$id}"),
-                        $id->toNative(),
+                        $id,
                         OfferType::event()
                     );
                 }
@@ -45,7 +44,7 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_a_valid_add_label_to_multiple_command(): void
     {
-        $json = new StringLiteral('{"label":"foo", "offers": [1, 2, 3]}');
+        $json = '{"label":"foo", "offers": [1, 2, 3]}';
 
         $expected = new AddLabelToMultiple(
             (new OfferIdentifierCollection())
@@ -83,7 +82,7 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_label_is_missing(): void
     {
-        $json = new StringLiteral('{"offers":[]}');
+        $json = '{"offers":[]}';
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('Missing value "label".');
@@ -96,7 +95,7 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_offers_are_missing(): void
     {
-        $json = new StringLiteral('{"label":"foo"}');
+        $json = '{"label":"foo"}';
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('Missing value "offers".');

@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -30,7 +29,7 @@ class CalendarJSONDeserializer extends JSONDeserializer
         $this->calendarDataValidator = $calendarDataValidator;
     }
 
-    public function deserialize(StringLiteral $data): Calendar
+    public function deserialize(string $data): Calendar
     {
         $data = (array) parent::deserialize($data);
 

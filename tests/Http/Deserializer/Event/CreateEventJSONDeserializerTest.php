@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class CreateEventJSONDeserializerTest extends TestCase
 {
@@ -23,7 +22,7 @@ class CreateEventJSONDeserializerTest extends TestCase
 
         $createEventJSONDeserializer = new CreateEventJSONDeserializer();
 
-        $createEvent = $createEventJSONDeserializer->deserialize(new StringLiteral($createEventAsJson));
+        $createEvent = $createEventJSONDeserializer->deserialize($createEventAsJson);
 
         $expectedLocation = new LocationId('28cf728d-441b-4912-b3b0-f03df0d22491');
 
