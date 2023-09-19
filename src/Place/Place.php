@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Offer;
@@ -69,7 +70,7 @@ use CultuurNet\UDB3\Place\Events\VideoAdded;
 use CultuurNet\UDB3\Place\Events\VideoDeleted;
 use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 use DateTimeInterface;
 use CultuurNet\UDB3\StringLiteral;
@@ -109,12 +110,12 @@ class Place extends Offer
     }
 
     public static function create(
-        string $id,
-        Language $mainLanguage,
-        Title $title,
-        EventType $eventType,
-        Address $address,
-        Calendar $calendar,
+        string            $id,
+        Language          $mainLanguage,
+        LegacyTitle       $title,
+        EventType         $eventType,
+        Address           $address,
+        Calendar          $calendar,
         DateTimeImmutable $publicationDate = null
     ): self {
         $place = new self();
@@ -145,10 +146,10 @@ class Place extends Offer
     }
 
     public function updateMajorInfo(
-        Title $title,
-        EventType $eventType,
-        Address $address,
-        Calendar $calendar
+        LegacyTitle $title,
+        EventType   $eventType,
+        Address     $address,
+        Calendar    $calendar
     ): void {
         $this->apply(
             new MajorInfoUpdated(
@@ -395,10 +396,10 @@ class Place extends Offer
 
     protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
     {
-        return new TitleTranslated($this->placeId, $language, $title);
+        return new TitleTranslated($this->placeId, $language, LegacyTitle::fromUdb3ModelTitle($title));
     }
 
-    protected function createTitleUpdatedEvent(Title $title): TitleUpdated
+    protected function createTitleUpdatedEvent(LegacyTitle $title): TitleUpdated
     {
         return new TitleUpdated($this->placeId, $title);
     }

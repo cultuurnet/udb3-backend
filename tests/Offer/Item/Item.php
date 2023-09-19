@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3Language;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -61,7 +62,7 @@ use CultuurNet\UDB3\Offer\Item\Events\ImageRemoved;
 use CultuurNet\UDB3\Offer\Item\Events\ImageUpdated;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeInterface;
 use RuntimeException;
 use CultuurNet\UDB3\StringLiteral;
@@ -163,10 +164,10 @@ class Item extends Offer
 
     protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
     {
-        return new TitleTranslated($this->id, $language, $title);
+        return new TitleTranslated($this->id, $language, LegacyTitle::fromUdb3ModelTitle($title));
     }
 
-    protected function createTitleUpdatedEvent(Title $title): TitleUpdated
+    protected function createTitleUpdatedEvent(LegacyTitle $title): TitleUpdated
     {
         return new TitleUpdated($this->id, $title);
     }

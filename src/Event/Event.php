@@ -82,6 +82,7 @@ use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -96,7 +97,7 @@ use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -120,13 +121,13 @@ class Event extends Offer
     }
 
     public static function create(
-        string $eventId,
-        LegacyLanguage $mainLanguage,
-        Title $title,
-        EventType $eventType,
-        LocationId $location,
-        Calendar $calendar,
-        Theme $theme = null,
+        string            $eventId,
+        LegacyLanguage    $mainLanguage,
+        LegacyTitle       $title,
+        EventType         $eventType,
+        LocationId        $location,
+        Calendar          $calendar,
+        Theme             $theme = null,
         DateTimeImmutable $publicationDate = null
     ): self {
         $event = new self();
@@ -297,11 +298,11 @@ class Event extends Offer
     }
 
     public function updateMajorInfo(
-        Title $title,
-        EventType $eventType,
-        LocationId $location,
-        Calendar $calendar,
-        Theme $theme = null
+        LegacyTitle $title,
+        EventType   $eventType,
+        LocationId  $location,
+        Calendar    $calendar,
+        Theme       $theme = null
     ): void {
         $this->apply(new MajorInfoUpdated($this->eventId, $title, $eventType, $location, $calendar, $theme));
 
@@ -582,10 +583,10 @@ class Event extends Offer
 
     protected function createTitleTranslatedEvent(LegacyLanguage $language, Title $title): TitleTranslated
     {
-        return new TitleTranslated($this->eventId, $language, $title);
+        return new TitleTranslated($this->eventId, $language, LegacyTitle::fromUdb3ModelTitle($title));
     }
 
-    protected function createTitleUpdatedEvent(Title $title): TitleUpdated
+    protected function createTitleUpdatedEvent(LegacyTitle $title): TitleUpdated
     {
         return new TitleUpdated($this->eventId, $title);
     }

@@ -324,7 +324,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $legacyTitle = LegacyTitle::fromUdb3ModelTitle($title);
         if ($this->isTitleChanged($legacyTitle, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
-                $event = $this->createTitleTranslatedEvent($language, $legacyTitle);
+                $event = $this->createTitleTranslatedEvent($language, $title);
             } else {
                 $event = $this->createTitleUpdatedEvent($legacyTitle);
             }
@@ -1042,7 +1042,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createTitleTranslatedEvent(
         LegacyLanguage $language,
-        LegacyTitle $title
+        Title $title
     ): AbstractTitleTranslated;
 
     abstract protected function createDescriptionTranslatedEvent(
