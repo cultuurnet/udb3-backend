@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Title as LegacyTitle;
 
 abstract class AbstractTitleTranslated extends AbstractPropertyTranslatedEvent
 {
@@ -18,10 +17,9 @@ abstract class AbstractTitleTranslated extends AbstractPropertyTranslatedEvent
         $this->title = $title;
     }
 
-    public function getTitle(): LegacyTitle
+    public function getTitle(): Title
     {
-        //return $this->title;
-        return LegacyTitle::fromUdb3ModelTitle($this->title);
+        return $this->title;
     }
 
     public function serialize(): array
