@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Timestamp;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class CalendarJSONDeserializerTest extends TestCase
 {
@@ -41,9 +40,7 @@ class CalendarJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_json_to_calendar(): void
     {
-        $calendarAsJsonString = new StringLiteral(
-            file_get_contents(__DIR__ . '/samples/calendar.json')
-        );
+        $calendarAsJsonString = file_get_contents(__DIR__ . '/samples/calendar.json');
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
@@ -101,9 +98,7 @@ class CalendarJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_json_to_calendar_with_status(): void
     {
-        $calendarAsJsonString = new StringLiteral(
-            file_get_contents(__DIR__ . '/samples/calendar_with_status.json')
-        );
+        $calendarAsJsonString = file_get_contents(__DIR__ . '/samples/calendar_with_status.json');
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
@@ -137,9 +132,7 @@ class CalendarJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_json_to_calendar_with_booking_availability(): void
     {
-        $calendarAsJsonString = new StringLiteral(
-            file_get_contents(__DIR__ . '/samples/calendar_with_booking_availability.json')
-        );
+        $calendarAsJsonString = file_get_contents(__DIR__ . '/samples/calendar_with_booking_availability.json');
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
@@ -169,9 +162,7 @@ class CalendarJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_json_to_calendar_with_status_on_time_spans(): void
     {
-        $calendarAsJsonString = new StringLiteral(
-            file_get_contents(__DIR__ . '/samples/calendar_with_status_on_time_spans.json')
-        );
+        $calendarAsJsonString = file_get_contents(__DIR__ . '/samples/calendar_with_status_on_time_spans.json');
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
@@ -239,9 +230,7 @@ class CalendarJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_json_to_calendar_with_booking_availability_on_time_spans(): void
     {
-        $calendarAsJsonString = new StringLiteral(
-            file_get_contents(__DIR__ . '/samples/calendar_with_booking_availability_on_time_spans.json')
-        );
+        $calendarAsJsonString = file_get_contents(__DIR__ . '/samples/calendar_with_booking_availability_on_time_spans.json');
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
@@ -286,7 +275,7 @@ class CalendarJSONDeserializerTest extends TestCase
         string $calendarData,
         CalendarType $expectedCalendarType
     ): void {
-        $calendarAsJsonString = new StringLiteral($calendarData);
+        $calendarAsJsonString = $calendarData;
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),

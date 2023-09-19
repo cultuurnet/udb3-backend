@@ -10,7 +10,6 @@ use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\StringLiteral;
 use InvalidArgumentException;
 
 final class DomainMessageJSONDeserializer implements DeserializerInterface
@@ -31,9 +30,9 @@ final class DomainMessageJSONDeserializer implements DeserializerInterface
         $this->payloadClass = $payloadClass;
     }
 
-    public function deserialize(StringLiteral $data): DomainMessage
+    public function deserialize(string $data): DomainMessage
     {
-        $data = Json::decodeAssociatively($data->toNative());
+        $data = Json::decodeAssociatively($data);
 
         if (null === $data) {
             throw new InvalidArgumentException('Invalid JSON');

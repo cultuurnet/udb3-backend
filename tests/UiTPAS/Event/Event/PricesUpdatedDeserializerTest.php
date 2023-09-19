@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\StringLiteral;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
@@ -69,9 +68,7 @@ final class PricesUpdatedDeserializerTest extends TestCase
                     )
                 )
             ),
-            $this->pricesUpdatedDeserializer->deserialize(
-                new StringLiteral(Json::encode($pricesUpdatedAsArray))
-            )
+            $this->pricesUpdatedDeserializer->deserialize(Json::encode($pricesUpdatedAsArray))
         );
     }
 
@@ -84,9 +81,7 @@ final class PricesUpdatedDeserializerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($exceptionMessage);
 
-        $this->pricesUpdatedDeserializer->deserialize(
-            new StringLiteral(Json::encode($invalidData))
-        );
+        $this->pricesUpdatedDeserializer->deserialize(Json::encode($invalidData));
     }
 
     public function invalidDataProvider(): array

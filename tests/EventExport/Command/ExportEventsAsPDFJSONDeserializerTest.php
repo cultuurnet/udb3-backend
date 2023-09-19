@@ -13,7 +13,6 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Subtitle;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class ExportEventsAsPDFJSONDeserializerTest extends TestCase
 {
@@ -111,12 +110,8 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
         ];
     }
 
-    private function getJSONStringFromFile(string $fileName): StringLiteral
+    private function getJSONStringFromFile(string $fileName): string
     {
-        $json = file_get_contents(
-            __DIR__ . '/' . $fileName
-        );
-
-        return new StringLiteral($json);
+        return file_get_contents(__DIR__ . '/' . $fileName);
     }
 }

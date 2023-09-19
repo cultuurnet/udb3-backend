@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Deserializer\ContactPoint;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -23,7 +22,7 @@ class ContactPointJSONDeserializer extends JSONDeserializer
         $this->validator = new ContactPointDataValidator();
     }
 
-    public function deserialize(StringLiteral $data): ContactPoint
+    public function deserialize(string $data): ContactPoint
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);

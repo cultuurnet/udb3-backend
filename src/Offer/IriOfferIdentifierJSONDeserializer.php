@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Deserializer\NotWellFormedException;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -26,9 +25,9 @@ class IriOfferIdentifierJSONDeserializer implements DeserializerInterface
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
     }
 
-    public function deserialize(StringLiteral $data): IriOfferIdentifier
+    public function deserialize(string $data): IriOfferIdentifier
     {
-        $data = json_decode($data->toNative(), true);
+        $data = json_decode($data, true);
 
         if (null === $data) {
             throw new NotWellFormedException('Invalid JSON');

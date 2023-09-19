@@ -17,7 +17,7 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
 {
-    public function deserialize(StringLiteral $data): EventCardSystemsUpdated
+    public function deserialize(string $data): EventCardSystemsUpdated
     {
         $dto = parent::deserialize($data);
 
