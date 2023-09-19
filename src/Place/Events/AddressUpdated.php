@@ -39,10 +39,10 @@ final class AddressUpdated extends PlaceEvent
         return new static(
             $data['place_id'],
             new Address(
-                new Street($data['address']),
-                new PostalCode($data['address']),
-                new Locality($data['address']),
-                new CountryCode($data['address'])
+                new Street($data['address']['streetAddress']),
+                new PostalCode($data['address']['postalCode']),
+                new Locality($data['address']['addressLocality']),
+                new CountryCode($data['address']['addressCountry'])
             )
         );
     }
