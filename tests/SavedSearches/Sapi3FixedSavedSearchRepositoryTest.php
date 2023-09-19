@@ -42,7 +42,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('Door mij ingevoerd'),
+                    'Door mij ingevoerd',
                     new CreatorQueryString('my_user_id')
                 ),
             ],
@@ -79,7 +79,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('Door mij ingevoerd'),
+                    'Door mij ingevoerd',
                     new CreatorQueryString('my_user_id')
                 ),
             ],
@@ -115,7 +115,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('Door mij ingevoerd'),
+                    'Door mij ingevoerd',
                     new CreatorQueryString('jane.doe@anonymous.com', 'my_user_id')
                 ),
             ],
@@ -151,7 +151,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('Door mij ingevoerd'),
+                    'Door mij ingevoerd',
                     new CreatorQueryString('jane.doe@anonymous.com')
                 ),
             ],

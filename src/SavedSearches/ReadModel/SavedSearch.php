@@ -5,29 +5,19 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SavedSearches\ReadModel;
 
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
-use CultuurNet\UDB3\StringLiteral;
 
 class SavedSearch implements \JsonSerializable
 {
-    /**
-     * @var StringLiteral|null
-     */
-    protected $id;
+    protected ?string $id;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $name;
+    protected string $name;
 
     /**
      * @var QueryString
      */
     protected $query;
 
-    /**
-     * @param StringLiteral $id
-     */
-    public function __construct(StringLiteral $name, QueryString $query, StringLiteral $id = null)
+    public function __construct(string $name, QueryString $query, string $id = null)
     {
         $this->name = $name;
         $this->query = $query;
@@ -40,7 +30,7 @@ class SavedSearch implements \JsonSerializable
     public function jsonSerialize()
     {
         $serializedSavedSearch = [
-            'name' => $this->name->toNative(),
+            'name' => $this->name,
             'query' => $this->query->toNative(),
         ];
 

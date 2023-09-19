@@ -114,9 +114,9 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
 
         while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             $savedSearches[] = new SavedSearch(
-                new StringLiteral($row[SchemaConfigurator::NAME]),
+                $row[SchemaConfigurator::NAME],
                 new QueryString($row[SchemaConfigurator::QUERY]),
-                new StringLiteral($row[SchemaConfigurator::ID])
+                $row[SchemaConfigurator::ID]
             );
         }
 

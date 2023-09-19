@@ -63,9 +63,9 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('In Leuven'),
+                    'In Leuven',
                     new QueryString('q=city:leuven'),
-                    new StringLiteral('73bf2160-058c-4e4e-bbee-6bcbe9298596')
+                    '73bf2160-058c-4e4e-bbee-6bcbe9298596'
                 ),
             ],
             $savedSearches
@@ -89,14 +89,14 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('In Leuven'),
+                    'In Leuven',
                     new QueryString('q=city:leuven'),
-                    new StringLiteral('73bf2160-058c-4e4e-bbee-6bcbe9298596')
+                    '73bf2160-058c-4e4e-bbee-6bcbe9298596'
                 ),
                 new SavedSearch(
-                    new StringLiteral('Alles in Tienen'),
+                    'Alles in Tienen',
                     new QueryString('q=city:Tienen'),
-                    new StringLiteral('4de79378-d9a9-47ec-9b38-6f76f9d6df37')
+                    '4de79378-d9a9-47ec-9b38-6f76f9d6df37'
                 ),
             ],
             $savedSearches
@@ -115,14 +115,14 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('Permanent in Rotselaar'),
+                    'Permanent in Rotselaar',
                     new QueryString('q=city:Rotselaar AND permanent:TRUE'),
-                    new StringLiteral('db4c4690-84fb-4ed9-9a64-fccdd6e29f53')
+                    'db4c4690-84fb-4ed9-9a64-fccdd6e29f53'
                 ),
                 new SavedSearch(
-                    new StringLiteral('Alles in Tienen'),
+                    'Alles in Tienen',
                     new QueryString('q=city:Tienen'),
-                    new StringLiteral('4de79378-d9a9-47ec-9b38-6f76f9d6df37')
+                    '4de79378-d9a9-47ec-9b38-6f76f9d6df37'
                 ),
             ],
             $savedSearches
@@ -153,9 +153,9 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $savedSearches = [];
         foreach ($rows as $row) {
             $savedSearches[] = new SavedSearch(
-                new StringLiteral($row[SchemaConfigurator::NAME]),
+                $row[SchemaConfigurator::NAME],
                 new QueryString($row[SchemaConfigurator::QUERY]),
-                new StringLiteral($row[SchemaConfigurator::ID])
+                $row[SchemaConfigurator::ID]
             );
         }
 
