@@ -36,7 +36,7 @@ class UpdateMajorInfoRequestHandler implements RequestHandlerInterface
         $this->commandBus->dispatch(
             new UpdateMajorInfo(
                 $eventId,
-                $majorInfo->getTitle(),
+                $majorInfo->getTitle()->toUdb3ModelTitle(),
                 $majorInfo->getType(),
                 $majorInfo->getLocation(),
                 $majorInfo->getCalendar(),

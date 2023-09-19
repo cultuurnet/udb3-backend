@@ -7,19 +7,17 @@ namespace CultuurNet\UDB3\Event\Commands;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 
 /**
  * Provides a command to update the major info of the event.
  */
 class UpdateMajorInfo extends AbstractCommand
 {
-    /**
-     * @var Title
-     */
-    private $title;
+    private Title $title;
 
     /**
      * @var EventType
@@ -41,12 +39,8 @@ class UpdateMajorInfo extends AbstractCommand
      */
     private $calendar;
 
-    /**
-     * UpdateMajorInfo constructor.
-     * @param string $eventId
-     */
     public function __construct(
-        $eventId,
+        string $eventId,
         Title $title,
         EventType $eventType,
         LocationId $location,
@@ -62,11 +56,11 @@ class UpdateMajorInfo extends AbstractCommand
     }
 
     /**
-     * @return Title
+     * @return LegacyTitle
      */
     public function getTitle()
     {
-        return $this->title;
+        return LegacyTitle::fromUdb3ModelTitle($this->title);
     }
 
     /**

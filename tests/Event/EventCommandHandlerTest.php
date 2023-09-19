@@ -129,7 +129,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_can_update_major_info_of_an_event(): void
     {
         $id = '1';
-        $title = new LegacyTitle('foo');
+        $title = new Title('foo');
         $eventType = new EventType('0.50.4.0.0', 'concert');
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
         $calendar = new Calendar(CalendarType::PERMANENT());
@@ -142,7 +142,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new UpdateMajorInfo($id, $title, $eventType, $location, $calendar)
             )
-            ->then([new MajorInfoUpdated($id, $title, $eventType, $location, $calendar)]);
+            ->then([new MajorInfoUpdated($id, LegacyTitle::fromUdb3ModelTitle($title), $eventType, $location, $calendar)]);
     }
 
     /**
@@ -153,7 +153,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         LocationId::setDummyPlaceForEducationIds(['6f87ce4c-bd39-4c5e-92b5-a9f8bdf4aa31']);
 
         $id = '1';
-        $title = new LegacyTitle('foo');
+        $title = new Title('foo');
         $eventType = new EventType('0.50.4.0.0', 'concert');
         $location = new LocationId('6f87ce4c-bd39-4c5e-92b5-a9f8bdf4aa31');
         $calendar = new Calendar(CalendarType::PERMANENT());
@@ -168,7 +168,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             )
             ->then(
                 [
-                    new MajorInfoUpdated($id, $title, $eventType, $location, $calendar),
+                    new MajorInfoUpdated($id, LegacyTitle::fromUdb3ModelTitle($title), $eventType, $location, $calendar),
                     new AudienceUpdated($id, new Audience(AudienceType::education())),
                 ]
             );

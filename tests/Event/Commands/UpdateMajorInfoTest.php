@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\CalendarType;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -39,7 +40,7 @@ class UpdateMajorInfoTest extends TestCase
     public function it_returns_the_correct_property_values(): void
     {
         $expectedId = 'id';
-        $expectedTitle = new Title('title');
+        $expectedTitle = new LegacyTitle('title');
         $expectedEventType = new EventType('bar_id', 'bar');
         $expectedLocation = new LocationId('335be568-aaf0-4147-80b6-9267daafe23b');
         $expectedCalendar = new Calendar(
