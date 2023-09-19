@@ -164,7 +164,7 @@ class Item extends Offer
 
     protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
     {
-        return new TitleTranslated($this->id, $language, LegacyTitle::fromUdb3ModelTitle($title));
+        return new TitleTranslated($this->id, $language, $title);
     }
 
     protected function createTitleUpdatedEvent(Title $title): TitleUpdated

@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -75,7 +76,7 @@ use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Money\Currency;
@@ -747,7 +748,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new MajorInfoUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Title('title'),
+            new LegacyTitle('title'),
             new EventType('0.0.0.0', 'event type'),
             new Address(
                 new Street('straat'),
@@ -908,7 +909,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new TitleUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Title('new title')
+            new LegacyTitle('new title')
         );
 
         $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
@@ -990,7 +991,7 @@ class HistoryProjectorTest extends TestCase
         return new PlaceCreated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             new LegacyLanguage('en'),
-            new Title('Foo'),
+            new LegacyTitle('Foo'),
             new EventType('1.8.2', 'PARTY!'),
             new Address(
                 new Street('acmelane 12'),

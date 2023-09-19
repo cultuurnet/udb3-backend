@@ -396,7 +396,7 @@ class Place extends Offer
 
     protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
     {
-        return new TitleTranslated($this->placeId, $language, LegacyTitle::fromUdb3ModelTitle($title));
+        return new TitleTranslated($this->placeId, $language, $title);
     }
 
     protected function createTitleUpdatedEvent(Title $title): TitleUpdated

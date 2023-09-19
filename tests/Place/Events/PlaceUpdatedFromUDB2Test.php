@@ -10,7 +10,8 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\TestCase;
 
 final class PlaceUpdatedFromUDB2Test extends TestCase
@@ -28,7 +29,7 @@ final class PlaceUpdatedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new Title('CC Palethe')),
+                new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new LegacyTitle('CC Palethe')),
                 new AddressUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Address(
@@ -57,7 +58,7 @@ final class PlaceUpdatedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($placeId, new Title('CC Palethe')),
+                new TitleUpdated($placeId, new LegacyTitle('CC Palethe')),
                 new TitleTranslated($placeId, new Language('fr'), new Title('Centre culturel Palethe')),
                 new TitleTranslated($placeId, new Language('de'), new Title('Kulturzentrum Palethe')),
                 new AddressUpdated(
@@ -88,7 +89,7 @@ final class PlaceUpdatedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($placeId, new Title('CC Palethe')),
+                new TitleUpdated($placeId, new LegacyTitle('CC Palethe')),
                 new AddressUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Address(
@@ -117,7 +118,7 @@ final class PlaceUpdatedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($placeId, new Title('CC Palethe')),
+                new TitleUpdated($placeId, new LegacyTitle('CC Palethe')),
                 new AddressUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Address(

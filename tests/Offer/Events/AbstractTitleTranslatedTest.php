@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\TestCase;
 
 class AbstractTitleTranslatedTest extends TestCase
@@ -26,10 +27,7 @@ class AbstractTitleTranslatedTest extends TestCase
      */
     protected $language;
 
-    /**
-     * @var Title
-     */
-    protected $title;
+    protected Title $title;
 
     public function setUp(): void
     {
@@ -63,7 +61,7 @@ class AbstractTitleTranslatedTest extends TestCase
     {
         $expectedItemId = 'Foo';
         $expectedLanguage = new Language('en');
-        $expectedTitle = new Title('Title');
+        $expectedTitle = new LegacyTitle('Title');
 
         $itemId = $this->titleTranslatedEvent->getItemId();
         $language = $this->titleTranslatedEvent->getLanguage();

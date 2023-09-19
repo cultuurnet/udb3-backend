@@ -72,6 +72,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -81,7 +82,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Money\Currency;
@@ -270,7 +271,7 @@ class HistoryProjectorTest extends TestCase
         $eventCreated = new EventCreated(
             $eventId,
             new LegacyLanguage('en'),
-            new Title('Faith no More'),
+            new LegacyTitle('Faith no More'),
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),
             new Calendar(CalendarType::PERMANENT()),
@@ -1322,7 +1323,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new MajorInfoUpdated(
             self::EVENT_ID_1,
-            new Title('title'),
+            new LegacyTitle('title'),
             new EventType('0.0.0.0', 'event type'),
             new LocationId('a0c6c66e-d933-4817-a335-2a5a51df1fa7'),
             new Calendar(CalendarType::PERMANENT())
@@ -1609,7 +1610,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_title_updated(): void
     {
-        $event = new TitleUpdated(self::EVENT_ID_1, new Title('new title'));
+        $event = new TitleUpdated(self::EVENT_ID_1, new LegacyTitle('new title'));
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

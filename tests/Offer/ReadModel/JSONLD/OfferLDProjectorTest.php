@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
@@ -64,7 +65,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentNullEnricher;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\StringLiteral;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -506,7 +507,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $titleUpdatedEvent = new TitleUpdated(
             '5582FCA5-38FD-40A0-B8FB-9FA70AB7ADA3',
-            new Title('A cycling adventure')
+            new LegacyTitle('A cycling adventure')
         );
 
         $initialDocument = new JsonDocument(

@@ -1769,7 +1769,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([
-                new TitleTranslated($itemId, $language, LegacyTitle::fromUdb3ModelTitle($title)),
+                new TitleTranslated($itemId, $language, $title),
             ]);
     }
 
@@ -1798,7 +1798,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([
-                new TitleTranslated($itemId, $language, LegacyTitle::fromUdb3ModelTitle($title)),
+                new TitleTranslated($itemId, $language, $title),
             ]);
     }
 
