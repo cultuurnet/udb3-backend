@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
+use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
@@ -155,6 +156,10 @@ final class RdfProjector implements EventListener
 
         if ($event->getDescription()) {
             $this->setDescription($resource, $event->getDescription());
+        }
+
+        if (!$event->getContactPoint()->isEmpty()) {
+            (new ContactPointEditor())->setContactPoint($resource, $event->getContactPoint());
         }
 
         $this->graphRepository->save($iri, $graph);
