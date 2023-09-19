@@ -58,7 +58,7 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
     public function it_can_handle_unsubscribe_from_saved_search_commands(): void
     {
         $userId = 'some-user-id';
-        $searchId = new StringLiteral('some-search-id');
+        $searchId = 'some-search-id';
 
         $unsubscribeFromSavedSearch = new UnsubscribeFromSavedSearch($userId, $searchId);
 

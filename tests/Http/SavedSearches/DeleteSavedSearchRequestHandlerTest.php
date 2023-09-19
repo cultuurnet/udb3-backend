@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\TestCase;
 
 class DeleteSavedSearchRequestHandlerTest extends TestCase
@@ -54,7 +53,7 @@ class DeleteSavedSearchRequestHandlerTest extends TestCase
             [
                 new UnsubscribeFromSavedSearch(
                     self::USER_ID,
-                    new StringLiteral(self::SEARCH_ID)
+                    self::SEARCH_ID
                 ),
             ],
             $this->commandBus->getRecordedCommands()

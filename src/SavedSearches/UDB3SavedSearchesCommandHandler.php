@@ -36,6 +36,6 @@ class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
         $userId = $unsubscribeFromSavedSearch->getUserId();
         $searchId = $unsubscribeFromSavedSearch->getSearchId();
 
-        $this->savedSearchRepository->delete(new StringLiteral($userId), $searchId);
+        $this->savedSearchRepository->delete(new StringLiteral($userId), new StringLiteral($searchId));
     }
 }
