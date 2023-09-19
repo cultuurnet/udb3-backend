@@ -8,16 +8,6 @@ use CultuurNet\UDB3\StringLiteral;
 
 class QueryString extends StringLiteral
 {
-    /**
-     * @return string
-     */
-    public function toURLQueryString()
-    {
-        return http_build_query([
-            'q' => $this->value,
-        ]);
-    }
-
     public static function fromURLQueryString(string $queryString): QueryString
     {
         parse_str($queryString, $queryArray);
