@@ -55,7 +55,7 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
                     $this->uuidGenerator->generate(),
                     $userId,
                     $name,
-                    $queryString->toNative(),
+                    $queryString->toString(),
                 ]
             );
 

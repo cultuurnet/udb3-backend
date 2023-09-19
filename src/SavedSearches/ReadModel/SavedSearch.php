@@ -31,7 +31,7 @@ class SavedSearch implements \JsonSerializable
     {
         $serializedSavedSearch = [
             'name' => $this->name,
-            'query' => $this->query->toNative(),
+            'query' => $this->query->toString(),
         ];
 
         if ($this->id) {
