@@ -37,7 +37,7 @@ class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
 
         return new SubscribeToSavedSearch(
             $this->userId->toNative(),
-            new StringLiteral($json->name),
+            $json->name,
             new QueryString($json->query)
         );
     }

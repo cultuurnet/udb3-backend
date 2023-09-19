@@ -36,7 +36,7 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
     public function it_can_handle_subscribe_to_saved_search_commands(): void
     {
         $userId = 'some-user-id';
-        $name = new StringLiteral('My very first saved search!');
+        $name = 'My very first saved search!';
         $query = new QueryString('city:"Leuven"');
 
         $subscribeToSavedSearch = new SubscribeToSavedSearch($userId, $name, $query);

@@ -28,7 +28,7 @@ class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
         $name = $subscribeToSavedSearch->getName();
         $query = $subscribeToSavedSearch->getQuery();
 
-        $this->savedSearchRepository->write(new StringLiteral($userId), $name, $query);
+        $this->savedSearchRepository->write(new StringLiteral($userId), new StringLiteral($name), $query);
     }
 
     public function handleUnsubscribeFromSavedSearch(UnsubscribeFromSavedSearch $unsubscribeFromSavedSearch): void

@@ -36,7 +36,7 @@ class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
         $this->assertEquals(
             new SubscribeToSavedSearch(
                 $this->userId,
-                new StringLiteral('My very first saved search.'),
+                'My very first saved search.',
                 new QueryString('city:"Leuven"')
             ),
             $command

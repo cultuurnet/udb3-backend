@@ -5,14 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SavedSearches\Command;
 
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
-use CultuurNet\UDB3\StringLiteral;
 
 class SubscribeToSavedSearch extends SavedSearchCommand
 {
-    /**
-     * @var StringLiteral
-     */
-    protected $name;
+    protected string $name;
 
     /**
      * @var QueryString
@@ -22,7 +18,7 @@ class SubscribeToSavedSearch extends SavedSearchCommand
 
     public function __construct(
         string $userId,
-        StringLiteral $name,
+        string $name,
         QueryString $query
     ) {
         parent::__construct($userId);
@@ -30,10 +26,7 @@ class SubscribeToSavedSearch extends SavedSearchCommand
         $this->query = $query;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

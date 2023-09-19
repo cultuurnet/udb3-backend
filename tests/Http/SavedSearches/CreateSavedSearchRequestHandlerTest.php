@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
-use CultuurNet\UDB3\StringLiteral;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -64,7 +63,7 @@ class CreateSavedSearchRequestHandlerTest extends TestCase
             [
                 new SubscribeToSavedSearch(
                     self::USER_ID,
-                    new StringLiteral('Avondlessen in Gent'),
+                    'Avondlessen in Gent',
                     new QueryString('regions:nis-44021 AND (typicalAgeRange:[18 TO *] AND name.*:Avondlessen)')
                 ),
             ],
