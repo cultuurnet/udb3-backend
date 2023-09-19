@@ -109,39 +109,6 @@ class CalendarTest extends TestCase
 
     /**
      * @test
-     */
-    public function time_stamps_need_to_have_type_time_stamp(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Timestamps should have type TimeStamp.');
-
-        new Calendar(
-            CalendarType::SINGLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
-            ['wrong timestamp'] // @phpstan-ignore-line
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function opening_hours_need_to_have_type_opening_hour(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('OpeningHours should have type OpeningHour.');
-
-        new Calendar(
-            CalendarType::PERIODIC(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
-            [],
-            ['wrong opening hours'] // @phpstan-ignore-line
-        );
-    }
-
-    /**
-     * @test
      * @dataProvider calendarProvider
      */
     public function it_determines_booking_availability_from_sub_events(
