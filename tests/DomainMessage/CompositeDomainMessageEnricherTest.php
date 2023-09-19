@@ -91,14 +91,8 @@ class CompositeDomainMessageEnricherTest extends TestCase
         $organizerCreatedDomainMessage = $this->createOrganizerCreatedDomainMessage();
         $organizerCreatedWithUniqueWebsiteDomainMessage = $this->createOrganizerCreatedWithUniqueWebsiteDomainMessage();
 
-
         $enrichedEventCreatedDomainMessage = clone $eventCreatedDomainMessage;
-        /** @phpstan-ignore-next-line */
-        $enrichedEventCreatedDomainMessage->extraProperty = true;
-
         $enrichedPlaceCreatedDomainMessage = clone $placeCreatedDomainMessage;
-        /** @phpstan-ignore-next-line */
-        $enrichedPlaceCreatedDomainMessage->extraProperty = true;
 
         $this->eventCreatedEnricher->expects($this->once())
             ->method('enrich')
