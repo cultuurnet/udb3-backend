@@ -71,7 +71,6 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\StringLiteral;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
@@ -101,7 +100,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected ?PriceInfo $priceInfo = null;
 
     /**
-     * @var StringLiteral[]
+     * @var Title[]
      */
     protected array $titles;
 
@@ -321,8 +320,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateTitle(LegacyLanguage $language, Title $title): void
     {
-        $legacyTitle = LegacyTitle::fromUdb3ModelTitle($title);
-        if ($this->isTitleChanged($legacyTitle, $language)) {
+        if ($this->isTitleChanged($title, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
                 $event = $this->createTitleTranslatedEvent($language, $title);
             } else {
@@ -335,12 +333,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function applyTitleTranslated(AbstractTitleTranslated $titleTranslated): void
     {
-        $this->titles[$titleTranslated->getLanguage()->getCode()] = LegacyTitle::fromUdb3ModelTitle($titleTranslated->getTitle());
+        $this->titles[$titleTranslated->getLanguage()->getCode()] = $titleTranslated->getTitle();
     }
 
     public function applyTitleUpdated(AbstractTitleUpdated $titleUpdated): void
     {
-        $this->titles[$this->mainLanguage->getCode()] = $titleUpdated->getTitle();
+        $this->titles[$this->mainLanguage->getCode()] = $titleUpdated->getTitle()->toUdb3ModelTitle();
     }
 
     public function updateDescription(Description $description, LegacyLanguage $language): void
@@ -860,12 +858,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         return false;
     }
 
-    private function isTitleChanged(LegacyTitle $title, LegacyLanguage $language): bool
+    private function isTitleChanged(Title $title, LegacyLanguage $language): bool
     {
         $languageCode = $language->getCode();
 
         return !isset($this->titles[$languageCode]) ||
-            !$title->sameValueAs($this->titles[$languageCode]);
+            !$title->sameAs($this->titles[$languageCode]);
     }
 
     private function isDescriptionChanged(Description $description, LegacyLanguage $language): bool
