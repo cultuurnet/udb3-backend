@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SwiftMailer;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use RuntimeException;
 use Swift_Events_SimpleEventDispatcher;
 use Swift_Mailer;
 use Swift_StreamFilters_StringReplacementFilterFactory;
@@ -61,11 +62,14 @@ final class SwiftMailerServiceProvider extends AbstractServiceProvider
                 $transport->setPort($options['port']);
                 $transport->setEncryption($options['encryption']);
 
-                // The following methods are "magic" methods which PHPStan does not recognize on this class for some
-                // reason.
-                $transport->setUsername($options['username']); /** @phpstan-ignore-line */
-                $transport->setPassword($options['password']); /** @phpstan-ignore-line */
-                $transport->setAuthMode($options['auth_mode']); /** @phpstan-ignore-line */
+                // check with if
+                if(! $transport instanceof \Swift_SmtpTransport) {
+                    throw new RuntimeException('Invalid SMTP transport, recieved '. get_class($transport));
+                }
+
+                $transport->setUsername($options['username']);
+                $transport->setPassword($options['password']);
+                $transport->setAuthMode($options['auth_mode']);
 
                 return new Swift_Mailer($transport);
             }
