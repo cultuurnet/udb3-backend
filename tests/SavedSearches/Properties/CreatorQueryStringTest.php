@@ -17,7 +17,7 @@ class CreatorQueryStringTest extends TestCase
         string $expectedQuery
     ): void {
         $this->assertEquals(
-            $creatorQueryString->toNative(),
+            $creatorQueryString->toString(),
             $expectedQuery
         );
     }

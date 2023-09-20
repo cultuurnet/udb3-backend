@@ -4,26 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches\Command;
 
-use CultuurNet\UDB3\StringLiteral;
-
 abstract class SavedSearchCommand
 {
-    /**
-     * @var StringLiteral
-     */
-    protected $userId;
-
+    protected string $userId;
 
     public function __construct(
-        StringLiteral $userId
+        string $userId
     ) {
         $this->userId = $userId;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getUserId()
+    public function getUserId(): string
     {
         return $this->userId;
     }

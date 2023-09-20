@@ -10,7 +10,6 @@ use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class Sapi3FixedSavedSearchRepositoryTest extends TestCase
 {
@@ -42,7 +41,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('Door mij ingevoerd'),
+                    'Door mij ingevoerd',
                     new CreatorQueryString('my_user_id')
                 ),
             ],
@@ -65,7 +64,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
         $userIdentityResolver->expects($this->once())
             ->method('getUserById')
-            ->with(new StringLiteral('my_user_id'))
+            ->with('my_user_id')
             ->willReturn(null);
 
         $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
@@ -79,7 +78,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('Door mij ingevoerd'),
+                    'Door mij ingevoerd',
                     new CreatorQueryString('my_user_id')
                 ),
             ],
@@ -115,7 +114,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('Door mij ingevoerd'),
+                    'Door mij ingevoerd',
                     new CreatorQueryString('jane.doe@anonymous.com', 'my_user_id')
                 ),
             ],
@@ -151,7 +150,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('Door mij ingevoerd'),
+                    'Door mij ingevoerd',
                     new CreatorQueryString('jane.doe@anonymous.com')
                 ),
             ],
