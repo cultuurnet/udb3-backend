@@ -27,6 +27,11 @@ final class Title implements \JsonSerializable
         return $this->value;
     }
 
+    public function sameValueAs(Title $title): bool
+    {
+        return $this->toNative() === $title->toNative();
+    }
+
     public function jsonSerialize(): string
     {
         return $this->value;
