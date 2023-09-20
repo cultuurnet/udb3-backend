@@ -34,6 +34,7 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
                 $graphStoreRepository,
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['eventsRdfBaseUri']),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['placesRdfBaseUri']),
+                RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['organizersRdfBaseUri']),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['taxonomy']['terms']),
                 $this->container->get('event_jsonld_repository'),
                 new EventDenormalizer(),
