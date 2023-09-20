@@ -109,7 +109,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         }
         return parent::serialize() + [
             'main_language' => $this->mainLanguage->getCode(),
-            'title' => (string)$this->getTitle(),
+            'title' => $this->getTitle()->toNative(),
             'event_type' => $this->getEventType()->serialize(),
             'theme' => $theme,
             'location' => $this->getLocation()->toString(),

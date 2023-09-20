@@ -7,12 +7,9 @@ namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use PHPUnit\Framework\TestCase;
 
-class OrganizerCreationPayloadDataValidatorTest extends TestCase
+final class OrganizerCreationPayloadDataValidatorTest extends TestCase
 {
-    /**
-     * @var OrganizerCreationPayloadDataValidator
-     */
-    private $validator;
+    private OrganizerCreationPayloadDataValidator $validator;
 
     public function setUp(): void
     {
@@ -41,7 +38,7 @@ class OrganizerCreationPayloadDataValidatorTest extends TestCase
         ];
 
         $expectedMessages = [
-            'name' => 'Title can not be empty.',
+            'name' => 'Given string should not be empty.',
             'website' => 'Not a valid url.',
             'address.addressCountry' => 'Should not be empty.',
             'contact.0.type' => 'Invalid type. Allowed types are: url, phone, email.',

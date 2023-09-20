@@ -95,7 +95,7 @@ use CultuurNet\UDB3\StringLiteral;
  * Implements PlaceServiceInterface and OrganizerServiceInterface to do a double
  * dispatch with CdbXMLImporter.
  */
-class EventLDProjector extends OfferLDProjector implements
+final class EventLDProjector extends OfferLDProjector implements
     EventListener,
     PlaceServiceInterface
 {
@@ -259,7 +259,7 @@ class EventLDProjector extends OfferLDProjector implements
         // Same as.
         $jsonLD->sameAs = $this->sameAs->generateSameAs(
             $eventCreated->getEventId(),
-            (string) reset($jsonLD->name)
+            reset($jsonLD->name)->toNative()
         );
 
         $eventType = $eventCreated->getEventType();

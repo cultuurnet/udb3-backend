@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Title;
 
 abstract class AbstractTitleUpdated extends AbstractEvent
 {
-    /**
-     * @var Title
-     */
-    protected $title;
+    protected Title $title;
 
     final public function __construct(string $id, Title $title)
     {
@@ -27,7 +24,7 @@ abstract class AbstractTitleUpdated extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'title' => (string) $this->title,
+            'title' => $this->title->toNative(),
         ];
     }
 
