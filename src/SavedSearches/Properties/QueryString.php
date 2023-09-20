@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches\Properties;
 
-use CultuurNet\UDB3\StringLiteral;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
-class QueryString extends StringLiteral
+class QueryString
 {
-    /**
-     * @return string
-     */
-    public function toURLQueryString()
+    use IsString;
+    use IsNotEmpty;
+    use Trims;
+
+    public function __construct(string $value)
     {
-        return http_build_query([
-            'q' => $this->value,
-        ]);
+        $value = $this->trim($value);
+        $this->guardNotEmpty($value);
+        $this->setValue($value);
     }
 
     public static function fromURLQueryString(string $queryString): QueryString
