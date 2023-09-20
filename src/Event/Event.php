@@ -121,13 +121,13 @@ class Event extends Offer
     }
 
     public static function create(
-        string            $eventId,
-        LegacyLanguage    $mainLanguage,
-        LegacyTitle       $title,
-        EventType         $eventType,
-        LocationId        $location,
-        Calendar          $calendar,
-        Theme             $theme = null,
+        string $eventId,
+        LegacyLanguage $mainLanguage,
+        Title $title,
+        EventType $eventType,
+        LocationId $location,
+        Calendar $calendar,
+        Theme $theme = null,
         DateTimeImmutable $publicationDate = null
     ): self {
         $event = new self();
@@ -136,7 +136,7 @@ class Event extends Offer
             new EventCreated(
                 $eventId,
                 $mainLanguage,
-                $title,
+                LegacyTitle::fromUdb3ModelTitle($title),
                 $eventType,
                 $location,
                 $calendar,
