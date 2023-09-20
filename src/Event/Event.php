@@ -97,7 +97,6 @@ use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -298,13 +297,13 @@ class Event extends Offer
     }
 
     public function updateMajorInfo(
-        LegacyTitle $title,
+        Title $title,
         EventType   $eventType,
         LocationId  $location,
         Calendar    $calendar,
         Theme       $theme = null
     ): void {
-        $this->apply(new MajorInfoUpdated($this->eventId, $title->toUdb3ModelTitle(), $eventType, $location, $calendar, $theme));
+        $this->apply(new MajorInfoUpdated($this->eventId, $title, $eventType, $location, $calendar, $theme));
 
         if ($location->isDummyPlaceForEducation()) {
             // Bookable education events should get education as their audience type. We record this explicitly so we

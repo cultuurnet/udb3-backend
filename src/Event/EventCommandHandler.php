@@ -25,7 +25,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\OfferCommandHandler;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -55,7 +54,7 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
         $event = $this->offerRepository->load($updateMajorInfo->getItemId());
 
         $event->updateMajorInfo(
-            LegacyTitle::fromUdb3ModelTitle($updateMajorInfo->getTitle()),
+            $updateMajorInfo->getTitle(),
             $updateMajorInfo->getEventType(),
             $updateMajorInfo->getLocation(),
             $updateMajorInfo->getCalendar(),
