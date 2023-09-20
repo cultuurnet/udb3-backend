@@ -7,30 +7,23 @@ namespace CultuurNet\UDB3\Role\Events;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class AbstractUserEventTest extends TestCase
 {
     /**
      * @var AbstractUserEvent|MockObject
+     * III-5812 Make inline once upgraded to PHP 8
      */
     private $abstractUserEvent;
 
-    /**
-     * @var UUID
-     */
-    private $uuid;
-
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
+    private UUID $uuid;
+    private string $userId;
 
     protected function setUp(): void
     {
         $this->uuid = new UUID('7c296342-d72b-4444-9f8b-2a0c99763c9a');
 
-        $this->userId = new StringLiteral('userId');
+        $this->userId = 'userId';
 
         $this->abstractUserEvent = $this->getMockForAbstractClass(
             AbstractUserEvent::class,
@@ -63,7 +56,7 @@ class AbstractUserEventTest extends TestCase
 
         $expectedArray = [
             AbstractUserEvent::UUID => $this->uuid->toString(),
-            AbstractUserEvent::USER_ID => $this->userId->toNative(),
+            AbstractUserEvent::USER_ID => $this->userId,
         ];
 
         $this->assertEquals($expectedArray, $actualArray);
