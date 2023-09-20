@@ -20,7 +20,6 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class RoleUsersProjectorTest extends TestCase
 {
@@ -123,7 +122,7 @@ class RoleUsersProjectorTest extends TestCase
         );
 
         $this->mockGetUserById(
-            new StringLiteral($this->userIdentityDetail->getUserId()),
+            $this->userIdentityDetail->getUserId(),
             $this->userIdentityDetail
         );
 
@@ -218,11 +217,11 @@ class RoleUsersProjectorTest extends TestCase
             $this->createEmptyJsonDocument($userAdded->getUuid())
         );
 
-        $this->mockGetUserById(new StringLiteral('userId'));
+        $this->mockGetUserById('userId');
 
         $this->userIdentityResolver->expects($this->once())
             ->method('getUserById')
-            ->with(new StringLiteral('userId'));
+            ->with('userId');
 
         $this->repository->expects($this->never())
             ->method('save');
@@ -268,7 +267,7 @@ class RoleUsersProjectorTest extends TestCase
     }
 
     private function mockGetUserById(
-        StringLiteral $userId,
+        string $userId,
         UserIdentityDetails $userIdentityDetails = null
     ): void {
         $this->userIdentityResolver
