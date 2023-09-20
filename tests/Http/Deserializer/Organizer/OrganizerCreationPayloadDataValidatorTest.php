@@ -41,7 +41,7 @@ class OrganizerCreationPayloadDataValidatorTest extends TestCase
         ];
 
         $expectedMessages = [
-            'name' => 'Title can not be empty.',
+            'name' => 'Given string should not be empty.',
             'website' => 'Not a valid url.',
             'address.addressCountry' => 'Should not be empty.',
             'contact.0.type' => 'Invalid type. Allowed types are: url, phone, email.',

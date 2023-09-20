@@ -25,7 +25,7 @@ class TitleTest extends TestCase
     public function it_can_not_be_empty(string $emptyStringValue): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Title can not be empty.');
+        $this->expectExceptionMessage('Given string should not be empty.');
         new Title($emptyStringValue);
     }
 
