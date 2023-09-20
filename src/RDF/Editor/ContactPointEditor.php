@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\RDF\Editor;
 
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use EasyRdf\Resource;
 
@@ -35,5 +36,33 @@ final class ContactPointEditor
             $urlResource->addLiteral(self::PROPERTY_CONTACT_POINT_PHONE, $phone->toString());
             $resource->add(self::PROPERTY_CONTACT_POINT, $urlResource);
         }
+    }
+
+    public function setBookingInfo(Resource $resource, BookingInfo $bookingInfo): void
+    {
+        $contactPoint = $resource->getGraph()->newBNode([self::TYPE_CONTACT_POINT]);
+
+        if ($bookingInfo->getWebsite()) {
+            $contactPoint->addLiteral(
+                self::PROPERTY_CONTACT_POINT_URL,
+                $bookingInfo->getWebsite()->getUrl()->toString()
+            );
+        }
+
+        if ($bookingInfo->getTelephoneNumber()) {
+            $contactPoint->addLiteral(
+                self::PROPERTY_CONTACT_POINT_PHONE,
+                $bookingInfo->getTelephoneNumber()->toString()
+            );
+        }
+
+        if ($bookingInfo->getEmailAddress()) {
+            $contactPoint->addLiteral(
+                self::PROPERTY_CONTACT_POINT_EMAIL,
+                $bookingInfo->getEmailAddress()->toString()
+            );
+        }
+
+        $resource->add(self::PROPERTY_CONTACT_POINT, $contactPoint);
     }
 }
