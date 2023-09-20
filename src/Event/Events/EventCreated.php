@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -53,9 +52,9 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         return $this->mainLanguage;
     }
 
-    public function getTitle(): LegacyTitle
+    public function getTitle(): Title
     {
-        return LegacyTitle::fromUdb3ModelTitle($this->title);
+        return $this->title;
     }
 
     public function getEventType(): EventType
@@ -110,7 +109,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         }
         return parent::serialize() + [
             'main_language' => $this->mainLanguage->getCode(),
-            'title' => (string)$this->getTitle(),
+            'title' => $this->getTitle()->toString(),
             'event_type' => $this->getEventType()->serialize(),
             'theme' => $theme,
             'location' => $this->getLocation()->toString(),

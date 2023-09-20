@@ -241,7 +241,7 @@ class EventLDProjector extends OfferLDProjector implements
             new Language($eventCreated->getMainLanguage()->getCode())
         );
 
-        $jsonLD->name[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
+        $jsonLD->name[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle()->toString();
         $jsonLD->location = [
                 '@type' => 'Place',
             ] + $this->placeJSONLD(

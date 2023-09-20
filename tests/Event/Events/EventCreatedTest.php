@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
@@ -134,7 +133,7 @@ class EventCreatedTest extends TestCase
      */
     public function it_stores_an_event_title(): void
     {
-        $this->assertEquals(new LegacyTitle('title'), $this->eventCreated->getTitle());
+        $this->assertEquals(new Title('title'), $this->eventCreated->getTitle());
     }
 
     /**
