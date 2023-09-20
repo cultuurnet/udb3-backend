@@ -10,31 +10,27 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title as Udb3ModelTitle;
  * @deprecated
  *   Use CultuurNet\UDB3\Model\ValueObject\Text\Title instead where possible.
  */
-class Title extends StringLiteral implements \JsonSerializable
+final class Title implements \JsonSerializable
 {
+    private string $value;
+
     public function __construct(string $value)
     {
-        parent::__construct(trim($value));
-
-        if ($this->isEmpty()) {
-            throw new \InvalidArgumentException('Title can not be empty.');
-        }
+        $this->value = $value;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function jsonSerialize()
+    public function toNative(): string
     {
-        return (string)$this;
+        return $this->value;
     }
 
-    /**
-     * @return Title
-     */
-    public static function fromUdb3ModelTitle(Udb3ModelTitle $title)
+    public function jsonSerialize(): string
     {
-        $string = $title->toString();
-        return new self($string);
+        return $this->value;
+    }
+
+    public static function fromUdb3ModelTitle(Udb3ModelTitle $title): self
+    {
+        return new self($title->toString());
     }
 }
