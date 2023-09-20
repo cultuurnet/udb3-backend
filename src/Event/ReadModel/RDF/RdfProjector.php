@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -60,6 +61,7 @@ final class RdfProjector implements EventListener
     private const TYPE_DATE_TIME = 'xsd:dateTime';
     private const TYPE_VIRTUAL_LOCATION = 'schema:VirtualLocation';
     private const TYPE_VIRTUAL_LOCATION_URL = 'xsd:string';
+    private const TYPE_BOEKINGSINFO = 'cpa:Boekingsinfo';
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_TYPE = 'dcterms:type';
@@ -78,6 +80,8 @@ final class RdfProjector implements EventListener
 
     private const PROPERTY_PERIOD_START = 'm8g:startTime';
     private const PROPERTY_PERIOD_END = 'm8g:endTime';
+
+    private const PROPERTY_BOEKINGSINFO = 'cpa:boeking';
 
     public function __construct(
         GraphRepository $graphRepository,
@@ -160,6 +164,10 @@ final class RdfProjector implements EventListener
 
         if (!$event->getContactPoint()->isEmpty()) {
             (new ContactPointEditor())->setContactPoint($resource, $event->getContactPoint());
+        }
+
+        if (!$event->getBookingInfo()->isEmpty()) {
+            $this->setBookingInfo($resource, $event->getBookingInfo());
         }
 
         $this->graphRepository->save($iri, $graph);
@@ -310,5 +318,14 @@ final class RdfProjector implements EventListener
                 new Literal($translatedDescription->getTranslation($language)->toString(), $language->toString())
             );
         }
+    }
+
+    private function setBookingInfo(Resource $resource, BookingInfo $bookingInfo): void
+    {
+        $bookingInfoResource = $resource->getGraph()->newBNode([self::TYPE_BOEKINGSINFO]);
+
+        (new ContactPointEditor())->setBookingInfo($bookingInfoResource, $bookingInfo);
+
+        $resource->add(self::PROPERTY_BOEKINGSINFO, $bookingInfoResource);
     }
 }
