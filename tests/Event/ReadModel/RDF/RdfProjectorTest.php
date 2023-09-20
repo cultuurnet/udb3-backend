@@ -1419,6 +1419,56 @@ class RdfProjectorTest extends RdfTestCase
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-contact-point.ttl'));
     }
 
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_booking_info(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+            'bookingInfo' => [
+                'url' => 'https://www.publiq.be',
+                'urlLabel' => [
+                    'nl' => 'Reserveer nu',
+                ],
+                'email' => 'info@publiq.be',
+                'phone' => '016 10 20 30',
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-booking-info.ttl'));
+    }
+
     public function getRdfDataSetName(): string
     {
         return 'events';

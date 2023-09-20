@@ -1,0 +1,33 @@
+{
+  "@context": "/contexts/event",
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Event met contact point"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    },
+    {
+      "id": "1.8.3.1.0",
+      "label": "Pop en rock",
+      "domain": "theme"
+    }
+  ],
+  "location": {
+    "@id": "%{baseUrl}/places/%{uuid_place}"
+  },
+  "bookingInfo": {
+    "phone": "string",
+    "email": "info@example.com",
+    "url": "https://www.example.com",
+    "urlLabel": {
+      "nl": "Nederlandse beschrijving",
+      "en": "English description"
+    },
+    "availabilityStarts": "2021-05-17T22:00:00+00:00",
+    "availabilityEnds": "2021-05-17T22:00:00+00:00"
+  }
+}
