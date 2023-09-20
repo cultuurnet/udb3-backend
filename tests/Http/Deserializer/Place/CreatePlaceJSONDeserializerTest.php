@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
-class CreatePlaceJSONDeserializerTest extends TestCase
+final class CreatePlaceJSONDeserializerTest extends TestCase
 {
     /**
      * @test

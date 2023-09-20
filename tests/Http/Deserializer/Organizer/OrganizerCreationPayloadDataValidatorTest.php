@@ -7,12 +7,9 @@ namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use PHPUnit\Framework\TestCase;
 
-class OrganizerCreationPayloadDataValidatorTest extends TestCase
+final class OrganizerCreationPayloadDataValidatorTest extends TestCase
 {
-    /**
-     * @var OrganizerCreationPayloadDataValidator
-     */
-    private $validator;
+    private OrganizerCreationPayloadDataValidator $validator;
 
     public function setUp(): void
     {

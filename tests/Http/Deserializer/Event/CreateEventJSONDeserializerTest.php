@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
-class CreateEventJSONDeserializerTest extends TestCase
+final class CreateEventJSONDeserializerTest extends TestCase
 {
     /**
      * @test

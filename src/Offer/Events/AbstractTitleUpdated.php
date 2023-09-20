@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Title;
 
 abstract class AbstractTitleUpdated extends AbstractEvent
 {
-    /**
-     * @var Title
-     */
-    protected $title;
+    protected Title $title;
 
     final public function __construct(string $id, Title $title)
     {

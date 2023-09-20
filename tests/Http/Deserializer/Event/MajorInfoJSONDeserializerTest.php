@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
-class MajorInfoJSONDeserializerTest extends TestCase
+final class MajorInfoJSONDeserializerTest extends TestCase
 {
     /**
      * @test

@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\TestCase;
 
-class MajorInfoJSONDeserializerTest extends TestCase
+final class MajorInfoJSONDeserializerTest extends TestCase
 {
     /**
      * @test

@@ -95,7 +95,7 @@ use CultuurNet\UDB3\StringLiteral;
  * Implements PlaceServiceInterface and OrganizerServiceInterface to do a double
  * dispatch with CdbXMLImporter.
  */
-class EventLDProjector extends OfferLDProjector implements
+final class EventLDProjector extends OfferLDProjector implements
     EventListener,
     PlaceServiceInterface
 {
