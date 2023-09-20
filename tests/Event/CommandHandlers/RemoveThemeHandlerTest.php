@@ -16,8 +16,8 @@ use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 
 class RemoveThemeHandlerTest extends CommandHandlerScenarioTestCase
 {

@@ -23,10 +23,10 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 
 final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase

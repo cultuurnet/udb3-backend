@@ -57,6 +57,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -66,7 +67,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -987,7 +988,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->mockPlaceService();
 
         $id = 'foo';
-        $title = new Title('new title');
+        $title = new LegacyTitle('new title');
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
         $calendar = new Calendar(
@@ -1216,7 +1217,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'samples/event_with_empty_keyword.cdbxml.xml'
         );
 
-        $title = new Title('new title');
+        $title = new LegacyTitle('new title');
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
         $calendar = new Calendar(

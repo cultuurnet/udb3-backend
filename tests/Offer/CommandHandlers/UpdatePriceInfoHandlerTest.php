@@ -21,11 +21,11 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Title;
 use Money\Currency;
 use Money\Money;
 

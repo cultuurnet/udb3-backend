@@ -11,8 +11,9 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -27,13 +28,13 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
     private ?DateTimeImmutable $publicationDate;
 
     public function __construct(
-        string $eventId,
-        Language $mainLanguage,
-        Title $title,
-        EventType $eventType,
-        LocationId $location,
-        Calendar $calendar,
-        ?Theme $theme = null,
+        string             $eventId,
+        Language           $mainLanguage,
+        Title        $title,
+        EventType          $eventType,
+        LocationId         $location,
+        Calendar           $calendar,
+        ?Theme             $theme = null,
         ?DateTimeImmutable $publicationDate = null
     ) {
         parent::__construct($eventId);
@@ -52,9 +53,9 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         return $this->mainLanguage;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): LegacyTitle
     {
-        return $this->title;
+        return LegacyTitle::fromUdb3ModelTitle($this->title);
     }
 
     public function getEventType(): EventType
@@ -87,7 +88,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         return array_values(
             array_filter(
                 [
-                    new TitleUpdated($this->eventId, $this->title->toUdb3ModelTitle()),
+                    new TitleUpdated($this->eventId, $this->title),
                     new TypeUpdated($this->eventId, $this->eventType),
                     $this->theme ? new ThemeUpdated($this->eventId, $this->theme) : null,
                     new LocationUpdated($this->eventId, $this->location),

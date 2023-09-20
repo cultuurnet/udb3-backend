@@ -136,7 +136,7 @@ class Event extends Offer
             new EventCreated(
                 $eventId,
                 $mainLanguage,
-                LegacyTitle::fromUdb3ModelTitle($title),
+                $title,
                 $eventType,
                 $location,
                 $calendar,

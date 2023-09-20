@@ -17,11 +17,11 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\DeleteDescription;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Title;
 
 class DeleteDescriptionHandlerTest extends CommandHandlerScenarioTestCase
 {

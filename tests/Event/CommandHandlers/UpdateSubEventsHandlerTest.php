@@ -27,11 +27,11 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use CultuurNet\UDB3\Timestamp as LegacyTimestamp;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTime;
 use DateTimeImmutable;
 
@@ -50,7 +50,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
         $permanentEventCreated = new EventCreated(
             '1',
             new LegacyLanguage('nl'),
-            new LegacyTitle('Permanent Event'),
+            new Title('Permanent Event'),
             new LegacyEventType('0.50.4.0.0', 'concert'),
             new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new LegacyCalendar(LegacyCalendarType::PERMANENT())
@@ -73,7 +73,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
         $periodicEventCreated = new EventCreated(
             '1',
             new LegacyLanguage('nl'),
-            new LegacyTitle('Periodic Event'),
+            new Title('Periodic Event'),
             new LegacyEventType('0.50.4.0.0', 'concert'),
             new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new LegacyCalendar(
@@ -100,7 +100,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
         $singleEventCreated = new EventCreated(
             '1',
             new LegacyLanguage('nl'),
-            new LegacyTitle('Single Event'),
+            new Title('Single Event'),
             new LegacyEventType('0.50.4.0.0', 'concert'),
             new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new LegacyCalendar(
@@ -146,7 +146,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new EventCreated(
                     '1',
                     new LegacyLanguage('nl'),
-                    new LegacyTitle('Multiple Event'),
+                    new Title('Multiple Event'),
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
@@ -192,7 +192,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new EventCreated(
                     '1',
                     new LegacyLanguage('nl'),
-                    new LegacyTitle('Multiple Event'),
+                    new Title('Multiple Event'),
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
@@ -240,7 +240,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new EventCreated(
                     '1',
                     new LegacyLanguage('nl'),
-                    new LegacyTitle('Multiple Event'),
+                    new Title('Multiple Event'),
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
@@ -287,7 +287,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new EventCreated(
                     '1',
                     new LegacyLanguage('nl'),
-                    new LegacyTitle('Multiple Event'),
+                    new Title('Multiple Event'),
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
@@ -338,7 +338,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                new EventCreated(
                    '1',
                    new LegacyLanguage('nl'),
-                   new LegacyTitle('Multiple Event'),
+                   new Title('Multiple Event'),
                    new LegacyEventType('0.50.4.0.0', 'concert'),
                    new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                    new LegacyCalendar(
@@ -397,7 +397,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new EventCreated(
                     '1',
                     new LegacyLanguage('nl'),
-                    new LegacyTitle('Multiple Event'),
+                    new Title('Multiple Event'),
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
@@ -470,7 +470,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new EventCreated(
                     '1',
                     new LegacyLanguage('nl'),
-                    new LegacyTitle('Multiple Event'),
+                    new Title('Multiple Event'),
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
@@ -520,7 +520,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new EventCreated(
                     '1',
                     new LegacyLanguage('nl'),
-                    new LegacyTitle('Multiple Event'),
+                    new Title('Multiple Event'),
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
@@ -575,7 +575,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new EventCreated(
                     '1',
                     new LegacyLanguage('nl'),
-                    new LegacyTitle('Multiple Event'),
+                    new Title('Multiple Event'),
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
@@ -640,7 +640,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new EventCreated(
                     '1',
                     new LegacyLanguage('nl'),
-                    new LegacyTitle('Multiple Event'),
+                    new Title('Multiple Event'),
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(

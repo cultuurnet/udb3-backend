@@ -19,8 +19,8 @@ use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 
 class UpdateAudienceHandlerTest extends CommandHandlerScenarioTestCase
 {

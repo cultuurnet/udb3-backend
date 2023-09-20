@@ -16,12 +16,12 @@ use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQuery;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use CultuurNet\UDB3\StringLiteral;
 

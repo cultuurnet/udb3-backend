@@ -10,6 +10,7 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
@@ -22,7 +23,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Timestamp;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 
 class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase

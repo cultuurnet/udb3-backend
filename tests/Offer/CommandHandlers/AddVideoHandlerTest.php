@@ -17,13 +17,13 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Title;
 
 final class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
 {

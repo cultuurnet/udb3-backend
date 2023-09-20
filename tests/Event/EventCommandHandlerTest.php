@@ -62,7 +62,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         return new EventCreated(
             $id,
             new Language('nl'),
-            new LegacyTitle('some representative title'),
+            new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(CalendarType::PERMANENT())
@@ -100,7 +100,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($id)
             ->when($command)
-            ->then([new EventCreated($id, $language, LegacyTitle::fromUdb3ModelTitle($title), $type, $location, $calendar, $theme, $now)]);
+            ->then([new EventCreated($id, $language, $title, $type, $location, $calendar, $theme, $now)]);
 
         // reset mocked time
         Chronos::setTestNow();

@@ -17,10 +17,10 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Title;
 
 class UpdateFacilitiesHandlerTest extends CommandHandlerScenarioTestCase
 {

@@ -16,13 +16,13 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Timestamp;
-use CultuurNet\UDB3\Title;
 use DateTime;
 
 final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioTestCase

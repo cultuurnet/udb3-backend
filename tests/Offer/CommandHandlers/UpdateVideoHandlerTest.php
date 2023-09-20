@@ -18,12 +18,12 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Video\UpdateVideo;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Title;
 
 class UpdateVideoHandlerTest extends CommandHandlerScenarioTestCase
 {
