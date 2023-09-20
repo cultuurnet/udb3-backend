@@ -31,7 +31,6 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title as LegacyTitle;
 
 class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -142,7 +141,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new UpdateMajorInfo($id, $title, $eventType, $location, $calendar)
             )
-            ->then([new MajorInfoUpdated($id, LegacyTitle::fromUdb3ModelTitle($title), $eventType, $location, $calendar)]);
+            ->then([new MajorInfoUpdated($id, $title, $eventType, $location, $calendar)]);
     }
 
     /**
@@ -168,7 +167,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             )
             ->then(
                 [
-                    new MajorInfoUpdated($id, LegacyTitle::fromUdb3ModelTitle($title), $eventType, $location, $calendar),
+                    new MajorInfoUpdated($id, $title, $eventType, $location, $calendar),
                     new AudienceUpdated($id, new Audience(AudienceType::education())),
                 ]
             );

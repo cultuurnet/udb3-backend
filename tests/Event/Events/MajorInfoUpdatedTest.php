@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\TestCase;
 
 class MajorInfoUpdatedTest extends TestCase
@@ -24,7 +23,7 @@ class MajorInfoUpdatedTest extends TestCase
 
         $eventWithTheme = new MajorInfoUpdated(
             $eventId,
-            new LegacyTitle('title'),
+            new Title('title'),
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(CalendarType::PERMANENT()),
@@ -33,7 +32,7 @@ class MajorInfoUpdatedTest extends TestCase
 
         $eventWithoutTheme = new MajorInfoUpdated(
             $eventId,
-            new LegacyTitle('title'),
+            new Title('title'),
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(CalendarType::PERMANENT())
@@ -116,7 +115,7 @@ class MajorInfoUpdatedTest extends TestCase
                 ],
                 new MajorInfoUpdated(
                     'test 456',
-                    new LegacyTitle('title'),
+                    new Title('title'),
                     new EventType('bar_id', 'bar'),
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
                     new Calendar(

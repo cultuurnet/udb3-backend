@@ -8,9 +8,10 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 
 final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranularEvents
 {
@@ -21,12 +22,12 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
     private Calendar $calendar;
 
     public function __construct(
-        string $eventId,
+        string      $eventId,
         Title $title,
-        EventType $eventType,
-        LocationId $location,
-        Calendar $calendar,
-        Theme $theme = null
+        EventType   $eventType,
+        LocationId  $location,
+        Calendar    $calendar,
+        Theme       $theme = null
     ) {
         parent::__construct($eventId);
 
@@ -37,9 +38,9 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         $this->theme = $theme;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): LegacyTitle
     {
-        return $this->title;
+        return LegacyTitle::fromUdb3ModelTitle($this->title);
     }
 
     public function getEventType(): EventType
@@ -67,7 +68,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         return array_values(
             array_filter(
                 [
-                    new TitleUpdated($this->itemId, $this->title->toUdb3ModelTitle()),
+                    new TitleUpdated($this->itemId, $this->title),
                     new TypeUpdated($this->itemId, $this->eventType),
                     $this->theme ? new ThemeUpdated($this->itemId, $this->theme) : null,
                     new LocationUpdated($this->itemId, $this->location),

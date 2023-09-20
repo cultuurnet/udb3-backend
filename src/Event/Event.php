@@ -304,7 +304,7 @@ class Event extends Offer
         Calendar    $calendar,
         Theme       $theme = null
     ): void {
-        $this->apply(new MajorInfoUpdated($this->eventId, $title, $eventType, $location, $calendar, $theme));
+        $this->apply(new MajorInfoUpdated($this->eventId, $title->toUdb3ModelTitle(), $eventType, $location, $calendar, $theme));
 
         if ($location->isDummyPlaceForEducation()) {
             // Bookable education events should get education as their audience type. We record this explicitly so we
