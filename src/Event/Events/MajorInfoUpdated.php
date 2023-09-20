@@ -11,7 +11,6 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title as LegacyTitle;
 
 final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranularEvents
 {
@@ -38,9 +37,9 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         $this->theme = $theme;
     }
 
-    public function getTitle(): LegacyTitle
+    public function getTitle(): Title
     {
-        return LegacyTitle::fromUdb3ModelTitle($this->title);
+        return $this->title;
     }
 
     public function getEventType(): EventType
@@ -85,7 +84,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
             $theme = $this->getTheme()->serialize();
         }
         return parent::serialize() + [
-            'title' => (string)$this->getTitle(),
+            'title' => $this->getTitle()->toString(),
             'event_type' => $this->getEventType()->serialize(),
             'theme' => $theme,
             'location' => $this->getLocation()->toString(),
