@@ -259,7 +259,7 @@ class EventLDProjector extends OfferLDProjector implements
         // Same as.
         $jsonLD->sameAs = $this->sameAs->generateSameAs(
             $eventCreated->getEventId(),
-            (string) reset($jsonLD->name)
+            reset($jsonLD->name)->toNative()
         );
 
         $eventType = $eventCreated->getEventType();
