@@ -100,7 +100,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected ?PriceInfo $priceInfo = null;
 
     /**
-     * @var StringLiteral[]
+     * @var Title[]
      */
     protected array $titles;
 
