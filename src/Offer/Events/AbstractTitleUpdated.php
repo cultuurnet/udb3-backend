@@ -27,7 +27,7 @@ abstract class AbstractTitleUpdated extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'title' => (string) $this->title,
+            'title' => $this->title->toNative(),
         ];
     }
 
