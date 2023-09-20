@@ -97,9 +97,10 @@ final class RdfProjector implements EventListener
             $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
         );
 
-        (new WorkflowStatusEditor())->setWorkflowStatus($resource, $place->getWorkflowStatus());
+        $workflowStatusEditor = new WorkflowStatusEditor();
+        $workflowStatusEditor->setWorkflowStatus($resource, $place->getWorkflowStatus());
         if ($place->getAvailableFrom()) {
-            (new WorkflowStatusEditor())->setAvailableFrom($resource, $place->getAvailableFrom());
+            $workflowStatusEditor->setAvailableFrom($resource, $place->getAvailableFrom());
         }
 
         $this->setTitle($resource, $place->getTitle());

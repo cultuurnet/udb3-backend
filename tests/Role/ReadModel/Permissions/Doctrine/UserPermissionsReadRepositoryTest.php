@@ -8,7 +8,6 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class UserPermissionsReadRepositoryTest extends TestCase
 {
@@ -26,8 +25,8 @@ class UserPermissionsReadRepositoryTest extends TestCase
         $this->rolePermissionTableName = 'role_permission';
 
         $schemaConfigurator = new SchemaConfigurator(
-            new StringLiteral($this->userRoleTableName),
-            new StringLiteral($this->rolePermissionTableName)
+            $this->userRoleTableName,
+            $this->rolePermissionTableName
         );
 
         $schemaManager = $this->getConnection()->getSchemaManager();

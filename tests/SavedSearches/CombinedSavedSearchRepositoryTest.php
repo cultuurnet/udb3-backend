@@ -9,7 +9,6 @@ use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class CombinedSavedSearchRepositoryTest extends TestCase
 {
@@ -20,19 +19,19 @@ class CombinedSavedSearchRepositoryTest extends TestCase
     {
         $savedSearches = [
             new SavedSearch(
-                new StringLiteral('Saved search 0'),
+                'Saved search 0',
                 new QueryString('city:leuven')
             ),
             new SavedSearch(
-                new StringLiteral('Saved search 1'),
+                'Saved search 1',
                 new QueryString('city:herent')
             ),
             new SavedSearch(
-                new StringLiteral('Saved search 2'),
+                'Saved search 2',
                 new CreatedByQueryString('cef70b98-2d4d-40a9-95f0-762aae66ef3f')
             ),
             new SavedSearch(
-                new StringLiteral('Saved search 3'),
+                'Saved search 3',
                 new QueryString('keyword:paspartoe')
             ),
         ];

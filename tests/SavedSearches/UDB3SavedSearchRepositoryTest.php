@@ -11,16 +11,12 @@ use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class UDB3SavedSearchRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var StringLiteral
-     */
-    private $tableName;
+    private string $tableName;
 
     /**
      * @var UuidGeneratorInterface|MockObject
@@ -42,7 +38,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
             $this->getConnection(),
             $this->tableName,
             $this->uuidGenerator,
-            new StringLiteral('6f072ba8-c510-40ac-b387-51f582650e26')
+            '6f072ba8-c510-40ac-b387-51f582650e26'
         );
     }
 
@@ -56,8 +52,8 @@ class UDB3SavedSearchRepositoryTest extends TestCase
             ->willReturn('73bf2160-058c-4e4e-bbee-6bcbe9298596');
 
         $this->udb3SavedSearchRepository->write(
-            new StringLiteral('96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc'),
-            new StringLiteral('In Leuven'),
+            '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
+            'In Leuven',
             new QueryString('q=city:leuven')
         );
 
@@ -66,9 +62,9 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('In Leuven'),
+                    'In Leuven',
                     new QueryString('q=city:leuven'),
-                    new StringLiteral('73bf2160-058c-4e4e-bbee-6bcbe9298596')
+                    '73bf2160-058c-4e4e-bbee-6bcbe9298596'
                 ),
             ],
             $savedSearches
@@ -83,8 +79,8 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $this->seedSavedSearches();
 
         $this->udb3SavedSearchRepository->delete(
-            new StringLiteral('6f072ba8-c510-40ac-b387-51f582650e26'),
-            new StringLiteral('db4c4690-84fb-4ed9-9a64-fccdd6e29f53')
+            '6f072ba8-c510-40ac-b387-51f582650e26',
+            'db4c4690-84fb-4ed9-9a64-fccdd6e29f53'
         );
 
         $savedSearches = $this->getSavedSearches();
@@ -92,14 +88,14 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('In Leuven'),
+                    'In Leuven',
                     new QueryString('q=city:leuven'),
-                    new StringLiteral('73bf2160-058c-4e4e-bbee-6bcbe9298596')
+                    '73bf2160-058c-4e4e-bbee-6bcbe9298596'
                 ),
                 new SavedSearch(
-                    new StringLiteral('Alles in Tienen'),
+                    'Alles in Tienen',
                     new QueryString('q=city:Tienen'),
-                    new StringLiteral('4de79378-d9a9-47ec-9b38-6f76f9d6df37')
+                    '4de79378-d9a9-47ec-9b38-6f76f9d6df37'
                 ),
             ],
             $savedSearches
@@ -118,14 +114,14 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 new SavedSearch(
-                    new StringLiteral('Permanent in Rotselaar'),
+                    'Permanent in Rotselaar',
                     new QueryString('q=city:Rotselaar AND permanent:TRUE'),
-                    new StringLiteral('db4c4690-84fb-4ed9-9a64-fccdd6e29f53')
+                    'db4c4690-84fb-4ed9-9a64-fccdd6e29f53'
                 ),
                 new SavedSearch(
-                    new StringLiteral('Alles in Tienen'),
+                    'Alles in Tienen',
                     new QueryString('q=city:Tienen'),
-                    new StringLiteral('4de79378-d9a9-47ec-9b38-6f76f9d6df37')
+                    '4de79378-d9a9-47ec-9b38-6f76f9d6df37'
                 ),
             ],
             $savedSearches
@@ -134,7 +130,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 
     private function createTable(): void
     {
-        $this->tableName = new StringLiteral('saved_searches');
+        $this->tableName = 'saved_searches';
         $schemaConfigurator = new SchemaConfigurator($this->tableName);
 
         $schemaConfigurator->configure(
@@ -149,16 +145,16 @@ class UDB3SavedSearchRepositoryTest extends TestCase
     private function getSavedSearches(): array
     {
         $statement = $this->connection->executeQuery(
-            'SELECT * FROM ' . $this->tableName->toNative()
+            'SELECT * FROM ' . $this->tableName
         );
         $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
         $savedSearches = [];
         foreach ($rows as $row) {
             $savedSearches[] = new SavedSearch(
-                new StringLiteral($row[SchemaConfigurator::NAME]),
+                $row[SchemaConfigurator::NAME],
                 new QueryString($row[SchemaConfigurator::QUERY]),
-                new StringLiteral($row[SchemaConfigurator::ID])
+                $row[SchemaConfigurator::ID]
             );
         }
 
@@ -176,20 +172,20 @@ class UDB3SavedSearchRepositoryTest extends TestCase
             );
 
         $this->udb3SavedSearchRepository->write(
-            new StringLiteral('96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc'),
-            new StringLiteral('In Leuven'),
+            '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
+            'In Leuven',
             new QueryString('q=city:leuven')
         );
 
         $this->udb3SavedSearchRepository->write(
-            new StringLiteral('6f072ba8-c510-40ac-b387-51f582650e26'),
-            new StringLiteral('Permanent in Rotselaar'),
+            '6f072ba8-c510-40ac-b387-51f582650e26',
+            'Permanent in Rotselaar',
             new QueryString('q=city:Rotselaar AND permanent:TRUE')
         );
 
         $this->udb3SavedSearchRepository->write(
-            new StringLiteral('6f072ba8-c510-40ac-b387-51f582650e26'),
-            new StringLiteral('Alles in Tienen'),
+            '6f072ba8-c510-40ac-b387-51f582650e26',
+            'Alles in Tienen',
             new QueryString('q=city:Tienen')
         );
     }

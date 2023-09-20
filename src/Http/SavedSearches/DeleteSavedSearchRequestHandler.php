@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
-use CultuurNet\UDB3\StringLiteral;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -33,8 +32,8 @@ final class DeleteSavedSearchRequestHandler implements RequestHandlerInterface
         $id = $routeParameters->get('id');
 
         $command = new UnsubscribeFromSavedSearch(
-            new StringLiteral($this->userId),
-            new StringLiteral($id)
+            $this->userId,
+            $id
         );
 
         $this->commandBus->dispatch($command);

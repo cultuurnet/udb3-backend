@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine;
 use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Types\Type;
-use CultuurNet\UDB3\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
@@ -15,11 +14,11 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     public const ROLE_ID_COLUMN = 'role_id';
     public const PERMISSION_COLUMN = 'permission';
 
-    private StringLiteral $userRoleTableName;
+    private string $userRoleTableName;
 
-    private StringLiteral $rolePermissionTableName;
+    private string $rolePermissionTableName;
 
-    public function __construct(StringLiteral $userRoleTableName, StringLiteral $rolePermissionTableName)
+    public function __construct(string $userRoleTableName, string $rolePermissionTableName)
     {
         $this->userRoleTableName = $userRoleTableName;
         $this->rolePermissionTableName = $rolePermissionTableName;
@@ -29,8 +28,8 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     {
         $schema = $schemaManager->createSchema();
 
-        if (!$schema->hasTable((string) $this->userRoleTableName)) {
-            $userRoleTable = $schema->createTable((string) $this->userRoleTableName);
+        if (!$schema->hasTable($this->userRoleTableName)) {
+            $userRoleTable = $schema->createTable($this->userRoleTableName);
 
             $userRoleTable->addColumn(self::USER_ID_COLUMN, Type::GUID)
                 ->setLength(36)
@@ -46,8 +45,8 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
             $schemaManager->createTable($userRoleTable);
         }
 
-        if (!$schema->hasTable((string) $this->rolePermissionTableName)) {
-            $rolePermissionTable = $schema->createTable((string) $this->rolePermissionTableName);
+        if (!$schema->hasTable($this->rolePermissionTableName)) {
+            $rolePermissionTable = $schema->createTable($this->rolePermissionTableName);
 
             $rolePermissionTable->addColumn(self::ROLE_ID_COLUMN, Type::GUID)
                 ->setLength(36)
