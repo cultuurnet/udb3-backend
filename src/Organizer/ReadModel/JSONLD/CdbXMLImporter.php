@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\ReadModel\JSONLD;
 
 use CultureFeed_Cdb_Data_Address_PhysicalAddress;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use stdClass;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 
 /**
  * Takes care of importing actors in the CdbXML format (UDB2) that represent
@@ -82,7 +83,8 @@ class CdbXMLImporter
                         new CountryCode($physicalAddress->getCountry())
                     );
 
-                    $jsonLD->address->{$jsonLD->mainLanguage} = $physicalAddress->toJsonLd();
+                    $addressNormalizer = new AddressNormalizer();
+                    $jsonLD->address->{$jsonLD->mainLanguage} = $addressNormalizer->normalize($physicalAddress);
                 }
             }
 

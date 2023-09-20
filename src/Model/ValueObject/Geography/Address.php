@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Geography;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressNormalizer;
+
 class Address
 {
     private Street $street;
@@ -88,12 +90,7 @@ class Address
 
     public function serialize(): array
     {
-        return [
-            'streetAddress' => $this->street->toString(),
-            'postalCode' => $this->postalCode->toString(),
-            'addressLocality' => $this->locality->toString(),
-            'addressCountry' => $this->countryCode->toString(),
-        ];
+        return (new AddressNormalizer())->normalize($this);
     }
 
     public static function deserialize(array $data): self
