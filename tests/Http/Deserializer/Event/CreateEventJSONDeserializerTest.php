@@ -9,6 +9,7 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
 class CreateEventJSONDeserializerTest extends TestCase
@@ -27,7 +28,7 @@ class CreateEventJSONDeserializerTest extends TestCase
         $expectedLocation = new LocationId('28cf728d-441b-4912-b3b0-f03df0d22491');
 
         $this->assertEquals(new Language('en'), $createEvent->getMainLanguage());
-        $this->assertEquals('talking title', $createEvent->getTitle());
+        $this->assertEquals(new Title('talking title'), $createEvent->getTitle());
         $this->assertEquals(new EventType('0.17.0.0.0', 'Route'), $createEvent->getType());
         $this->assertEquals($expectedLocation, $createEvent->getLocation());
         $this->assertEquals(new Calendar(CalendarType::PERMANENT()), $createEvent->getCalendar());
