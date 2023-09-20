@@ -9,7 +9,6 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class MajorInfoJSONDeserializerTest extends TestCase
 {
@@ -22,7 +21,7 @@ class MajorInfoJSONDeserializerTest extends TestCase
 
         $majorInfoJSONDeserializer = new MajorInfoJSONDeserializer();
 
-        $majorInfo = $majorInfoJSONDeserializer->deserialize(new StringLiteral($majorInfoAsJson));
+        $majorInfo = $majorInfoJSONDeserializer->deserialize($majorInfoAsJson);
 
         $expectedLocation = new LocationId('28cf728d-441b-4912-b3b0-f03df0d22491');
 
@@ -41,7 +40,7 @@ class MajorInfoJSONDeserializerTest extends TestCase
 
         $majorInfoJSONDeserializer = new MajorInfoJSONDeserializer();
 
-        $majorInfo = $majorInfoJSONDeserializer->deserialize(new StringLiteral($majorInfoAsJson));
+        $majorInfo = $majorInfoJSONDeserializer->deserialize($majorInfoAsJson);
 
         $expectedLocation = new LocationId('28cf728d-441b-4912-b3b0-f03df0d22491');
 

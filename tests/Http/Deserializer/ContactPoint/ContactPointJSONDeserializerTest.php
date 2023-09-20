@@ -7,14 +7,10 @@ namespace CultuurNet\UDB3\Http\Deserializer\ContactPoint;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\ContactPoint;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class ContactPointJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var ContactPointJSONDeserializer
-     */
-    private $contactPointJSONDeserializer;
+    private ContactPointJSONDeserializer $contactPointJSONDeserializer;
 
     protected function setUp(): void
     {
@@ -26,7 +22,7 @@ class ContactPointJSONDeserializerTest extends TestCase
      */
     public function it_validates_data_on_deserialize_and_throws_exception_when_invalid(): void
     {
-        $data = new StringLiteral('[{"type":"foo","value":"0123456789"}]');
+        $data = '[{"type":"foo","value":"0123456789"}]';
 
         $this->expectException(DataValidationException::class);
 
@@ -41,7 +37,7 @@ class ContactPointJSONDeserializerTest extends TestCase
         $phone1 = '{"type":"phone","value":"0123456789"}';
         $phone2 = '{"type":"phone","value":"9876543210"}';
         $email = '{"type":"email","value":"user@company.be"}';
-        $data = new StringLiteral('[' . $phone1 . ', ' . $phone2 . ', ' . $email . ']');
+        $data = '[' . $phone1 . ', ' . $phone2 . ', ' . $email . ']';
 
         $expectedContactPoint = new ContactPoint(
             ['0123456789', '9876543210'],

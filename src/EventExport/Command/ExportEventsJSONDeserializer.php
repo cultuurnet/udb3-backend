@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -16,7 +15,7 @@ use CultuurNet\UDB3\StringLiteral;
  */
 abstract class ExportEventsJSONDeserializer extends JSONDeserializer
 {
-    public function deserialize(StringLiteral $data): ExportEvents
+    public function deserialize(string $data): ExportEvents
     {
         $data = parent::deserialize($data);
 

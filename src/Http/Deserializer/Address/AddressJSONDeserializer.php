@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Deserializer\Address;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -27,7 +26,7 @@ class AddressJSONDeserializer extends JSONDeserializer
     /**
      * @throws DataValidationException
      */
-    public function deserialize(StringLiteral $data): Address
+    public function deserialize(string $data): Address
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);

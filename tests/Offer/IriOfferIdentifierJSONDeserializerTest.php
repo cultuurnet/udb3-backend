@@ -9,14 +9,10 @@ use CultuurNet\UDB3\Deserializer\NotWellFormedException;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class IriOfferIdentifierJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var IriOfferIdentifierJSONDeserializer
-     */
-    private $deserializer;
+    private IriOfferIdentifierJSONDeserializer $deserializer;
 
     /**
      * @var IriOfferIdentifierFactoryInterface|MockObject
@@ -36,7 +32,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_a_valid_iri_offer_identifier(): void
     {
-        $json = new StringLiteral('{"@id":"http://du.de/event/1","@type":"Event"}');
+        $json = '{"@id":"http://du.de/event/1","@type":"Event"}';
 
         $expected = new IriOfferIdentifier(
             new Url('http://du.de/event/1'),
@@ -59,7 +55,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_the_json_is_malformed(): void
     {
-        $json = new StringLiteral('{"foo"');
+        $json = '{"foo"';
 
         $this->expectException(NotWellFormedException::class);
         $this->expectExceptionMessage('Invalid JSON');
@@ -72,7 +68,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_id_is_missing(): void
     {
-        $json = new StringLiteral('{"@type":"Event"}');
+        $json = '{"@type":"Event"}';
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('Missing property "@id".');
@@ -85,7 +81,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_type_is_missing(): void
     {
-        $json = new StringLiteral('{"@id":"http://du.de/event/1"}');
+        $json = '{"@id":"http://du.de/event/1"}';
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('Missing property "@type".');

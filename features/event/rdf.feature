@@ -62,3 +62,21 @@ Feature: Test RDF projection of events
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/mixed-event-with-online-url-and-multiple-calendar.ttl"
+
+  Scenario: Create an event with organizer
+    Given I create a random name of 10 characters
+    And I set the JSON request payload from "organizers/organizer-minimal.json"
+    And I send a POST request to "/organizers/"
+    And I keep the value of the JSON response at "id" as "organizerId"
+    And I create an event from "events/rdf/event-with-organizer.json" and save the "id" as "eventId"
+    And I am using the RDF base URL
+    And I accept "text/turtle"
+    When I get the RDF of event with id "%{eventId}"
+    Then the RDF response should match "events/rdf/event-with-organizer.ttl"
+
+  Scenario: Create an event with contact point
+    And I create an event from "events/rdf/event-with-contact-point.json" and save the "id" as "eventId"
+    And I am using the RDF base URL
+    And I accept "text/turtle"
+    When I get the RDF of event with id "%{eventId}"
+    Then the RDF response should match "events/rdf/event-with-contact-point.ttl"

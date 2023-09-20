@@ -10,7 +10,6 @@ use CultuurNet\UDB3\EventExport\EventExportQuery;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class ExportEventsJSONDeserializerTest extends TestCase
 {
@@ -29,9 +28,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
      */
     public function it_deserializes_a_minimal_export_command(): void
     {
-        $data = new StringLiteral(
-            $this->getJsonData('export_data_query.json')
-        );
+        $data = $this->getJsonData('export_data_query.json');
 
         $this->deserializer->expects($this->once())
             ->method('createCommand')
@@ -51,9 +48,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
      */
     public function it_deserializes_a_complete_export_command(): void
     {
-        $data = new StringLiteral(
-            $this->getJsonData('export_data.json')
-        );
+        $data = $this->getJsonData('export_data.json');
 
         $this->deserializer->expects($this->once())
             ->method('createCommand')
@@ -81,7 +76,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_query_is_missing(): void
     {
-        $data = new StringLiteral('{"email":"foo@bar.com"}');
+        $data = '{"email":"foo@bar.com"}';
         $this->expectException(MissingValueException::class);
         $this->deserializer->deserialize($data);
     }
@@ -89,16 +84,12 @@ class ExportEventsJSONDeserializerTest extends TestCase
     /**
      * @test
      * @dataProvider commandDataProvider
-     *
-     * @param string                $expectedCommandType
      */
     public function it_can_create_different_command_types(
         DeserializerInterface $deserializer,
-        $expectedCommandType
+        string $expectedCommandType
     ): void {
-        $data = new StringLiteral(
-            $this->getJsonData('export_data.json')
-        );
+        $data = $this->getJsonData('export_data.json');
 
         $command = $deserializer->deserialize($data);
 
@@ -120,10 +111,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
         $this->assertEquals($expectedCommand, $command);
     }
 
-    /**
-     * @return array
-     */
-    public function commandDataProvider()
+    public function commandDataProvider(): array
     {
         return [
             [
@@ -137,11 +125,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $fileName
-     * @return string
-     */
-    private function getJsonData($fileName)
+    private function getJsonData(string $fileName): string
     {
         return file_get_contents(__DIR__ . '/' . $fileName);
     }

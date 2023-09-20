@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Deserializer\Event;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -27,7 +26,7 @@ class EventTypeJSONDeserializer extends JSONDeserializer
     /**
      * @throws DataValidationException
      */
-    public function deserialize(StringLiteral $data): EventType
+    public function deserialize(string $data): EventType
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);

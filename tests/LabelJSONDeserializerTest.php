@@ -26,7 +26,7 @@ class LabelJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_a_valid_label(): void
     {
-        $json = new StringLiteral('{"label": "test-label"}');
+        $json = '{"label": "test-label"}';
         $label = $this->deserializer->deserialize($json);
         $this->assertEquals($this->label, $label);
     }
@@ -36,7 +36,7 @@ class LabelJSONDeserializerTest extends TestCase
      */
     public function it_throws_an_exception_when_no_label_is_found(): void
     {
-        $json = new StringLiteral('{"foo": "bar"}');
+        $json = '{"foo": "bar"}';
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('Missing value "label"!');
