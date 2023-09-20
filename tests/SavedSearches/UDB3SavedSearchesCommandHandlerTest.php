@@ -10,7 +10,6 @@ use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class UDB3SavedSearchesCommandHandlerTest extends TestCase
 {
@@ -35,8 +34,8 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
      */
     public function it_can_handle_subscribe_to_saved_search_commands(): void
     {
-        $userId = new StringLiteral('some-user-id');
-        $name = new StringLiteral('My very first saved search!');
+        $userId = 'some-user-id';
+        $name = 'My very first saved search!';
         $query = new QueryString('city:"Leuven"');
 
         $subscribeToSavedSearch = new SubscribeToSavedSearch($userId, $name, $query);
@@ -57,8 +56,8 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
      */
     public function it_can_handle_unsubscribe_from_saved_search_commands(): void
     {
-        $userId = new StringLiteral('some-user-id');
-        $searchId = new StringLiteral('some-search-id');
+        $userId = 'some-user-id';
+        $searchId = 'some-search-id';
 
         $unsubscribeFromSavedSearch = new UnsubscribeFromSavedSearch($userId, $searchId);
 

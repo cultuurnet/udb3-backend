@@ -14,7 +14,6 @@ use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\User\CurrentUser;
-use CultuurNet\UDB3\StringLiteral;
 use League\Container\DefinitionContainerInterface;
 
 final class SavedSearchesServiceProvider extends AbstractServiceProvider
@@ -40,9 +39,9 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 return new UDB3SavedSearchRepository(
                     $container->get('dbal_connection'),
-                    new StringLiteral('saved_searches_sapi3'),
+                    'saved_searches_sapi3',
                     new Version4Generator(),
-                    new StringLiteral($container->get(CurrentUser::class)->getId())
+                    $container->get(CurrentUser::class)->getId()
                 );
             }
         );

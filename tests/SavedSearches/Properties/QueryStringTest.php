@@ -19,8 +19,7 @@ class QueryStringTest extends TestCase
 
         $queryString = QueryString::fromURLQueryString($urlQueryString);
 
-        $this->assertEquals($expected, $queryString);
-        $this->assertEquals($expected, $queryString->toNative());
+        $this->assertEquals($expected, $queryString->toString());
 
         // Valid URL query string, but without "q" parameter.
         $invalidUrlQueryString = 'a=b&c=d';
