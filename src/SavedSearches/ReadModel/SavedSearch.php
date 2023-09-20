@@ -12,10 +12,7 @@ class SavedSearch implements \JsonSerializable
 
     protected string $name;
 
-    /**
-     * @var QueryString
-     */
-    protected $query;
+    protected QueryString $query;
 
     public function __construct(string $name, QueryString $query, string $id = null)
     {
