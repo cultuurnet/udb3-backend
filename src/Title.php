@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title as Udb3ModelTitle;
 
 /**
@@ -14,10 +15,12 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title as Udb3ModelTitle;
 final class Title implements \JsonSerializable
 {
     use IsNotEmpty;
+    use Trims;
     private string $value;
 
     public function __construct(string $value)
     {
+        $value = $this->trim($value);
         $this->guardNotEmpty($value);
         $this->value = $value;
     }
