@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title as Udb3ModelTitle;
 
 /**
@@ -12,10 +13,12 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title as Udb3ModelTitle;
  */
 final class Title implements \JsonSerializable
 {
+    use IsNotEmpty;
     private string $value;
 
     public function __construct(string $value)
     {
+        $this->guardNotEmpty($value);
         $this->value = $value;
     }
 
