@@ -142,9 +142,10 @@ final class RdfProjector implements EventListener
             $this->setOrganizer($resource, $event->getOrganizerReference());
         }
 
-        (new WorkflowStatusEditor())->setWorkflowStatus($resource, $event->getWorkflowStatus());
+        $workflowStatusEditor = new WorkflowStatusEditor();
+        $workflowStatusEditor->setWorkflowStatus($resource, $event->getWorkflowStatus());
         if ($event->getAvailableFrom()) {
-            (new WorkflowStatusEditor())->setAvailableFrom($resource, $event->getAvailableFrom());
+            $workflowStatusEditor->setAvailableFrom($resource, $event->getAvailableFrom());
         }
 
         if (!$event->getAttendanceMode()->sameAs(AttendanceMode::offline())) {
