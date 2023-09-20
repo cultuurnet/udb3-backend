@@ -22,6 +22,7 @@ class RdfProjectorTest extends RdfTestCase
             $this->graphRepository,
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/organizers/' . $item),
             new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
             $this->documentRepository,
             new EventDenormalizer(),
@@ -1315,6 +1316,51 @@ class RdfProjectorTest extends RdfTestCase
         );
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-multiple-calendar.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_organizer(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+            'organizer' => [
+                '@id' => 'https://mock.io.uitdatabank.be/organizers/331a966d-d8ff-4e3c-a6f4-83b901f6c3af',
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-organizer.ttl'));
     }
 
     public function getRdfDataSetName(): string

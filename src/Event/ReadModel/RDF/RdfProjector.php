@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
+use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -45,6 +46,7 @@ final class RdfProjector implements EventListener
     private GraphRepository $graphRepository;
     private IriGeneratorInterface $eventsIriGenerator;
     private IriGeneratorInterface $placesIriGenerator;
+    private IriGeneratorInterface $organizersIriGenerator;
     private IriGeneratorInterface $termsIriGenerator;
     private DocumentRepository $documentRepository;
     private DenormalizerInterface $eventDenormalizer;
@@ -64,6 +66,8 @@ final class RdfProjector implements EventListener
     private const PROPERTY_ACTVITEIT_LOCATIE = 'prov:atLocation';
     private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
 
+    private const PROPERTY_CARRIED_OUT_BY = 'cidoc:P14_carried_out_by';
+
     private const PROPERTY_RUIMTE_TIJD = 'cp:ruimtetijd';
     private const PROPERTY_RUIMTE_TIJD_LOCATION = 'cidoc:P161_has_spatial_projection';
     private const PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE = 'cidoc:P160_has_temporal_projection';
@@ -78,6 +82,7 @@ final class RdfProjector implements EventListener
         GraphRepository $graphRepository,
         IriGeneratorInterface $eventsIriGenerator,
         IriGeneratorInterface $placesIriGenerator,
+        IriGeneratorInterface $organizersIriGenerator,
         IriGeneratorInterface $termsIriGenerator,
         DocumentRepository $documentRepository,
         DenormalizerInterface $eventDenormalizer,
@@ -87,6 +92,7 @@ final class RdfProjector implements EventListener
         $this->graphRepository = $graphRepository;
         $this->eventsIriGenerator = $eventsIriGenerator;
         $this->placesIriGenerator = $placesIriGenerator;
+        $this->organizersIriGenerator = $organizersIriGenerator;
         $this->termsIriGenerator = $termsIriGenerator;
         $this->documentRepository = $documentRepository;
         $this->eventDenormalizer = $eventDenormalizer;
@@ -131,9 +137,14 @@ final class RdfProjector implements EventListener
 
         $this->setTerms($resource, $event->getTerms());
 
-        (new WorkflowStatusEditor())->setWorkflowStatus($resource, $event->getWorkflowStatus());
+        if ($event->getOrganizerReference()) {
+            $this->setOrganizer($resource, $event->getOrganizerReference());
+        }
+
+        $workflowStatusEditor = new WorkflowStatusEditor();
+        $workflowStatusEditor->setWorkflowStatus($resource, $event->getWorkflowStatus());
         if ($event->getAvailableFrom()) {
-            (new WorkflowStatusEditor())->setAvailableFrom($resource, $event->getAvailableFrom());
+            $workflowStatusEditor->setAvailableFrom($resource, $event->getAvailableFrom());
         }
 
         if (!$event->getAttendanceMode()->sameAs(AttendanceMode::offline())) {
@@ -190,6 +201,12 @@ final class RdfProjector implements EventListener
                 $resource->set(self::PROPERTY_ACTIVITEIT_THEMA, new Resource($terms));
             }
         }
+    }
+
+    private function setOrganizer(Resource $resource, OrganizerReference $organizerReference): void
+    {
+        $organizerIri = $this->organizersIriGenerator->iri($organizerReference->getOrganizerId()->toString());
+        $resource->addResource(self::PROPERTY_CARRIED_OUT_BY, $organizerIri);
     }
 
     private function setCalendarWithLocation(Resource $resource, Event $event): void
