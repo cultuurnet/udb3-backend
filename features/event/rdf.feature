@@ -80,3 +80,9 @@ Feature: Test RDF projection of events
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/event-with-contact-point.ttl"
+  Scenario: Create an event with booking info
+    And I create an event from "events/rdf/event-with-booking-info.json" and save the "id" as "eventId"
+    And I am using the RDF base URL
+    And I accept "text/turtle"
+    When I get the RDF of event with id "%{eventId}"
+    Then the RDF response should match "events/rdf/event-with-booking-info.ttl"
