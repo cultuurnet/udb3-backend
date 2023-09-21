@@ -10,6 +10,7 @@ use Broadway\EventStore\EventStore;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManager;
+use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Offer\Item\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\FlagAsDuplicate;
@@ -101,7 +102,7 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
         EventBus $eventBus
     ): ItemCommandHandler {
         $this->organizerRepository = $this->createMock(Repository::class);
-        $this->mediaManager = $this->createMock(MediaManager::class);
+        $this->mediaManager = $this->createMock(MediaManagerInterface::class);
 
         return new ItemCommandHandler(
             new ItemRepository($eventStore, $eventBus),

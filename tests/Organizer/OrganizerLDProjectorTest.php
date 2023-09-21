@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaObject;
+use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
@@ -61,7 +62,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\RecordedOn;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 final class OrganizerLDProjectorTest extends TestCase
 {
@@ -559,7 +559,7 @@ final class OrganizerLDProjectorTest extends TestCase
                 MediaObject::create(
                     new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     MIMEType::fromSubtype('jpeg'),
-                    new StringLiteral('Uploaded image'),
+                    new Description('Uploaded image'),
                     new CopyrightHolder('publiq'),
                     new Url('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
                     new Language('nl')
@@ -595,7 +595,7 @@ final class OrganizerLDProjectorTest extends TestCase
                 MediaObject::create(
                     new UUID('dd45e5a1-f70c-48d7-83e5-dde9226c1dd6'),
                     MIMEType::fromSubtype('png'),
-                    new StringLiteral('Extra image'),
+                    new Description('Extra image'),
                     new CopyrightHolder('madewithlove'),
                     new Url('https://images.uitdatabank.be/dd45e5a1-f70c-48d7-83e5-dde9226c1dd6.png'),
                     new Language('en')
@@ -631,7 +631,7 @@ final class OrganizerLDProjectorTest extends TestCase
                 MediaObject::create(
                     new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     MIMEType::fromSubtype('jpeg'),
-                    new StringLiteral('Image Description'),
+                    new Description('Image Description'),
                     new CopyrightHolder('madewithlove'),
                     new Url('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
                     new Language('en')

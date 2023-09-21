@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
+use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -64,13 +65,12 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
 use DateTimeInterface;
 use RuntimeException;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
  *   Use a real Offer implementation in tests instead.
  */
-class Item extends Offer
+final class Item extends Offer
 {
     protected string $id;
 
@@ -123,7 +123,7 @@ class Item extends Offer
 
     protected function createImageUpdatedEvent(
         UUID $mediaObjectId,
-        StringLiteral $description,
+        ImageDescription $description,
         CopyrightHolder $copyrightHolder,
         ?string $language = null
     ): ImageUpdated {

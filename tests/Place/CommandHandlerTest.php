@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Media\MediaManager;
+use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
@@ -124,7 +124,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->organizerRepository = $this->createMock(Repository::class);
 
-        $this->mediaManager = $this->createMock(MediaManager::class);
+        $this->mediaManager = $this->createMock(MediaManagerInterface::class);
 
         return new CommandHandler(
             $repository,
