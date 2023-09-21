@@ -105,7 +105,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     {
         $id = 'foo';
         $url = 'http://www.google.be';
-        $urlLabel = new MultilingualString(new Language('nl'), new StringLiteral('Google'));
+        $urlLabel = new MultilingualString(new Language('nl'), 'Google');
         $phone = '045';
         $email = 'test@test.com';
         $availabilityStarts = \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00');
