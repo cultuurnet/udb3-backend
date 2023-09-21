@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo as PlaceUpdateBookingInfo;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Iterator;
 use PHPUnit\Framework\TestCase;
@@ -96,7 +95,7 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
 
         $bookingInfoBasicUrl = new BookingInfo(
             $basicUrl,
-            new MultilingualString(new Language('nl'), new StringLiteral('Publiq vzw')),
+            new MultilingualString(new Language('nl'), 'Publiq vzw'),
             '02/1232323',
             'info@publiq.be',
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2023-01-01T00:00:00+01:00'),
@@ -105,7 +104,7 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
 
         $bookingInfoSpecialCharactersUrl = new BookingInfo(
             $specialCharactersUrl,
-            new MultilingualString(new Language('nl'), new StringLiteral('Publiq vzw')),
+            new MultilingualString(new Language('nl'), 'Publiq vzw'),
             '02/1232323',
             'info@publiq.be',
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2023-01-01T00:00:00+01:00'),

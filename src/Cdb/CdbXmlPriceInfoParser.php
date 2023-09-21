@@ -12,7 +12,6 @@ use CultuurNet\UDB3\MoneyFactory;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 
@@ -102,13 +101,13 @@ final class CdbXmlPriceInfoParser
             foreach ($translatedTariffs as $tariffName => $tariffPrice) {
                 if (!isset($tariffs[$tariffIndex])) {
                     $tariff = new Tariff(
-                        new MultilingualString(new LegacyLanguage($language), new StringLiteral((string) $tariffName)),
+                        new MultilingualString(new LegacyLanguage($language), (string) $tariffName),
                         MoneyFactory::create($tariffPrice, new Currency('EUR'))
                     );
                 } else {
                     $tariff = $tariffs[$tariffIndex];
                     $name = $tariff->getName();
-                    $name = $name->withTranslation(new LegacyLanguage($language), new StringLiteral((string) $tariffName));
+                    $name = $name->withTranslation(new LegacyLanguage($language), (string) $tariffName);
                     $tariff = new Tariff(
                         $name,
                         $tariff->getPrice()
