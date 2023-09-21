@@ -199,7 +199,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
                 'nl' => 'Foo',
             ],
             'description' => (object) [
-                'nl' => $description,
+                'nl' => $description->toNative(),
             ],
             'languages' => ['nl'],
             'completedLanguages' => ['nl'],
