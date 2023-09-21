@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use CultuurNet\UDB3\StringLiteral;
 
 class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, MediaManagerInterface
 {
@@ -84,7 +83,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         $pathParts = explode('/', $uploadImage->getFilePath()->toNative());
         $fileName = array_pop($pathParts);
         $fileNameParts = explode('.', $fileName);
-        $extension = StringLiteral::fromNative(array_pop($fileNameParts));
+        $extension = array_pop($fileNameParts);
         $destinationPath = $this->pathGenerator->path(
             $uploadImage->getFileId(),
             $extension
