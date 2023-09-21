@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Deserializes `application/vnd.cultuurnet.uitpas-events.event-card-systems-updated+json` messages

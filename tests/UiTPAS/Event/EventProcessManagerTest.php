@@ -26,7 +26,6 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 class EventProcessManagerTest extends TestCase
 {
