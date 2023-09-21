@@ -8,6 +8,7 @@ use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
+use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
@@ -142,7 +143,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer = $this->load($updateImage->getItemId());
         $offer->updateImage(
             $updateImage->getMediaObjectId(),
-            new StringLiteral($updateImage->getDescription()),
+            new Description($updateImage->getDescription()),
             $updateImage->getCopyrightHolder()
         );
         $this->offerRepository->save($offer);

@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
+use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\StringLiteral;
 use InvalidArgumentException;
@@ -71,7 +72,7 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
 
         $imageId = $this->imageUploader->upload(
             $uploadedFile,
-            new StringLiteral($description),
+            new Description($description),
             $copyrightHolder,
             $language
         );

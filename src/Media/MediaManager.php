@@ -50,7 +50,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
     public function create(
         UUID $id,
         MIMEType $fileType,
-        StringLiteral $description,
+        Description $description,
         CopyrightHolder $copyrightHolder,
         Url $sourceLocation,
         Language $language
@@ -130,7 +130,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         return new Image(
             $mediaObject->getMediaObjectId(),
             $mediaObject->getMimeType(),
-            new Description((string) $mediaObject->getDescription()),
+            $mediaObject->getDescription(),
             $mediaObject->getCopyrightHolder(),
             $mediaObject->getSourceLocation(),
             $mediaObject->getLanguage()

@@ -71,6 +71,7 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
+use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
@@ -547,7 +548,7 @@ class Event extends Offer
 
     protected function createImageUpdatedEvent(
         UUID $mediaObjectId,
-        StringLiteral $description,
+        ImageDescription $description,
         CopyrightHolder $copyrightHolder,
         ?string $language = null
     ): ImageUpdated {

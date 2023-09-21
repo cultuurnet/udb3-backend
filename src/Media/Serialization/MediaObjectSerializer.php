@@ -39,7 +39,7 @@ class MediaObjectSerializer
             'id' => $mediaObject->getMediaObjectId()->toString(),
             'contentUrl' => $mediaObject->getSourceLocation()->toString(),
             'thumbnailUrl' => $mediaObject->getSourceLocation()->toString(),
-            'description' => (string) $mediaObject->getDescription(),
+            'description' => $mediaObject->getDescription()->toNative(),
             'copyrightHolder' => $mediaObject->getCopyrightHolder()->toString(),
             'inLanguage' => (string) $mediaObject->getLanguage(),
         ];

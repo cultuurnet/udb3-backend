@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Media\Events;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -23,11 +24,7 @@ final class MediaObjectCreated implements Serializable
      * @var MIMEType
      */
     private $mimeType;
-
-    /**
-     * @var StringLiteral
-     */
-    private $description;
+    private Description $description;
 
     /**
      * @var CopyrightHolder
@@ -47,7 +44,7 @@ final class MediaObjectCreated implements Serializable
     public function __construct(
         UUID $id,
         MIMEType $fileType,
-        StringLiteral $description,
+        Description $description,
         CopyrightHolder $copyrightHolder,
         Url $sourceLocation,
         Language $language
@@ -70,7 +67,7 @@ final class MediaObjectCreated implements Serializable
         return $this->mediaObjectId;
     }
 
-    public function getDescription(): StringLiteral
+    public function getDescription(): Description
     {
         return $this->description;
     }
@@ -114,7 +111,7 @@ final class MediaObjectCreated implements Serializable
         return new self(
             new UUID($data['media_object_id']),
             new MIMEType($data['mime_type']),
-            new StringLiteral($data['description']),
+            new Description($data['description']),
             new CopyrightHolder($copyrightHolderData),
             new Url($data['source_location']),
             array_key_exists('language', $data) ? new Language($data['language']) : new Language('nl')
