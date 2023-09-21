@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address;
 
-use CultuurNet\UDB3\Model\ValueObject\Geography\Street as Udb3ModelStreet;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
 /**
