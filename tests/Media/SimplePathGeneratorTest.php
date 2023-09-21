@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Media;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
-class SimplePathGeneratorTest extends TestCase
+final class SimplePathGeneratorTest extends TestCase
 {
     /**
      * @test
