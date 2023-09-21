@@ -94,7 +94,6 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
@@ -671,7 +670,7 @@ final class Event extends Offer
         return new Approved($this->eventId);
     }
 
-    protected function createRejectedEvent(StringLiteral $reason): Rejected
+    protected function createRejectedEvent(string $reason): Rejected
     {
         return new Rejected($this->eventId, $reason);
     }

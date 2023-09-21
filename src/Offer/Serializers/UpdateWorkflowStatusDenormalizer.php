@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\Commands\Moderation\Approve as ApprovePlace;
 use CultuurNet\UDB3\Place\Commands\Moderation\Publish as PublishPlace;
 use CultuurNet\UDB3\Place\Commands\Moderation\Reject as RejectPlace;
-use CultuurNet\UDB3\StringLiteral;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class UpdateWorkflowStatusDenormalizer implements DenormalizerInterface
@@ -47,10 +46,9 @@ final class UpdateWorkflowStatusDenormalizer implements DenormalizerInterface
         }
 
         if ($workflowStatus->sameAs(WorkflowStatus::REJECTED())) {
-            $reason = new StringLiteral($data['reason']);
             return $this->offerType->sameAs(OfferType::event())
-                ? new RejectEvent($this->offerId, $reason)
-                : new RejectPlace($this->offerId, $reason);
+                ? new RejectEvent($this->offerId, $data['reason'])
+                : new RejectPlace($this->offerId, $data['reason']);
         }
 
         if ($workflowStatus->sameAs(WorkflowStatus::DELETED())) {

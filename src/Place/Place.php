@@ -73,7 +73,6 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3Language;
 
 class Place extends Offer
@@ -484,7 +483,7 @@ class Place extends Offer
         return new Approved($this->placeId);
     }
 
-    protected function createRejectedEvent(StringLiteral $reason): Rejected
+    protected function createRejectedEvent(string $reason): Rejected
     {
         return new Rejected($this->placeId, $reason);
     }

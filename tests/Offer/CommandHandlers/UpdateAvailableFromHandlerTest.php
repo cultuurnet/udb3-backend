@@ -26,7 +26,6 @@ use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
-use CultuurNet\UDB3\StringLiteral;
 
 final class UpdateAvailableFromHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -87,7 +86,7 @@ final class UpdateAvailableFromHandlerTest extends CommandHandlerScenarioTestCas
                 [new AvailableFromUpdated($eventId, new DateTimeImmutable('2030-11-15T11:22:33+00:00'))],
             ],
             'available from on rejected event' => [
-                [$eventCreated, new Rejected($eventId, new StringLiteral('Rejected'))],
+                [$eventCreated, new Rejected($eventId, 'Rejected')],
                 new UpdateAvailableFrom($eventId, new DateTimeImmutable('2030-11-15T11:22:33+00:00')),
                 [new AvailableFromUpdated($eventId, new DateTimeImmutable('2030-11-15T11:22:33+00:00'))],
             ],

@@ -65,7 +65,6 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
 use DateTimeInterface;
 use RuntimeException;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -262,7 +261,7 @@ final class Item extends Offer
         return new ImagesUpdatedFromUDB2($this->id, $images);
     }
 
-    protected function createRejectedEvent(StringLiteral $reason): Rejected
+    protected function createRejectedEvent(string $reason): Rejected
     {
         return new Rejected($this->id, $reason);
     }

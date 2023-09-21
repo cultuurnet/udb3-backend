@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\StringLiteral;
 use DateTime;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -45,9 +44,7 @@ final class PatchOfferRequestHandler implements RequestHandlerInterface
 
         if ($domainModel === 'Reject') {
             $content = Json::decode($request->getBody()->getContents());
-            $reason = new StringLiteral($content->reason);
-
-            $command = new $commandClass($offerId, $reason);
+            $command = new $commandClass($offerId, $content->reason);
         } elseif ($domainModel === 'Publish') {
             $publicationDate = $this->getPublicationDate($request);
 
