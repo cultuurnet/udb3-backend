@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 final class UploadImageTest extends TestCase
 {
@@ -81,7 +80,7 @@ final class UploadImageTest extends TestCase
     public function it_stores_a_file_path(): void
     {
         $this->assertEquals(
-            StringLiteral::fromNative('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
             $this->uploadImage->getFilePath()
         );
     }
