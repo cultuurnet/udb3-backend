@@ -4,18 +4,25 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPAS\ValueObject;
 
-use CultuurNet\UDB3\StringLiteral;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
-class Id extends StringLiteral
+final class Id
 {
+    use IsNotEmpty;
+    use Trims;
+
+    private string $value;
+
     public function __construct(string $value)
     {
-        parent::__construct($value);
+        $value = $this->trim($value);
+        $this->guardNotEmpty($value);
+        $this->value = $value;
+    }
 
-        $value = trim($value);
-
-        if (strlen($value) === 0) {
-            throw new \InvalidArgumentException('ID should not be an empty string.');
-        }
+    public function toNative(): string
+    {
+        return $this->value;
     }
 }
