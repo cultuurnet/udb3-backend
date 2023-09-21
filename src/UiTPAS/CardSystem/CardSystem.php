@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTPAS\CardSystem;
 
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
-use CultuurNet\UDB3\StringLiteral;
 
 class CardSystem
 {
@@ -33,11 +32,8 @@ class CardSystem
         return $this->id;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getName()
+    public function getName(): string
     {
-        return new StringLiteral($this->name);
+        return $this->name;
     }
 }
