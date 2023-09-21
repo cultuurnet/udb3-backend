@@ -23,14 +23,14 @@ final class UploadImage
 
     private MIMEType $mimeType;
 
-    private StringLiteral $filePath;
+    private string $filePath;
 
     public function __construct(
         UUID $fileId,
         MIMEType $mimeType,
         Description $description,
         CopyrightHolder $copyrightHolder,
-        StringLiteral$filePath,
+        string $filePath,
         Language $language
     ) {
         $this->fileId = $fileId;
@@ -68,6 +68,6 @@ final class UploadImage
 
     public function getFilePath(): StringLiteral
     {
-        return $this->filePath;
+        return new StringLiteral($this->filePath);
     }
 }

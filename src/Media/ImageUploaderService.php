@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\StringLiteral;
 use League\Flysystem\FilesystemOperator;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
@@ -87,7 +86,7 @@ final class ImageUploaderService implements ImageUploaderInterface
                 MIMEType::fromNative($mimeType),
                 $description,
                 $copyrightHolder,
-                new StringLiteral($destination),
+                $destination,
                 $language
             )
         );
