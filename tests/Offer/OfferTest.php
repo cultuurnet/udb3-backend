@@ -56,7 +56,6 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\Item;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 
@@ -1949,21 +1948,21 @@ class OfferTest extends AggregateRootScenarioTestCase
 
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
-            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('publiq')),
+            new MultilingualString(new LegacyLanguage('nl'), 'publiq'),
             '02 123 45 67',
             'info@publiq.be'
         );
 
         $sameBookingInfo = new BookingInfo(
             'www.publiq.be',
-            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('publiq')),
+            new MultilingualString(new LegacyLanguage('nl'), 'publiq'),
             '02 123 45 67',
             'info@publiq.be'
         );
 
         $otherBookingInfo = new BookingInfo(
             'www.2dotstwice.be',
-            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('2dotstwice')),
+            new MultilingualString(new LegacyLanguage('nl'), '2dotstwice'),
             '016 12 34 56',
             'info@2dotstwice.be'
         );

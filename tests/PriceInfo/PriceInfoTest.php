@@ -12,7 +12,6 @@ use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class PriceInfoTest extends TestCase
 {
@@ -40,7 +39,7 @@ class PriceInfoTest extends TestCase
             new Tariff(
                 new MultilingualString(
                     new Language('nl'),
-                    new StringLiteral('Tarief inwoners')
+                    'Tarief inwoners'
                 ),
                 new Money(950, new Currency('EUR'))
             ),
@@ -50,7 +49,7 @@ class PriceInfoTest extends TestCase
             new Tariff(
                 new MultilingualString(
                     new Language('nl'),
-                    new StringLiteral('UiTPAS tarief')
+                    'UiTPAS tarief'
                 ),
                 new Money(650, new Currency('EUR'))
             ),
@@ -157,7 +156,7 @@ class PriceInfoTest extends TestCase
                 new Tariff(
                     new MultilingualString(
                         new Language('nl'),
-                        new StringLiteral('Senioren')
+                        'Senioren'
                     ),
                     new Money(500, new Currency('EUR'))
                 )

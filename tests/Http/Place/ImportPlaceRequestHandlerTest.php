@@ -76,7 +76,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Place;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use Money\Currency;
@@ -890,7 +889,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         'https://www.dehel.be/booking',
                         new MultilingualString(
                             new LegacyLanguage('nl'),
-                            new StringLiteral('Bestel hier je tickets')
+                            'Bestel hier je tickets'
                         ),
                         '016 10 20 30',
                         'booking@dehel.be',
