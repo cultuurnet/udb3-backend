@@ -7,11 +7,11 @@ namespace CultuurNet\UDB3\Security\ResourceOwner\Doctrine;
 use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 
-class SchemaConfigurator implements SchemaConfiguratorInterface
+final class SchemaConfigurator implements SchemaConfiguratorInterface
 {
-    protected string $tableName;
+    private string $tableName;
 
-    protected string $idField;
+    private string $idField;
 
     public function __construct(string $tableName, string $idField)
     {
