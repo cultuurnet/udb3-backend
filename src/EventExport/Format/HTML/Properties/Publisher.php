@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\EventExport\Format\HTML\Properties;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
-class Publisher
+final class Publisher
 {
     use IsString;
     use Trims;

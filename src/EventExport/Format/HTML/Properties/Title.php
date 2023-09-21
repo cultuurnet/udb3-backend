@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
-class Title
+final class Title
 {
     use IsString;
     use Trims;
