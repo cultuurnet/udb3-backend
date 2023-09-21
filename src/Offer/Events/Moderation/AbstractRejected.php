@@ -5,22 +5,18 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Events\Moderation;
 
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
-use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractRejected extends AbstractEvent
 {
-    /**
-     * @var StringLiteral
-     */
-    private $reason;
+    private string $reason;
 
-    final public function __construct(string $itemId, StringLiteral $reason)
+    final public function __construct(string $itemId, string $reason)
     {
         parent::__construct($itemId);
         $this->reason = $reason;
     }
 
-    public function getReason(): StringLiteral
+    public function getReason(): string
     {
         return $this->reason;
     }
@@ -28,7 +24,7 @@ abstract class AbstractRejected extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'reason' => $this->reason->toNative(),
+            'reason' => $this->reason,
         ];
     }
 
@@ -36,7 +32,7 @@ abstract class AbstractRejected extends AbstractEvent
     {
         return new static(
             $data['item_id'],
-            new StringLiteral($data['reason'])
+           $data['reason']
         );
     }
 }

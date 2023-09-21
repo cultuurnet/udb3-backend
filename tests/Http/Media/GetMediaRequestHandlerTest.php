@@ -11,12 +11,12 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\MediaUrlMapping;
+use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\TestCase;
 
 final class GetMediaRequestHandlerTest extends TestCase
@@ -42,7 +42,7 @@ final class GetMediaRequestHandlerTest extends TestCase
                 MediaObject::create(
                     new UUID($id),
                     MIMEType::fromSubtype('jpeg'),
-                    new StringLiteral('UDB2 image'),
+                    new Description('UDB2 image'),
                     new CopyrightHolder('publiq'),
                     new Url('https://media.uitdatabank.be/123/5624b810-c340-40a4-8f38-0393eca59bfe.jpg'),
                     new Language('nl')

@@ -2053,7 +2053,7 @@ class OfferLDProjectorTest extends TestCase
                 'itemId' => $itemId,
                 'event' => new Rejected(
                     $itemId,
-                    new StringLiteral('Image contains nudity.')
+                    'Image contains nudity.'
                 ),
             ],
             'offer flagged as duplicate' => [

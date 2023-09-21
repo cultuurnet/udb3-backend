@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Media\MediaManager;
+use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\Theme;
@@ -47,7 +47,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->organizerRepository = $this->createMock(Repository::class);
 
-        $this->mediaManager = $this->createMock(MediaManager::class);
+        $this->mediaManager = $this->createMock(MediaManagerInterface::class);
 
         return new EventCommandHandler(
             $repository,

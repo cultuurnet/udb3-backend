@@ -9,17 +9,17 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileSize;
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileType;
+use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 use Zend\Diactoros\Stream;
 
-class ImageUploaderServiceTest extends TestCase
+final class ImageUploaderServiceTest extends TestCase
 {
     private UUID $fileId;
 
@@ -63,7 +63,7 @@ class ImageUploaderServiceTest extends TestCase
      */
     public function it_should_throw_an_exception_if_the_uploaded_file_is_not_an_image(): void
     {
-        $description = new StringLiteral('file description');
+        $description = new Description('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
         $image = $this->createMock(UploadedFileInterface::class);
@@ -106,7 +106,7 @@ class ImageUploaderServiceTest extends TestCase
             ->method('getSize')
             ->willReturn(1000001);
 
-        $description = new StringLiteral('file description');
+        $description = new Description('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
@@ -144,7 +144,7 @@ class ImageUploaderServiceTest extends TestCase
             ->method('getError')
             ->willReturn(UPLOAD_ERR_CANT_WRITE);
 
-        $description = new StringLiteral('file description');
+        $description = new Description('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
@@ -184,7 +184,7 @@ class ImageUploaderServiceTest extends TestCase
             ->method('getStream')
             ->willReturn(new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')));
 
-        $description = new StringLiteral('file description');
+        $description = new Description('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
@@ -224,7 +224,7 @@ class ImageUploaderServiceTest extends TestCase
             ->method('getStream')
             ->willReturn(new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')));
 
-        $description = new StringLiteral('file description');
+        $description = new Description('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
@@ -264,7 +264,7 @@ class ImageUploaderServiceTest extends TestCase
             ->method('getStream')
             ->willReturn(new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')));
 
-        $description = new StringLiteral('file description');
+        $description = new Description('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
@@ -304,7 +304,7 @@ class ImageUploaderServiceTest extends TestCase
             1000000
         );
 
-        $description = new StringLiteral('file description');
+        $description = new Description('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 

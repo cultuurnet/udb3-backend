@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
@@ -577,7 +576,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 ),
                 new Rejected(
                     $eventId,
-                    new StringLiteral('Reason unknown (imported from UiTdatabank v2)')
+                    'Reason unknown (imported from UiTdatabank v2)'
                 ),
             ],
             $eventImportedFromUDB2->toGranularEvents()
