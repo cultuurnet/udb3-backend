@@ -26,9 +26,8 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use CultuurNet\UDB3\StringLiteral;
 
-class EventProcessManagerTest extends TestCase
+final class EventProcessManagerTest extends TestCase
 {
     private EventProcessManager $eventProcessManager;
 
@@ -140,15 +139,15 @@ class EventProcessManagerTest extends TestCase
         $cardSystems = [
             'c73d78b7-95a7-45b3-bde5-5b2ec7b13afa' => new CardSystem(
                 new Id('c73d78b7-95a7-45b3-bde5-5b2ec7b13afa'),
-                new StringLiteral('Mock CS Paspartoe')
+                'Mock CS Paspartoe'
             ),
             'f23ccb75-190a-4814-945e-c95e83101cc5' => new CardSystem(
                 new Id('f23ccb75-190a-4814-945e-c95e83101cc5'),
-                new StringLiteral('Mock CS UiTPAS Gent')
+                'Mock CS UiTPAS Gent'
             ),
             '98ce6fbc-fb68-4efc-b8c7-95763cb967dd' => new CardSystem(
                 new Id('98ce6fbc-fb68-4efc-b8c7-95763cb967dd'),
-                new StringLiteral('Mock CS UiTPAS Oostende')
+                'Mock CS UiTPAS Oostende'
             ),
         ];
 
@@ -185,7 +184,7 @@ class EventProcessManagerTest extends TestCase
     public function it_should_log_a_warning_if_no_label_can_be_found_for_an_active_card_system(): void
     {
         $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
-        $cardSystems = [7 => new CardSystem(new Id('7'), new StringLiteral('Mock CS'))];
+        $cardSystems = [7 => new CardSystem(new Id('7'), 'Mock CS')];
 
         $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);
 

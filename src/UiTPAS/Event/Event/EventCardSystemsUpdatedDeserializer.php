@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Deserializes `application/vnd.cultuurnet.uitpas-events.event-card-systems-updated+json` messages
@@ -15,7 +14,7 @@ use CultuurNet\UDB3\StringLiteral;
  *
  * Make sure to extract this logic if more (similar) uitpas messages have to be deserialized in the future.
  */
-class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
+final class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
 {
     public function deserialize(string $data): EventCardSystemsUpdated
     {
@@ -47,7 +46,7 @@ class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
 
             $cardSystems[$cardSystemDTO->id] = new CardSystem(
                 new Id((string) $cardSystemDTO->id),
-                new StringLiteral($cardSystemDTO->name)
+                $cardSystemDTO->name
             );
         }
 

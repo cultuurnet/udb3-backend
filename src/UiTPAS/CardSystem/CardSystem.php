@@ -5,41 +5,28 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTPAS\CardSystem;
 
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
-use CultuurNet\UDB3\StringLiteral;
 
-class CardSystem
+final class CardSystem
 {
-    /**
-     * @var Id
-     */
-    private $id;
+    private Id $id;
 
-    /**
-     * @var StringLiteral
-     */
-    private $name;
+    private string $name;
 
 
     public function __construct(
         Id $id,
-        StringLiteral $name
+        string $name
     ) {
         $this->id = $id;
         $this->name = $name;
     }
 
-    /**
-     * @return Id
-     */
-    public function getId()
+    public function getId(): Id
     {
         return $this->id;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
