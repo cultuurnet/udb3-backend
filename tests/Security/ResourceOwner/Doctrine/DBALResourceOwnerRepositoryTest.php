@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Security\ResourceOwner\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 final class DBALResourceOwnerRepositoryTest extends TestCase
 {

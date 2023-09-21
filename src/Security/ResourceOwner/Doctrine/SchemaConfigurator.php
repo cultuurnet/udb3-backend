@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Security\ResourceOwner\Doctrine;
 
 use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use CultuurNet\UDB3\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
