@@ -27,7 +27,7 @@ use Money\Money;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class EventProcessManagerTest extends TestCase
+final class EventProcessManagerTest extends TestCase
 {
     private EventProcessManager $eventProcessManager;
 

@@ -14,7 +14,7 @@ use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
  *
  * Make sure to extract this logic if more (similar) uitpas messages have to be deserialized in the future.
  */
-class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
+final class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
 {
     public function deserialize(string $data): EventCardSystemsUpdated
     {

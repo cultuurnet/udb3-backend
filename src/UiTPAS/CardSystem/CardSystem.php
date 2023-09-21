@@ -6,12 +6,9 @@ namespace CultuurNet\UDB3\UiTPAS\CardSystem;
 
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 
-class CardSystem
+final class CardSystem
 {
-    /**
-     * @var Id
-     */
-    private $id;
+    private Id $id;
 
     private string $name;
 
@@ -24,10 +21,7 @@ class CardSystem
         $this->name = $name;
     }
 
-    /**
-     * @return Id
-     */
-    public function getId()
+    public function getId(): Id
     {
         return $this->id;
     }
