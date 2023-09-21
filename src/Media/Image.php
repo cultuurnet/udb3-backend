@@ -14,35 +14,17 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 final class Image implements Serializable
 {
-    /**
-     * @var UUID
-     */
-    private $mediaObjectId;
+    private UUID $mediaObjectId;
 
-    /**
-     * @var MIMEType
-     */
-    private $mimeType;
+    private MIMEType $mimeType;
 
-    /**
-     * @var Description
-     */
-    private $description;
+    private Description $description;
 
-    /**
-     * @var CopyrightHolder
-     */
-    private $copyrightHolder;
+    private CopyrightHolder $copyrightHolder;
 
-    /**
-     * @var Url
-     */
-    private $sourceLocation;
+    private Url $sourceLocation;
 
-    /**
-     * @var Language
-     */
-    private $language;
+    private Language $language;
 
     public function __construct(
         UUID $id,
@@ -113,8 +95,8 @@ final class Image implements Serializable
     {
         return [
             'media_object_id' => $this->getMediaObjectId()->toString(),
-            'mime_type' => (string) $this->getMimeType(),
-            'description' => (string) $this->getDescription(),
+            'mime_type' => $this->getMimeType()->toNative(),
+            'description' => $this->getDescription()->toNative(),
             'copyright_holder' => $this->getCopyrightHolder()->toString(),
             'source_location' => $this->getSourceLocation()->toString(),
             'language' => (string) $this->getLanguage(),

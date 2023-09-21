@@ -7,13 +7,13 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
+use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\StringLiteral;
 
-class MediaObjectTest extends AggregateRootScenarioTestCase
+final class MediaObjectTest extends AggregateRootScenarioTestCase
 {
     protected function getAggregateRootClass(): string
     {
@@ -27,7 +27,7 @@ class MediaObjectTest extends AggregateRootScenarioTestCase
     {
         $fileId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
         $fileType = new MIMEType('image/png');
-        $description = new StringLiteral('The Gleaners');
+        $description = new Description('The Gleaners');
         $copyrightHolder = new CopyrightHolder('Jean-François Millet');
         $location = new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
         $language = new Language('en');
@@ -68,7 +68,7 @@ class MediaObjectTest extends AggregateRootScenarioTestCase
         $mediaObject = MediaObject::create(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new StringLiteral('The Gleaners'),
+            new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
@@ -85,7 +85,7 @@ class MediaObjectTest extends AggregateRootScenarioTestCase
         );
 
         $this->assertEquals(
-            new StringLiteral('The Gleaners'),
+            new Description('The Gleaners'),
             $mediaObject->getDescription()
         );
 

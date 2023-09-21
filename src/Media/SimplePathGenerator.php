@@ -5,15 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\StringLiteral;
 
-class SimplePathGenerator implements PathGeneratorInterface
+final class SimplePathGenerator implements PathGeneratorInterface
 {
-    /**
-     * @{inheritdoc}
-     */
-    public function path(UUID $fileId, StringLiteral $extension)
+    public function path(UUID $fileId, string $extension): string
     {
-        return $fileId->toString() . '.' . (string)$extension;
+        return $fileId->toString() . '.' . $extension;
     }
 }

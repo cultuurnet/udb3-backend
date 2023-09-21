@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
-class MediaObjectSerializerTest extends TestCase
+final class MediaObjectSerializerTest extends TestCase
 {
     /**
      * @var MockObject|MediaObjectSerializer
@@ -165,8 +165,7 @@ class MediaObjectSerializerTest extends TestCase
      */
     public function it_serializes_mime_type_image_to_image_object(): void
     {
-        /** @var MIMEType $mimeType */
-        $mimeType = MIMEType::fromNative('image/jpeg');
+        $mimeType = new MIMEType('image/jpeg');
 
         $this->assertEquals(
             'schema:ImageObject',

@@ -71,6 +71,7 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
+use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
@@ -93,14 +94,13 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 
-class Event extends Offer
+final class Event extends Offer
 {
     protected string $eventId;
 
@@ -547,7 +547,7 @@ class Event extends Offer
 
     protected function createImageUpdatedEvent(
         UUID $mediaObjectId,
-        StringLiteral $description,
+        ImageDescription $description,
         CopyrightHolder $copyrightHolder,
         ?string $language = null
     ): ImageUpdated {
