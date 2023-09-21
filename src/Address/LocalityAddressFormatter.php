@@ -9,7 +9,7 @@ final class LocalityAddressFormatter implements AddressFormatter
     public function format(Address $address): string
     {
         return $address->getPostalCode() . ' ' .
-            $address->getLocality() . ', ' .
+            $address->getLocality()->toNative() . ', ' .
             $address->getCountryCode()->toString();
     }
 }
