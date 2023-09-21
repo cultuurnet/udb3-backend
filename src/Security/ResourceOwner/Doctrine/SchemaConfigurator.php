@@ -10,11 +10,11 @@ use CultuurNet\UDB3\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
-    protected StringLiteral $tableName;
+    protected string $tableName;
 
-    protected StringLiteral $idField;
+    protected string $idField;
 
-    public function __construct(StringLiteral $tableName, StringLiteral $idField)
+    public function __construct(string $tableName, string $idField)
     {
         $this->tableName = $tableName;
         $this->idField = $idField;
@@ -23,10 +23,10 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     public function configure(AbstractSchemaManager $schemaManager): void
     {
         $schema = $schemaManager->createSchema();
-        $table = $schema->createTable($this->tableName->toNative());
+        $table = $schema->createTable($this->tableName);
 
         $table->addColumn(
-            $this->idField->toNative(),
+            $this->idField,
             'guid',
             ['length' => 36, 'notnull' => true]
         );
@@ -36,7 +36,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
             ['length' => 36, 'notnull' => true]
         );
 
-        $table->setPrimaryKey([$this->idField->toNative(), 'user_id']);
+        $table->setPrimaryKey([$this->idField, 'user_id']);
 
         $schemaManager->createTable($table);
     }
