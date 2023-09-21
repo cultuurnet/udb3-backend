@@ -309,7 +309,7 @@ trait OfferHistoryProjectorTrait
     {
         /* @var Rejected $event */
         $event = $domainMessage->getPayload();
-        $reason = $event->getReason()->toNative();
+        $reason = $event->getReason();
 
         $this->writeHistory(
             $domainMessage->getId(),
