@@ -73,7 +73,6 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3Language;
 
 class Place extends Offer
