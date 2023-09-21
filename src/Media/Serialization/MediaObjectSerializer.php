@@ -47,17 +47,17 @@ class MediaObjectSerializer
 
     public function serializeMimeType(MIMEType $mimeType): string
     {
-        $typeParts = explode('/', (string) $mimeType);
+        $typeParts = explode('/', $mimeType->toNative());
         $type = array_shift($typeParts);
 
         if ($type === 'image') {
             return 'schema:ImageObject';
         }
 
-        if ((string) $mimeType === 'application/octet-stream') {
+        if ($mimeType->toNative() === 'application/octet-stream') {
             return 'schema:mediaObject';
         }
 
-        throw new UnsupportedException('Unsupported MIME-type "' . $mimeType . '"');
+        throw new UnsupportedException('Unsupported MIME-type "' . $mimeType->toNative() . '"');
     }
 }

@@ -95,7 +95,7 @@ final class Image implements Serializable
     {
         return [
             'media_object_id' => $this->getMediaObjectId()->toString(),
-            'mime_type' => (string) $this->getMimeType(),
+            'mime_type' => $this->getMimeType()->toNative(),
             'description' => $this->getDescription()->toNative(),
             'copyright_holder' => $this->getCopyrightHolder()->toString(),
             'source_location' => $this->getSourceLocation()->toString(),

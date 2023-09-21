@@ -5,12 +5,22 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media\Properties;
 
 use InvalidArgumentException;
-use CultuurNet\UDB3\StringLiteral;
 use function is_string;
 
-final class MIMEType extends StringLiteral
+final class MIMEType
 {
-    protected static array $supportedSubtypes = [
+    private string $value;
+
+    public function __construct(string $value)
+    {
+        $this->value = $value;
+    }
+
+    public function toNative(): string
+    {
+        return $this->value;
+    }
+    private static array $supportedSubtypes = [
         'jpeg' => 'image',
         'png' => 'image',
         'gif' => 'image',
