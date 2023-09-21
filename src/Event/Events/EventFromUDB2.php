@@ -39,7 +39,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\SerializableSimpleXmlElement;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeZone;
 
@@ -241,7 +240,7 @@ trait EventFromUDB2
         }
 
         if ($wfstatus === 'rejected') {
-            return new Rejected($this->eventId, new StringLiteral('Reason unknown (imported from UiTdatabank v2)'));
+            return new Rejected($this->eventId, 'Reason unknown (imported from UiTdatabank v2)');
         }
 
         if ($wfstatus === 'deleted') {
