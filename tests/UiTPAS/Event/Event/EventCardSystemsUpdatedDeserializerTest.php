@@ -6,9 +6,8 @@ namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
-class EventCardSystemsUpdatedDeserializerTest extends TestCase
+final class EventCardSystemsUpdatedDeserializerTest extends TestCase
 {
     private EventCardSystemsUpdatedDeserializer $deserializer;
 
@@ -41,11 +40,11 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
         $event = $this->deserializer->deserialize($json);
         $cardSystems = $event->getCardSystems();
 
-        $this->assertEquals('48ef34b0-e34a-4a15-9ae2-a5a01f189f90', $event->getId());
+        $this->assertEquals(new Id('48ef34b0-e34a-4a15-9ae2-a5a01f189f90'), $event->getId());
         $this->assertEquals(new Id('7'), $cardSystems[7]->getId());
-        $this->assertEquals(new StringLiteral('UiTPAS Oostende'), $cardSystems[7]->getName());
+        $this->assertEquals('UiTPAS Oostende', $cardSystems[7]->getName());
         $this->assertEquals(new Id('25'), $cardSystems[25]->getId());
-        $this->assertEquals(new StringLiteral('UiTPAS Dender'), $cardSystems[25]->getName());
+        $this->assertEquals('UiTPAS Dender', $cardSystems[25]->getName());
         $this->assertCount(2, $cardSystems);
     }
 
@@ -69,9 +68,9 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
         $event = $this->deserializer->deserialize($json);
         $cardSystems = $event->getCardSystems();
 
-        $this->assertEquals('48ef34b0-e34a-4a15-9ae2-a5a01f189f90', $event->getId());
+        $this->assertEquals(new Id('48ef34b0-e34a-4a15-9ae2-a5a01f189f90'), $event->getId());
         $this->assertEquals(new Id('7'), $cardSystems[7]->getId());
-        $this->assertEquals(new StringLiteral('UiTPAS Oostende'), $cardSystems[7]->getName());
+        $this->assertEquals('UiTPAS Oostende', $cardSystems[7]->getName());
         $this->assertCount(1, $cardSystems);
     }
 
@@ -90,7 +89,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
         $event = $this->deserializer->deserialize($json);
         $cardSystems = $event->getCardSystems();
 
-        $this->assertEquals('48ef34b0-e34a-4a15-9ae2-a5a01f189f90', $event->getId());
+        $this->assertEquals(new Id('48ef34b0-e34a-4a15-9ae2-a5a01f189f90'), $event->getId());
         $this->assertCount(0, $cardSystems);
     }
 
