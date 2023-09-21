@@ -41,7 +41,6 @@ use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
-use CultuurNet\UDB3\StringLiteral;
 
 class PlaceTest extends AggregateRootScenarioTestCase
 {
@@ -382,7 +381,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
 
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
-            new MultilingualString(new Language('nl'), new StringLiteral('publiq')),
+            new MultilingualString(new Language('nl'), 'Publiq'),
             '02 123 45 67',
             'info@publiq.be'
         );

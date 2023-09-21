@@ -25,7 +25,7 @@ class BookingInfoTest extends TestCase
             'www.publiq.be',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('publiq')
+                'publiq'
             ),
             '02 123 45 67',
             'info@publiq.be'
@@ -35,7 +35,7 @@ class BookingInfoTest extends TestCase
             'www.publiq.be',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('publiq')
+                'publiq'
             ),
             '02 123 45 67',
             'info@publiq.be'
@@ -45,7 +45,7 @@ class BookingInfoTest extends TestCase
             'www.2dotstwice.be',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('2dotstwice')
+                '2dotstwice'
             ),
             '016 12 34 56',
             'info@2dotstwice.be'
@@ -80,7 +80,7 @@ class BookingInfoTest extends TestCase
             'https://publiq.be',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('publiq')
+                'publiq'
             ),
             '044/444444',
             'info@publiq.be',
@@ -206,7 +206,7 @@ class BookingInfoTest extends TestCase
             'https://www.publiq.be',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('publiq')
+                'publiq'
             ),
             '044/444444',
             'info@publiq.be',

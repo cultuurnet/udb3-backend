@@ -8,7 +8,6 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class AbstractBookingInfoEventTest extends TestCase
 {
@@ -32,7 +31,7 @@ class AbstractBookingInfoEventTest extends TestCase
         $this->itemId = 'Foo';
         $this->bookingInfo = new BookingInfo(
             'http://foo.bar',
-            new MultilingualString(new Language('nl'), new StringLiteral('urlLabel')),
+            new MultilingualString(new Language('nl'), 'urlLabel'),
             '0123456789',
             'foo@bar.com',
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-01-01T00:00:00+01:00'),
@@ -52,7 +51,7 @@ class AbstractBookingInfoEventTest extends TestCase
         $expectedItemId = 'Foo';
         $expectedBookingInfo = new BookingInfo(
             'http://foo.bar',
-            new MultilingualString(new Language('nl'), new StringLiteral('urlLabel')),
+            new MultilingualString(new Language('nl'), 'urlLabel'),
             '0123456789',
             'foo@bar.com',
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-01-01T00:00:00+01:00'),
@@ -74,7 +73,7 @@ class AbstractBookingInfoEventTest extends TestCase
         $expectedItemId = 'Foo';
         $expectedBookingInfo = new BookingInfo(
             'http://foo.bar',
-            new MultilingualString(new Language('nl'), new StringLiteral('urlLabel')),
+            new MultilingualString(new Language('nl'), 'urlLabel'),
             '0123456789',
             'foo@bar.com',
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-01-01T00:00:00+01:00'),
@@ -138,7 +137,7 @@ class AbstractBookingInfoEventTest extends TestCase
                     'madId',
                     new BookingInfo(
                         'http://foo.bar',
-                        new MultilingualString(new Language('nl'), new StringLiteral('urlLabel')),
+                        new MultilingualString(new Language('nl'), 'urlLabel'),
                         '0123456789',
                         'foo@bar.com',
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-01-01T00:00:00+01:00'),
