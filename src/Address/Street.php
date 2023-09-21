@@ -28,18 +28,8 @@ final class Street
         return $this->value;
     }
 
-    public function sameValueAs(self $title): bool
+    public function sameValueAs(self $street): bool
     {
-        return $this->toNative() === $title->toNative();
-    }
-
-    public function jsonSerialize(): string
-    {
-        return $this->value;
-    }
-
-    public static function fromUdb3ModelStreet(Udb3ModelStreet $title): self
-    {
-        return new self($title->toString());
+        return $this->toNative() === $street->toNative();
     }
 }
