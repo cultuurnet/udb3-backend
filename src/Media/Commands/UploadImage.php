@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\StringLiteral;
 
 final class UploadImage
 {
@@ -23,14 +22,14 @@ final class UploadImage
 
     private MIMEType $mimeType;
 
-    private StringLiteral $filePath;
+    private string $filePath;
 
     public function __construct(
         UUID $fileId,
         MIMEType $mimeType,
         Description $description,
         CopyrightHolder $copyrightHolder,
-        StringLiteral$filePath,
+        string $filePath,
         Language $language
     ) {
         $this->fileId = $fileId;
@@ -66,7 +65,7 @@ final class UploadImage
         return $this->mimeType;
     }
 
-    public function getFilePath(): StringLiteral
+    public function getFilePath(): string
     {
         return $this->filePath;
     }
