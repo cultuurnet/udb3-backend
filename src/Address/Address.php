@@ -16,21 +16,9 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 final class Address implements Serializable, JsonLdSerializableInterface
 {
     private CountryCode $countryCode;
-
-    /**
-     * @var Locality
-     */
-    private $locality;
-
-    /**
-     * @var PostalCode
-     */
-    private $postalCode;
-
-    /**
-     * @var Street
-     */
-    private $streetAddress;
+    private Locality $locality;
+    private PostalCode $postalCode;
+    private Street $streetAddress;
 
     public function __construct(
         Street $streetAddress,
