@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Place\Commands\Moderation\Approve as ApprovePlace;
 use CultuurNet\UDB3\Place\Commands\Moderation\Publish as PublishPlace;
 use CultuurNet\UDB3\Place\Commands\Moderation\Reject as RejectPlace;
-use CultuurNet\UDB3\StringLiteral;
 use Iterator;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -159,7 +158,7 @@ final class UpdateWorkflowStatusRequestHandlerTest extends TestCase
 
         $expected = new $rejectCommandClassName(
             'd1422721-f226-48fd-a26d-cb21599ee533',
-            new StringLiteral('Offers that focus primarily on religion are not allowed in UiTdatabank.')
+            'Offers that focus primarily on religion are not allowed in UiTdatabank.'
         );
 
         $commands = $this->commandBus->getRecordedCommands();

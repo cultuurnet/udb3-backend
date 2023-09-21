@@ -671,7 +671,7 @@ final class Event extends Offer
         return new Approved($this->eventId);
     }
 
-    protected function createRejectedEvent(StringLiteral $reason): Rejected
+    protected function createRejectedEvent(string $reason): Rejected
     {
         return new Rejected($this->eventId, $reason);
     }
