@@ -83,7 +83,7 @@ final class ImageUploaderService implements ImageUploaderInterface
         $this->commandBus->dispatch(
             new UploadImage(
                 $fileId,
-                MIMEType::fromNative($mimeType),
+                new MIMEType($mimeType),
                 $description,
                 $copyrightHolder,
                 $destination,

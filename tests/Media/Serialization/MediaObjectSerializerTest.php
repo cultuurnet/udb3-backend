@@ -165,8 +165,7 @@ class MediaObjectSerializerTest extends TestCase
      */
     public function it_serializes_mime_type_image_to_image_object(): void
     {
-        /** @var MIMEType $mimeType */
-        $mimeType = MIMEType::fromNative('image/jpeg');
+        $mimeType = new MIMEType('image/jpeg');
 
         $this->assertEquals(
             'schema:ImageObject',
