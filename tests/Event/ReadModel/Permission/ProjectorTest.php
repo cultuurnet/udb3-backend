@@ -68,7 +68,7 @@ final class ProjectorTest extends TestCase
             $payload
         );
 
-        $userId = new StringLiteral('123');
+        $userId = 'dcd1e123-0608-4824-afe3-99124feda64b';
 
         $this->userIdResolver->expects($this->once())
             ->method('resolveCreatedByToUserId')
