@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
-class MediaObjectSerializerTest extends TestCase
+final class MediaObjectSerializerTest extends TestCase
 {
     /**
      * @var MockObject|MediaObjectSerializer
