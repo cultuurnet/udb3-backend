@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Security\ResourceOwner\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 final class DBALResourceOwnerRepositoryTest extends TestCase
 {
@@ -19,7 +18,7 @@ final class DBALResourceOwnerRepositoryTest extends TestCase
         $table = 'event_permission';
         $idField = 'event_id';
 
-        (new SchemaConfigurator(new StringLiteral($table), new StringLiteral($idField)))->configure(
+        (new SchemaConfigurator($table, $idField))->configure(
             $this->getConnection()->getSchemaManager()
         );
 
