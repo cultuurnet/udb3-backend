@@ -47,7 +47,7 @@ class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
 
             $cardSystems[$cardSystemDTO->id] = new CardSystem(
                 new Id((string) $cardSystemDTO->id),
-                new StringLiteral($cardSystemDTO->name)
+                $cardSystemDTO->name
             );
         }
 

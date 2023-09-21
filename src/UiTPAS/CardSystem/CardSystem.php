@@ -14,15 +14,12 @@ class CardSystem
      */
     private $id;
 
-    /**
-     * @var StringLiteral
-     */
-    private $name;
+    private string $name;
 
 
     public function __construct(
         Id $id,
-        StringLiteral $name
+        string $name
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -41,6 +38,6 @@ class CardSystem
      */
     public function getName()
     {
-        return $this->name;
+        return new StringLiteral($this->name);
     }
 }
