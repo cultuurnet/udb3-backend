@@ -50,7 +50,6 @@ use DateTimeImmutable;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class Udb3ModelToLegacyOfferAdapterTest extends TestCase
 {
@@ -335,7 +334,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
         );
         $expected = $expected->withExtraTariff(
             new \CultuurNet\UDB3\PriceInfo\Tariff(
-                new MultilingualString(new \CultuurNet\UDB3\Language('nl'), new StringLiteral('Senioren')),
+                new MultilingualString(new \CultuurNet\UDB3\Language('nl'), 'Senioren'),
                 new Money(1050, new Currency('EUR'))
             )
         );
@@ -362,7 +361,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
             'https://www.publiq.be',
             new MultilingualString(
                 new \CultuurNet\UDB3\Language('nl'),
-                new StringLiteral('Publiq')
+                'Publiq'
             ),
             '044/444444',
             'info@publiq.be',

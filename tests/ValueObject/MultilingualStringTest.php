@@ -18,36 +18,25 @@ use CultuurNet\UDB3\StringLiteral;
 
 class MultilingualStringTest extends TestCase
 {
-    /**
-     * @var Language
-     */
-    private $originalLanguage;
+    private Language $originalLanguage;
+
+    private string $originalString;
 
     /**
-     * @var StringLiteral
+     * @var string[]
      */
-    private $originalString;
+    private array $translations;
 
-    /**
-     * @var StringLiteral[]
-     */
-    private $translations;
-
-    /**
-     * @var MultilingualString
-     */
-    private $multilingualString;
+    private MultilingualString $multilingualString;
 
     public function setUp(): void
     {
         $this->originalLanguage = new Language('nl');
-        $this->originalString = new StringLiteral(
-            'Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu'
-        );
+        $this->originalString = 'Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu';
 
         $this->translations = [
-            'fr' => new StringLiteral('Tous les oiseaux ont commencé nids, sauf moi et vous. Ce que nous attendons?'),
-            'en' => new StringLiteral('All birds have begun nests, except me and you. What we are waiting for?'),
+            'fr' => 'Tous les oiseaux ont commencé nids, sauf moi et vous. Ce que nous attendons?',
+            'en' => 'All birds have begun nests, except me and you. What we are waiting for?',
         ];
 
         $this->multilingualString = (new MultilingualString($this->originalLanguage, $this->originalString))
@@ -78,15 +67,9 @@ class MultilingualStringTest extends TestCase
     public function it_returns_all_translations_including_the_original_language__string(): void
     {
         $expected = [
-            'nl' => new StringLiteral(
-                'Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu'
-            ),
-            'fr' => new StringLiteral(
-                'Tous les oiseaux ont commencé nids, sauf moi et vous. Ce que nous attendons?'
-            ),
-            'en' => new StringLiteral(
-                'All birds have begun nests, except me and you. What we are waiting for?'
-            ),
+            'nl' =>  'Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu',
+            'fr' => 'Tous les oiseaux ont commencé nids, sauf moi et vous. Ce que nous attendons?',
+            'en' => 'All birds have begun nests, except me and you. What we are waiting for?',
         ];
 
         $this->assertEquals($expected, $this->multilingualString->getTranslationsIncludingOriginal());
@@ -102,7 +85,7 @@ class MultilingualStringTest extends TestCase
 
         $this->multilingualString->withTranslation(
             new Language('nl'),
-            new StringLiteral('Alle vogels zijn nesten begonnen, behalve ik en jij. Waar wachten wij nu op?')
+            'Alle vogels zijn nesten begonnen, behalve ik en jij. Waar wachten wij nu op?'
         );
     }
 

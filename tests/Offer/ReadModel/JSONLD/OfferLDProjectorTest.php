@@ -63,7 +63,6 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentNullEnricher;
 use CultuurNet\UDB3\RecordedOn;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
@@ -730,7 +729,7 @@ class OfferLDProjectorTest extends TestCase
             new Tariff(
                 new MultilingualString(
                     new LegacyLanguage('nl'),
-                    new StringLiteral('Tarief inwoners')
+                    'Tarief inwoners'
                 ),
                 new Money(950, new Currency('EUR'))
             )
@@ -740,7 +739,7 @@ class OfferLDProjectorTest extends TestCase
             new Tariff(
                 new MultilingualString(
                     new LegacyLanguage('nl'),
-                    new StringLiteral('UiTPAS tarief')
+                    'UiTPAS tarief'
                 ),
                 new Money(650, new Currency('EUR'))
             )
@@ -2419,7 +2418,7 @@ class OfferLDProjectorTest extends TestCase
 
         $event = new BookingInfoUpdated($id, new BookingInfo(
             'http://www.google.be',
-            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('Dit is een booking info event')),
+            new MultilingualString(new LegacyLanguage('nl'), 'Dit is een booking info event'),
             '0471123456',
             'test@test.be'
         ));
