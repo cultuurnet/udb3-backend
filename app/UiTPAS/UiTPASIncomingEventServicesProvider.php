@@ -15,7 +15,6 @@ use CultuurNet\UDB3\UiTPAS\Event\Event\PricesUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
 use CultuurNet\UDB3\UiTPAS\Label\InMemoryUiTPASLabelsRepository;
 use Ramsey\Uuid\UuidFactory;
-use CultuurNet\UDB3\StringLiteral;
 
 final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
 {
@@ -36,15 +35,11 @@ final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
             function () use ($container) {
                 $uitpasDeserializerLocator = new SimpleDeserializerLocator();
                 $uitpasDeserializerLocator->registerDeserializer(
-                    new StringLiteral(
-                        'application/vnd.cultuurnet.uitpas-events.event-card-systems-updated+json'
-                    ),
+                    'application/vnd.cultuurnet.uitpas-events.event-card-systems-updated+json',
                     new EventCardSystemsUpdatedDeserializer()
                 );
                 $uitpasDeserializerLocator->registerDeserializer(
-                    new StringLiteral(
-                        'application/vnd.cultuurnet.uitpas-events.event-uitpas-prices-updated+json'
-                    ),
+                    'application/vnd.cultuurnet.uitpas-events.event-uitpas-prices-updated+json',
                     new PricesUpdatedDeserializer()
                 );
 
