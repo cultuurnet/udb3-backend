@@ -483,7 +483,7 @@ class Place extends Offer
         return new Approved($this->placeId);
     }
 
-    protected function createRejectedEvent(StringLiteral $reason): Rejected
+    protected function createRejectedEvent(string $reason): Rejected
     {
         return new Rejected($this->placeId, $reason);
     }

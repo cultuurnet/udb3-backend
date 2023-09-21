@@ -166,7 +166,7 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_handles_reject_command_on_ready_for_validation_item(): void
     {
-        $reason = new StringLiteral('reject reason');
+        $reason = 'reject reason';
 
         $this->scenario
             ->withAggregateId($this->id)

@@ -4,34 +4,27 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands\Moderation;
 
-use CultuurNet\UDB3\StringLiteral;
-
 abstract class AbstractReject extends AbstractModerationCommand
 {
     /**
      * The reason why an offer is rejected, e.g.: Image and price info is missing.
-     *
-     * @var StringLiteral
      */
-    private $reason;
+    private string $reason;
 
     /**
      * @param string $itemId
      *  The id of the item that is targeted by the command.
      *
-     * @param StringLiteral $reason
+     * @param string $reason
      *  The reason why an offer is rejected, e.g.: Image and price info is missing.
      */
-    public function __construct($itemId, StringLiteral $reason)
+    public function __construct(string $itemId, string $reason)
     {
         parent::__construct($itemId);
         $this->reason = $reason;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getReason()
+    public function getReason(): string
     {
         return $this->reason;
     }
