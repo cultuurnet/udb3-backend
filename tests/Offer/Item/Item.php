@@ -71,7 +71,7 @@ use CultuurNet\UDB3\StringLiteral;
  * @deprecated
  *   Use a real Offer implementation in tests instead.
  */
-class Item extends Offer
+final class Item extends Offer
 {
     protected string $id;
 

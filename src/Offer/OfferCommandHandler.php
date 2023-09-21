@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
-use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteCurrentOrganizer;
@@ -33,10 +32,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
     protected Repository $organizerRepository;
 
-    /**
-     * @var MediaManagerInterface|MediaManager
-     */
-    protected $mediaManager;
+    protected MediaManagerInterface $mediaManager;
 
     public function __construct(
         Repository $offerRepository,

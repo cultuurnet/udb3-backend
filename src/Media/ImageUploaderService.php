@@ -19,7 +19,7 @@ use League\Flysystem\FilesystemOperator;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 
-class ImageUploaderService implements ImageUploaderInterface
+final class ImageUploaderService implements ImageUploaderInterface
 {
     private UuidGeneratorInterface $uuidGenerator;
 

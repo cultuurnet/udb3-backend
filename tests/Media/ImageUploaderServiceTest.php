@@ -19,7 +19,7 @@ use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 use Zend\Diactoros\Stream;
 
-class ImageUploaderServiceTest extends TestCase
+final class ImageUploaderServiceTest extends TestCase
 {
     private UUID $fileId;
 

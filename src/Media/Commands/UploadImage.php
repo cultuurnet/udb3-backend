@@ -11,31 +11,19 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\StringLiteral;
 
-class UploadImage
+final class UploadImage
 {
-    protected UUID $fileId;
+    private UUID $fileId;
 
-    /**
-     * @var Language
-     */
-    protected $language;
+    private Language $language;
 
-    protected Description $description;
+    private Description $description;
 
-    /**
-     * @var CopyrightHolder
-     */
-    protected $copyrightHolder;
+    private CopyrightHolder $copyrightHolder;
 
-    /**
-     * @var MIMEType
-     */
-    protected $mimeType;
+    private MIMEType $mimeType;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $filePath;
+    private StringLiteral $filePath;
 
     public function __construct(
         UUID $fileId,

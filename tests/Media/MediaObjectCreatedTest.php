@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
-class MediaObjectCreatedTest extends TestCase
+final class MediaObjectCreatedTest extends TestCase
 {
     /**
      * @test

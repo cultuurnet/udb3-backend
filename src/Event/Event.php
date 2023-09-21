@@ -101,7 +101,7 @@ use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 
-class Event extends Offer
+final class Event extends Offer
 {
     protected string $eventId;
 

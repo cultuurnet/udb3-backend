@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 
-class UploadImageTest extends TestCase
+final class UploadImageTest extends TestCase
 {
     /**
      * @var UploadImage

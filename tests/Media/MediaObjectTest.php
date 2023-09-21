@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
-class MediaObjectTest extends AggregateRootScenarioTestCase
+final class MediaObjectTest extends AggregateRootScenarioTestCase
 {
     protected function getAggregateRootClass(): string
     {

@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use CultuurNet\UDB3\StringLiteral;
 
-class MediaManagerTest extends TestCase
+final class MediaManagerTest extends TestCase
 {
     private MediaManager $mediaManager;
 
