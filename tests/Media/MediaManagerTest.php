@@ -66,7 +66,7 @@ class MediaManagerTest extends TestCase
         $command = new UploadImage(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            StringLiteral::fromNative('description'),
+            new Description('description'),
             new CopyrightHolder('copyright'),
             StringLiteral::fromNative('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
@@ -109,7 +109,7 @@ class MediaManagerTest extends TestCase
         $command = new UploadImage(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            StringLiteral::fromNative('description'),
+            new Description('description'),
             new CopyrightHolder('copyright'),
             StringLiteral::fromNative('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')

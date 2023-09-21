@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media\Commands;
 
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -23,7 +24,7 @@ class UploadImageTest extends TestCase
         $this->uploadImage = new UploadImage(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            StringLiteral::fromNative('description'),
+            new Description('description'),
             new CopyrightHolder('copyright'),
             StringLiteral::fromNative('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
@@ -58,7 +59,7 @@ class UploadImageTest extends TestCase
     public function it_stores_a_description(): void
     {
         $this->assertEquals(
-            StringLiteral::fromNative('description'),
+            new Description('description'),
             $this->uploadImage->getDescription()
         );
     }

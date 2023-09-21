@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\MediaObjectRepository;
+use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -56,7 +57,6 @@ use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Organizer;
 use CultuurNet\UDB3\Organizer\Organizer as OrganizerAggregate;
-use CultuurNet\UDB3\StringLiteral;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -118,7 +118,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $mediaObject
             ->method('getDescription')
-            ->willReturn(new StringLiteral($description));
+            ->willReturn(new ImageDescription($description));
 
         $mediaObject
             ->method('getCopyrightHolder')
