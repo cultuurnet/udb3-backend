@@ -22,6 +22,9 @@ class DescriptionTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * @test
+     */
     public function it_should_return_value_with_to_string(): void
     {
         $udb3ModelDescription = new Udb3ModelDescription('test');
@@ -29,6 +32,9 @@ class DescriptionTest extends TestCase
         $this->assertEquals('test', $udb3ModelDescription->toString());
     }
 
+    /**
+     * @test
+     */
     public function it_should_compare_two_strings(): void
     {
         $descriptionA = new Udb3ModelDescription('test');
