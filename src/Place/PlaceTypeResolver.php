@@ -45,6 +45,6 @@ final class PlaceTypeResolver implements TypeResolverInterface
         if (!array_key_exists($typeId, $this->types)) {
             throw new Exception('Unknown place type id: ' . $typeId);
         }
-        return $this->types[(string) $typeId];
+        return $this->types[$typeId];
     }
 }
