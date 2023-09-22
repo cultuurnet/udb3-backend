@@ -42,7 +42,7 @@ final class PlaceTypeResolver implements TypeResolverInterface
 
     public function byId(string $typeId): EventType
     {
-        if (!array_key_exists((string) $typeId, $this->types)) {
+        if (!array_key_exists($typeId, $this->types)) {
             throw new Exception('Unknown place type id: ' . $typeId);
         }
         return $this->types[(string) $typeId];
