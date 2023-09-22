@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class MultilingualStringTest extends TestCase
 {
@@ -98,7 +97,7 @@ class MultilingualStringTest extends TestCase
     public function it_can_return_the_value_for_a_given_language_or_a_fallback_language(
         Language $preferredLanguage,
         array $fallbackLanguages,
-        StringLiteral $expected = null
+        string $expected = null
     ): void {
         $actual = $this->multilingualString->getStringForLanguage($preferredLanguage, ...$fallbackLanguages);
         $this->assertEquals($expected, $actual);
@@ -113,17 +112,17 @@ class MultilingualStringTest extends TestCase
             [
                 new Language('nl'),
                 [new Language('fr'), new Language('en')],
-                new StringLiteral('Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu'),
+                'Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu',
             ],
             [
                 new Language('de'),
                 [new Language('fr'), new Language('en')],
-                new StringLiteral('Tous les oiseaux ont commencé nids, sauf moi et vous. Ce que nous attendons?'),
+                'Tous les oiseaux ont commencé nids, sauf moi et vous. Ce que nous attendons?',
             ],
             [
                 new Language('de'),
                 [new Language('es'), new Language('en')],
-                new StringLiteral('All birds have begun nests, except me and you. What we are waiting for?'),
+                'All birds have begun nests, except me and you. What we are waiting for?',
             ],
             [
                 new Language('de'),

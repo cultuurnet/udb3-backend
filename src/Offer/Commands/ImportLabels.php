@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\StringLiteral;
 
 final class ImportLabels extends AbstractCommand
 {
@@ -21,15 +19,5 @@ final class ImportLabels extends AbstractCommand
     public function getLabels(): Labels
     {
         return $this->labels;
-    }
-
-    public function getLabelNames(): array
-    {
-        return array_map(
-            function (Label $label) {
-                return new StringLiteral($label->getName()->toString());
-            },
-            $this->getLabels()->toArray()
-        );
     }
 }

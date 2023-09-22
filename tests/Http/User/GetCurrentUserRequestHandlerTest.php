@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebTokenFactory;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -91,7 +90,7 @@ final class GetCurrentUserRequestHandlerTest extends TestCase
 
         $this->userIdentityResolver->expects($this->once())
             ->method('getUserById')
-            ->with(new StringLiteral('current_user_id'))
+            ->with('current_user_id')
             ->willReturn($userIdentity);
 
         $response = $this->getCurrentUserIdentityController->handle($this->request);
@@ -141,7 +140,7 @@ final class GetCurrentUserRequestHandlerTest extends TestCase
     {
         $this->userIdentityResolver->expects($this->once())
             ->method('getUserById')
-            ->with(new StringLiteral('current_user_id'))
+            ->with('current_user_id')
             ->willReturn(null);
 
         $this->assertCallableThrowsApiProblem(

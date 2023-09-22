@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands\Moderation;
 
-use CultuurNet\UDB3\StringLiteral;
-
 class AbstractRejectTest extends AbstractModerationCommandTestBase
 {
     public function getModerationCommandClass(): string
@@ -18,7 +16,7 @@ class AbstractRejectTest extends AbstractModerationCommandTestBase
      */
     public function it_stores_a_reason(): void
     {
-        $reason = new StringLiteral('This event is the same as.');
+        $reason = 'This event is the same as.';
 
         /** @var AbstractReject $abstractReject */
         $abstractReject = $this->getMockForAbstractClass(

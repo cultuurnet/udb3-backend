@@ -8,13 +8,12 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class AbstractDBALRepositoryTest extends TestCase
 {
     private Connection $connection;
 
-    private StringLiteral $tableName;
+    private string $tableName;
 
     /**
      * @var AbstractDBALRepository|MockObject
@@ -29,7 +28,7 @@ class AbstractDBALRepositoryTest extends TestCase
             ]
         );
 
-        $this->tableName = new StringLiteral('tableName');
+        $this->tableName = 'tableName';
 
         $this->abstractDBALRepository = $this->getMockForAbstractClass(
             AbstractDBALRepository::class,
