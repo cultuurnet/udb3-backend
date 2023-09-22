@@ -32,18 +32,18 @@ final class DomainMessageJSONDeserializer implements DeserializerInterface
 
     public function deserialize(string $data): DomainMessage
     {
-        $data = Json::decodeAssociatively($data);
-
-        if (null === $data) {
+        try {
+            $decoded = Json::decodeAssociatively($data);
+        } catch (\JsonException $e) {
             throw new InvalidArgumentException('Invalid JSON');
         }
 
         return new DomainMessage(
-            $data['id'],
-            (int) $data['playhead'],
-            Metadata::deserialize($data['metadata']),
-            $this->payloadClass::deserialize($data['payload']),
-            DateTime::fromString($data['recorded_on'])
+            $decoded['id'],
+            (int) $decoded['playhead'],
+            Metadata::deserialize($decoded['metadata']),
+            $this->payloadClass::deserialize($decoded['payload']),
+            DateTime::fromString($decoded['recorded_on'])
         );
     }
 }

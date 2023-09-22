@@ -34,7 +34,7 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
 
         $jsonLd = Json::decodeAssociatively($document->getRawBody());
 
-        $addressLanguage = $jsonLd->mainLanguage ?? 'nl';
+        $addressLanguage = $jsonLd['mainLanguage'] ?? 'nl';
 
         if (!isset($jsonLd['address'][$addressLanguage])) {
             // Some places have an address in another language then the main language or `nl`
