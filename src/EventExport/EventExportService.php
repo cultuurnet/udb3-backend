@@ -89,7 +89,7 @@ final class EventExportService implements EventExportServiceInterface
                 $logger->error(
                     'not_exported',
                     [
-                        'query' => (string) $query,
+                        'query' => $query->toString(),
                         'error' => "total amount of items ({$totalItemCount}) exceeded {$this->maxAmountOfItems}",
                     ]
                 );
@@ -101,13 +101,13 @@ final class EventExportService implements EventExportServiceInterface
         } else {
             // do a pre query to test if the query is valid and check the item count
             try {
-                $preQueryResult = $this->searchService->search((string) $query, 1);
+                $preQueryResult = $this->searchService->search($query->toString(), 1);
                 $totalItemCount = $preQueryResult->getTotalItems();
             } catch (Exception $e) {
                 $logger->error(
                     'not_exported',
                     [
-                        'query' => (string) $query,
+                        'query' => $query->toString(),
                         'error' => $e->getMessage(),
                         'exception_class' => get_class($e),
                     ]
@@ -120,7 +120,7 @@ final class EventExportService implements EventExportServiceInterface
                 $logger->error(
                     'not_exported',
                     [
-                        'query' => (string) $query,
+                        'query' => $query->toString(),
                         'error' => "total amount of items ({$totalItemCount}) exceeded {$this->maxAmountOfItems}",
                     ]
                 );
@@ -132,7 +132,7 @@ final class EventExportService implements EventExportServiceInterface
                 'total items: {totalItems}',
                 [
                     'totalItems' => $totalItemCount,
-                    'query' => (string) $query,
+                    'query' => $query->toString(),
                 ]
             );
 
@@ -140,7 +140,7 @@ final class EventExportService implements EventExportServiceInterface
                 $logger->error(
                     'not_exported',
                     [
-                        'query' => (string) $query,
+                        'query' => $query->toString(),
                         'error' => 'query did not return any results',
                     ]
                 );
@@ -232,7 +232,7 @@ final class EventExportService implements EventExportServiceInterface
 
     private function search(EventExportQuery $query, LoggerInterface $logger): Generator
     {
-        $events = $this->resultsGenerator->search((string) $query);
+        $events = $this->resultsGenerator->search($query->toString());
 
         $count = 0;
         foreach ($events as $eventIdentifier) {

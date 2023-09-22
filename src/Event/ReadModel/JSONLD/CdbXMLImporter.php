@@ -145,7 +145,7 @@ class CdbXMLImporter
     ): void {
         try {
             $description = MergedDescription::fromCdbDetail($languageDetail);
-            $jsonLD->description[$language] = $description->toNative();
+            $jsonLD->description[$language] = $description->toString();
         } catch (\InvalidArgumentException $e) {
             return;
         }

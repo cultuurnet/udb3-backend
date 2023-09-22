@@ -74,7 +74,7 @@ final class ProjectorTest extends TestCase
 
         $this->userIdResolver->expects($this->once())
             ->method('resolveCreatedByToUserId')
-            ->with(new StringLiteral('cultuurnet001'))
+            ->with('cultuurnet001')
             ->willReturn($userId);
 
         $this->repository->expects($this->once())
