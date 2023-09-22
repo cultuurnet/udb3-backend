@@ -9,5 +9,5 @@ use CultuurNet\UDB3\StringLiteral;
 
 interface TypeResolverInterface
 {
-    public function byId(StringLiteral $typeId): EventType;
+    public function byId(string $typeId): EventType;
 }

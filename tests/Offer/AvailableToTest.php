@@ -39,10 +39,10 @@ class AvailableToTest extends TestCase
         $calendar = new Calendar(CalendarType::MULTIPLE(), null, null, [new Timestamp($startDate, $endDate)]);
         $eventTypeResolver = new EventTypeResolver();
 
-        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId(new StringLiteral('0.7.0.0.0')));
+        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId('0.7.0.0.0'));
         $this->assertEquals($endDate, $availableTo->getAvailableTo());
 
-        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId(new StringLiteral('0.3.1.0.0')));
+        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId('0.3.1.0.0'));
         $this->assertEquals($startDate, $availableTo->getAvailableTo());
     }
 

@@ -386,7 +386,7 @@ final class EventLDProjector extends OfferLDProjector implements
         $eventType = null;
         foreach ($eventJsonLD->terms as $term) {
             if ($term->domain === 'eventtype') {
-                $typeId = new StringLiteral($term->id);
+                $typeId = $term->id;
                 // This is a workaround to allow copies of events that
                 // have a placeType instead of an eventType.
                 // These events could also be cleaned up in the future
