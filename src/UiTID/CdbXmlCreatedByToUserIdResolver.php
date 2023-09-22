@@ -27,9 +27,6 @@ class CdbXmlCreatedByToUserIdResolver implements LoggerAwareInterface, CreatedBy
         $this->logger = new NullLogger();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function resolveCreatedByToUserId(string $createdByIdentifier): ?string
     {
         try {

@@ -41,9 +41,7 @@ final class Projector implements EventListener
         $createdByIdentifier = $cdbActor->getCreatedBy();
 
         if ($createdByIdentifier) {
-            $ownerId = $this->userIdResolver->resolveCreatedByToUserId(
-                $createdByIdentifier
-            );
+            $ownerId = $this->userIdResolver->resolveCreatedByToUserId($createdByIdentifier);
 
             if (!$ownerId) {
                 return;
