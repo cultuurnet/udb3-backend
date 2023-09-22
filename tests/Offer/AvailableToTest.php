@@ -9,7 +9,6 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Timestamp;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class AvailableToTest extends TestCase
 {

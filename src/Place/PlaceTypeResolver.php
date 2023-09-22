@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Place;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Offer\TypeResolverInterface;
 use Exception;
-use CultuurNet\UDB3\StringLiteral;
 
 class PlaceTypeResolver implements TypeResolverInterface
 {

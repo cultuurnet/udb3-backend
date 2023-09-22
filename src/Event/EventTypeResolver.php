@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Offer\TypeResolverInterface;
 use Exception;
-use CultuurNet\UDB3\StringLiteral;
 
 class EventTypeResolver implements TypeResolverInterface
 {

@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Offer\ThemeResolverInterface;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\StringLiteral;
 
 class EventThemeResolver implements ThemeResolverInterface
 {
@@ -717,11 +716,11 @@ class EventThemeResolver implements ThemeResolverInterface
     /**
      * @inheritdoc
      */
-    public function byId(StringLiteral $themeId)
+    public function byId(string $themeId)
     {
-        if (!array_key_exists((string) $themeId, $this->themes)) {
+        if (!array_key_exists($themeId, $this->themes)) {
             throw new \Exception('Unknown event theme id: ' . $themeId);
         }
-        return $this->themes[(string) $themeId];
+        return $this->themes[$themeId];
     }
 }
