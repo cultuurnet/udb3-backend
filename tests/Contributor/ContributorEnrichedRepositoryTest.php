@@ -11,7 +11,6 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -65,8 +64,8 @@ final class ContributorEnrichedRepositoryTest extends TestCase
             ->method('isAllowed')
             ->with(
                 Permission::aanbodBewerken(),
-                new StringLiteral($this->offerId),
-                new StringLiteral($this->currentUserId)
+                $this->offerId,
+                $this->currentUserId
             )
             ->willReturn(true);
 
@@ -111,8 +110,8 @@ final class ContributorEnrichedRepositoryTest extends TestCase
             ->method('isAllowed')
             ->with(
                 Permission::aanbodBewerken(),
-                new StringLiteral($this->offerId),
-                new StringLiteral($this->currentUserId)
+                $this->offerId,
+                $this->currentUserId
             )
             ->willReturn(true);
 
@@ -150,8 +149,8 @@ final class ContributorEnrichedRepositoryTest extends TestCase
             ->method('isAllowed')
             ->with(
                 Permission::aanbodBewerken(),
-                new StringLiteral($this->offerId),
-                new StringLiteral($this->currentUserId)
+                $this->offerId,
+                $this->currentUserId
             )
             ->willReturn(false);
 
