@@ -37,7 +37,7 @@ trait DelegateEventHandlingToSpecificMethodTrait
 
         $expectedClass = $parameter->getClass();
 
-        if ($expectedClass !== null && $expectedClass->getName() !== get_class($event)) {
+        if ($expectedClass === null || $expectedClass->getName() !== get_class($event)) {
             return null;
         }
 
