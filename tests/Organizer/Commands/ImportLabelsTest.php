@@ -9,9 +9,8 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
-class ImportLabelsTest extends TestCase
+final class ImportLabelsTest extends TestCase
 {
     private string $organizerId;
 
@@ -53,20 +52,6 @@ class ImportLabelsTest extends TestCase
         $this->assertEquals(
             $this->labels,
             $this->importLabels->getLabels()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_convert_a_labels_collection_to_label_names(): void
-    {
-        $this->assertEquals(
-            [
-                new StringLiteral('foo'),
-                new StringLiteral('bar'),
-            ],
-            $this->importLabels->getLabelNames()
         );
     }
 
