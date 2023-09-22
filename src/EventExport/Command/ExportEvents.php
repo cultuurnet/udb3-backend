@@ -40,10 +40,6 @@ abstract class ExportEvents implements ExportEventsInterface, AsyncCommand
         EmailAddress $address = null,
         ?array $selection = null
     ) {
-        if ($query->isEmpty()) {
-            throw new \RuntimeException('Query can not be empty');
-        }
-
         $this->query = $query;
         $this->include = $include;
         $this->address = $address;

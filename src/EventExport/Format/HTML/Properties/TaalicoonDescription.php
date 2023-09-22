@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\EventExport\Format\HTML\Properties;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
-class TaalicoonDescription extends Enum
+final class TaalicoonDescription extends Enum
 {
     public static function getAllowedValues(): array
     {
