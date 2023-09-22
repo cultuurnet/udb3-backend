@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Deserializer;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Title;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -15,16 +14,16 @@ use CultuurNet\UDB3\StringLiteral;
  */
 class TitleJSONDeserializer extends JSONDeserializer
 {
-    private ?StringLiteral $propertyName;
+    private ?string $propertyName;
 
     public function __construct(
         bool $assoc = false,
-        StringLiteral $propertyName = null
+        string $propertyName = null
     ) {
         parent::__construct($assoc);
 
         if (is_null($propertyName)) {
-            $propertyName = new StringLiteral('title');
+            $propertyName = 'title';
         }
 
         $this->propertyName = $propertyName;
@@ -34,7 +33,7 @@ class TitleJSONDeserializer extends JSONDeserializer
     {
         $data = parent::deserialize($data);
 
-        $propertyName = $this->propertyName->toNative();
+        $propertyName = $this->propertyName;
 
         if (!isset($data->{$propertyName})) {
             throw new MissingValueException("Missing value for \"{$propertyName}\".");
