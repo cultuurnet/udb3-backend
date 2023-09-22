@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Offer\OfferFacilityResolver;
 
 class PlaceFacilityResolver extends OfferFacilityResolver
 {
-    /**
-     * @inheritdoc
-     */
-    final protected function getFacilities()
+    final protected function getFacilities(): array
     {
         return [
             '3.13.1.0.0' => new Facility('3.13.1.0.0', 'Voorzieningen voor assistentiehonden'),
