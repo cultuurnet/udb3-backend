@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -76,7 +75,7 @@ final class GetContributorsRequestHandlerTest extends TestCase
     ): void {
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
-            ->with(Permission::aanbodBewerken(), new StringLiteral($offerId), new StringLiteral($this->currentUserId))
+            ->with(Permission::aanbodBewerken(), $offerId, $this->currentUserId)
             ->willReturn(true);
 
         $this->contributorRepository->expects($this->once())
@@ -140,7 +139,7 @@ final class GetContributorsRequestHandlerTest extends TestCase
     ): void {
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
-            ->with(Permission::aanbodBewerken(), new StringLiteral($offerId), new StringLiteral($this->currentUserId))
+            ->with(Permission::aanbodBewerken(), $offerId, $this->currentUserId)
             ->willReturn(false);
 
         $getContributorsRequest = $this->psr7RequestBuilder

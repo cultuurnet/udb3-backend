@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -135,7 +134,7 @@ final class PropertyPolyfillRepositoryTest extends TestCase
         // Mock that "UiTPAS Mechelen" is visible
         $this->labelReadRepository->expects($this->any())
             ->method('getByName')
-            ->with(new StringLiteral('uitpas mechelen'))
+            ->with('uitpas mechelen')
             ->willReturn(
                 new Entity(
                     new UUID('7ba9e0e6-f1b5-4931-a00a-cd660c990e57'),

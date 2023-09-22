@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQuery;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
-use CultuurNet\UDB3\StringLiteral;
 
 class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -76,7 +75,7 @@ class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
         $this->permissionQuery
             ->method('getEditableResourceIds')
             ->with($newOwner)
-            ->willReturn([new StringLiteral($id)]);
+            ->willReturn([$id]);
 
         $this->scenario
             ->withAggregateId($id)
@@ -97,7 +96,7 @@ class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
         $this->permissionQuery
             ->method('getEditableResourceIds')
             ->with($newOwner)
-            ->willReturn([new StringLiteral($otherId)]);
+            ->willReturn([$otherId]);
 
         $this->scenario
             ->withAggregateId($id)

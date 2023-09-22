@@ -10,7 +10,6 @@ use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 class CdbXmlCreatedByToUserIdResolverTest extends TestCase
 {
@@ -24,10 +23,7 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
      */
     private $logger;
 
-    /**
-     * @var CdbXmlCreatedByToUserIdResolver
-     */
-    private $resolver;
+    private CdbXmlCreatedByToUserIdResolver $resolver;
 
     public function setUp(): void
     {
@@ -79,10 +75,10 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
     public function it_then_tries_to_resolve_createdby_as_a_non_uuid_id(): void
     {
         $createdBy = 'auth0|c4ff15aa-a8d2-4952-b9eb-329d625b0d02';
-        $userId = new StringLiteral('auth0|c4ff15aa-a8d2-4952-b9eb-329d625b0d02');
+        $userId = 'auth0|c4ff15aa-a8d2-4952-b9eb-329d625b0d02';
 
         $user = new UserIdentityDetails(
-            $userId->toNative(),
+            $userId,
             'johndoe',
             'johndoe@example.com'
         );
@@ -105,10 +101,10 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
     {
         $createdBy = 'johndoe@example.com';
 
-        $userId = new StringLiteral('abc');
+        $userId = 'abc';
 
         $user = new UserIdentityDetails(
-            $userId->toNative(),
+            $userId,
             'johndoe',
             'johndoe@example.com'
         );
@@ -136,10 +132,10 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
     {
         $createdBy = 'johndoe';
 
-        $userId = new StringLiteral('abc');
+        $userId = 'abc';
 
         $user = new UserIdentityDetails(
-            $userId->toNative(),
+            $userId,
             'johndoe',
             'johndoe@example.com'
         );

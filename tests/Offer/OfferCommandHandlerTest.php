@@ -32,39 +32,15 @@ use CultuurNet\UDB3\Title;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
-use CultuurNet\UDB3\StringLiteral;
 
 class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var string
-     */
-    protected $id;
-
-    /**
-     * @var Language
-     */
-    protected $language;
-
-    /**
-     * @var Title
-     */
-    protected $title;
-
-    /**
-     * @var StringLiteral
-     */
-    protected $description;
-
-    /**
-     * @var PriceInfo
-     */
-    protected $priceInfo;
-
-    /**
-     * @var ItemCreated
-     */
-    protected $itemCreated;
+    protected string $id;
+    protected Language $language;
+    protected Title $title;
+    protected string $description;
+    protected PriceInfo $priceInfo;
+    protected ItemCreated $itemCreated;
 
     /**
      * @var Repository|MockObject
@@ -83,7 +59,7 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->id = '123';
         $this->language = new Language('en');
         $this->title = new Title('English title');
-        $this->description = new StringLiteral('English description');
+        $this->description = 'English description';
 
         $this->itemCreated = new ItemCreated(
             $this->id,

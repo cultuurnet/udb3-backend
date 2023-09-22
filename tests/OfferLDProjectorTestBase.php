@@ -262,10 +262,10 @@ abstract class OfferLDProjectorTestBase extends TestCase
     {
         $id = 'foo';
         $imageId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
-        $description = StringLiteral::fromNative('Some description.');
+        $description = 'Some description.';
         $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
         $eventClass = $this->getEventClass('ImageUpdated');
-        $imageUpdated = new $eventClass($id, $imageId->toString(), $description->toNative(), $copyrightHolder->toString());
+        $imageUpdated = new $eventClass($id, $imageId->toString(), $description, $copyrightHolder->toString());
 
         $initialDocument = new JsonDocument(
             $id,
