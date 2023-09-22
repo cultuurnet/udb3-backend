@@ -7,9 +7,8 @@ namespace CultuurNet\UDB3\Http\Deserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
-class TitleJSONDeserializerTest extends TestCase
+final class TitleJSONDeserializerTest extends TestCase
 {
     private TitleJSONDeserializer $deserializer;
 
@@ -34,7 +33,7 @@ class TitleJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_with_optional_property_name(): void
     {
-        $deserializer = new TitleJSONDeserializer(false, new StringLiteral('name'));
+        $deserializer = new TitleJSONDeserializer(false, 'name');
 
         $json = '{"name": "Lorem ipsum"}';
         $expected = new Title('Lorem ipsum');

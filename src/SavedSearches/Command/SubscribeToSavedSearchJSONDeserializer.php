@@ -7,17 +7,16 @@ namespace CultuurNet\UDB3\SavedSearches\Command;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
  *   Refactor to implement RequestBodyParser and throw ApiProblemException
  */
-class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
+final class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
 {
-    protected StringLiteral $userId;
+    private string $userId;
 
-    public function __construct(StringLiteral $userId)
+    public function __construct(string $userId)
     {
         parent::__construct();
         $this->userId = $userId;
@@ -36,7 +35,7 @@ class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
         }
 
         return new SubscribeToSavedSearch(
-            $this->userId->toNative(),
+            $this->userId,
             $json->name,
             new QueryString($json->query)
         );

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\SavedSearches;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearchJSONDeserializer;
-use CultuurNet\UDB3\StringLiteral;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -30,7 +29,7 @@ final class CreateSavedSearchRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $commandDeserializer = new SubscribeToSavedSearchJSONDeserializer(
-            new StringLiteral($this->userId)
+            $this->userId
         );
 
         $command = $commandDeserializer->deserialize($request->getBody()->getContents());
