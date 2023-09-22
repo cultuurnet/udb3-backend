@@ -33,7 +33,7 @@ abstract class Collection implements \IteratorAggregate, \Countable
     /**
      * @return static
      */
-    public function with($value) // @phpstan-ignore-line
+    public function with($value) // @phpstan-ignore-line III-5812 Can be fixed once updating to PHP 8 => static
     {
         $values = $this->values;
         $values[] = $value;
