@@ -7,12 +7,9 @@ namespace CultuurNet\UDB3\Event;
 use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\TestCase;
 
-class EventThemeResolverTest extends TestCase
+final class EventThemeResolverTest extends TestCase
 {
-    /**
-     * @var EventThemeResolver
-     */
-    private $themeResolver;
+    private EventThemeResolver $themeResolver;
 
     public function setUp(): void
     {

@@ -15,21 +15,11 @@ use CultuurNet\UDB3\Offer\TypeResolverInterface;
 
 class LegacyBridgeCategoryResolver implements CategoryResolverInterface
 {
-    /**
-     * @var TypeResolverInterface
-     */
-    private $typeResolver;
+    private TypeResolverInterface $typeResolver;
 
-    /**
-     * @var ThemeResolverInterface|null
-     */
-    private $themeResolver;
+    private ?ThemeResolverInterface $themeResolver;
 
-    /**
-     * @var OfferFacilityResolverInterface
-     */
-    private $facilityResolver;
-
+    private OfferFacilityResolverInterface $facilityResolver;
 
     public function __construct(
         TypeResolverInterface $typeResolver,

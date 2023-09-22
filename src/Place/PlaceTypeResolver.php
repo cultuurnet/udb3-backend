@@ -8,12 +8,12 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Offer\TypeResolverInterface;
 use Exception;
 
-class PlaceTypeResolver implements TypeResolverInterface
+final class PlaceTypeResolver implements TypeResolverInterface
 {
     /**
      * @var EventType[]
      */
-    private $types;
+    private array $types;
 
     public function __construct()
     {

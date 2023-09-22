@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValida
  * @deprecated
  *   Refactor to implement RequestBodyParser and throw ApiProblemException
  */
-class FacilitiesJSONDeserializer extends JSONDeserializer
+final class FacilitiesJSONDeserializer extends JSONDeserializer
 {
     private OfferFacilityResolverInterface $facilityResolver;
 

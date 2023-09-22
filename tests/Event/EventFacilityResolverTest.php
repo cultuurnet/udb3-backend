@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event;
 use CultuurNet\UDB3\Facility;
 use PHPUnit\Framework\TestCase;
 
-class EventFacilityResolverTest extends TestCase
+final class EventFacilityResolverTest extends TestCase
 {
     /**
      * @test

@@ -7,12 +7,12 @@ namespace CultuurNet\UDB3\Event;
 use CultuurNet\UDB3\Offer\TypeResolverInterface;
 use Exception;
 
-class EventTypeResolver implements TypeResolverInterface
+final class EventTypeResolver implements TypeResolverInterface
 {
     /**
      * @var EventType[]
      */
-    private $types;
+    private array $types;
 
     public function __construct()
     {
@@ -44,10 +44,10 @@ class EventTypeResolver implements TypeResolverInterface
 
     public function byId(string $typeId): EventType
     {
-        if (!array_key_exists((string) $typeId, $this->types)) {
+        if (!array_key_exists($typeId, $this->types)) {
             throw new Exception('Unknown event type id: ' . $typeId);
         }
-        return $this->types[(string) $typeId];
+        return $this->types[$typeId];
     }
 
     public static function isOnlyAvailableUntilStartDate(EventType $eventType): bool

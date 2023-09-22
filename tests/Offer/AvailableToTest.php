@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Timestamp;
 use PHPUnit\Framework\TestCase;
 
-class AvailableToTest extends TestCase
+final class AvailableToTest extends TestCase
 {
     /**
      * @test

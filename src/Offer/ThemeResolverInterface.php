@@ -8,8 +8,5 @@ use CultuurNet\UDB3\Theme;
 
 interface ThemeResolverInterface
 {
-    /**
-     * @return Theme
-     */
-    public function byId(string $themeId);
+    public function byId(string $themeId): Theme;
 }

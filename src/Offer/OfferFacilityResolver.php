@@ -13,9 +13,6 @@ abstract class OfferFacilityResolver implements OfferFacilityResolverInterface
      */
     private array $facilities;
 
-    /**
-     * PlaceTypeResolver constructor.
-     */
     public function __construct()
     {
         $this->facilities = $this->getFacilities();
@@ -23,11 +20,11 @@ abstract class OfferFacilityResolver implements OfferFacilityResolverInterface
 
     public function byId(string $facilityId): Facility
     {
-        if (!array_key_exists((string) $facilityId, $this->facilities)) {
+        if (!array_key_exists($facilityId, $this->facilities)) {
             throw new \Exception("Unknown facility id '{$facilityId}'");
         }
 
-        return $this->facilities[(string) $facilityId];
+        return $this->facilities[$facilityId];
     }
 
     /**
