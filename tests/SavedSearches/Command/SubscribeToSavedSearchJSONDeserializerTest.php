@@ -8,11 +8,11 @@ use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use PHPUnit\Framework\TestCase;
 
-class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
+final class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 {
-    protected string $userId;
+    private string $userId;
 
-    protected SubscribeToSavedSearchJSONDeserializer $deserializer;
+    private SubscribeToSavedSearchJSONDeserializer $deserializer;
 
     public function setUp(): void
     {

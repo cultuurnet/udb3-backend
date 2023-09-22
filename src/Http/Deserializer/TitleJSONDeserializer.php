@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Title;
  * @deprecated
  *   Refactor to implement RequestBodyParser and throw ApiProblemException
  */
-class TitleJSONDeserializer extends JSONDeserializer
+final class TitleJSONDeserializer extends JSONDeserializer
 {
     private ?string $propertyName;
 

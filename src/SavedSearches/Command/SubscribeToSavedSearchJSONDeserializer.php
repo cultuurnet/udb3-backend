@@ -12,7 +12,7 @@ use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
  * @deprecated
  *   Refactor to implement RequestBodyParser and throw ApiProblemException
  */
-class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
+final class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
 {
     private string $userId;
 

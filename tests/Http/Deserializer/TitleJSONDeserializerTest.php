@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
-class TitleJSONDeserializerTest extends TestCase
+final class TitleJSONDeserializerTest extends TestCase
 {
     private TitleJSONDeserializer $deserializer;
 
