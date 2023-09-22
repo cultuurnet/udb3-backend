@@ -86,7 +86,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Projects state changes on Event entities to a JSON-LD read model in a
@@ -248,7 +247,6 @@ final class EventLDProjector extends OfferLDProjector implements
                 $eventCreated->getLocation()->toString()
             );
 
-        /** @var Calendar $calendar */
         $calendar = $eventCreated->getCalendar();
         $calendarJsonLD = $calendar->toJsonLd();
         $jsonLD = (object) array_merge((array) $jsonLD, $calendarJsonLD);
@@ -279,7 +277,7 @@ final class EventLDProjector extends OfferLDProjector implements
         // Set the creator.
         $author = $this->getAuthorFromMetadata($domainMessage->getMetadata());
         if ($author) {
-            $jsonLD->creator = $author->toNative();
+            $jsonLD->creator = $author;
         }
 
         $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->toString();
@@ -309,7 +307,7 @@ final class EventLDProjector extends OfferLDProjector implements
         // Set the creator.
         $author = $this->getAuthorFromMetadata($domainMessage->getMetadata());
         if ($author) {
-            $eventJsonLD->creator = $author->toNative();
+            $eventJsonLD->creator = $author;
         }
 
         // Set the id.
@@ -387,6 +385,7 @@ final class EventLDProjector extends OfferLDProjector implements
         foreach ($eventJsonLD->terms as $term) {
             if ($term->domain === 'eventtype') {
                 $typeId = $term->id;
+
                 // This is a workaround to allow copies of events that
                 // have a placeType instead of an eventType.
                 // These events could also be cleaned up in the future
@@ -572,15 +571,11 @@ final class EventLDProjector extends OfferLDProjector implements
             ->normalize(ImmutablePlace::createNilLocation());
     }
 
-    private function getAuthorFromMetadata(Metadata $metadata): ?StringLiteral
+    private function getAuthorFromMetadata(Metadata $metadata): ?string
     {
         $properties = $metadata->serialize();
 
-        if (isset($properties['user_id'])) {
-            return new StringLiteral($properties['user_id']);
-        }
-
-        return null;
+        return $properties['user_id'] ?? null;
     }
 
     protected function getLabelAddedClassName(): string

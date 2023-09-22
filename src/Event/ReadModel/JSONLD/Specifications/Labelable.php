@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications;
 
-use CultuurNet\UDB3\StringLiteral;
-
 trait Labelable
 {
-    public function hasLabel(\stdClass $eventLd, StringLiteral $label): bool
+    public function hasLabel(\stdClass $eventLd, string $label): bool
     {
-        if ($label->isEmpty()) {
+        if ($label === '') {
             throw new \InvalidArgumentException('Label can not be empty');
         }
 
         return property_exists($eventLd, 'labels') &&
                 is_array($eventLd->labels) &&
-                in_array((string) $label, $eventLd->labels);
+            in_array($label, $eventLd->labels, true);
     }
 }

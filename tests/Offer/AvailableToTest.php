@@ -45,10 +45,7 @@ final class AvailableToTest extends TestCase
         $this->assertEquals($startDate, $availableTo->getAvailableTo());
     }
 
-    /**
-     * @return array
-     */
-    public function calendarsDateProvider()
+    public function calendarsDateProvider(): array
     {
         $startDate = new \DateTime('2016-10-10T18:19:20');
         $endDate = new \DateTime('2016-10-18T20:19:18');
