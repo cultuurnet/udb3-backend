@@ -7,14 +7,10 @@ namespace CultuurNet\UDB3\EventListener;
 use CultuurNet\UDB3\Offer\Item\Events\LabelAdded;
 use CultuurNet\UDB3\Offer\Item\Events\LabelRemoved;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class ClassNameEventSpecificationTest extends TestCase
 {
-    /**
-     * @var LabelAdded
-     */
-    private $labelAdded;
+    private LabelAdded $labelAdded;
 
     protected function setUp(): void
     {
@@ -30,8 +26,8 @@ class ClassNameEventSpecificationTest extends TestCase
     public function it_returns_true_when_class_name_matches(): void
     {
         $classNameEventFilter = new ClassNameEventSpecification(
-            new StringLiteral(LabelAdded::class),
-            new StringLiteral(LabelRemoved::class)
+            LabelAdded::class,
+            LabelRemoved::class
         );
 
         $this->assertTrue($classNameEventFilter->matches($this->labelAdded));
@@ -42,9 +38,7 @@ class ClassNameEventSpecificationTest extends TestCase
      */
     public function it_returns_false_when_class_name_does_not_match(): void
     {
-        $classNameEventFilter = new ClassNameEventSpecification(
-            new StringLiteral(LabelRemoved::class)
-        );
+        $classNameEventFilter = new ClassNameEventSpecification(LabelRemoved::class);
 
         $this->assertFalse($classNameEventFilter->matches($this->labelAdded));
     }
