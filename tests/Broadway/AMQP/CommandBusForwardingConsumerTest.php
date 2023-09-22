@@ -13,7 +13,6 @@ use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 final class CommandBusForwardingConsumerTest extends TestCase
 {
@@ -96,12 +95,12 @@ final class CommandBusForwardingConsumerTest extends TestCase
 
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
-            ->with(new StringLiteral('application/vnd.cultuurnet.udb3-commands.dummy-command+json'))
+            ->with('application/vnd.cultuurnet.udb3-commands.dummy-command+json')
             ->willReturn($this->deserializer);
 
         $this->deserializer->expects($this->once())
             ->method('deserialize')
-            ->with(new StringLiteral(''))
+            ->with('')
             ->willReturn($expectedCommand);
 
         $this->channel->expects($this->once())

@@ -17,7 +17,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidFactory;
-use CultuurNet\UDB3\StringLiteral;
 
 final class EventBusForwardingConsumerTest extends TestCase
 {
@@ -151,12 +150,12 @@ final class EventBusForwardingConsumerTest extends TestCase
 
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
-            ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
+            ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
             ->willReturn($this->deserializer);
 
         $this->deserializer->expects($this->once())
             ->method('deserialize')
-            ->with(new StringLiteral(''))
+            ->with('')
             ->willReturn('');
 
         $this->channel->expects($this->once())
@@ -183,7 +182,7 @@ final class EventBusForwardingConsumerTest extends TestCase
     public function it_logs_messages_when_consuming(): void
     {
         $context = [];
-        $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
+        $context['correlation_id'] = 'my-correlation-id-123';
 
         $this->logger->expects($this->exactly(3))
             ->method('info')
@@ -204,7 +203,7 @@ final class EventBusForwardingConsumerTest extends TestCase
 
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
-            ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
+            ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
             ->willReturn($this->deserializer);
 
         $messageProperties = [
@@ -228,7 +227,7 @@ final class EventBusForwardingConsumerTest extends TestCase
     {
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
-            ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
+            ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
             ->willThrowException(new \InvalidArgumentException('Deserializerlocator error'));
 
         $this->channel->expects($this->once())
@@ -255,7 +254,7 @@ final class EventBusForwardingConsumerTest extends TestCase
     public function it_logs_messages_when_rejecting_a_message(): void
     {
         $context = [];
-        $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
+        $context['correlation_id'] = 'my-correlation-id-123';
 
         $this->logger
             ->expects($this->exactly(2))
@@ -281,7 +280,7 @@ final class EventBusForwardingConsumerTest extends TestCase
 
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
-            ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
+            ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
             ->willThrowException(new \InvalidArgumentException('Deserializerlocator error'));
 
         $this->channel->expects($this->once())
@@ -309,7 +308,7 @@ final class EventBusForwardingConsumerTest extends TestCase
     {
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
-            ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
+            ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
             ->willThrowException(new DeserializerNotFoundException());
 
         $this->channel->expects($this->once())

@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 final class QueryTest extends TestCase
 {
@@ -33,7 +32,7 @@ final class QueryTest extends TestCase
     public function it_stores_a_value(): void
     {
         $this->assertEquals(
-            new StringLiteral(self::NAME),
+            self::NAME,
             $this->query->getValue()
         );
     }
@@ -44,7 +43,7 @@ final class QueryTest extends TestCase
     public function it_stores_a_user_id(): void
     {
         $this->assertEquals(
-            new StringLiteral(self::USER_ID),
+            self::USER_ID,
             $this->query->getUserId()
         );
     }

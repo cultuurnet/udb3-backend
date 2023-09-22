@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class AbstractLabelCommandTest extends TestCase
 {
@@ -66,7 +65,7 @@ class AbstractLabelCommandTest extends TestCase
     {
         $this->assertEquals(
             [
-                new StringLiteral('LabelTest'),
+                'LabelTest',
             ],
             $this->labelCommand->getLabelNames()
         );

@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
-use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -76,8 +75,8 @@ final class GetContributorsRequestHandlerTest extends TestCase
             ->method('isAllowed')
             ->with(
                 Permission::aanbodBewerken(),
-                new StringLiteral($this->organizerId),
-                new StringLiteral($this->currentUserId)
+                $this->organizerId,
+                $this->currentUserId
             )
             ->willReturn(true);
 
@@ -134,8 +133,8 @@ final class GetContributorsRequestHandlerTest extends TestCase
             ->method('isAllowed')
             ->with(
                 Permission::aanbodBewerken(),
-                new StringLiteral($this->organizerId),
-                new StringLiteral($this->currentUserId)
+                $this->organizerId,
+                $this->currentUserId
             )
             ->willReturn(false);
 
