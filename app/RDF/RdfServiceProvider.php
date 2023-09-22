@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Organizer\ReadModel\RDF\RdfProjector as OrganizerRdfProjector;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector as PlaceRdfProjector;
-use CultuurNet\UDB3\StringLiteral;
 use EasyRdf\GraphStore;
 use Ramsey\Uuid\UuidFactory;
 
@@ -73,7 +72,7 @@ final class RdfServiceProvider extends AbstractServiceProvider
                 ];
                 foreach ($deserializerMapping as $payloadClass => $contentType) {
                     $deserializerLocator->registerDeserializer(
-                        new StringLiteral($contentType),
+                        $contentType,
                         new DomainMessageJSONDeserializer($payloadClass)
                     );
                 }

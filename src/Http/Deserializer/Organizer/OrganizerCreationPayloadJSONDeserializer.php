@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointJSONDeserializer;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Title;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -34,7 +33,7 @@ class OrganizerCreationPayloadJSONDeserializer extends JSONDeserializer
         $this->contactPointDeserializer = new ContactPointJSONDeserializer();
     }
 
-    public function deserialize(StringLiteral $data): OrganizerCreationPayload
+    public function deserialize(string $data): OrganizerCreationPayload
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);
@@ -44,19 +43,11 @@ class OrganizerCreationPayloadJSONDeserializer extends JSONDeserializer
         $contactPoint = null;
 
         if (isset($data['address'])) {
-            $address = $this->addressDeserializer->deserialize(
-                new StringLiteral(
-                    json_encode($data['address'])
-                )
-            );
+            $address = $this->addressDeserializer->deserialize(json_encode($data['address']));
         }
 
         if (isset($data['contact'])) {
-            $contactPoint = $this->contactPointDeserializer->deserialize(
-                new StringLiteral(
-                    json_encode($data['contact'])
-                )
-            );
+            $contactPoint = $this->contactPointDeserializer->deserialize(json_encode($data['contact']));
         }
 
         return new OrganizerCreationPayload(

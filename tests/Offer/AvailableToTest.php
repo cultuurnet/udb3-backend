@@ -9,9 +9,8 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Timestamp;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
-class AvailableToTest extends TestCase
+final class AvailableToTest extends TestCase
 {
     /**
      * @test
@@ -39,17 +38,14 @@ class AvailableToTest extends TestCase
         $calendar = new Calendar(CalendarType::MULTIPLE(), null, null, [new Timestamp($startDate, $endDate)]);
         $eventTypeResolver = new EventTypeResolver();
 
-        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId(new StringLiteral('0.7.0.0.0')));
+        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId('0.7.0.0.0'));
         $this->assertEquals($endDate, $availableTo->getAvailableTo());
 
-        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId(new StringLiteral('0.3.1.0.0')));
+        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId('0.3.1.0.0'));
         $this->assertEquals($startDate, $availableTo->getAvailableTo());
     }
 
-    /**
-     * @return array
-     */
-    public function calendarsDateProvider()
+    public function calendarsDateProvider(): array
     {
         $startDate = new \DateTime('2016-10-10T18:19:20');
         $endDate = new \DateTime('2016-10-18T20:19:18');

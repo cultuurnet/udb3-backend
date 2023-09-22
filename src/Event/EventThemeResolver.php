@@ -6,14 +6,13 @@ namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Offer\ThemeResolverInterface;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\StringLiteral;
 
-class EventThemeResolver implements ThemeResolverInterface
+final class EventThemeResolver implements ThemeResolverInterface
 {
     /**
      * @var Theme[]
      */
-    private $themes;
+    private array $themes;
 
     public function __construct()
     {
@@ -714,14 +713,11 @@ class EventThemeResolver implements ThemeResolverInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function byId(StringLiteral $themeId)
+    public function byId(string $themeId): Theme
     {
-        if (!array_key_exists((string) $themeId, $this->themes)) {
+        if (!array_key_exists($themeId, $this->themes)) {
             throw new \Exception('Unknown event theme id: ' . $themeId);
         }
-        return $this->themes[(string) $themeId];
+        return $this->themes[$themeId];
     }
 }

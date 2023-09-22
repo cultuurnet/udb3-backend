@@ -4,28 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches\Command;
 
-use CultuurNet\UDB3\StringLiteral;
-
 class UnsubscribeFromSavedSearch extends SavedSearchCommand
 {
-    /**
-     * @var StringLiteral
-     */
-    protected $searchId;
+    protected string $searchId;
 
 
     public function __construct(
-        StringLiteral $userId,
-        StringLiteral $searchId
+        string $userId,
+        string $searchId
     ) {
         parent::__construct($userId);
         $this->searchId = $searchId;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getSearchId()
+    public function getSearchId(): string
     {
         return $this->searchId;
     }

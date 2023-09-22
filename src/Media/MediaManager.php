@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use CultuurNet\UDB3\StringLiteral;
 
 class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, MediaManagerInterface
 {
@@ -50,7 +49,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
     public function create(
         UUID $id,
         MIMEType $fileType,
-        StringLiteral $description,
+        Description $description,
         CopyrightHolder $copyrightHolder,
         Url $sourceLocation,
         Language $language
@@ -81,10 +80,10 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
 
     public function handleUploadImage(UploadImage $uploadImage): void
     {
-        $pathParts = explode('/', $uploadImage->getFilePath()->toNative());
+        $pathParts = explode('/', $uploadImage->getFilePath());
         $fileName = array_pop($pathParts);
         $fileNameParts = explode('.', $fileName);
-        $extension = StringLiteral::fromNative(array_pop($fileNameParts));
+        $extension = array_pop($fileNameParts);
         $destinationPath = $this->pathGenerator->path(
             $uploadImage->getFileId(),
             $extension
@@ -92,7 +91,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
 
         $destinationIri = $this->iriGenerator->iri($destinationPath);
 
-        $this->imageStorage->store($uploadImage->getFilePath()->toNative(), $destinationPath);
+        $this->imageStorage->store($uploadImage->getFilePath(), $destinationPath);
 
         $this->create(
             $uploadImage->getFileId(),
@@ -130,7 +129,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         return new Image(
             $mediaObject->getMediaObjectId(),
             $mediaObject->getMimeType(),
-            new Description((string) $mediaObject->getDescription()),
+            $mediaObject->getDescription(),
             $mediaObject->getCopyrightHolder(),
             $mediaObject->getSourceLocation(),
             $mediaObject->getLanguage()

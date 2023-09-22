@@ -4,15 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Cdb\Description;
 
-use CultuurNet\UDB3\StringLiteral;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 
-class MergedDescription extends StringLiteral
+final class MergedDescription
 {
+    use IsString;
+
+    public function __construct(string $value)
+    {
+        $this->setValue($value);
+    }
+
     /**
-     * @return MergedDescription
      * @throws \InvalidArgumentException
      */
-    public static function fromCdbDetail(\CultureFeed_Cdb_Data_Detail $detail)
+    public static function fromCdbDetail(\CultureFeed_Cdb_Data_Detail $detail): MergedDescription
     {
         $longDescription = $detail->getLongDescription();
         if ($longDescription) {
@@ -25,15 +31,15 @@ class MergedDescription extends StringLiteral
         }
 
         if ($longDescription && $shortDescription) {
-            return MergedDescription::merge($shortDescription, $longDescription);
+            return self::merge($shortDescription, $longDescription);
         }
 
         if ($longDescription) {
-            return new MergedDescription($longDescription->toNative());
+            return new self($longDescription->toString());
         }
 
         if ($shortDescription) {
-            return new MergedDescription($shortDescription->toNative());
+            return new self($shortDescription->toString());
         }
 
         throw new \InvalidArgumentException(
@@ -41,18 +47,13 @@ class MergedDescription extends StringLiteral
         );
     }
 
-    /**
-     * @return MergedDescription $longDescription
-     */
-    public static function merge(ShortDescription $shortDescription, LongDescription $longDescription)
+    public static function merge(ShortDescription $shortDescription, LongDescription $longDescription): MergedDescription
     {
-        $shortAsString = $shortDescription->toNative();
-        $longAsString = $longDescription->toNative();
-
+        $shortAsString = $shortDescription->toString();
         $shortAsStringWithoutEllipsis = rtrim($shortAsString, '. ');
 
-        $longFormattedAsUdb2Short = (new ShortDescriptionUDB2FormattingFilter())->filter($longAsString);
-        $longFormattedAsUdb3Short = (new ShortDescriptionUDB3FormattingFilter())->filter($longAsString);
+        $longFormattedAsUdb2Short = (new ShortDescriptionUDB2FormattingFilter())->filter($longDescription->toString());
+        $longFormattedAsUdb3Short = (new ShortDescriptionUDB3FormattingFilter())->filter($longDescription->toString());
 
         $udb2Comparison = strncmp(
             $longFormattedAsUdb2Short,
@@ -69,9 +70,9 @@ class MergedDescription extends StringLiteral
         $shortIncludedInLong = $udb2Comparison === 0 || $udb3Comparison === 0;
 
         if ($shortIncludedInLong) {
-            return new MergedDescription($longAsString);
+            return new self($longDescription->toString());
         } else {
-            return new MergedDescription($shortAsString . PHP_EOL . PHP_EOL . $longAsString);
+            return new self($shortAsString . PHP_EOL . PHP_EOL . $longDescription->toString());
         }
     }
 }

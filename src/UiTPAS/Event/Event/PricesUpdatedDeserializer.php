@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\MoneyFactory;
-use CultuurNet\UDB3\StringLiteral;
 use Money\Currency;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Validator;
@@ -53,7 +52,7 @@ final class PricesUpdatedDeserializer extends JSONDeserializer
         ],
     ];
 
-    public function deserialize(StringLiteral $data): PricesUpdated
+    public function deserialize(string $data): PricesUpdated
     {
         /** @var stdClass $dto */
         $dto = parent::deserialize($data);

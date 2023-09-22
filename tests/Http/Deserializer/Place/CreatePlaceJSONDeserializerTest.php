@@ -13,10 +13,10 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
-class CreatePlaceJSONDeserializerTest extends TestCase
+final class CreatePlaceJSONDeserializerTest extends TestCase
 {
     /**
      * @test
@@ -27,7 +27,7 @@ class CreatePlaceJSONDeserializerTest extends TestCase
 
         $createPlaceJSONDeserializer = new CreatePlaceJSONDeserializer();
 
-        $createPlace = $createPlaceJSONDeserializer->deserialize(new StringLiteral($createPlaceAsJson));
+        $createPlace = $createPlaceJSONDeserializer->deserialize($createPlaceAsJson);
 
         $expectedAddress = new Address(
             new Street('Kerkstraat 1'),
@@ -37,7 +37,7 @@ class CreatePlaceJSONDeserializerTest extends TestCase
         );
 
         $this->assertEquals(new Language('en'), $createPlace->getMainLanguage());
-        $this->assertEquals('Test place', $createPlace->getTitle());
+        $this->assertEquals(new Title('Test place'), $createPlace->getTitle());
         $this->assertEquals(new EventType('3CuHvenJ+EGkcvhXLg9Ykg', 'Archeologische Site'), $createPlace->getType());
         $this->assertEquals($expectedAddress, $createPlace->getAddress());
         $this->assertEquals(new Calendar(CalendarType::PERMANENT()), $createPlace->getCalendar());

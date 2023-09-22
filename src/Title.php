@@ -4,37 +4,44 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title as Udb3ModelTitle;
 
 /**
  * @deprecated
  *   Use CultuurNet\UDB3\Model\ValueObject\Text\Title instead where possible.
  */
-class Title extends StringLiteral implements \JsonSerializable
+final class Title implements \JsonSerializable
 {
+    use IsNotEmpty;
+    use Trims;
+    private string $value;
+
     public function __construct(string $value)
     {
-        parent::__construct(trim($value));
-
-        if ($this->isEmpty()) {
-            throw new \InvalidArgumentException('Title can not be empty.');
-        }
+        $value = $this->trim($value);
+        $this->guardNotEmpty($value);
+        $this->value = $value;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function jsonSerialize()
+    public function toNative(): string
     {
-        return (string)$this;
+        return $this->value;
     }
 
-    /**
-     * @return Title
-     */
-    public static function fromUdb3ModelTitle(Udb3ModelTitle $title)
+    public function sameValueAs(Title $title): bool
     {
-        $string = $title->toString();
-        return new self($string);
+        return $this->toNative() === $title->toNative();
+    }
+
+    public function jsonSerialize(): string
+    {
+        return $this->value;
+    }
+
+    public static function fromUdb3ModelTitle(Udb3ModelTitle $title): self
+    {
+        return new self($title->toString());
     }
 }

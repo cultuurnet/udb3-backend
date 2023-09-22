@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Deserializer\Theme;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -27,7 +26,7 @@ class ThemeJSONDeserializer extends JSONDeserializer
     /**
      * @throws DataValidationException
      */
-    public function deserialize(StringLiteral $data): Theme
+    public function deserialize(string $data): Theme
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);

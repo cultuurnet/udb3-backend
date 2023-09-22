@@ -4,19 +4,37 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description as Udb3ModelDescription;
 
 /**
  * @deprecated
  *   Use CultuurNet\UDB3\Model\ValueObject\Text\Description instead where possible.
  */
-class Description extends StringLiteral
+final class Description
 {
-    /**
-     * @return Description
-     */
-    public static function fromUdb3ModelDescription(Udb3ModelDescription $udb3ModelDescription)
+    use Trims;
+
+    private string $value;
+
+    public function __construct(string $value)
     {
-        return new Description($udb3ModelDescription->toString());
+        $value = $this->trim($value);
+        $this->value = $value;
+    }
+
+    public static function fromUdb3ModelDescription(Udb3ModelDescription $udb3ModelDescription): self
+    {
+        return new self($udb3ModelDescription->toString());
+    }
+
+    public function toNative(): string
+    {
+        return $this->value;
+    }
+
+    public function sameValueAs(self $description): bool
+    {
+        return $this->toNative() === $description->toNative();
     }
 }

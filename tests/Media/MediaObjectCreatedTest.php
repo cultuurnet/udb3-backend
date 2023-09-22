@@ -6,14 +6,14 @@ namespace CultuurNet\UDB3\Media;
 
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
+use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
-class MediaObjectCreatedTest extends TestCase
+final class MediaObjectCreatedTest extends TestCase
 {
     /**
      * @test
@@ -58,7 +58,7 @@ class MediaObjectCreatedTest extends TestCase
                 new MediaObjectCreated(
                     new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
                     new MIMEType('image/png'),
-                    new StringLiteral('The Gleaners'),
+                    new Description('The Gleaners'),
                     new CopyrightHolder('Jean-François Millet'),
                     new Url('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
                     new Language('en')
@@ -83,7 +83,7 @@ class MediaObjectCreatedTest extends TestCase
         $expectedEvent = new MediaObjectCreated(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new StringLiteral('The Gleaners'),
+            new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('nl')
@@ -108,7 +108,7 @@ class MediaObjectCreatedTest extends TestCase
         $expectedEvent = new MediaObjectCreated(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new StringLiteral('The Gleaners'),
+            new Description('The Gleaners'),
             new CopyrightHolder('J_'),
             new Url('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('nl')

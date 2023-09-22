@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\SavedSearches\Properties;
 
 use PHPUnit\Framework\TestCase;
 
-class CreateByQueryStringTest extends TestCase
+class CreatedByQueryStringTest extends TestCase
 {
     /**
      * @test
@@ -17,7 +17,7 @@ class CreateByQueryStringTest extends TestCase
         string $expectedQuery
     ): void {
         $this->assertEquals(
-            $createdByQueryString->toNative(),
+            $createdByQueryString->toString(),
             $expectedQuery
         );
     }

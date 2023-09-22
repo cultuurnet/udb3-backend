@@ -10,17 +10,16 @@ use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsDuplicate;
 use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsInappropriate;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\Moderation\Reject;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Place\Commands\Moderation\Approve as ApprovePlace;
 use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsDuplicate as FlagAsDuplicatePlace;
 use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsInappropriate as FlagAsInappropriatePlace;
 use CultuurNet\UDB3\Place\Commands\Moderation\Publish as PublishPlace;
 use CultuurNet\UDB3\Place\Commands\Moderation\Reject as RejectPlace;
-use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
-use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
-use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\StringLiteral;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -85,7 +84,7 @@ final class PatchOfferRequestHandlerTest extends TestCase
                 'offerType' => 'events',
                 'request' => 'application/ld+json;domain-model=Reject',
                 'body' => ['reason' => 'Description missing :('],
-                'expectedCommand' => new Reject($this->offerId, new StringLiteral('Description missing :(')),
+                'expectedCommand' => new Reject($this->offerId, 'Description missing :('),
             ],
             'Flag event as duplicate' => [
                 'offerType' => 'events',
@@ -118,7 +117,7 @@ final class PatchOfferRequestHandlerTest extends TestCase
                 'offerType' => 'places',
                 'request' => 'application/ld+json;domain-model=Reject',
                 'body' => ['reason' => 'Description missing :('],
-                'expectedCommand' => new RejectPlace($this->offerId, new StringLiteral('Description missing :(')),
+                'expectedCommand' => new RejectPlace($this->offerId, 'Description missing :('),
             ],
             'Flag place as duplicate' => [
                 'offerType' => 'places',

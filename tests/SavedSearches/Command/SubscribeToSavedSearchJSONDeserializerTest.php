@@ -7,17 +7,16 @@ namespace CultuurNet\UDB3\SavedSearches\Command;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
-class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
+final class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 {
-    protected StringLiteral $userId;
+    private string $userId;
 
-    protected SubscribeToSavedSearchJSONDeserializer $deserializer;
+    private SubscribeToSavedSearchJSONDeserializer $deserializer;
 
     public function setUp(): void
     {
-        $this->userId = new StringLiteral('xyx');
+        $this->userId ='xyx';
 
         $this->deserializer = new SubscribeToSavedSearchJSONDeserializer(
             $this->userId
@@ -36,7 +35,7 @@ class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
         $this->assertEquals(
             new SubscribeToSavedSearch(
                 $this->userId,
-                new StringLiteral('My very first saved search.'),
+                'My very first saved search.',
                 new QueryString('city:"Leuven"')
             ),
             $command
@@ -69,12 +68,8 @@ class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
         );
     }
 
-    private function getStringFromFile(string $fileName): StringLiteral
+    private function getStringFromFile(string $fileName): string
     {
-        $json = file_get_contents(
-            __DIR__ . '/' . $fileName
-        );
-
-        return new StringLiteral($json);
+        return file_get_contents(__DIR__ . '/' . $fileName);
     }
 }

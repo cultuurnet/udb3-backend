@@ -87,7 +87,6 @@ use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class HistoryProjectorTest extends TestCase
 {
@@ -1490,7 +1489,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_rejected(): void
     {
-        $event = new Rejected(self::EVENT_ID_1, new StringLiteral('not good enough'));
+        $event = new Rejected(self::EVENT_ID_1, 'not good enough');
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

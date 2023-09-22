@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\MediaObject;
+use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -23,7 +24,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\Commands\AddImage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 final class AddImageRequestHandlerTest extends TestCase
 {
@@ -64,7 +64,7 @@ final class AddImageRequestHandlerTest extends TestCase
                 MediaObject::create(
                     new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     MIMEType::fromSubtype('jpeg'),
-                    new StringLiteral('Uploaded image'),
+                    new ImageDescription('Uploaded image'),
                     new CopyrightHolder('madewithlove'),
                     new Url('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
                     new LegacyLanguage('nl')

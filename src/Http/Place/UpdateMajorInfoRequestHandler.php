@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 class UpdateMajorInfoRequestHandler implements RequestHandlerInterface
 {
@@ -32,7 +31,7 @@ class UpdateMajorInfoRequestHandler implements RequestHandlerInterface
         $routeParameters = new RouteParameters($request);
         $placeId = $routeParameters->getPlaceId();
 
-        $majorInfo = $this->majorInfoDeserializer->deserialize(new StringLiteral((string) $request->getBody()));
+        $majorInfo = $this->majorInfoDeserializer->deserialize((string) $request->getBody());
 
         $this->commandBus->dispatch(
             new UpdateMajorInfo(

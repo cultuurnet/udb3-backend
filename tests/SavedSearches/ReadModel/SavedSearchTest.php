@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches\ReadModel;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class SavedSearchTest extends TestCase
 {
@@ -16,12 +16,12 @@ class SavedSearchTest extends TestCase
     public function it_can_be_serialized_to_json(): void
     {
         $savedSearch = new SavedSearch(
-            new StringLiteral('In Leuven'),
+            'In Leuven',
             new QueryString('city:"Leuven"'),
-            new StringLiteral('101')
+            '101'
         );
 
-        $jsonEncoded = json_encode($savedSearch);
+        $jsonEncoded = Json::encode($savedSearch);
 
         $this->assertEquals(
             '{"name":"In Leuven","query":"city:\"Leuven\"","id":"101"}',
@@ -35,11 +35,11 @@ class SavedSearchTest extends TestCase
     public function it_does_not_serialize_an_empty_id_property(): void
     {
         $savedSearch = new SavedSearch(
-            new StringLiteral('In Leuven'),
+            'In Leuven',
             new QueryString('city:"Leuven"')
         );
 
-        $jsonEncoded = json_encode($savedSearch);
+        $jsonEncoded = Json::encode($savedSearch);
 
         $this->assertEquals(
             '{"name":"In Leuven","query":"city:\"Leuven\""}',

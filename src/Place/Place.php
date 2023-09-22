@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
+use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -72,7 +73,6 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3Language;
 
 class Place extends Offer
@@ -360,7 +360,7 @@ class Place extends Offer
 
     protected function createImageUpdatedEvent(
         UUID $mediaObjectId,
-        StringLiteral $description,
+        ImageDescription $description,
         CopyrightHolder $copyrightHolder,
         ?string $language = null
     ): ImageUpdated {
@@ -483,7 +483,7 @@ class Place extends Offer
         return new Approved($this->placeId);
     }
 
-    protected function createRejectedEvent(StringLiteral $reason): Rejected
+    protected function createRejectedEvent(string $reason): Rejected
     {
         return new Rejected($this->placeId, $reason);
     }

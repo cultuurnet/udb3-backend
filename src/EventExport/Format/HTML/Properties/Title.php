@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Properties;
 
-use CultuurNet\UDB3\StringLiteral;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
-class Title extends StringLiteral
+final class Title
 {
+    use IsString;
+    use Trims;
+    use IsNotEmpty;
+
     public function __construct(string $value)
     {
-        parent::__construct($value);
-
-        if ($this->isEmpty()) {
-            throw new \InvalidArgumentException(
-                'title can not be empty'
-            );
-        }
+        $value = $this->trim($value);
+        $this->guardNotEmpty($value);
+        $this->setValue($value);
     }
 }

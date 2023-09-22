@@ -6,19 +6,12 @@ namespace CultuurNet\UDB3\Offer\Events\Moderation;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class AbstractRejectedTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $itemId;
+    private string $itemId;
 
-    /**
-     * @var StringLiteral
-     */
-    private $reason;
+    private string $reason;
 
     /**
      * @var AbstractRejected|MockObject
@@ -28,7 +21,7 @@ class AbstractRejectedTest extends TestCase
     protected function setUp(): void
     {
         $this->itemId = 'e1d026e2-d158-40e9-b82a-dfcd62de2a77';
-        $this->reason = new StringLiteral('Het aanbod is hetzelfde als...');
+        $this->reason = 'Het aanbod is hetzelfde als...';
 
         $this->abstractRejected = $this->getMockForAbstractClass(
             AbstractRejected::class,

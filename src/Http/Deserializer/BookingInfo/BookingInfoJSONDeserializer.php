@@ -8,7 +8,6 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -21,7 +20,7 @@ class BookingInfoJSONDeserializer extends JSONDeserializer
         parent::__construct(true);
     }
 
-    public function deserialize(StringLiteral $data): BookingInfo
+    public function deserialize(string $data): BookingInfo
     {
         /* @var array $data */
         $data = parent::deserialize($data);

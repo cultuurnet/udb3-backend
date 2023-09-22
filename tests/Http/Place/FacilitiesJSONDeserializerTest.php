@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Place\PlaceFacilityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class FacilitiesJSONDeserializerTest extends TestCase
 {
@@ -35,7 +34,7 @@ class FacilitiesJSONDeserializerTest extends TestCase
         $this->expectException(DataValidationException::class);
         $this->expectExceptionMessage('The facilities property should contain a list of ids');
 
-        $deserializer->deserialize(new StringLiteral('{"facilities": "C92E4A28-4A59-43DD-999E-7F53F735D30C"}'));
+        $deserializer->deserialize('{"facilities": "C92E4A28-4A59-43DD-999E-7F53F735D30C"}');
     }
 
     /**
@@ -53,9 +52,7 @@ class FacilitiesJSONDeserializerTest extends TestCase
 
         $expectedFacilities = [$facility];
 
-        $facilities = $deserializer->deserialize(new StringLiteral(
-            '{"facilities": ["3.23.1.0.0"]}'
-        ));
+        $facilities = $deserializer->deserialize('{"facilities": ["3.23.1.0.0"]}');
 
         $this->assertEquals($expectedFacilities, $facilities);
     }
@@ -75,9 +72,7 @@ class FacilitiesJSONDeserializerTest extends TestCase
 
         $expectedFacilities = [$facility];
 
-        $facilities = $deserializer->deserialize(new StringLiteral(
-            '{"facilities": ["3.23.1.0.0", "3.23.1.0.0"]}'
-        ));
+        $facilities = $deserializer->deserialize('{"facilities": ["3.23.1.0.0", "3.23.1.0.0"]}');
 
         $this->assertEquals($expectedFacilities, $facilities);
     }
@@ -94,9 +89,7 @@ class FacilitiesJSONDeserializerTest extends TestCase
 
         $expectedFacilities = [$wheelchairFacility, $audioDescriptionFacility];
 
-        $facilities = $deserializer->deserialize(new StringLiteral(
-            '{"facilities": ["3.13.1.0.0", "3.25.0.0.0"]}'
-        ));
+        $facilities = $deserializer->deserialize('{"facilities": ["3.13.1.0.0", "3.25.0.0.0"]}');
 
         $this->assertEquals($expectedFacilities, $facilities);
     }
@@ -110,8 +103,6 @@ class FacilitiesJSONDeserializerTest extends TestCase
 
         $this->expectExceptionMessage("Unknown facility id '1.8.2'");
 
-        $deserializer->deserialize(new StringLiteral(
-            '{"facilities": ["3.25.0.0.0", "1.8.2"]}'
-        ));
+        $deserializer->deserialize('{"facilities": ["3.25.0.0.0", "1.8.2"]}');
     }
 }

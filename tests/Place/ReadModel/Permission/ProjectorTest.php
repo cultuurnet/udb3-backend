@@ -16,14 +16,13 @@ use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 final class ProjectorTest extends TestCase
 {
@@ -70,17 +69,17 @@ final class ProjectorTest extends TestCase
             $payload
         );
 
-        $userId = new StringLiteral('123');
+        $userId = 'dcd1e123-0608-4824-afe3-99124feda64b';
 
         $this->userIdResolver->expects($this->once())
             ->method('resolveCreatedByToUserId')
-            ->with(new StringLiteral('cultuurnet001'))
+            ->with('cultuurnet001')
             ->willReturn($userId);
 
         $this->repository->expects($this->once())
             ->method('markResourceEditableByUser')
             ->with(
-                new StringLiteral('318F2ACB-F612-6F75-0037C9C29F44087A'),
+                '318F2ACB-F612-6F75-0037C9C29F44087A',
                 $userId
             );
 
@@ -109,7 +108,7 @@ final class ProjectorTest extends TestCase
 
         $this->userIdResolver->expects($this->once())
             ->method('resolveCreatedByToUserId')
-            ->with(new StringLiteral('cultuurnet001'))
+            ->with('cultuurnet001')
             ->willReturn(null);
 
         $this->repository->expects($this->never())
@@ -123,11 +122,11 @@ final class ProjectorTest extends TestCase
      */
     public function it_add_permission_to_the_user_that_created_a_place(): void
     {
-        $userId = new StringLiteral('user-id');
-        $placeId = new StringLiteral('place-id');
+        $userId = 'user-id';
+        $placeId = 'place-id';
 
         $payload = new PlaceCreated(
-            $placeId->toNative(),
+            $placeId,
             new Language('en'),
             new Title('test 123'),
             new EventType('0.50.4.0.0', 'concert'),
@@ -141,10 +140,10 @@ final class ProjectorTest extends TestCase
         );
 
         $msg = DomainMessage::recordNow(
-            $placeId->toNative(),
+            $placeId,
             1,
             new Metadata(
-                ['user_id' => $userId->toNative()]
+                ['user_id' => $userId]
             ),
             $payload
         );

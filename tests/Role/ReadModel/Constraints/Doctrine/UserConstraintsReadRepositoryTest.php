@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as Pe
 use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\SchemaConfigurator as SearchSchemaConfigurator;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class UserConstraintsReadRepositoryTest extends TestCase
 {
@@ -44,8 +43,8 @@ class UserConstraintsReadRepositoryTest extends TestCase
         $this->rolesSearchTableName = 'roles_search';
 
         $permissionSchemaConfigurator = new PermissionSchemaConfigurator(
-            new StringLiteral($this->userRolesTableName),
-            new StringLiteral($this->rolePermissionsTableName)
+            $this->userRolesTableName,
+            $this->rolePermissionsTableName
         );
         $permissionSchemaConfigurator->configure(
             $this->getConnection()->getSchemaManager()

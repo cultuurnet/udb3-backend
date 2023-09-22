@@ -56,7 +56,6 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\Item;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 
@@ -1388,7 +1387,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('You can not approve an offer that is not ready for validation');
         $itemId = '4b5f30bf-a612-4cb9-bba0-4a77a4385a73';
-        $reason = new StringLiteral('There are spelling mistakes in the description.');
+        $reason = 'There are spelling mistakes in the description.';
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1412,7 +1411,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_not_reject_an_offer_more_than_once_for_the_same_reason(): void
     {
         $itemId = '04bf2962-2d7c-4da9-8e01-8a8fa249e70c';
-        $reason = new StringLiteral('The title is misleading.');
+        $reason = 'The title is misleading.';
         $now = new \DateTime();
 
         $this->scenario
@@ -1444,8 +1443,8 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('The offer has already been rejected for another reason: The title is misleading.');
         $itemId = '1cb18f8c-5be4-4301-9761-dea2bbfa9a1f';
-        $reason = new StringLiteral('The title is misleading.');
-        $differentReason = new StringLiteral('I\'m afraid I can\'t let you do that.');
+        $reason = 'The title is misleading.';
+        $differentReason = 'I\'m afraid I can\'t let you do that.';
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1469,7 +1468,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_reject_an_offer_that_is_ready_for_validation_with_a_reason(): void
     {
         $itemId = '0c93d516-cda2-4062-b8b3-f649cbc8086c';
-        $reason = new StringLiteral('You forgot to add an organizer.');
+        $reason = 'You forgot to add an organizer.';
         $now = new \DateTime();
 
         $this->scenario
@@ -1528,7 +1527,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('The offer has already been rejected for another reason: duplicate');
         $itemId = '0e3a13ec-a88d-4cd5-9565-d7b00690c52f';
-        $reason = new StringLiteral('The theme does not match the description.');
+        $reason = 'The theme does not match the description.';
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1582,7 +1581,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('The offer has already been rejected for another reason: inappropriate');
         $itemId = '05f4b7f7-a0ed-4530-8b25-2a573fe7f305';
-        $reason = new StringLiteral('The theme does not match the description.');
+        $reason = 'The theme does not match the description.';
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1608,7 +1607,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('You can not reject an offer that is not ready for validation');
         $itemId = '5988798b-c211-4c04-a9f4-ceb2568d93b3';
-        $reason = new StringLiteral('Yeah, but no, but yeah...');
+        $reason = 'Yeah, but no, but yeah...';
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1949,21 +1948,21 @@ class OfferTest extends AggregateRootScenarioTestCase
 
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
-            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('publiq')),
+            new MultilingualString(new LegacyLanguage('nl'), 'publiq'),
             '02 123 45 67',
             'info@publiq.be'
         );
 
         $sameBookingInfo = new BookingInfo(
             'www.publiq.be',
-            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('publiq')),
+            new MultilingualString(new LegacyLanguage('nl'), 'publiq'),
             '02 123 45 67',
             'info@publiq.be'
         );
 
         $otherBookingInfo = new BookingInfo(
             'www.2dotstwice.be',
-            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('2dotstwice')),
+            new MultilingualString(new LegacyLanguage('nl'), '2dotstwice'),
             '016 12 34 56',
             'info@2dotstwice.be'
         );

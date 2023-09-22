@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\SavedSearches\Command;
 
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class SubscribeToSavedSearchTest extends TestCase
 {
@@ -15,8 +14,8 @@ class SubscribeToSavedSearchTest extends TestCase
      */
     public function it_returns_the_stored_data(): void
     {
-        $userId = new StringLiteral('some-user-id');
-        $name = new StringLiteral('My very first saved search.');
+        $userId = 'some-user-id';
+        $name = 'My very first saved search.';
         $query = new QueryString('city:"Leuven"');
 
         $command = new SubscribeToSavedSearch($userId, $name, $query);

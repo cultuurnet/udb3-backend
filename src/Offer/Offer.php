@@ -69,7 +69,6 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractPublished;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -95,12 +94,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected ?DateTimeInterface $availableFrom = null;
 
-    protected ?StringLiteral $rejectedReason = null;
+    protected ?string $rejectedReason = null;
 
     protected ?PriceInfo $priceInfo = null;
 
     /**
-     * @var StringLiteral[]
+     * @var Title[]
      */
     protected array $titles;
 
@@ -551,7 +550,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateImage(
         UUID $mediaObjectId,
-        StringLiteral $description,
+        ImageDescription $description,
         CopyrightHolder $copyrightHolder
     ): void {
         if ($this->updateImageAllowed($mediaObjectId, $description, $copyrightHolder)) {
@@ -567,7 +566,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     private function updateImageAllowed(
         UUID $mediaObjectId,
-        StringLiteral $description,
+        ImageDescription $description,
         CopyrightHolder $copyrightHolder
     ): bool {
         $image = $this->images->findImageByUUID($mediaObjectId);
@@ -824,31 +823,29 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         return false;
     }
 
-    public function reject(StringLiteral $reason): void
+    public function reject(string $reason): void
     {
         $this->guardRejection($reason) ?: $this->apply($this->createRejectedEvent($reason));
     }
 
     public function flagAsDuplicate(): void
     {
-        $reason = new StringLiteral(self::DUPLICATE_REASON);
-        $this->guardRejection($reason) ?: $this->apply($this->createFlaggedAsDuplicate());
+        $this->guardRejection(self::DUPLICATE_REASON) ?: $this->apply($this->createFlaggedAsDuplicate());
     }
 
     public function flagAsInappropriate(): void
     {
-        $reason = new StringLiteral(self::INAPPROPRIATE_REASON);
-        $this->guardRejection($reason) ?: $this->apply($this->createFlaggedAsInappropriate());
+        $this->guardRejection(self::INAPPROPRIATE_REASON) ?: $this->apply($this->createFlaggedAsInappropriate());
     }
 
-    private function guardRejection(StringLiteral $reason): bool
+    private function guardRejection(string $reason): bool
     {
         if ($this->workflowStatus->sameAs(WorkflowStatus::REJECTED())) {
-            if ($this->rejectedReason && $reason->sameValueAs($this->rejectedReason)) {
+            if ($reason === $this->rejectedReason) {
                 return true; // nothing left to do if the offer has already been rejected for the same reason
-            } else {
-                throw new Exception('The offer has already been rejected for another reason: ' . $this->rejectedReason);
             }
+
+            throw new Exception('The offer has already been rejected for another reason: ' . $this->rejectedReason);
         }
 
         if (!$this->workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
@@ -921,13 +918,13 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyFlaggedAsDuplicate(AbstractFlaggedAsDuplicate $flaggedAsDuplicate): void
     {
-        $this->rejectedReason = new StringLiteral(self::DUPLICATE_REASON);
+        $this->rejectedReason = self::DUPLICATE_REASON;
         $this->workflowStatus = WorkflowStatus::REJECTED();
     }
 
     protected function applyFlaggedAsInappropriate(AbstractFlaggedAsInappropriate $flaggedAsInappropriate): void
     {
-        $this->rejectedReason = new StringLiteral(self::INAPPROPRIATE_REASON);
+        $this->rejectedReason = self::INAPPROPRIATE_REASON;
         $this->workflowStatus = WorkflowStatus::REJECTED();
     }
 
@@ -1054,7 +1051,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createImageUpdatedEvent(
         UUID $uuid,
-        StringLiteral $description,
+        ImageDescription $description,
         CopyrightHolder $copyrightHolder,
         ?string $language = null
     ): AbstractImageUpdated;
@@ -1099,7 +1096,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createApprovedEvent(): AbstractApproved;
 
-    abstract protected function createRejectedEvent(StringLiteral $reason): AbstractRejected;
+    abstract protected function createRejectedEvent(string $reason): AbstractRejected;
 
     abstract protected function createFlaggedAsDuplicate(): AbstractFlaggedAsDuplicate;
 

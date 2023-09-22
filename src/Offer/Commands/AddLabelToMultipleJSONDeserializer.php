@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Deserializer\NotWellFormedException;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -30,7 +29,7 @@ class AddLabelToMultipleJSONDeserializer extends JSONDeserializer
     /**
      * @throws NotWellFormedException
      */
-    public function deserialize(StringLiteral $data): AddLabelToMultiple
+    public function deserialize(string $data): AddLabelToMultiple
     {
         $data = parent::deserialize($data);
 
@@ -46,11 +45,7 @@ class AddLabelToMultipleJSONDeserializer extends JSONDeserializer
 
         foreach ($data->offers as $offer) {
             $offers = $offers->with(
-                $this->offerIdentifierDeserializer->deserialize(
-                    new StringLiteral(
-                        json_encode($offer)
-                    )
-                )
+                $this->offerIdentifierDeserializer->deserialize(json_encode($offer))
             );
         }
 

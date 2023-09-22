@@ -10,15 +10,15 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileSize;
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileType;
+use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\StringLiteral;
 use League\Flysystem\FilesystemOperator;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 
-class ImageUploaderService implements ImageUploaderInterface
+final class ImageUploaderService implements ImageUploaderInterface
 {
     private UuidGeneratorInterface $uuidGenerator;
 
@@ -60,7 +60,7 @@ class ImageUploaderService implements ImageUploaderInterface
 
     public function upload(
         UploadedFileInterface $file,
-        StringLiteral $description,
+        Description $description,
         CopyrightHolder $copyrightHolder,
         Language $language
     ): UUID {
@@ -83,10 +83,10 @@ class ImageUploaderService implements ImageUploaderInterface
         $this->commandBus->dispatch(
             new UploadImage(
                 $fileId,
-                MIMEType::fromNative($mimeType),
+                new MIMEType($mimeType),
                 $description,
                 $copyrightHolder,
-                new StringLiteral($destination),
+                $destination,
                 $language
             )
         );

@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsWriteRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class UserPermissionsWriteRepositoryTest extends TestCase
 {
@@ -27,8 +26,8 @@ class UserPermissionsWriteRepositoryTest extends TestCase
         $this->rolePermissionTableName = 'role_permission';
 
         $schemaConfigurator = new SchemaConfigurator(
-            new StringLiteral($this->userRoleTableName),
-            new StringLiteral($this->rolePermissionTableName),
+            $this->userRoleTableName,
+            $this->rolePermissionTableName,
         );
 
         $schemaManager = $this->getConnection()->getSchemaManager();

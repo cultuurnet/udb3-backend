@@ -7,11 +7,11 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
+use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\StringLiteral;
 
 interface MediaManagerInterface extends CommandHandler
 {
@@ -24,7 +24,7 @@ interface MediaManagerInterface extends CommandHandler
     public function create(
         UUID $id,
         MIMEType $mimeType,
-        StringLiteral $description,
+        Description $description,
         CopyrightHolder $copyrightHolder,
         Url $sourceLocation,
         Language $language

@@ -71,7 +71,6 @@ use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use Money\Currency;
@@ -664,8 +663,8 @@ final class ImportEventRequestHandlerTest extends TestCase
                     $eventId,
                     new BookingInfo(
                         'https://www.publiq.be',
-                        (new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('Nederlandse label')))
-                            ->withTranslation(new LegacyLanguage('en'), new StringLiteral('English label')),
+                        (new MultilingualString(new LegacyLanguage('nl'), 'Nederlandse label'))
+                            ->withTranslation(new LegacyLanguage('en'), 'English label'),
                         '016 12 34 56',
                         'info@publiq.be',
                         new DateTimeImmutable('2021-05-17T22:00:00+00:00'),

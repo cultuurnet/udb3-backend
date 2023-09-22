@@ -10,7 +10,6 @@ use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\User\UserIdentityResolver;
-use CultuurNet\UDB3\StringLiteral;
 
 class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
 {
@@ -35,10 +34,9 @@ class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
      */
     public function ownedByCurrentUser(): array
     {
-        $name = new StringLiteral('Door mij ingevoerd');
         $creatorQueryString = $this->getCreatorQueryString();
         return [
-            new SavedSearch($name, $creatorQueryString),
+            new SavedSearch('Door mij ingevoerd', $creatorQueryString),
         ];
     }
 

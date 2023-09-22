@@ -86,7 +86,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Projects state changes on Event entities to a JSON-LD read model in a
@@ -95,7 +94,7 @@ use CultuurNet\UDB3\StringLiteral;
  * Implements PlaceServiceInterface and OrganizerServiceInterface to do a double
  * dispatch with CdbXMLImporter.
  */
-class EventLDProjector extends OfferLDProjector implements
+final class EventLDProjector extends OfferLDProjector implements
     EventListener,
     PlaceServiceInterface
 {
@@ -248,7 +247,6 @@ class EventLDProjector extends OfferLDProjector implements
                 $eventCreated->getLocation()->toString()
             );
 
-        /** @var Calendar $calendar */
         $calendar = $eventCreated->getCalendar();
         $calendarJsonLD = $calendar->toJsonLd();
         $jsonLD = (object) array_merge((array) $jsonLD, $calendarJsonLD);
@@ -259,7 +257,7 @@ class EventLDProjector extends OfferLDProjector implements
         // Same as.
         $jsonLD->sameAs = $this->sameAs->generateSameAs(
             $eventCreated->getEventId(),
-            (string) reset($jsonLD->name)
+            reset($jsonLD->name)->toNative()
         );
 
         $eventType = $eventCreated->getEventType();
@@ -279,7 +277,7 @@ class EventLDProjector extends OfferLDProjector implements
         // Set the creator.
         $author = $this->getAuthorFromMetadata($domainMessage->getMetadata());
         if ($author) {
-            $jsonLD->creator = $author->toNative();
+            $jsonLD->creator = $author;
         }
 
         $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->toString();
@@ -309,7 +307,7 @@ class EventLDProjector extends OfferLDProjector implements
         // Set the creator.
         $author = $this->getAuthorFromMetadata($domainMessage->getMetadata());
         if ($author) {
-            $eventJsonLD->creator = $author->toNative();
+            $eventJsonLD->creator = $author;
         }
 
         // Set the id.
@@ -386,7 +384,8 @@ class EventLDProjector extends OfferLDProjector implements
         $eventType = null;
         foreach ($eventJsonLD->terms as $term) {
             if ($term->domain === 'eventtype') {
-                $typeId = new StringLiteral($term->id);
+                $typeId = $term->id;
+
                 // This is a workaround to allow copies of events that
                 // have a placeType instead of an eventType.
                 // These events could also be cleaned up in the future
@@ -572,15 +571,11 @@ class EventLDProjector extends OfferLDProjector implements
             ->normalize(ImmutablePlace::createNilLocation());
     }
 
-    private function getAuthorFromMetadata(Metadata $metadata): ?StringLiteral
+    private function getAuthorFromMetadata(Metadata $metadata): ?string
     {
         $properties = $metadata->serialize();
 
-        if (isset($properties['user_id'])) {
-            return new StringLiteral($properties['user_id']);
-        }
-
-        return null;
+        return $properties['user_id'] ?? null;
     }
 
     protected function getLabelAddedClassName(): string

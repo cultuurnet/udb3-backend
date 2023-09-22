@@ -105,7 +105,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     {
         $id = 'foo';
         $url = 'http://www.google.be';
-        $urlLabel = new MultilingualString(new Language('nl'), new StringLiteral('Google'));
+        $urlLabel = new MultilingualString(new Language('nl'), 'Google');
         $phone = '045';
         $email = 'test@test.com';
         $availabilityStarts = \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00');
@@ -199,7 +199,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
                 'nl' => 'Foo',
             ],
             'description' => (object) [
-                'nl' => $description,
+                'nl' => $description->toNative(),
             ],
             'languages' => ['nl'],
             'completedLanguages' => ['nl'],
@@ -241,7 +241,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
                     'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
                     'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                     'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                    'description' => (string) $description,
+                    'description' => $description->toNative(),
                     'copyrightHolder' => $copyrightHolder->toString(),
                     'inLanguage' => 'en',
                 ],

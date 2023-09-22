@@ -10,7 +10,6 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerAwareTrait;
-use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractConsumer implements ConsumerInterface
 {
@@ -89,15 +88,11 @@ abstract class AbstractConsumer implements ConsumerInterface
                 );
             }
 
-            $contentType = new StringLiteral($message->get('content_type'));
-
             $deserializer = $this->deserializerLocator->getDeserializerForContentType(
-                $contentType
+                $message->get('content_type')
             );
 
-            $deserializedMessage = $deserializer->deserialize(
-                new StringLiteral($message->body)
-            );
+            $deserializedMessage = $deserializer->deserialize($message->body);
 
             $this->delayIfNecessary();
 

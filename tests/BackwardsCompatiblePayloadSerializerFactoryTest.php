@@ -440,7 +440,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
 
         $this->assertEquals(
-            new MultilingualString(new Language('nl'), new StringLiteral('Reserveer plaatsen')),
+            new MultilingualString(new Language('nl'), 'Reserveer plaatsen'),
             $bookingInfoUpdated->getBookingInfo()->getUrlLabel()
         );
     }
@@ -611,7 +611,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
                 new Tariff(
                     new MultilingualString(
                         new Language('nl'),
-                        new StringLiteral('Senioren')
+                        'Senioren'
                     ),
                     new Money(1000, new Currency('EUR'))
                 )
@@ -620,7 +620,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
                 new Tariff(
                     new MultilingualString(
                         new Language('nl'),
-                        new StringLiteral('Studenten')
+                        'Studenten'
                     ),
                     new Money(750, new Currency('EUR'))
                 )

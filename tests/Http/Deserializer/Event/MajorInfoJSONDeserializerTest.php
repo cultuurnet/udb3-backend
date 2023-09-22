@@ -8,10 +8,10 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
-class MajorInfoJSONDeserializerTest extends TestCase
+final class MajorInfoJSONDeserializerTest extends TestCase
 {
     /**
      * @test
@@ -22,11 +22,11 @@ class MajorInfoJSONDeserializerTest extends TestCase
 
         $majorInfoJSONDeserializer = new MajorInfoJSONDeserializer();
 
-        $majorInfo = $majorInfoJSONDeserializer->deserialize(new StringLiteral($majorInfoAsJson));
+        $majorInfo = $majorInfoJSONDeserializer->deserialize($majorInfoAsJson);
 
         $expectedLocation = new LocationId('28cf728d-441b-4912-b3b0-f03df0d22491');
 
-        $this->assertEquals('talking title', $majorInfo->getTitle());
+        $this->assertEquals(new Title('talking title'), $majorInfo->getTitle());
         $this->assertEquals(new EventType('0.17.0.0.0', 'Route'), $majorInfo->getType());
         $this->assertEquals($expectedLocation, $majorInfo->getLocation());
         $this->assertEquals(new Calendar(CalendarType::PERMANENT()), $majorInfo->getCalendar());
@@ -41,11 +41,11 @@ class MajorInfoJSONDeserializerTest extends TestCase
 
         $majorInfoJSONDeserializer = new MajorInfoJSONDeserializer();
 
-        $majorInfo = $majorInfoJSONDeserializer->deserialize(new StringLiteral($majorInfoAsJson));
+        $majorInfo = $majorInfoJSONDeserializer->deserialize($majorInfoAsJson);
 
         $expectedLocation = new LocationId('28cf728d-441b-4912-b3b0-f03df0d22491');
 
-        $this->assertEquals('talking title', $majorInfo->getTitle());
+        $this->assertEquals(new Title('talking title'), $majorInfo->getTitle());
         $this->assertEquals(new EventType('0.17.0.0.0', 'Route'), $majorInfo->getType());
         $this->assertEquals($expectedLocation, $majorInfo->getLocation());
         $this->assertEquals(new Calendar(CalendarType::PERMANENT()), $majorInfo->getCalendar());
