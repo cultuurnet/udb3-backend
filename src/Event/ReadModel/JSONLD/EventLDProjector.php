@@ -384,14 +384,16 @@ final class EventLDProjector extends OfferLDProjector implements
         $eventType = null;
         foreach ($eventJsonLD->terms as $term) {
             if ($term->domain === 'eventtype') {
+                $typeId = $term->id;
+
                 // This is a workaround to allow copies of events that
                 // have a placeType instead of an eventType.
                 // These events could also be cleaned up in the future
                 // @see https://jira.uitdatabank.be/browse/III-3926
                 try {
-                    $eventType = $this->eventTypeResolver->byId($term->id);
+                    $eventType = $this->eventTypeResolver->byId($typeId);
                 } catch (\Exception $exception) {
-                    $eventType = $this->placeTypeResolver->byId($term->id);
+                    $eventType = $this->placeTypeResolver->byId($typeId);
                 }
             }
         }
@@ -573,11 +575,7 @@ final class EventLDProjector extends OfferLDProjector implements
     {
         $properties = $metadata->serialize();
 
-        if (isset($properties['user_id'])) {
-            return $properties['user_id'];
-        }
-
-        return null;
+        return $properties['user_id'] ?? null;
     }
 
     protected function getLabelAddedClassName(): string
