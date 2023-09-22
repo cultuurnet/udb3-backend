@@ -46,7 +46,7 @@ class FacilitiesJSONDeserializer extends JSONDeserializer
 
         return array_map(
             function ($facilityId) {
-                return $this->facilityResolver->byId(new StringLiteral($facilityId));
+                return $this->facilityResolver->byId($facilityId);
             },
             array_unique($data['facilities'])
         );

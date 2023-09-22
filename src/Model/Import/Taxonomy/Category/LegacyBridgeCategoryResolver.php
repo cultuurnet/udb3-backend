@@ -82,7 +82,7 @@ class LegacyBridgeCategoryResolver implements CategoryResolverInterface
 
         try {
             /** @var LegacyCategory $legacyCategory */
-            $legacyCategory = $resolver->byId(new StringLiteral($categoryID->toString()));
+            $legacyCategory = $resolver->byId($categoryID->toString());
             return $this->convertLegacyCategory($legacyCategory);
         } catch (\Exception $e) {
             return null;

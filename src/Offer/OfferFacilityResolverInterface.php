@@ -9,5 +9,5 @@ use CultuurNet\UDB3\StringLiteral;
 
 interface OfferFacilityResolverInterface
 {
-    public function byId(StringLiteral $facilityId): Facility;
+    public function byId(string $facilityId): Facility;
 }
