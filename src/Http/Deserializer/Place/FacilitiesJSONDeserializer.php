@@ -10,13 +10,12 @@ use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValidator;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
  *   Refactor to implement RequestBodyParser and throw ApiProblemException
  */
-class FacilitiesJSONDeserializer extends JSONDeserializer
+final class FacilitiesJSONDeserializer extends JSONDeserializer
 {
     private OfferFacilityResolverInterface $facilityResolver;
 
@@ -46,7 +45,7 @@ class FacilitiesJSONDeserializer extends JSONDeserializer
 
         return array_map(
             function ($facilityId) {
-                return $this->facilityResolver->byId(new StringLiteral($facilityId));
+                return $this->facilityResolver->byId($facilityId);
             },
             array_unique($data['facilities'])
         );

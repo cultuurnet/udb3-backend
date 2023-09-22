@@ -6,9 +6,8 @@ namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Facility;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
-class PlaceFacilityResolverTest extends TestCase
+final class PlaceFacilityResolverTest extends TestCase
 {
     /**
      * @test
@@ -21,7 +20,7 @@ class PlaceFacilityResolverTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage("Unknown facility id '1.8.2'");
 
-        $resolver->byId(new StringLiteral('1.8.2'));
+        $resolver->byId('1.8.2');
     }
 
     /**
@@ -32,7 +31,7 @@ class PlaceFacilityResolverTest extends TestCase
     {
         $resolver = new PlaceFacilityResolver();
 
-        $facility = $resolver->byId(new StringLiteral('3.23.3.0.0'));
+        $facility = $resolver->byId('3.23.3.0.0');
         $expectedFacility = new Facility('3.23.3.0.0', 'Rolstoel ter beschikking');
 
         $this->assertEquals($expectedFacility, $facility);

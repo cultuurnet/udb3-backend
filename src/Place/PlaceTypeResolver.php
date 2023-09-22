@@ -7,14 +7,13 @@ namespace CultuurNet\UDB3\Place;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Offer\TypeResolverInterface;
 use Exception;
-use CultuurNet\UDB3\StringLiteral;
 
-class PlaceTypeResolver implements TypeResolverInterface
+final class PlaceTypeResolver implements TypeResolverInterface
 {
     /**
      * @var EventType[]
      */
-    private $types;
+    private array $types;
 
     public function __construct()
     {
@@ -41,11 +40,11 @@ class PlaceTypeResolver implements TypeResolverInterface
         ];
     }
 
-    public function byId(StringLiteral $typeId): EventType
+    public function byId(string $typeId): EventType
     {
-        if (!array_key_exists((string) $typeId, $this->types)) {
+        if (!array_key_exists($typeId, $this->types)) {
             throw new Exception('Unknown place type id: ' . $typeId);
         }
-        return $this->types[(string) $typeId];
+        return $this->types[$typeId];
     }
 }

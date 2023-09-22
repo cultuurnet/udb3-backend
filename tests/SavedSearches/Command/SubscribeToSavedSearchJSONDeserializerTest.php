@@ -7,20 +7,19 @@ namespace CultuurNet\UDB3\SavedSearches\Command;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
-class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
+final class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 {
-    protected string $userId;
+    private string $userId;
 
-    protected SubscribeToSavedSearchJSONDeserializer $deserializer;
+    private SubscribeToSavedSearchJSONDeserializer $deserializer;
 
     public function setUp(): void
     {
         $this->userId ='xyx';
 
         $this->deserializer = new SubscribeToSavedSearchJSONDeserializer(
-            new StringLiteral($this->userId)
+            $this->userId
         );
     }
 
