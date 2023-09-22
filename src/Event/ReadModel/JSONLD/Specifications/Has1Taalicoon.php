@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications;
 
-use CultuurNet\UDB3\StringLiteral;
-
 class Has1Taalicoon implements EventSpecificationInterface
 {
     use Labelable;
 
     public function isSatisfiedBy(\stdClass $eventLd): bool
     {
-        return $this->hasLabel($eventLd, new StringLiteral('één taalicoon'));
+        return $this->hasLabel($eventLd, 'één taalicoon');
     }
 }
