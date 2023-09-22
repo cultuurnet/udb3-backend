@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
-use CultuurNet\UDB3\StringLiteral;
 
 final class Projector implements EventListener
 {
@@ -43,7 +42,7 @@ final class Projector implements EventListener
 
         if ($createdByIdentifier) {
             $ownerId = $this->userIdResolver->resolveCreatedByToUserId(
-                new StringLiteral($createdByIdentifier)
+                $createdByIdentifier
             );
 
             if (!$ownerId) {
@@ -52,7 +51,7 @@ final class Projector implements EventListener
 
             $this->permissionRepository->markResourceEditableByUser(
                 $placeImportedFromUDB2->getActorId(),
-                $ownerId->toNative()
+                $ownerId
             );
         }
     }

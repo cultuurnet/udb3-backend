@@ -43,7 +43,7 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
      */
     public function it_first_tries_to_resolve_created_by_as_a_uuid(): void
     {
-        $createdBy = new StringLiteral('4eaf3516-342f-4c28-a2ce-80a0c6332f11');
+        $createdBy = '4eaf3516-342f-4c28-a2ce-80a0c6332f11';
 
         $actualUserId = $this->resolver->resolveCreatedByToUserId($createdBy);
 
@@ -55,7 +55,7 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
      */
     public function it_logs_when_created_by_is_not_a_uuid(): void
     {
-        $createdBy = new StringLiteral('acf1c0f-30d-3ef-e7b-cd4b7676206');
+        $createdBy = 'acf1c0f-30d-3ef-e7b-cd4b7676206';
 
         $this->logger->expects($this->once())
             ->method('info')
@@ -78,7 +78,7 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
      */
     public function it_then_tries_to_resolve_createdby_as_a_non_uuid_id(): void
     {
-        $createdBy = new StringLiteral('auth0|c4ff15aa-a8d2-4952-b9eb-329d625b0d02');
+        $createdBy = 'auth0|c4ff15aa-a8d2-4952-b9eb-329d625b0d02';
         $userId = new StringLiteral('auth0|c4ff15aa-a8d2-4952-b9eb-329d625b0d02');
 
         $user = new UserIdentityDetails(
@@ -103,7 +103,7 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
      */
     public function it_then_tries_to_resolve_createdby_as_an_email_address(): void
     {
-        $createdBy = new StringLiteral('johndoe@example.com');
+        $createdBy = 'johndoe@example.com';
 
         $userId = new StringLiteral('abc');
 
@@ -134,7 +134,7 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
      */
     public function it_falls_back_to_resolving_createdby_as_a_nick_name_if_createdby_is_not_an_email_address(): void
     {
-        $createdBy = new StringLiteral('johndoe');
+        $createdBy = 'johndoe';
 
         $userId = new StringLiteral('abc');
 
@@ -167,7 +167,7 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
      */
     public function it_returns_null_when_user_id_not_resolved(): void
     {
-        $createdBy = new StringLiteral('johndoe');
+        $createdBy = 'johndoe';
 
         $this->users->expects($this->once())
             ->method('getUserById')

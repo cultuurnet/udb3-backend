@@ -70,11 +70,11 @@ final class ProjectorTest extends TestCase
             $payload
         );
 
-        $userId = new StringLiteral('123');
+        $userId = '123';
 
         $this->userIdResolver->expects($this->once())
             ->method('resolveCreatedByToUserId')
-            ->with(new StringLiteral('cultuurnet001'))
+            ->with('cultuurnet001')
             ->willReturn($userId);
 
         $this->repository->expects($this->once())
