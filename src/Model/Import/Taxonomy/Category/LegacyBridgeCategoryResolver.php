@@ -12,25 +12,14 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Offer\ThemeResolverInterface;
 use CultuurNet\UDB3\Offer\TypeResolverInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 class LegacyBridgeCategoryResolver implements CategoryResolverInterface
 {
-    /**
-     * @var TypeResolverInterface
-     */
-    private $typeResolver;
+    private TypeResolverInterface $typeResolver;
 
-    /**
-     * @var ThemeResolverInterface|null
-     */
-    private $themeResolver;
+    private ?ThemeResolverInterface $themeResolver;
 
-    /**
-     * @var OfferFacilityResolverInterface
-     */
-    private $facilityResolver;
-
+    private OfferFacilityResolverInterface $facilityResolver;
 
     public function __construct(
         TypeResolverInterface $typeResolver,
@@ -82,7 +71,7 @@ class LegacyBridgeCategoryResolver implements CategoryResolverInterface
 
         try {
             /** @var LegacyCategory $legacyCategory */
-            $legacyCategory = $resolver->byId(new StringLiteral($categoryID->toString()));
+            $legacyCategory = $resolver->byId($categoryID->toString());
             return $this->convertLegacyCategory($legacyCategory);
         } catch (\Exception $e) {
             return null;
