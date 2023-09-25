@@ -79,7 +79,7 @@ class Role extends EventSourcedAggregateRoot
 
     public function updateConstraint(Query $query): void
     {
-        if (!$this->isCurrentQueryEmpty() && !$this->query->sameValueAs($query)) {
+        if (!$this->isCurrentQueryEmpty() && !$this->query->sameAs($query)) {
             $this->apply(new ConstraintUpdated($this->uuid, $query));
         }
     }

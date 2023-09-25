@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ValueObjects;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use InvalidArgumentException;
 
 /**
@@ -16,28 +17,28 @@ use InvalidArgumentException;
  */
 final class Status implements Serializable
 {
+    use IsString;
+
     /**
      * Store the StatusType as a string to prevent serialization issues when the Calendar is part of a command that
      * gets queued in Redis, as the base Enum class that it extends from does not support serialization for some reason.
-     * @var string
      */
-    private $type;
 
     /**
      * @var StatusReason[]
      */
-    private $reason;
+    private array $reason;
 
     public function __construct(StatusType $type, array $reason)
     {
         $this->ensureTranslationsAreUnique($reason);
-        $this->type = $type->toNative();
+        $this->value = $type->toString();
         $this->reason = $reason;
     }
 
     public function getType(): StatusType
     {
-        return StatusType::fromNative($this->type);
+        return StatusType::fromNative($this->value);
     }
 
     public function getReason(): array
@@ -66,7 +67,7 @@ final class Status implements Serializable
     public function serialize(): array
     {
         $serialized = [
-            'type' => $this->type,
+            'type' => $this->value,
         ];
 
         $statusReasons = [];

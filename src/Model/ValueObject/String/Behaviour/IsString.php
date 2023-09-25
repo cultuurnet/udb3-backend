@@ -27,4 +27,9 @@ trait IsString
     {
         $this->value = $value;
     }
+
+    public function isEmpty(): bool
+    {
+        return $this->value === '';
+    }
 }

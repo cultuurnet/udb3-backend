@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ValueObjects;
 
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
+
 class Query
 {
-    private string $value;
+    use IsString;
 
     public function __construct(string $value)
     {
@@ -15,20 +17,5 @@ class Query
         }
 
         $this->value = $value;
-    }
-
-    public function toNative(): string
-    {
-        return $this->value;
-    }
-
-    public function isEmpty(): bool
-    {
-        return empty($this->value);
-    }
-
-    public function sameValueAs(Query $other): bool
-    {
-        return $this->value === $other->value;
     }
 }

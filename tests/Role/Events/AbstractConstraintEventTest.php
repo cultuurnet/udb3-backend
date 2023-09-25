@@ -50,7 +50,7 @@ class AbstractConstraintEventTest extends TestCase
 
         $expectedArray = [
             'uuid' => $this->uuid->toString(),
-            'query' => $this->query->toNative(),
+            'query' => $this->query->toString(),
         ];
 
         $this->assertEquals($expectedArray, $actualArray);
@@ -63,7 +63,7 @@ class AbstractConstraintEventTest extends TestCase
     {
         $data = [
             'uuid' => $this->uuid->toString(),
-            'query' => $this->query->toNative(),
+            'query' => $this->query->toString(),
         ];
         $actualEvent = $this->event->deserialize($data);
         $expectedEvent = $this->event;

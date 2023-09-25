@@ -66,7 +66,7 @@ class UpdateOfferStatusCommand extends AbstractCommand
                 $input,
                 $output,
                 new ConfirmationQuestion(
-                    "This action will update the status of {$count} {$this->getPluralOfferType()} to {$statusType->toNative()}, continue? [y/N] ",
+                    "This action will update the status of {$count} {$this->getPluralOfferType()} to {$statusType->toString()}, continue? [y/N] ",
                     false
                 )
             );
@@ -112,9 +112,9 @@ class UpdateOfferStatusCommand extends AbstractCommand
         $question =  new ChoiceQuestion(
             'What should be the new status?',
             [
-                StatusType::available()->toNative(),
-                StatusType::temporarilyUnavailable()->toNative(),
-                StatusType::unavailable()->toNative(),
+                StatusType::available()->toString(),
+                StatusType::temporarilyUnavailable()->toString(),
+                StatusType::unavailable()->toString(),
             ]
         );
         $question->setErrorMessage('Invalid status: %s');

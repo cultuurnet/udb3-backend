@@ -449,7 +449,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             // If there are no subEvents, set the top status and top bookingAvailability.
             $calendar->status = $topStatus;
             $calendar->bookingAvailability = $topBookingAvailability;
-        } elseif ($calendar->deriveStatusTypeFromSubEvents()->equals($topStatus->getType())) {
+        } elseif ($calendar->deriveStatusTypeFromSubEvents()->sameAs($topStatus->getType())) {
             // If there are subEvents, the top status and bookingAvailability have already been determined by their
             // respective status and bookingAvailability and it should not be overwritten to avoid confusion in the
             // expected behavior in tests, even though the JSON-LD projections will always fix it (again).
@@ -464,23 +464,23 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     private function deriveStatusTypeFromSubEvents(): StatusType
     {
         $statusTypeCounts = [];
-        $statusTypeCounts[StatusType::available()->toNative()] = 0;
-        $statusTypeCounts[StatusType::temporarilyUnavailable()->toNative()] = 0;
-        $statusTypeCounts[StatusType::unavailable()->toNative()] = 0;
+        $statusTypeCounts[StatusType::available()->toString()] = 0;
+        $statusTypeCounts[StatusType::temporarilyUnavailable()->toString()] = 0;
+        $statusTypeCounts[StatusType::unavailable()->toString()] = 0;
 
         foreach ($this->timestamps as $timestamp) {
-            ++$statusTypeCounts[$timestamp->getStatus()->getType()->toNative()];
+            ++$statusTypeCounts[$timestamp->getStatus()->getType()->toString()];
         }
 
-        if ($statusTypeCounts[StatusType::available()->toNative()] > 0) {
+        if ($statusTypeCounts[StatusType::available()->toString()] > 0) {
             return StatusType::available();
         }
 
-        if ($statusTypeCounts[StatusType::temporarilyUnavailable()->toNative()] > 0) {
+        if ($statusTypeCounts[StatusType::temporarilyUnavailable()->toString()] > 0) {
             return StatusType::temporarilyUnavailable();
         }
 
-        if ($statusTypeCounts[StatusType::unavailable()->toNative()] > 0) {
+        if ($statusTypeCounts[StatusType::unavailable()->toString()] > 0) {
             return StatusType::unavailable();
         }
 
@@ -507,7 +507,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         // If the calendar has subEvents, the top level status is valid if it is the same type as the type derived from
         // the subEvents. In that case return $this->status so we include the top-level reason (if it has one).
         $expectedStatusType = $this->deriveStatusTypeFromSubEvents();
-        if ($this->status->getType()->equals($expectedStatusType)) {
+        if ($this->status->getType()->sameAs($expectedStatusType)) {
             // Also make sure to include the reason of a sub event when there is no reason on the top level.
             if (count($this->timestamps) === 1 && count($this->status->getReason()) === 0) {
                 return $this->timestamps[0]->getStatus();

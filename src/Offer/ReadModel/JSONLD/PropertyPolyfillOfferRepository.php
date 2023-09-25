@@ -98,7 +98,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 
         if (!isset($json['status'])) {
             $json['status'] = [
-                'type' => StatusType::available()->toNative(),
+                'type' => StatusType::available()->toString(),
             ];
         }
 
@@ -144,7 +144,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                     [
                         'id' => $index,
                         'status' => [
-                            'type' => StatusType::available()->toNative(),
+                            'type' => StatusType::available()->toString(),
                         ],
                         'bookingAvailability' => BookingAvailability::available()->serialize(),
                     ],
@@ -172,7 +172,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 
         if (!isset($json['location']['status'])) {
             $json['location']['status'] = [
-                'type' => StatusType::available()->toNative(),
+                'type' => StatusType::available()->toString(),
             ];
         }
 
