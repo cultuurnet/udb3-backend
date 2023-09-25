@@ -103,9 +103,13 @@ class EventDenormalizer extends OfferDenormalizer
             throw new UnsupportedException('Event data should be an associative array.');
         }
 
-        /* @var ImmutableEvent $offer */
         $offer = $this->denormalizeOffer($data);
-        $offer = $this->denormalizeAttendanceMode($data, $offer); // @phpstan-ignore-line
+
+        if (! $offer instanceof ImmutableEvent) {
+            throw new UnsupportedException(sprintf('Expected an %s but got a %s', ImmutableEvent::class, get_class($offer)));
+        }
+
+        $offer = $this->denormalizeAttendanceMode($data, $offer);
         $offer = $this->denormalizeOnlineUrl($data, $offer);
         return $this->denormalizeAudienceType($data, $offer);
     }

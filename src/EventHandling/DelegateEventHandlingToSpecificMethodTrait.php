@@ -18,8 +18,7 @@ trait DelegateEventHandlingToSpecificMethodTrait
         }
     }
 
-    // @phpstan-ignore-next-line
-    private function getHandleMethodName($event): ?string
+    private function getHandleMethodName(object $event): ?string
     {
         $classParts = explode('\\', get_class($event));
         $methodName = 'apply' . end($classParts);
