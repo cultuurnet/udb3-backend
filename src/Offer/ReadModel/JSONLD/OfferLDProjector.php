@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Category;
 use CultuurNet\UDB3\CulturefeedSlugger;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EntityServiceInterface;
+use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\OrganizerServiceInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Facility;
@@ -856,6 +857,11 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         if (isset($mainImage)) {
             $offerLd->image = $mainImage->getSourceLocation()->toString();
         }
+    }
+
+    protected function applyConcluded(Concluded $concluded): JsonDocument
+    {
+        return $this->loadDocumentFromRepository($concluded);
     }
 
     protected function newDocument(string $id): JsonDocument

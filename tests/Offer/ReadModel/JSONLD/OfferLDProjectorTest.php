@@ -9,6 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -2425,5 +2426,31 @@ class OfferLDProjectorTest extends TestCase
 
         $body = $this->project($event, $id, null, $this->recordedOn->toBroadwayDateTime());
         $this->assertEquals($expectedBody, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_the_playhead_on_concluded(): void
+    {
+        $itemId = 'C50051D6-EEB1-E9F9-B07889755901D7156';
+        $initialDocument = new JsonDocument(
+            $itemId,
+            Json::encode([])
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $concluded = new Concluded($itemId);
+
+        $body = $this->project($concluded, $itemId, null, $this->recordedOn->toBroadwayDateTime());
+
+        $this->assertEquals(
+            (object) [
+                'modified' => $this->recordedOn->toString(),
+                'playhead' => 1,
+            ],
+            $body
+        );
     }
 }

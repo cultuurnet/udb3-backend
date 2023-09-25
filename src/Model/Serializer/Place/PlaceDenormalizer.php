@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
@@ -113,9 +114,13 @@ class PlaceDenormalizer extends OfferDenormalizer
             throw new UnsupportedException('Place data should be an associative array.');
         }
 
-        /* @var ImmutablePlace $offer */
         $offer = $this->denormalizeOffer($data);
-        return $this->denormalizeGeoCoordinates($data, $offer); // @phpstan-ignore-line
+
+        if (! $offer instanceof ImmutablePlace) {
+            throw new UnsupportedException(sprintf('Expected an %s but got a %s', ImmutableEvent::class, get_class($offer)));
+        }
+
+        return $this->denormalizeGeoCoordinates($data, $offer);
     }
 
     private function denormalizeGeoCoordinates(array $data, ImmutablePlace $place): ImmutablePlace
