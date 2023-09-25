@@ -55,9 +55,9 @@ final class Address implements Serializable, JsonLdSerializableInterface
     public function serialize(): array
     {
         return [
-          'streetAddress' => $this->streetAddress->toNative(),
-          'postalCode' => $this->postalCode->toNative(),
-          'addressLocality' => $this->locality->toNative(),
+          'streetAddress' => $this->streetAddress->toString(),
+          'postalCode' => $this->postalCode->toString(),
+          'addressLocality' => $this->locality->toString(),
           'addressCountry' => $this->countryCode->toString(),
         ];
     }
@@ -76,9 +76,9 @@ final class Address implements Serializable, JsonLdSerializableInterface
     {
         return [
             'addressCountry' => $this->countryCode->toString(),
-            'addressLocality' => $this->locality->toNative(),
-            'postalCode' => $this->postalCode->toNative(),
-            'streetAddress' => $this->streetAddress->toNative(),
+            'addressLocality' => $this->locality->toString(),
+            'postalCode' => $this->postalCode->toString(),
+            'streetAddress' => $this->streetAddress->toString(),
         ];
     }
 

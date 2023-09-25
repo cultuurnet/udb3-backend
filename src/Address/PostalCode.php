@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address;
 
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
 /**
@@ -13,22 +14,11 @@ use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 final class PostalCode
 {
     use Trims;
-
-    private string $value;
+    use IsString;
 
     public function __construct(string $value)
     {
         $value = $this->trim($value);
         $this->value = $value;
-    }
-
-    public function toNative(): string
-    {
-        return $this->value;
-    }
-
-    public function sameValueAs(self $postalCode): bool
-    {
-        return $this->toNative() === $postalCode->toNative();
     }
 }
