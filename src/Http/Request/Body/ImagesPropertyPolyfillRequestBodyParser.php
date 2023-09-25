@@ -159,7 +159,7 @@ final class ImagesPropertyPolyfillRequestBodyParser implements RequestBodyParser
         // Only set missing properties, so a client can also include overwrites for specific properties if wanted.
         // Included properties will only be overwritten on the event/place/organizer, not on the image aggregate.
         if (!isset($imageData->description)) {
-            $imageData->description = $image->getDescription()->toNative();
+            $imageData->description = $image->getDescription()->toString();
         }
         if (!isset($imageData->copyrightHolder)) {
             $imageData->copyrightHolder = $image->getCopyrightHolder()->toString();

@@ -578,7 +578,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
         // Update when copyright or description is changed.
         return !$copyrightHolder->sameAs($image->getCopyrightHolder()) ||
-            !$description->sameValueAs($image->getDescription());
+            !$description->sameAs($image->getDescription());
     }
 
     public function removeImage(Image $image): void

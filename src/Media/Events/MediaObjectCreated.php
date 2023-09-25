@@ -75,11 +75,11 @@ final class MediaObjectCreated implements Serializable
     {
         return [
             'media_object_id' => $this->getMediaObjectId()->toString(),
-            'mime_type' => $this->getMimeType()->toNative(),
-            'description' => $this->getDescription()->toNative(),
+            'mime_type' => $this->getMimeType()->toString(),
+            'description' => $this->getDescription()->toString(),
             'copyright_holder' => $this->getCopyrightHolder()->toString(),
             'source_location' => $this->getSourceLocation()->toString(),
-            'language' => (string) $this->getLanguage(),
+            'language' => $this->getLanguage()->toString(),
         ];
     }
 

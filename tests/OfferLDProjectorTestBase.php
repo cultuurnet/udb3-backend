@@ -241,7 +241,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
                     'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
                     'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                     'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                    'description' => $description->toNative(),
+                    'description' => $description->toString(),
                     'copyrightHolder' => $copyrightHolder->toString(),
                     'inLanguage' => 'en',
                 ],
