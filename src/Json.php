@@ -8,7 +8,7 @@ use JsonException;
 
 final class Json
 {
-    public static int $depth = 512;
+    private const DEPTH = 512;
 
     /**
      * @param mixed $value
@@ -22,7 +22,7 @@ final class Json
      */
     public static function encode($value): string
     {
-        return json_encode($value, JSON_THROW_ON_ERROR, self::$depth);
+        return json_encode($value, JSON_THROW_ON_ERROR, self::DEPTH);
     }
 
     /**
@@ -36,9 +36,9 @@ final class Json
      * @throws JsonException
      *   If the JSON could not be decoded, for example because the syntax is invalid.
      */
-    public static function decode(string $data) // @phpstan-ignore-line III-5812 Can be fixed once updating to PHP 8 => ?bool|array
+    public static function decode(string $data) // @phpstan-ignore-line III-5812 Can be given a return type once updating to PHP 8
     {
-        return json_decode($data, false, self::$depth, JSON_THROW_ON_ERROR);
+        return json_decode($data, false, self::DEPTH, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -52,8 +52,8 @@ final class Json
      * @throws JsonException
      *   If the JSON could not be decoded, for example because the syntax is invalid.
      */
-    public static function decodeAssociatively(string $data) // @phpstan-ignore-line III-5812 Can be fixed once updating to PHP 8 => ?bool|array
+    public static function decodeAssociatively(string $data) // @phpstan-ignore-line III-5812 Can be given a return type once updating to PHP 8
     {
-        return json_decode($data, true, self::$depth, JSON_THROW_ON_ERROR);
+        return json_decode($data, true, self::DEPTH, JSON_THROW_ON_ERROR);
     }
 }
