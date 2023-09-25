@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD;
 
-use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Offer\Item\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\CalendarUpdated;
@@ -205,10 +204,5 @@ class ItemLDProjector extends OfferLDProjector
     protected function getFacilitiesUpdatedClassName(): string
     {
         return FacilitiesUpdated::class;
-    }
-
-    protected function getConcludedClassName(): string
-    {
-        return Concluded::class;
     }
 }
