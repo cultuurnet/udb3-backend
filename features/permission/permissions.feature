@@ -14,6 +14,7 @@ Feature: Test the permissions in UDB3
     And I set the JSON request payload from "events/rondleiding-citadel.json"
     And I send a POST request to "/imports/events/"
     And I keep the value of the JSON response at "id" as "uuid_event_rondleiding"
+    And I wait for the event with url "/events/%{uuid_event_rondleiding}" to be indexed
 
   Scenario: update place WITH permission - owner
     Given I am authorized as JWT provider v1 user "invoerder_lgm"
