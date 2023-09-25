@@ -40,7 +40,6 @@ class CalendarTest extends TestCase
 {
     public const START_DATE = '2016-03-06T10:00:00+01:00';
     public const END_DATE = '2016-03-13T12:00:00+01:00';
-
     public const TIMESTAMP_1 = '1457254800';
     public const TIMESTAMP_1_START_DATE = '2016-03-06T10:00:00+01:00';
     public const TIMESTAMP_1_END_DATE = '2016-03-06T10:00:00+01:00';
@@ -1913,5 +1912,38 @@ class CalendarTest extends TestCase
         foreach ($updatedCalendar->getTimestamps() as $timestamp) {
             $this->assertEquals($newStatus, $timestamp->getStatus());
         }
+    }
+
+    /**
+     * @test
+     */
+    public function time_stamps_need_to_have_type_time_stamp(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Timestamps should have type TimeStamp.');
+
+        new Calendar(
+            CalendarType::SINGLE(),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
+            ['wrong timestamp'] // @phpstan-ignore-line
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function opening_hours_need_to_have_type_opening_hour(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('OpeningHours should have type OpeningHour.');
+
+        new Calendar(
+            CalendarType::PERIODIC(),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
+            [],
+            ['wrong opening hours'] // @phpstan-ignore-line
+        );
     }
 }
