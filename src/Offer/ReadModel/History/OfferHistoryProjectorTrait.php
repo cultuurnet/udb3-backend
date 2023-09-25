@@ -62,7 +62,7 @@ trait OfferHistoryProjectorTrait
 
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, "Beschrijving vertaald ({$event->getLanguage()})")
+            Log::createFromDomainMessage($domainMessage, "Beschrijving vertaald ({$event->getLanguage()->toString()})")
         );
     }
 
@@ -334,7 +334,7 @@ trait OfferHistoryProjectorTrait
 
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, "Titel vertaald ({$event->getLanguage()})")
+            Log::createFromDomainMessage($domainMessage, "Titel vertaald ({$event->getLanguage()->toString()})")
         );
     }
 

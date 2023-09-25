@@ -82,7 +82,15 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /** @var EventCreated|PlaceCreated|OrganizerCreatedWithUniqueWebsite $created */
         $created = $this->serializer->deserialize($decoded);
 
-        $this->assertEquals($expectedMainLanguage, $created->getMainLanguage());
+        /*
+         * The signature of getMainLanguage() is not consistent, sometimes this returns a string, sometimes a Language object
+         * */
+        if (is_string($created->getMainLanguage())) {
+            $this->assertEquals($expectedMainLanguage->toString(), $created->getMainLanguage());
+        } else {
+            $this->assertEquals($expectedMainLanguage->toString(), $created->getMainLanguage()->toString());
+            $this->assertTrue($expectedMainLanguage->sameAs($created->getMainLanguage()));
+        }
     }
 
     public function mainLanguageDataProvider(): array
