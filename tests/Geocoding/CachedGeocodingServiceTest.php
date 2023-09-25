@@ -7,26 +7,22 @@ namespace CultuurNet\UDB3\Geocoding;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
+use CultuurNet\UDB3\Json;
 use Doctrine\Common\Cache\ArrayCache;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Doctrine\Common\Cache\Cache;
 
 class CachedGeocodingServiceTest extends TestCase
 {
-    /**
-     * @var ArrayCache
-     */
-    private $cache;
+    private ArrayCache $cache;
 
     /**
      * @var GeocodingService|MockObject
      */
     private $decoratee;
 
-    /**
-     * @var CachedGeocodingService
-     */
-    private $service;
+    private CachedGeocodingService $service;
 
     public function setUp(): void
     {
@@ -76,5 +72,28 @@ class CachedGeocodingServiceTest extends TestCase
 
         $this->assertNull($freshCoordinates);
         $this->assertNull($cachedCoordinates);
+    }
+
+    /**
+     * @test
+     */
+    public function it_saves_in_the_cache(): void
+    {
+        $address = 'Wrong address';
+
+        $geocodingService = $this->createMock(GeocodingService::class);
+        $geocodingService->expects($this->once())
+            ->method('getCoordinates')
+            ->with($address)
+            ->willReturn(null);
+
+        $cache = $this->createMock(Cache::class);
+
+        $cache->expects($this->once())
+            ->method('save')
+            ->with($address, Json::encode(CachedGeocodingService::NO_COORDINATES_FOUND));
+
+        $service = new CachedGeocodingService($geocodingService, $cache);
+        $this->assertNull($service->getCoordinates($address));
     }
 }
