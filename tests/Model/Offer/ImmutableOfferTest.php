@@ -566,7 +566,12 @@ class ImmutableOfferTest extends TestCase
         $offer = $this->getOffer();
         $calendar = $offer->getCalendar();
 
-        /** @phpstan-ignore-next-line  */
+        if (! $calendar instanceof SingleSubEventCalendar) {
+            $this->addWarning(sprintf('Calender expected a %s, received %s', SingleSubEventCalendar::class, get_class($calendar)));
+
+            return;
+        }
+
         $expected = $calendar->getEndDate();
         $actual = $offer->getAvailableTo();
 
