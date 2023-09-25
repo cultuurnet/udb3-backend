@@ -868,7 +868,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $languageCode = $language->getCode();
 
         return !isset($this->descriptions[$languageCode]) ||
-            !$description->sameValueAs($this->descriptions[$languageCode]);
+            !$description->sameAs($this->descriptions[$languageCode]);
     }
 
     protected function isDeleted(): bool

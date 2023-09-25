@@ -579,7 +579,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
         $languageCode = $descriptionTranslated->getLanguage()->getCode();
-        $description = $descriptionTranslated->getDescription()->toNative();
+        $description = $descriptionTranslated->getDescription()->toString();
         if (empty($offerLd->description)) {
             $offerLd->description = new \stdClass();
         }
@@ -698,7 +698,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         }
 
         $mainLanguage = isset($offerLd->mainLanguage) ? $offerLd->mainLanguage : 'nl';
-        $offerLd->description->{$mainLanguage} = $descriptionUpdated->getDescription()->toNative();
+        $offerLd->description->{$mainLanguage} = $descriptionUpdated->getDescription()->toString();
 
         return $document->withBody($offerLd);
     }

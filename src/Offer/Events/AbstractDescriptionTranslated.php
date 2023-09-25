@@ -28,7 +28,7 @@ class AbstractDescriptionTranslated extends AbstractPropertyTranslatedEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'description' => $this->description->toNative(),
+            'description' => $this->description->toString(),
         ];
     }
 
