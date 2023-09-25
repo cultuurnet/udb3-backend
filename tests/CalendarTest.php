@@ -409,7 +409,7 @@ class CalendarTest extends TestCase
                     'type' => StatusType::available()->toNative(),
                 ],
                 'bookingAvailability' => [
-                    'type' => BookingAvailabilityType::available()->toNative(),
+                    'type' => BookingAvailabilityType::available()->toString(),
                 ],
                 'timestamps' => [
                     [
@@ -419,7 +419,7 @@ class CalendarTest extends TestCase
                             'type' => StatusType::available()->toNative(),
                         ],
                         'bookingAvailability' => [
-                            'type' => BookingAvailabilityType::available()->toNative(),
+                            'type' => BookingAvailabilityType::available()->toString(),
                         ],
                     ],
                     [
@@ -429,7 +429,7 @@ class CalendarTest extends TestCase
                             'type' => StatusType::available()->toNative(),
                         ],
                         'bookingAvailability' => [
-                            'type' => BookingAvailabilityType::available()->toNative(),
+                            'type' => BookingAvailabilityType::available()->toString(),
                         ],
                     ],
                 ],
@@ -725,7 +725,7 @@ class CalendarTest extends TestCase
                         'type' => StatusType::available()->toNative(),
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -737,7 +737,7 @@ class CalendarTest extends TestCase
                                 'type' => StatusType::available()->toNative(),
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -774,7 +774,7 @@ class CalendarTest extends TestCase
                         ],
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -790,7 +790,7 @@ class CalendarTest extends TestCase
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -820,7 +820,7 @@ class CalendarTest extends TestCase
                         'type' => StatusType::available()->toNative(),
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -832,7 +832,7 @@ class CalendarTest extends TestCase
                                 'type' => StatusType::available()->toNative(),
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                         [
@@ -844,7 +844,7 @@ class CalendarTest extends TestCase
                                 'type' => StatusType::available()->toNative(),
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -888,7 +888,7 @@ class CalendarTest extends TestCase
                         'type' => StatusType::available()->toNative(),
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -904,7 +904,7 @@ class CalendarTest extends TestCase
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                         [
@@ -920,7 +920,7 @@ class CalendarTest extends TestCase
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -964,7 +964,7 @@ class CalendarTest extends TestCase
                         'type' => 'TemporarilyUnavailable',
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -980,7 +980,7 @@ class CalendarTest extends TestCase
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                         [
@@ -996,7 +996,7 @@ class CalendarTest extends TestCase
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -1040,7 +1040,7 @@ class CalendarTest extends TestCase
                         'type' => 'Unavailable',
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -1056,7 +1056,7 @@ class CalendarTest extends TestCase
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                         [
@@ -1072,7 +1072,7 @@ class CalendarTest extends TestCase
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -1124,7 +1124,7 @@ class CalendarTest extends TestCase
                         'type' => 'Unavailable',
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -1140,7 +1140,7 @@ class CalendarTest extends TestCase
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                         [
@@ -1156,7 +1156,7 @@ class CalendarTest extends TestCase
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -1190,7 +1190,7 @@ class CalendarTest extends TestCase
                         'type' => StatusType::available()->toNative(),
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::unavailable()->toNative(),
+                        'type' => BookingAvailabilityType::unavailable()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -1202,7 +1202,7 @@ class CalendarTest extends TestCase
                                 'type' => StatusType::available()->toNative(),
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::unavailable()->toNative(),
+                                'type' => BookingAvailabilityType::unavailable()->toString(),
                             ],
                         ],
                         [
@@ -1214,7 +1214,7 @@ class CalendarTest extends TestCase
                                 'type' => StatusType::available()->toNative(),
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::unavailable()->toNative(),
+                                'type' => BookingAvailabilityType::unavailable()->toString(),
                             ],
                         ],
                     ],
@@ -1234,7 +1234,7 @@ class CalendarTest extends TestCase
                         'type' => StatusType::available()->toNative(),
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                 ],
             ],
@@ -1248,7 +1248,7 @@ class CalendarTest extends TestCase
                         'type' => StatusType::available()->toNative(),
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                 ],
             ],
@@ -1272,7 +1272,7 @@ class CalendarTest extends TestCase
                         ],
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                 ],
             ],

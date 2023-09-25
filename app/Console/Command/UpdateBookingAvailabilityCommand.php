@@ -55,8 +55,8 @@ class UpdateBookingAvailabilityCommand extends AbstractCommand
         $bookingQuestion =  new ChoiceQuestion(
             'Provide the new booking availability?',
             [
-                BookingAvailabilityType::available()->toNative(),
-                BookingAvailabilityType::unavailable()->toNative(),
+                BookingAvailabilityType::available()->toString(),
+                BookingAvailabilityType::unavailable()->toString(),
             ]
         );
         $bookingQuestion->setErrorMessage('Invalid booking availability: %s');
@@ -70,7 +70,7 @@ class UpdateBookingAvailabilityCommand extends AbstractCommand
             $input,
             $output,
             new ConfirmationQuestion(
-                "This action will update the status of $count events to {$bookingAvailability->toNative()}, continue? [y/N] ",
+                "This action will update the status of $count events to {$bookingAvailability->toString()}, continue? [y/N] ",
                 false
             )
         );

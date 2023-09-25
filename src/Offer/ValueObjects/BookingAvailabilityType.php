@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ValueObjects;
 
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use InvalidArgumentException;
 
 /**
@@ -12,10 +13,10 @@ use InvalidArgumentException;
  */
 class BookingAvailabilityType
 {
+    use IsString;
+
     private const AVAILABLE = 'Available';
     private const UNAVAILABLE = 'Unavailable';
-
-    private string $value;
 
     /**
      * @var string[]
@@ -41,11 +42,6 @@ class BookingAvailabilityType
     public static function unavailable(): BookingAvailabilityType
     {
         return new BookingAvailabilityType(self::UNAVAILABLE);
-    }
-
-    public function toNative(): string
-    {
-        return $this->value;
     }
 
     public static function fromNative(string $value): BookingAvailabilityType

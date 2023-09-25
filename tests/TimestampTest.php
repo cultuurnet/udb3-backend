@@ -120,7 +120,7 @@ class TimestampTest extends TestCase
                 ],
             ],
             'bookingAvailability' => [
-                'type' => BookingAvailabilityType::unavailable()->toNative(),
+                'type' => BookingAvailabilityType::unavailable()->toString(),
             ],
         ];
 

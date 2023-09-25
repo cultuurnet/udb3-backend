@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Offer\ValueObjects;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 
 /**
  * @deprecated
@@ -14,16 +15,16 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelB
  */
 final class BookingAvailability implements Serializable
 {
+    use IsString;
+
     /**
      * Store the BookingAvailabilityType as a string to prevent serialization issues when the Calendar is part of a
      * command that gets queued in Redis, as the base Enum class that it extends from does not support serialization for
      * some reason.
      */
-    private string $type;
-
     public function __construct(BookingAvailabilityType $type)
     {
-        $this->type = $type->toNative();
+        $this->value = $type->toString();
     }
 
     public static function available(): BookingAvailability
@@ -38,12 +39,12 @@ final class BookingAvailability implements Serializable
 
     public function getType(): BookingAvailabilityType
     {
-        return BookingAvailabilityType::fromNative($this->type);
+        return BookingAvailabilityType::fromNative($this->value);
     }
 
     public function equals(BookingAvailability $bookingAvailability): bool
     {
-        return $this->type === $bookingAvailability->getType()->toNative();
+        return $this->value === $bookingAvailability->getType()->toString();
     }
 
     public static function deserialize(array $data): BookingAvailability
@@ -54,7 +55,7 @@ final class BookingAvailability implements Serializable
     public function serialize(): array
     {
         return [
-            'type' => $this->type,
+            'type' => $this->value,
         ];
     }
 
