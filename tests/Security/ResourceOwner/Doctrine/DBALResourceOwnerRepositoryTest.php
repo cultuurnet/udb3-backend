@@ -129,4 +129,21 @@ final class DBALResourceOwnerRepositoryTest extends TestCase
             $this->repository->getEditableResourceIds($johnDoe)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_updates_the_user_id_if_previous_user_was_not_known(): void
+    {
+        $janeDoe = 'def';
+
+        $this->repository->markResourceEditableByNewUser('C50051D6-EEB1-E9F9-B07889755901D716', $janeDoe);
+
+        $this->assertEquals(
+            [
+                'C50051D6-EEB1-E9F9-B07889755901D716',
+            ],
+            $this->repository->getEditableResourceIds($janeDoe)
+        );
+    }
 }

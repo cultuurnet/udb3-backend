@@ -63,10 +63,31 @@ final class DBALResourceOwnerRepository implements ResourceOwnerRepository, Reso
 
     public function markResourceEditableByNewUser(string $resourceId, string $userId): void
     {
-        $this->connection->update(
-            $this->tableName,
-            ['user_id' => $userId],
-            [$this->idField => $resourceId]
-        );
+        if ($this->getResourceCount($resourceId) === 0) {
+            $this->connection->insert(
+                $this->tableName,
+                [
+                    $this->idField => $resourceId,
+                    'user_id' => $userId,
+                ]
+            );
+        } else {
+            $this->connection->update(
+                $this->tableName,
+                ['user_id' => $userId],
+                [$this->idField => $resourceId]
+            );
+        }
+    }
+
+    private function getResourceCount(string $resourceId): int
+    {
+        return count($this->connection->createQueryBuilder()
+            ->select($this->idField)
+            ->from($this->tableName)
+            ->where($this->idField . ' = :resource_id')
+            ->setParameter(':resource_id', $resourceId)
+            ->execute()
+            ->fetchAll());
     }
 }
