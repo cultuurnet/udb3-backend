@@ -372,30 +372,30 @@ class CalendarTest extends TestCase
                 'startDate' => '2016-03-06T10:00:00+01:00',
                 'endDate' => '2016-03-13T12:00:00+01:00',
                 'status' => [
-                    'type' => StatusType::available()->toNative(),
+                    'type' => StatusType::available()->toString(),
                 ],
                 'bookingAvailability' => [
-                    'type' => BookingAvailabilityType::available()->toNative(),
+                    'type' => BookingAvailabilityType::available()->toString(),
                 ],
                 'timestamps' => [
                     [
                         'startDate' => self::TIMESTAMP_1_START_DATE,
                         'endDate' => self::TIMESTAMP_1_END_DATE,
                         'status' => [
-                            'type' => StatusType::available()->toNative(),
+                            'type' => StatusType::available()->toString(),
                         ],
                         'bookingAvailability' => [
-                            'type' => BookingAvailabilityType::available()->toNative(),
+                            'type' => BookingAvailabilityType::available()->toString(),
                         ],
                     ],
                     [
                         'startDate' => self::TIMESTAMP_2_START_DATE,
                         'endDate' => self::TIMESTAMP_2_END_DATE,
                         'status' => [
-                            'type' => StatusType::available()->toNative(),
+                            'type' => StatusType::available()->toString(),
                         ],
                         'bookingAvailability' => [
-                            'type' => BookingAvailabilityType::available()->toNative(),
+                            'type' => BookingAvailabilityType::available()->toString(),
                         ],
                     ],
                 ],
@@ -450,14 +450,14 @@ class CalendarTest extends TestCase
                     'startDate' => self::TIMESTAMP_1_START_DATE,
                     'endDate' => self::TIMESTAMP_1_END_DATE,
                     'status' => [
-                        'type' => StatusType::available()->toNative(),
+                        'type' => StatusType::available()->toString(),
                     ],
                 ],
                 [
                     'startDate' => self::TIMESTAMP_2_START_DATE,
                     'endDate' => self::TIMESTAMP_2_END_DATE,
                     'status' => [
-                        'type' => StatusType::available()->toNative(),
+                        'type' => StatusType::available()->toString(),
                     ],
                 ],
             ],
@@ -688,10 +688,10 @@ class CalendarTest extends TestCase
                     'startDate' => '2016-03-06T10:00:00+01:00',
                     'endDate' => '2016-03-13T12:00:00+01:00',
                     'status' => [
-                        'type' => StatusType::available()->toNative(),
+                        'type' => StatusType::available()->toString(),
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -700,10 +700,10 @@ class CalendarTest extends TestCase
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::available()->toNative(),
+                                'type' => StatusType::available()->toString(),
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -740,7 +740,7 @@ class CalendarTest extends TestCase
                         ],
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -756,7 +756,7 @@ class CalendarTest extends TestCase
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -783,10 +783,10 @@ class CalendarTest extends TestCase
                     'startDate' => '2016-03-06T10:00:00+01:00',
                     'endDate' => '2020-03-13T12:00:00+01:00',
                     'status' => [
-                        'type' => StatusType::available()->toNative(),
+                        'type' => StatusType::available()->toString(),
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -795,10 +795,10 @@ class CalendarTest extends TestCase
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::available()->toNative(),
+                                'type' => StatusType::available()->toString(),
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                         [
@@ -807,10 +807,10 @@ class CalendarTest extends TestCase
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::available()->toNative(),
+                                'type' => StatusType::available()->toString(),
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -851,10 +851,10 @@ class CalendarTest extends TestCase
                     'startDate' => '2016-03-06T10:00:00+01:00',
                     'endDate' => '2020-03-13T12:00:00+01:00',
                     'status' => [
-                        'type' => StatusType::available()->toNative(),
+                        'type' => StatusType::available()->toString(),
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -870,7 +870,7 @@ class CalendarTest extends TestCase
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                         [
@@ -879,14 +879,14 @@ class CalendarTest extends TestCase
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::available()->toNative(),
+                                'type' => StatusType::available()->toString(),
                                 'reason' => [
                                     'nl' => 'Gelukkig gaat het door.',
                                     'fr' => 'Heureusement, ça continue.',
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -930,7 +930,7 @@ class CalendarTest extends TestCase
                         'type' => 'TemporarilyUnavailable',
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -946,7 +946,7 @@ class CalendarTest extends TestCase
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                         [
@@ -955,14 +955,14 @@ class CalendarTest extends TestCase
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::unavailable()->toNative(),
+                                'type' => StatusType::unavailable()->toString(),
                                 'reason' => [
                                     'nl' => 'Nog erger, het is afgelast.',
                                     'fr' => 'Pire encore, il a été annulé.',
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -1006,7 +1006,7 @@ class CalendarTest extends TestCase
                         'type' => 'Unavailable',
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -1015,14 +1015,14 @@ class CalendarTest extends TestCase
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::unavailable()->toNative(),
+                                'type' => StatusType::unavailable()->toString(),
                                 'reason' => [
                                     'nl' => 'Het is afgelast.',
                                     'fr' => 'Il a été annulé.',
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                         [
@@ -1031,14 +1031,14 @@ class CalendarTest extends TestCase
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::unavailable()->toNative(),
+                                'type' => StatusType::unavailable()->toString(),
                                 'reason' => [
                                     'nl' => 'Nog erger, het is afgelast.',
                                     'fr' => 'Pire encore, il a été annulé.',
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -1090,7 +1090,7 @@ class CalendarTest extends TestCase
                         'type' => 'Unavailable',
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -1099,14 +1099,14 @@ class CalendarTest extends TestCase
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::unavailable()->toNative(),
+                                'type' => StatusType::unavailable()->toString(),
                                 'reason' => [
                                     'nl' => 'Het is afgelast.',
                                     'fr' => 'Il a été annulé.',
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                         [
@@ -1115,14 +1115,14 @@ class CalendarTest extends TestCase
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::unavailable()->toNative(),
+                                'type' => StatusType::unavailable()->toString(),
                                 'reason' => [
                                     'nl' => 'Nog erger, het is afgelast.',
                                     'fr' => 'Pire encore, il a été annulé.',
                                 ],
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::available()->toNative(),
+                                'type' => BookingAvailabilityType::available()->toString(),
                             ],
                         ],
                     ],
@@ -1153,10 +1153,10 @@ class CalendarTest extends TestCase
                     'startDate' => '2016-03-06T10:00:00+01:00',
                     'endDate' => '2020-03-13T12:00:00+01:00',
                     'status' => [
-                        'type' => StatusType::available()->toNative(),
+                        'type' => StatusType::available()->toString(),
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::unavailable()->toNative(),
+                        'type' => BookingAvailabilityType::unavailable()->toString(),
                     ],
                     'subEvent' => [
                         [
@@ -1165,10 +1165,10 @@ class CalendarTest extends TestCase
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::available()->toNative(),
+                                'type' => StatusType::available()->toString(),
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::unavailable()->toNative(),
+                                'type' => BookingAvailabilityType::unavailable()->toString(),
                             ],
                         ],
                         [
@@ -1177,10 +1177,10 @@ class CalendarTest extends TestCase
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::available()->toNative(),
+                                'type' => StatusType::available()->toString(),
                             ],
                             'bookingAvailability' => [
-                                'type' => BookingAvailabilityType::unavailable()->toNative(),
+                                'type' => BookingAvailabilityType::unavailable()->toString(),
                             ],
                         ],
                     ],
@@ -1197,10 +1197,10 @@ class CalendarTest extends TestCase
                     'startDate' => '2016-03-06T10:00:00+01:00',
                     'endDate' => '2016-03-13T12:00:00+01:00',
                     'status' => [
-                        'type' => StatusType::available()->toNative(),
+                        'type' => StatusType::available()->toString(),
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                 ],
             ],
@@ -1211,10 +1211,10 @@ class CalendarTest extends TestCase
                 'jsonld' => [
                     'calendarType' => 'permanent',
                     'status' => [
-                        'type' => StatusType::available()->toNative(),
+                        'type' => StatusType::available()->toString(),
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                 ],
             ],
@@ -1232,13 +1232,13 @@ class CalendarTest extends TestCase
                 'jsonld' => [
                     'calendarType' => 'permanent',
                     'status' => [
-                        'type' => StatusType::temporarilyUnavailable()->toNative(),
+                        'type' => StatusType::temporarilyUnavailable()->toString(),
                         'reason' => [
                             'nl' => 'We zijn in volle verbouwing',
                         ],
                     ],
                     'bookingAvailability' => [
-                        'type' => BookingAvailabilityType::available()->toNative(),
+                        'type' => BookingAvailabilityType::available()->toString(),
                     ],
                 ],
             ],

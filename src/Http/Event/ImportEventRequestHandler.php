@@ -246,7 +246,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdateTitle(
                 $eventId,
                 new Language($language),
-                new Title($title->toNative())
+                new Title($title->toString())
             );
         }
 

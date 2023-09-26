@@ -70,7 +70,7 @@ final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEve
     public function serialize(): array
     {
         return parent::serialize() + [
-            'title' => $this->getTitle()->toNative(),
+            'title' => $this->getTitle()->toString(),
             'event_type' => $this->getEventType()->serialize(),
             'address' => $this->getAddress()->serialize(),
             'calendar' => $this->getCalendar()->serialize(),

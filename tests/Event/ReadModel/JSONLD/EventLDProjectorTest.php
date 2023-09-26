@@ -706,7 +706,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $body = $this->project($event, $eventId);
 
-        $this->assertEquals(new Language('en'), $body->mainLanguage);
+        $this->assertEquals((new Language('en'))->toString(), $body->mainLanguage);
     }
 
     /**

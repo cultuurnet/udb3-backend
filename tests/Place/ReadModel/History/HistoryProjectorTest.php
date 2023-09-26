@@ -180,7 +180,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
         $this->assertHistoryContainsLogWithDescription(
             $descriptionTranslatedEvent->getItemId(),
-            "Beschrijving vertaald ({$descriptionTranslatedEvent->getLanguage()})"
+            "Beschrijving vertaald ({$descriptionTranslatedEvent->getLanguage()->toString()})"
         );
     }
 
@@ -195,7 +195,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
         $this->assertHistoryContainsLogWithDescription(
             $titleTranslatedEvent->getItemId(),
-            "Titel vertaald ({$titleTranslatedEvent->getLanguage()})"
+            "Titel vertaald ({$titleTranslatedEvent->getLanguage()->toString()})"
         );
     }
 

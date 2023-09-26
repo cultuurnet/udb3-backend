@@ -194,7 +194,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdateTitle(
                 $placeId,
                 new Language($language),
-                new Title($title->toNative())
+                new Title($title->toString())
             );
         }
 

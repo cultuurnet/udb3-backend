@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3ModelLanguage;
 
 /**
@@ -12,7 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3ModelLanguage;
  */
 class Language
 {
-    protected string $code;
+    use IsString;
 
     public function __construct(string $code)
     {
@@ -21,17 +22,12 @@ class Language
                 'Invalid language code: ' . $code
             );
         }
-        $this->code = $code;
-    }
-
-    public function __toString(): string
-    {
-        return $this->code;
+        $this->value = $code;
     }
 
     public function getCode(): string
     {
-        return $this->code;
+        return $this->value;
     }
 
     public static function fromUdb3ModelLanguage(Udb3ModelLanguage $language): Language

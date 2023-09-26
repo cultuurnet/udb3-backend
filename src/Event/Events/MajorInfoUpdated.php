@@ -84,7 +84,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
             $theme = $this->getTheme()->serialize();
         }
         return parent::serialize() + [
-            'title' => $this->getTitle()->toNative(),
+            'title' => $this->getTitle()->toString(),
             'event_type' => $this->getEventType()->serialize(),
             'theme' => $theme,
             'location' => $this->getLocation()->toString(),

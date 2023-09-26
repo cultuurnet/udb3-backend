@@ -35,7 +35,7 @@ abstract class AbstractConstraintEvent extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'query' => $this->query->toNative(),
+            'query' => $this->query->toString(),
         ];
     }
 }

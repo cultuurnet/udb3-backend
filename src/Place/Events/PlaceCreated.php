@@ -91,7 +91,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
         }
         return parent::serialize() + [
             'main_language' => $this->mainLanguage->getCode(),
-            'title' => $this->getTitle()->toNative(),
+            'title' => $this->getTitle()->toString(),
             'event_type' => $this->getEventType()->serialize(),
             'address' => $this->getAddress()->serialize(),
             'calendar' => $this->getCalendar()->serialize(),

@@ -36,7 +36,7 @@ final class AddMediaObjectPropertiesRequestBodyParser implements RequestBodyPars
         $convertedData = [];
         $convertedData['id'] = $imageId;
         $convertedData['language'] = $data['language'] ?? $mediaObject->getLanguage()->getCode();
-        $convertedData['description'] = $data['description'] ?? $mediaObject->getDescription()->toNative();
+        $convertedData['description'] = $data['description'] ?? $mediaObject->getDescription()->toString();
         $convertedData['copyrightHolder'] = $data['copyrightHolder'] ?? $mediaObject->getCopyrightHolder()->toString();
 
         return $request->withParsedBody((object)$convertedData);

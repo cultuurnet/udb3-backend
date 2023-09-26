@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ValueObjects;
 
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use InvalidArgumentException;
 
 /**
@@ -12,14 +13,11 @@ use InvalidArgumentException;
  */
 final class StatusType
 {
+    use IsString;
+
     private const AVAILABLE = 'Available';
     private const TEMPORARILY_UNAVAILABLE = 'TemporarilyUnavailable';
     private const UNAVAILABLE = 'Unavailable';
-
-    /**
-     * @var string
-     */
-    private $value;
 
     /**
      * @var string[]
@@ -53,18 +51,8 @@ final class StatusType
         return new StatusType(self::UNAVAILABLE);
     }
 
-    public function toNative(): string
-    {
-        return $this->value;
-    }
-
     public static function fromNative(string $value): StatusType
     {
         return new StatusType($value);
-    }
-
-    public function equals(StatusType $status): bool
-    {
-        return $this->value === $status->toNative();
     }
 }

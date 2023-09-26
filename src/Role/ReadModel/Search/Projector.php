@@ -56,7 +56,7 @@ class Projector implements EventListener
     {
         $this->repository->updateConstraint(
             $constraintAdded->getUuid()->toString(),
-            $constraintAdded->getQuery()->toNative()
+            $constraintAdded->getQuery()->toString()
         );
     }
 
@@ -64,7 +64,7 @@ class Projector implements EventListener
     {
         $this->repository->updateConstraint(
             $constraintUpdated->getUuid()->toString(),
-            $constraintUpdated->getQuery()->toNative()
+            $constraintUpdated->getQuery()->toString()
         );
     }
 

@@ -39,25 +39,25 @@ class MediaObjectSerializer
             'id' => $mediaObject->getMediaObjectId()->toString(),
             'contentUrl' => $mediaObject->getSourceLocation()->toString(),
             'thumbnailUrl' => $mediaObject->getSourceLocation()->toString(),
-            'description' => $mediaObject->getDescription()->toNative(),
+            'description' => $mediaObject->getDescription()->toString(),
             'copyrightHolder' => $mediaObject->getCopyrightHolder()->toString(),
-            'inLanguage' => (string) $mediaObject->getLanguage(),
+            'inLanguage' => $mediaObject->getLanguage()->toString(),
         ];
     }
 
     public function serializeMimeType(MIMEType $mimeType): string
     {
-        $typeParts = explode('/', $mimeType->toNative());
+        $typeParts = explode('/', $mimeType->toString());
         $type = array_shift($typeParts);
 
         if ($type === 'image') {
             return 'schema:ImageObject';
         }
 
-        if ($mimeType->toNative() === 'application/octet-stream') {
+        if ($mimeType->toString() === 'application/octet-stream') {
             return 'schema:mediaObject';
         }
 
-        throw new UnsupportedException('Unsupported MIME-type "' . $mimeType->toNative() . '"');
+        throw new UnsupportedException('Unsupported MIME-type "' . $mimeType->toString() . '"');
     }
 }

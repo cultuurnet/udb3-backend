@@ -258,7 +258,7 @@ trait OfferCommandHandlerTestTrait
             return new $imageUpdated(
                 $itemId,
                 $image->getMediaObjectId()->toString(),
-                $image->getDescription()->toNative(),
+                $image->getDescription()->toString(),
                 $image->getCopyrightHolder()->toString(),
                 $image->getLanguage()->getCode()
             );

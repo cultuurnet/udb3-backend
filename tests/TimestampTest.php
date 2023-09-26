@@ -114,13 +114,13 @@ class TimestampTest extends TestCase
             'startDate' => self::START_DATE,
             'endDate' => self::END_DATE,
             'status' => [
-                'type' => StatusType::unavailable()->toNative(),
+                'type' => StatusType::unavailable()->toString(),
                 'reason' => [
                     'nl' => 'Vanavond niet, schat',
                 ],
             ],
             'bookingAvailability' => [
-                'type' => BookingAvailabilityType::unavailable()->toNative(),
+                'type' => BookingAvailabilityType::unavailable()->toString(),
             ],
         ];
 

@@ -367,7 +367,7 @@ class Place extends Offer
         return new ImageUpdated(
             $this->placeId,
             $mediaObjectId->toString(),
-            $description->toNative(),
+            $description->toString(),
             $copyrightHolder->toString(),
             $language
         );

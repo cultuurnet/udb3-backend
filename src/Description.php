@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description as Udb3ModelDescription;
 
@@ -14,8 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Description as Udb3ModelDescription;
 final class Description
 {
     use Trims;
-
-    private string $value;
+    use IsString;
 
     public function __construct(string $value)
     {
@@ -26,15 +26,5 @@ final class Description
     public static function fromUdb3ModelDescription(Udb3ModelDescription $udb3ModelDescription): self
     {
         return new self($udb3ModelDescription->toString());
-    }
-
-    public function toNative(): string
-    {
-        return $this->value;
-    }
-
-    public function sameValueAs(self $description): bool
-    {
-        return $this->toNative() === $description->toNative();
     }
 }

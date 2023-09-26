@@ -130,7 +130,7 @@ final class Item extends Offer
         return new ImageUpdated(
             $this->id,
             $mediaObjectId->toString(),
-            $description->toNative(),
+            $description->toString(),
             $copyrightHolder->toString(),
             $language
         );

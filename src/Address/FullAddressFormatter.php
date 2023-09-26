@@ -14,8 +14,8 @@ final class FullAddressFormatter implements AddressFormatter
             self::LINE_SEPARATOR,
             array_filter(
                 [
-                    $address->getStreetAddress()->toNative(),
-                    $address->getPostalCode()->toNative() . ' ' . $address->getLocality()->toNative(),
+                    $address->getStreetAddress()->toString(),
+                    $address->getPostalCode()->toString() . ' ' . $address->getLocality()->toString(),
                     $address->getCountryCode()->toString(),
                 ]
             )

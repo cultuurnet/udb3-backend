@@ -554,7 +554,7 @@ final class Event extends Offer
         return new ImageUpdated(
             $this->eventId,
             $mediaObjectId->toString(),
-            $description->toNative(),
+            $description->toString(),
             $copyrightHolder->toString(),
             $language
         );

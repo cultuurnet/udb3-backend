@@ -4,22 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Media\Properties;
 
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use InvalidArgumentException;
-use function is_string;
 
 final class MIMEType
 {
-    private string $value;
+    use IsString;
 
     public function __construct(string $value)
     {
         $this->value = $value;
     }
 
-    public function toNative(): string
-    {
-        return $this->value;
-    }
     private static array $supportedSubtypes = [
         'jpeg' => 'image',
         'png' => 'image',
@@ -27,6 +23,10 @@ final class MIMEType
         'octet-stream'  => 'application',
     ];
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnsupportedMIMETypeException
+     */
     public static function fromSubtype(string $subtypeString): MIMEType
     {
         if (!is_string($subtypeString)) {

@@ -578,7 +578,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
         // Update when copyright or description is changed.
         return !$copyrightHolder->sameAs($image->getCopyrightHolder()) ||
-            !$description->sameValueAs($image->getDescription());
+            !$description->sameAs($image->getDescription());
     }
 
     public function removeImage(Image $image): void
@@ -860,7 +860,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $languageCode = $language->getCode();
 
         return !isset($this->titles[$languageCode]) ||
-            !$title->sameValueAs($this->titles[$languageCode]);
+            !$title->sameAs($this->titles[$languageCode]);
     }
 
     private function isDescriptionChanged(Description $description, LegacyLanguage $language): bool
@@ -868,7 +868,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $languageCode = $language->getCode();
 
         return !isset($this->descriptions[$languageCode]) ||
-            !$description->sameValueAs($this->descriptions[$languageCode]);
+            !$description->sameAs($this->descriptions[$languageCode]);
     }
 
     protected function isDeleted(): bool

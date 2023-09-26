@@ -485,7 +485,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $body = $this->project($place, $placeId);
 
-        $this->assertEquals(new Language('en'), $body->mainLanguage);
+        $this->assertEquals((new Language('en'))->toString(), $body->mainLanguage);
     }
 
     /**

@@ -174,9 +174,9 @@ final class OrganizerLDProjectorTest extends TestCase
         $jsonLD->address = [
             'nl' => [
                 'addressCountry' => $country->toString(),
-                'addressLocality' => $locality->toNative(),
-                'postalCode' => $postalCode->toNative(),
-                'streetAddress' => $street->toNative(),
+                'addressLocality' => $locality->toString(),
+                'postalCode' => $postalCode->toString(),
+                'streetAddress' => $street->toString(),
             ],
         ];
         $jsonLD->phone = ['050/123'];
