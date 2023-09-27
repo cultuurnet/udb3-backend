@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SwiftMailer;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use RuntimeException;
 use Swift_Events_SimpleEventDispatcher;
 use Swift_Mailer;
 use Swift_StreamFilters_StringReplacementFilterFactory;
@@ -30,6 +29,7 @@ final class SwiftMailerServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'mailer',
             static function () use ($container) {
+                /** @var \Swift_SmtpTransport $transport */
                 $transport = new Swift_Transport_EsmtpTransport(
                     new Swift_Transport_StreamBuffer(
                         new Swift_StreamFilters_StringReplacementFilterFactory()
@@ -61,11 +61,6 @@ final class SwiftMailerServiceProvider extends AbstractServiceProvider
                 $transport->setHost($options['host']);
                 $transport->setPort($options['port']);
                 $transport->setEncryption($options['encryption']);
-
-                // check with if
-                if (! $transport instanceof \Swift_SmtpTransport) {
-                    throw new RuntimeException('Invalid SMTP transport, received ' . get_class($transport));
-                }
 
                 $transport->setUsername($options['username']);
                 $transport->setPassword($options['password']);
