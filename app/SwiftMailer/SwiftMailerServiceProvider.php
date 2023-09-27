@@ -62,8 +62,7 @@ final class SwiftMailerServiceProvider extends AbstractServiceProvider
                 $transport->setPort($options['port']);
                 $transport->setEncryption($options['encryption']);
 
-                // check with if
-                if (! $transport instanceof \Swift_SmtpTransport) {
+                if (!is_subclass_of($transport, \Swift_SmtpTransport::class)) {
                     throw new RuntimeException('Invalid SMTP transport, received ' . get_class($transport));
                 }
 
