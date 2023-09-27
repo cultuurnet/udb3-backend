@@ -37,7 +37,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
     {
         $values = $this->entityToValues($entity);
 
-        $sql = 'INSERT INTO ' . $this->tableName . ' VALUES (?, ?, ?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO ' . $this->tableName . ' VALUES (?, ?, ?, ?, ?)';
 
         $this->connection->executeQuery($sql, $values);
     }
@@ -49,8 +49,6 @@ abstract class BaseDBALRepositoryTest extends TestCase
             $entity->getName(),
             $entity->getVisibility()->sameAs(Visibility::VISIBLE()),
             $entity->getPrivacy()->sameAs(Privacy::PRIVACY_PRIVATE()),
-            null,
-            0,
             $entity->isExcluded(),
         ];
     }
