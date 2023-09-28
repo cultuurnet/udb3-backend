@@ -9,7 +9,7 @@ use Broadway\EventStore\EventStore;
 use Broadway\Repository\Repository;
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Xml;
-use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use CultuurNet\UDB3\Description;

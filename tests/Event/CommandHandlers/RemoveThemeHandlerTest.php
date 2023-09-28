@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event\CommandHandlers;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\Commands\RemoveTheme;
 use CultuurNet\UDB3\Event\EventRepository;

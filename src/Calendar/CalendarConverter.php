@@ -13,7 +13,6 @@ use CultureFeed_Cdb_Data_Calendar_SchemeDay;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultureFeed_Cdb_Data_Calendar_TimestampList;
 use CultureFeed_Cdb_Data_Calendar_Weekscheme;
-use CultuurNet\UDB3\CalendarInterface;
 use DateInterval;
 use DateTimeInterface;
 use InvalidArgumentException;
