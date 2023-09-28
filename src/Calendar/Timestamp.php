@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
 use DateTimeInterface;
-use InvalidArgumentException;
 
 /**
  * @deprecated
@@ -34,7 +33,7 @@ final class Timestamp implements Serializable
         BookingAvailability $bookingAvailability = null
     ) {
         if ($endDate < $startDate) {
-            throw new InvalidArgumentException('End date can not be earlier than start date.');
+            throw new EndDateCanNotBeEarlierThanStartDate();
         }
 
         $this->startDate = $startDate;
