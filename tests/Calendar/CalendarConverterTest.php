@@ -204,7 +204,7 @@ class CalendarConverterTest extends TestCase
 
         $expectedCalendar = new CultureFeed_Cdb_Data_Calendar_Permanent();
         $weekScheme = \CultureFeed_Cdb_Data_Calendar_Weekscheme::parseFromCdbXml(
-            simplexml_load_file(__DIR__ . '/week_scheme.xml')
+            simplexml_load_file(__DIR__ . '/samples/week_scheme.xml')
         );
         $expectedCalendar->setWeekScheme($weekScheme);
 
@@ -258,7 +258,7 @@ class CalendarConverterTest extends TestCase
         );
 
         $weekScheme = \CultureFeed_Cdb_Data_Calendar_Weekscheme::parseFromCdbXml(
-            simplexml_load_file(__DIR__ . '/week_scheme.xml')
+            simplexml_load_file(__DIR__ . '/samples/week_scheme.xml')
         );
 
         $expectedPeriod = new CultureFeed_Cdb_Data_Calendar_Period('2017-01-24', '2018-01-24');
