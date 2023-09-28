@@ -9,6 +9,7 @@ use CultureFeed_Exception;
 use CultureFeed_HttpException;
 use CultuurNet\CalendarSummaryV3\FormatterException;
 use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
+use CultuurNet\UDB3\Calendar\EndDateCanNotBeEarlierThanStartDate;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Deserializer\NotWellFormedException;
@@ -118,6 +119,7 @@ final class ApiProblemFactory
             case $e instanceof FormatterException:
             case $e instanceof EventCannotBeAddedToProduction:
             case $e instanceof EventCannotBeRemovedFromProduction:
+            case $e instanceof EndDateCanNotBeEarlierThanStartDate:
                 return ApiProblem::blank($e->getMessage(), $e->getCode() ?: 400);
 
             // Because almost any exception will be an instance of \Exception, we need to do a strict comparison of the
