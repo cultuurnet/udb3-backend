@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\CalendarFactory;
+use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Event\EventType;

@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Place;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\CalendarFactory;
+use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;

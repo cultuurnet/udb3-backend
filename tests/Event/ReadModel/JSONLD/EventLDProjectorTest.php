@@ -24,7 +24,7 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
-use CultuurNet\UDB3\CalendarFactory;
+use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
