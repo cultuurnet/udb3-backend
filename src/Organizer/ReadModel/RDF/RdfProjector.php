@@ -84,11 +84,13 @@ final class RdfProjector implements EventListener
             return;
         }
 
+        $modified = $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM);
         GraphEditor::for($graph)->setGeneralProperties(
             $iri,
             self::TYPE_ORGANISATOR,
-            DateTimeFactory::fromISO8601($organizerData['created'])->format(DateTime::ATOM),
-            $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
+            isset($organizerData['created']) ?
+                DateTimeFactory::fromISO8601($organizerData['created'])->format(DateTime::ATOM) : $modified,
+            $modified
         );
 
         $this->setName($resource, $organizer->getName());
