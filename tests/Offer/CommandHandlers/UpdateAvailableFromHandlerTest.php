@@ -10,7 +10,7 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Broadway\EventStore\TraceableEventStore;
 use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
