@@ -6,17 +6,7 @@ namespace CultuurNet\UDB3\Calendar;
 
 interface CalendarFactoryInterface
 {
-    /**
-     * @return Calendar
-     */
-    public function createFromCdbCalendar(
-        \CultureFeed_Cdb_Data_Calendar $cdbCalendar
-    );
+    public function createFromCdbCalendar(\CultureFeed_Cdb_Data_Calendar $cdbCalendar): Calendar;
 
-    /**
-     * @return Calendar
-     */
-    public function createFromWeekScheme(
-        \CultureFeed_Cdb_Data_Calendar_Weekscheme $weekScheme = null
-    );
+    public function createFromWeekScheme(\CultureFeed_Cdb_Data_Calendar_Weekscheme $weekScheme = null): Calendar;
 }

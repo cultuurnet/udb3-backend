@@ -12,38 +12,16 @@ use DateTimeInterface;
  */
 interface CalendarInterface
 {
-    /**
-     * Get current calendar type.
-     *
-     * @return CalendarType
-     */
-    public function getType();
+    public function getType(): CalendarType;
+
+    public function getStartDate(): ?DateTimeInterface;
+
+    public function getEndDate(): ?DateTimeInterface;
+
+    public function getOpeningHours(): array;
 
     /**
-     * Get the start date.
-     *
-     * @return DateTimeInterface
-     */
-    public function getStartDate();
-
-    /**
-     * Get the end date.
-     *
-     * @return DateTimeInterface
-     */
-    public function getEndDate();
-
-    /**
-     * Get the opening hours.
-     *
-     * @return OpeningHour[]
-     */
-    public function getOpeningHours();
-
-    /**
-     * Get timestamps.
-     *
      * @return Timestamp[]
      */
-    public function getTimestamps();
+    public function getTimestamps(): array;
 }
