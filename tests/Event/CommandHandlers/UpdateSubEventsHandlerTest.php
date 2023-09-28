@@ -30,7 +30,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
-use CultuurNet\UDB3\Timestamp as LegacyTimestamp;
+use CultuurNet\UDB3\Calendar\Timestamp as LegacyTimestamp;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTime;
 use DateTimeImmutable;

@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Offer;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
-use CultuurNet\UDB3\Timestamp;
+use CultuurNet\UDB3\Calendar\Timestamp;
 use PHPUnit\Framework\TestCase;
 
 final class AvailableToTest extends TestCase

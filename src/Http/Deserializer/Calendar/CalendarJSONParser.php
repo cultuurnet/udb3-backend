@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
-use CultuurNet\UDB3\Timestamp;
+use CultuurNet\UDB3\Calendar\Timestamp;
 
 class CalendarJSONParser
 {

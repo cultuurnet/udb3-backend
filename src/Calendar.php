@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Calendar\OpeningHour;
+use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar as Udb3ModelCalendar;

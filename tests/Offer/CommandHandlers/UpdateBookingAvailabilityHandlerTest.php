@@ -21,7 +21,7 @@ use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Timestamp;
+use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\Title;
 use DateTime;
 

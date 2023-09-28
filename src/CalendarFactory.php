@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
+use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\Cdb\DateTimeFactory;
 use DateTimeInterface;
 
