@@ -8,10 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class DayOfWeekCollectionTest extends TestCase
 {
-    /**
-     * @var DayOfWeekCollection
-     */
-    private $dayOfWeekCollection;
+    private DayOfWeekCollection $dayOfWeekCollection;
 
     protected function setUp(): void
     {

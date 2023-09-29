@@ -7,21 +7,15 @@ namespace CultuurNet\UDB3\Calendar;
 use CultureFeed_Cdb_Data_Calendar_Period;
 use CultureFeed_Cdb_Data_Calendar_PeriodList;
 use CultureFeed_Cdb_Data_Calendar_Permanent;
-use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
-use CultuurNet\UDB3\Timestamp;
 use DateTime;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
 class CalendarConverterTest extends TestCase
 {
-    /**
-     * @var CalendarConverter
-     */
-    private $converter;
+    private CalendarConverter $converter;
 
     public function setUp(): void
     {
@@ -207,7 +201,7 @@ class CalendarConverterTest extends TestCase
 
         $expectedCalendar = new CultureFeed_Cdb_Data_Calendar_Permanent();
         $weekScheme = \CultureFeed_Cdb_Data_Calendar_Weekscheme::parseFromCdbXml(
-            simplexml_load_file(__DIR__ . '/../week_scheme.xml')
+            simplexml_load_file(__DIR__ . '/samples/week_scheme.xml')
         );
         $expectedCalendar->setWeekScheme($weekScheme);
 
@@ -261,7 +255,7 @@ class CalendarConverterTest extends TestCase
         );
 
         $weekScheme = \CultureFeed_Cdb_Data_Calendar_Weekscheme::parseFromCdbXml(
-            simplexml_load_file(__DIR__ . '/../week_scheme.xml')
+            simplexml_load_file(__DIR__ . '/samples/week_scheme.xml')
         );
 
         $expectedPeriod = new CultureFeed_Cdb_Data_Calendar_Period('2017-01-24', '2018-01-24');

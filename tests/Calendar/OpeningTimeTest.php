@@ -10,20 +10,11 @@ use PHPUnit\Framework\TestCase;
 
 class OpeningTimeTest extends TestCase
 {
-    /**
-     * @var Hour
-     */
-    private $hour;
+    private Hour $hour;
 
-    /**
-     * @var Minute
-     */
-    private $minute;
+    private Minute $minute;
 
-    /**
-     * @var OpeningTime
-     */
-    private $openingTime;
+    private OpeningTime $openingTime;
 
     protected function setUp(): void
     {

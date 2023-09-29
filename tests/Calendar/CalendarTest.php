@@ -2,15 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3;
+namespace CultuurNet\UDB3\Calendar;
 
-use CultuurNet\UDB3\Calendar\DayOfWeek;
-use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
-use CultuurNet\UDB3\Calendar\OpeningHour;
-use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType as Udb3ModelBookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
 use CultureFeed_Cdb_Data_PerformerList;
-use CultuurNet\UDB3\CalendarFactoryInterface;
+use CultuurNet\UDB3\Calendar\CalendarFactoryInterface;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractorInterface;
 use CultuurNet\UDB3\Cdb\Description\MergedDescription;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;

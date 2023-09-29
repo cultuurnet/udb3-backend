@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Place\ReadModel\JSONLD;
 
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
-use CultuurNet\UDB3\CalendarFactory;
+use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;

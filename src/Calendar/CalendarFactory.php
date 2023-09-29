@@ -2,23 +2,16 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3;
+namespace CultuurNet\UDB3\Calendar;
 
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
-use CultuurNet\UDB3\Calendar\DayOfWeek;
-use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
-use CultuurNet\UDB3\Calendar\OpeningHour;
-use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Cdb\DateTimeFactory;
 use DateTimeInterface;
 
 class CalendarFactory implements CalendarFactoryInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function createFromCdbCalendar(\CultureFeed_Cdb_Data_Calendar $cdbCalendar)
+    public function createFromCdbCalendar(\CultureFeed_Cdb_Data_Calendar $cdbCalendar): Calendar
     {
         //
         // Get the start day.
@@ -162,12 +155,9 @@ class CalendarFactory implements CalendarFactoryInterface
         );
     }
 
-    /**
-     * @return Calendar
-     */
     public function createFromWeekScheme(
         \CultureFeed_Cdb_Data_Calendar_Weekscheme $weekScheme = null
-    ) {
+    ): Calendar {
         $openingHours = [];
 
         if ($weekScheme) {
@@ -188,7 +178,7 @@ class CalendarFactory implements CalendarFactoryInterface
      */
     private function createOpeningHoursFromWeekScheme(
         \CultureFeed_Cdb_Data_Calendar_Weekscheme $weekScheme
-    ) {
+    ): array {
         $openingHours = [];
 
         foreach ($weekScheme->getDays() as $day) {
@@ -230,13 +220,12 @@ class CalendarFactory implements CalendarFactoryInterface
     }
 
     /**
-     * @param OpeningHour[] ...$openingHours
      * @return OpeningHour[]
      */
     private function addToOpeningHours(
         OpeningHour $newOpeningHour,
         OpeningHour ...$openingHours
-    ) {
+    ): array {
         foreach ($openingHours as $openingHour) {
             if ($openingHour->hasEqualHours($newOpeningHour)) {
                 $openingHour->addDayOfWeekCollection(
@@ -250,15 +239,10 @@ class CalendarFactory implements CalendarFactoryInterface
         return $openingHours;
     }
 
-    /**
-     * @param string $startDateString
-     * @param string $endDateString
-     * @return Timestamp
-     */
     private function createTimestamp(
-        $startDateString,
-        $endDateString
-    ) {
+        string $startDateString,
+        string $endDateString
+    ): Timestamp {
         $startDate = DateTimeFactory::dateTimeFromDateString($startDateString);
         $endDate = DateTimeFactory::dateTimeFromDateString($endDateString);
 
@@ -270,11 +254,8 @@ class CalendarFactory implements CalendarFactoryInterface
      * between e.g. 9 PM and 3 AM (the next day). To keep the dates chronological we push the end to the next day.
      *
      * If the end dates does not make any sense at all, it is forced to the start date.
-     *
-     *
-     * @return Timestamp
      */
-    private function createChronologicalTimestamp(DateTimeInterface $start, DateTimeInterface $end)
+    private function createChronologicalTimestamp(DateTimeInterface $start, DateTimeInterface $end): Timestamp
     {
         $startDate = Chronos::instance($start);
         $endDate = Chronos::instance($end);
@@ -292,10 +273,11 @@ class CalendarFactory implements CalendarFactoryInterface
 
     /**
      * @param CultureFeed_Cdb_Data_Calendar_Timestamp[] $timestampList
-     * @return CultureFeed_Cdb_Data_Calendar_Timestamp
      */
-    private function getLastTimestamp(array $timestampList, CultureFeed_Cdb_Data_Calendar_Timestamp $default)
-    {
+    private function getLastTimestamp(
+        array $timestampList,
+        CultureFeed_Cdb_Data_Calendar_Timestamp $default
+    ): CultureFeed_Cdb_Data_Calendar_Timestamp {
         $lastTimestamp = $default;
         foreach ($timestampList as $timestamp) {
             $currentEndDate = Chronos::parse($lastTimestamp->getEndDate());
@@ -310,10 +292,11 @@ class CalendarFactory implements CalendarFactoryInterface
 
     /**
      * @param CultureFeed_Cdb_Data_Calendar_Timestamp[] $timestampList
-     * @return CultureFeed_Cdb_Data_Calendar_Timestamp
      */
-    private function getFirstTimestamp(array $timestampList, CultureFeed_Cdb_Data_Calendar_Timestamp $default)
-    {
+    private function getFirstTimestamp(
+        array $timestampList,
+        CultureFeed_Cdb_Data_Calendar_Timestamp $default
+    ): CultureFeed_Cdb_Data_Calendar_Timestamp {
         $firstTimestamp = $default;
         foreach ($timestampList as $timestamp) {
             $currentStartTime = Chronos::parse($firstTimestamp->getDate());

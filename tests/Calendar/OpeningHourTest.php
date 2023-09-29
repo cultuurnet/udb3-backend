@@ -10,30 +10,15 @@ use PHPUnit\Framework\TestCase;
 
 class OpeningHourTest extends TestCase
 {
-    /**
-     * @var OpeningTime
-     */
-    private $opens;
+    private OpeningTime $opens;
 
-    /**
-     * @var OpeningTime
-     */
-    private $closes;
+    private OpeningTime $closes;
 
-    /**
-     * @var DayOfWeekCollection
-     */
-    private $dayOfWeekCollection;
+    private DayOfWeekCollection $dayOfWeekCollection;
 
-    /**
-     * @var array
-     */
-    private $openingHourAsArray;
+    private array $openingHourAsArray;
 
-    /**
-     * @var OpeningHour
-     */
-    private $openingHour;
+    private OpeningHour $openingHour;
 
     protected function setUp(): void
     {

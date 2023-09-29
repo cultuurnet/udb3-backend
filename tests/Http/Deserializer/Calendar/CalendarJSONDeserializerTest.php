@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
-use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
-use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
-use CultuurNet\UDB3\Timestamp;
+use CultuurNet\UDB3\Calendar\Timestamp;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

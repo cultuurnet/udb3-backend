@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\JSONLD;
 
-use CultuurNet\UDB3\CalendarFactoryInterface;
+use CultuurNet\UDB3\Calendar\CalendarFactoryInterface;
 use CultuurNet\UDB3\Cdb\Description\MergedDescription;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporterInterface;
