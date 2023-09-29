@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\Calendar\DayOfWeek;
+use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
+use CultuurNet\UDB3\Calendar\OpeningHour;
+use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
@@ -22,7 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Timestamp;
+use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -307,40 +311,40 @@ final class EventImportedFromUDB2Test extends TestCase
                         \DateTimeImmutable::createFromFormat('Y-m-d', '2018-01-08'),
                         [],
                         [
-                            0 => new Calendar\OpeningHour(
-                                new Calendar\OpeningTime(new Hour(10), new Minute(0)),
-                                new Calendar\OpeningTime(new Hour(18), new Minute(0)),
-                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::MONDAY())
+                            0 => new OpeningHour(
+                                new OpeningTime(new Hour(10), new Minute(0)),
+                                new OpeningTime(new Hour(18), new Minute(0)),
+                                new DayOfWeekCollection(DayOfWeek::MONDAY())
                             ),
-                            1 => new Calendar\OpeningHour(
-                                new Calendar\OpeningTime(new Hour(10), new Minute(0)),
-                                new Calendar\OpeningTime(new Hour(18), new Minute(0)),
-                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::TUESDAY())
+                            1 => new OpeningHour(
+                                new OpeningTime(new Hour(10), new Minute(0)),
+                                new OpeningTime(new Hour(18), new Minute(0)),
+                                new DayOfWeekCollection(DayOfWeek::TUESDAY())
                             ),
-                            2 => new Calendar\OpeningHour(
-                                new Calendar\OpeningTime(new Hour(10), new Minute(0)),
-                                new Calendar\OpeningTime(new Hour(18), new Minute(0)),
-                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::WEDNESDAY())
+                            2 => new OpeningHour(
+                                new OpeningTime(new Hour(10), new Minute(0)),
+                                new OpeningTime(new Hour(18), new Minute(0)),
+                                new DayOfWeekCollection(DayOfWeek::WEDNESDAY())
                             ),
-                            3 => new Calendar\OpeningHour(
-                                new Calendar\OpeningTime(new Hour(10), new Minute(0)),
-                                new Calendar\OpeningTime(new Hour(18), new Minute(0)),
-                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::THURSDAY())
+                            3 => new OpeningHour(
+                                new OpeningTime(new Hour(10), new Minute(0)),
+                                new OpeningTime(new Hour(18), new Minute(0)),
+                                new DayOfWeekCollection(DayOfWeek::THURSDAY())
                             ),
-                            4 => new Calendar\OpeningHour(
-                                new Calendar\OpeningTime(new Hour(10), new Minute(0)),
-                                new Calendar\OpeningTime(new Hour(18), new Minute(0)),
-                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::FRIDAY())
+                            4 => new OpeningHour(
+                                new OpeningTime(new Hour(10), new Minute(0)),
+                                new OpeningTime(new Hour(18), new Minute(0)),
+                                new DayOfWeekCollection(DayOfWeek::FRIDAY())
                             ),
-                            5 => new Calendar\OpeningHour(
-                                new Calendar\OpeningTime(new Hour(10), new Minute(0)),
-                                new Calendar\OpeningTime(new Hour(18), new Minute(0)),
-                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::SATURDAY())
+                            5 => new OpeningHour(
+                                new OpeningTime(new Hour(10), new Minute(0)),
+                                new OpeningTime(new Hour(18), new Minute(0)),
+                                new DayOfWeekCollection(DayOfWeek::SATURDAY())
                             ),
-                            6 => new Calendar\OpeningHour(
-                                new Calendar\OpeningTime(new Hour(8), new Minute(0)),
-                                new Calendar\OpeningTime(new Hour(12), new Minute(0)),
-                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::SUNDAY())
+                            6 => new OpeningHour(
+                                new OpeningTime(new Hour(8), new Minute(0)),
+                                new OpeningTime(new Hour(12), new Minute(0)),
+                                new DayOfWeekCollection(DayOfWeek::SUNDAY())
                             ),
                         ]
                     )
@@ -390,20 +394,20 @@ final class EventImportedFromUDB2Test extends TestCase
                         null,
                         [],
                         [
-                            0 => new Calendar\OpeningHour(
-                                new Calendar\OpeningTime(new Hour(9), new Minute(30)),
-                                new Calendar\OpeningTime(new Hour(11), new Minute(30)),
-                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::WEDNESDAY())
+                            0 => new OpeningHour(
+                                new OpeningTime(new Hour(9), new Minute(30)),
+                                new OpeningTime(new Hour(11), new Minute(30)),
+                                new DayOfWeekCollection(DayOfWeek::WEDNESDAY())
                             ),
-                            1 => new Calendar\OpeningHour(
-                                new Calendar\OpeningTime(new Hour(9), new Minute(0)),
-                                new Calendar\OpeningTime(new Hour(17), new Minute(0)),
-                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::THURSDAY())
+                            1 => new OpeningHour(
+                                new OpeningTime(new Hour(9), new Minute(0)),
+                                new OpeningTime(new Hour(17), new Minute(0)),
+                                new DayOfWeekCollection(DayOfWeek::THURSDAY())
                             ),
-                            2 => new Calendar\OpeningHour(
-                                new Calendar\OpeningTime(new Hour(9), new Minute(30)),
-                                new Calendar\OpeningTime(new Hour(11), new Minute(30)),
-                                new Calendar\DayOfWeekCollection(Calendar\DayOfWeek::SATURDAY())
+                            2 => new OpeningHour(
+                                new OpeningTime(new Hour(9), new Minute(30)),
+                                new OpeningTime(new Hour(11), new Minute(30)),
+                                new DayOfWeekCollection(DayOfWeek::SATURDAY())
                             ),
                         ]
                     )

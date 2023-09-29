@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
-use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications\EventSpecificationInterface;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications\Has1Taalicoon;

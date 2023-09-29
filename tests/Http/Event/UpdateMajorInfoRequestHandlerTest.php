@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;

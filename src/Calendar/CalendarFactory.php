@@ -2,14 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3;
+namespace CultuurNet\UDB3\Calendar;
 
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
-use CultuurNet\UDB3\Calendar\DayOfWeek;
-use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
-use CultuurNet\UDB3\Calendar\OpeningHour;
-use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Cdb\DateTimeFactory;
 use DateTimeInterface;
 

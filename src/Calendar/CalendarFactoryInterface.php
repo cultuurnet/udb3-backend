@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3;
+namespace CultuurNet\UDB3\Calendar;
 
 interface CalendarFactoryInterface
 {

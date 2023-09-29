@@ -2,14 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3;
+namespace CultuurNet\UDB3\Calendar;
 
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultureFeed_Cdb_Data_Calendar_TimestampList;
-use CultuurNet\UDB3\Calendar\DayOfWeek;
-use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
-use CultuurNet\UDB3\Calendar\OpeningHour;
-use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use DateTimeImmutable;
@@ -106,7 +102,7 @@ class CalendarFactoryTest extends TestCase
         );
 
         $weekScheme = \CultureFeed_Cdb_Data_Calendar_Weekscheme::parseFromCdbXml(
-            simplexml_load_file(__DIR__ . '/week_scheme.xml')
+            simplexml_load_file(__DIR__ . '/samples/week_scheme.xml')
         );
 
         $calendar = $this->factory->createFromWeekScheme($weekScheme);
@@ -875,7 +871,7 @@ class CalendarFactoryTest extends TestCase
         return [
             'import event with period: datefrom + dateto, no weekscheme' => [
                 'cdbCalendar' => $this->createPeriodListFromXML(
-                    file_get_contents(__DIR__ . '/Calendar/samples/periodic/calendar_udb2_import_example_1101.xml')
+                    file_get_contents(__DIR__ . '/samples/periodic/calendar_udb2_import_example_1101.xml')
                 ),
                 'expectedCalendar' => new Calendar(
                     CalendarType::PERIODIC(),
@@ -885,7 +881,7 @@ class CalendarFactoryTest extends TestCase
             ],
             'import event with period: datefrom + dateto + weekscheme only openingtimes from' => [
                 'cdbCalendar' => $this->createPeriodListFromXML(
-                    file_get_contents(__DIR__ . '/Calendar/samples/periodic/calendar_udb2_import_example_1201.xml')
+                    file_get_contents(__DIR__ . '/samples/periodic/calendar_udb2_import_example_1201.xml')
                 ),
                 'expectedCalendar' => new Calendar(
                     CalendarType::PERIODIC(),
@@ -915,7 +911,7 @@ class CalendarFactoryTest extends TestCase
             ],
             'import event with period: datefrom + dateto + weekscheme openingtimes from + to' => [
                 'cdbCalendar' => $this->createPeriodListFromXML(
-                    file_get_contents(__DIR__ . '/Calendar/samples/periodic/calendar_udb2_import_example_1301.xml')
+                    file_get_contents(__DIR__ . '/samples/periodic/calendar_udb2_import_example_1301.xml')
                 ),
                 'expectedCalendar' => new Calendar(
                     CalendarType::PERIODIC(),
@@ -945,7 +941,7 @@ class CalendarFactoryTest extends TestCase
             ],
             'import event with period: datefrom + dateto + weekscheme mix openingtimes from + to' => [
                 'cdbCalendar' => $this->createPeriodListFromXML(
-                    file_get_contents(__DIR__ . '/Calendar/samples/periodic/calendar_udb2_import_example_1401.xml')
+                    file_get_contents(__DIR__ . '/samples/periodic/calendar_udb2_import_example_1401.xml')
                 ),
                 'expectedCalendar' => new Calendar(
                     CalendarType::PERIODIC(),
@@ -1007,13 +1003,13 @@ class CalendarFactoryTest extends TestCase
         return [
             'import permanent event, no weekscheme as periodic event' => [
                 'cdbCalendar' => $this->createPermanentCalendarFromXML(
-                    file_get_contents(__DIR__ . '/Calendar/samples/permanent/calendar_udb2_import_example_1501.xml')
+                    file_get_contents(__DIR__ . '/samples/permanent/calendar_udb2_import_example_1501.xml')
                 ),
                 'expectedCalendar' => new Calendar(CalendarType::PERMANENT()),
             ],
             'import permanent event with weekscheme only openingtimes from' => [
                 'cdbCalendar' => $this->createPermanentCalendarFromXML(
-                    file_get_contents(__DIR__ . '/Calendar/samples/permanent/calendar_udb2_import_example_1601.xml')
+                    file_get_contents(__DIR__ . '/samples/permanent/calendar_udb2_import_example_1601.xml')
                 ),
                 'expectedCalendar' => new Calendar(
                     CalendarType::PERMANENT(),
@@ -1043,7 +1039,7 @@ class CalendarFactoryTest extends TestCase
             ],
             'import permanent event with weekscheme openingtimes from + to' => [
                 'cdbCalendar' => $this->createPermanentCalendarFromXML(
-                    file_get_contents(__DIR__ . '/Calendar/samples/permanent/calendar_udb2_import_example_1701.xml')
+                    file_get_contents(__DIR__ . '/samples/permanent/calendar_udb2_import_example_1701.xml')
                 ),
                 'expectedCalendar' => new Calendar(
                     CalendarType::PERMANENT(),
@@ -1073,7 +1069,7 @@ class CalendarFactoryTest extends TestCase
             ],
             'import permanent event with weekscheme mix openingtimes from + to' => [
                 'cdbCalendar' => $this->createPermanentCalendarFromXML(
-                    file_get_contents(__DIR__ . '/Calendar/samples/permanent/calendar_udb2_import_example_1801.xml')
+                    file_get_contents(__DIR__ . '/samples/permanent/calendar_udb2_import_example_1801.xml')
                 ),
                 'expectedCalendar' => new Calendar(
                     CalendarType::PERMANENT(),

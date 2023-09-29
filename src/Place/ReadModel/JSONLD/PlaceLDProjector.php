@@ -9,7 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\EventType;

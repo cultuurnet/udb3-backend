@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Timestamp;
+use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\TestCase;
 

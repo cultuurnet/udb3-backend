@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer;
 
-use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\ConvertsToApiProblem;
 use Exception;

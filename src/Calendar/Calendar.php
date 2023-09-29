@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3;
+namespace CultuurNet\UDB3\Calendar;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\JsonLdSerializableInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar as Udb3ModelCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
