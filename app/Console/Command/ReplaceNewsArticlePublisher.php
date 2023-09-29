@@ -76,13 +76,15 @@ final class ReplaceNewsArticlePublisher extends Command
 
     private function getNewsArticleCount(string $publisher): int
     {
-        return $this->connection->createQueryBuilder()
-            ->select('*')
-            ->from('news_article')
-            ->where('publisher = :publisher')
-            ->setParameter(':publisher', $publisher)
-            ->execute()
-            ->rowCount();
+        return count(
+            $this->connection->createQueryBuilder()
+                ->select('*')
+                ->from('news_article')
+                ->where('publisher = :publisher')
+                ->setParameter(':publisher', $publisher)
+                ->execute()
+                ->fetchAll()
+        );
     }
 
     private function updateNewsArticles(string $oldPublisher, string $newPublisher): void

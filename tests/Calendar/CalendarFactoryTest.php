@@ -102,7 +102,7 @@ class CalendarFactoryTest extends TestCase
         );
 
         $weekScheme = \CultureFeed_Cdb_Data_Calendar_Weekscheme::parseFromCdbXml(
-            simplexml_load_file(__DIR__ . '/week_scheme.xml')
+            simplexml_load_file(__DIR__ . '/samples/week_scheme.xml')
         );
 
         $calendar = $this->factory->createFromWeekScheme($weekScheme);

@@ -199,8 +199,6 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             SchemaConfigurator::NAME_COLUMN,
             SchemaConfigurator::VISIBLE_COLUMN,
             SchemaConfigurator::PRIVATE_COLUMN,
-            SchemaConfigurator::PARENT_UUID_COLUMN,
-            SchemaConfigurator::COUNT_COLUMN,
             SchemaConfigurator::EXCLUDED_COLUMN,
         ];
     }

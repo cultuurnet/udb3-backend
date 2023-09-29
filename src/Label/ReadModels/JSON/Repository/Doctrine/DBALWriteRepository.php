@@ -25,7 +25,6 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
                 SchemaConfigurator::NAME_COLUMN => '?',
                 SchemaConfigurator::VISIBLE_COLUMN => '?',
                 SchemaConfigurator::PRIVATE_COLUMN => '?',
-                SchemaConfigurator::PARENT_UUID_COLUMN => '?',
                 SchemaConfigurator::EXCLUDED_COLUMN => '?',
             ])
             ->setParameters([
@@ -33,7 +32,6 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
                 $name,
                 $visibility->sameAs(Visibility::VISIBLE()) ? 1 : 0,
                 $privacy->sameAs(Privacy::PRIVACY_PRIVATE()) ? 1 : 0,
-                null,
                 0,
             ]);
 

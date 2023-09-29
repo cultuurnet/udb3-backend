@@ -16,8 +16,6 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     public const NAME_COLUMN = 'name';
     public const VISIBLE_COLUMN = 'visible';
     public const PRIVATE_COLUMN = 'private';
-    public const PARENT_UUID_COLUMN = 'parentUuid';
-    public const COUNT_COLUMN = 'count_col';
     public const EXCLUDED_COLUMN = 'excluded';
 
     private string $tableName;
@@ -57,14 +55,6 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
         $table->addColumn(self::PRIVATE_COLUMN, Type::BOOLEAN)
             ->setNotnull(true)
             ->setDefault(false);
-
-        $table->addColumn(self::PARENT_UUID_COLUMN, Type::GUID)
-            ->setLength(36)
-            ->setNotnull(false);
-
-        $table->addColumn(self::COUNT_COLUMN, Type::BIGINT)
-            ->setNotnull(true)
-            ->setDefault(0);
 
         $table->addColumn(self::EXCLUDED_COLUMN, Type::BOOLEAN)
             ->setNotnull(true)
