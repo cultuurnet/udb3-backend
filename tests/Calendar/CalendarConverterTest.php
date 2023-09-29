@@ -15,10 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class CalendarConverterTest extends TestCase
 {
-    /**
-     * @var CalendarConverter
-     */
-    private $converter;
+    private CalendarConverter $converter;
 
     public function setUp(): void
     {

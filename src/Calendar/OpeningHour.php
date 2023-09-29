@@ -13,20 +13,11 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3M
  */
 final class OpeningHour implements Serializable
 {
-    /**
-     * @var OpeningTime
-     */
-    private $opens;
+    private OpeningTime $opens;
 
-    /**
-     * @var OpeningTime
-     */
-    private $closes;
+    private OpeningTime $closes;
 
-    /**
-     * @var DayOfWeekCollection
-     */
-    private $dayOfWeekCollection;
+    private DayOfWeekCollection $dayOfWeekCollection;
 
     public function __construct(
         OpeningTime $opens,

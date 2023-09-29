@@ -14,30 +14,17 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
  */
 class OpeningTime
 {
-    /**
-     * @var Hour
-     */
-    private $hour;
+    private Hour $hour;
 
-    /**
-     * @var Minute
-     */
-    private $minute;
+    private Minute $minute;
 
-    /**
-     * Custom value object for opening times without seconds.
-     *
-     */
     public function __construct(Hour $hour, Minute $minute)
     {
         $this->hour = $hour;
         $this->minute = $minute;
     }
 
-    /**
-     * @return OpeningTime
-     */
-    public static function fromNativeDateTime(\DateTimeInterface $dateTime)
+    public static function fromNativeDateTime(\DateTimeInterface $dateTime): OpeningTime
     {
         $hour = new Hour((int) ($dateTime->format('H')));
         $minute = new Minute((int) ($dateTime->format('i')));
@@ -47,62 +34,41 @@ class OpeningTime
 
     /**
      * The supported string format is H:i
-     *
-     * @param string $time
-     * @return OpeningTime
      */
-    public static function fromNativeString($time)
+    public static function fromNativeString(string $time): OpeningTime
     {
         return self::fromNativeDateTime(
             \DateTime::createFromFormat('H:i', $time)
         );
     }
 
-    /**
-     * @return string
-     */
-    public function toNativeString()
+    public function toNativeString(): string
     {
         return (string) $this;
     }
 
-    /**
-     * @return Hour
-     */
-    public function getHour()
+    public function getHour(): Hour
     {
         return $this->hour;
     }
 
-    /**
-     * @return Minute
-     */
-    public function getMinute()
+    public function getMinute(): Minute
     {
         return $this->minute;
     }
 
-    /**
-     * @return bool
-     */
-    public function sameValueAs(OpeningTime $time)
+    public function sameValueAs(OpeningTime $time): bool
     {
         return $this->getHour()->sameAs($time->getHour()) &&
             $this->getMinute()->sameAs($time->getMinute());
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->toNativeDateTime()->format('H:i');
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
-    private function toNativeDateTime()
+    private function toNativeDateTime(): \DateTimeInterface
     {
         $hour   = $this->getHour()->toInteger();
         $minute = $this->getMinute()->toInteger();
@@ -113,10 +79,7 @@ class OpeningTime
         return $time;
     }
 
-    /**
-     * @return self
-     */
-    public static function fromUdb3ModelTime(Time $time)
+    public static function fromUdb3ModelTime(Time $time): OpeningTime
     {
         $hour = new Hour($time->getHour()->toInteger());
         $minute = new Minute($time->getMinute()->toInteger());

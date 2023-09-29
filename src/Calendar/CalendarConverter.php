@@ -20,10 +20,7 @@ use League\Period\Period;
 
 class CalendarConverter implements CalendarConverterInterface
 {
-    /**
-     * @var \DateTimeZone
-     */
-    private $cdbTimezone;
+    private \DateTimeZone $cdbTimezone;
 
     public function __construct(\DateTimeZone $cdbTimezone = null)
     {
@@ -34,10 +31,7 @@ class CalendarConverter implements CalendarConverterInterface
         $this->cdbTimezone = $cdbTimezone;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function toCdbCalendar(CalendarInterface $calendar)
+    public function toCdbCalendar(CalendarInterface $calendar): \CultureFeed_Cdb_Data_Calendar
     {
         $weekScheme = $this->getWeekScheme($calendar);
         $calendarType = (string) $calendar->getType();
@@ -93,10 +87,7 @@ class CalendarConverter implements CalendarConverterInterface
         return $cdbCalendar;
     }
 
-    /**
-     * @return int
-     */
-    private function countTimestamps(CultureFeed_Cdb_Data_Calendar_TimestampList $timestamps)
+    private function countTimestamps(CultureFeed_Cdb_Data_Calendar_TimestampList $timestamps): int
     {
         $numberOfTimestamps =  iterator_count($timestamps);
         $timestamps->rewind();
@@ -105,10 +96,9 @@ class CalendarConverter implements CalendarConverterInterface
     }
 
     /**
-     * @return CultureFeed_Cdb_Data_Calendar_Weekscheme|null
      * @throws \Exception
      */
-    private function getWeekScheme(CalendarInterface $itemCalendar)
+    private function getWeekScheme(CalendarInterface $itemCalendar): ?CultureFeed_Cdb_Data_Calendar_Weekscheme
     {
         // Store opening hours.
         $openingHours = $itemCalendar->getOpeningHours();
@@ -163,17 +153,12 @@ class CalendarConverter implements CalendarConverterInterface
         return $weekScheme;
     }
 
-    /**
-     * @param Integer|null $index
-     *
-     * @return CultureFeed_Cdb_Data_Calendar_TimestampList
-     */
     private function createTimestampCalendar(
         DateTimeInterface $startDate,
         DateTimeInterface $endDate,
         CultureFeed_Cdb_Data_Calendar_TimestampList $calendar,
-        $index = null
-    ) {
+        ?int $index = null
+    ): CultureFeed_Cdb_Data_Calendar_TimestampList {
         // Make a clone of the original calendar to avoid updating input param.
         $newCalendar = clone $calendar;
 
@@ -249,11 +234,7 @@ class CalendarConverter implements CalendarConverterInterface
         return $time;
     }
 
-    /**
-     * @param int $index
-     * @return string
-     */
-    private function createIndexedTimeString($index)
+    private function createIndexedTimeString(int $index): string
     {
         return '00:00:' . str_pad((string) $index, 2, '0', STR_PAD_LEFT);
     }
@@ -261,10 +242,8 @@ class CalendarConverter implements CalendarConverterInterface
     /**
      * DateTimeInterface has no setTimezone() method, so we need to convert it to a DateTimeImmutable object
      * first using Chronos.
-     *
-     * @return DateTimeInterface
      */
-    private function configureCdbTimezone(\DateTimeInterface $dateTime)
+    private function configureCdbTimezone(\DateTimeInterface $dateTime): DateTimeInterface
     {
         return Chronos::instance($dateTime)->setTimezone($this->cdbTimezone);
     }

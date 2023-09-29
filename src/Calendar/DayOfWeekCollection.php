@@ -19,10 +19,6 @@ class DayOfWeekCollection implements Serializable
      */
     private $daysOfWeek = [];
 
-    /**
-     * DayOfWeekCollection constructor.
-     * @param DayOfWeek[] ...$daysOfWeek
-     */
     public function __construct(DayOfWeek ...$daysOfWeek)
     {
         array_walk($daysOfWeek, [$this, 'addDayOfWeek']);
@@ -31,10 +27,8 @@ class DayOfWeekCollection implements Serializable
     /**
      * Keeps the collection of days of week unique.
      * Makes sure that the objects are stored as strings to allow PHP serialize method.
-     *
-     * @return DayOfWeekCollection
      */
-    public function addDayOfWeek(DayOfWeek $dayOfWeek)
+    public function addDayOfWeek(DayOfWeek $dayOfWeek): DayOfWeekCollection
     {
         $this->daysOfWeek = array_unique(
             array_merge(
@@ -51,7 +45,7 @@ class DayOfWeekCollection implements Serializable
     /**
      * @return DayOfWeek[]
      */
-    public function getDaysOfWeek()
+    public function getDaysOfWeek(): array
     {
         return array_map(
             function ($dayOfWeek) {
@@ -80,10 +74,7 @@ class DayOfWeekCollection implements Serializable
         return $this->daysOfWeek;
     }
 
-    /**
-     * @return self
-     */
-    public static function fromUdb3ModelDays(Days $days)
+    public static function fromUdb3ModelDays(Days $days): DayOfWeekCollection
     {
         $days = array_map(
             function (Day $day) {
