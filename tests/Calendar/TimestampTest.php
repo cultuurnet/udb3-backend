@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use DateTime;
 use DateTimeInterface;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class TimestampTest extends TestCase
@@ -56,7 +55,7 @@ class TimestampTest extends TestCase
     {
         $pastDate = '2016-01-03T00:01:01+01:00';
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(EndDateCanNotBeEarlierThanStartDate::class);
         $this->expectExceptionMessage('End date can not be earlier than start date.');
 
         new Timestamp(
