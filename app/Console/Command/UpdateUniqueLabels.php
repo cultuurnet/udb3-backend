@@ -109,13 +109,15 @@ class UpdateUniqueLabels extends Command
 
     private function getAllLabelAddedEventsCount(): int
     {
-        return $this->connection->createQueryBuilder()
-            ->select('uuid')
-            ->from('event_store')
-            ->where('type = "' . self::LABEL_CREATED . '"')
-            ->orderBy('id')
-            ->execute()
-            ->rowCount();
+        return count(
+            $this->connection->createQueryBuilder()
+                ->select('uuid')
+                ->from('event_store')
+                ->where('type = "' . self::LABEL_CREATED . '"')
+                ->orderBy('id')
+                ->execute()
+                ->fetchAll()
+        );
     }
 
     /**
