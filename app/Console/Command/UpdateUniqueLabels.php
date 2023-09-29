@@ -17,15 +17,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class UpdateUniqueLabels extends Command
+final class UpdateUniqueLabels extends Command
 {
     private const MAX_RESULTS = 1000;
     private const LABEL_CREATED = 'CultuurNet.UDB3.Label.Events.Created';
 
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
