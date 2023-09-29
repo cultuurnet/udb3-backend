@@ -154,7 +154,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
     public function count(string $keyword): int
     {
         $keyword = $this->addWildcardToKeyword($keyword);
-        return (int) $this->createSearchQuery($keyword)->execute()->rowCount();
+        return count($this->createSearchQuery($keyword)->execute()->fetchAll());
     }
 
     private function createSearchQuery(string $keyword): QueryBuilder

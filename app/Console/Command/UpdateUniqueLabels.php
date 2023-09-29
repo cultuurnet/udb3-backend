@@ -17,15 +17,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class UpdateUniqueLabels extends Command
+final class UpdateUniqueLabels extends Command
 {
     private const MAX_RESULTS = 1000;
     private const LABEL_CREATED = 'CultuurNet.UDB3.Label.Events.Created';
 
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -109,13 +106,15 @@ class UpdateUniqueLabels extends Command
 
     private function getAllLabelAddedEventsCount(): int
     {
-        return $this->connection->createQueryBuilder()
-            ->select('uuid')
-            ->from('event_store')
-            ->where('type = "' . self::LABEL_CREATED . '"')
-            ->orderBy('id')
-            ->execute()
-            ->rowCount();
+        return count(
+            $this->connection->createQueryBuilder()
+                ->select('uuid')
+                ->from('event_store')
+                ->where('type = "' . self::LABEL_CREATED . '"')
+                ->orderBy('id')
+                ->execute()
+                ->fetchAll()
+        );
     }
 
     /**

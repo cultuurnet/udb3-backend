@@ -119,14 +119,16 @@ class UpdateUniqueOrganizers extends Command
 
     private function getAllOrganizerEventsCount(): int
     {
-        return $this->connection->createQueryBuilder()
-            ->select('uuid')
-            ->from('event_store')
-            ->where('type = "' . self::ORGANIZER_CREATED . '"')
-            ->orWhere('type = "' . self::ORGANIZER_WEBSITE_UPDATED . '"')
-            ->orderBy('id')
-            ->execute()
-            ->rowCount();
+        return count(
+            $this->connection->createQueryBuilder()
+                ->select('uuid')
+                ->from('event_store')
+                ->where('type = "' . self::ORGANIZER_CREATED . '"')
+                ->orWhere('type = "' . self::ORGANIZER_WEBSITE_UPDATED . '"')
+                ->orderBy('id')
+                ->execute()
+                ->fetchAll()
+        );
     }
 
     /**
