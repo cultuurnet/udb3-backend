@@ -95,7 +95,9 @@ final class RdfProjector implements EventListener
 
         $this->setName($resource, $organizer->getName());
 
-        $this->setHomepage($resource, $organizer->getUrl());
+        if ($organizer->getUrl()) {
+            $this->setHomepage($resource, $organizer->getUrl());
+        }
 
         if ($organizer->getAddress()) {
             (new AddressEditor($this->addressParser))
