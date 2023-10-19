@@ -37,7 +37,7 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['organizersRdfBaseUri']),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['taxonomy']['terms']),
                 $this->container->get('event_jsonld_repository'),
-                new EventDenormalizer(),
+                (new EventDenormalizer())->handlesDummyOrganizers(),
                 $this->container->get(AddressParser::class),
                 LoggerFactory::create($this->getContainer(), LoggerName::forService('rdf'))
             )

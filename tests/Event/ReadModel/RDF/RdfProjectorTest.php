@@ -25,7 +25,7 @@ class RdfProjectorTest extends RdfTestCase
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/organizers/' . $item),
             new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
             $this->documentRepository,
-            new EventDenormalizer(),
+            (new EventDenormalizer())->handlesDummyOrganizers(),
             $this->addressParser,
             $this->logger
         );
