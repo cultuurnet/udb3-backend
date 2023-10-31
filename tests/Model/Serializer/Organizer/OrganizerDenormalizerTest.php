@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -36,10 +37,7 @@ use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class OrganizerDenormalizerTest extends TestCase
 {
-    /**
-     * @var OrganizerDenormalizer
-     */
-    private $denormalizer;
+    private OrganizerDenormalizer $denormalizer;
 
     public function setUp(): void
     {
@@ -73,6 +71,47 @@ class OrganizerDenormalizerTest extends TestCase
         $actual = $this->denormalizer->denormalize($organizerData, ImmutableOrganizer::class);
 
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_default_workflow_status_active(): void
+    {
+        $organizerData = [
+            '@id' => 'https://io.uitdatabank.be/organizer/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Organizer',
+            '@context' => '/contexts/organizer',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+        ];
+
+        $actual = $this->denormalizer->denormalize($organizerData, ImmutableOrganizer::class);
+
+        $this->assertEquals($actual->getWorkflowStatus(), WorkflowStatus::ACTIVE());
+    }
+
+    /**
+     * @test
+     */
+    public function it_normalizes_workflow_status_deleted(): void
+    {
+        $organizerData = [
+            '@id' => 'https://io.uitdatabank.be/organizer/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Organizer',
+            '@context' => '/contexts/organizer',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'workflowStatus' => 'DELETED',
+        ];
+
+        $actual = $this->denormalizer->denormalize($organizerData, ImmutableOrganizer::class);
+
+        $this->assertEquals($actual->getWorkflowStatus(), WorkflowStatus::DELETED());
     }
 
     /**
