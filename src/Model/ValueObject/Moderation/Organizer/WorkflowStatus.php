@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Organizer;
+namespace CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
