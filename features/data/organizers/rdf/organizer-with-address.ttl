@@ -34,5 +34,7 @@
                 ] ;
         <http://xmlns.com/foaf/0.1/homepage>
                 "https://www.%{name}.be" ;
+        <https://data.publiq.be/ns/uitdatabank#workflowStatus>
+                <https://data.publiq.be/concepts/workflowStatus/active> ;
         <https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.naam>
                 "%{name}"@nl .
