@@ -8,6 +8,7 @@
 @prefix cpr: <https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.> .
 @prefix schema: <https://schema.org/> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
+@prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
@@ -38,4 +39,5 @@
     ]
   ] ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
+  cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> .
