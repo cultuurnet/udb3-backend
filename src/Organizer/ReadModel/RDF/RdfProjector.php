@@ -41,6 +41,7 @@ final class RdfProjector implements EventListener
     private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
     private const PROPERTY_HOMEPAGE = 'foaf:homepage';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
+    private const PROPERTY_WORKFLOW_STATUS = 'udb:workflowStatus';
 
     public function __construct(
         GraphRepository $graphRepository,
@@ -93,6 +94,8 @@ final class RdfProjector implements EventListener
             $modified
         );
 
+        $this->setWorkflowStatus($resource, $organizerData);
+
         $this->setName($resource, $organizer->getName());
 
         if ($organizer->getUrl()) {
@@ -144,5 +147,17 @@ final class RdfProjector implements EventListener
     private function setHomepage(Resource $resource, Url $url): void
     {
         $resource->addLiteral(self::PROPERTY_HOMEPAGE, new Literal($url->toString()));
+    }
+
+    private function setWorkflowStatus(Resource $resource, array $organizerData): void
+    {
+        $statusTemplate = 'https://data.publiq.be/concepts/workflowStatus/%s';
+        $status = sprintf($statusTemplate, 'active');
+
+        if (isset($organizerData['workflowStatus']) && $organizerData['workflowStatus'] === 'DELETED') {
+            $status = sprintf($statusTemplate, 'deleted');
+        }
+
+        $resource->set(self::PROPERTY_WORKFLOW_STATUS, new Resource($status));
     }
 }
