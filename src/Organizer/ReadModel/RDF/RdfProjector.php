@@ -11,6 +11,7 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
@@ -94,7 +95,7 @@ final class RdfProjector implements EventListener
             $modified
         );
 
-        $this->setWorkflowStatus($resource, $organizerData);
+        $this->setWorkflowStatus($resource, $organizer->getWorkflowStatus());
 
         $this->setName($resource, $organizer->getName());
 
@@ -149,12 +150,12 @@ final class RdfProjector implements EventListener
         $resource->addLiteral(self::PROPERTY_HOMEPAGE, new Literal($url->toString()));
     }
 
-    private function setWorkflowStatus(Resource $resource, array $organizerData): void
+    private function setWorkflowStatus(Resource $resource, WorkflowStatus $workflowStatus): void
     {
         $statusTemplate = 'https://data.publiq.be/concepts/workflowStatus/%s';
         $status = sprintf($statusTemplate, 'active');
 
-        if (isset($organizerData['workflowStatus']) && $organizerData['workflowStatus'] === 'DELETED') {
+        if ($workflowStatus->sameAs(WorkflowStatus::DELETED())) {
             $status = sprintf($statusTemplate, 'deleted');
         }
 
