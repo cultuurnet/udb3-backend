@@ -26,5 +26,7 @@
                 <http://host.docker.internal:8080/places/%{uuid_place}> ;
         <https://data.publiq.be/ns/uitdatabank#workflowStatus>
                 <https://data.publiq.be/concepts/workflowStatus/draft> ;
+        <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.locatieType>
+                <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
         <https://data.vlaanderen.be/ns/cultuurparticipatie#thema>
                 <https://taxonomy-test.uitdatabank.be/terms/1.8.2.0.0> .

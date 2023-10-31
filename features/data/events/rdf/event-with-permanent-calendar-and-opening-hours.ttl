@@ -38,4 +38,6 @@
                             <https://schema.org/dayOfWeek>  <https://schema.org/Thursday> , <https://schema.org/Friday> ;
                             <https://schema.org/opens>      "09:00"
                           ]
-                ] .
+                ] ;
+        <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.locatieType>
+                <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> .
