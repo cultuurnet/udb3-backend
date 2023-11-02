@@ -23,4 +23,6 @@
         <http://www.w3.org/ns/prov#atLocation>
                 <http://host.docker.internal:8080/places/%{uuid_place}> ;
         <https://data.publiq.be/ns/uitdatabank#workflowStatus>
-                <https://data.publiq.be/concepts/workflowStatus/draft> .
+                <https://data.publiq.be/concepts/workflowStatus/draft> ;
+        <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.locatieType>
+                <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> .

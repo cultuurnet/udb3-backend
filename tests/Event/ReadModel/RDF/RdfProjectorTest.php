@@ -1199,7 +1199,7 @@ class RdfProjectorTest extends RdfTestCase
             'location' => [
                 '@id' => 'https://mock.io.uitdatabank.be/place/bfc60a14-6208-4372-942e-86e63744769a',
             ],
-            'attendanceMode' => 'online',
+            'attendanceMode' => 'mixed',
             'onlineUrl' => 'https://www.publiq.be/livestream',
             'created' => '2023-01-01T12:30:15+01:00',
         ];

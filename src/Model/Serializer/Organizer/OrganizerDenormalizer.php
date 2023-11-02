@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
@@ -147,8 +148,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
         $organizer = $this->denormalizeContactPoint($data, $organizer);
         $organizer = $this->denormalizeGeoCoordinates($data, $organizer);
         $organizer = $this->denormalizeImages($data, $organizer);
-
-        return $organizer;
+        return $this->denormalizeWorkflowStatus($data, $organizer);
     }
 
     private function denormalizeDescription(array $data, ImmutableOrganizer $organizer): ImmutableOrganizer
@@ -232,5 +232,15 @@ class OrganizerDenormalizer implements DenormalizerInterface
     public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === ImmutableOrganizer::class || $type === Organizer::class;
+    }
+
+    private function denormalizeWorkflowStatus(array $data, ImmutableOrganizer $organizer): ImmutableOrganizer
+    {
+        if (isset($data['workflowStatus'])) {
+            $workflowStatus = new WorkflowStatus($data['workflowStatus']);
+            $organizer = $organizer->withWorkflowStatus($workflowStatus);
+        }
+
+        return $organizer;
     }
 }

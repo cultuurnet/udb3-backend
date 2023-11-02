@@ -80,6 +80,7 @@ final class RdfProjector implements EventListener
 
     private const PROPERTY_VIRTUAL_LOCATION = 'schema:location';
     private const PROPERTY_VIRTUAL_LOCATION_URL = 'schema:url';
+    private const PROPERTY_LOCATIE_TYPE = 'cpa:locatieType';
 
     private const PROPERTY_PERIOD_START = 'm8g:startTime';
     private const PROPERTY_PERIOD_END = 'm8g:endTime';
@@ -168,6 +169,8 @@ final class RdfProjector implements EventListener
         if ($event->getAvailableFrom()) {
             $workflowStatusEditor->setAvailableFrom($resource, $event->getAvailableFrom());
         }
+
+        $this->setLocatieType($resource, $event->getAttendanceMode());
 
         if (!$event->getAttendanceMode()->sameAs(AttendanceMode::offline())) {
             $this->setVirtualLocation($resource, $event->getOnlineUrl());
@@ -357,7 +360,7 @@ final class RdfProjector implements EventListener
         $resource->addLiteral(self::PROPERTY_REALISATOR_NAAM, new Literal($name, 'nl'));
     }
 
-    public function setDummyOrganizerContactPoint(Resource $organizerResource, array $contactPointData): void
+    private function setDummyOrganizerContactPoint(Resource $organizerResource, array $contactPointData): void
     {
         (new ContactPointEditor())->setContactPoint(
             $organizerResource,
@@ -366,5 +369,21 @@ final class RdfProjector implements EventListener
                 ContactPoint::class
             )
         );
+    }
+
+    private function setLocatieType(Resource $resource, AttendanceMode $attendanceMode): void
+    {
+        $locatieTypeTemplate = 'https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/%s';
+        $locatieType = sprintf($locatieTypeTemplate, 'fysiek');
+
+        if ($attendanceMode->sameAs(AttendanceMode::online())) {
+            $locatieType = sprintf($locatieTypeTemplate, 'online');
+        }
+
+        if ($attendanceMode->sameAs(AttendanceMode::mixed())) {
+            $locatieType = sprintf($locatieTypeTemplate, 'hybride');
+        }
+
+        $resource->set(self::PROPERTY_LOCATIE_TYPE, new Resource($locatieType));
     }
 }

@@ -33,6 +33,8 @@
                             <https://schema.org/url>        "https://www.example.com"
                           ]
                 ] ;
+        <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.locatieType>
+                <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
         <https://data.vlaanderen.be/ns/cultuurparticipatie#ruimtetijd>
                 [ a       <http://www.cidoc-crm.org/cidoc-crm/E92_Spacetime_Volume> ;
                   <http://www.cidoc-crm.org/cidoc-crm/P160_has_temporal_projection>
