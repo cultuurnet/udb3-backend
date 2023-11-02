@@ -25,7 +25,7 @@ class RdfProjectorTest extends RdfTestCase
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/organizers/' . $item),
             new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
             $this->documentRepository,
-            new EventDenormalizer(),
+            (new EventDenormalizer())->handlesDummyOrganizers(),
             $this->addressParser,
             $this->logger
         );
@@ -1199,7 +1199,7 @@ class RdfProjectorTest extends RdfTestCase
             'location' => [
                 '@id' => 'https://mock.io.uitdatabank.be/place/bfc60a14-6208-4372-942e-86e63744769a',
             ],
-            'attendanceMode' => 'online',
+            'attendanceMode' => 'mixed',
             'onlineUrl' => 'https://www.publiq.be/livestream',
             'created' => '2023-01-01T12:30:15+01:00',
         ];
@@ -1361,6 +1361,105 @@ class RdfProjectorTest extends RdfTestCase
         );
 
         $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-organizer.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_dummy_organizer(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+            'organizer' => [
+                'name' => 'Dummy Organizer',
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_dummy_organizer_with_contact_point(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
+                'name' => 'Dummy Location',
+            ],
+            'organizer' => [
+                'name' => 'Dummy Organizer',
+                'contactPoint' => [
+                    'phone' => [
+                        '016 666 666',
+                    ],
+                    'url' => [
+                        'http://www.dummy-organizer.be',
+                    ],
+                ],
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+
+        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer-with-contact-point.ttl'));
     }
 
     /**

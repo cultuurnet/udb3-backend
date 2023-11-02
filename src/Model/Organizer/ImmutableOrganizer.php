@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
@@ -39,6 +40,8 @@ class ImmutableOrganizer implements Organizer
 
     private Images $images;
 
+    private WorkflowStatus $workflowStatus;
+
     /**
      * @param Url|null $url
      *  When creating a new organizer a url is required.
@@ -59,6 +62,7 @@ class ImmutableOrganizer implements Organizer
         $this->labels = new Labels();
         $this->contactPoint = new ContactPoint();
         $this->images = new Images();
+        $this->workflowStatus = WorkflowStatus::ACTIVE();
     }
 
     public function getId(): UUID
@@ -191,6 +195,18 @@ class ImmutableOrganizer implements Organizer
     {
         $c = clone $this;
         $c->images = $images;
+        return $c;
+    }
+
+    public function getWorkflowStatus(): WorkflowStatus
+    {
+        return $this->workflowStatus;
+    }
+
+    public function withWorkflowStatus(WorkflowStatus $workflowStatus): ImmutableOrganizer
+    {
+        $c = clone $this;
+        $c->workflowStatus = $workflowStatus;
         return $c;
     }
 }

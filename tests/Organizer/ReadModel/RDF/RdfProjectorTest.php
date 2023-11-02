@@ -71,6 +71,37 @@ class RdfProjectorTest extends RdfTestCase
     /**
      * @test
      */
+    public function it_converts_a_simple_deleted_organizer(): void
+    {
+        $organizerId = '56f1efdb-fe25-44f6-b9d7-4a6a836799d7';
+
+        $organizer = [
+            '@id' => 'https://mock.io.uitdatabank.be/organizers/' . $organizerId,
+            'mainLanguage' => 'nl',
+            'url' => 'https://www.publiq.be',
+            'name' => [
+                'nl' => 'publiq VZW',
+                'en' => 'publiq NPO',
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+            'workflowStatus' => 'DELETED',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($organizerId, json_encode($organizer)));
+
+        $this->project(
+            $organizerId,
+            [
+                new OrganizerProjectedToJSONLD($organizerId, 'https://mock.io.uitdatabank.be/organizer/' . $organizerId),
+            ]
+        );
+
+        $this->assertTurtleData($organizerId, file_get_contents(__DIR__ . '/ttl/organizer-deleted.ttl'));
+    }
+
+    /**
+     * @test
+     */
     public function it_converts_a_simple_organizer_without_url(): void
     {
         $organizerId = '56f1efdb-fe25-44f6-b9d7-4a6a836799d7';

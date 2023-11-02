@@ -6,6 +6,7 @@
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
+@prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
@@ -26,4 +27,5 @@
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   cidoc:P14_carried_out_by <https://mock.data.publiq.be/organizers/331a966d-d8ff-4e3c-a6f4-83b901f6c3af> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
+  cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> .

@@ -5,9 +5,11 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
+@prefix cpr: <https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.> .
+@prefix schema: <https://schema.org/> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
-@prefix m8g: <http://data.europa.eu/m8g/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a cidoc:E7_Activity ;
@@ -25,14 +27,17 @@
   dcterms:title "Faith no more"@nl ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
+  cidoc:P14_carried_out_by [
+    a cp:Organisator ;
+    cpr:naam "Dummy Organizer"@nl ;
+    schema:contactPoint [
+      a schema:ContactPoint ;
+      schema:url "http://www.dummy-organizer.be"
+    ], [
+      a schema:ContactPoint ;
+      schema:telephone "016 666 666"
+    ]
+  ] ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  cp:ruimtetijd [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-    cidoc:P160_has_temporal_projection [
-      a m8g:PeriodOfTime ;
-      m8g:startTime "2023-05-06T20:00:00+01:00"^^xsd:dateTime ;
-      m8g:endTime "2023-05-06T23:00:00+01:00"^^xsd:dateTime
-    ]
-  ] .
+  prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> .
