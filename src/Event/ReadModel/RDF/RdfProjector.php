@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -22,6 +23,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -62,6 +64,7 @@ final class RdfProjector implements EventListener
     private const TYPE_VIRTUAL_LOCATION = 'schema:VirtualLocation';
     private const TYPE_VIRTUAL_LOCATION_URL = 'xsd:string';
     private const TYPE_BOEKINGSINFO = 'cpa:Boekingsinfo';
+    private const TYPE_ORGANISATOR = 'cp:Organisator';
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_TYPE = 'dcterms:type';
@@ -82,6 +85,8 @@ final class RdfProjector implements EventListener
     private const PROPERTY_PERIOD_END = 'm8g:endTime';
 
     private const PROPERTY_BOEKINGSINFO = 'cpa:boeking';
+
+    private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
 
     public function __construct(
         GraphRepository $graphRepository,
@@ -144,6 +149,18 @@ final class RdfProjector implements EventListener
 
         if ($event->getOrganizerReference()) {
             $this->setOrganizer($resource, $event->getOrganizerReference());
+        }
+
+        if ($this->hasDummyOrganizer($event, $eventData)) {
+            $organizerResource = $resource->getGraph()->newBNode([self::TYPE_ORGANISATOR]);
+
+            $this->setDummyOrganizerName($organizerResource, $eventData['organizer']['name']);
+
+            if (isset($eventData['organizer']['contactPoint'])) {
+                $this->setDummyOrganizerContactPoint($organizerResource, $eventData['organizer']['contactPoint']);
+            }
+
+            $resource->add(self::PROPERTY_CARRIED_OUT_BY, $organizerResource);
         }
 
         $workflowStatusEditor = new WorkflowStatusEditor();
@@ -328,5 +345,26 @@ final class RdfProjector implements EventListener
         (new ContactPointEditor())->setBookingInfo($bookingInfoResource, $bookingInfo);
 
         $resource->add(self::PROPERTY_BOEKINGSINFO, $bookingInfoResource);
+    }
+
+    private function hasDummyOrganizer(Event $event, array $eventData): bool
+    {
+        return $event->getOrganizerReference() === null && isset($eventData['organizer']['name']);
+    }
+
+    private function setDummyOrganizerName(Resource $resource, string $name): void
+    {
+        $resource->addLiteral(self::PROPERTY_REALISATOR_NAAM, new Literal($name, 'nl'));
+    }
+
+    public function setDummyOrganizerContactPoint(Resource $organizerResource, array $contactPointData): void
+    {
+        (new ContactPointEditor())->setContactPoint(
+            $organizerResource,
+            (new ContactPointDenormalizer())->denormalize(
+                $contactPointData,
+                ContactPoint::class
+            )
+        );
     }
 }
