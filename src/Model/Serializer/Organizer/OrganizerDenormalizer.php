@@ -118,7 +118,8 @@ class OrganizerDenormalizer implements DenormalizerInterface
         $idUrl = new Url($data['@id']);
         $id = $this->organizerIDParser->fromUrl($idUrl);
 
-        $mainLanguageKey = $data['mainLanguage'];
+        $mainLanguageKey = $data['mainLanguage'] ?? 'nl';
+        $data['mainLanguage'] = $mainLanguageKey;
         $mainLanguage = new Language($mainLanguageKey);
 
         /* @var TranslatedTitle $title */
