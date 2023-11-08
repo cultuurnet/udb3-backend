@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -22,6 +23,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -62,6 +64,7 @@ final class RdfProjector implements EventListener
     private const TYPE_VIRTUAL_LOCATION = 'schema:VirtualLocation';
     private const TYPE_VIRTUAL_LOCATION_URL = 'xsd:string';
     private const TYPE_BOEKINGSINFO = 'cpa:Boekingsinfo';
+    private const TYPE_ORGANISATOR = 'cp:Organisator';
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_TYPE = 'dcterms:type';
@@ -77,11 +80,14 @@ final class RdfProjector implements EventListener
 
     private const PROPERTY_VIRTUAL_LOCATION = 'schema:location';
     private const PROPERTY_VIRTUAL_LOCATION_URL = 'schema:url';
+    private const PROPERTY_LOCATIE_TYPE = 'cpa:locatieType';
 
     private const PROPERTY_PERIOD_START = 'm8g:startTime';
     private const PROPERTY_PERIOD_END = 'm8g:endTime';
 
     private const PROPERTY_BOEKINGSINFO = 'cpa:boeking';
+
+    private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
 
     public function __construct(
         GraphRepository $graphRepository,
@@ -146,11 +152,23 @@ final class RdfProjector implements EventListener
             $this->setOrganizer($resource, $event->getOrganizerReference());
         }
 
+        if ($this->hasDummyOrganizer($event, $eventData)) {
+            $organizerResource = $resource->getGraph()->newBNode([self::TYPE_ORGANISATOR]);
+
+            $this->setDummyOrganizerName($organizerResource, $eventData['organizer']['name']);
+
+            $this->setDummyOrganizerContactPoint($organizerResource, $eventData['organizer']);
+
+            $resource->add(self::PROPERTY_CARRIED_OUT_BY, $organizerResource);
+        }
+
         $workflowStatusEditor = new WorkflowStatusEditor();
         $workflowStatusEditor->setWorkflowStatus($resource, $event->getWorkflowStatus());
         if ($event->getAvailableFrom()) {
             $workflowStatusEditor->setAvailableFrom($resource, $event->getAvailableFrom());
         }
+
+        $this->setLocatieType($resource, $event->getAttendanceMode());
 
         if (!$event->getAttendanceMode()->sameAs(AttendanceMode::offline())) {
             $this->setVirtualLocation($resource, $event->getOnlineUrl());
@@ -328,5 +346,42 @@ final class RdfProjector implements EventListener
         (new ContactPointEditor())->setBookingInfo($bookingInfoResource, $bookingInfo);
 
         $resource->add(self::PROPERTY_BOEKINGSINFO, $bookingInfoResource);
+    }
+
+    private function hasDummyOrganizer(Event $event, array $eventData): bool
+    {
+        return $event->getOrganizerReference() === null && isset($eventData['organizer']['name']);
+    }
+
+    private function setDummyOrganizerName(Resource $resource, string $name): void
+    {
+        $resource->addLiteral(self::PROPERTY_REALISATOR_NAAM, new Literal($name, 'nl'));
+    }
+
+    private function setDummyOrganizerContactPoint(Resource $organizerResource, array $contactPointData): void
+    {
+        (new ContactPointEditor())->setContactPoint(
+            $organizerResource,
+            (new ContactPointDenormalizer())->denormalize(
+                $contactPointData,
+                ContactPoint::class
+            )
+        );
+    }
+
+    private function setLocatieType(Resource $resource, AttendanceMode $attendanceMode): void
+    {
+        $locatieTypeTemplate = 'https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/%s';
+        $locatieType = sprintf($locatieTypeTemplate, 'fysiek');
+
+        if ($attendanceMode->sameAs(AttendanceMode::online())) {
+            $locatieType = sprintf($locatieTypeTemplate, 'online');
+        }
+
+        if ($attendanceMode->sameAs(AttendanceMode::mixed())) {
+            $locatieType = sprintf($locatieTypeTemplate, 'hybride');
+        }
+
+        $resource->set(self::PROPERTY_LOCATIE_TYPE, new Resource($locatieType));
     }
 }

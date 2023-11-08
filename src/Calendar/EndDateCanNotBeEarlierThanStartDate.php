@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Calendar;
 
-final class EndDateCanNotBeEarlierThanStartDate extends \Exception
+final class EndDateCanNotBeEarlierThanStartDate extends \InvalidArgumentException
 {
     public function __construct()
     {
