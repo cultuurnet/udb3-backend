@@ -27,19 +27,16 @@ use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Title;
+use Geocoder\Model\Address as GeocoderAddress;
+use Geocoder\Model\AdminLevelCollection;
+use Geocoder\Model\Coordinates as GeocoderCoordinates;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var AddressFormatter
-     */
-    private $defaultAddressFormatter;
+    private AddressFormatter $defaultAddressFormatter;
 
-    /**
-     * @var AddressFormatter
-     */
-    private $localityAddressFormatter;
+    private AddressFormatter $localityAddressFormatter;
 
     /**
      * @var GeocodingService|MockObject
@@ -99,7 +96,14 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->geocodingService->expects($this->once())
             ->method('fetchAddress')
             ->with('Wetstraat 1, 1000 Bxl, BE')
-            ->willReturn($coordinates);
+            ->willReturn(new GeocoderAddress(
+                'cache',
+                new AdminLevelCollection(),
+                new GeocoderCoordinates(
+                    $coordinates->getLatitude()->toFloat(),
+                    $coordinates->getLongitude()->toFloat()
+                )
+            ));
 
         $expectedEvent = new GeoCoordinatesUpdated($id, $coordinates);
 

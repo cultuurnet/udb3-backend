@@ -48,10 +48,10 @@ class UpdateGeoCoordinatesFromAddressCommandHandler extends Udb3CommandHandler
                     $updateGeoCoordinates->address()
                 )
             );
-        }
 
-        if ($enrichedAddress === null) {
-            return;
+            if ($enrichedAddress === null) {
+                return;
+            }
         }
 
         $organizer = $this->loadOrganizer($updateGeoCoordinates->organizerId());

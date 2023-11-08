@@ -36,15 +36,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var AddressFormatter
-     */
-    private $defaultAddressFormatter;
+    private AddressFormatter $defaultAddressFormatter;
 
-    /**
-     * @var AddressFormatter
-     */
-    private $localityAddressFormatter;
+    private AddressFormatter $localityAddressFormatter;
 
     /**
      * @var GeocodingService|MockObject

@@ -10,6 +10,9 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Json;
 use Doctrine\Common\Cache\ArrayCache;
+use Geocoder\Model\Address as GeocoderAddress;
+use Geocoder\Model\AdminLevelCollection;
+use Geocoder\Model\Coordinates as GeocoderCoordinates;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Doctrine\Common\Cache\Cache;
@@ -46,7 +49,14 @@ class CachedGeocodingServiceTest extends TestCase
         $this->decorator->expects($this->once())
             ->method('fetchAddress')
             ->with($address)
-            ->willReturn($expectedCoordinates);
+            ->willReturn(new GeocoderAddress(
+                'cache',
+                new AdminLevelCollection(),
+                new GeocoderCoordinates(
+                    $expectedCoordinates->getLatitude()->toFloat(),
+                    $expectedCoordinates->getLongitude()->toFloat()
+                )
+            ));
 
         $freshCoordinates = $this->service->fetchAddress($address);
         $cachedCoordinates = $this->service->fetchAddress($address);

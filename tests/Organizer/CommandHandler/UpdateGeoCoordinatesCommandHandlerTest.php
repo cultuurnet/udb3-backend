@@ -22,6 +22,9 @@ use CultuurNet\UDB3\Organizer\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
+use Geocoder\Model\Address as GeocoderAddress;
+use Geocoder\Model\AdminLevelCollection;
+use Geocoder\Model\Coordinates as GeocoderCoordinates;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
@@ -70,7 +73,14 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $this->geocodingService->expects($this->once())
             ->method('fetchAddress')
             ->with('Wetstraat 1, 1000 Bxl, BE')
-            ->willReturn($coordinates);
+            ->willReturn(new GeocoderAddress(
+                'cache',
+                new AdminLevelCollection(),
+                new GeocoderCoordinates(
+                    $coordinates->getLatitude()->toFloat(),
+                    $coordinates->getLongitude()->toFloat()
+                )
+            ));
 
         $expectedEvent = new GeoCoordinatesUpdated(
             $organizerId,
@@ -119,7 +129,14 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
                     '1000 Bxl, BE',
                 ]
             )
-            ->willReturnOnConsecutiveCalls(null, $coordinates);
+            ->willReturnOnConsecutiveCalls(null, new GeocoderAddress(
+                'cache',
+                new AdminLevelCollection(),
+                new GeocoderCoordinates(
+                    $coordinates->getLatitude()->toFloat(),
+                    $coordinates->getLongitude()->toFloat()
+                )
+            ));
 
         $expectedEvent = new GeoCoordinatesUpdated(
             $organizerId,
