@@ -26,11 +26,9 @@ final class PublicRouteWithAuthMatcher
         foreach ($this->publicRoutes as $publicRouteRule) {
             if ($publicRouteRule->matchesRequest($request) && isset($this->publicRoutesWithAuth[$publicRouteRule->getPathPattern()])) {
                 $authConfig = $this->publicRoutesWithAuth[$publicRouteRule->getPathPattern()];
-
-
-
+                
                 if (empty($authConfig['mode'])) {
-                    if(empty($authConfig['param'])) {
+                    if (empty($authConfig['param'])) {
                         return false;
                     }
 
