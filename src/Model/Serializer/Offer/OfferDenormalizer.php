@@ -171,6 +171,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $id = $this->idParser->fromUrl($idUrl);
 
         $mainLanguageKey = $data['mainLanguage'] ?? 'nl';
+        $data['mainLanguage'] = $mainLanguageKey;
         $mainLanguage = new Language($mainLanguageKey);
 
         /* @var TranslatedTitle $title */
