@@ -27,8 +27,15 @@ final class PublicRouteWithAuthMatcher
             if ($publicRouteRule->matchesRequest($request) && isset($this->publicRoutesWithAuth[$publicRouteRule->getPathPattern()])) {
                 $authConfig = $this->publicRoutesWithAuth[$publicRouteRule->getPathPattern()];
 
+
+
                 if (empty($authConfig['mode'])) {
-                    return false;
+                    if(empty($authConfig['param'])) {
+                        return false;
+                    }
+
+                    // If no mode is set, put a param is configured, assume param mode
+                    $authConfig['mode'] = self::PARAM;
                 }
 
                 if (mb_strtolower($authConfig['mode']) === self::ALWAYS) {
