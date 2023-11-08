@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Geocoding;
 
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
+use Geocoder\Location;
 
 interface GeocodingService
 {
@@ -14,4 +15,6 @@ interface GeocodingService
      * This can happen in case of a wrong/unknown address.
      */
     public function getCoordinates(string $address): ?Coordinates;
+
+    public function fetchAddress(string $address) : ?Location;
 }

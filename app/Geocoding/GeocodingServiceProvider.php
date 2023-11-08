@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Geocoding;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Geocoding\CacheEncoder\CoordinateEncoder;
+use CultuurNet\UDB3\Geocoding\CacheEncoder\RichEncoder;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
 use Geocoder\StatefulGeocoder;
 use Http\Adapter\Guzzle7\Client;
@@ -42,7 +44,8 @@ final class GeocodingServiceProvider extends AbstractServiceProvider
 
                 return new CachedGeocodingService(
                     $geocodingService,
-                    $container->get('cache')('geocoords')
+                    $container->get('cache')('geocoords'),
+                    empty($container->get('config')['address_enrichment']) ? new CoordinateEncoder() : new RichEncoder()
                 );
             }
         );

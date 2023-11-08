@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Geocoding;
 
+use CultuurNet\UDB3\Geocoding\CacheEncoder\CoordinateEncoder;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -15,20 +16,19 @@ use Doctrine\Common\Cache\Cache;
 
 class CachedGeocodingServiceTest extends TestCase
 {
-    private ArrayCache $cache;
 
     /**
      * @var GeocodingService|MockObject
      */
-    private $decoratee;
+    private $decorator;
 
     private CachedGeocodingService $service;
 
     public function setUp(): void
     {
-        $this->cache = new ArrayCache();
-        $this->decoratee = $this->createMock(GeocodingService::class);
-        $this->service = new CachedGeocodingService($this->decoratee, $this->cache);
+        $cache = new ArrayCache();
+        $this->decorator = $this->createMock(GeocodingService::class);
+        $this->service = new CachedGeocodingService($this->decorator, $cache, new CoordinateEncoder());
     }
 
     /**
@@ -43,13 +43,13 @@ class CachedGeocodingServiceTest extends TestCase
             new Longitude(2.76412)
         );
 
-        $this->decoratee->expects($this->once())
-            ->method('getCoordinates')
+        $this->decorator->expects($this->once())
+            ->method('fetchAddress')
             ->with($address)
             ->willReturn($expectedCoordinates);
 
-        $freshCoordinates = $this->service->getCoordinates($address);
-        $cachedCoordinates = $this->service->getCoordinates($address);
+        $freshCoordinates = $this->service->fetchAddress($address);
+        $cachedCoordinates = $this->service->fetchAddress($address);
 
         $this->assertEquals($expectedCoordinates, $freshCoordinates);
         $this->assertEquals($expectedCoordinates, $cachedCoordinates);
@@ -62,13 +62,13 @@ class CachedGeocodingServiceTest extends TestCase
     {
         $address = 'Eikelberg (achter de bibliotheek), 8340 Sijsele (Damme), BE';
 
-        $this->decoratee->expects($this->once())
-            ->method('getCoordinates')
+        $this->decorator->expects($this->exactly(2))
+            ->method('fetchAddress')
             ->with($address)
             ->willReturn(null);
 
-        $freshCoordinates = $this->service->getCoordinates($address);
-        $cachedCoordinates = $this->service->getCoordinates($address);
+        $freshCoordinates = $this->service->fetchAddress($address);
+        $cachedCoordinates = $this->service->fetchAddress($address);
 
         $this->assertNull($freshCoordinates);
         $this->assertNull($cachedCoordinates);
@@ -83,7 +83,7 @@ class CachedGeocodingServiceTest extends TestCase
 
         $geocodingService = $this->createMock(GeocodingService::class);
         $geocodingService->expects($this->once())
-            ->method('getCoordinates')
+            ->method('fetchAddress')
             ->with($address)
             ->willReturn(null);
 
@@ -93,7 +93,7 @@ class CachedGeocodingServiceTest extends TestCase
             ->method('save')
             ->with($address, Json::encode(CachedGeocodingService::NO_COORDINATES_FOUND));
 
-        $service = new CachedGeocodingService($geocodingService, $cache);
+        $service = new CachedGeocodingService($geocodingService, $cache, new CoordinateEncoder());
         $this->assertNull($service->getCoordinates($address));
     }
 }

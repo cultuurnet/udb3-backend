@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use Geocoder\Exception\CollectionIsEmpty;
+use Geocoder\Location;
 use Geocoder\Model\Coordinates as GeocoderCoordinates;
 use Geocoder\Exception\Exception;
 use Geocoder\Geocoder;
@@ -48,5 +49,17 @@ class DefaultGeocodingService implements GeocodingService
             );
             return null;
         }
+    }
+
+    public function fetchAddress(string $address) : ?Location
+    {
+        $addresses = $this->geocoder->geocode($address);
+        $coordinates = $addresses->first()->getCoordinates();
+
+        if ($coordinates === null) {
+            return null;
+        }
+
+        return $addresses->first();
     }
 }
