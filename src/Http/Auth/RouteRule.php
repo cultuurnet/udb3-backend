@@ -23,4 +23,9 @@ abstract class RouteRule
         $path = $request->getUri()->getPath();
         return in_array($method, $this->methods, true) && preg_match($this->pathPattern, $path) === 1;
     }
+
+    public function getPathPattern(): string
+    {
+        return $this->pathPattern;
+    }
 }

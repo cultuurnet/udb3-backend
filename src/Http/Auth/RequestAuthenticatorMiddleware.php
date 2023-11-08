@@ -28,9 +28,6 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 {
     private const BEARER = 'Bearer ';
 
-    /** @var PublicRouteRule[] */
-    private array $publicRoutes = [];
-
     /** @var PermissionRestrictedRouteRule[] */
     private array $permissionRestrictedRoutes = [];
 
@@ -43,7 +40,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
     private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
     private UserPermissionsReadRepositoryInterface $userPermissionReadRepository;
-    private bool $authenticatePublicRoutes;
+    private PublicRouteWithAuthMatcher $publicRouteWithAuthMatcher;
 
     public function __construct(
         JwtValidator $uitIdV1JwtValidator,
@@ -52,7 +49,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
         ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck,
         UserPermissionsReadRepositoryInterface $userPermissionsReadRepository,
-        bool $authenticatePublicRoutes
+        PublicRouteWithAuthMatcher $publicRouteWithAuthMatcher
     ) {
         $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
         $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
@@ -60,12 +57,12 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
         $this->apiKeyConsumerPermissionCheck = $apiKeyConsumerPermissionCheck;
         $this->userPermissionReadRepository = $userPermissionsReadRepository;
-        $this->authenticatePublicRoutes = $authenticatePublicRoutes;
+        $this->publicRouteWithAuthMatcher = $publicRouteWithAuthMatcher;
     }
 
     public function addPublicRoute(string $pathPattern, array $methods = []): void
     {
-        $this->publicRoutes[] = new PublicRouteRule($pathPattern, $methods);
+        $this->publicRouteWithAuthMatcher->addPublicRoute(new PublicRouteRule($pathPattern, $methods));
     }
 
     public function addPermissionRestrictedRoute(string $pathPattern, array $methods, Permission $permission): void
@@ -88,11 +85,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
             return;
         }
 
-        if ($this->isPublicRoute($request) && !$this->authenticatePublicRoutes) {
-            return;
-        }
-
-        if ($this->isPublicRoute($request) && empty($request->getHeader('authorization'))) {
+        if (!$this->publicRouteWithAuthMatcher->isAuthenticationRequired($request) && empty($request->getHeader('authorization'))) {
             return;
         }
 
@@ -206,15 +199,5 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private function isCorsPreflightRequest(ServerRequestInterface $request): bool
     {
         return $request->getMethod() === 'OPTIONS' && $request->hasHeader('access-control-request-method');
-    }
-
-    private function isPublicRoute(ServerRequestInterface $request): bool
-    {
-        foreach ($this->publicRoutes as $publicRouteRule) {
-            if ($publicRouteRule->matchesRequest($request)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

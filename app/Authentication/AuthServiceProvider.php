@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV1JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV2JwtValidator;
+use CultuurNet\UDB3\Http\Auth\PublicRouteWithAuthMatcher;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Impersonator;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
@@ -57,9 +58,9 @@ final class AuthServiceProvider extends AbstractServiceProvider
                     ),
                     new CultureFeedApiKeyAuthenticator($container->get(ConsumerReadRepository::class)),
                     $container->get(ConsumerReadRepository::class),
-                    new ConsumerIsInPermissionGroup((string) $container->get('config')['api_key']['group_id']),
+                    new ConsumerIsInPermissionGroup((string)$container->get('config')['api_key']['group_id']),
                     $container->get(UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY),
-                    $container->get('config')['authenticate_public_routes'] ?? false
+                    $container->get(PublicRouteWithAuthMatcher::class),
                 );
 
                 // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs,
@@ -122,7 +123,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                 // Check first if we're impersonating someone.
                 // This is done when handling async commands via a CLI worker.
                 /* @var Impersonator $impersonator */
-                $impersonator =  $container->get('impersonator');
+                $impersonator = $container->get('impersonator');
                 if ($impersonator->getJwt()) {
                     return $impersonator->getJwt();
                 }
@@ -179,6 +180,11 @@ final class AuthServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'impersonator',
             fn () => new Impersonator()
+        );
+
+        $container->addShared(
+            PublicRouteWithAuthMatcher::class,
+            fn () => new PublicRouteWithAuthMatcher($container->get('config')['public_routes_with_auth'] ?? [])
         );
     }
 }
