@@ -67,7 +67,7 @@ class DefaultGeocodingServiceTest extends TestCase
             new Longitude($longFloat)
         );
 
-        $actualCoordinates = $this->service->getCoordinates($address);
+        $actualCoordinates = $this->service->fetchAddress($address);
 
         $this->assertEquals($expectedCoordinates, $actualCoordinates);
     }
@@ -90,7 +90,7 @@ class DefaultGeocodingServiceTest extends TestCase
             ->method('warning')
             ->with('No results for address: "' . $address . '". Exception message: Could not execute query');
 
-        $actualCoordinates = $this->service->getCoordinates($address);
+        $actualCoordinates = $this->service->fetchAddress($address);
 
         $this->assertNull($actualCoordinates);
     }

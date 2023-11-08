@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\CommandHandler;
 
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Address\AddressFormatter;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
@@ -35,26 +36,26 @@ class UpdateGeoCoordinatesFromAddressCommandHandler extends Udb3CommandHandler
 
     protected function handleUpdateGeoCoordinatesFromAddress(UpdateGeoCoordinatesFromAddress $updateGeoCoordinates): void
     {
-        $coordinates = $this->geocodingService->getCoordinates(
+        $enrichedAddress = $this->geocodingService->fetchAddress(
             $this->defaultAddressFormatter->format(
                 $updateGeoCoordinates->address()
             )
         );
 
-        if ($coordinates === null) {
-            $coordinates = $this->geocodingService->getCoordinates(
+        if ($enrichedAddress === null) {
+            $enrichedAddress = $this->geocodingService->fetchAddress(
                 $this->fallbackAddressFormatter->format(
                     $updateGeoCoordinates->address()
                 )
             );
         }
 
-        if ($coordinates === null) {
+        if ($enrichedAddress === null) {
             return;
         }
 
         $organizer = $this->loadOrganizer($updateGeoCoordinates->organizerId());
-        $organizer->updateGeoCoordinates($coordinates);
+        $organizer->updateGeoCoordinates(Coordinates::fromLocation($enrichedAddress));
         $this->organizerRepository->save($organizer);
     }
 

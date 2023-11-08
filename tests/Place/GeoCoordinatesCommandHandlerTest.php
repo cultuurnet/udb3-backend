@@ -97,7 +97,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $this->geocodingService->expects($this->once())
-            ->method('getCoordinates')
+            ->method('fetchAddress')
             ->with('Wetstraat 1, 1000 Bxl, BE')
             ->willReturn($coordinates);
 
@@ -141,7 +141,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $this->geocodingService->expects($this->exactly(2))
-            ->method('getCoordinates')
+            ->method('fetchAddress')
             ->withConsecutive(
                 [
                     'Wetstraat 1 (foutief), 1000 Bxl, BE',

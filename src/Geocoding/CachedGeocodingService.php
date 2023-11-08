@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Geocoding;
 
 use CultuurNet\UDB3\Geocoding\CacheEncoder\CacheEncoder;
-use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
-use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Json;
 use Doctrine\Common\Cache\Cache;
 use Geocoder\Location;
+use Geocoder\Model\Address;
+use Geocoder\Model\AdminLevelCollection;
+use Geocoder\Model\Coordinates;
 
 class CachedGeocodingService implements GeocodingService
 {
@@ -29,7 +29,7 @@ class CachedGeocodingService implements GeocodingService
         $this->cacheEncoder = $cacheEncoder;
     }
 
-    public function getCoordinates(string $address): ?Coordinates
+    public function fetchAddress(string $address): ?Location
     {
         $encodedCacheData = $this->cache->fetch($this->cacheEncoder->getKey($address));
 
@@ -43,10 +43,7 @@ class CachedGeocodingService implements GeocodingService
             }
 
             if (isset($cacheData['lat'], $cacheData['long'])) {
-                return new Coordinates(
-                    new Latitude((float) $cacheData['lat']),
-                    new Longitude((float) $cacheData['long'])
-                );
+                return $this->constructAddressFromCache($cacheData);
             }
         }
 
@@ -65,14 +62,18 @@ class CachedGeocodingService implements GeocodingService
             return null;
         }
 
-        return new Coordinates(
-            new Latitude((float) $cacheData['lat']),
-            new Longitude((float) $cacheData['long'])
-        );
+        return $this->constructAddressFromCache($cacheData);
     }
 
-    public function fetchAddress(string $address): ?Location
+    private function constructAddressFromCache(array $cacheData): Address
     {
-        return $this->geocodingService->fetchAddress($address);
+        return new Address(
+            'cache',
+            new AdminLevelCollection(),
+            new Coordinates(
+                $cacheData['lat'],
+                $cacheData['long']
+            )
+        );
     }
 }

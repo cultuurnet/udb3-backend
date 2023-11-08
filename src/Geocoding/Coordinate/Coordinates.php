@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Geocoding\Coordinate;
 
+use Geocoder\Location;
+
 class Coordinates
 {
     private Latitude $lat;
@@ -44,5 +46,13 @@ class Coordinates
         $lon = new Longitude((float) $split[1]);
 
         return new Coordinates($lat, $lon);
+    }
+
+    public static function fromLocation(Location $location): Coordinates
+    {
+        return new Coordinates(
+            new Latitude($location->getCoordinates()->getLatitude()),
+            new Longitude($location->getCoordinates()->getLongitude()),
+        );
     }
 }

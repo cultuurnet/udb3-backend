@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\Repository;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
+use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Address\AddressFormatter;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
@@ -47,9 +50,9 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
             $updateGeoCoordinates->getAddress()
         );
 
-        $coordinates = $this->geocodingService->getCoordinates($exactAddress);
+        $enrichedAddress = $this->geocodingService->fetchAddress($exactAddress);
 
-        if ($coordinates === null) {
+        if ($enrichedAddress !== null && $enrichedAddress->getCoordinates() === null) {
             $fallbackAddress = $this->fallbackAddressFormatter->format(
                 $updateGeoCoordinates->getAddress()
             );
@@ -63,23 +66,23 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
                 )
             );
 
-            $coordinates = $this->geocodingService->getCoordinates($fallbackAddress);
+            $enrichedAddress = $this->geocodingService->fetchAddress($fallbackAddress);
 
-            if (!is_null($coordinates)) {
+            if ($enrichedAddress !== null && $enrichedAddress->getCoordinates() === null) {
                 $this->logger->debug(
                     "Found coordinates for fallback address '$fallbackAddress' for offer id $offerId"
                 );
             }
         }
 
-        if ($coordinates === null) {
+        if ($enrichedAddress === null || $enrichedAddress->getCoordinates() === null) {
             $this->logger->debug('Could not find coordinates for fallback address for offer id ' . $offerId);
             return;
         }
 
         /** @var Offer $offer */
         $offer = $this->offerRepository->load($offerId);
-        $offer->updateGeoCoordinates($coordinates);
+        $offer->updateGeoCoordinates(Coordinates::fromLocation($enrichedAddress));
         $this->offerRepository->save($offer);
     }
 }

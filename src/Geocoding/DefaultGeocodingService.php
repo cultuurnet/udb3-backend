@@ -5,13 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Geocoding;
 
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
-use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use Geocoder\Exception\CollectionIsEmpty;
-use Geocoder\Location;
-use Geocoder\Model\Coordinates as GeocoderCoordinates;
-use Geocoder\Exception\Exception;
+use Exception;
 use Geocoder\Geocoder;
+use Geocoder\Location;
 use Psr\Log\LoggerInterface;
 
 class DefaultGeocodingService implements GeocodingService
@@ -28,38 +24,17 @@ class DefaultGeocodingService implements GeocodingService
         $this->logger = $logger;
     }
 
-    public function getCoordinates(string $address): ?Coordinates
+    public function fetchAddress(string $address): ?Location
     {
         try {
-            $addresses = $this->geocoder->geocode($address);
-            /** @var GeocoderCoordinates|null $coordinates */
-            $coordinates = $addresses->first()->getCoordinates();
-
-            if ($coordinates === null) {
-                throw new CollectionIsEmpty('Coordinates from address are empty');
-            }
-
-            return new Coordinates(
-                new Latitude($coordinates->getLatitude()),
-                new Longitude($coordinates->getLongitude())
-            );
-        } catch (Exception|CollectionIsEmpty $exception) {
+            return $this->geocoder->geocode($address)->first();
+        }
+        catch(Exception $e) {
             $this->logger->warning(
-                'No results for address: "' . $address . '". Exception message: ' . $exception->getMessage()
+                'No results for address: "' . $address . '". Exception message: ' . $e->getMessage()
             );
-            return null;
-        }
-    }
-
-    public function fetchAddress(string $address) : ?Location
-    {
-        $addresses = $this->geocoder->geocode($address);
-        $coordinates = $addresses->first()->getCoordinates();
-
-        if ($coordinates === null) {
-            return null;
         }
 
-        return $addresses->first();
+        return null;
     }
 }

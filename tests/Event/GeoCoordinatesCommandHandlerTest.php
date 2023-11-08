@@ -29,6 +29,9 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
+use Geocoder\Model\Address as GeocoderAddress;
+use Geocoder\Model\AdminLevelCollection;
+use Geocoder\Model\Coordinates as GeocoderCoordinates;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
@@ -96,9 +99,16 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $this->geocodingService->expects($this->once())
-            ->method('getCoordinates')
+            ->method('fetchAddress')
             ->with('Wetstraat 1, 1000 Bxl, BE')
-            ->willReturn($coordinates);
+            ->willReturn(new GeocoderAddress(
+                'cache',
+                new AdminLevelCollection(),
+                new GeocoderCoordinates(
+                    $coordinates->getLatitude()->toFloat(),
+                    $coordinates->getLongitude()->toFloat()
+                )
+            ));
 
         $expectedEvent = new GeoCoordinatesUpdated($eventId, $coordinates);
 
@@ -137,7 +147,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $this->geocodingService->expects($this->exactly(2))
-            ->method('getCoordinates')
+            ->method('fetchAddress')
             ->withConsecutive(
                 [
                     'Wetstraat 1 (foutief), 1000 Bxl, BE',
@@ -146,7 +156,17 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
                     '1000 Bxl, BE',
                 ]
             )
-            ->willReturnOnConsecutiveCalls(null, $coordinates);
+            ->willReturnOnConsecutiveCalls(
+                null,
+                new GeocoderAddress(
+                    'cache',
+                    new AdminLevelCollection(),
+                    new GeocoderCoordinates(
+                        $coordinates->getLatitude()->toFloat(),
+                        $coordinates->getLongitude()->toFloat()
+                    )
+                )
+            );
 
         $expectedEvent = new GeoCoordinatesUpdated($eventId, $coordinates);
 
@@ -185,7 +205,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         $command = new UpdateGeoCoordinatesFromAddress($eventId, $address);
 
         $this->geocodingService->expects($this->any())
-            ->method('getCoordinates')
+            ->method('fetchAddress')
             ->willReturn(null);
 
         $this->scenario

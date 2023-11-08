@@ -62,7 +62,7 @@ class CachedGeocodingServiceTest extends TestCase
     {
         $address = 'Eikelberg (achter de bibliotheek), 8340 Sijsele (Damme), BE';
 
-        $this->decorator->expects($this->exactly(2))
+        $this->decorator->expects($this->once())
             ->method('fetchAddress')
             ->with($address)
             ->willReturn(null);
@@ -94,6 +94,6 @@ class CachedGeocodingServiceTest extends TestCase
             ->with($address, Json::encode(CachedGeocodingService::NO_COORDINATES_FOUND));
 
         $service = new CachedGeocodingService($geocodingService, $cache, new CoordinateEncoder());
-        $this->assertNull($service->getCoordinates($address));
+        $this->assertNull($service->fetchAddress($address));
     }
 }

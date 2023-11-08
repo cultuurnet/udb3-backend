@@ -68,7 +68,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $coordinates = $this->someCoordinates();
 
         $this->geocodingService->expects($this->once())
-            ->method('getCoordinates')
+            ->method('fetchAddress')
             ->with('Wetstraat 1, 1000 Bxl, BE')
             ->willReturn($coordinates);
 
@@ -110,7 +110,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $coordinates = $this->someCoordinates();
 
         $this->geocodingService->expects($this->exactly(2))
-            ->method('getCoordinates')
+            ->method('fetchAddress')
             ->withConsecutive(
                 [
                     'Wetstraat 1, 1000 Bxl, BE',
@@ -157,7 +157,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $command = new UpdateGeoCoordinatesFromAddress($organizerId, $address);
 
         $this->geocodingService->expects($this->any())
-            ->method('getCoordinates')
+            ->method('fetchAddress')
             ->willReturnOnConsecutiveCalls(null);
 
         $this->scenario
