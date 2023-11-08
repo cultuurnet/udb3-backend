@@ -1438,13 +1438,11 @@ class RdfProjectorTest extends RdfTestCase
             ],
             'organizer' => [
                 'name' => 'Dummy Organizer',
-                'contactPoint' => [
-                    'phone' => [
-                        '016 666 666',
-                    ],
-                    'url' => [
-                        'http://www.dummy-organizer.be',
-                    ],
+                'phone' => [
+                    '016 666 666',
+                ],
+                'url' => [
+                    'http://www.dummy-organizer.be',
                 ],
             ],
             'created' => '2023-01-01T12:30:15+01:00',

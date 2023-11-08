@@ -157,9 +157,7 @@ final class RdfProjector implements EventListener
 
             $this->setDummyOrganizerName($organizerResource, $eventData['organizer']['name']);
 
-            if (isset($eventData['organizer']['contactPoint'])) {
-                $this->setDummyOrganizerContactPoint($organizerResource, $eventData['organizer']['contactPoint']);
-            }
+            $this->setDummyOrganizerContactPoint($organizerResource, $eventData['organizer']);
 
             $resource->add(self::PROPERTY_CARRIED_OUT_BY, $organizerResource);
         }
