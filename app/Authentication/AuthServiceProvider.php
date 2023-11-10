@@ -59,7 +59,6 @@ final class AuthServiceProvider extends AbstractServiceProvider
                     $container->get(ConsumerReadRepository::class),
                     new ConsumerIsInPermissionGroup((string) $container->get('config')['api_key']['group_id']),
                     $container->get(UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY),
-                    $container->get('config')['authenticate_public_routes'] ?? false
                 );
 
                 // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs,
@@ -67,7 +66,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                 // rather liberal approach and allow all alphanumeric characters and a dash as ids.
                 $authenticator->addPublicRoute('~^/offers/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/(events?|places?)/?$~', ['GET']);
-                $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/.*?$~', ['GET'], 'embedContributors');
                 $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/calendar-summary/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/permissions?/.+$~', ['GET']);
                 $authenticator->addPublicRoute('~^/organizers/?$~', ['GET']);
