@@ -5,10 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\RDF\RDFResponseFactory;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepositoryMockFactory;
+use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use EasyRdf\Graph;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class GetDetailRequestHandlerTest extends TestCase
@@ -16,12 +21,32 @@ class GetDetailRequestHandlerTest extends TestCase
     use AssertApiProblemTrait;
 
     private OfferJsonDocumentReadRepositoryMockFactory $mockRepositoryFactory;
+
     private GetDetailRequestHandler $getDetailRequestHandler;
+
+    /** @var GraphRepository&MockObject */
+    private $graphStoreRepository;
 
     protected function setUp(): void
     {
         $this->mockRepositoryFactory = new OfferJsonDocumentReadRepositoryMockFactory();
-        $this->getDetailRequestHandler = new GetDetailRequestHandler($this->mockRepositoryFactory->create());
+        $this->graphStoreRepository = $this->createMock(GraphRepository::class);
+
+        $this->getDetailRequestHandler = new GetDetailRequestHandler(
+            $this->mockRepositoryFactory->create(),
+            new RDFResponseFactory(
+                $this->graphStoreRepository,
+                new CallableIriGenerator(
+                    fn ($placeId) =>  'https://io.uitdatabank.dev/places/' . $placeId
+                )
+            ),
+            new RDFResponseFactory(
+                $this->graphStoreRepository,
+                new CallableIriGenerator(
+                    fn ($eventId) =>  'https://io.uitdatabank.dev/events/' . $eventId
+                )
+            )
+        );
     }
 
     /**
