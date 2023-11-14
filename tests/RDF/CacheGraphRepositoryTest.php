@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace RDF;
 
 use CultuurNet\UDB3\RDF\CacheGraphRepository;
+use CultuurNet\UDB3\RDF\GraphNotFound;
 use Doctrine\Common\Cache\Cache;
 use EasyRdf\Graph;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -83,16 +84,16 @@ class CacheGraphRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_graph_when_key_is_not_found(): void
+    public function it_throws_graph_not_found_when_key_is_not_found(): void
     {
         $this->cache->expects($this->once())
             ->method('fetch')
             ->with($this->uri)
             ->willReturn(false);
 
-        $this->assertEquals(
-            new Graph($this->uri),
-            $this->cacheGraphRepository->get($this->uri)
-        );
+        $this->expectException(GraphNotFound::class);
+        $this->expectExceptionMessage('Graph not found for uri: ' . $this->uri);
+
+        $this->cacheGraphRepository->get($this->uri);
     }
 }

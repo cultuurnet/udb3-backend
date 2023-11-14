@@ -24,12 +24,11 @@ final class CacheGraphRepository implements GraphRepository
     public function get(string $uri): Graph
     {
         $value = $this->cache->fetch($uri);
-
-        $graph = new Graph($uri);
         if ($value === false) {
-            return $graph;
+            throw new GraphNotFound($uri);
         }
 
+        $graph = new Graph($uri);
         $graph->parse($value, 'turtle');
         return $graph;
     }
