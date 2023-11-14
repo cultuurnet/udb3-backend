@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Organizer\ReadModel\RDF\RdfProjector;
+use CultuurNet\UDB3\RDF\CacheGraphRepository;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
 
 final class OrganizerRdfServiceProvider extends AbstractServiceProvider
@@ -27,6 +28,10 @@ final class OrganizerRdfServiceProvider extends AbstractServiceProvider
             $this->container->get('config')['rdf']['organizersGraphStoreUrl'],
             $this->container->get('config')['rdf']['useDeleteAndInsert'] ?? false
         );
+
+        if ($this->container->get('config')['rdf']['useCache']) {
+            $graphStoreRepository = new CacheGraphRepository($this->container->get('cache')('rdf_organizer'));
+        }
 
         $this->container->addShared(
             RdfProjector::class,

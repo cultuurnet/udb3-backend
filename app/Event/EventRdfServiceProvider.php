@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
+use CultuurNet\UDB3\RDF\CacheGraphRepository;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
 
 final class EventRdfServiceProvider extends AbstractServiceProvider
@@ -27,6 +28,10 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
             $this->container->get('config')['rdf']['eventsGraphStoreUrl'],
             $this->container->get('config')['rdf']['useDeleteAndInsert'] ?? false
         );
+
+        if ($this->container->get('config')['rdf']['useCache']) {
+            $graphStoreRepository = new CacheGraphRepository($this->container->get('cache')('rdf_event'));
+        }
 
         $this->container->addShared(
             RdfProjector::class,
