@@ -9,56 +9,48 @@ Feature: Test RDF projection of events
 
   Scenario: Create an event with only the required fields
     Given I create an event from "events/rdf/event-with-required-fields.json" and save the "id" as "eventId"
-    And I am using the RDF base URL
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/event-with-required-fields.ttl"
 
   Scenario: Create an event with permanent calendar and opening hours
     And I create an event from "events/event-with-permanent-calendar-and-opening-hours.json" and save the "id" as "eventId"
-    And I am using the RDF base URL
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/event-with-permanent-calendar-and-opening-hours.ttl"
 
   Scenario: Create an event with periodic calendar and opening hours
     And I create an event from "events/event-with-periodic-calendar-and-opening-hours.json" and save the "id" as "eventId"
-    And I am using the RDF base URL
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/event-with-periodic-calendar-and-opening-hours.ttl"
 
   Scenario: Create an online event with permanent calendar and online url
     And I create an event from "events/rdf/online-event-with-online-url-and-permanent-calendar.json" and save the "id" as "eventId"
-    And I am using the RDF base URL
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/online-event-with-online-url-and-permanent-calendar.ttl"
 
   Scenario: Create an online event with multiple calendar
     And I create an event from "events/rdf/online-event-with-multiple-calendar.json" and save the "id" as "eventId"
-    And I am using the RDF base URL
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/online-event-with-multiple-calendar.ttl"
 
   Scenario: Create an online event with multiple calendar and online url
     And I create an event from "events/rdf/online-event-with-online-url-and-multiple-calendar.json" and save the "id" as "eventId"
-    And I am using the RDF base URL
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/online-event-with-online-url-and-multiple-calendar.ttl"
 
   Scenario: Create a mixed event with permanent calendar and online url
     And I create an event from "events/rdf/mixed-event-with-online-url-and-permanent-calendar.json" and save the "id" as "eventId"
-    And I am using the RDF base URL
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/mixed-event-with-online-url-and-permanent-calendar.ttl"
 
   Scenario: Create a mixed event with multiple calendar and online url
     And I create an event from "events/rdf/mixed-event-with-online-url-and-multiple-calendar.json" and save the "id" as "eventId"
-    And I am using the RDF base URL
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/mixed-event-with-online-url-and-multiple-calendar.ttl"
@@ -69,28 +61,24 @@ Feature: Test RDF projection of events
     And I send a POST request to "/organizers/"
     And I keep the value of the JSON response at "id" as "organizerId"
     And I create an event from "events/rdf/event-with-organizer.json" and save the "id" as "eventId"
-    And I am using the RDF base URL
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/event-with-organizer.ttl"
 
   Scenario: Create an event with contact point
     And I create an event from "events/rdf/event-with-contact-point.json" and save the "id" as "eventId"
-    And I am using the RDF base URL
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/event-with-contact-point.ttl"
 
   Scenario: Create an event with booking info
     And I create an event from "events/rdf/event-with-booking-info.json" and save the "id" as "eventId"
-    And I am using the RDF base URL
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/event-with-booking-info.ttl"
 
   Scenario: Create an event with all fields
     Given I create an event from "events/rdf/event-with-all-fields.json" and save the "id" as "eventId"
-    And I am using the RDF base URL
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/event-with-all-fields.ttl"
