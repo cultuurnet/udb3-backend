@@ -18,7 +18,7 @@ final class CacheGraphRepository implements GraphRepository
 
     public function save(string $uri, Graph $graph): void
     {
-        $this->cache->save($uri, $graph->serialise('turtle'));
+        $this->cache->save($uri, trim($graph->serialise('turtle')));
     }
 
     public function get(string $uri): Graph
