@@ -18,7 +18,7 @@ class PublicRouteRuleTest extends TestCase
             ->withUriFromString('/places')
             ->build('GET');
     }
-    
+
     public function testMatchesRequestWithMatchingRoute(): void
     {
         $routeRule = new PublicRouteRule('/\/places/', ['GET']);
