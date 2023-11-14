@@ -9,5 +9,9 @@ use EasyRdf\Graph;
 interface GraphRepository
 {
     public function save(string $uri, Graph $graph): void;
+
+    /**
+     * @throws GraphNotFound
+     */
     public function get(string $uri): Graph;
 }
