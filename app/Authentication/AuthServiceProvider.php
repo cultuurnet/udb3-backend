@@ -66,7 +66,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                 // rather liberal approach and allow all alphanumeric characters and a dash as ids.
                 $authenticator->addPublicRoute('~^/offers/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/(events?|places?)/?$~', ['GET']);
-                $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/.*?$~', ['GET'], 'embedContributors');
+                $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/?$~', ['GET'], 'embedContributors');
                 $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/calendar-summary/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/permissions?/.+$~', ['GET']);
                 $authenticator->addPublicRoute('~^/organizers/?$~', ['GET']);
