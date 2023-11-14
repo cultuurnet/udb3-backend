@@ -1,0 +1,6 @@
+@prefix cidoc: <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<https://io.uitdatabank.dev/events/c09b7a51-b17c-4121-b278-eef71ef04e47>
+  a cidoc:E7_Activity ;
+  dcterms:title "OSLO release party" .

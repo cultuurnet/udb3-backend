@@ -1,0 +1,6 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+
+<https://io.uitdatabank.dev/places/fced66fb-72e9-47c3-bde0-7494d299962b>
+  a dcterms:Location ;
+  locn:locatorName "Het Depot" .
