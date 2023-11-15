@@ -18,6 +18,7 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
+            'place_graph_store_repository',
             RdfProjector::class,
         ];
     }
@@ -32,6 +33,11 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
         if ($this->container->get('config')['rdf']['useCache']) {
             $graphStoreRepository = new CacheGraphRepository($this->container->get('cache')('rdf_place'));
         }
+
+        $this->container->addShared(
+            'place_graph_store_repository',
+            $graphStoreRepository
+        );
 
         $this->container->addShared(
             RdfProjector::class,
