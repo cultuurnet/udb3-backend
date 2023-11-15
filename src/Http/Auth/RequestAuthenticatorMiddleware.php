@@ -43,7 +43,6 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
     private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
     private UserPermissionsReadRepositoryInterface $userPermissionReadRepository;
-    private bool $authenticatePublicRoutes;
 
     public function __construct(
         JwtValidator $uitIdV1JwtValidator,
@@ -51,8 +50,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
         ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck,
-        UserPermissionsReadRepositoryInterface $userPermissionsReadRepository,
-        bool $authenticatePublicRoutes
+        UserPermissionsReadRepositoryInterface $userPermissionsReadRepository
     ) {
         $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
         $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
@@ -60,12 +58,11 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
         $this->apiKeyConsumerPermissionCheck = $apiKeyConsumerPermissionCheck;
         $this->userPermissionReadRepository = $userPermissionsReadRepository;
-        $this->authenticatePublicRoutes = $authenticatePublicRoutes;
     }
 
-    public function addPublicRoute(string $pathPattern, array $methods = []): void
+    public function addPublicRoute(string $pathPattern, array $methods = [], ?string $excludeQueryParam = null): void
     {
-        $this->publicRoutes[] = new PublicRouteRule($pathPattern, $methods);
+        $this->publicRoutes[] = new PublicRouteRule($pathPattern, $methods, $excludeQueryParam);
     }
 
     public function addPermissionRestrictedRoute(string $pathPattern, array $methods, Permission $permission): void
@@ -84,20 +81,10 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
      */
     public function authenticate(ServerRequestInterface $request): void
     {
-        if ($this->isCorsPreflightRequest($request)) {
+        if ($this->isCorsPreflightRequest($request) || $this->isPublicRoute($request)) {
             return;
         }
 
-        if ($this->isPublicRoute($request) && !$this->authenticatePublicRoutes) {
-            return;
-        }
-
-        if ($this->isPublicRoute($request) && empty($request->getHeader('authorization'))) {
-            return;
-        }
-
-        // For requests to public routes, if authenticationToggle is enabled,
-        // that provide extra information to Authenticated Users. eg. show contributors
         $this->authenticateToken($request);
 
         // Requests that use a token from the JWT provider (v1 or v2) require an API key from UiTID v1.
