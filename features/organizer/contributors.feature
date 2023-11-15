@@ -64,7 +64,7 @@ Feature: Test the UDB3 organizers contributors endpoint
     """
     And I send a PUT request to "%{organizerUrl}/contributors"
     And the response status should be "204"
-    When I get the organizer at "%{organizerUrl}"
+    When I get the organizer at "%{organizerUrl}?embedContributors=true"
     Then the JSON response at "contributors" should be:
     """
     [

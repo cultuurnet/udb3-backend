@@ -64,7 +64,7 @@ Feature: Test the UDB3 places contributors endpoint
     """
     And I send a PUT request to "%{placeUrl}/contributors"
     And the response status should be "204"
-    When I get the place at "%{placeUrl}"
+    When I get the place at "%{placeUrl}?embedContributors=true"
     Then the JSON response at "contributors" should be:
     """
     [
@@ -231,5 +231,5 @@ Feature: Test the UDB3 places contributors endpoint
     """
     And I send a PUT request to "%{placeUrl}/name/nl"
     Then the response status should be "204"
-    And I get the place at "%{placeUrl}"
+    And I get the place at "%{placeUrl}?embedContributors=true"
     And the JSON response at "name/nl" should be "Contributor updated title"
