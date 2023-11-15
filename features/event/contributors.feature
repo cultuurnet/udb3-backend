@@ -69,7 +69,7 @@ Feature: Test the UDB3 events contributors endpoint
     """
     And I send a PUT request to "%{eventUrl}/contributors"
     And the response status should be "204"
-    When I get the event at "%{eventUrl}"
+    When I get the event at "%{eventUrl}?embedContributors=true"
     Then the JSON response at "contributors" should be:
     """
     [

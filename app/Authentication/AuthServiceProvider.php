@@ -70,7 +70,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                 $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/calendar-summary/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/permissions?/.+$~', ['GET']);
                 $authenticator->addPublicRoute('~^/organizers/?$~', ['GET']);
-                $authenticator->addPublicRoute('~^/organizers/[\w\-]+/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/organizers/[\w\-]+/?$~', ['GET'], 'embedContributors');
                 $authenticator->addPublicRoute('~^/organizers/[\w\-]+/permissions/.+$~', ['GET']);
                 $authenticator->addPublicRoute('~^/labels/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/label/[\w\-]+/?$~', ['GET']);
