@@ -24,6 +24,7 @@ final class InMemoryGraphRepository implements GraphRepository
             // are also cloned.
             return unserialize(serialize($this->graphs[$uri]));
         }
-        return new Graph($uri);
+
+        throw new GraphNotFound($uri);
     }
 }
