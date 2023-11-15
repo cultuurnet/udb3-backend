@@ -8,7 +8,11 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\RDF\RDFResponseFactory;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\RDF\GraphRepository;
+use EasyRdf\Graph;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -21,12 +25,25 @@ class GetOrganizerRequestHandlerTest extends TestCase
 
     private GetOrganizerRequestHandler $getOrganizerRequestHandler;
 
+    /** @var GraphRepository&MockObject */
+    private $graphStoreRepository;
+
     private Psr7RequestBuilder $psr7RequestBuilder;
 
     protected function setUp(): void
     {
         $this->organizerService = $this->createMock(EntityServiceInterface::class);
-        $this->getOrganizerRequestHandler = new GetOrganizerRequestHandler($this->organizerService);
+        $this->graphStoreRepository = $this->createMock(GraphRepository::class);
+
+        $this->getOrganizerRequestHandler = new GetOrganizerRequestHandler(
+            $this->organizerService,
+            new RDFResponseFactory(
+                $this->graphStoreRepository,
+                new CallableIriGenerator(
+                    fn ($organizerId) =>  'https://io.uitdatabank.dev/organizers/' . $organizerId
+                )
+            )
+        );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
     }
@@ -52,6 +69,40 @@ class GetOrganizerRequestHandlerTest extends TestCase
         $this->assertEquals(
             '{"id":"a088f396-ac96-45c4-b6b2-e2b6afe8af07"}',
             $response->getBody()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_getting_an_organizer_as_turtle(): void
+    {
+        $organizerId = 'a088f396-ac96-45c4-b6b2-e2b6afe8af07';
+        $uri = 'https://io.uitdatabank.dev/organizers/' . $organizerId;
+
+        $getOrganizerRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('organizerId', $organizerId)
+            ->withHeader('Accept', 'text/turtle')
+            ->build('GET');
+
+        $this->organizerService->expects($this->never())
+            ->method('getEntity');
+
+        $graph = new Graph($uri);
+        $resource = $graph->resource($uri);
+        $resource->setType('cp:Organisator');
+        $resource->addLiteral('cpr:naam', ['publiq vzw']);
+
+        $this->graphStoreRepository->expects($this->once())
+            ->method('get')
+            ->with($uri)
+            ->willReturn($graph);
+
+        $response = $this->getOrganizerRequestHandler->handle($getOrganizerRequest);
+
+        $this->assertEquals(
+            file_get_contents(__DIR__ . '/samples/organizer.ttl'),
+            $response->getBody()->getContents()
         );
     }
 
