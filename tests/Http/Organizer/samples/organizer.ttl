@@ -1,0 +1,6 @@
+@prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
+@prefix cpr: <https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.> .
+
+<https://io.uitdatabank.dev/organizers/a088f396-ac96-45c4-b6b2-e2b6afe8af07>
+  a cp:Organisator ;
+  cpr:naam "publiq vzw" .
