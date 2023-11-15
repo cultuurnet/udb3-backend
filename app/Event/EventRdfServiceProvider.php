@@ -18,6 +18,7 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
+            'event_graph_store_repository',
             RdfProjector::class,
         ];
     }
@@ -32,6 +33,11 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
         if ($this->container->get('config')['rdf']['useCache']) {
             $graphStoreRepository = new CacheGraphRepository($this->container->get('cache')('rdf_event'));
         }
+
+        $this->container->addShared(
+            'event_graph_store_repository',
+            $graphStoreRepository
+        );
 
         $this->container->addShared(
             RdfProjector::class,

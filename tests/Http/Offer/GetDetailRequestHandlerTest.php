@@ -5,10 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\RDF\RDFResponseFactory;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepositoryMockFactory;
+use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use EasyRdf\Graph;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class GetDetailRequestHandlerTest extends TestCase
@@ -16,12 +21,32 @@ class GetDetailRequestHandlerTest extends TestCase
     use AssertApiProblemTrait;
 
     private OfferJsonDocumentReadRepositoryMockFactory $mockRepositoryFactory;
+
     private GetDetailRequestHandler $getDetailRequestHandler;
+
+    /** @var GraphRepository&MockObject */
+    private $graphStoreRepository;
 
     protected function setUp(): void
     {
         $this->mockRepositoryFactory = new OfferJsonDocumentReadRepositoryMockFactory();
-        $this->getDetailRequestHandler = new GetDetailRequestHandler($this->mockRepositoryFactory->create());
+        $this->graphStoreRepository = $this->createMock(GraphRepository::class);
+
+        $this->getDetailRequestHandler = new GetDetailRequestHandler(
+            $this->mockRepositoryFactory->create(),
+            new RDFResponseFactory(
+                $this->graphStoreRepository,
+                new CallableIriGenerator(
+                    fn ($placeId) =>  'https://io.uitdatabank.dev/places/' . $placeId
+                )
+            ),
+            new RDFResponseFactory(
+                $this->graphStoreRepository,
+                new CallableIriGenerator(
+                    fn ($eventId) =>  'https://io.uitdatabank.dev/events/' . $eventId
+                )
+            )
+        );
     }
 
     /**
@@ -49,6 +74,39 @@ class GetDetailRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_the_requested_event_turtle_if_found(): void
+    {
+        $eventId = 'c09b7a51-b17c-4121-b278-eef71ef04e47';
+        $uri = 'https://io.uitdatabank.dev/events/' . $eventId;
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('/events/' . $eventId)
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', $eventId)
+            ->withHeader('Accept', 'text/turtle')
+            ->build('GET');
+
+        $graph = new Graph($uri);
+        $resource = $graph->resource($uri);
+        $resource->setType('cidoc:E7_Activity');
+        $resource->addLiteral('dcterms:title', ['OSLO release party']);
+
+        $this->graphStoreRepository->expects($this->once())
+            ->method('get')
+            ->with($uri)
+            ->willReturn($graph);
+
+        $response = $this->getDetailRequestHandler->handle($request);
+
+        $this->assertEquals(
+            file_get_contents(__DIR__ . '/samples/event.ttl'),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_the_requested_place_json_ld_if_found(): void
     {
         $this->mockPlaceDocument('fced66fb-72e9-47c3-bde0-7494d299962b');
@@ -66,6 +124,39 @@ class GetDetailRequestHandlerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertArrayHasKey('@id', $decodedResponseBody);
         $this->assertArrayNotHasKey('metadata', $decodedResponseBody);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_the_requested_place_turtle_if_found(): void
+    {
+        $placeId = 'fced66fb-72e9-47c3-bde0-7494d299962b';
+        $uri = 'https://io.uitdatabank.dev/places/' . $placeId;
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('/places/' . $placeId)
+            ->withRouteParameter('offerType', 'places')
+            ->withRouteParameter('offerId', $placeId)
+            ->withHeader('Accept', 'text/turtle')
+            ->build('GET');
+
+        $graph = new Graph($uri);
+        $resource = $graph->resource($uri);
+        $resource->setType('dcterms:Location');
+        $resource->addLiteral('locn:locatorName', ['Het Depot']);
+
+        $this->graphStoreRepository->expects($this->once())
+            ->method('get')
+            ->with($uri)
+            ->willReturn($graph);
+
+        $response = $this->getDetailRequestHandler->handle($request);
+
+        $this->assertEquals(
+            file_get_contents(__DIR__ . '/samples/place.ttl'),
+            $response->getBody()->getContents()
+        );
     }
 
     /**
