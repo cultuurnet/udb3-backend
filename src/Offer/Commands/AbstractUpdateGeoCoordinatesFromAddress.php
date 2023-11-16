@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 abstract class AbstractUpdateGeoCoordinatesFromAddress extends AbstractCommand
 {
-    /**
-     * @var Address
-     */
-    private $address;
+    private Address $address;
 
     /**
      * @param string $itemId
@@ -22,10 +20,7 @@ abstract class AbstractUpdateGeoCoordinatesFromAddress extends AbstractCommand
         $this->address = $address;
     }
 
-    /**
-     * @return Address
-     */
-    public function getAddress()
+    public function getAddress() : Address
     {
         return $this->address;
     }
