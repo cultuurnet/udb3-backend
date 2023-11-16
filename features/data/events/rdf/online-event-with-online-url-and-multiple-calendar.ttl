@@ -1,49 +1,48 @@
+@prefix cidoc: <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
+@prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
+@prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
+@prefix schema: <https://schema.org/> .
+@prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
+@prefix m8g: <http://data.europa.eu/m8g/> .
+
 <http://host.docker.internal:8080/events/%{eventId}>
-        a                              <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> ;
-        <http://purl.org/dc/terms/created>
-                "2023-09-11T09:59:00+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        <http://purl.org/dc/terms/modified>
-                "2023-09-11T09:59:00+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        <http://purl.org/dc/terms/title>
-                "Permanent event"@nl ;
-        <http://purl.org/dc/terms/type>
-                <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
-        <http://www.w3.org/ns/adms#identifier>
-                [ a       <http://www.w3.org/ns/adms#Identifier> ;
-                  <http://www.w3.org/2004/02/skos/core#notation>
-                          "http://host.docker.internal:8080/events/%{eventId}"^^<http://www.w3.org/2001/XMLSchema#anyURI> ;
-                  <https://data.vlaanderen.be/ns/generiek#gestructureerdeIdentificator>
-                          [ a       <https://data.vlaanderen.be/ns/generiek#GestructureerdeIdentificator> ;
-                            <https://data.vlaanderen.be/ns/generiek#lokaleIdentificator>
-                                    "%{eventId}" ;
-                            <https://data.vlaanderen.be/ns/generiek#naamruimte>
-                                    "http://host.docker.internal:8080/events/"
-                          ]
-                ] ;
-        <https://data.publiq.be/ns/uitdatabank#workflowStatus>
-                <https://data.publiq.be/concepts/workflowStatus/draft> ;
-        <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.locatieType>
-                <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/online> ;
-        <https://data.vlaanderen.be/ns/cultuurparticipatie#ruimtetijd>
-                [ a       <http://www.cidoc-crm.org/cidoc-crm/E92_Spacetime_Volume> ;
-                  <http://www.cidoc-crm.org/cidoc-crm/P160_has_temporal_projection>
-                          [ a       <http://data.europa.eu/m8g/PeriodOfTime> ;
-                            <http://data.europa.eu/m8g/endTime>
-                                    "2021-05-17T22:00:00+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-                            <http://data.europa.eu/m8g/startTime>
-                                    "2021-05-17T08:00:00+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime>
-                          ]
-                ] ;
-        <https://data.vlaanderen.be/ns/cultuurparticipatie#ruimtetijd>
-                [ a       <http://www.cidoc-crm.org/cidoc-crm/E92_Spacetime_Volume> ;
-                  <http://www.cidoc-crm.org/cidoc-crm/P160_has_temporal_projection>
-                          [ a       <http://data.europa.eu/m8g/PeriodOfTime> ;
-                            <http://data.europa.eu/m8g/endTime>
-                                    "2021-05-18T22:00:00+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-                            <http://data.europa.eu/m8g/startTime>
-                                    "2021-05-18T08:00:00+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime>
-                          ]
-                ] ;
-        <https://schema.org/location>  [ a                         <https://schema.org/VirtualLocation> ;
-                                         <https://schema.org/url>  "https://www.publiq.be/livestream"
-                                       ] .
+  a cidoc:E7_Activity ;
+  dcterms:created ""^^xsd:dateTime ;
+  dcterms:modified ""^^xsd:dateTime ;
+  adms:identifier [
+    a adms:Identifier ;
+    skos:notation "http://host.docker.internal:8080/events/%{eventId}"^^xsd:anyURI ;
+    generiek:gestructureerdeIdentificator [
+      a generiek:GestructureerdeIdentificator ;
+      generiek:naamruimte "http://host.docker.internal:8080/events/" ;
+      generiek:lokaleIdentificator "%{eventId}"
+    ]
+  ] ;
+  dcterms:title "Permanent event"@nl ;
+  dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
+  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
+  cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/online> ;
+  schema:location [
+    a schema:VirtualLocation ;
+    schema:url "https://www.publiq.be/livestream"^^xsd:string
+  ] ;
+  cp:ruimtetijd [
+    a cidoc:E92_Spacetime_Volume ;
+    cidoc:P160_has_temporal_projection [
+      a m8g:PeriodOfTime ;
+      m8g:startTime ""^^xsd:dateTime ;
+      m8g:endTime ""^^xsd:dateTime
+    ]
+  ], [
+    a cidoc:E92_Spacetime_Volume ;
+    cidoc:P160_has_temporal_projection [
+      a m8g:PeriodOfTime ;
+      m8g:startTime ""^^xsd:dateTime ;
+      m8g:endTime ""^^xsd:dateTime
+    ]
+  ] .
