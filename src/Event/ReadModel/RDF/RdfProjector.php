@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
@@ -155,7 +156,10 @@ final class RdfProjector implements EventListener
         if ($this->hasDummyOrganizer($event, $eventData)) {
             $organizerResource = $resource->getGraph()->newBNode([self::TYPE_ORGANISATOR]);
 
-            $this->setDummyOrganizerName($organizerResource, $eventData['organizer']['name']);
+            $dummyOrganizerName = $this->getDummyOrganizerName($eventData['organizer'], $event->getMainLanguage());
+            if (!empty($dummyOrganizerName)) {
+                $this->setDummyOrganizerName($organizerResource, $dummyOrganizerName);
+            }
 
             $this->setDummyOrganizerContactPoint($organizerResource, $eventData['organizer']);
 
@@ -351,6 +355,19 @@ final class RdfProjector implements EventListener
     private function hasDummyOrganizer(Event $event, array $eventData): bool
     {
         return $event->getOrganizerReference() === null && isset($eventData['organizer']['name']);
+    }
+
+    private function getDummyOrganizerName(array $organizerData, Language $mainLanguage): string
+    {
+        if (is_string($organizerData['name'])) {
+            return $organizerData['name'];
+        }
+
+        if (is_array($organizerData['name'])) {
+            return $organizerData['name'][$mainLanguage->toString()] ?? reset($organizerData['name']);
+        }
+
+        return '';
     }
 
     private function setDummyOrganizerName(Resource $resource, string $name): void
