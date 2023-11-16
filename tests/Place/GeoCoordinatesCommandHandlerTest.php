@@ -26,25 +26,25 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var AddressFormatter
-     */
-    private $defaultAddressFormatter;
+    private AddressFormatter $defaultAddressFormatter;
 
-    /**
-     * @var AddressFormatter
-     */
-    private $localityAddressFormatter;
+    private AddressFormatter $localityAddressFormatter;
 
     /**
      * @var GeocodingService|MockObject
      */
     private $geocodingService;
+
+    /**
+     * @var DocumentRepository|MockObject
+     */
+    private $documentRepository;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): GeoCoordinatesCommandHandler
     {
@@ -57,12 +57,15 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->localityAddressFormatter = new LocalityAddressFormatter();
 
         $this->geocodingService = $this->createMock(GeocodingService::class);
+        $this->documentRepository = $this->createMock(DocumentRepository::class);
 
         return new GeoCoordinatesCommandHandler(
             $repository,
             $this->defaultAddressFormatter,
             $this->localityAddressFormatter,
-            $this->geocodingService
+            $this->geocodingService,
+            $this->documentRepository,
+            false
         );
     }
 
