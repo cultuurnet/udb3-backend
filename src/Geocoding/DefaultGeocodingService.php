@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Geocoding;
 
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
-use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use Geocoder\Exception\CollectionIsEmpty;
-use Geocoder\Model\Coordinates as GeocoderCoordinates;
+use CultuurNet\UDB3\Geocoding\Dto\EnrichedAddress;
 use Geocoder\Exception\Exception;
 use Geocoder\Geocoder;
 use Psr\Log\LoggerInterface;
@@ -18,6 +15,7 @@ class DefaultGeocodingService implements GeocodingService
     private Geocoder $geocoder;
 
     private LoggerInterface $logger;
+    private array $cache = [];
 
     public function __construct(
         Geocoder $geocoder,
@@ -27,26 +25,39 @@ class DefaultGeocodingService implements GeocodingService
         $this->logger = $logger;
     }
 
-    public function getCoordinates(string $address): ?Coordinates
+    public function getCoordinates(string $address, ?string $locationName=null): ?Coordinates
     {
         try {
-            $addresses = $this->geocoder->geocode($address);
-            /** @var GeocoderCoordinates|null $coordinates */
-            $coordinates = $addresses->first()->getCoordinates();
-
-            if ($coordinates === null) {
-                throw new CollectionIsEmpty('Coordinates from address are empty');
+            $key = $address . $locationName;
+            if (!isset($this->cache[$key])) {
+                $this->cache[$key] = new GeocodingResponse($this->geocoder, $address, $locationName);
             }
 
-            return new Coordinates(
-                new Latitude($coordinates->getLatitude()),
-                new Longitude($coordinates->getLongitude())
-            );
-        } catch (Exception|CollectionIsEmpty $exception) {
+            return $this->cache[$key]->getCoordinates();
+        } catch (Exception $e) {
             $this->logger->warning(
-                'No results for address: "' . $address . '". Exception message: ' . $exception->getMessage()
+                'No results for address: "' . $address . '". Exception message: ' . $e->getMessage()
             );
-            return null;
         }
+
+        return null;
+    }
+
+    public function getEnrichedAddress(string $address, ?string $locationName): ?EnrichedAddress
+    {
+        try {
+            $key = $address . $locationName;
+            if (!isset($this->cache[$key])) {
+                $this->cache[$key] = new GeocodingResponse($this->geocoder, $address, $locationName);
+            }
+
+            return $this->cache[$key]->getEnrichedAddress();
+        } catch (Exception $e) {
+            $this->logger->warning(
+                'No results for address: "' . $address . '". Exception message: ' . $e->getMessage()
+            );
+        }
+
+        return $this->cache[$key]->getEnrichedAddress();
     }
 }

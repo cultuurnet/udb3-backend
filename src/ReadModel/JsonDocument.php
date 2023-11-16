@@ -29,6 +29,9 @@ final class JsonDocument implements Identifiable
         return (object) Json::decode($this->body);
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function getAssocBody(): array
     {
         return (array) Json::decodeAssociatively($this->body);

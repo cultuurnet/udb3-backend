@@ -40,10 +40,19 @@ final class GeocodingServiceProvider extends AbstractServiceProvider
                     LoggerFactory::create($container, LoggerName::forService('geo-coordinates', 'google'))
                 );
 
-                return new CachedGeocodingService(
+                $cachedGeocodingService = new CachedGeocodingService(
                     $geocodingService,
                     $container->get('cache')('geocoords')
                 );
+
+                if ($container->get('config')['address_enrichment']) {
+                    return new EnrichedCachedGeocodingService(
+                        $cachedGeocodingService,
+                        $container->get('cache')('geocoords_enriched')
+                    );
+                }
+
+                return $cachedGeocodingService;
             }
         );
     }

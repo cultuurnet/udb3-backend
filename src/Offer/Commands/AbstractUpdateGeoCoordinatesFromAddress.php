@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 abstract class AbstractUpdateGeoCoordinatesFromAddress extends AbstractCommand
 {
@@ -20,7 +19,7 @@ abstract class AbstractUpdateGeoCoordinatesFromAddress extends AbstractCommand
         $this->address = $address;
     }
 
-    public function getAddress() : Address
+    public function getAddress(): Address
     {
         return $this->address;
     }

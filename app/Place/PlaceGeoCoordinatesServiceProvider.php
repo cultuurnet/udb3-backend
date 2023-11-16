@@ -34,7 +34,9 @@ final class PlaceGeoCoordinatesServiceProvider extends AbstractServiceProvider
                     $container->get('place_repository'),
                     new FullAddressFormatter(),
                     new LocalityAddressFormatter(),
-                    $container->get(GeocodingService::class)
+                    $container->get(GeocodingService::class),
+                    $container->get('place_jsonld_repository'),
+                    $container->get('config')['address_enrichment'] ?? false
                 );
 
                 $handler->setLogger(LoggerFactory::create($container, LoggerName::forService('geo-coordinates', 'place')));
