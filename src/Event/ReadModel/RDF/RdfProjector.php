@@ -138,6 +138,17 @@ final class RdfProjector implements EventListener
             return;
         }
 
+        if (!isset($eventData['created'])) {
+            $this->logger->warning(
+                'Unable to project event ' . $eventId . ' without created date to RDF.',
+                [
+                    'id' => $eventId,
+                    'type' => 'event',
+                ]
+            );
+            return;
+        }
+
         GraphEditor::for($graph)->setGeneralProperties(
             $iri,
             self::TYPE_ACTIVITEIT,
