@@ -70,6 +70,49 @@ class RdfProjectorTest extends RdfTestCase
     /**
      * @test
      */
+    public function it_logs_missing_created(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $this->logger->expects($this->once())
+            ->method('warning')
+            ->with('Unable to project event d4b46fba-6433-4f86-bcb5-edeef6689fea without created date to RDF.');
+
+        $this->project(
+            $eventId,
+            [
+                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_converts_a_simple_event(): void
     {
         $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
