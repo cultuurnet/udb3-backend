@@ -31,10 +31,10 @@ use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
-use CultuurNet\UDB3\Http\RDF\RDFResponseFactory;
+use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
-use CultuurNet\UDB3\RDF\RdfServiceProvider;
+use CultuurNet\UDB3\Organizer\ReadModel\RDF\OrganizerJsonToTurtleConverter;
 use CultuurNet\UDB3\User\CurrentUser;
 
 final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvider
@@ -96,9 +96,8 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             function () use ($container) {
                 return new GetOrganizerRequestHandler(
                     $container->get('organizer_service'),
-                    new RDFResponseFactory(
-                        $container->get('organizer_graph_store_repository'),
-                        RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['organizersRdfBaseUri'])
+                    new TurtleResponseFactory(
+                        $container->get(OrganizerJsonToTurtleConverter::class)
                     )
                 );
             }
