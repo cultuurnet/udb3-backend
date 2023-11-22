@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector as EventRdfProjector;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
-use CultuurNet\UDB3\Organizer\ReadModel\RDF\RdfProjector as OrganizerRdfProjector;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector as PlaceRdfProjector;
 use EasyRdf\GraphStore;
@@ -58,7 +57,6 @@ final class RdfServiceProvider extends AbstractServiceProvider
                 if (($this->container->get('config')['rdf']['enabled'] ?? false) === true) {
                     $eventBus->subscribe($this->container->get(PlaceRdfProjector::class));
                     $eventBus->subscribe($this->container->get(EventRdfProjector::class));
-                    $eventBus->subscribe($this->container->get(OrganizerRdfProjector::class));
                 }
 
                 $deserializerLocator = new SimpleDeserializerLocator();
