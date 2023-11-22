@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\RDF\RDFResponseFactory;
+use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Http\Request\QueryParameters;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
@@ -20,16 +21,16 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class GetDetailRequestHandler implements RequestHandlerInterface
 {
     private OfferJsonDocumentReadRepository $offerJsonDocumentReadRepository;
-    private RDFResponseFactory $placeRdfResponseFactory;
+    private TurtleResponseFactory $placeTurtleResponseFactory;
     private RDFResponseFactory $eventRdfResponseFactory;
 
     public function __construct(
         OfferJsonDocumentReadRepository $offerJsonDocumentReadRepository,
-        RDFResponseFactory $placeRdfResponseFactory,
+        TurtleResponseFactory $placeTurtleResponseFactory,
         RDFResponseFactory $eventRdfResponseFactory
     ) {
         $this->offerJsonDocumentReadRepository = $offerJsonDocumentReadRepository;
-        $this->placeRdfResponseFactory = $placeRdfResponseFactory;
+        $this->placeTurtleResponseFactory = $placeTurtleResponseFactory;
         $this->eventRdfResponseFactory = $eventRdfResponseFactory;
     }
 
@@ -43,7 +44,7 @@ final class GetDetailRequestHandler implements RequestHandlerInterface
         if ($acceptHeader === 'text/turtle') {
             try {
                 if ($offerType->sameAs(OfferType::place())) {
-                    return $this->placeRdfResponseFactory->turtle($offerId);
+                    return $this->placeTurtleResponseFactory->turtle($offerId);
                 }
                 return $this->eventRdfResponseFactory->turtle($offerId);
             } catch (GraphNotFound $exception) {
