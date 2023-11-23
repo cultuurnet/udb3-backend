@@ -8,11 +8,11 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
-use CultuurNet\UDB3\Http\RDF\RDFResponseFactory;
+use CultuurNet\UDB3\Http\RDF\JsonToTurtleConverter;
+use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\RDF\GraphRepository;
 use EasyRdf\Graph;
+use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -25,23 +25,20 @@ class GetOrganizerRequestHandlerTest extends TestCase
 
     private GetOrganizerRequestHandler $getOrganizerRequestHandler;
 
-    /** @var GraphRepository&MockObject */
-    private $graphStoreRepository;
+    /** @var JsonToTurtleConverter&MockObject */
+    private $jsonToTurtleConverter;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
     protected function setUp(): void
     {
         $this->organizerService = $this->createMock(EntityServiceInterface::class);
-        $this->graphStoreRepository = $this->createMock(GraphRepository::class);
+        $this->jsonToTurtleConverter = $this->createMock(JsonToTurtleConverter::class);
 
         $this->getOrganizerRequestHandler = new GetOrganizerRequestHandler(
             $this->organizerService,
-            new RDFResponseFactory(
-                $this->graphStoreRepository,
-                new CallableIriGenerator(
-                    fn ($organizerId) =>  'https://io.uitdatabank.dev/organizers/' . $organizerId
-                )
+            new TurtleResponseFactory(
+                $this->jsonToTurtleConverter
             )
         );
 
@@ -88,15 +85,16 @@ class GetOrganizerRequestHandlerTest extends TestCase
         $this->organizerService->expects($this->never())
             ->method('getEntity');
 
-        $graph = new Graph($uri);
+        $graph = new Graph();
         $resource = $graph->resource($uri);
         $resource->setType('cp:Organisator');
         $resource->addLiteral('cpr:naam', ['publiq vzw']);
+        $turtle = trim((new Turtle())->serialise($graph, 'turtle'));
 
-        $this->graphStoreRepository->expects($this->once())
-            ->method('get')
-            ->with($uri)
-            ->willReturn($graph);
+        $this->jsonToTurtleConverter->expects($this->once())
+            ->method('convert')
+            ->with($organizerId)
+            ->willReturn($turtle);
 
         $response = $this->getOrganizerRequestHandler->handle($getOrganizerRequest);
 
