@@ -51,6 +51,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateWorkflowStatusRequestHandler;
 use CultuurNet\UDB3\Http\RDF\RDFResponseFactory;
+use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
@@ -80,6 +81,7 @@ use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispat
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
+use CultuurNet\UDB3\Place\ReadModel\RDF\PlaceJsonToTurtleConverter;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -367,9 +369,8 @@ final class OfferServiceProvider extends AbstractServiceProvider
             GetDetailRequestHandler::class,
             fn () => new GetDetailRequestHandler(
                 $container->get(OfferJsonDocumentReadRepository::class),
-                new RDFResponseFactory(
-                    $container->get('place_graph_store_repository'),
-                    RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['placesRdfBaseUri'])
+                new TurtleResponseFactory(
+                    $container->get(PlaceJsonToTurtleConverter::class)
                 ),
                 new RDFResponseFactory(
                     $container->get('event_graph_store_repository'),
