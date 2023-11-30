@@ -27,63 +27,100 @@ class EnrichedCachedGeocodingServiceTest extends TestCase
     private $cacheMock;
 
     private EnrichedCachedGeocodingService $enrichedCachedGeocodingService;
-    private Coordinates $coordinates;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->geocodingServiceMock = $this->createMock(GeocodingService::class);
+        $this->geocodingServiceMock = $this->createMock(GeocodingCacheFacade::class);
         $this->cacheMock = $this->createMock(Cache::class);
 
         $this->enrichedCachedGeocodingService = new EnrichedCachedGeocodingService(
             $this->geocodingServiceMock,
-            $this->cacheMock
+            $this->cacheMock,
+            true
         );
-
-        $this->coordinates = new Coordinates(new Latitude(40.7128), new Longitude(-74.0060));
-
-        $this->geocodingServiceMock->expects($this->once())
-            ->method('getCoordinates')
-            ->with(self::ADDRESS, self::LOCATION_NAME)
-            ->willReturn($this->coordinates);
     }
 
-    public function testGetCoordinatesWithCache(): void
+    public function testAddressEnrichmentFlagOff(): void
     {
-        $this->cacheMock->expects($this->once())
-            ->method('contains')
-            ->with(self::ADDRESS . self::LOCATION_NAME)
-            ->willReturn(true);
+        $enrichedCachedGeocodingService = new EnrichedCachedGeocodingService(
+            $this->createMock(GeocodingCacheFacade::class),
+            $this->cacheMock,
+            false
+        );
 
-        $this->assertSame(
-            $this->coordinates,
-            $this->enrichedCachedGeocodingService->getCoordinates(self::ADDRESS, self::LOCATION_NAME)
+        $this->assertNull(
+            $enrichedCachedGeocodingService->saveEnrichedAddress(
+                self::ADDRESS,
+                self::LOCATION_NAME
+            )
         );
     }
 
-    public function testGetCoordinatesWithoutCache(): void
+
+    public function testSaveEnrichedAddressNoCacheHit(): void
     {
         $this->cacheMock->expects($this->once())
             ->method('contains')
             ->with(self::ADDRESS . self::LOCATION_NAME)
             ->willReturn(false);
 
+        $enrichedAddress = new EnrichedAddress(
+            'place123',
+            self::ADDRESS,
+            'ROOFTOP',
+            ['street_address'],
+            true,
+            new Coordinates(
+                new Latitude(1.07845),
+                new Longitude(2.76412)
+            )
+        );
         $this->geocodingServiceMock->expects($this->once())
-            ->method('getEnrichedAddress')
+            ->method('fetchEnrichedAddress')
             ->with(self::ADDRESS, self::LOCATION_NAME)
-            ->willReturn(new EnrichedAddress(
-                'place123',
-                self::ADDRESS,
-                'ROOFTOP',
-                ['street_address'],
-                true,
-                $this->coordinates
-            ));
+            ->willReturn($enrichedAddress);
 
         $this->assertSame(
-            $this->coordinates,
-            $this->enrichedCachedGeocodingService->getCoordinates(self::ADDRESS, self::LOCATION_NAME)
+            $enrichedAddress,
+            $this->enrichedCachedGeocodingService->saveEnrichedAddress(
+                self::ADDRESS,
+                self::LOCATION_NAME
+            )
+        );
+    }
+
+    public function testSaveEnrichedAddressCacheHit(): void
+    {
+        $this->cacheMock->expects($this->once())
+            ->method('contains')
+            ->with(self::ADDRESS . self::LOCATION_NAME)
+            ->willReturn(true);
+
+        $enrichedAddress = new EnrichedAddress(
+            'place123',
+            self::ADDRESS,
+            'ROOFTOP',
+            ['street_address'],
+            true,
+            new Coordinates(
+                new Latitude(1.07845),
+                new Longitude(2.76412)
+            )
+        );
+
+        $this->cacheMock->expects($this->once())
+            ->method('fetch')
+            ->with(self::ADDRESS . self::LOCATION_NAME)
+            ->willReturn($enrichedAddress);
+
+        $this->assertSame(
+            $enrichedAddress,
+            $this->enrichedCachedGeocodingService->saveEnrichedAddress(
+                self::ADDRESS,
+                self::LOCATION_NAME
+            )
         );
     }
 }

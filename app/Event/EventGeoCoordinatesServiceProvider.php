@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Geocoding\EnrichedCachedGeocodingService;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use Psr\Log\NullLogger;
 
@@ -36,6 +37,7 @@ final class EventGeoCoordinatesServiceProvider extends AbstractServiceProvider
                     new FullAddressFormatter(),
                     new LocalityAddressFormatter(),
                     $container->get(GeocodingService::class),
+                    $container->get(EnrichedCachedGeocodingService::class),
                     $container->get('event_jsonld_repository'),
                     $container->get('config')['address_enrichment'] ?? false
                 );

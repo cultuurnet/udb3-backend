@@ -25,34 +25,39 @@ final class GeocodingServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->addShared(
+            GeocodingCacheFacade::class,
+            function () use ($container) {
+                return new StatefulGeocoder(
+                    new GoogleMaps(
+                        new Client(),
+                        null,
+                        $container->get('config')['google_maps_api_key'] ?? null
+                    )
+                );
+            }
+        );
+
+        $container->addShared(
+            EnrichedCachedGeocodingService::class,
+            function () use ($container) {
+                return new EnrichedCachedGeocodingService(
+                    $container->get(GeocodingCacheFacade::class),
+                    $container->get('cache')('geocoords_enriched'),
+                    $container->get('config')['address_enrichment']
+                );
+            }
+        );
+
+        $container->addShared(
             GeocodingService::class,
             function () use ($container) {
-                $googleMapsApiKey = $container->get('config')['google_maps_api_key'] ?? null;
-
-                $geocodingService = new DefaultGeocodingService(
-                    new StatefulGeocoder(
-                        new GoogleMaps(
-                            new Client(),
-                            null,
-                            $googleMapsApiKey
-                        )
+                return new CachedGeocodingService(
+                    new GeocodingService(
+                        $container->get(GeocodingCacheFacade::class),
+                        LoggerFactory::create($container, LoggerName::forService('geo-coordinates', 'google'))
                     ),
-                    LoggerFactory::create($container, LoggerName::forService('geo-coordinates', 'google'))
-                );
-
-                $cachedGeocodingService = new CachedGeocodingService(
-                    $geocodingService,
                     $container->get('cache')('geocoords')
                 );
-
-                if ($container->get('config')['address_enrichment']) {
-                    return new EnrichedCachedGeocodingService(
-                        $cachedGeocodingService,
-                        $container->get('cache')('geocoords_enriched')
-                    );
-                }
-
-                return $cachedGeocodingService;
             }
         );
     }

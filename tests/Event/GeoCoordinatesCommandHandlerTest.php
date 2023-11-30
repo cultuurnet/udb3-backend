@@ -7,10 +7,6 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
-use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\AddressFormatter;
 use CultuurNet\UDB3\Address\FullAddressFormatter;
@@ -24,16 +20,23 @@ use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
+use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
+use CultuurNet\UDB3\Geocoding\EnrichedCachedGeocodingService;
+use CultuurNet\UDB3\Geocoding\GeocodingService;
+use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
+    private const EVENT_ID = '004aea08-e13d-48c9-b9eb-a18f20e6d44e';
     private AddressFormatter $defaultAddressFormatter;
 
     private AddressFormatter $localityAddressFormatter;
@@ -42,6 +45,11 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
      * @var GeocodingService|MockObject
      */
     private $geocodingService;
+
+    /**
+     * @var EnrichedCachedGeocodingService|MockObject
+     */
+    private $enrichedCachedGeocodingService;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): GeoCoordinatesCommandHandler
     {
@@ -54,15 +62,27 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->localityAddressFormatter = new LocalityAddressFormatter();
 
         $this->geocodingService = $this->createMock(GeocodingService::class);
+        $this->enrichedCachedGeocodingService = $this->createMock(EnrichedCachedGeocodingService::class);
         $documentRepository = $this->createMock(DocumentRepository::class);
+        $documentRepository->expects($this->once())
+            ->method('fetch')
+            ->with(self::EVENT_ID)
+            ->willReturn(new JsonDocument(self::EVENT_ID, json_encode([
+                'name' => [
+                    'nl' => 'Faith no More',
+                    'fr' => 'Faith no More - a la francais',
+
+                ],
+            ], JSON_THROW_ON_ERROR)));
 
         return new GeoCoordinatesCommandHandler(
             $eventRepository,
             $this->defaultAddressFormatter,
             $this->localityAddressFormatter,
             $this->geocodingService,
+            $this->enrichedCachedGeocodingService,
             $documentRepository,
-            false
+            true
         );
     }
 
@@ -71,8 +91,6 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_creates_coordinates_from_an_address_and_updates_them_on_the_given_event(): void
     {
-        $eventId = '004aea08-e13d-48c9-b9eb-a18f20e6d44e';
-
         $address = new Address(
             new Street('Wetstraat 1'),
             new PostalCode('1000'),
@@ -81,12 +99,12 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $eventImported = new EventImportedFromUDB2(
-            $eventId,
+            self::EVENT_ID,
             file_get_contents(__DIR__ . '/samples/event_004aea08-e13d-48c9-b9eb-a18f20e6d44e.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 
-        $command = new UpdateGeoCoordinatesFromAddress($eventId, $address);
+        $command = new UpdateGeoCoordinatesFromAddress(self::EVENT_ID, $address);
 
         $coordinates = new Coordinates(
             new Latitude(-0.12),
@@ -98,10 +116,10 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->with('Wetstraat 1, 1000 Bxl, BE')
             ->willReturn($coordinates);
 
-        $expectedEvent = new GeoCoordinatesUpdated($eventId, $coordinates);
+        $expectedEvent = new GeoCoordinatesUpdated(self::EVENT_ID, $coordinates);
 
         $this->scenario
-            ->withAggregateId($eventId)
+            ->withAggregateId(self::EVENT_ID)
             ->given([$eventImported])
             ->when($command)
             ->then([$expectedEvent]);
@@ -112,8 +130,6 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_has_a_fallback_to_locality_when_full_address_has_null_coordinates(): void
     {
-        $eventId = '004aea08-e13d-48c9-b9eb-a18f20e6d44e';
-
         $address = new Address(
             new Street('Wetstraat 1 (foutief)'),
             new PostalCode('1000'),
@@ -122,12 +138,12 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $eventImported = new EventImportedFromUDB2(
-            $eventId,
+            self::EVENT_ID,
             file_get_contents(__DIR__ . '/samples/event_004aea08-e13d-48c9-b9eb-a18f20e6d44e.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 
-        $command = new UpdateGeoCoordinatesFromAddress($eventId, $address);
+        $command = new UpdateGeoCoordinatesFromAddress(self::EVENT_ID, $address);
 
         $coordinates = new Coordinates(
             new Latitude(-0.12),
@@ -146,10 +162,10 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             )
             ->willReturnOnConsecutiveCalls(null, $coordinates);
 
-        $expectedEvent = new GeoCoordinatesUpdated($eventId, $coordinates);
+        $expectedEvent = new GeoCoordinatesUpdated(self::EVENT_ID, $coordinates);
 
         $this->scenario
-            ->withAggregateId($eventId)
+            ->withAggregateId(self::EVENT_ID)
             ->given([$eventImported])
             ->when($command)
             ->then([$expectedEvent]);
@@ -161,8 +177,6 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_skips_update_if_the_geo_coordinates_can_not_be_resolved(): void
     {
-        $eventId = 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
-
         $address = new Address(
             new Street('Wetstraat 1'),
             new PostalCode('1000'),
@@ -171,7 +185,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $eventCreated = new EventCreated(
-            $eventId,
+            self::EVENT_ID,
             new Language('en'),
             new Title('Faith no More'),
             new EventType('0.50.4.0.0', 'Concert'),
@@ -180,14 +194,14 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             new Theme('1.8.1.0.0', 'Rock')
         );
 
-        $command = new UpdateGeoCoordinatesFromAddress($eventId, $address);
+        $command = new UpdateGeoCoordinatesFromAddress(self::EVENT_ID, $address);
 
         $this->geocodingService->expects($this->any())
             ->method('getCoordinates')
             ->willReturn(null);
 
         $this->scenario
-            ->withAggregateId($eventId)
+            ->withAggregateId(self::EVENT_ID)
             ->given([$eventCreated])
             ->when($command)
             ->then([]);

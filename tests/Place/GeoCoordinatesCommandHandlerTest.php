@@ -10,6 +10,8 @@ use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
+use CultuurNet\UDB3\Geocoding\Dto\EnrichedAddress;
+use CultuurNet\UDB3\Geocoding\EnrichedCachedGeocodingService;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\AddressFormatter;
@@ -27,11 +29,13 @@ use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
+    private const PLACE_ID = 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
     private AddressFormatter $defaultAddressFormatter;
 
     private AddressFormatter $localityAddressFormatter;
@@ -40,6 +44,11 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
      * @var GeocodingService|MockObject
      */
     private $geocodingService;
+
+    /**
+     * @var EnrichedCachedGeocodingService|MockObject
+     */
+    private $enrichedCachedGeocodingService;
 
     /**
      * @var DocumentRepository|MockObject
@@ -57,15 +66,28 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->localityAddressFormatter = new LocalityAddressFormatter();
 
         $this->geocodingService = $this->createMock(GeocodingService::class);
+        $this->enrichedCachedGeocodingService = $this->createMock(EnrichedCachedGeocodingService::class);
+
         $this->documentRepository = $this->createMock(DocumentRepository::class);
+        $this->documentRepository->expects($this->once())
+            ->method('fetch')
+            ->with(self::PLACE_ID)
+            ->willReturn(new JsonDocument(self::PLACE_ID, json_encode([
+                'name' => [
+                    'nl' => 'Publiq HQ',
+                    'fr' => 'Publiq HQ - a la francais',
+
+                ],
+            ], JSON_THROW_ON_ERROR)));
 
         return new GeoCoordinatesCommandHandler(
             $repository,
             $this->defaultAddressFormatter,
             $this->localityAddressFormatter,
             $this->geocodingService,
+            $this->enrichedCachedGeocodingService,
             $this->documentRepository,
-            false
+            true
         );
     }
 
@@ -74,8 +96,6 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_creates_coordinates_from_an_address_and_updates_them_on_the_given_place(): void
     {
-        $id = 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
-
         $address = new Address(
             new Street('Wetstraat 1'),
             new PostalCode('1000'),
@@ -84,7 +104,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $placeCreated = new PlaceCreated(
-            $id,
+            self::PLACE_ID,
             new Language('en'),
             new Title('Some place'),
             new EventType('01.01', 'Some category'),
@@ -92,7 +112,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             new Calendar(CalendarType::PERMANENT())
         );
 
-        $command = new UpdateGeoCoordinatesFromAddress($id, $address);
+        $command = new UpdateGeoCoordinatesFromAddress(self::PLACE_ID, $address);
 
         $coordinates = new Coordinates(
             new Latitude(-0.12),
@@ -104,10 +124,10 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->with('Wetstraat 1, 1000 Bxl, BE')
             ->willReturn($coordinates);
 
-        $expectedEvent = new GeoCoordinatesUpdated($id, $coordinates);
+        $expectedEvent = new GeoCoordinatesUpdated(self::PLACE_ID, $coordinates);
 
         $this->scenario
-            ->withAggregateId($id)
+            ->withAggregateId(self::PLACE_ID)
             ->given([$placeCreated])
             ->when($command)
             ->then([$expectedEvent]);
@@ -118,8 +138,6 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_has_a_fallback_to_locality_when_full_address_has_null_coordinates(): void
     {
-        $id = 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
-
         $address = new Address(
             new Street('Wetstraat 1 (foutief)'),
             new PostalCode('1000'),
@@ -128,7 +146,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $placeCreated = new PlaceCreated(
-            $id,
+            self::PLACE_ID,
             new Language('en'),
             new Title('Some place'),
             new EventType('01.01', 'Some category'),
@@ -136,7 +154,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             new Calendar(CalendarType::PERMANENT())
         );
 
-        $command = new UpdateGeoCoordinatesFromAddress($id, $address);
+        $command = new UpdateGeoCoordinatesFromAddress(self::PLACE_ID, $address);
 
         $coordinates = new Coordinates(
             new Latitude(-0.12),
@@ -155,10 +173,105 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             )
             ->willReturnOnConsecutiveCalls(null, $coordinates);
 
-        $expectedEvent = new GeoCoordinatesUpdated($id, $coordinates);
+        $expectedEvent = new GeoCoordinatesUpdated(self::PLACE_ID, $coordinates);
 
         $this->scenario
-            ->withAggregateId($id)
+            ->withAggregateId(self::PLACE_ID)
+            ->given([$placeCreated])
+            ->when($command)
+            ->then([$expectedEvent]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_saves_an_enriched_address(): void
+    {
+        $address = new Address(
+            new Street('Wetstraat 1'),
+            new PostalCode('1000'),
+            new Locality('Bxl'),
+            new CountryCode('BE')
+        );
+
+        $placeCreated = new PlaceCreated(
+            self::PLACE_ID,
+            new Language('en'),
+            new Title('Some place'),
+            new EventType('01.01', 'Some category'),
+            $address,
+            new Calendar(CalendarType::PERMANENT())
+        );
+
+        $command = new UpdateGeoCoordinatesFromAddress(self::PLACE_ID, $address);
+
+        $this->enrichedCachedGeocodingService->expects($this->once())
+            ->method('saveEnrichedAddress')
+            ->with('Wetstraat 1, 1000 Bxl, BE', 'Publiq HQ')
+            ->willReturn($this->createMock(EnrichedAddress::class));
+
+        $coordinates = new Coordinates(
+            new Latitude(-0.12),
+            new Longitude(4.76)
+        );
+
+        $this->geocodingService->expects($this->once())
+            ->method('getCoordinates')
+            ->with('Wetstraat 1, 1000 Bxl, BE')
+            ->willReturn($coordinates);
+
+        $expectedEvent = new GeoCoordinatesUpdated(self::PLACE_ID, $coordinates);
+
+        $this->scenario
+            ->withAggregateId(self::PLACE_ID)
+            ->given([$placeCreated])
+            ->when($command)
+            ->then([$expectedEvent]);
+    }
+
+    /**
+     * @test
+     * This tests if an enriched address is saved for the fallback address
+     */
+    public function it_saves_an_enriched_address_even_when_no_coordinates_are_found(): void
+    {
+        $address = new Address(
+            new Street('Wetstraat 1'),
+            new PostalCode('1000'),
+            new Locality('Bxl'),
+            new CountryCode('BE')
+        );
+
+        $placeCreated = new PlaceCreated(
+            self::PLACE_ID,
+            new Language('en'),
+            new Title('Some place'),
+            new EventType('01.01', 'Some category'),
+            $address,
+            new Calendar(CalendarType::PERMANENT())
+        );
+
+        $command = new UpdateGeoCoordinatesFromAddress(self::PLACE_ID, $address);
+
+        $this->enrichedCachedGeocodingService->expects($this->once())
+            ->method('saveEnrichedAddress')
+            ->with('Wetstraat 1, 1000 Bxl, BE', 'Publiq HQ')
+            ->willReturn($this->createMock(EnrichedAddress::class));
+
+        $coordinates = new Coordinates(
+            new Latitude(-0.12),
+            new Longitude(4.76)
+        );
+
+        $this->geocodingService->expects($this->exactly(2))
+            ->method('getCoordinates')
+            ->withConsecutive(['Wetstraat 1, 1000 Bxl, BE'], ['1000 Bxl, BE'])
+            ->willReturnOnConsecutiveCalls(null, $coordinates);
+
+        $expectedEvent = new GeoCoordinatesUpdated(self::PLACE_ID, $coordinates);
+
+        $this->scenario
+            ->withAggregateId(self::PLACE_ID)
             ->given([$placeCreated])
             ->when($command)
             ->then([$expectedEvent]);

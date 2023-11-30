@@ -4,39 +4,34 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Geocoding;
 
-use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Dto\EnrichedAddress;
 use Doctrine\Common\Cache\Cache;
 
-class EnrichedCachedGeocodingService implements GeocodingService
+class EnrichedCachedGeocodingService
 {
-    private GeocodingService $geocodingService;
-
+    private GeocodingCacheFacade $geocoder;
     private Cache $cache;
+    private bool $addressEnrichment;
 
-    public function __construct(GeocodingService $geocodingService, Cache $cache)
+    public function __construct(GeocodingCacheFacade $geocoder, Cache $cache, bool $addressEnrichment)
     {
-        $this->geocodingService = $geocodingService;
+        $this->geocoder = $geocoder;
         $this->cache = $cache;
+        $this->addressEnrichment = $addressEnrichment;
     }
 
-    public function getCoordinates(string $address, ?string $locationName=null): ?Coordinates
+    public function saveEnrichedAddress(string $address, ?string $locationName): ?EnrichedAddress
     {
-        $key = $address . $locationName;
-
-        if (!$this->cache->contains($key)) {
-            try {
-                $this->cache->save($key, $this->geocodingService->getEnrichedAddress($address, $locationName));
-            } catch (NoGoogleAddressToEnrichReceived $e) {
-                // No google address to save
-            }
+        if (! $this->addressEnrichment) {
+            return null;
         }
 
-        return $this->geocodingService->getCoordinates($address, $locationName);
-    }
+        $key = $address . $locationName;
 
-    public function getEnrichedAddress(string $address, ?string $locationName): EnrichedAddress
-    {
-        return $this->geocodingService->getEnrichedAddress($address, $locationName);
+        if ($this->cache->contains($key)) {
+            return $this->cache->fetch($key);
+        }
+
+        return $this->geocoder->fetchEnrichedAddress($address, $locationName);
     }
 }

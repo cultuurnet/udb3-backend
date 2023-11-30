@@ -5,16 +5,34 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Geocoding;
 
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Geocoding\Dto\EnrichedAddress;
+use CultuurNet\UDB3\Geocoding\Exception\NoCoordinatesForAddressReceived;
+use CultuurNet\UDB3\Geocoding\Exception\NoGoogleAddressReceived;
+use Psr\Log\LoggerInterface;
 
-interface GeocodingService
+class GeocodingService implements HasCoordinates
 {
-    /**
-     * Gets the coordinates of the given address.
-     * Returns null when no coordinates are found for the given address.
-     * This can happen in case of a wrong/unknown address.
-     */
-    public function getCoordinates(string $address, ?string $locationName=null): ?Coordinates;
+    private GeocodingCacheFacade $geocoder;
 
-    public function getEnrichedAddress(string $address, ?string $locationName): ?EnrichedAddress;
+    private LoggerInterface $logger;
+
+    public function __construct(
+        GeocodingCacheFacade $geocoder,
+        LoggerInterface $logger
+    ) {
+        $this->geocoder = $geocoder;
+        $this->logger = $logger;
+    }
+
+    public function getCoordinates(string $address, ?string $locationName = null): ?Coordinates
+    {
+        try {
+            return $this->geocoder->fetchCoordinates($address, $locationName);
+        } catch (NoGoogleAddressReceived|NoCoordinatesForAddressReceived $e) {
+            $this->logger->warning(
+                'No results for address: "' . $address . '". Exception message: ' . $e->getMessage()
+            );
+        }
+
+        return null;
+    }
 }

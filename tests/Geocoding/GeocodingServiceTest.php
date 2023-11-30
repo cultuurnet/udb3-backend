@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Geocoding;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use Geocoder\Exception\CollectionIsEmpty;
+use CultuurNet\UDB3\Geocoding\Exception\NoGoogleAddressReceived;
 use Geocoder\Geocoder;
 use Geocoder\Model\Address;
 use Geocoder\Model\AddressCollection;
@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class DefaultGeocodingServiceTest extends TestCase
+class GeocodingServiceTest extends TestCase
 {
     /**
      * @var Geocoder|MockObject
@@ -29,14 +29,14 @@ class DefaultGeocodingServiceTest extends TestCase
      */
     private $logger;
 
-    private DefaultGeocodingService $service;
+    private GeocodingService $service;
 
     public function setUp(): void
     {
-        $this->geocoder = $this->createMock(Geocoder::class);
+        $this->geocoder = $this->createMock(GeocodingCacheFacade::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
-        $this->service = new DefaultGeocodingService($this->geocoder, $this->logger);
+        $this->service = new GeocodingService($this->geocoder, $this->logger);
     }
 
     /**
@@ -57,15 +57,15 @@ class DefaultGeocodingServiceTest extends TestCase
             ),
         ]);
 
-        $this->geocoder->expects($this->once())
-            ->method('geocode')
-            ->with($address)
-            ->willReturn($result);
-
         $expectedCoordinates = new Coordinates(
             new Latitude($latFloat),
             new Longitude($longFloat)
         );
+
+        $this->geocoder->expects($this->once())
+            ->method('fetchCoordinates')
+            ->with($address)
+            ->willReturn($expectedCoordinates);
 
         $actualCoordinates = $this->service->getCoordinates($address);
 
@@ -80,15 +80,15 @@ class DefaultGeocodingServiceTest extends TestCase
         $address = 'Eikelberg (achter de bibliotheek), 8340 Sijsele (Damme), BE';
 
         $this->geocoder->expects($this->once())
-            ->method('geocode')
+            ->method('fetchCoordinates')
             ->with($address)
             ->willThrowException(
-                new CollectionIsEmpty('Could not execute query')
+                new NoGoogleAddressReceived()
             );
 
         $this->logger->expects($this->once())
             ->method('warning')
-            ->with('No results for address: "' . $address . '". Exception message: Could not execute query');
+            ->with('No results for address: "' . $address . '". Exception message: ' . NoGoogleAddressReceived::ERROR);
 
         $actualCoordinates = $this->service->getCoordinates($address);
 

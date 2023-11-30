@@ -7,19 +7,18 @@ namespace CultuurNet\UDB3\Geocoding;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\Geocoding\Dto\EnrichedAddress;
 use CultuurNet\UDB3\Json;
 use Doctrine\Common\Cache\Cache;
 
-class CachedGeocodingService implements GeocodingService
+class CachedGeocodingService implements HasCoordinates
 {
     public const NO_COORDINATES_FOUND = 'NO_COORDINATES_FOUND';
 
-    private GeocodingService $geocodingService;
+    private HasCoordinates $geocodingService;
 
     private Cache $cache;
 
-    public function __construct(GeocodingService $geocodingService, Cache $cache)
+    public function __construct(HasCoordinates $geocodingService, Cache $cache)
     {
         $this->geocodingService = $geocodingService;
         $this->cache = $cache;
@@ -61,10 +60,5 @@ class CachedGeocodingService implements GeocodingService
         $this->cache->save($address, Json::encode($cacheData));
 
         return $coordinates;
-    }
-
-    public function getEnrichedAddress(string $address, ?string $locationName): ?EnrichedAddress
-    {
-        return $this->geocodingService->getEnrichedAddress($address, $locationName);
     }
 }

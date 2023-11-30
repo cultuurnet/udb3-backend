@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\Repository;
+use CultuurNet\UDB3\Geocoding\EnrichedCachedGeocodingService;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Address\AddressFormatter;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
@@ -27,6 +28,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
     private AddressFormatter $fallbackAddressFormatter;
 
     private GeocodingService $geocodingService;
+    private EnrichedCachedGeocodingService $enrichedCachedGeocodingService;
     private DocumentRepository $documentRepository;
     private bool $addressEnrichment;
 
@@ -35,6 +37,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
         AddressFormatter $defaultAddressFormatter,
         AddressFormatter $fallbackAddressFormatter,
         GeocodingService $geocodingService,
+        EnrichedCachedGeocodingService $enrichedCachedGeocodingService,
         DocumentRepository $documentRepository,
         bool $addressEnrichment
     ) {
@@ -42,6 +45,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
         $this->defaultAddressFormatter = $defaultAddressFormatter;
         $this->fallbackAddressFormatter = $fallbackAddressFormatter;
         $this->geocodingService = $geocodingService;
+        $this->enrichedCachedGeocodingService = $enrichedCachedGeocodingService;
         $this->logger = new NullLogger();
         $this->documentRepository = $documentRepository;
         $this->addressEnrichment = $addressEnrichment;
@@ -87,6 +91,8 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
             $this->logger->debug('Could not find coordinates for fallback address for offer id ' . $offerId);
             return;
         }
+
+        $this->enrichedCachedGeocodingService->saveEnrichedAddress($exactAddress, $locationName);
 
         /** @var Offer $offer */
         $offer = $this->offerRepository->load($offerId);

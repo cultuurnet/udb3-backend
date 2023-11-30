@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\FullAddressFormatter;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Geocoding\EnrichedCachedGeocodingService;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
@@ -35,6 +36,7 @@ final class PlaceGeoCoordinatesServiceProvider extends AbstractServiceProvider
                     new FullAddressFormatter(),
                     new LocalityAddressFormatter(),
                     $container->get(GeocodingService::class),
+                    $container->get(EnrichedCachedGeocodingService::class),
                     $container->get('place_jsonld_repository'),
                     $container->get('config')['address_enrichment'] ?? false
                 );
