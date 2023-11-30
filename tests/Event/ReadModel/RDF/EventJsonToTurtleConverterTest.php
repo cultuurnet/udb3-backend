@@ -4,32 +4,37 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
+use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\Address\ParsedAddress;
-use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
-use CultuurNet\UDB3\RdfTestCase;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
-class RdfProjectorTest extends RdfTestCase
+class EventJsonToTurtleConverterTest extends TestCase
 {
+    private DocumentRepository $documentRepository;
+
+    /** @var AddressParser&MockObject */
+    private $addressParser;
+
+    /** @var LoggerInterface&MockObject */
+    private $logger;
+
+    private EventJsonToTurtleConverter $eventJsonToTurtleConverter;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->rdfProjector = new RdfProjector(
-            $this->graphRepository,
-            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
-            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
-            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/organizers/' . $item),
-            new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
-            $this->documentRepository,
-            (new EventDenormalizer())->handlesDummyOrganizers(),
-            $this->addressParser,
-            $this->logger
-        );
+        $this->documentRepository = new InMemoryDocumentRepository();
 
+        $this->addressParser = $this->createMock(AddressParser::class);
         $this->addressParser->expects($this->any())
             ->method('parse')
             ->willReturn(
@@ -40,6 +45,19 @@ class RdfProjectorTest extends RdfTestCase
                     'Leuven'
                 )
             );
+
+        $this->logger = $this->createMock(LoggerInterface::class);
+
+        $this->eventJsonToTurtleConverter = new EventJsonToTurtleConverter(
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/places/' . $item),
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/organizers/' . $item),
+            new CallableIriGenerator(fn (string $item): string => 'https://mock.taxonomy.uitdatabank.be/terms/' . $item),
+            $this->documentRepository,
+            (new EventDenormalizer())->handlesDummyOrganizers(),
+            $this->addressParser,
+            $this->logger
+        );
     }
 
     /**
@@ -59,12 +77,10 @@ class RdfProjectorTest extends RdfTestCase
             ->method('warning')
             ->with('Unable to project event d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $this->expectError();
+        $this->expectErrorMessage('Undefined index: name');
+
+        $this->eventJsonToTurtleConverter->convert($eventId);
     }
 
     /**
@@ -94,6 +110,7 @@ class RdfProjectorTest extends RdfTestCase
             'location' => [
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
@@ -102,12 +119,10 @@ class RdfProjectorTest extends RdfTestCase
             ->method('warning')
             ->with('Unable to project event d4b46fba-6433-4f86-bcb5-edeef6689fea without created date to RDF.');
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Event ' . $eventId . ' has no created date.');
+
+        $this->eventJsonToTurtleConverter->convert($eventId);
     }
 
     /**
@@ -138,18 +153,14 @@ class RdfProjectorTest extends RdfTestCase
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event.ttl'));
     }
 
     /**
@@ -183,18 +194,14 @@ class RdfProjectorTest extends RdfTestCase
                 'nl' => 'Dit is het laatste concert van Faith no more',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-description.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-description.ttl'));
     }
 
     /**
@@ -231,18 +238,14 @@ class RdfProjectorTest extends RdfTestCase
                 'en' => 'This is the last concert of Faith no more',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-translations.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-translations.ttl'));
     }
 
     /**
@@ -290,18 +293,14 @@ class RdfProjectorTest extends RdfTestCase
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-calendar-permanent-and-opening-hours.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-calendar-permanent-and-opening-hours.ttl'));
     }
 
     /**
@@ -334,18 +333,14 @@ class RdfProjectorTest extends RdfTestCase
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-calendar-periodic.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-calendar-periodic.ttl'));
     }
 
     /**
@@ -404,18 +399,14 @@ class RdfProjectorTest extends RdfTestCase
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-calendar-periodic-and-opening-hours.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-calendar-periodic-and-opening-hours.ttl'));
     }
 
     /**
@@ -448,18 +439,14 @@ class RdfProjectorTest extends RdfTestCase
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-calendar-single.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-calendar-single.ttl'));
     }
 
     /**
@@ -502,18 +489,14 @@ class RdfProjectorTest extends RdfTestCase
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-calendar-multiple.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-calendar-multiple.ttl'));
     }
 
     /**
@@ -545,18 +528,14 @@ class RdfProjectorTest extends RdfTestCase
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-status-approved.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-status-approved.ttl'));
     }
 
     /**
@@ -588,18 +567,14 @@ class RdfProjectorTest extends RdfTestCase
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-status-deleted.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-status-deleted.ttl'));
     }
 
     /**
@@ -631,18 +606,14 @@ class RdfProjectorTest extends RdfTestCase
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-status-ready-for-validation.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-status-ready-for-validation.ttl'));
     }
 
     /**
@@ -674,18 +645,14 @@ class RdfProjectorTest extends RdfTestCase
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-status-rejected.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-status-rejected.ttl'));
     }
 
     /**
@@ -718,18 +685,14 @@ class RdfProjectorTest extends RdfTestCase
                 '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-publication-date.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-publication-date.ttl'));
     }
 
     /**
@@ -767,18 +730,14 @@ class RdfProjectorTest extends RdfTestCase
                 ],
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-dummy-location.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-dummy-location.ttl'));
     }
 
     /**
@@ -828,18 +787,14 @@ class RdfProjectorTest extends RdfTestCase
                 ],
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-multiple-calendar.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-multiple-calendar.ttl'));
     }
 
     /**
@@ -879,18 +834,14 @@ class RdfProjectorTest extends RdfTestCase
                 ],
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-single-calendar.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-single-calendar.ttl'));
     }
 
     /**
@@ -925,18 +876,14 @@ class RdfProjectorTest extends RdfTestCase
             'attendanceMode' => 'online',
             'onlineUrl' => 'https://www.publiq.be/livestream',
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-single-calendar.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-single-calendar.ttl'));
     }
 
     /**
@@ -970,18 +917,14 @@ class RdfProjectorTest extends RdfTestCase
             ],
             'attendanceMode' => 'online',
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/online-event-with-single-calendar.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/online-event-with-single-calendar.ttl'));
     }
 
     /**
@@ -1026,18 +969,14 @@ class RdfProjectorTest extends RdfTestCase
             'attendanceMode' => 'online',
             'onlineUrl' => 'https://www.publiq.be/livestream',
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-multiple-calendar.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-multiple-calendar.ttl'));
     }
 
     /**
@@ -1070,18 +1009,14 @@ class RdfProjectorTest extends RdfTestCase
             'attendanceMode' => 'online',
             'onlineUrl' => 'https://www.publiq.be/livestream',
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-permanent-calendar.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-permanent-calendar.ttl'));
     }
 
     /**
@@ -1113,18 +1048,14 @@ class RdfProjectorTest extends RdfTestCase
             ],
             'attendanceMode' => 'online',
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/online-event-with-permanent-calendar.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/online-event-with-permanent-calendar.ttl'));
     }
 
     /**
@@ -1156,18 +1087,14 @@ class RdfProjectorTest extends RdfTestCase
             ],
             'attendanceMode' => 'mixed',
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/mixed-event-with-permanent-calendar.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/mixed-event-with-permanent-calendar.ttl'));
     }
 
     /**
@@ -1201,18 +1128,14 @@ class RdfProjectorTest extends RdfTestCase
             ],
             'attendanceMode' => 'mixed',
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/mixed-event-with-single-calendar.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/mixed-event-with-single-calendar.ttl'));
     }
 
     /**
@@ -1245,18 +1168,14 @@ class RdfProjectorTest extends RdfTestCase
             'attendanceMode' => 'mixed',
             'onlineUrl' => 'https://www.publiq.be/livestream',
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-permanent-calendar.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-permanent-calendar.ttl'));
     }
 
     /**
@@ -1291,18 +1210,14 @@ class RdfProjectorTest extends RdfTestCase
             'attendanceMode' => 'mixed',
             'onlineUrl' => 'https://www.publiq.be/livestream',
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-single-calendar.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-single-calendar.ttl'));
     }
 
     /**
@@ -1347,18 +1262,14 @@ class RdfProjectorTest extends RdfTestCase
             'attendanceMode' => 'mixed',
             'onlineUrl' => 'https://www.publiq.be/livestream',
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-multiple-calendar.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-multiple-calendar.ttl'));
     }
 
     /**
@@ -1392,18 +1303,14 @@ class RdfProjectorTest extends RdfTestCase
                 '@id' => 'https://mock.io.uitdatabank.be/organizers/331a966d-d8ff-4e3c-a6f4-83b901f6c3af',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-organizer.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-organizer.ttl'));
     }
 
     /**
@@ -1437,18 +1344,14 @@ class RdfProjectorTest extends RdfTestCase
                 'name' => 'Dummy Organizer',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'));
     }
 
     /**
@@ -1485,18 +1388,14 @@ class RdfProjectorTest extends RdfTestCase
                 ],
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'));
     }
 
     /**
@@ -1537,18 +1436,14 @@ class RdfProjectorTest extends RdfTestCase
                 ],
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer-with-contact-point.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer-with-contact-point.ttl'));
     }
 
     /**
@@ -1593,18 +1488,14 @@ class RdfProjectorTest extends RdfTestCase
                 ],
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-contact-point.ttl'));
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-contact-point.ttl'));
     }
 
     /**
@@ -1643,22 +1534,13 @@ class RdfProjectorTest extends RdfTestCase
                 'phone' => '016 10 20 30',
             ],
             'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
         $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
 
-        $this->project(
-            $eventId,
-            [
-                new EventProjectedToJSONLD($eventId, 'https://mock.io.uitdatabank.be/events/' . $eventId),
-            ]
-        );
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertTurtleData($eventId, file_get_contents(__DIR__ . '/ttl/event-with-booking-info.ttl'));
-    }
-
-    public function getRdfDataSetName(): string
-    {
-        return 'events';
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-booking-info.ttl'));
     }
 }

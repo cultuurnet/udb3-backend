@@ -26,6 +26,7 @@ Feature: Test the Search API v3 contributors
       | q                     | contributors:%{organizerContributorEmail} |
     Then the JSON response at "totalItems" should be 1
     And the JSON response at "member/0/@id" should be "%{organizerUrl}"
+    But the JSON response should not have "member/0/contributors"
 
   Scenario: Search for Place with contributors
     Given I create a place from "places/place.json" and save the "url" as "placeUrl"
@@ -46,6 +47,7 @@ Feature: Test the Search API v3 contributors
       | q                     | contributors:%{placeContributorEmail} |
     Then the JSON response at "totalItems" should be 1
     And the JSON response at "member/0/@id" should be "%{placeUrl}"
+    But the JSON response should not have "member/0/contributors"
 
   Scenario: Search for Events with contributors
     Given I create a place from "places/place.json" and save the "url" as "placeUrl"
@@ -67,3 +69,4 @@ Feature: Test the Search API v3 contributors
       | q                     | contributors:%{eventContributorEmail} |
     Then the JSON response at "totalItems" should be 1
     And the JSON response at "member/0/@id" should be "%{eventUrl}"
+    But the JSON response should not have "member/0/contributors"

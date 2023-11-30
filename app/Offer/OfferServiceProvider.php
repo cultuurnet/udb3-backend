@@ -10,6 +10,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Contributor\ContributorRepository;
+use CultuurNet\UDB3\Event\ReadModel\RDF\EventJsonToTurtleConverter;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
@@ -50,7 +51,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateWorkflowStatusRequestHandler;
-use CultuurNet\UDB3\Http\RDF\RDFResponseFactory;
+use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
@@ -80,8 +81,8 @@ use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispat
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
+use CultuurNet\UDB3\Place\ReadModel\RDF\PlaceJsonToTurtleConverter;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
-use CultuurNet\UDB3\RDF\RdfServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
@@ -367,14 +368,8 @@ final class OfferServiceProvider extends AbstractServiceProvider
             GetDetailRequestHandler::class,
             fn () => new GetDetailRequestHandler(
                 $container->get(OfferJsonDocumentReadRepository::class),
-                new RDFResponseFactory(
-                    $container->get('place_graph_store_repository'),
-                    RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['placesRdfBaseUri'])
-                ),
-                new RDFResponseFactory(
-                    $container->get('event_graph_store_repository'),
-                    RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['eventsRdfBaseUri'])
-                )
+                new TurtleResponseFactory($container->get(PlaceJsonToTurtleConverter::class)),
+                new TurtleResponseFactory($container->get(EventJsonToTurtleConverter::class))
             )
         );
 

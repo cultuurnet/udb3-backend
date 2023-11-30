@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
-use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Address\AddressParser;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Http\RDF\JsonToTurtleConverter;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
@@ -37,18 +35,17 @@ use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
-use CultuurNet\UDB3\RDF\GraphRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
+use EasyRdf\Serialiser\Turtle;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-final class RdfProjector implements EventListener
+final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 {
-    private GraphRepository $graphRepository;
     private IriGeneratorInterface $eventsIriGenerator;
     private IriGeneratorInterface $placesIriGenerator;
     private IriGeneratorInterface $organizersIriGenerator;
@@ -91,7 +88,6 @@ final class RdfProjector implements EventListener
     private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
 
     public function __construct(
-        GraphRepository $graphRepository,
         IriGeneratorInterface $eventsIriGenerator,
         IriGeneratorInterface $placesIriGenerator,
         IriGeneratorInterface $organizersIriGenerator,
@@ -101,7 +97,6 @@ final class RdfProjector implements EventListener
         AddressParser $addressParser,
         LoggerInterface $logger
     ) {
-        $this->graphRepository = $graphRepository;
         $this->eventsIriGenerator = $eventsIriGenerator;
         $this->placesIriGenerator = $placesIriGenerator;
         $this->organizersIriGenerator = $organizersIriGenerator;
@@ -112,48 +107,44 @@ final class RdfProjector implements EventListener
         $this->logger = $logger;
     }
 
-    public function handle(DomainMessage $domainMessage): void
+    public function convert(string $id): string
     {
-        if (get_class($domainMessage->getPayload()) !== EventProjectedToJSONLD::class) {
-            return;
-        }
+        $iri = $this->eventsIriGenerator->iri($id);
 
-        $eventId = $domainMessage->getPayload()->getItemId();
-        $iri = $this->eventsIriGenerator->iri($eventId);
         $graph = new Graph($iri);
         $resource = $graph->resource($iri);
 
-        $eventData = $this->fetchEventData($domainMessage);
+        $eventData = $this->fetchEventData($id);
         try {
             $event = $this->getEvent($eventData);
         } catch (\Throwable $throwable) {
             $this->logger->warning(
-                'Unable to project event ' . $eventId . ' with invalid JSON to RDF.',
+                'Unable to project event ' . $id . ' with invalid JSON to RDF.',
                 [
-                    'id' => $eventId,
+                    'id' => $id,
                     'type' => 'event',
-                    'exception' => $throwable,
+                    'exception' => $id,
                 ]
             );
-            return;
+            throw $throwable;
         }
 
         if (!isset($eventData['created'])) {
             $this->logger->warning(
-                'Unable to project event ' . $eventId . ' without created date to RDF.',
+                'Unable to project event ' . $id . ' without created date to RDF.',
                 [
-                    'id' => $eventId,
+                    'id' => $id,
                     'type' => 'event',
                 ]
             );
-            return;
+            throw new \InvalidArgumentException('Event ' . $id . ' has no created date.');
         }
 
         GraphEditor::for($graph)->setGeneralProperties(
             $iri,
             self::TYPE_ACTIVITEIT,
             DateTimeFactory::fromISO8601($eventData['created'])->format(DateTime::ATOM),
-            $domainMessage->getRecordedOn()->toNative()->format(DateTime::ATOM)
+            DateTimeFactory::fromISO8601($eventData['modified'])->format(DateTime::ATOM),
         );
 
         $this->setTitle($resource, $event->getTitle());
@@ -204,15 +195,12 @@ final class RdfProjector implements EventListener
             $this->setBookingInfo($resource, $event->getBookingInfo());
         }
 
-        $this->graphRepository->save($iri, $graph);
+        return trim((new Turtle())->serialise($graph, 'turtle'));
     }
 
-    private function fetchEventData(DomainMessage $domainMessage): array
+    private function fetchEventData(string $id): array
     {
-        /** @var EventProjectedToJSONLD $eventProjectedToJSONLD */
-        $eventProjectedToJSONLD = $domainMessage->getPayload();
-        $jsonDocument = $this->documentRepository->fetch($eventProjectedToJSONLD->getItemId());
-
+        $jsonDocument = $this->documentRepository->fetch($id);
         return $jsonDocument->getAssocBody();
     }
 
