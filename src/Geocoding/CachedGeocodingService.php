@@ -26,7 +26,9 @@ class CachedGeocodingService implements HasCoordinates
 
     public function getCoordinates(string $address, ?string $locationName=null): ?Coordinates
     {
-        $encodedCacheData = $this->cache->fetch($address);
+        $key = $locationName ? $address . $locationName : $address;
+
+        $encodedCacheData = $this->cache->fetch($key);
 
         if ($encodedCacheData) {
             $cacheData = Json::decodeAssociatively($encodedCacheData);
@@ -57,7 +59,7 @@ class CachedGeocodingService implements HasCoordinates
             ];
         }
 
-        $this->cache->save($address, Json::encode($cacheData));
+        $this->cache->save($key, Json::encode($cacheData));
 
         return $coordinates;
     }

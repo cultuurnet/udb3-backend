@@ -64,7 +64,7 @@ class GeocodingCacheFacade
 
     protected function fetchLocation(string $address, string $locationName = null): ?Location
     {
-        $key = $address . $locationName;
+        $key = $locationName ? $address . $locationName : $address;
 
         if (!isset($this->cache[$key])) {
             try {

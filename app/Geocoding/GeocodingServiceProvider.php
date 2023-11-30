@@ -27,12 +27,14 @@ final class GeocodingServiceProvider extends AbstractServiceProvider
         $container->addShared(
             GeocodingCacheFacade::class,
             function () use ($container) {
-                return new StatefulGeocoder(
+                return new GeocodingCacheFacade(
+                    new StatefulGeocoder(
                     new GoogleMaps(
-                        new Client(),
-                        null,
-                        $container->get('config')['google_maps_api_key'] ?? null
-                    )
+                            new Client(),
+                            null,
+                            $container->get('config')['google_maps_api_key'] ?? null
+                        )
+                )
                 );
             }
         );

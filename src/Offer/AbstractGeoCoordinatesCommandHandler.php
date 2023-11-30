@@ -6,9 +6,9 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Geocoding\EnrichedCachedGeocodingService;
-use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Address\AddressFormatter;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
+use CultuurNet\UDB3\Geocoding\HasCoordinates;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -26,8 +26,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
     private AddressFormatter $defaultAddressFormatter;
 
     private AddressFormatter $fallbackAddressFormatter;
-
-    private GeocodingService $geocodingService;
+    private HasCoordinates $geocodingCoordinatesService;
     private EnrichedCachedGeocodingService $enrichedCachedGeocodingService;
     private DocumentRepository $documentRepository;
     private bool $addressEnrichment;
@@ -36,7 +35,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
         Repository $placeRepository,
         AddressFormatter $defaultAddressFormatter,
         AddressFormatter $fallbackAddressFormatter,
-        GeocodingService $geocodingService,
+        HasCoordinates $geocodingService,
         EnrichedCachedGeocodingService $enrichedCachedGeocodingService,
         DocumentRepository $documentRepository,
         bool $addressEnrichment
@@ -44,7 +43,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
         $this->offerRepository = $placeRepository;
         $this->defaultAddressFormatter = $defaultAddressFormatter;
         $this->fallbackAddressFormatter = $fallbackAddressFormatter;
-        $this->geocodingService = $geocodingService;
+        $this->geocodingCoordinatesService = $geocodingService;
         $this->enrichedCachedGeocodingService = $enrichedCachedGeocodingService;
         $this->logger = new NullLogger();
         $this->documentRepository = $documentRepository;
@@ -62,7 +61,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
 
         $locationName = $this->fetchOfferName($offerId);
 
-        $coordinates = $this->geocodingService->getCoordinates($exactAddress, $locationName);
+        $coordinates = $this->geocodingCoordinatesService->getCoordinates($exactAddress, $locationName);
 
         if ($coordinates === null) {
             $fallbackAddress = $this->fallbackAddressFormatter->format(
@@ -78,7 +77,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
                 )
             );
 
-            $coordinates = $this->geocodingService->getCoordinates($fallbackAddress, $locationName);
+            $coordinates = $this->geocodingCoordinatesService->getCoordinates($fallbackAddress, $locationName);
 
             if (!is_null($coordinates)) {
                 $this->logger->debug(
