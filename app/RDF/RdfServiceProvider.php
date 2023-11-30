@@ -14,13 +14,10 @@ use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
-use CultuurNet\UDB3\Event\ReadModel\RDF\RdfProjector as EventRdfProjector;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
-use CultuurNet\UDB3\Organizer\ReadModel\RDF\RdfProjector as OrganizerRdfProjector;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
-use CultuurNet\UDB3\Place\ReadModel\RDF\RdfProjector as PlaceRdfProjector;
 use EasyRdf\GraphStore;
 use Ramsey\Uuid\UuidFactory;
 
@@ -55,11 +52,6 @@ final class RdfServiceProvider extends AbstractServiceProvider
             'amqp.rdf_event_bus_forwarding_consumer',
             function () {
                 $eventBus = new SimpleEventBus();
-                if (($this->container->get('config')['rdf']['enabled'] ?? false) === true) {
-                    $eventBus->subscribe($this->container->get(PlaceRdfProjector::class));
-                    $eventBus->subscribe($this->container->get(EventRdfProjector::class));
-                    $eventBus->subscribe($this->container->get(OrganizerRdfProjector::class));
-                }
 
                 $deserializerLocator = new SimpleDeserializerLocator();
                 $deserializerMapping = [
