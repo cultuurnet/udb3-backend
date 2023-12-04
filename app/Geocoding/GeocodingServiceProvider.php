@@ -30,10 +30,10 @@ final class GeocodingServiceProvider extends AbstractServiceProvider
                 return new GeocodingCacheFacade(
                     new StatefulGeocoder(
                         new GoogleMaps(
-                        new Client(),
-                        null,
-                        $container->get('config')['google_maps_api_key'] ?? null
-                    )
+                            new Client(),
+                            null,
+                            $container->get('config')['google_maps_api_key'] ?? null
+                        )
                     )
                 );
             }
