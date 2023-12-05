@@ -1626,7 +1626,7 @@ class EventJsonToTurtleConverterTest extends TestCase
                         'en' => 'Base tariff',
                         'de' => 'Basisrate',
                     ],
-                    'price' => 60,
+                    'price' => 59.99,
                     'priceCurrency' => 'EUR',
                 ],
                 [
