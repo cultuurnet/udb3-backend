@@ -26,6 +26,8 @@ use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -86,6 +88,8 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private const PROPERTY_BOEKINGSINFO = 'cpa:boeking';
 
     private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
+
+    private const PROPERTY_LABEL = 'rdfs:label';
 
     public function __construct(
         IriGeneratorInterface $eventsIriGenerator,
@@ -193,6 +197,10 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
         if (!$event->getBookingInfo()->isEmpty()) {
             $this->setBookingInfo($resource, $event->getBookingInfo());
+        }
+
+        if ($event->getLabels()->count() > 0) {
+            $this->setLabels($resource, $event->getLabels());
         }
 
         return trim((new Turtle())->serialise($graph, 'turtle'));
@@ -399,5 +407,18 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         $resource->set(self::PROPERTY_LOCATIE_TYPE, new Resource($locatieType));
+    }
+
+    private function setLabels(Resource $resource, Labels $getLabels): void
+    {
+        /** @var Label $label */
+        foreach ($getLabels as $label) {
+            $labelType = $label->isVisible() ? 'labeltype:publiek' : 'labeltype:verborgen';
+
+            $resource->addLiteral(
+                self::PROPERTY_LABEL,
+                new Literal($label->getName()->toString(), null, $labelType)
+            );
+        }
     }
 }
