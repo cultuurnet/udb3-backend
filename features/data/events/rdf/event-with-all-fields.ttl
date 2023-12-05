@@ -9,6 +9,8 @@
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix m8g: <http://data.europa.eu/m8g/> .
 @prefix schema: <https://schema.org/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix labeltype: <https://data.cultuurparticipatie.be/id/concept/LabelType/> .
 
 <http://host.docker.internal:8080/events/%{eventId}>
   a cidoc:E7_Activity ;
@@ -64,4 +66,5 @@
       schema:telephone "string" ;
       schema:email "info@example.com"
     ]
-  ] .
+  ] ;
+  rdfs:label "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen .

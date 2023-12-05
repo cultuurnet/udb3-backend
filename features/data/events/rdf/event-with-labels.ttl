@@ -30,4 +30,4 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://host.docker.internal:8080/places/%{uuid_place}> ;
-  rdfs:label "public_label_1"^^labeltype:publiek, "public_label_2"^^labeltype:publiek, "hidden_label_1"^^labeltype:verborgen, "hidden_label_2"^^labeltype:verborgen .
+  rdfs:label "public-visible-1"^^labeltype:publiek, "public-visible-2"^^labeltype:publiek, "public-invisible-1"^^labeltype:verborgen, "public-invisible-2"^^labeltype:verborgen .
