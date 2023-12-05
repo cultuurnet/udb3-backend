@@ -452,14 +452,14 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         );
         $priceResource->set(
             self::PROPERTY_VALUE,
-            new Literal((string) ($tariff->getPrice()->getAmount() / 100), null)
+            new Literal((string) ($tariff->getPrice()->getAmount() / 100), null, 'xsd:float')
         );
         $prijsResource->set(self::PROPERTY_PRICE, $priceResource);
 
         foreach ($tariff->getName()->getLanguages() as $language) {
             /** @var TariffName $name */
             $name = $tariff->getName()->getTranslation($language);
-            $prijsResource->addLiteral(
+            $prijsResource->add(
                 self::PROPERTY_PREF_LABEL,
                 new Literal($name->toString(), $language->toString())
             );

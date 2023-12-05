@@ -35,7 +35,7 @@
     schema:price [
       a schema:MonetaryAmount ;
       schema:currency "EUR" ;
-      schema:value "59.99"
+      schema:value "59.99"^^xsd:float
     ] ;
     skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
     cpp:prijscategorie "<https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis>"
@@ -44,7 +44,7 @@
     schema:price [
       a schema:MonetaryAmount ;
       schema:currency "EUR" ;
-      schema:value "40"
+      schema:value "40"^^xsd:float
     ] ;
     skos:prefLabel "Reductie"@nl ;
     cpp:prijscategorie "<https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/tarief>"
