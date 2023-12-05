@@ -72,7 +72,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($organizerId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/organizer.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer.ttl'), $turtle);
     }
 
     /**
@@ -99,7 +99,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($organizerId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/organizer-deleted.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer-deleted.ttl'), $turtle);
     }
 
     /**
@@ -124,7 +124,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($organizerId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/organizer-without-homepage.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer-without-homepage.ttl'), $turtle);
     }
 
     /**
@@ -149,7 +149,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($organizerId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/organizer.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer.ttl'), $turtle);
     }
 
     /**
@@ -187,7 +187,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($organizerId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/organizer-with-address.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer-with-address.ttl'), $turtle);
     }
 
     /**
@@ -228,7 +228,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($organizerId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/organizer-with-contact-point.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer-with-contact-point.ttl'), $turtle);
     }
 
     /**
@@ -262,7 +262,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($organizerId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/organizer-with-labels.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer-with-labels.ttl'), $turtle);
     }
 
     public function getRdfDataSetName(): string
