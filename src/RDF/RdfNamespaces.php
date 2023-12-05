@@ -27,5 +27,6 @@ final class RdfNamespaces
         RdfNamespace::set('prov', 'http://www.w3.org/ns/prov#');
         RdfNamespace::set('schema', 'https://schema.org/');
         RdfNamespace::set('foaf', 'http://xmlns.com/foaf/0.1/');
+        RdfNamespace::set('labeltype', 'https://data.cultuurparticipatie.be/id/concept/LabelType/');
     }
 }
