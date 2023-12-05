@@ -339,6 +339,52 @@ class PlaceJsonToTurtleConverterTest extends TestCase
         $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/place-with-publication-date.ttl'));
     }
 
+    /**
+     * @test
+     */
+    public function it_converts_a_place_with_labels(): void
+    {
+        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $place = [
+            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '8.48.0.0.0',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Voorbeeld titel',
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Martelarenlaan 1',
+                    'postalCode' => '3000',
+                    'addressLocality' => 'Leuven',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'labels' => [
+                'public_label_1',
+                'public_label_2',
+            ],
+            'hiddenLabels' => [
+                'hidden_label_1',
+                'hidden_label_2',
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+
+        $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
+
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/place-with-labels.ttl'));
+    }
+
     private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void
     {
         $formatted = (new FullAddressFormatter())->format($address);
