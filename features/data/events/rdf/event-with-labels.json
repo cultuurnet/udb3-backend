@@ -1,0 +1,30 @@
+{
+  "@context": "/contexts/event",
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Event met contact point"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    },
+    {
+      "id": "1.8.3.1.0",
+      "label": "Pop en rock",
+      "domain": "theme"
+    }
+  ],
+  "location": {
+    "@id": "%{baseUrl}/places/%{uuid_place}"
+  },
+  "labels": [
+    "public-visible-1",
+    "public-visible-2"
+  ],
+  "hiddenLabels": [
+    "public-invisible-1",
+    "public-invisible-2"
+  ]
+}
