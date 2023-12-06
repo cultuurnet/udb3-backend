@@ -11,3 +11,9 @@ Feature: Test RDF projection of places
     And I accept "text/turtle"
     When I get the RDF of place with id "%{placeId}"
     Then the RDF response should match "places/rdf/place-with-required-fields.ttl"
+
+  Scenario: Create a place with labels
+    And I create a place from "places/rdf/place-with-labels.json" and save the "id" as "placeId"
+    And I accept "text/turtle"
+    When I get the RDF of place with id "%{placeId}"
+    Then the RDF response should match "places/rdf/place-with-labels.ttl"
