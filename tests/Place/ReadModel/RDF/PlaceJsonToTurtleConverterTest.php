@@ -138,17 +138,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
      */
     public function it_converts_a_place_with_translations(): void
     {
-        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
-        $place = [
-            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
-            'mainLanguage' => 'nl',
-            'calendarType' => 'permanent',
-            'terms' => [
-                [
-                    'id' => '8.48.0.0.0',
-                    'domain' => 'eventtype',
-                ],
-            ],
+        $this->givenThereIsAPlace([
             'name' => [
                 'nl' => 'Voorbeeld titel',
                 'en' => 'Example title',
@@ -167,11 +157,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
                     'addressCountry' => 'BE',
                 ],
             ],
-            'created' => '2023-01-01T12:30:15+01:00',
-            'modified' => '2023-01-01T12:30:15+01:00',
-        ];
-
-        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+        ]);
 
         $this->expectParsedAddress(
             new LegacyAddress(
@@ -188,7 +174,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
             )
         );
 
-        $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
+        $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
         $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-translations.ttl'), $turtle);
     }
