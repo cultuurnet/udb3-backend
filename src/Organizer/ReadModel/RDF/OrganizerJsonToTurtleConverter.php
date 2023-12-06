@@ -17,6 +17,7 @@ use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GeometryEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
+use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
@@ -107,6 +108,10 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
 
         if (!$organizer->getContactPoint()->isEmpty()) {
             (new ContactPointEditor())->setContactPoint($resource, $organizer->getContactPoint());
+        }
+
+        if ($organizer->getLabels()->count() > 0) {
+            (new LabelEditor())->setLabels($resource, $organizer->getLabels());
         }
 
         return trim((new Turtle())->serialise($graph, 'turtle'));

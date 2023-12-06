@@ -231,6 +231,40 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
         $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/organizer-with-contact-point.ttl'));
     }
 
+    /**
+     * @test
+     */
+    public function it_converts_an_organizer_with_labels(): void
+    {
+        $organizerId = '56f1efdb-fe25-44f6-b9d7-4a6a836799d7';
+
+        $organizer = [
+            '@id' => 'https://mock.io.uitdatabank.be/organizers/' . $organizerId,
+            'mainLanguage' => 'nl',
+            'url' => 'https://www.publiq.be',
+            'name' => [
+                'nl' => 'publiq VZW',
+                'en' => 'publiq NPO',
+            ],
+            'labels' => [
+                'public_label_1',
+                'public_label_2',
+            ],
+            'hiddenLabels' => [
+                'hidden_label_1',
+                'hidden_label_2',
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($organizerId, json_encode($organizer)));
+
+        $turtle = $this->organizerJsonToTurtleConverter->convert($organizerId);
+
+        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/organizer-with-labels.ttl'));
+    }
+
     public function getRdfDataSetName(): string
     {
         return 'organizers';
