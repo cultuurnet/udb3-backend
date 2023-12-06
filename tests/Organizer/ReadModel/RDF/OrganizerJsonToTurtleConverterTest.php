@@ -225,7 +225,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
     private function givenThereIsAnOrganizer(array $extraProperties = []): void
     {
-        $this->organizer = array_merge($this->organizer, $extraProperties);
-        $this->documentRepository->save(new JsonDocument($this->organizerId, json_encode($this->organizer)));
+        $organizer = array_merge($this->organizer, $extraProperties);
+        $this->documentRepository->save(new JsonDocument($this->organizerId, json_encode($organizer)));
     }
 }
