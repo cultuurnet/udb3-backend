@@ -4,13 +4,10 @@
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
-@prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
-@prefix m8g: <http://data.europa.eu/m8g/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix schema: <https://schema.org/> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix labeltype: <https://data.cultuurparticipatie.be/id/concept/LabelType/> .
 @prefix cpp: <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/> .
 
 <http://host.docker.internal:8080/events/%{eventId}>
@@ -26,56 +23,27 @@
       generiek:lokaleIdentificator "%{eventId}"
     ]
   ] ;
-  dcterms:title "Event met alle velden"@nl, "Event with all fields"@en ;
+  dcterms:title "Permanent event"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
-  cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  cp:ruimtetijd [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection <http://host.docker.internal:8080/places/%{uuid_place}> ;
-    cidoc:P160_has_temporal_projection [
-      a m8g:PeriodOfTime ;
-      m8g:startTime ""^^xsd:dateTime ;
-      m8g:endTime ""^^xsd:dateTime
-    ]
-  ], [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection <http://host.docker.internal:8080/places/%{uuid_place}> ;
-    cidoc:P160_has_temporal_projection [
-      a m8g:PeriodOfTime ;
-      m8g:startTime ""^^xsd:dateTime ;
-      m8g:endTime ""^^xsd:dateTime
-    ]
-  ] ;
-  dcterms:description "Nederlandse beschrijving"@nl, "English description"@en ;
-  schema:contactPoint [
-    a schema:ContactPoint ;
-    schema:url "https://www.example.com"
-  ], [
-    a schema:ContactPoint ;
-    schema:email "info@example.com"
-  ], [
-    a schema:ContactPoint ;
-    schema:telephone "string"
-  ] ;
-  cpa:boeking [
-    a cpa:Boekingsinfo ;
-    schema:contactPoint [
-      a schema:ContactPoint ;
-      schema:url "https://www.example.com" ;
-      schema:telephone "string" ;
-      schema:email "info@example.com"
-    ]
-  ] ;
-  rdfs:label "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen ;
+  prov:atLocation <http://host.docker.internal:8080/places/%{uuid_place}> ;
   cpa:prijs [
     a schema:PriceSpecification ;
     schema:price [
       a schema:MonetaryAmount ;
       schema:currency "EUR" ;
-      schema:value "10.5"^^schema:Number
+      schema:value "59.99"^^schema:Number
     ] ;
     skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
     cpp:prijscategorie "<https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis>"
+  ], [
+    a schema:PriceSpecification ;
+    schema:price [
+      a schema:MonetaryAmount ;
+      schema:currency "EUR" ;
+      schema:value "40"^^schema:Number
+    ] ;
+    skos:prefLabel "Reductie"@nl ;
+    cpp:prijscategorie "<https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/tarief>"
   ] .

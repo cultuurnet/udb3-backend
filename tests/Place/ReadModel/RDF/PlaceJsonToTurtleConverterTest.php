@@ -128,7 +128,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/place.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place.ttl'), $turtle);
     }
 
     /**
@@ -188,7 +188,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/place-with-translations.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-translations.ttl'), $turtle);
     }
 
     /**
@@ -230,7 +230,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/place-with-coordinates.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-coordinates.ttl'), $turtle);
     }
 
     /**
@@ -270,7 +270,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/' . $file));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/' . $file), $turtle);
     }
 
     public function workflowStatusDataProvider(): array
@@ -336,7 +336,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/place-with-publication-date.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-publication-date.ttl'), $turtle);
     }
 
     /**
@@ -382,7 +382,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/place-with-labels.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-labels.ttl'), $turtle);
     }
 
     private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void

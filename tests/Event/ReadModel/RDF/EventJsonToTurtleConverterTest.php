@@ -160,7 +160,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event.ttl'), $turtle);
     }
 
     /**
@@ -201,7 +201,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-description.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-description.ttl'), $turtle);
     }
 
     /**
@@ -245,7 +245,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-translations.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-translations.ttl'), $turtle);
     }
 
     /**
@@ -300,7 +300,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-calendar-permanent-and-opening-hours.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-calendar-permanent-and-opening-hours.ttl'), $turtle);
     }
 
     /**
@@ -340,7 +340,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-calendar-periodic.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-calendar-periodic.ttl'), $turtle);
     }
 
     /**
@@ -406,7 +406,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-calendar-periodic-and-opening-hours.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-calendar-periodic-and-opening-hours.ttl'), $turtle);
     }
 
     /**
@@ -446,7 +446,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-calendar-single.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-calendar-single.ttl'), $turtle);
     }
 
     /**
@@ -496,7 +496,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-calendar-multiple.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-calendar-multiple.ttl'), $turtle);
     }
 
     /**
@@ -535,7 +535,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-status-approved.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-status-approved.ttl'), $turtle);
     }
 
     /**
@@ -574,7 +574,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-status-deleted.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-status-deleted.ttl'), $turtle);
     }
 
     /**
@@ -613,7 +613,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-status-ready-for-validation.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-status-ready-for-validation.ttl'), $turtle);
     }
 
     /**
@@ -652,7 +652,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-status-rejected.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-status-rejected.ttl'), $turtle);
     }
 
     /**
@@ -692,7 +692,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-publication-date.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-publication-date.ttl'), $turtle);
     }
 
     /**
@@ -737,7 +737,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-dummy-location.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location.ttl'), $turtle);
     }
 
     /**
@@ -794,7 +794,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-multiple-calendar.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-multiple-calendar.ttl'), $turtle);
     }
 
     /**
@@ -841,7 +841,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-single-calendar.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-single-calendar.ttl'), $turtle);
     }
 
     /**
@@ -883,7 +883,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-single-calendar.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-single-calendar.ttl'), $turtle);
     }
 
     /**
@@ -924,7 +924,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/online-event-with-single-calendar.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/online-event-with-single-calendar.ttl'), $turtle);
     }
 
     /**
@@ -976,7 +976,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-multiple-calendar.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-multiple-calendar.ttl'), $turtle);
     }
 
     /**
@@ -1016,7 +1016,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-permanent-calendar.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-permanent-calendar.ttl'), $turtle);
     }
 
     /**
@@ -1055,7 +1055,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/online-event-with-permanent-calendar.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/online-event-with-permanent-calendar.ttl'), $turtle);
     }
 
     /**
@@ -1094,7 +1094,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/mixed-event-with-permanent-calendar.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/mixed-event-with-permanent-calendar.ttl'), $turtle);
     }
 
     /**
@@ -1135,7 +1135,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/mixed-event-with-single-calendar.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/mixed-event-with-single-calendar.ttl'), $turtle);
     }
 
     /**
@@ -1175,7 +1175,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-permanent-calendar.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-permanent-calendar.ttl'), $turtle);
     }
 
     /**
@@ -1217,7 +1217,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-single-calendar.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-single-calendar.ttl'), $turtle);
     }
 
     /**
@@ -1269,7 +1269,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-multiple-calendar.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-multiple-calendar.ttl'), $turtle);
     }
 
     /**
@@ -1310,7 +1310,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-organizer.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-organizer.ttl'), $turtle);
     }
 
     /**
@@ -1351,7 +1351,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'), $turtle);
     }
 
     /**
@@ -1395,7 +1395,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'), $turtle);
     }
 
     /**
@@ -1443,7 +1443,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer-with-contact-point.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer-with-contact-point.ttl'), $turtle);
     }
 
     /**
@@ -1495,7 +1495,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-contact-point.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-contact-point.ttl'), $turtle);
     }
 
     /**
@@ -1541,7 +1541,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-booking-info.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-booking-info.ttl'), $turtle);
     }
 
     /**
@@ -1587,6 +1587,65 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/event-with-labels.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-labels.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_price_info(): void
+    {
+        $eventId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+
+        $event = [
+            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.4.0.0',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '1.8.3.1.0',
+                    'domain' => 'theme',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Faith no more',
+            ],
+            'location' => [
+                '@id' => 'https://mock.io.uitdatabank.be/places/bfc60a14-6208-4372-942e-86e63744769a',
+            ],
+            'priceInfo' => [
+                [
+                    'category' => 'base',
+                    'name' => [
+                        'nl' => 'Basistarief',
+                        'fr' => 'Tarif de base',
+                        'en' => 'Base tariff',
+                        'de' => 'Basisrate',
+                    ],
+                    'price' => 59.99,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'nl' => 'Reductie',
+                    ],
+                    'price' => 40,
+                    'priceCurrency' => 'EUR',
+                ],
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
+        ];
+
+        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-price-info.ttl'), $turtle);
     }
 }
