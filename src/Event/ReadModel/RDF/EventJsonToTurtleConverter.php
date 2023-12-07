@@ -452,7 +452,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         );
         $priceResource->set(
             self::PROPERTY_VALUE,
-            new Literal((string) ($tariff->getPrice()->getAmount() / 100), null, 'xsd:float')
+            new Literal((string) ($tariff->getPrice()->getAmount() / 100), null, 'schema:Number')
         );
         $prijsResource->set(self::PROPERTY_PRICE, $priceResource);
 
