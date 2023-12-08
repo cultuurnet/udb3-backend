@@ -24,9 +24,11 @@ class CachedGeocodingService implements GeocodingService
         $this->cache = $cache;
     }
 
-    public function getCoordinates(string $address): ?Coordinates
+    public function getCoordinates(string $address, string $locationName=''): ?Coordinates
     {
-        $encodedCacheData = $this->cache->fetch($address);
+        $key = empty($locationName) ? $address : trim($address . $address);
+
+        $encodedCacheData = $this->cache->fetch($key);
 
         if ($encodedCacheData) {
             $cacheData = Json::decodeAssociatively($encodedCacheData);
@@ -45,7 +47,7 @@ class CachedGeocodingService implements GeocodingService
             }
         }
 
-        $coordinates = $this->geocodingService->getCoordinates($address);
+        $coordinates = $this->geocodingService->getCoordinates($address, $locationName);
 
         // Some addresses have no coordinates, to cache these addresses 'NO_COORDINATES_FOUND' is used as value.
         // When null is passed in as the coordinates, then 'NO_COORDINATES_FOUND' is stored as cache value.
@@ -57,7 +59,7 @@ class CachedGeocodingService implements GeocodingService
             ];
         }
 
-        $this->cache->save($address, Json::encode($cacheData));
+        $this->cache->save($key, Json::encode($cacheData));
 
         return $coordinates;
     }
