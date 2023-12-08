@@ -12,6 +12,10 @@ final class ExtractOfferName
             return '';
         }
 
-        return $offer['name']['nl'] ?? ($offer['name'][$offer['mainLanguage']] ?? current($offer['name']));
+        if(empty($offer['mainLanguage'])) {
+            $offer['mainLanguage'] = 'nl';
+        }
+
+        return $offer['name'][$offer['mainLanguage']] ?? current($offer['name']);
     }
 }
