@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Geocoding;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
 use Geocoder\StatefulGeocoder;
 use Http\Adapter\Guzzle7\Client;
-use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
 class GeocodingServiceFactory

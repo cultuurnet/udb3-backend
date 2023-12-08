@@ -12,7 +12,7 @@ final class ExtractOfferName
             return '';
         }
 
-        if(empty($offer['mainLanguage'])) {
+        if (empty($offer['mainLanguage'])) {
             $offer['mainLanguage'] = 'nl';
         }
 
