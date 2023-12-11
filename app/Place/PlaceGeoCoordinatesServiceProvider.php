@@ -35,7 +35,7 @@ final class PlaceGeoCoordinatesServiceProvider extends AbstractServiceProvider
                     new FullAddressFormatter(),
                     new LocalityAddressFormatter(),
                     $container->get(GeocodingService::class),
-                    $container->get('event_jsonld_repository'),
+                    $container->get('place_jsonld_repository'),
                     $container->get('config')['add_location_name_to_coordinates_lookup'] ?? false
                 );
 
