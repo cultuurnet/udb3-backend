@@ -31,7 +31,7 @@ abstract class AbstractGeocodingService implements GeocodingService
     public function getCoordinates(string $address, string $locationName=''): ?Coordinates
     {
         try {
-            $addresses = $this->geocoder->geocode($this->getKey($address, $locationName));
+            $addresses = $this->geocoder->geocode($this->searchTerm($address, $locationName));
             /** @var GeocoderCoordinates|null $coordinates */
             $coordinates = $addresses->first()->getCoordinates();
 
@@ -50,6 +50,4 @@ abstract class AbstractGeocodingService implements GeocodingService
             return null;
         }
     }
-
-    abstract protected function getKey(string $address, string $locationName): string;
 }

@@ -13,12 +13,12 @@ class GeocodingServiceFactory
 {
     private bool $addLocationNameToCoordinatesLookup;
 
-    public function __construct(bool $isNewFeature)
+    public function __construct(bool $addLocationNameToCoordinatesLookup)
     {
-        $this->addLocationNameToCoordinatesLookup = $isNewFeature;
+        $this->addLocationNameToCoordinatesLookup = $addLocationNameToCoordinatesLookup;
     }
 
-    public function createService(LoggerInterface $logger, ?string $googleMapApiKey): GeocodingService
+    public function createService(LoggerInterface $logger, string $googleMapApiKey): GeocodingService
     {
         if ($this->addLocationNameToCoordinatesLookup) {
             return $this->createEnrichedService($logger, $googleMapApiKey);
@@ -29,12 +29,12 @@ class GeocodingServiceFactory
 
     public function getCacheName(): string
     {
-        return ($this->addLocationNameToCoordinatesLookup) ? 'geocoords_enriched' : 'geocoords';
+        return ($this->addLocationNameToCoordinatesLookup) ? 'geocoords_with_location_name' : 'geocoords';
     }
 
-    private function createEnrichedService(LoggerInterface $logger, ?string $googleMapApiKey): GeocodingService
+    private function createEnrichedService(LoggerInterface $logger, string $googleMapApiKey): GeocodingService
     {
-        return new EnrichedGeocodingService(
+        return new GeocodingServiceWithLocationName(
             new StatefulGeocoder(
                 new GoogleMaps(
                     new Client(),
@@ -46,7 +46,7 @@ class GeocodingServiceFactory
         );
     }
 
-    private function createBasicService(LoggerInterface $logger, ?string $googleMapApiKey): GeocodingService
+    private function createBasicService(LoggerInterface $logger, string $googleMapApiKey): GeocodingService
     {
         return new DefaultGeocodingService(
             new StatefulGeocoder(

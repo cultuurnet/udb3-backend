@@ -14,4 +14,6 @@ interface GeocodingService
      * This can happen in case of a wrong/unknown address.
      */
     public function getCoordinates(string $address, string $locationName=''): ?Coordinates;
+
+    public function searchTerm(string $address, string $locationName): string;
 }

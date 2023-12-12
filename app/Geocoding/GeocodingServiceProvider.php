@@ -21,24 +21,22 @@ final class GeocodingServiceProvider extends AbstractServiceProvider
     {
         $container = $this->getContainer();
 
-        $geocodingService = new GeocodingServiceFactory(
-            $container->get('config')['add_location_name_to_coordinates_lookup'] ?? false
-        );
-
         $container->addShared(
             GeocodingService::class,
-            function () use ($container, $geocodingService) {
-                $googleMapsApiKey = $container->get('config')['google_maps_api_key'] ?? null;
+            function () use ($container) {
+                $geocodingServiceFactory = new GeocodingServiceFactory(
+                    $container->get('config')['add_location_name_to_coordinates_lookup'] ?? false
+                );
 
                 return new CachedGeocodingService(
-                    $geocodingService->createService(
+                    $geocodingServiceFactory->createService(
                         LoggerFactory::create(
                             $container,
                             LoggerName::forService('geo-coordinates', 'google')
                         ),
-                        $googleMapsApiKey,
+                        $container->get('config')['google_maps_api_key'] ?? '',
                     ),
-                    $container->get('cache')($geocodingService->getCacheName())
+                    $container->get('cache')($geocodingServiceFactory->getCacheName())
                 );
             }
         );
