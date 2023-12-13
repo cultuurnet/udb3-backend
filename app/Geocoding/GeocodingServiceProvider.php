@@ -34,7 +34,7 @@ final class GeocodingServiceProvider extends AbstractServiceProvider
                             $container,
                             LoggerName::forService('geo-coordinates', 'google')
                         ),
-                        $container->get('config')['google_maps_api_key'] ?? '',
+                        $container->get('config')['google_maps_api_key'],
                     ),
                     $container->get('cache')($geocodingServiceFactory->getCacheName())
                 );
