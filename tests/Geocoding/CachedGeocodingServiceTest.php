@@ -86,6 +86,10 @@ class CachedGeocodingServiceTest extends TestCase
             ->method('getCoordinates')
             ->with($address)
             ->willReturn(null);
+        $geocodingService->expects($this->once())
+            ->method('searchTerm')
+            ->with($address)
+            ->willReturn($address);
 
         $cache = $this->createMock(Cache::class);
 
@@ -95,5 +99,30 @@ class CachedGeocodingServiceTest extends TestCase
 
         $service = new CachedGeocodingService($geocodingService, $cache);
         $this->assertNull($service->getCoordinates($address));
+    }
+
+    public function test_that_it_uses_the_location_name_in_the_key(): void
+    {
+        $address = ' Teststraat 1, 8340 Sijsele (Damme), BE ';
+        $locationName = ' Eikelberg (achter de bibliotheek) ';
+
+        $geocodingService = $this->createMock(GeocodingService::class);
+        $geocodingService->expects($this->once())
+            ->method('getCoordinates')
+            ->with($address, $locationName)
+            ->willReturn(null);
+        $geocodingService->expects($this->once())
+            ->method('searchTerm')
+            ->with($address, $locationName)
+            ->willReturn(trim($locationName . $address));
+
+        $cache = $this->createMock(Cache::class);
+
+        $cache->expects($this->once())
+            ->method('save')
+            ->with(trim($locationName . $address), Json::encode(CachedGeocodingService::NO_COORDINATES_FOUND));
+
+        $service = new CachedGeocodingService($geocodingService, $cache);
+        $this->assertNull($service->getCoordinates($address, $locationName));
     }
 }

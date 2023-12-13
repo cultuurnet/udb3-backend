@@ -13,5 +13,7 @@ interface GeocodingService
      * Returns null when no coordinates are found for the given address.
      * This can happen in case of a wrong/unknown address.
      */
-    public function getCoordinates(string $address): ?Coordinates;
+    public function getCoordinates(string $address, string $locationName=''): ?Coordinates;
+
+    public function searchTerm(string $address, string $locationName): string;
 }
