@@ -425,17 +425,17 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private function setPriceInfo(Resource $resource, PriceInfo $priceInfo): void
     {
         $basePriceResource = $this->createPrijsResource($resource, $priceInfo->getBasePrice());
-        $basePriceResource->addLiteral(
+        $basePriceResource->set(
             self::PROPERTY_PRIJS_CATEGORY,
-            '<https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis>'
+            new Resource('<https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis>')
         );
         $resource->add(self::PROPERTY_PRIJS, $basePriceResource);
 
         foreach ($priceInfo->getTariffs() as $tariff) {
             $priceResource = $this->createPrijsResource($resource, $tariff);
-            $priceResource->addLiteral(
+            $priceResource->set(
                 self::PROPERTY_PRIJS_CATEGORY,
-                '<https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/tarief>'
+                new Resource('<https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/tarief>')
             );
             $resource->add(self::PROPERTY_PRIJS, $priceResource);
         }
