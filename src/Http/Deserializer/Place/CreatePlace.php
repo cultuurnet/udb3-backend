@@ -31,7 +31,7 @@ class CreatePlace extends MajorInfo
         $this->mainLanguage = $mainLanguage;
     }
 
-    public function getMainLanguage() : Language
+    public function getMainLanguage(): Language
     {
         return $this->mainLanguage;
     }

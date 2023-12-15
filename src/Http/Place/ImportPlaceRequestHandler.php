@@ -46,7 +46,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\LookupDuplicatePlace;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
-use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;

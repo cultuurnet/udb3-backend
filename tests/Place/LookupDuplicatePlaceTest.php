@@ -58,6 +58,4 @@ class LookupDuplicatePlaceTest extends TestCase
             ],
         ];
     }
-
-
 }
