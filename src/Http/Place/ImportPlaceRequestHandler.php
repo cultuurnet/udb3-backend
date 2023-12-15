@@ -29,8 +29,8 @@ use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateOrganizer;
-use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
+use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Offer\InvalidWorkflowStatusTransition;
@@ -44,7 +44,10 @@ use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
+use CultuurNet\UDB3\Place\LookupDuplicatePlace;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
+use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
+use CultuurNet\UDB3\Search\SearchServiceInterface;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -68,6 +71,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
     private CommandBus $commandBus;
 
     private ImageCollectionFactory $imageCollectionFactory;
+    private SearchServiceInterface $sapi3SearchService;
 
     public function __construct(
         Repository $aggregateRepository,
@@ -76,7 +80,8 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         RequestBodyParser $importPreProcessingRequestBodyParser,
         IriGeneratorInterface $iriGenerator,
         CommandBus $commandBus,
-        ImageCollectionFactory $imageCollectionFactory
+        ImageCollectionFactory $imageCollectionFactory,
+        SearchServiceInterface $sapi3SearchService
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -85,6 +90,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $this->iriGenerator = $iriGenerator;
         $this->commandBus = $commandBus;
         $this->imageCollectionFactory = $imageCollectionFactory;
+        $this->sapi3SearchService = $sapi3SearchService;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -137,6 +143,18 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $commands = [];
         if (!$placeExists) {
+            $lookupDuplicatePlace = new LookupDuplicatePlace($this->sapi3SearchService, $place, $address);
+
+            if ($lookupDuplicatePlace->isDuplicate()) {
+                return new JsonResponse(
+                    [
+                        'message' => 'A place with this address / location name combination already exists. Please use the existing place for your purposes.',
+                        'placeId' => $lookupDuplicatePlace->getPlaceId(),
+                    ],
+                    StatusCodeInterface::STATUS_SEE_OTHER
+                );
+            }
+
             $placeAggregate = PlaceAggregate::create(
                 $placeId,
                 $mainLanguage,

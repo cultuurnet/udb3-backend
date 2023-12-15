@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
+use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
 
 final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
 {
@@ -73,7 +74,8 @@ final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
                     ),
                     $container->get('place_iri_generator'),
                     $container->get('event_command_bus'),
-                    $container->get('import_image_collection_factory')
+                    $container->get('import_image_collection_factory'),
+                    $container->get(PlacesSapi3SearchService::class),
                 );
             }
         );
