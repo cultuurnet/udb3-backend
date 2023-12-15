@@ -8,10 +8,7 @@ use Broadway\Serializer\Serializable;
 
 abstract class PlaceEvent implements Serializable
 {
-    /**
-     * @var string
-     */
-    protected $placeId;
+    protected string $placeId;
 
     public function __construct(string $placeId)
     {
