@@ -23,6 +23,9 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -33,6 +36,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
+use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -63,6 +67,8 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private const TYPE_VIRTUAL_LOCATION_URL = 'xsd:string';
     private const TYPE_BOEKINGSINFO = 'cpa:Boekingsinfo';
     private const TYPE_ORGANISATOR = 'cp:Organisator';
+    private const TYPE_PRICE_SPECIFICATION = 'schema:PriceSpecification';
+    private const TYPE_MONETARY_AMOUNT = 'schema:MonetaryAmount';
 
     private const PROPERTY_ACTIVITEIT_NAAM = 'dcterms:title';
     private const PROPERTY_ACTIVITEIT_TYPE = 'dcterms:type';
@@ -86,6 +92,13 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private const PROPERTY_BOEKINGSINFO = 'cpa:boeking';
 
     private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
+
+    private const PROPERTY_PRIJS = 'cpa:prijs';
+    private const PROPERTY_PRICE = 'schema:price';
+    private const PROPERTY_CURRENCY = 'schema:currency';
+    private const PROPERTY_VALUE = 'schema:value';
+    private const PROPERTY_PRIJS_CATEGORY = 'cpp:prijscategorie';
+    private const PROPERTY_PREF_LABEL = 'skos:prefLabel';
 
     public function __construct(
         IriGeneratorInterface $eventsIriGenerator,
@@ -193,6 +206,14 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
         if (!$event->getBookingInfo()->isEmpty()) {
             $this->setBookingInfo($resource, $event->getBookingInfo());
+        }
+
+        if ($event->getLabels()->count() > 0) {
+            (new LabelEditor())->setLabels($resource, $event->getLabels());
+        }
+
+        if ($event->getPriceInfo()) {
+            $this->setPriceInfo($resource, $event->getPriceInfo());
         }
 
         return trim((new Turtle())->serialise($graph, 'turtle'));
@@ -399,5 +420,51 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         $resource->set(self::PROPERTY_LOCATIE_TYPE, new Resource($locatieType));
+    }
+
+    private function setPriceInfo(Resource $resource, PriceInfo $priceInfo): void
+    {
+        $basePriceResource = $this->createPrijsResource($resource, $priceInfo->getBasePrice());
+        $basePriceResource->set(
+            self::PROPERTY_PRIJS_CATEGORY,
+            new Resource('<https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis>')
+        );
+        $resource->add(self::PROPERTY_PRIJS, $basePriceResource);
+
+        foreach ($priceInfo->getTariffs() as $tariff) {
+            $priceResource = $this->createPrijsResource($resource, $tariff);
+            $priceResource->set(
+                self::PROPERTY_PRIJS_CATEGORY,
+                new Resource('<https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/tarief>')
+            );
+            $resource->add(self::PROPERTY_PRIJS, $priceResource);
+        }
+    }
+
+    private function createPrijsResource(Resource $resource, Tariff $tariff): Resource
+    {
+        $prijsResource = $resource->getGraph()->newBNode([self::TYPE_PRICE_SPECIFICATION]);
+
+        $priceResource = $prijsResource->getGraph()->newBNode([self::TYPE_MONETARY_AMOUNT]);
+        $priceResource->set(
+            self::PROPERTY_CURRENCY,
+            new Literal($tariff->getPrice()->getCurrency()->getName(), null)
+        );
+        $priceResource->set(
+            self::PROPERTY_VALUE,
+            new Literal((string) ($tariff->getPrice()->getAmount() / 100), null, 'schema:Number')
+        );
+        $prijsResource->set(self::PROPERTY_PRICE, $priceResource);
+
+        foreach ($tariff->getName()->getLanguages() as $language) {
+            /** @var TariffName $name */
+            $name = $tariff->getName()->getTranslation($language);
+            $prijsResource->add(
+                self::PROPERTY_PREF_LABEL,
+                new Literal($name->toString(), $language->toString())
+            );
+        }
+
+        return $prijsResource;
     }
 }

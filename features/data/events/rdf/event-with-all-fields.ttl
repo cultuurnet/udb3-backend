@@ -9,6 +9,9 @@
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix m8g: <http://data.europa.eu/m8g/> .
 @prefix schema: <https://schema.org/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix labeltype: <https://data.cultuurparticipatie.be/id/concept/LabelType/> .
+@prefix cpp: <https://data.vlaanderen.be/ns/cultuurparticipatie#Prijsinfo> .
 
 <http://host.docker.internal:8080/events/%{eventId}>
   a cidoc:E7_Activity ;
@@ -64,4 +67,15 @@
       schema:telephone "string" ;
       schema:email "info@example.com"
     ]
+  ] ;
+  rdfs:label "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen ;
+  cpa:prijs [
+    a schema:PriceSpecification ;
+    schema:price [
+      a schema:MonetaryAmount ;
+      schema:currency "EUR" ;
+      schema:value "10.5"^^schema:Number
+    ] ;
+    skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
+    cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis>
   ] .

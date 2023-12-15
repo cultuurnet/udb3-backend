@@ -29,10 +29,38 @@ class PlaceJsonToTurtleConverterTest extends TestCase
     private $logger;
     private DocumentRepository $documentRepository;
     private array $expectedParsedAddresses;
+    private string $placeId;
+    private array $place;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
+        $this->place = [
+            '@id' => 'https://mock.io.uitdatabank.be/places/' . $this->placeId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '8.48.0.0.0',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Voorbeeld titel',
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Martelarenlaan 1',
+                    'postalCode' => '3000',
+                    'addressLocality' => 'Leuven',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
+        ];
 
         $this->documentRepository = new InMemoryDocumentRepository();
 
@@ -98,37 +126,11 @@ class PlaceJsonToTurtleConverterTest extends TestCase
      */
     public function it_converts_a_simple_place(): void
     {
-        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
-        $place = [
-            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
-            'mainLanguage' => 'nl',
-            'calendarType' => 'permanent',
-            'terms' => [
-                [
-                    'id' => '8.48.0.0.0',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'name' => [
-                'nl' => 'Voorbeeld titel',
-            ],
-            'address' => [
-                'nl' => [
-                    'streetAddress' => 'Martelarenlaan 1',
-                    'postalCode' => '3000',
-                    'addressLocality' => 'Leuven',
-                    'addressCountry' => 'BE',
-                ],
-            ],
-            'created' => '2023-01-01T12:30:15+01:00',
-            'modified' => '2023-01-01T12:30:15+01:00',
-        ];
+        $this->givenThereIsAPlace();
 
-        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+        $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
-
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/place.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place.ttl'), $turtle);
     }
 
     /**
@@ -136,17 +138,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
      */
     public function it_converts_a_place_with_translations(): void
     {
-        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
-        $place = [
-            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
-            'mainLanguage' => 'nl',
-            'calendarType' => 'permanent',
-            'terms' => [
-                [
-                    'id' => '8.48.0.0.0',
-                    'domain' => 'eventtype',
-                ],
-            ],
+        $this->givenThereIsAPlace([
             'name' => [
                 'nl' => 'Voorbeeld titel',
                 'en' => 'Example title',
@@ -165,11 +157,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
                     'addressCountry' => 'BE',
                 ],
             ],
-            'created' => '2023-01-01T12:30:15+01:00',
-            'modified' => '2023-01-01T12:30:15+01:00',
-        ];
-
-        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+        ]);
 
         $this->expectParsedAddress(
             new LegacyAddress(
@@ -186,9 +174,9 @@ class PlaceJsonToTurtleConverterTest extends TestCase
             )
         );
 
-        $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
+        $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/place-with-translations.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-translations.ttl'), $turtle);
     }
 
     /**
@@ -196,41 +184,16 @@ class PlaceJsonToTurtleConverterTest extends TestCase
      */
     public function it_converts_a_place_with_coordinates(): void
     {
-        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
-        $place = [
-            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
-            'mainLanguage' => 'nl',
-            'calendarType' => 'permanent',
-            'terms' => [
-                [
-                    'id' => '8.48.0.0.0',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'name' => [
-                'nl' => 'Voorbeeld titel',
-            ],
-            'address' => [
-                'nl' => [
-                    'streetAddress' => 'Martelarenlaan 1',
-                    'postalCode' => '3000',
-                    'addressLocality' => 'Leuven',
-                    'addressCountry' => 'BE',
-                ],
-            ],
+        $this->givenThereIsAPlace([
             'geo' => [
                 'latitude' => 50.879,
                 'longitude' => 4.6997,
             ],
-            'created' => '2023-01-01T12:30:15+01:00',
-            'modified' => '2023-01-01T12:30:15+01:00',
-        ];
+        ]);
 
-        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+        $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
-
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/place-with-coordinates.ttl'));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-coordinates.ttl'), $turtle);
     }
 
     /**
@@ -239,38 +202,13 @@ class PlaceJsonToTurtleConverterTest extends TestCase
      */
     public function it_converts_a_place_workflow_status(WorkflowStatus $workflowStatus, string $file): void
     {
-        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
-        $place = [
-            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
-            'mainLanguage' => 'nl',
-            'calendarType' => 'permanent',
+        $this->givenThereIsAPlace([
             'workflowStatus' => $workflowStatus->toString(),
-            'terms' => [
-                [
-                    'id' => '8.48.0.0.0',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'name' => [
-                'nl' => 'Voorbeeld titel',
-            ],
-            'address' => [
-                'nl' => [
-                    'streetAddress' => 'Martelarenlaan 1',
-                    'postalCode' => '3000',
-                    'addressLocality' => 'Leuven',
-                    'addressCountry' => 'BE',
-                ],
-            ],
-            'created' => '2023-01-01T12:30:15+01:00',
-            'modified' => '2023-01-01T12:30:15+01:00',
-        ];
+        ]);
 
-        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+        $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
-
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/' . $file));
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/' . $file), $turtle);
     }
 
     public function workflowStatusDataProvider(): array
@@ -304,44 +242,46 @@ class PlaceJsonToTurtleConverterTest extends TestCase
      */
     public function it_converts_a_published_place(): void
     {
-        $placeId = 'd4b46fba-6433-4f86-bcb5-edeef6689fea';
-        $place = [
-            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
-            'mainLanguage' => 'nl',
-            'calendarType' => 'permanent',
+        $this->givenThereIsAPlace([
             'workflowStatus' => WorkflowStatus::APPROVED()->toString(),
             'availableFrom' => '2023-04-23T12:30:15+02:00',
-            'terms' => [
-                [
-                    'id' => '8.48.0.0.0',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'name' => [
-                'nl' => 'Voorbeeld titel',
-            ],
-            'address' => [
-                'nl' => [
-                    'streetAddress' => 'Martelarenlaan 1',
-                    'postalCode' => '3000',
-                    'addressLocality' => 'Leuven',
-                    'addressCountry' => 'BE',
-                ],
-            ],
-            'created' => '2023-01-01T12:30:15+01:00',
-            'modified' => '2023-01-01T12:30:15+01:00',
-        ];
+        ]);
 
-        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+        $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $turtle = $this->placeJsonToTurtleConverter->convert($placeId);
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-publication-date.ttl'), $turtle);
+    }
 
-        $this->assertEquals($turtle, file_get_contents(__DIR__ . '/ttl/place-with-publication-date.ttl'));
+    /**
+     * @test
+     */
+    public function it_converts_a_place_with_labels(): void
+    {
+        $this->givenThereIsAPlace([
+            'labels' => [
+                'public_label_1',
+                'public_label_2',
+            ],
+            'hiddenLabels' => [
+                'hidden_label_1',
+                'hidden_label_2',
+            ],
+        ]);
+
+        $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-labels.ttl'), $turtle);
     }
 
     private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void
     {
         $formatted = (new FullAddressFormatter())->format($address);
         $this->expectedParsedAddresses[$formatted] = $parsedAddress;
+    }
+
+    private function givenThereIsAPlace(array $extraProperties = []): void
+    {
+        $place = array_merge($this->place, $extraProperties);
+        $this->documentRepository->save(new JsonDocument($this->placeId, json_encode($place)));
     }
 }

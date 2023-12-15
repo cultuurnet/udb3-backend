@@ -26,20 +26,17 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var AddressFormatter
-     */
-    private $defaultAddressFormatter;
+    private const PLACE_ID = 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
+    private AddressFormatter $defaultAddressFormatter;
 
-    /**
-     * @var AddressFormatter
-     */
-    private $localityAddressFormatter;
+    private AddressFormatter $localityAddressFormatter;
 
     /**
      * @var GeocodingService|MockObject
@@ -58,11 +55,25 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->geocodingService = $this->createMock(GeocodingService::class);
 
+        $documentRepository = $this->createMock(DocumentRepository::class);
+        $documentRepository->expects($this->once())
+            ->method('fetch')
+            ->with(self::PLACE_ID)
+            ->willReturn(new JsonDocument(self::PLACE_ID, json_encode([
+                'name' => [
+                    'nl' => 'Faith no More',
+                    'fr' => 'Faith no More - a la francais',
+
+                ],
+            ], JSON_THROW_ON_ERROR)));
+
         return new GeoCoordinatesCommandHandler(
             $repository,
             $this->defaultAddressFormatter,
             $this->localityAddressFormatter,
-            $this->geocodingService
+            $this->geocodingService,
+            $documentRepository,
+            true,
         );
     }
 
@@ -71,8 +82,6 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_creates_coordinates_from_an_address_and_updates_them_on_the_given_place(): void
     {
-        $id = 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
-
         $address = new Address(
             new Street('Wetstraat 1'),
             new PostalCode('1000'),
@@ -81,7 +90,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $placeCreated = new PlaceCreated(
-            $id,
+            self::PLACE_ID,
             new Language('en'),
             new Title('Some place'),
             new EventType('01.01', 'Some category'),
@@ -89,7 +98,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             new Calendar(CalendarType::PERMANENT())
         );
 
-        $command = new UpdateGeoCoordinatesFromAddress($id, $address);
+        $command = new UpdateGeoCoordinatesFromAddress(self::PLACE_ID, $address);
 
         $coordinates = new Coordinates(
             new Latitude(-0.12),
@@ -101,10 +110,10 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->with('Wetstraat 1, 1000 Bxl, BE')
             ->willReturn($coordinates);
 
-        $expectedEvent = new GeoCoordinatesUpdated($id, $coordinates);
+        $expectedEvent = new GeoCoordinatesUpdated(self::PLACE_ID, $coordinates);
 
         $this->scenario
-            ->withAggregateId($id)
+            ->withAggregateId(self::PLACE_ID)
             ->given([$placeCreated])
             ->when($command)
             ->then([$expectedEvent]);
@@ -115,8 +124,6 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_has_a_fallback_to_locality_when_full_address_has_null_coordinates(): void
     {
-        $id = 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
-
         $address = new Address(
             new Street('Wetstraat 1 (foutief)'),
             new PostalCode('1000'),
@@ -125,7 +132,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $placeCreated = new PlaceCreated(
-            $id,
+            self::PLACE_ID,
             new Language('en'),
             new Title('Some place'),
             new EventType('01.01', 'Some category'),
@@ -133,7 +140,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             new Calendar(CalendarType::PERMANENT())
         );
 
-        $command = new UpdateGeoCoordinatesFromAddress($id, $address);
+        $command = new UpdateGeoCoordinatesFromAddress(self::PLACE_ID, $address);
 
         $coordinates = new Coordinates(
             new Latitude(-0.12),
@@ -152,10 +159,10 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             )
             ->willReturnOnConsecutiveCalls(null, $coordinates);
 
-        $expectedEvent = new GeoCoordinatesUpdated($id, $coordinates);
+        $expectedEvent = new GeoCoordinatesUpdated(self::PLACE_ID, $coordinates);
 
         $this->scenario
-            ->withAggregateId($id)
+            ->withAggregateId(self::PLACE_ID)
             ->given([$placeCreated])
             ->when($command)
             ->then([$expectedEvent]);

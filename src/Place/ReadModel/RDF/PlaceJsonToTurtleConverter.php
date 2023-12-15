@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\GeometryEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
+use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
@@ -102,6 +103,10 @@ final class PlaceJsonToTurtleConverter implements JsonToTurtleConverter
 
         if ($place->getGeoCoordinates()) {
             (new GeometryEditor())->setCoordinates($resource, $place->getGeoCoordinates());
+        }
+
+        if ($place->getLabels()->count() > 0) {
+            (new LabelEditor())->setLabels($resource, $place->getLabels());
         }
 
         return trim((new Turtle())->serialise($graph, 'turtle'));
