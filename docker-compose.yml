@@ -56,17 +56,6 @@ services:
     networks:
       - uitdatabank
 
-  fuseki:
-    image: public.ecr.aws/y2o7k5u2/udb3/jena-fuseki
-    container_name: fuseki.uitdatabank
-    hostname: 'fusekidocker'
-    volumes:
-      - 'udb3-fuseki:/var/lib/jena-fuseki/databases'
-    ports:
-      - 8080:80
-    networks:
-      - uitdatabank
-
 networks:
   uitdatabank:
     driver: bridge
@@ -75,6 +64,4 @@ volumes:
   udb3-redis:
     driver: local
   udb3-mysql:
-    driver: local
-  udb3-fuseki:
     driver: local
