@@ -76,7 +76,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Place;
-use CultuurNet\UDB3\Search\SearchServiceInterface;
+use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use Money\Currency;
@@ -145,7 +145,8 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
             $this->commandBus,
             $this->imageCollectionFactory,
-            $this->createMock(SearchServiceInterface::class),
+            true,
+            $this->createMock(LookupDuplicatePlace::class),
         );
 
         $this->commandBus->record();
