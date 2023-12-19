@@ -63,7 +63,7 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
 
         $this->sapi3SearchService->expects($this->once())
             ->method('search')
-            ->with('unique_address_identifier:online_tesstraat 1_2000_antwerpen_be_current-user-id', 1)
+            ->with('unique_address_identifier:online_kerkstraat_1_2000_antwerpen_be_current-user-id', 1)
             ->willReturn(
                 new Results($itemIdentifiers, $itemIdentifiers->count())
             );
@@ -84,7 +84,7 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
             ),
             new PermanentCalendar(new OpeningHours()),
             new TranslatedAddress(new Language('nl'), new Udb3Address(
-                new Udb3Street('Tesstraat 1'),
+                new Udb3Street('Kerkstraat 1'),
                 new Udb3PostalCode('2000'),
                 new Udb3Locality('Antwerpen'),
                 new CountryCode('BE')
