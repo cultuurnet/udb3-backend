@@ -146,7 +146,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $commands = [];
         if (!$placeExists) {
-
             if ($this->preventDuplicatePlaces) {
                 $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceId($place);
                 if ($duplicatePlaceId !== null) {
