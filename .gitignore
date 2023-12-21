@@ -2,7 +2,6 @@
 /build/
 /cache/
 /log/
-/web/uploads/
 /web/media/
 /web/images
 *.pem
