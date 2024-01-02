@@ -31,7 +31,7 @@ final class RdfServiceProvider extends AbstractServiceProvider
         $this->container->addShared(
             AddressParser::class,
             fn (): AddressParser => $this->createAddressParser(
-                $this->container->get('config')['google_maps_api_key'] ?? false
+                $this->container->get('config')['rdf']['google_maps_address_parser'] ?? false
             )
         );
     }
