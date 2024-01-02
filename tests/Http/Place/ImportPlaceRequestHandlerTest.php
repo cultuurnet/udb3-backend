@@ -1088,7 +1088,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ],
             'calendarType' => 'permanent',
             'mainLanguage' => 'nl',
-            'availableFrom' => '2024-01-01T16:00:00+01:00',
+            'availableFrom' => '2030-01-01T16:00:00+01:00',
             'workflowStatus' => 'READY_FOR_VALIDATION',
         ];
 
@@ -1120,7 +1120,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             [
-                new Publish($placeId, new DateTimeImmutable('2024-01-01T16:00:00+01:00')),
+                new Publish($placeId, new DateTimeImmutable('2030-01-01T16:00:00+01:00')),
                 new UpdateTitle($placeId, new Language('nl'), new Title('In De Hel')),
                 new UpdateType($placeId, 'Yf4aZBfsUEu2NsQqsprngw'),
                 new UpdateAddress(
