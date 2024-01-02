@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\RDF\Editor;
 
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
-use CultuurNet\UDB3\Address\AddressParser;
+use CultuurNet\UDB3\Address\Parser\AddressParser;
 use CultuurNet\UDB3\Address\FullAddressFormatter;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use EasyRdf\Literal;

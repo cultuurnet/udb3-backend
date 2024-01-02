@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
-use CultuurNet\UDB3\Address\AddressParser;
+use CultuurNet\UDB3\Address\Parser\AddressParser;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\RDF\JsonToTurtleConverter;

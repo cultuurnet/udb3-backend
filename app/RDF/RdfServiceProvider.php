@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\RDF;
 
-use CultuurNet\UDB3\Address\AddressParser;
-use CultuurNet\UDB3\Address\CachingAddressParser;
-use CultuurNet\UDB3\Address\GeopuntAddressParser;
+use CultuurNet\UDB3\Address\Parser\AddressParser;
+use CultuurNet\UDB3\Address\Parser\CachingAddressParser;
+use CultuurNet\UDB3\Address\Parser\GeopuntAddressParser;
+use CultuurNet\UDB3\Address\Parser\GoogleMapsAddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;

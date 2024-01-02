@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Address;
+namespace CultuurNet\UDB3\Address\Parser;
 
+use CultuurNet\UDB3\Address\ParsedAddress;
 use CultuurNet\UDB3\Json;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
