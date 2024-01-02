@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
-use CultuurNet\UDB3\Address\Parser\AddressParser;
-use CultuurNet\UDB3\Address\FullAddressFormatter;
+use CultuurNet\UDB3\Address\Formatter\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Locality as LegacyLocality;
 use CultuurNet\UDB3\Address\ParsedAddress;
+use CultuurNet\UDB3\Address\Parser\AddressParser;
 use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
 use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\CommandHandler;
 
-use CultuurNet\UDB3\Geocoding\GeocodingService;
-use CultuurNet\UDB3\Address\AddressFormatter;
+use CultuurNet\UDB3\Address\Formatter\AddressFormatter;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
+use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Organizer\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Organizer\Organizer;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
