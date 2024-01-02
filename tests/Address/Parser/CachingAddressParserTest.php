@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address\Parser;
 
-use CultuurNet\UDB3\Address\ParsedAddress;
 use Doctrine\Common\Cache\ArrayCache;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
