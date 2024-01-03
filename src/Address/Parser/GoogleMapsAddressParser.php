@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address\Parser;
 
+use Geocoder\Exception\Exception;
 use Geocoder\Geocoder;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -21,18 +22,22 @@ final class GoogleMapsAddressParser implements AddressParser, LoggerAwareInterfa
 
     public function parse(string $formattedAddress): ?ParsedAddress
     {
-        $addresses = $this->geocoder->geocode($formattedAddress);
+        try {
+            $addresses = $this->geocoder->geocode($formattedAddress);
 
-        if ($addresses->isEmpty()) {
+            $address = $addresses->first();
+
+            return new ParsedAddress(
+                $address->getStreetName(),
+                $address->getStreetNumber(),
+                $address->getPostalCode(),
+                $address->getLocality()
+            );
+        } catch (Exception $exception) {
+            $this->logger->warning(
+                'No results for address: "' . $formattedAddress . '". Exception message: ' . $exception->getMessage()
+            );
             return null;
         }
-
-        $address = $addresses->first();
-        return new ParsedAddress(
-            $address->getStreetName(),
-            $address->getStreetNumber(),
-            $address->getPostalCode(),
-            $address->getLocality()
-        );
     }
 }
