@@ -30,8 +30,10 @@
     a locn:Address ;
     locn:fullAddress "Henegouwenkaai 41-43, 1080 Brussel, BE"@nl, "Quai du Hainaut 41-43, 1080 Bruxelles, BE"@fr ;
     locn:postName "Brussel"@nl, "Bruxelles"@fr ;
+    locn:thoroughfare "Quai du Hainaut"@nl, "Quai du Hainaut"@fr ;
     locn:adminUnitL1 "BE" ;
-    locn:postcode "1080"
+    locn:postcode "1080" ;
+    locn:locatorDesignator "41"
   ] ;
   locn:geometry [
     a locn:Geometry ;
