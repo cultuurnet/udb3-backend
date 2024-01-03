@@ -7,13 +7,19 @@ namespace CultuurNet\UDB3\Http\Auth\Jwt;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
+use DateInterval;
+use DateTimeZone;
 use Exception;
 use InvalidArgumentException;
-use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Signer\Key;
+use Lcobucci\Clock\SystemClock;
+use Lcobucci\JWT\Encoding\JoseEncoder;
+use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\Token;
-use Lcobucci\JWT\ValidationData;
+use Lcobucci\JWT\Token\Parser;
+use Lcobucci\JWT\UnencryptedToken;
+use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\Validator;
 
 final class JsonWebToken
 {
@@ -158,7 +164,13 @@ final class JsonWebToken
         // This will automatically validate the time-sensitive claims.
         // Set the leeway to 30 seconds so we can compensate for slight clock skew between auth0 and our own servers.
         // @see https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
-        return $this->token->validate(new ValidationData(null, self::TIME_LEEWAY));
+        return (new Validator())->validate(
+            $this->token,
+            new LooseValidAt(
+                new SystemClock(new DateTimeZone('CET')),
+                new DateInterval('PT' . self::TIME_LEEWAY . 'S')
+            )
+        );
     }
 
     public function hasValidIssuer(array $validIssuers): bool
@@ -193,11 +205,16 @@ final class JsonWebToken
         return in_array('entry', $apis, true);
     }
 
-    public function verifyRsaSha256Signature(string $publicKey, ?string $keyPassphrase = null): bool
+    public function verifyRsaSha256Signature(string $publicKey, ?string $keyPassphrase = ''): bool
     {
-        $signer = new Sha256();
-        $key = new Key($publicKey, $keyPassphrase);
-        return $this->token->verify($signer, $key);
+        if (empty($publicKey)) {
+            return false;
+        }
+
+        return (new Validator())->validate(
+            $this->token,
+            new SignedWith(new Sha256(), InMemory::plainText($publicKey, $keyPassphrase))
+        );
     }
 
     public function getCredentials(): string
