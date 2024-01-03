@@ -26,6 +26,10 @@ final class GoogleMapsAddressParser implements AddressParser, LoggerAwareInterfa
             $addresses = $this->geocoder->geocode($formattedAddress);
 
             $address = $addresses->first();
+            if ($address->getStreetNumber() === null) {
+                $this->logger->warning('No street number found for address: "' . $formattedAddress . '"');
+                return null;
+            }
 
             return new ParsedAddress(
                 $address->getStreetName(),
