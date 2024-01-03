@@ -36,6 +36,6 @@
   ] ;
   locn:geometry [
     a locn:Geometry ;
-    geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>5.0038777, 51.0156421</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral
+    geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>5.0037447, 51.0155378</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral
   ] ;
   rdfs:label "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen .
