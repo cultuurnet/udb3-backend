@@ -222,7 +222,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_non_cdb_externalid.cdbxml.xml');
 
-        $this->assertObjectHasAttribute('sameAs', $jsonEvent);
+        $this->assertObjectHasProperty('sameAs', $jsonEvent);
         $this->assertContains('CC_De_Grote_Post:degrotepost_Evenement_453', $jsonEvent->sameAs);
     }
 
@@ -233,7 +233,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_cdb_externalid.cdbxml.xml');
 
-        $this->assertObjectHasAttribute('sameAs', $jsonEvent);
+        $this->assertObjectHasProperty('sameAs', $jsonEvent);
         $this->assertNotContains('CDB:95b30501-6a70-4cb3-a5c9-4a2eb7003214', $jsonEvent->sameAs);
     }
 
@@ -254,7 +254,7 @@ class CdbXMLImporterTest extends TestCase
 
         $originalReference = 'http://www.uitinvlaanderen.be/agenda/e/' . $slug . '/' . $eventId;
 
-        $this->assertObjectHasAttribute('sameAs', $jsonEvent);
+        $this->assertObjectHasProperty('sameAs', $jsonEvent);
         $this->assertContains($originalReference, $jsonEvent->sameAs);
     }
 
@@ -265,18 +265,18 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_non_cdb_externalid.cdbxml.xml');
 
-        $this->assertObjectHasAttribute('availableFrom', $jsonEvent);
+        $this->assertObjectHasProperty('availableFrom', $jsonEvent);
         $this->assertEquals('2014-07-25T05:18:22+02:00', $jsonEvent->availableFrom);
 
-        $this->assertObjectHasAttribute('availableTo', $jsonEvent);
+        $this->assertObjectHasProperty('availableTo', $jsonEvent);
         $this->assertEquals('2015-03-29T00:00:00+01:00', $jsonEvent->availableTo);
 
         $anotherJsonEvent = $this->createJsonEventFromCdbXml('event_with_cdb_externalid.cdbxml.xml');
 
-        $this->assertObjectHasAttribute('availableFrom', $anotherJsonEvent);
+        $this->assertObjectHasProperty('availableFrom', $anotherJsonEvent);
         $this->assertEquals('2014-10-22T00:00:00+02:00', $anotherJsonEvent->availableFrom);
 
-        $this->assertObjectHasAttribute('availableTo', $anotherJsonEvent);
+        $this->assertObjectHasProperty('availableTo', $anotherJsonEvent);
         $this->assertEquals('2015-03-19T00:00:00+01:00', $anotherJsonEvent->availableTo);
     }
 
@@ -287,7 +287,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_email_and_phone_number.cdbxml.xml');
 
-        $this->assertObjectHasAttribute('contactPoint', $jsonEvent);
+        $this->assertObjectHasProperty('contactPoint', $jsonEvent);
         $this->assertEquals(['0475 82 21 36'], $jsonEvent->contactPoint['phone']);
     }
 
@@ -298,7 +298,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_just_an_email.cdbxml.xml');
 
-        $this->assertObjectHasAttribute('contactPoint', $jsonEvent);
+        $this->assertObjectHasProperty('contactPoint', $jsonEvent);
         $this->assertArrayNotHasKey('phone', $jsonEvent->contactPoint);
     }
 
@@ -309,7 +309,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_just_an_email.cdbxml.xml');
 
-        $this->assertObjectHasAttribute('contactPoint', $jsonEvent);
+        $this->assertObjectHasProperty('contactPoint', $jsonEvent);
         $this->assertEquals(
             ['kgielens@stichtingtegenkanker.be'],
             $jsonEvent->contactPoint['email']
@@ -323,7 +323,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_just_a_phone_number.cdbxml.xml');
 
-        $this->assertObjectHasAttribute('contactPoint', $jsonEvent);
+        $this->assertObjectHasProperty('contactPoint', $jsonEvent);
         $this->assertArrayNotHasKey('mail', $jsonEvent->contactPoint);
     }
 
@@ -334,7 +334,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_email_and_phone_number.cdbxml.xml');
 
-        $this->assertObjectHasAttribute('seeAlso', $jsonEvent);
+        $this->assertObjectHasProperty('seeAlso', $jsonEvent);
         $this->assertContains('http://www.rekanto.be', $jsonEvent->seeAlso);
     }
 
@@ -345,11 +345,11 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_reservation_url.cdbxml.xml');
 
-        $this->assertObjectHasAttribute('bookingInfo', $jsonEvent);
+        $this->assertObjectHasProperty('bookingInfo', $jsonEvent);
         $this->assertEquals('http://brugge.iticketsro.com/ccmechelen/', $jsonEvent->bookingInfo['url']);
 
         // Reservation url should not have been added to seeAlso.
-        $this->assertObjectHasAttribute('seeAlso', $jsonEvent);
+        $this->assertObjectHasProperty('seeAlso', $jsonEvent);
         $this->assertNotContains('http://brugge.iticketsro.com/ccmechelen/', $jsonEvent->seeAlso);
     }
 
@@ -360,7 +360,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_email_and_phone_number.cdbxml.xml');
 
-        $this->assertObjectHasAttribute('bookingInfo', $jsonEvent);
+        $this->assertObjectHasProperty('bookingInfo', $jsonEvent);
         $this->assertArrayNotHasKey('url', $jsonEvent->bookingInfo);
     }
 
@@ -376,7 +376,7 @@ class CdbXMLImporterTest extends TestCase
             'url' => ['http://www.rekanto.be'],
         ];
 
-        $this->assertObjectHasAttribute('contactPoint', $jsonEvent);
+        $this->assertObjectHasProperty('contactPoint', $jsonEvent);
         $this->assertEquals($expectedContactPoint, $jsonEvent->contactPoint);
     }
 
@@ -387,7 +387,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_negative_timestamp.cdbxml.xml');
 
-        $this->assertObjectHasAttribute('bookingInfo', $jsonEvent);
+        $this->assertObjectHasProperty('bookingInfo', $jsonEvent);
         $this->assertEquals('1968-12-31T23:00:00+00:00', $jsonEvent->bookingInfo['availabilityStarts']);
         $this->assertEquals('1968-12-31T23:00:00+00:00', $jsonEvent->bookingInfo['availabilityEnds']);
     }
@@ -1062,7 +1062,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXmlWithAgeRange(null, null);
 
-        $this->assertObjectHasAttribute('typicalAgeRange', $jsonEvent, '-');
+        $this->assertObjectHasProperty('typicalAgeRange', $jsonEvent, '-');
     }
 
     /**
