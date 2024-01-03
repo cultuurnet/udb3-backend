@@ -24,15 +24,9 @@ final class JsonWebToken
 
     private const TIME_LEEWAY = 30;
 
-    /**
-     * @var string
-     */
-    private $jwt;
+    private string $jwt;
 
-    /**
-     * @var Token
-     */
-    private $token;
+    private UnencryptedToken $token;
 
     /**
      * @throws InvalidArgumentException
