@@ -45,18 +45,18 @@ final class JsonWebToken
     public function getType(): string
     {
         // V1 tokens had a non-standardized "uid" claim
-        if ($this->token->hasClaim('uid')) {
+        if ($this->token->claims()->has('uid')) {
             return self::UIT_ID_V1_JWT_PROVIDER_TOKEN;
         }
 
         // V2 tokens from the JWT provider are Auth0 ID tokens and do not have an azp claim
-        if (!$this->token->hasClaim('azp')) {
+        if (!$this->token->claims()->has('azp')) {
             return self::UIT_ID_V2_JWT_PROVIDER_TOKEN;
         }
 
         // V2 client access tokens are always requested using the client-credentials grant type (gty)
         // @see https://stackoverflow.com/questions/49492471/whats-the-meaning-of-the-gty-claim-in-a-jwt-token/49492971
-        if ($this->token->getClaim('gty', '') === 'client-credentials') {
+        if ($this->token->claims()->get('gty', '') === 'client-credentials') {
             return self::UIT_ID_V2_CLIENT_ACCESS_TOKEN;
         }
 
@@ -66,15 +66,15 @@ final class JsonWebToken
 
     public function getUserId(): string
     {
-        if ($this->token->hasClaim('uid')) {
-            return $this->token->getClaim('uid');
+        if ($this->token->claims()->has('uid')) {
+            return $this->token->claims()->get('uid');
         }
 
-        if ($this->token->hasClaim('https://publiq.be/uitidv1id')) {
-            return $this->token->getClaim('https://publiq.be/uitidv1id');
+        if ($this->token->claims()->has('https://publiq.be/uitidv1id')) {
+            return $this->token->claims()->get('https://publiq.be/uitidv1id');
         }
 
-        return $this->token->getClaim('sub');
+        return $this->token->claims()->get('sub');
     }
 
     public function getUserIdentityDetails(UserIdentityResolver $userIdentityResolver): ?UserIdentityDetails
@@ -87,8 +87,8 @@ final class JsonWebToken
         if ($this->hasClaims(['nick', 'email'])) {
             return new UserIdentityDetails(
                 $this->getUserId(),
-                $this->token->getClaim('nick'),
-                $this->token->getClaim('email')
+                $this->token->claims()->get('nick'),
+                $this->token->claims()->get('email')
             );
         }
 
@@ -96,8 +96,8 @@ final class JsonWebToken
         if ($this->hasClaims(['nickname', 'email'])) {
             return new UserIdentityDetails(
                 $this->getUserId(),
-                $this->token->getClaim('nickname'),
-                $this->token->getClaim('email')
+                $this->token->claims()->get('nickname'),
+                $this->token->claims()->get('email')
             );
         }
 
@@ -110,11 +110,11 @@ final class JsonWebToken
 
     public function getEmailAddress(): ?EmailAddress
     {
-        if ($this->token->hasClaim('email')) {
-            return new EmailAddress($this->token->getClaim('email'));
+        if ($this->token->claims()->has('email')) {
+            return new EmailAddress($this->token->claims()->get('email'));
         }
-        if ($this->token->hasClaim('https://publiq.be/email')) {
-            return new EmailAddress($this->token->getClaim('https://publiq.be/email'));
+        if ($this->token->claims()->has('https://publiq.be/email')) {
+            return new EmailAddress($this->token->claims()->get('https://publiq.be/email'));
         }
         return null;
     }
@@ -123,8 +123,8 @@ final class JsonWebToken
     {
         // Check first if the token has the claim, to prevent an OutOfBoundsException (thrown if the default is set to
         // null and the claim is missing).
-        if ($this->token->hasClaim('azp')) {
-            return (string) $this->token->getClaim('azp');
+        if ($this->token->claims()->has('azp')) {
+            return (string) $this->token->claims()->get('azp');
         }
         return null;
     }
@@ -133,8 +133,8 @@ final class JsonWebToken
     {
         // Check first if the token has the claim, to prevent an OutOfBoundsException (thrown if the default is set to
         // null and the claim is missing).
-        if ($this->token->hasClaim('https://publiq.be/client-name')) {
-            return (string) $this->token->getClaim('https://publiq.be/client-name');
+        if ($this->token->claims()->has('https://publiq.be/client-name')) {
+            return (string) $this->token->claims()->get('https://publiq.be/client-name');
         }
         return null;
     }
@@ -142,7 +142,7 @@ final class JsonWebToken
     public function hasClaims(array $names): bool
     {
         foreach ($names as $name) {
-            if (!$this->token->hasClaim($name)) {
+            if (!$this->token->claims()->has($name)) {
                 return false;
             }
         }
@@ -160,17 +160,17 @@ final class JsonWebToken
 
     public function hasValidIssuer(array $validIssuers): bool
     {
-        return in_array($this->token->getClaim('iss', ''), $validIssuers, true);
+        return in_array($this->token->claims()->get('iss', ''), $validIssuers, true);
     }
 
     public function hasAudience(string $audience): bool
     {
-        if (!$this->token->hasClaim('aud')) {
+        if (!$this->token->claims()->has('aud')) {
             return false;
         }
 
         // The aud claim can be a string or an array. Convert string to array with one value for consistency.
-        $aud = $this->token->getClaim('aud');
+        $aud = $this->token->claims()->get('aud');
         if (is_string($aud)) {
             $aud = [$aud];
         }
@@ -180,7 +180,7 @@ final class JsonWebToken
 
     public function hasEntryApiInPubliqApisClaim(): bool
     {
-        $apis = $this->token->getClaim('https://publiq.be/publiq-apis', '');
+        $apis = $this->token->claims()->get('https://publiq.be/publiq-apis', '');
 
         if (!is_string($apis)) {
             return false;
