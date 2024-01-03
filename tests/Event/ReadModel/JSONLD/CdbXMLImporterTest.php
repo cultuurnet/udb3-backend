@@ -551,7 +551,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_negative_base_price.cdbxml.xml');
 
-        $this->assertObjectNotHasAttribute('priceInfo', $jsonEvent);
+        $this->assertObjectNotHasProperty('priceInfo', $jsonEvent);
     }
 
     /**
@@ -561,7 +561,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_invalid_base_price.cdbxml.xml');
 
-        $this->assertObjectNotHasAttribute('priceInfo', $jsonEvent);
+        $this->assertObjectNotHasProperty('priceInfo', $jsonEvent);
     }
 
     /**
