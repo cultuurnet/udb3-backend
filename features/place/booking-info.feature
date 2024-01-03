@@ -85,7 +85,7 @@ Feature: Test place bookingInfo property
     }
     """
 
-  Scenario: It returns an error when updating the bookingInfo of an unknown place
+  Scenario: When updating the bookingInfo of an unknown place an error is returned
     Given I set the JSON request payload to:
         """
         {
