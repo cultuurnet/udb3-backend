@@ -117,7 +117,7 @@ Feature: Test the UDB3 organizers contributors endpoint
     When I get the organizer at "%{organizerUrl}"
     Then the JSON response should not have "contributors"
 
-  Scenario: It should overwrite all contributors
+  Scenario: Overwrite all contributors
     Given I set the JSON request payload to:
     """
     [
@@ -143,7 +143,7 @@ Feature: Test the UDB3 organizers contributors endpoint
     ]
     """
 
-  Scenario: It should reject invalid emails:
+  Scenario: Reject invalid emails
     Given I set the JSON request payload to:
     """
     [
