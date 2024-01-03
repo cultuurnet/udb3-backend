@@ -83,7 +83,7 @@ Feature: Test the UDB3 events API
     }
     """
 
-  Scenario: It gives an error when updating contact point with invalid request body
+  Scenario: When updating contact point with invalid request body an error is returned
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
     """
@@ -110,7 +110,7 @@ Feature: Test the UDB3 events API
     And I get the event at "%{eventUrl}"
     And the JSON response should not have "contactPoint"
 
-  Scenario: It updates when empty strings are given
+  Scenario: Update with empty strings
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     When I set the JSON request payload to:
     """
