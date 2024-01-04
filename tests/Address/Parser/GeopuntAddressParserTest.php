@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Address;
+namespace CultuurNet\UDB3\Address\Parser;
 
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\TestLogger;

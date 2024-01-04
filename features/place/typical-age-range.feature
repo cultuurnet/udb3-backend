@@ -47,7 +47,7 @@ Feature: Test places typicalAgeRange property
     When I get the place at "%{placeUrl}"
     And the JSON response at "typicalAgeRange" should be "-"
 
-  Scenario: It gives an error when the request body is invalid
+  Scenario: When the request body is invalid an error is returned
     And I set the JSON request payload to:
         """
         { "typicalAgeRange": "" }
@@ -66,7 +66,7 @@ Feature: Test places typicalAgeRange property
     And I get the place at "%{placeUrl}"
     And the JSON response at "typicalAgeRange" should be "-"
 
-  Scenario: It gives an error when the minimum age is bigger than the maximum age
+  Scenario: When the minimum age is bigger than the maximum age an error is returned
     And I set the JSON request payload to:
         """
         { "typicalAgeRange": "12-6" }

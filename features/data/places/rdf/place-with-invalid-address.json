@@ -1,0 +1,26 @@
+{
+  "name": {
+    "nl": "Nowhere"
+  },
+  "terms": [
+    {
+      "id": "Yf4aZBfsUEu2NsQqsprngw"
+    }
+  ],
+  "address": {
+    "nl" : {
+      "addressCountry": "BE",
+      "addressLocality": "Gemeente",
+      "postalCode": "Postcode",
+      "streetAddress": "Straat 1"
+    }
+  },
+  "calendarType": "permanent",
+  "mainLanguage": "nl",
+  "labels": [
+    "public-visible"
+  ],
+  "hiddenLabels": [
+    "public-invisible"
+  ]
+}

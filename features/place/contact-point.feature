@@ -75,7 +75,7 @@ Feature: Test place contactPoint property
     }
     """
 
-  Scenario: It gives an error when updating contact point with invalid request body
+  Scenario: When updating contact point with invalid request body an error is returned
     Given I set the JSON request payload to:
     """
     {
@@ -101,7 +101,7 @@ Feature: Test place contactPoint property
     And I get the place at "%{placeUrl}"
     And the JSON response should not have "contactPoint"
 
-  Scenario: It updates when empty strings are given
+  Scenario: Update with empty strings
     When I set the JSON request payload to:
     """
     {

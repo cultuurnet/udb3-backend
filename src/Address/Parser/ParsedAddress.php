@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Address;
+namespace CultuurNet\UDB3\Address\Parser;
 
 final class ParsedAddress
 {

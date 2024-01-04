@@ -6,7 +6,7 @@ Feature: Test the UDB3 roles API with users
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I send and accept "application/json"
 
-  Scenario: It gives an error when adding invalid role uuid to user
+  Scenario: Adding an invalid role uuid to a user gives an error
     When I send a PUT request to "/roles/not-a-uuid/users/auth0|631748dba64ea78e3983b207"
     Then the response status should be "404"
     And the JSON response should be:
@@ -19,7 +19,7 @@ Feature: Test the UDB3 roles API with users
     }
     """
 
-  Scenario: It can add a role to a user
+  Scenario: Add a role to a user
     Given I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "role_uuid"
 
@@ -38,7 +38,7 @@ Feature: Test the UDB3 roles API with users
     ]
     """
 
-  Scenario: It gives an error when removing invalid role uuid to user
+  Scenario: Removing an invalid role uuid from a user gives an error
     When I send a DELETE request to "/roles/not-a-uuid/users/auth0|631748dba64ea78e3983b207"
     Then the response status should be "404"
     And the JSON response should be:
@@ -51,7 +51,7 @@ Feature: Test the UDB3 roles API with users
     }
     """
 
-  Scenario: It can remove a role from a user
+  Scenario: Remove a role from a user
     Given I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "role_uuid"
     And I send a PUT request to "/roles/%{role_uuid}/users/auth0|631748dba64ea78e3983b207"
@@ -65,7 +65,7 @@ Feature: Test the UDB3 roles API with users
     []
     """
 
-  Scenario: It gets users for a non-existing role
+  Scenario: Get users for a non-existing role
     When I send a GET request to "/roles/c45706f4-c254-4f7f-8c34-2fdb683941f0/users"
 
     Then the response status should be "404"
@@ -93,14 +93,14 @@ Feature: Test the UDB3 roles API with users
         "username": "stef"
       },
       {
-        "uuid": "google-oauth2|105581372645959335476",
+        "uuid": "30a34ead-4733-43ec-99d1-47b45c01cf2f",
         "email": "luc@madewithlove.be",
         "username": "luc"
       }
     ]
     """
 
-  Scenario: It returns an empty array when the user has no roles
+  Scenario: When the user has no roles an empty array is returned
     Given I remove all roles for user with id "auth0|631748dba64ea78e3983b207"
 
     When I send a GET request to "/users/auth0|631748dba64ea78e3983b207/roles"
@@ -111,7 +111,7 @@ Feature: Test the UDB3 roles API with users
     []
     """
 
-  Scenario: It gets all roles from a user
+  Scenario: Gets all roles from a user
     Given I remove all roles for user with id "auth0|631748dba64ea78e3983b207"
     And I set the JSON request payload to:
     """
@@ -147,7 +147,7 @@ Feature: Test the UDB3 roles API with users
     ]
     """
 
-  Scenario: It gets all roles from the current user
+  Scenario: Get all roles from the current user
     Given I send a GET request to "/user"
     And I keep the value of the JSON response at "uuid" as "currentUserId"
     And I set the JSON request payload to:
