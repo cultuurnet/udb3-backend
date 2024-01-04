@@ -20,12 +20,12 @@ Feature: Test the UDB3 roles API
     And the JSON response at "totalItems" should not be 0
     And the JSON response at "member/0/name" should not be ""
 
-  Scenario: get non-existing role
+  Scenario: Get non-existing role
     When I send a GET request to "/roles/this-does-not-exist"
     Then the response status should be "404"
     And the JSON response at "detail" should be 'The Role with id "this-does-not-exist" was not found.'
 
-  Scenario: It returns all labels for a role
+  Scenario: Get all labels for a role
     Given I set the JSON request payload to:
     """
     { "name": "test_role" }
@@ -72,7 +72,7 @@ Feature: Test the UDB3 roles API
     ]
     """
 
-  Scenario: It returns an empty array when the role has no labels
+  Scenario: An empty array is returned when the role has no labels
     Given I set the JSON request payload to:
     """
     { "name": "test_role" }
@@ -88,7 +88,7 @@ Feature: Test the UDB3 roles API
     []
     """
 
-  Scenario: It errors when getting labels for unexisting role
+  Scenario: When getting labels for non-existing role an error is returned
     When I send a GET request to "/roles/this-does-not-exist/labels"
     Then the response status should be "404"
     And the JSON response at "detail" should be 'The Role with id "this-does-not-exist" was not found.'

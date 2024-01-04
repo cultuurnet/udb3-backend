@@ -119,7 +119,7 @@ Feature: Test place address property
     }
     """
 
-  Scenario: It gives an error when the request body is invalid
+  Scenario: When the request body is invalid an error is returned
     Given I set the JSON request payload to:
     """
     {

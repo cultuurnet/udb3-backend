@@ -299,7 +299,7 @@ Feature: Test the UDB3 roles API permissions
     When I send a DELETE request to "/roles/%{roleId}/labels/%{labelId}"
     Then the response status should be "403"
 
-  Scenario: It gets a list of all the available permissions
+  Scenario: Get a list of all the available permissions
     When I am authorized as JWT provider v1 user "centraal_beheerder"
     And I send a GET request to "/permissions"
 
