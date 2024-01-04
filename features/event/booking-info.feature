@@ -196,7 +196,7 @@ Feature: Test the UDB3 events API
     }
     """
 
-  Scenario: It returns an error when updating the bookingInfo of an unknown event
+  Scenario: When updating the bookingInfo of an unknown event an error is returned
     Given I set the JSON request payload to:
       """
       {
@@ -220,7 +220,7 @@ Feature: Test the UDB3 events API
       "The event with id \"0680f399-7768-4ba0-b33a-d4d15c21282e\" was not found."
       """
 
-  Scenario: It returns an error when using a triple slashed url
+  Scenario: When using a triple slashed url an error is returned
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """

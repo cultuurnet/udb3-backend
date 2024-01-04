@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -115,8 +116,14 @@ class PlaceJsonToTurtleConverterTest extends TestCase
             ->method('warning')
             ->with('Unable to project place d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
 
-        $this->expectError();
-        $this->expectErrorMessage('Undefined index: name');
+        set_error_handler(
+            static function ($errorNumber, $errorString) {
+                restore_error_handler();
+                throw new Exception($errorString, $errorNumber);
+            },
+            E_ALL
+        );
+        $this->expectExceptionMessage('Undefined index: name');
 
         $this->placeJsonToTurtleConverter->convert($placeId);
     }

@@ -81,7 +81,7 @@ Feature: Test event description property
 
   # Relates to https://jira.uitdatabank.be/browse/III-5150
   # Right now the JSON response returns an empty string when the description is empty, it shouldn't return any value
-  Scenario: It can remove an event description by passing an empty one
+  Scenario: Remove an event description by passing an empty one
     And I set the JSON request payload to:
         """
         { "description": "Updated description test_event in Dutch" }
