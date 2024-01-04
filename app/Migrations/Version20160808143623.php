@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Migrations;
 
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20160808143623 extends AbstractMigration
 {
