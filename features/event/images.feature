@@ -219,7 +219,7 @@ Feature: Test event images property
     ]
     """
 
-  Scenario: It checks the uuid when adding a single image to an event
+  Scenario: The uuid is checked when adding a single image to an event
     Given I create a minimal permanent event and save the "url" as "eventUrl"
     When I set the JSON request payload to:
     """
@@ -239,7 +239,7 @@ Feature: Test event images property
     ]
     """
 
-  Scenario: It checks the request body when adding a single image to an event
+  Scenario: The request body is checked when adding a single image to an event
     Given I create a minimal permanent event and save the "url" as "eventUrl"
     When I set the JSON request payload to:
     """
@@ -333,7 +333,7 @@ Feature: Test event images property
     ]
     """
 
-  Scenario: It checks the request body when updating an image on an event
+  Scenario: The request body is checked when updating an image on an event
     Given I create an event from "events/event-with-images.json" and save the "url" as "eventUrl"
     When I set the JSON request payload to:
     """
@@ -428,7 +428,7 @@ Feature: Test event images property
       "https://images.uitdatabank.dev/%{imageId2}.jpeg"
       """
 
-  Scenario: It checks the request body when selecting a main image on an event
+  Scenario: The request body is checked when selecting a main image on an event
     Given I create an event from "events/event-with-images.json" and save the "url" as "eventUrl"
     When I set the JSON request payload to:
       """
@@ -451,7 +451,7 @@ Feature: Test event images property
     "https://images.uitdatabank.dev/%{imageId1}.jpeg"
     """
 
-    Scenario: It can not select a main image that's not part of the event
+    Scenario: A main image is not selected when it is not part of the event
       Given I create a minimal permanent event and save the "url" as "eventUrl"
       When I set the JSON request payload to:
       """

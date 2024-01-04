@@ -117,7 +117,7 @@ Feature: Test the UDB3 places contributors endpoint
     When I get the place at "%{placeUrl}"
     Then the JSON response should not have "contributors"
 
-  Scenario: It should overwrite all contributors
+  Scenario: Overwrite all contributors
     Given I set the JSON request payload to:
     """
     [
@@ -143,7 +143,7 @@ Feature: Test the UDB3 places contributors endpoint
     ]
     """
 
-  Scenario: It should reject invalid emails:
+  Scenario: Reject invalid emails
     Given I set the JSON request payload to:
     """
     [
