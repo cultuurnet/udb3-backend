@@ -93,7 +93,7 @@ Feature: Test the UDB3 roles API with users
         "username": "stef"
       },
       {
-        "uuid": "google-oauth2|105581372645959335476",
+        "uuid": "30a34ead-4733-43ec-99d1-47b45c01cf2f",
         "email": "luc@madewithlove.be",
         "username": "luc"
       }
