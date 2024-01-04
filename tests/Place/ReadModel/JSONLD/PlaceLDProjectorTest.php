@@ -497,7 +497,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $body = $this->project($event, $event->getActorId());
 
-        $this->assertObjectNotHasAttribute('image', $body);
+        $this->assertObjectNotHasProperty('image', $body);
     }
 
 

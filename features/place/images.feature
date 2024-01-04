@@ -217,7 +217,7 @@ Feature: Test place images property
     ]
     """
 
-  Scenario: It checks the uuid when adding a single image to a place
+  Scenario: The uuid is checked when adding a single image to a place
     Given I create a minimal place and save the "url" as "placeUrl"
     When I set the JSON request payload to:
     """
@@ -237,7 +237,7 @@ Feature: Test place images property
     ]
     """
 
-  Scenario: It checks the request body when adding a single image to a place
+  Scenario: The request body is checked when adding a single image to a place
     Given I create a minimal place and save the "url" as "placeUrl"
     When I set the JSON request payload to:
     """
@@ -331,7 +331,7 @@ Feature: Test place images property
     ]
     """
 
-  Scenario: It checks the request body when updating an image on a place
+  Scenario: The request body is checked when updating an image on a place
     Given I create a place from "places/place-with-images.json" and save the "url" as "placeUrl"
     When I set the JSON request payload to:
     """
@@ -426,7 +426,7 @@ Feature: Test place images property
       "https://images.uitdatabank.dev/%{imageId2}.jpeg"
       """
 
-  Scenario: It checks the request body when selecting a main image on a place
+  Scenario: The request body is checked when selecting a main image on a place
     Given I create a place from "places/place-with-images.json" and save the "url" as "placeUrl"
     When I set the JSON request payload to:
       """
@@ -449,7 +449,7 @@ Feature: Test place images property
     "https://images.uitdatabank.dev/%{imageId1}.jpeg"
     """
 
-  Scenario: It can not select a main image that's not part of the place
+  Scenario: A main image can not be selected that's not part of the place
     Given I create a minimal place and save the "url" as "placeUrl"
     When I set the JSON request payload to:
       """

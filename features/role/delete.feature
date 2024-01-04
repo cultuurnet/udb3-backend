@@ -5,7 +5,7 @@ Feature: Test the UDB3 roles API
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider v1 user "centraal_beheerder"
 
-  Scenario: it gives an error when deleting role with invalid id
+  Scenario: An error is thrown when deleting a role with invalid id
     When I send a DELETE request to "/roles/not-a-uuid"
     Then the response status should be "404"
     And the JSON response should be:
@@ -18,7 +18,7 @@ Feature: Test the UDB3 roles API
     }
     """
 
-  Scenario: delete role
+  Scenario: Delete a role
     Given I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "role_uuid"
 
