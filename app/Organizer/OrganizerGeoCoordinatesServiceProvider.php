@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer;
 
-use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
-use CultuurNet\UDB3\Address\FullAddressFormatter;
-use CultuurNet\UDB3\Address\LocalityAddressFormatter;
+use CultuurNet\UDB3\Address\Formatter\FullAddressFormatter;
+use CultuurNet\UDB3\Address\Formatter\LocalityAddressFormatter;
+use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateGeoCoordinatesFromAddressCommandHandler;
 use CultuurNet\UDB3\Organizer\ProcessManager\GeoCoordinatesProcessManager;
-use CultuurNet\UDB3\Error\LoggerFactory;
-use CultuurNet\UDB3\Error\LoggerName;
 
 final class OrganizerGeoCoordinatesServiceProvider extends AbstractServiceProvider
 {
