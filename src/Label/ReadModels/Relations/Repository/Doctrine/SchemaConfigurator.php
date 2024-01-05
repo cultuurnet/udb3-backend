@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
@@ -39,19 +39,19 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     {
         $table = $schema->createTable($tableName);
 
-        $table->addColumn(self::LABEL_NAME, Type::STRING)
+        $table->addColumn(self::LABEL_NAME, Types::STRING)
             ->setLength(255)
             ->setNotnull(true);
 
-        $table->addColumn(self::RELATION_TYPE, Type::STRING)
+        $table->addColumn(self::RELATION_TYPE, Types::STRING)
             ->setLength(255)
             ->setNotnull(true);
 
-        $table->addColumn(self::RELATION_ID, Type::GUID)
+        $table->addColumn(self::RELATION_ID, Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 
-        $table->addColumn(self::IMPORTED, Type::BOOLEAN)
+        $table->addColumn(self::IMPORTED, Types::BOOLEAN)
             ->setNotnull(true)
             ->setDefault(false);
 

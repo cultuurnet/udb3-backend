@@ -9,7 +9,7 @@ use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
@@ -39,15 +39,15 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     {
         $table = $schema->createTable($tableName);
 
-        $table->addColumn(self::UUID_COLUMN, Type::GUID)
+        $table->addColumn(self::UUID_COLUMN, Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 
-        $table->addColumn(self::NAME_COLUMN, Type::STRING)
+        $table->addColumn(self::NAME_COLUMN, Types::STRING)
             ->setLength(255)
             ->setNotnull(true);
 
-        $table->addColumn(self::CONSTRAINT_COLUMN, Type::TEXT)
+        $table->addColumn(self::CONSTRAINT_COLUMN, Types::TEXT)
             ->setLength(MySqlPlatform::LENGTH_LIMIT_TEXT + 1)
             ->setNotnull(false);
 
