@@ -12,12 +12,12 @@ use CultuurNet\UDB3\Media\Exceptions\InvalidFileType;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use Laminas\Diactoros\Stream;
 use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
-use Zend\Diactoros\Stream;
 
 final class ImageUploaderServiceTest extends TestCase
 {
