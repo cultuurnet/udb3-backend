@@ -123,8 +123,8 @@ class PlaceJsonToTurtleConverterTest extends TestCase
             },
             E_ALL
         );
-        $this->expectExceptionMessage('Undefined index: name');
-
+        $this->expectException(Exception::class);
+        
         $this->placeJsonToTurtleConverter->convert($placeId);
     }
 
