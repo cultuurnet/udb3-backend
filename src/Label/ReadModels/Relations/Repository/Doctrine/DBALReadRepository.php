@@ -38,7 +38,8 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
             ->where($whereLabelName)
             ->andWhere(SchemaConfigurator::RELATION_TYPE . ' = ?')
             ->setParameters([$labelName, $relationType->toString()])
-        ->execute()->fetchAll(\PDO::FETCH_COLUMN);
+            ->execute()
+            ->fetchFirstColumn();
     }
 
     public function getLabelRelationsForItem(string $relationId): array
