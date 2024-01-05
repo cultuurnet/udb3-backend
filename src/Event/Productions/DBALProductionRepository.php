@@ -28,7 +28,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
 
     public function find(ProductionId $productionId): Production
     {
-        $results = $this->getConnection()->fetchAll(
+        $results = $this->getConnection()->fetchAllAssociative(
             'SELECT * FROM productions WHERE production_id = :productionId',
             [
                 'productionId' => $productionId->toNative(),
@@ -187,7 +187,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
 
     public function findProductionForEventId(string $eventId): Production
     {
-        $results = $this->getConnection()->fetchAll(
+        $results = $this->getConnection()->fetchAllAssociative(
             'SELECT * FROM productions WHERE production_id = (SELECT production_id FROM productions WHERE event_id = :eventId)',
             [
                 'eventId' => $eventId,
