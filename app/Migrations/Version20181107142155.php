@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Migrations;
 
 use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Add the table for SAPI3 saved searches.
- */
 class Version20181107142155 extends AbstractMigration
 {
     private const SAVED_SEARCHES_SAPI3 = 'saved_searches_sapi3';

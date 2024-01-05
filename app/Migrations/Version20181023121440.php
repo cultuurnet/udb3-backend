@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Migrations;
 
 use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 class Version20181023121440 extends AbstractMigration
 {
     public function up(Schema $schema): void
