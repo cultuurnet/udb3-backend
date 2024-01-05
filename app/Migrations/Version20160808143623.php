@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Migrations;
 
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 
 class Version20160808143623 extends AbstractMigration
@@ -20,11 +20,11 @@ class Version20160808143623 extends AbstractMigration
     {
         $userRoleTable = $schema->createTable(UserPermissionsServiceProvider::USER_ROLES_TABLE);
 
-        $userRoleTable->addColumn(self::USER_ID_COLUMN, Type::GUID)
+        $userRoleTable->addColumn(self::USER_ID_COLUMN, Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 
-        $userRoleTable->addColumn(self::ROLE_ID_COLUMN, Type::GUID)
+        $userRoleTable->addColumn(self::ROLE_ID_COLUMN, Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 
@@ -33,11 +33,11 @@ class Version20160808143623 extends AbstractMigration
 
         $rolePermissionTable = $schema->createTable(UserPermissionsServiceProvider::ROLE_PERMISSIONS_TABLE);
 
-        $rolePermissionTable->addColumn(self::ROLE_ID_COLUMN, Type::GUID)
+        $rolePermissionTable->addColumn(self::ROLE_ID_COLUMN, Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 
-        $rolePermissionTable->addColumn(self::PERMISSION_COLUMN, Type::STRING)
+        $rolePermissionTable->addColumn(self::PERMISSION_COLUMN, Types::STRING)
             ->setLength(255)
             ->setNotnull(true);
 

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Migrations;
 
 use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\SchemaConfigurator;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 
 class Version20181106123049 extends AbstractMigration
@@ -20,19 +20,19 @@ class Version20181106123049 extends AbstractMigration
 
         $table->addColumn(
             SchemaConfigurator::UUID_COLUMN,
-            Type::GUID,
+            Types::GUID,
             ['length' => 36]
         );
 
         $table->addColumn(
             SchemaConfigurator::NAME_COLUMN,
-            Type::STRING
+            Types::STRING
         )
             ->setLength(255);
 
         $table->addColumn(
             SchemaConfigurator::CONSTRAINT_COLUMN,
-            Type::STRING
+            Types::STRING
         )
             ->setNotnull(false);
 

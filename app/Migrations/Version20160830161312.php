@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Migrations;
 
 use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\SchemaConfigurator;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 
 class Version20160830161312 extends AbstractMigration
@@ -15,7 +15,7 @@ class Version20160830161312 extends AbstractMigration
     {
         $table = $schema->getTable('roles_search');
 
-        $table->addColumn(SchemaConfigurator::CONSTRAINT_COLUMN, Type::STRING)
+        $table->addColumn(SchemaConfigurator::CONSTRAINT_COLUMN, Types::STRING)
             ->setNotnull(false);
     }
 

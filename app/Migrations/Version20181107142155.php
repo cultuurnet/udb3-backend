@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Migrations;
 
 use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 
 class Version20181107142155 extends AbstractMigration
@@ -18,19 +18,19 @@ class Version20181107142155 extends AbstractMigration
     {
         $table = $schema->createTable(self::SAVED_SEARCHES_SAPI3);
 
-        $table->addColumn(SchemaConfigurator::ID, Type::GUID)
+        $table->addColumn(SchemaConfigurator::ID, Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 
-        $table->addColumn(SchemaConfigurator::USER, Type::GUID)
+        $table->addColumn(SchemaConfigurator::USER, Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 
-        $table->addColumn(SchemaConfigurator::NAME, Type::STRING)
+        $table->addColumn(SchemaConfigurator::NAME, Types::STRING)
             ->setLength(255)
             ->setNotnull(true);
 
-        $table->addColumn(SchemaConfigurator::QUERY, Type::TEXT)
+        $table->addColumn(SchemaConfigurator::QUERY, Types::TEXT)
             ->setNotnull(true);
 
         $table->addIndex([SchemaConfigurator::ID]);
