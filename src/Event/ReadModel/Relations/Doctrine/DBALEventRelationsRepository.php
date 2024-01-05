@@ -194,7 +194,7 @@ final class DBALEventRelationsRepository implements EventRelationsRepository
 
         $statement = $queryBuilder->execute();
 
-        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $statement->fetchAllAssociative();
 
         return isset($rows[0][$eventType]) ? $rows[0][$eventType] : null;
     }

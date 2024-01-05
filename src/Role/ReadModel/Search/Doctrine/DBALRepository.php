@@ -68,7 +68,7 @@ class DBALRepository implements RepositoryInterface
             $q->setParameter('role_name', '%' . $query . '%');
         }
 
-        $results = $q->execute()->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $q->execute()->fetchAllAssociative();
 
         //Total.
         $q = $this->connection->createQueryBuilder();
