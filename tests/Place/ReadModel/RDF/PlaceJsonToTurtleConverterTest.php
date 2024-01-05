@@ -124,7 +124,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
             E_ALL
         );
         $this->expectException(Exception::class);
-        
+
         $this->placeJsonToTurtleConverter->convert($placeId);
     }
 
