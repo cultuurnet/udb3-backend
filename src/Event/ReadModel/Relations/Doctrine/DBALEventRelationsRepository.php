@@ -117,7 +117,7 @@ final class DBALEventRelationsRepository implements EventRelationsRepository
             ->setParameter('event_id', $id);
 
         $result = $q->execute();
-        $relations = $result->fetchAll();
+        $relations = $result->fetchAllAssociative();
 
         return count($relations) > 0;
     }

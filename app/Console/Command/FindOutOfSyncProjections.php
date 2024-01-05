@@ -79,7 +79,7 @@ final class FindOutOfSyncProjections extends Command
             ->setParameter(':last_id', $input->getArgument('last-id'))
             ->groupBy('uuid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         foreach ($results as $result) {
             $uuid = $result['uuid'];

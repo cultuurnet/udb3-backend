@@ -51,7 +51,7 @@ final class DbalContributorRepository implements ContributorRepository
             ->setParameter(':id', $id->toString())
             ->setParameter(':email', $emailAddress->toString())
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         return count($results) > 0;
     }

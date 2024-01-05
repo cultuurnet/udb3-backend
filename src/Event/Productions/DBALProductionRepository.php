@@ -125,7 +125,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
             $query->setParameter(':keyword', $keyword);
         }
 
-        $results = $query->execute()->fetchAll();
+        $results = $query->execute()->fetchAllAssociative();
 
         if (empty($results)) {
             return [];
@@ -154,7 +154,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
     public function count(string $keyword): int
     {
         $keyword = $this->addWildcardToKeyword($keyword);
-        return count($this->createSearchQuery($keyword)->execute()->fetchAll());
+        return count($this->createSearchQuery($keyword)->execute()->fetchAllAssociative());
     }
 
     private function createSearchQuery(string $keyword): QueryBuilder

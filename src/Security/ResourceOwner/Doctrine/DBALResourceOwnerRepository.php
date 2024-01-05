@@ -88,6 +88,6 @@ final class DBALResourceOwnerRepository implements ResourceOwnerRepository, Reso
             ->where($this->idField . ' = :resource_id')
             ->setParameter(':resource_id', $resourceId)
             ->execute()
-            ->fetchAll());
+            ->fetchAllAssociative());
     }
 }

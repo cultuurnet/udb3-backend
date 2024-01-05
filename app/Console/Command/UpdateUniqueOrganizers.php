@@ -114,7 +114,7 @@ class UpdateUniqueOrganizers extends Command
             ->setFirstResult($offset)
             ->setMaxResults(self::MAX_RESULTS)
             ->execute()
-            ->fetchAll(PDO::FETCH_ASSOC);
+            ->fetchAllAssociative();
     }
 
     private function getAllOrganizerEventsCount(): int
@@ -127,7 +127,7 @@ class UpdateUniqueOrganizers extends Command
                 ->orWhere('type = "' . self::ORGANIZER_WEBSITE_UPDATED . '"')
                 ->orderBy('id')
                 ->execute()
-                ->fetchAll()
+                ->fetchAllAssociative()
         );
     }
 

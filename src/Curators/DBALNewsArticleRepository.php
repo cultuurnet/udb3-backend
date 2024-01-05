@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 
 final class DBALNewsArticleRepository implements NewsArticleRepository
 {
@@ -30,7 +29,7 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
             ->where('id = :id')
             ->setParameter(':id', $id->toString())
             ->execute()
-            ->fetchAll(FetchMode::ASSOCIATIVE);
+            ->fetchAllAssociative();
 
         if (count($newsArticleRows) !== 1) {
             throw new NewsArticleNotFound($id);
@@ -74,7 +73,7 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
         $newsArticleRows = $query
             ->setMaxResults($newsArticleSearch->getItemsPerPage())
             ->execute()
-            ->fetchAll(FetchMode::ASSOCIATIVE);
+            ->fetchAllAssociative();
 
         return $this->createNewsArticles($newsArticleRows);
     }

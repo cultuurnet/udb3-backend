@@ -159,7 +159,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
             ->where($likeUniqueValue)
             ->setParameter('uniqueValue', $uniqueValue)
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         if (!empty($rows)) {
             throw new UniqueConstraintException(

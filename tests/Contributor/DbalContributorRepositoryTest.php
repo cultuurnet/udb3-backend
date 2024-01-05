@@ -157,7 +157,7 @@ final class DbalContributorRepositoryTest extends TestCase
             ->andWhere('type = :type')
             ->setParameter(':type', $itemType->toString())
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         $this->assertEquals(2, count($result));
     }
