@@ -11,10 +11,10 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use Laminas\Diactoros\UploadedFile;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
-use Zend\Diactoros\UploadedFile;
 
 final class UploadMediaRequestHandlerTest extends TestCase
 {
