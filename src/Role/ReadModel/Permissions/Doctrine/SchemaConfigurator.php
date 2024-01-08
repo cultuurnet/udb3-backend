@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine;
 
 use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
@@ -31,11 +31,11 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
         if (!$schema->hasTable($this->userRoleTableName)) {
             $userRoleTable = $schema->createTable($this->userRoleTableName);
 
-            $userRoleTable->addColumn(self::USER_ID_COLUMN, Type::GUID)
+            $userRoleTable->addColumn(self::USER_ID_COLUMN, Types::GUID)
                 ->setLength(36)
                 ->setNotnull(true);
 
-            $userRoleTable->addColumn(self::ROLE_ID_COLUMN, Type::GUID)
+            $userRoleTable->addColumn(self::ROLE_ID_COLUMN, Types::GUID)
                 ->setLength(36)
                 ->setNotnull(true);
 
@@ -48,11 +48,11 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
         if (!$schema->hasTable($this->rolePermissionTableName)) {
             $rolePermissionTable = $schema->createTable($this->rolePermissionTableName);
 
-            $rolePermissionTable->addColumn(self::ROLE_ID_COLUMN, Type::GUID)
+            $rolePermissionTable->addColumn(self::ROLE_ID_COLUMN, Types::GUID)
                 ->setLength(36)
                 ->setNotnull(true);
 
-            $rolePermissionTable->addColumn(self::PERMISSION_COLUMN, Type::STRING)
+            $rolePermissionTable->addColumn(self::PERMISSION_COLUMN, Types::STRING)
                 ->setLength(255)
                 ->setNotnull(true);
 

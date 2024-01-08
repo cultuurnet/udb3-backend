@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
@@ -40,23 +40,23 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     {
         $table = $schema->createTable($tableName);
 
-        $table->addColumn(self::UUID_COLUMN, Type::GUID)
+        $table->addColumn(self::UUID_COLUMN, Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 
-        $table->addColumn(self::NAME_COLUMN, Type::STRING)
+        $table->addColumn(self::NAME_COLUMN, Types::STRING)
             ->setLength(255)
             ->setNotnull(true);
 
-        $table->addColumn(self::VISIBLE_COLUMN, Type::BOOLEAN)
+        $table->addColumn(self::VISIBLE_COLUMN, Types::BOOLEAN)
             ->setNotnull(true)
             ->setDefault(true);
 
-        $table->addColumn(self::PRIVATE_COLUMN, Type::BOOLEAN)
+        $table->addColumn(self::PRIVATE_COLUMN, Types::BOOLEAN)
             ->setNotnull(true)
             ->setDefault(false);
 
-        $table->addColumn(self::EXCLUDED_COLUMN, Type::BOOLEAN)
+        $table->addColumn(self::EXCLUDED_COLUMN, Types::BOOLEAN)
             ->setNotnull(true)
             ->setDefault(false);
 

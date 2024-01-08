@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 
 final class Version20230927114216 extends AbstractMigration
@@ -22,10 +22,10 @@ final class Version20230927114216 extends AbstractMigration
     {
         $table = $schema->getTable('labels_json');
 
-        $table->addColumn('parentUuid', Type::GUID)
+        $table->addColumn('parentUuid', Types::GUID)
             ->setLength(36)
             ->setNotnull(false);
-        $table->addColumn('count_col', Type::BIGINT)
+        $table->addColumn('count_col', Types::BIGINT)
             ->setNotnull(true)
             ->setDefault(0);
     }

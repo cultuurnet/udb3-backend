@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 
 class Version20170731151814 extends AbstractMigration
@@ -17,7 +18,7 @@ class Version20170731151814 extends AbstractMigration
             ->changeColumn(
                 'zip',
                 [
-                    'type' => Type::getType('string'),
+                    'type' => Type::getType(Types::STRING),
                     'length' => 32,
                 ]
             );
@@ -26,7 +27,7 @@ class Version20170731151814 extends AbstractMigration
             ->changeColumn(
                 'created',
                 [
-                    'type' => Type::getType('string'),
+                    'type' => Type::getType(Types::STRING),
                     'length' => 32,
                 ]
             );
@@ -35,7 +36,7 @@ class Version20170731151814 extends AbstractMigration
             ->changeColumn(
                 'updated',
                 [
-                    'type' => Type::getType('string'),
+                    'type' => Type::getType(Types::STRING),
                     'length' => 32,
                 ]
             );
@@ -44,7 +45,7 @@ class Version20170731151814 extends AbstractMigration
             ->changeColumn(
                 'owning_domain',
                 [
-                    'type' => Type::getType('string'),
+                    'type' => Type::getType(Types::STRING),
                     'length' => 256,
                 ]
             );
@@ -53,7 +54,7 @@ class Version20170731151814 extends AbstractMigration
             ->changeColumn(
                 'entity_iri',
                 [
-                    'type' => Type::getType('string'),
+                    'type' => Type::getType(Types::STRING),
                     'length' => 256,
                 ]
             );
@@ -69,7 +70,7 @@ class Version20170731151814 extends AbstractMigration
             ->changeColumn(
                 'zip',
                 [
-                    'type' => Type::getType('text'),
+                    'type' => Type::getType(Types::TEXT),
                 ]
             );
 
@@ -77,7 +78,7 @@ class Version20170731151814 extends AbstractMigration
             ->changeColumn(
                 'created',
                 [
-                    'type' => Type::getType('text'),
+                    'type' => Type::getType(Types::TEXT),
                 ]
             );
 
@@ -85,7 +86,7 @@ class Version20170731151814 extends AbstractMigration
             ->changeColumn(
                 'updated',
                 [
-                    'type' => Type::getType('text'),
+                    'type' => Type::getType(Types::TEXT),
                 ]
             );
 
@@ -93,7 +94,7 @@ class Version20170731151814 extends AbstractMigration
             ->changeColumn(
                 'owning_domain',
                 [
-                    'type' => Type::getType('text'),
+                    'type' => Type::getType(Types::TEXT),
                 ]
             );
 
@@ -101,15 +102,12 @@ class Version20170731151814 extends AbstractMigration
             ->changeColumn(
                 'entity_iri',
                 [
-                    'type' => Type::getType('text'),
+                    'type' => Type::getType(Types::TEXT),
                 ]
             );
     }
 
-    /**
-     * @return Table
-     */
-    private function getIndexTable(Schema $schema)
+    private function getIndexTable(Schema $schema): Table
     {
         return $schema->getTable('index_readmodel');
     }

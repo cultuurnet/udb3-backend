@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 
 class Version20160607132920 extends AbstractMigration
@@ -54,11 +54,11 @@ class Version20160607132920 extends AbstractMigration
     {
         $table = $schema->createTable(self::LABELS_UNIQUE_TABLE);
 
-        $table->addColumn(self::UUID_COLUMN, Type::GUID)
+        $table->addColumn(self::UUID_COLUMN, Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 
-        $table->addColumn(self::UNIQUE_COLUMN, Type::STRING)
+        $table->addColumn(self::UNIQUE_COLUMN, Types::STRING)
             ->setLength(255)
             ->setNotnull(true);
 

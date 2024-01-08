@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Curators;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 final class NewsArticleSchemaConfigurator
 {
@@ -14,16 +14,16 @@ final class NewsArticleSchemaConfigurator
     {
         $table = $schema->createTable('news_article');
 
-        $table->addColumn('id', Type::GUID)->setLength(36)->setNotnull(true);
-        $table->addColumn('headline', Type::TEXT)->setDefault(null)->setNotnull(false);
-        $table->addColumn('in_language', Type::TEXT)->setDefault(null)->setNotnull(false);
-        $table->addColumn('text', Type::TEXT)->setDefault(null)->setNotnull(false);
-        $table->addColumn('about', Type::TEXT)->setDefault(null)->setNotnull(false);
-        $table->addColumn('publisher', Type::TEXT)->setDefault(null)->setNotnull(false);
-        $table->addColumn('url', Type::TEXT)->setDefault(null)->setNotnull(false);
-        $table->addColumn('publisher_logo', Type::TEXT)->setDefault(null)->setNotnull(false);
-        $table->addColumn('image_url', Type::TEXT)->setDefault(null)->setNotnull(false);
-        $table->addColumn('copyright_holder', Type::TEXT)
+        $table->addColumn('id', Types::GUID)->setLength(36)->setNotnull(true);
+        $table->addColumn('headline', Types::TEXT)->setDefault(null)->setNotnull(false);
+        $table->addColumn('in_language', Types::TEXT)->setDefault(null)->setNotnull(false);
+        $table->addColumn('text', Types::TEXT)->setDefault(null)->setNotnull(false);
+        $table->addColumn('about', Types::TEXT)->setDefault(null)->setNotnull(false);
+        $table->addColumn('publisher', Types::TEXT)->setDefault(null)->setNotnull(false);
+        $table->addColumn('url', Types::TEXT)->setDefault(null)->setNotnull(false);
+        $table->addColumn('publisher_logo', Types::TEXT)->setDefault(null)->setNotnull(false);
+        $table->addColumn('image_url', Types::TEXT)->setDefault(null)->setNotnull(false);
+        $table->addColumn('copyright_holder', Types::TEXT)
             ->setDefault(null)
             ->setNotnull(false)
             ->setLength(250);

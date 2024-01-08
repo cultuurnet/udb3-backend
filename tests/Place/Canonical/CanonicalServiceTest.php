@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 
 class CanonicalServiceTest extends TestCase
@@ -35,8 +35,8 @@ class CanonicalServiceTest extends TestCase
         $this->mostEventsPlaceId = '34621f3b-b626-4672-be7c-33972ac13791';
 
         $table = new Table('duplicate_places');
-        $table->addColumn('cluster_id', Type::BIGINT)->setNotnull(true);
-        $table->addColumn('place_uuid', Type::GUID)->setLength(36)->setNotnull(true);
+        $table->addColumn('cluster_id', Types::BIGINT)->setNotnull(true);
+        $table->addColumn('place_uuid', Types::GUID)->setLength(36)->setNotnull(true);
         $this->createTable($table);
         $this->getConnection()->insert(
             'duplicate_places',
@@ -119,10 +119,10 @@ class CanonicalServiceTest extends TestCase
 
         $documentRepository = new InMemoryDocumentRepository();
         $labelsRelations = new Table('labels_relations');
-        $labelsRelations->addColumn('labelName', Type::STRING)->setLength(255);
-        $labelsRelations->addColumn('relationType', Type::STRING)->setLength(255);
-        $labelsRelations->addColumn('relationId', Type::BIGINT)->setNotnull(true);
-        $labelsRelations->addColumn('imported', Type::SMALLINT)->setNotnull(true)->setDefault(0);
+        $labelsRelations->addColumn('labelName', Types::STRING)->setLength(255);
+        $labelsRelations->addColumn('relationType', Types::STRING)->setLength(255);
+        $labelsRelations->addColumn('relationId', Types::BIGINT)->setNotnull(true);
+        $labelsRelations->addColumn('imported', Types::SMALLINT)->setNotnull(true)->setDefault(0);
         $this->createTable($labelsRelations);
 
         $this->getConnection()->insert(
@@ -146,9 +146,9 @@ class CanonicalServiceTest extends TestCase
         );
 
         $eventRelations = new Table('event_relations');
-        $eventRelations->addColumn('event', Type::STRING)->setLength(36)->setNotnull(true);
-        $eventRelations->addColumn('organizer', Type::STRING)->setLength(36)->setNotnull(true);
-        $eventRelations->addColumn('place', Type::STRING)->setLength(36)->setNotnull(true);
+        $eventRelations->addColumn('event', Types::STRING)->setLength(36)->setNotnull(true);
+        $eventRelations->addColumn('organizer', Types::STRING)->setLength(36)->setNotnull(true);
+        $eventRelations->addColumn('place', Types::STRING)->setLength(36)->setNotnull(true);
         $this->createTable($eventRelations);
 
         $this->getConnection()->insert(

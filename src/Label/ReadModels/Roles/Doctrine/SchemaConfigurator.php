@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine;
 
 use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
@@ -29,11 +29,11 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
                 $this->labelRolesTableName
             );
 
-            $labelRolesTable->addColumn(self::LABEL_ID_COLUMN, Type::GUID)
+            $labelRolesTable->addColumn(self::LABEL_ID_COLUMN, Types::GUID)
                 ->setLength(36)
                 ->setNotnull(true);
 
-            $labelRolesTable->addColumn(self::ROLE_ID_COLUMN, Type::GUID)
+            $labelRolesTable->addColumn(self::ROLE_ID_COLUMN, Types::GUID)
                 ->setLength(36)
                 ->setNotnull(true);
 
