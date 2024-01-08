@@ -8,7 +8,6 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
-use PDO;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -50,14 +49,14 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
                     ->from('event_relations')
                     ->where('organizer IS NOT NULL')
                     ->execute()
-                    ->fetchAll(PDO::FETCH_COLUMN);
+                    ->fetchFirstColumn();
 
                 $queryBuilder = $connection->createQueryBuilder();
                 $placeOrganizers = $queryBuilder->select('DISTINCT organizer')
                     ->from('place_relations')
                     ->where('organizer IS NOT NULL')
                     ->execute()
-                    ->fetchAll(PDO::FETCH_COLUMN);
+                    ->fetchFirstColumn();
 
                 $allOrganizers = array_merge($eventOrganizers, $placeOrganizers);
                 $allOrganizers = array_unique($allOrganizers);
@@ -81,7 +80,7 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
                     ->from('event_relations')
                     ->where('place IS NOT NULL')
                     ->execute()
-                    ->fetchAll(PDO::FETCH_COLUMN);
+                    ->fetchFirstColumn();
 
                 $this->fireEvents(
                     $eventLocations,

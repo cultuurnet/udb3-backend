@@ -28,7 +28,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
 
     public function find(ProductionId $productionId): Production
     {
-        $results = $this->getConnection()->fetchAll(
+        $results = $this->getConnection()->fetchAllAssociative(
             'SELECT * FROM productions WHERE production_id = :productionId',
             [
                 'productionId' => $productionId->toNative(),
@@ -125,7 +125,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
             $query->setParameter(':keyword', $keyword);
         }
 
-        $results = $query->execute()->fetchAll();
+        $results = $query->execute()->fetchAllAssociative();
 
         if (empty($results)) {
             return [];
@@ -154,7 +154,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
     public function count(string $keyword): int
     {
         $keyword = $this->addWildcardToKeyword($keyword);
-        return count($this->createSearchQuery($keyword)->execute()->fetchAll());
+        return count($this->createSearchQuery($keyword)->execute()->fetchAllAssociative());
     }
 
     private function createSearchQuery(string $keyword): QueryBuilder
@@ -187,7 +187,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
 
     public function findProductionForEventId(string $eventId): Production
     {
-        $results = $this->getConnection()->fetchAll(
+        $results = $this->getConnection()->fetchAllAssociative(
             'SELECT * FROM productions WHERE production_id = (SELECT production_id FROM productions WHERE event_id = :eventId)',
             [
                 'eventId' => $eventId,

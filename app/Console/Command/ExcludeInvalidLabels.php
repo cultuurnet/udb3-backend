@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Label\Commands\ExcludeLabel as ExcludeLabelCommand;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use Doctrine\DBAL\Connection;
-use PDO;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -77,7 +76,7 @@ final class ExcludeInvalidLabels extends AbstractCommand
                 ->where('excluded = :excluded')
                 ->setParameter(':excluded', 0)
                 ->execute()
-                ->fetchAll()
+                ->fetchAllAssociative()
         );
     }
 
@@ -91,6 +90,6 @@ final class ExcludeInvalidLabels extends AbstractCommand
             ->setFirstResult($firstResult)
             ->setMaxResults(self::MAX_RESULTS)
             ->execute()
-            ->fetchAll(PDO::FETCH_ASSOC);
+            ->fetchAllAssociative();
     }
 }

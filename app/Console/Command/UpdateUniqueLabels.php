@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use PDO;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Console\Command\Command;
@@ -101,7 +100,7 @@ final class UpdateUniqueLabels extends Command
             ->setFirstResult($offset)
             ->setMaxResults(self::MAX_RESULTS)
             ->execute()
-            ->fetchAll(PDO::FETCH_ASSOC);
+            ->fetchAllAssociative();
     }
 
     private function getAllLabelAddedEventsCount(): int
@@ -113,7 +112,7 @@ final class UpdateUniqueLabels extends Command
                 ->where('type = "' . self::LABEL_CREATED . '"')
                 ->orderBy('id')
                 ->execute()
-                ->fetchAll()
+                ->fetchAllAssociative()
         );
     }
 

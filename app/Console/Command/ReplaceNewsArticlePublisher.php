@@ -83,7 +83,7 @@ final class ReplaceNewsArticlePublisher extends Command
                 ->where('publisher = :publisher')
                 ->setParameter(':publisher', $publisher)
                 ->execute()
-                ->fetchAll()
+                ->fetchAllAssociative()
         );
     }
 

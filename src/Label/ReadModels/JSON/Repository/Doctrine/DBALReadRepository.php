@@ -237,7 +237,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         $entities = [];
 
         $statement = $queryBuilder->execute();
-        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $statement->fetchAllAssociative();
         foreach ($rows as $row) {
             $entities[] = $this->rowToEntity($row);
         }

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Place\Canonical;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Types;
-use PDO;
 use PHPUnit\Framework\TestCase;
 
 class DBALDuplicatePlaceRepositoryTest extends TestCase
@@ -102,7 +101,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
             ->select('*')
             ->from('duplicate_places')
             ->execute()
-            ->fetchAll(PDO::FETCH_NUM);
+            ->fetchAllNumeric();
 
         $this->assertEquals(
             [

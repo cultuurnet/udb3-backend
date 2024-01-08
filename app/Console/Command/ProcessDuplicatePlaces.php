@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
-use PDO;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -169,6 +168,6 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             ->select('place_uuid')
             ->from('duplicate_places_removed_from_cluster')
             ->execute()
-            ->fetchAll(PDO::FETCH_COLUMN);
+            ->fetchFirstColumn();
     }
 }

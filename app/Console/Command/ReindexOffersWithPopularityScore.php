@@ -13,7 +13,6 @@ use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -98,7 +97,7 @@ class ReindexOffersWithPopularityScore extends Command
             ->where('offer_type = :type')
             ->setParameter(':type', $type)
             ->execute()
-            ->fetchAll(FetchMode::COLUMN);
+            ->fetchFirstColumn();
     }
 
     private function askConfirmation(InputInterface $input, OutputInterface $output, string $type, int $count): bool

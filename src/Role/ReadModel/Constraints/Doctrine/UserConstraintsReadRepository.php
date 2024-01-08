@@ -67,6 +67,6 @@ class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInte
             ->setParameter('userId', $userId)
             ->setParameter('permission', $permission->toString());
 
-        return $userConstraintsQuery->execute()->fetchAll(\PDO::FETCH_COLUMN);
+        return $userConstraintsQuery->execute()->fetchFirstColumn();
     }
 }
