@@ -11,7 +11,7 @@ jobs:
         name: Unit tests ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
@@ -51,7 +51,7 @@ jobs:
         name: Code style ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
@@ -84,7 +84,7 @@ jobs:
         name: Static analysis ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
@@ -117,7 +117,7 @@ jobs:
         name: Unused composer dependencies ${{ matrix.php-versions }}
         steps:
             -   name: 📤 Checkout project
-                uses: actions/checkout@v2
+                uses: actions/checkout@v4
 
             -   name: 🐘 Install PHP
                 uses: shivammathur/setup-php@v2
