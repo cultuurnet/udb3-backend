@@ -39,6 +39,7 @@ use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
+use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
@@ -136,10 +137,10 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 [
                     'id' => $id,
                     'type' => 'event',
-                    'exception' => $id,
+                    'exception' => $throwable->getMessage(),
                 ]
             );
-            throw $throwable;
+            throw new JsonDataCouldNotBeConverted($throwable->getMessage());
         }
 
         if (!isset($eventData['created'])) {
@@ -150,7 +151,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                     'type' => 'event',
                 ]
             );
-            throw new \InvalidArgumentException('Event ' . $id . ' has no created date.');
+            throw new JsonDataCouldNotBeConverted('Event ' . $id . ' has no created date.');
         }
 
         GraphEditor::for($graph)->setGeneralProperties(

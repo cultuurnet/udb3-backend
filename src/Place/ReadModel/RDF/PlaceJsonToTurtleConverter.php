@@ -19,6 +19,7 @@ use CultuurNet\UDB3\RDF\Editor\GeometryEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
+use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
@@ -76,10 +77,10 @@ final class PlaceJsonToTurtleConverter implements JsonToTurtleConverter
                 [
                     'id' => $id,
                     'type' => 'place',
-                    'exception' => $id,
+                    'exception' => $throwable->getMessage(),
                 ]
             );
-            throw $throwable;
+            throw new JsonDataCouldNotBeConverted($throwable->getMessage());
         }
 
         GraphEditor::for($graph)->setGeneralProperties(
