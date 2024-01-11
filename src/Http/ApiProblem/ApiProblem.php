@@ -496,4 +496,14 @@ final class ApiProblem extends Exception
             'The image with id ' . $imageId . ' is not linked to the resource. Add it first before you can perform an action.'
         );
     }
+
+    public static function invalidJsonData(string $detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/body/invalid-json-data',
+            'Invalid JSON data for RDF creation',
+            400,
+            $detail
+        );
+    }
 }
