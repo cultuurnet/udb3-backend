@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Address\Parser\ParsedAddress;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -151,7 +152,7 @@ class EventJsonToTurtleConverterTest extends TestCase
             ->method('warning')
             ->with('Unable to project event d4b46fba-6433-4f86-bcb5-edeef6689fea without created date to RDF.');
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(JsonDataCouldNotBeConverted::class);
         $this->expectExceptionMessage('Event ' . $eventId . ' has no created date.');
 
         $this->eventJsonToTurtleConverter->convert($eventId);
