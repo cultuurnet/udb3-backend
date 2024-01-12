@@ -11,8 +11,7 @@
   "email": "john@doe.com",
   "include": [],
   "order": {
-    "property": "availableTo",
-    "order": "asc"
+    "property": "availableTo"
   },
   "perDay": false,
   "query": "city:doetown"

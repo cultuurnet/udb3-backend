@@ -11,6 +11,7 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Footer;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Publisher;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Subtitle;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
+use CultuurNet\UDB3\EventExport\SortOrder;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use PHPUnit\Framework\TestCase;
 
@@ -84,6 +85,30 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
     /**
      * @test
      */
+    public function it_expects_order_to_contain_property(): void
+    {
+        $exportData = $this->getJSONStringFromFile('export_pdf_data_without_order_property.json');
+
+        $this->expectException(MissingValueException::class);
+        $this->expectExceptionMessage("order is incomplete. You should provide a 'property' key.");
+        $this->deserializer->deserialize($exportData);
+    }
+
+    /**
+     * @test
+     */
+    public function it_expects_order_to_contain_order(): void
+    {
+        $exportData = $this->getJSONStringFromFile('export_pdf_data_without_order_order.json');
+
+        $this->expectException(MissingValueException::class);
+        $this->expectExceptionMessage("order is incomplete. You should provide a 'order' key.");
+        $this->deserializer->deserialize($exportData);
+    }
+
+    /**
+     * @test
+     */
     public function it_includes_optional_properties(): void
     {
         $exportData = $this->getJSONStringFromFile('export_pdf_data.json');
@@ -94,6 +119,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
         $this->assertEquals(new Footer('a footer'), $command->getFooter());
         $this->assertEquals(new EmailAddress('john@doe.com'), $command->getAddress());
         $this->assertEquals(WebArchiveTemplate::map(), $command->getTemplate());
+        $this->assertEquals(new SortOrder('availableTo', 'asc'), $command->getSortOrder());
     }
 
     /**

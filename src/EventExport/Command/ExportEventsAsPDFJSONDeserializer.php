@@ -87,7 +87,7 @@ class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
         $hasOrder = isset($json->order->order);
 
         if ($hasProperty && !$hasOrder) {
-            throw new MissingValueException("order is incomplete. You should provide an 'order' key.");
+            throw new MissingValueException("order is incomplete. You should provide a 'order' key.");
         }
 
         if (!$hasProperty && $hasOrder) {
