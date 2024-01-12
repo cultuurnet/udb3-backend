@@ -20,4 +20,6 @@ interface ExportEventsInterface
     public function getSelection(): ?array;
 
     public function getSortOrder(): ?SortOrder;
+
+    public function withSortOrder(SortOrder $sortOrder): object;
 }
