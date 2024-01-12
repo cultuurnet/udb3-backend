@@ -24,20 +24,20 @@ final class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
 
     public function deserialize(string $data): SubscribeToSavedSearch
     {
-        $data = parent::deserialize($data);
+        $json = parent::deserialize($data);
 
-        if (!isset($data->name)) {
+        if (!isset($json->name)) {
             throw new MissingValueException('name is missing');
         }
 
-        if (!isset($data->query)) {
+        if (!isset($json->query)) {
             throw new MissingValueException('query is missing');
         }
 
         return new SubscribeToSavedSearch(
             $this->userId,
-            $data->name,
-            new QueryString($data->query)
+            $json->name,
+            new QueryString($json->query)
         );
     }
 }
