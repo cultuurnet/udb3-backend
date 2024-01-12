@@ -31,8 +31,7 @@ final class SortOrder
     public function toArray(): array
     {
         return [
-            $this->getProperty() => $this->getOrder()
+            $this->getProperty() => $this->getOrder(),
         ];
     }
-
 }
