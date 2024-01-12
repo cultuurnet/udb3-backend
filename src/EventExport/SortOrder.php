@@ -25,4 +25,14 @@ final class SortOrder
         return $this->order;
     }
 
+    /**
+     * @return array<string, string>
+     */
+    public function toArray(): array
+    {
+        return [
+            $this->getProperty() => $this->getOrder()
+        ];
+    }
+
 }
