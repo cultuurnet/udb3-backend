@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\EventExport\Command;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
+use CultuurNet\UDB3\EventExport\SortOrder;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 /**
@@ -38,12 +39,33 @@ abstract class ExportEventsJSONDeserializer extends JSONDeserializer
             $include = $data->include;
         }
 
-        return $this->createCommand(
+        $command = $this->createCommand(
             $query,
             $include,
             $email,
             $selection
         );
+
+        $hasProperty = isset($data->order->property);
+        $hasOrder = isset($data->order->order);
+
+        if ($hasProperty && !$hasOrder) {
+            throw new MissingValueException("order is incomplete. You should provide a 'order' key.");
+        }
+
+        if (!$hasProperty && $hasOrder) {
+            throw new MissingValueException("order is incomplete. You should provide a 'property' key.");
+        }
+
+        if ($hasProperty && $hasOrder) { // @phpstan-ignore-line
+            $sortOrder = new SortOrder(
+                $data->order->property,
+                $data->order->order,
+            );
+            $command = $command->withSortOrder($sortOrder);
+        }
+
+        return $command;
     }
 
     /**
