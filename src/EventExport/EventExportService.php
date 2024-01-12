@@ -84,7 +84,7 @@ final class EventExportService implements EventExportServiceInterface
             $this->resultsGenerator->setLogger($logger);
         }
 
-        if ($this->resultsGenerator instanceof SortableInterface) {
+        if ($this->resultsGenerator instanceof SortableInterface && isset($sortOrder)) {
             $this->resultsGenerator = $this->resultsGenerator->withSorting($sortOrder->toArray());
         }
 
@@ -107,7 +107,8 @@ final class EventExportService implements EventExportServiceInterface
         } else {
             // do a pre query to test if the query is valid and check the item count
             try {
-                $preQueryResult = $this->searchService->search($query->toString(), 1, 0, $sortOrder->toArray());
+                $sort = $sortOrder ? $sortOrder->toArray() : null;
+                $preQueryResult = $this->searchService->search($query->toString(), 1, 0, $sort);
                 $totalItemCount = $preQueryResult->getTotalItems();
             } catch (Exception $e) {
                 $logger->error(
