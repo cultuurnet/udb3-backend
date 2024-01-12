@@ -202,7 +202,7 @@ class ExportEventsAsPDF implements ExportEventsInterface, AsyncCommand
         return $this->selection;
     }
 
-    public function getSortOrder(): SortOrder
+    public function getSortOrder(): ?SortOrder
     {
         return $this->sortOrder;
     }
