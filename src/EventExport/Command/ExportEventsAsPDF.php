@@ -78,17 +78,17 @@ class ExportEventsAsPDF implements ExportEventsInterface, AsyncCommand
         $this->address = $address;
     }
 
-    public function withSortOrder(SortOrder $order): ExportEventsAsPDF
+    public function withSortOrder(SortOrder $sortOrder): ExportEventsAsPDF
     {
         $exportEvents = clone $this;
-        $exportEvents->setSortOrder($order);
+        $exportEvents->setSortOrder($sortOrder);
 
         return $exportEvents;
     }
 
-    public function setSortOrder(SortOrder $order): void
+    public function setSortOrder(SortOrder $sortOrder): void
     {
-        $this->sortOrder = $order;
+        $this->sortOrder = $sortOrder;
     }
 
     /**
