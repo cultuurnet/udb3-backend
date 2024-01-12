@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport;
 
+use CultuurNet\UDB3\Deserializer\MissingValueException;
+
 final class SortOrder
 {
     private string $property;
@@ -33,5 +35,31 @@ final class SortOrder
         return [
             $this->getProperty() => $this->getOrder(),
         ];
+    }
+
+    /**
+     * @param object|object[] $json
+     */
+    public static function fromJson($json): ?SortOrder
+    {
+        $hasProperty = isset($json->order->property);
+        $hasOrder = isset($json->order->order);
+
+        if ($hasProperty && !$hasOrder) {
+            throw new MissingValueException("order is incomplete. You should provide a 'order' key.");
+        }
+
+        if (!$hasProperty && $hasOrder) {
+            throw new MissingValueException("order is incomplete. You should provide a 'property' key.");
+        }
+
+        if ($hasProperty && $hasOrder) { // @phpstan-ignore-line
+            return new SortOrder(
+                $json->order->property,
+                $json->order->order,
+            );
+        }
+
+        return null;
     }
 }

@@ -18,25 +18,25 @@ abstract class ExportEventsJSONDeserializer extends JSONDeserializer
 {
     public function deserialize(string $data): ExportEvents
     {
-        $data = parent::deserialize($data);
+        $json = parent::deserialize($data);
 
-        if (!isset($data->query)) {
+        if (!isset($json->query)) {
             throw new MissingValueException('query is missing');
         }
-        $query = new EventExportQuery($data->query);
+        $query = new EventExportQuery($json->query);
 
         $email = $selection = $include = null;
         // @todo This throws an exception when the e-mail is invalid. How do we handle this?
-        if (isset($data->email)) {
-            $email = new EmailAddress($data->email);
+        if (isset($json->email)) {
+            $email = new EmailAddress($json->email);
         }
 
-        if (isset($data->selection)) {
-            $selection = $data->selection;
+        if (isset($json->selection)) {
+            $selection = $json->selection;
         }
 
-        if (isset($data->include)) {
-            $include = $data->include;
+        if (isset($json->include)) {
+            $include = $json->include;
         }
 
         $command = $this->createCommand(
@@ -46,22 +46,9 @@ abstract class ExportEventsJSONDeserializer extends JSONDeserializer
             $selection
         );
 
-        $hasProperty = isset($data->order->property);
-        $hasOrder = isset($data->order->order);
+        $sortOrder = SortOrder::fromJson($json);
 
-        if ($hasProperty && !$hasOrder) {
-            throw new MissingValueException("order is incomplete. You should provide a 'order' key.");
-        }
-
-        if (!$hasProperty && $hasOrder) {
-            throw new MissingValueException("order is incomplete. You should provide a 'property' key.");
-        }
-
-        if ($hasProperty && $hasOrder) { // @phpstan-ignore-line
-            $sortOrder = new SortOrder(
-                $data->order->property,
-                $data->order->order,
-            );
+        if (isset($sortOrder)) {
             $command = $command->withSortOrder($sortOrder);
         }
 
