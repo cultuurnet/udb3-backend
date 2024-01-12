@@ -12,6 +12,7 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Footer;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Publisher;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Subtitle;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
+use CultuurNet\UDB3\EventExport\SortOrder;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 /**
@@ -80,6 +81,25 @@ class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
 
         if (isset($json->selection)) {
             $command = $command->withSelection($json->selection);
+        }
+
+        $hasProperty = isset($json->order->property);
+        $hasOrder = isset($json->order->order);
+
+        if ($hasProperty && !$hasOrder) {
+            throw new MissingValueException("order is incomplete. You should provide an 'order' key.");
+        }
+
+        if (!$hasProperty && $hasOrder) {
+            throw new MissingValueException("order is incomplete. You should provide a 'property' key.");
+        }
+
+        if ($hasProperty && $hasOrder) {
+            $sortOrder = new SortOrder(
+                $json->order->property,
+                $json->order->order,
+            );
+            $command = $command->withSortOrder($sortOrder);
         }
 
         if (isset($customizations->subtitle)) {
