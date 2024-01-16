@@ -35,13 +35,15 @@ trait PlaceSteps
     }
 
     /**
-     * @Given I create a minimal place and save the :jsonPath as :variableName then I should get a :responseCode response code
+     * @Given /^I create a minimal place and save the "([^"]*)" as "([^"]*)" then I should get a "([^"]*)" response code$/
      */
-    public function iCreateAMinimalPlaceIShouldGetAResponseCodeAndSaveTheAs(string $jsonPath, string $variableName, int $responseCode): void
+    public function iCreateAMinimalPlaceAndSaveTheAsThenIShouldGetAResponseCode(string $jsonPath, string $variableName, int $responseCode)
     {
+        $json = $this->fixtures->loadJson('places/place-with-required-fields-and-variable-name.json', $this->variableState);
+
         $this->createPlace(
             '/places',
-            $this->fixtures->loadJson('places/place-with-required-fields.json', $this->variableState),
+            $json,
             $jsonPath,
             $variableName,
             $responseCode

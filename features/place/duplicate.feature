@@ -7,12 +7,12 @@ Feature: Test creating places
     And I send and accept "application/json"
 
   Scenario: Be prevented from creating a new place if we already have one on that address
-    Given I create a minimal place and save the "id" as "placeId" then I should get a "201" response code
-    Given I create a minimal place and save the "id" as "placeId" then I should get a "303" response code
-    Then the JSON response should be:
+    Given I prevent duplicate creation
+    Given I create a random name of 6 characters and keep it as "name"
+    Given I create a minimal place and save the "id" as "originalPlaceId" then I should get a "201" response code
+    Given I create a minimal place and save the "originalPlace" as "newPlaceUri" then I should get a "409" response code
+    Then the JSON response at "originalPlace" should be:
     """
-    {
-      "message": "A place with this address / location name combination already exists. Please use the existing place for your purposes.",
-      "placeId": "%{placeId}",
-    }
+    "http://host.docker.internal:8000/place/%{originalPlaceId}"
     """
+    Then I allow duplicate creation
