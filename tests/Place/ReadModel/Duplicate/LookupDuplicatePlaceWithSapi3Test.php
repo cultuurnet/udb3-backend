@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -26,8 +27,11 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Results;
-use CultuurNet\UDB3\Search\SearchServiceInterface;
+use CultuurNet\UDB3\Search\Sapi3SearchService;
+use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -35,15 +39,36 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
 {
     private LookupDuplicatePlaceWithSapi3 $lookupDuplicatePlaceWithSapi3;
 
-    /** @var SearchServiceInterface & MockObject  */
+    /** @var Sapi3SearchService & MockObject */
     private $sapi3SearchService;
 
     protected function setUp(): void
     {
-        $this->sapi3SearchService = $this->createMock(SearchServiceInterface::class);
+        $this->sapi3SearchService = $this->createMock(Sapi3SearchService::class);
+        $this->sapi3SearchService->expects($this->atMost(2))
+            ->method('getLastRequestedUri')
+            ->willReturn(new Uri('http://www.example.com/last_requested_uri'));
+
+        $documentRepositoryMock = $this->createMock(DocumentRepository::class);
+
+        $documentRepositoryMock->expects($this->atMost(2))
+            ->method('fetch')
+            ->willReturnCallback(function (string $id) {
+                switch ($id) {
+                    case '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831':
+                    case 'aadcee95-6180-4924-a8eb-ed829d4957a2':
+                        return new JsonDocument($id, Json::encode([]));
+                    case '55a4c2bc-4441-1aef-1aef-bd6ab9ccd831':
+                        return new JsonDocument($id, Json::encode(['duplicatedBy' => 'http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831']));
+                    default:
+                        return new \Exception('There is no hope');
+                }
+            });
 
         $this->lookupDuplicatePlaceWithSapi3 = new LookupDuplicatePlaceWithSapi3(
             $this->sapi3SearchService,
+            new UniqueAddressIdentifierFactory(),
+            $documentRepositoryMock,
             'current-user-id'
         );
     }
@@ -53,10 +78,8 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
      */
     public function it_returns_duplicate_place_based_on_search_result(): void
     {
-        $place = $this->createPlace();
-
         $itemIdentifiers = new ItemIdentifiers(new ItemIdentifier(
-            new Url('http://example.com/place/1'),
+            new Url('http://example.com/place/aadcee95-6180-4924-a8eb-ed829d4957a2'),
             'aadcee95-6180-4924-a8eb-ed829d4957a2',
             ItemType::place()
         ));
@@ -68,9 +91,59 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
                 new Results($itemIdentifiers, $itemIdentifiers->count())
             );
 
-        $duplicatePlaceId = $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceId($place);
+        $duplicatePlaceUri = $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
 
-        $this->assertEquals('aadcee95-6180-4924-a8eb-ed829d4957a2', $duplicatePlaceId);
+        $this->assertEquals('http://example.com/place/aadcee95-6180-4924-a8eb-ed829d4957a2', $duplicatePlaceUri);
+    }
+
+    /**
+     * @dataProvider searchResultsProvider
+     */
+    public function test_get_duplicate_place_uri(Results $searchResult, ?string $expectedResult): void
+    {
+        $this->sapi3SearchService->method('search')->willReturn($searchResult);
+
+        $duplicatePlaceUri = $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
+        $this->assertEquals($expectedResult, $duplicatePlaceUri);
+    }
+
+    public function searchResultsProvider(): array
+    {
+        return [
+            'No results' => [new Results(new ItemIdentifiers(), 0), null],
+            'One result' => [
+                new Results(new ItemIdentifiers(new ItemIdentifier(
+                    new Url('http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831'),
+                    '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
+                    ItemType::place()
+                )), 1),
+                'http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
+            ],
+            'Multiple results with duplicatedBy field' => [
+                new Results(new ItemIdentifiers(new ItemIdentifier(
+                    new Url('http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831'),
+                    '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
+                    ItemType::place()
+                ), new ItemIdentifier(
+                    new Url('http://www.example.com/place/55a4c2bc-4441-1aef-1aef-bd6ab9ccd831'),
+                    '55a4c2bc-4441-1aef-1aef-bd6ab9ccd831',
+                    ItemType::place()
+                )), 2),
+                'http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
+            ],
+            'Multiple results without duplicatedBy field' => [
+                new Results(new ItemIdentifiers(new ItemIdentifier(
+                    new Url('http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831'),
+                    '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
+                    ItemType::place()
+                ), new ItemIdentifier(
+                    new Url('http://www.example.com/place/aadcee95-6180-4924-a8eb-ed829d4957a2'),
+                    'aadcee95-6180-4924-a8eb-ed829d4957a2',
+                    ItemType::place()
+                )), 2),
+                'http://www.example.com/last_requested_uri',
+            ],
+        ];
     }
 
     private function createPlace(): ImmutablePlace
