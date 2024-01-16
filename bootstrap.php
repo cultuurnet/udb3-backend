@@ -48,6 +48,7 @@ use CultuurNet\UDB3\Place\PlacePermissionServiceProvider;
 use CultuurNet\UDB3\Place\PlaceRdfServiceProvider;
 use CultuurNet\UDB3\Place\PlaceReadServiceProvider;
 use CultuurNet\UDB3\Place\PlaceServiceProvider;
+use CultuurNet\UDB3\Place\PlaceUniqueAddressIdentifierProvider;
 use CultuurNet\UDB3\RDF\RdfNamespaces;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
 use CultuurNet\UDB3\Role\RoleRequestHandlerServiceProvider;
@@ -134,6 +135,7 @@ $container->addServiceProvider(new PlaceRequestHandlerServiceProvider());
 $container->addServiceProvider(new PlacePermissionServiceProvider());
 $container->addServiceProvider(new PlaceGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new PlaceHistoryServiceProvider());
+$container->addServiceProvider(new PlaceUniqueAddressIdentifierProvider());
 
 /** Organizer **/
 $container->addServiceProvider(new OrganizerServiceProvider());
