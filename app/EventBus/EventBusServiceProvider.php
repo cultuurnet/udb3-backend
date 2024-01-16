@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider;
 use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
+use CultuurNet\UDB3\Place\ReadModel\Duplicate\UniqueAddressIdentifierProjector;
 use CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector as PlaceHistoryProjector;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
@@ -78,6 +79,7 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                             'uitpas_event_process_manager',
                             RelocateEventToCanonicalPlace::class,
                             AutoApproveForUiTIDv1ApiKeysProcessManager::class,
+                            UniqueAddressIdentifierProjector::class,
                         ];
 
                         $initialSubscribersCount = count($subscribers);
