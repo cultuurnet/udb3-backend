@@ -5,43 +5,69 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
 use CultuurNet\UDB3\Model\Place\Place;
-use CultuurNet\UDB3\Search\SearchServiceInterface;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\Search\Sapi3SearchService;
 
 class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
 {
-    private SearchServiceInterface $sapi3SearchService;
+    private Sapi3SearchService $sapi3SearchService;
+    private UniqueAddressIdentifierFactory $addressIdentifierFactory;
+    private DocumentRepository $placeRepository;
     private string $currentUserId;
 
     public function __construct(
-        SearchServiceInterface $sapi3SearchService,
+        Sapi3SearchService $sapi3SearchService,
+        UniqueAddressIdentifierFactory $addressIdentifierFactory,
+        DocumentRepository $placeRepository,
         string $currentUserId
     ) {
         $this->sapi3SearchService = $sapi3SearchService;
         $this->currentUserId = $currentUserId;
+        $this->addressIdentifierFactory = $addressIdentifierFactory;
+        $this->placeRepository = $placeRepository;
     }
 
-    public function getDuplicatePlaceId(Place $place): ?string
+    /*
+    When there is only one place propose that place
+    When there are multiple places propose the one with duplicatedBy
+    When there are multiple but no canonical returns the search query to get all places
+    */
+    public function getDuplicatePlaceUri(Place $place): ?string
     {
-        $parts = $this->getParts($place, $this->currentUserId);
+        $results = $this->sapi3SearchService->search(
+            'unique_address_identifier:' . $this->addressIdentifierFactory->hash(
+                $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
+                $place->getAddress()->getTranslation($place->getMainLanguage()),
+                $this->currentUserId
+            ),
+            1
+        );
 
-        $parts = array_map(fn ($part) => str_replace(' ', '_', trim($part)), $parts);
-        $uniqueAddressIdentifier = mb_strtolower(implode('_', array_filter($parts)));
+        if ($results->getTotalItems() === 0) {
+            return null;
+        }
 
-        $results = $this->sapi3SearchService->search('unique_address_identifier:' . $uniqueAddressIdentifier, 1);
-        return $results->getTotalItems() >= 1 ? $results->getItems()[0]->getId() : null;
-    }
+        if ($results->getTotalItems() === 1) {
+            return $results->getItems()[0]->getUrl()->toString();
+        }
 
-    private function getParts(Place $place, string $currentUserId): array
-    {
-        $address = $place->getAddress()->getTranslation($place->getMainLanguage());
+        foreach ($results->getItems() as $item) {
+            try {
+                $placeAsJson = $this->placeRepository->fetch($item->getId())->getAssocBody();
 
-        return [
-            $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
-            $address->getStreet()->toString(),
-            $address->getPostalCode()->toString(),
-            $address->getLocality()->toString(),
-            $address->getCountryCode()->toString(),
-            $currentUserId,
-        ];
+                if (!empty($placeAsJson['duplicatedBy'])) {
+                    return $placeAsJson['duplicatedBy'];
+                }
+            } catch (DocumentDoesNotExist $e) {
+            }
+        }
+
+        if ($this->sapi3SearchService->getLastRequestedUri() === null) {
+            // This should never happen, but probably not worth it to crash the Place API request for it
+            return $results->getItems()[0]->getUrl()->toString();
+        }
+
+        return $this->sapi3SearchService->getLastRequestedUri()->__toString();
     }
 }

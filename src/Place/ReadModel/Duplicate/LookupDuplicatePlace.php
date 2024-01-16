@@ -8,5 +8,5 @@ use CultuurNet\UDB3\Model\Place\Place;
 
 interface LookupDuplicatePlace
 {
-    public function getDuplicatePlaceId(Place $place): ?string;
+    public function getDuplicatePlaceUri(Place $place): ?string;
 }
