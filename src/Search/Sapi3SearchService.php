@@ -16,7 +16,7 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use function http_build_query;
 
-class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
+class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface, ReturnLastRequestedUri
 {
     use LoggerAwareTrait;
 
@@ -27,6 +27,7 @@ class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
     private ItemIdentifierFactory $itemIdentifierFactory;
 
     private ?string $apiKey;
+    private ?UriInterface $lastRequestedUri = null;
 
     public function __construct(
         UriInterface $searchLocation,
@@ -88,6 +89,14 @@ class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
             new ItemIdentifiers()
         );
 
+        $this->lastRequestedUri = $itemRequest->getUri();
+
         return new Results($itemIds, (int) $searchResponseData->{'totalItems'});
+    }
+
+    // Tip: use ->toString() to get the full URI including query parts
+    public function getLastRequestedUri(): ?UriInterface
+    {
+        return $this->lastRequestedUri;
     }
 }
