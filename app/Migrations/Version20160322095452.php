@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Add a created column to the index read-model.
- */
 class Version20160322095452 extends AbstractMigration
 {
     public function up(Schema $schema): void

@@ -57,7 +57,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
         $sql = 'SELECT * FROM ' . $this->tableName;
 
         $statement = $this->connection->executeQuery($sql);
-        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $statement->fetchAllAssociative();
 
         $labelRelations = [];
         foreach ($rows as $row) {

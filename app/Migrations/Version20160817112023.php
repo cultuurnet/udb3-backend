@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Migrations;
 
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 class Version20160817112023 extends AbstractMigration
 {
     public const LABEL_ID_COLUMN = 'label_id';
@@ -24,11 +21,11 @@ class Version20160817112023 extends AbstractMigration
             LabelServiceProvider::LABEL_ROLES_TABLE
         );
 
-        $userRoleTable->addColumn(self::LABEL_ID_COLUMN, Type::GUID)
+        $userRoleTable->addColumn(self::LABEL_ID_COLUMN, Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 
-        $userRoleTable->addColumn(self::ROLE_ID_COLUMN, Type::GUID)
+        $userRoleTable->addColumn(self::ROLE_ID_COLUMN, Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 

@@ -147,7 +147,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $statement = $this->connection->executeQuery(
             'SELECT * FROM ' . $this->tableName
         );
-        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $statement->fetchAllAssociative();
 
         $savedSearches = [];
         foreach ($rows as $row) {

@@ -238,7 +238,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
         $sql = 'SELECT * FROM ' . $tableName;
 
         $statement = $this->getConnection()->executeQuery($sql);
-        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $statement->fetchAllAssociative();
 
         return $rows;
     }

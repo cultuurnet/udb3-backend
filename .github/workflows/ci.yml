@@ -7,11 +7,11 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ['7.4']
-        name: PHP ${{ matrix.php-versions }}
+                php-versions: ['7.4', '8.0']
+        name: Unit tests ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
@@ -29,7 +29,7 @@ jobs:
 
             - name: 📩 Cache Composer packages
               id: composer-cache
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               with:
                   path: vendor
                   key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}-v1
@@ -45,21 +45,24 @@ jobs:
 
     cs:
         runs-on: ubuntu-latest
-        name: Code style
+        strategy:
+          matrix:
+            php-versions: [ '7.4', '8.0' ]
+        name: Code style ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 7.4
+                  php-version: ${{ matrix.php-versions }}
                   extensions: tidy, zip
                   tools: composer
 
             - name: 📩 Cache Composer packages
               id: composer-cache
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               with:
                   path: vendor
                   key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -75,21 +78,24 @@ jobs:
 
     phpstan:
         runs-on: ubuntu-latest
-        name: Static analysis
+        strategy:
+          matrix:
+            php-versions: [ '7.4', '8.0' ]
+        name: Static analysis ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 7.4
+                  php-version: ${{ matrix.php-versions }}
                   extensions: tidy, zip
                   tools: composer
 
             - name: 📩 Cache Composer packages
               id: composer-cache
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               with:
                   path: vendor
                   key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -105,21 +111,24 @@ jobs:
 
     unused:
         runs-on: ubuntu-latest
-        name: Unused composer dependencies
+        strategy:
+          matrix:
+            php-versions: [ '7.4', '8.0' ]
+        name: Unused composer dependencies ${{ matrix.php-versions }}
         steps:
             -   name: 📤 Checkout project
-                uses: actions/checkout@v2
+                uses: actions/checkout@v4
 
             -   name: 🐘 Install PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: 7.4
+                    php-version: ${{ matrix.php-versions }}
                     extensions: tidy, zip
                     tools: composer
 
             -   name: 📩 Cache Composer packages
                 id: composer-cache
-                uses: actions/cache@v2
+                uses: actions/cache@v3
                 with:
                     path: vendor
                     key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}

@@ -104,10 +104,7 @@ class DBALRepositoryTest extends TestCase
         return $relations;
     }
 
-    /**
-     * @return array
-     */
-    private function getAll(Connection $connection)
+    private function getAll(Connection $connection): array
     {
         $queryBuilder = $connection->createQueryBuilder();
 
@@ -116,6 +113,6 @@ class DBALRepositoryTest extends TestCase
             ->from($this->tableName)
             ->getSQL();
 
-        return $connection->fetchAll($sql);
+        return $connection->fetchAllAssociative($sql);
     }
 }

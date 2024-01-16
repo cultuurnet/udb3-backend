@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Recommendations;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 
 final class DBALRecommendationsRepository implements RecommendationsRepository
 {
@@ -26,7 +25,7 @@ final class DBALRecommendationsRepository implements RecommendationsRepository
             ->where('event_id = :event_id')
             ->setParameter(':event_id', $eventId)
             ->execute()
-            ->fetchAll(FetchMode::NUMERIC);
+            ->fetchAllNumeric();
 
         return $this->createRecommendations($recommendationRows);
     }
@@ -41,7 +40,7 @@ final class DBALRecommendationsRepository implements RecommendationsRepository
             ->where('recommended_event_id = :recommended_event_id')
             ->setParameter(':recommended_event_id', $recommendedEventId)
             ->execute()
-            ->fetchAll(FetchMode::NUMERIC);
+            ->fetchAllNumeric();
 
         return $this->createRecommendations($recommendationRows);
     }

@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 
-use CultuurNet\UDB3\Address\AddressParser;
-use CultuurNet\UDB3\Address\ParsedAddress;
+use CultuurNet\UDB3\Address\Parser\AddressParser;
+use CultuurNet\UDB3\Address\Parser\ParsedAddress;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -102,8 +104,14 @@ class EventJsonToTurtleConverterTest extends TestCase
             ->method('warning')
             ->with('Unable to project event d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
 
-        $this->expectError();
-        $this->expectErrorMessage('Undefined index: name');
+        set_error_handler(
+            static function ($errorNumber, $errorString) {
+                restore_error_handler();
+                throw new Exception($errorString, $errorNumber);
+            },
+            E_ALL
+        );
+        $this->expectException(Exception::class);
 
         $this->eventJsonToTurtleConverter->convert($eventId);
     }
@@ -144,7 +152,7 @@ class EventJsonToTurtleConverterTest extends TestCase
             ->method('warning')
             ->with('Unable to project event d4b46fba-6433-4f86-bcb5-edeef6689fea without created date to RDF.');
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(JsonDataCouldNotBeConverted::class);
         $this->expectExceptionMessage('Event ' . $eventId . ' has no created date.');
 
         $this->eventJsonToTurtleConverter->convert($eventId);

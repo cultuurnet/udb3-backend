@@ -18,6 +18,7 @@ task :build_artifact do |task|
   FileUtils.mkdir_p('log')
   FileUtils.touch('config.php')
   FileUtils.rm('web/downloads/.gitignore')
+  FileUtils.rm('web/uploads/.gitignore')
 
   system("fpm -s dir -t deb -n #{artifact_name} -v #{version} -a all -p pkg \
     -x '.git*' -x pkg -x lib -x Rakefile -x Gemfile -x Gemfile.lock \

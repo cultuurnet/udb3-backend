@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Recommendations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 final class RecommendationsSchemaConfigurator
 {
@@ -14,8 +14,8 @@ final class RecommendationsSchemaConfigurator
     {
         $table = $schema->createTable('event_recommendations');
 
-        $table->addColumn('event_id', Type::GUID)->setLength(36)->setNotnull(true);
-        $table->addColumn('recommended_event_id', Type::GUID)->setLength(36)->setNotnull(true);
+        $table->addColumn('event_id', Types::GUID)->setLength(36)->setNotnull(true);
+        $table->addColumn('recommended_event_id', Types::GUID)->setLength(36)->setNotnull(true);
         $table->addColumn('score', 'decimal', ['notnull' => true, 'scale' => 2]);
         $table->addIndex(['event_id']);
         $table->addIndex(['recommended_event_id']);

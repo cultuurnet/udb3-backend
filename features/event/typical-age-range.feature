@@ -45,7 +45,7 @@ Feature: Test the UDB3 events API
     And I send a GET request to "%{eventUrl}"
     And the JSON response at "typicalAgeRange" should be "-"
 
-  Scenario: It gives an error when the request body is invalid
+  Scenario: When the request body is invalid an error is returned
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """
@@ -65,7 +65,7 @@ Feature: Test the UDB3 events API
     And I get the event at "%{eventUrl}"
     And the JSON response at "typicalAgeRange" should be "-"
 
-  Scenario: It gives an error when the minimum age is bigger than the maximum age
+  Scenario: When the minimum age is bigger than the maximum age an error is returned
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """

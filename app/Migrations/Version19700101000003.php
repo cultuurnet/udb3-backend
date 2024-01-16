@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Creates the event_relations table.
- */
 class Version19700101000003 extends AbstractMigration
 {
     public function up(Schema $schema): void

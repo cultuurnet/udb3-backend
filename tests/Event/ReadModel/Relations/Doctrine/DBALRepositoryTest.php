@@ -5,22 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
-use PDO;
 use PHPUnit\Framework\TestCase;
 
 class DBALRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var DBALEventRelationsRepository
-     */
-    private $repository;
+    private DBALEventRelationsRepository $repository;
 
-    /**
-     * @var string
-     */
-    private $tableName;
+    private string $tableName;
 
     public function setUp(): void
     {
@@ -38,17 +31,13 @@ class DBALRepositoryTest extends TestCase
         $this->tableName = 'event_relations';
     }
 
-    /**
-     * @param array $expectedData
-     * @param string $tableName
-     */
-    private function assertTableData($expectedData, $tableName): void
+    private function assertTableData(array $expectedData, string $tableName): void
     {
         $expectedData = array_values($expectedData);
 
         $results = $this->getConnection()->executeQuery('SELECT * from ' . $tableName);
 
-        $actualData = $results->fetchAll(PDO::FETCH_OBJ);
+        $actualData = $results->fetchAllAssociative();
 
         $this->assertEquals(
             $expectedData,
@@ -56,11 +45,7 @@ class DBALRepositoryTest extends TestCase
         );
     }
 
-    /**
-     * @param string $tableName
-     * @param array $rows
-     */
-    private function insertTableData($tableName, $rows): void
+    private function insertTableData(string $tableName, array $rows): void
     {
         $q = $this->getConnection()->createQueryBuilder();
 
@@ -103,7 +88,7 @@ class DBALRepositoryTest extends TestCase
         $this->insertTableData($this->tableName, $existingData);
         $eventId = 'event-id';
         $organizerId = 'new-organizer-id';
-        $expectedData[] = (object)[
+        $expectedData[] = [
             'event' => 'event-id',
             'organizer' => 'new-organizer-id',
             'place' => 'some-place-id',
@@ -121,7 +106,7 @@ class DBALRepositoryTest extends TestCase
     {
         $eventId = 'event-id';
         $organizerId = 'organizer-id';
-        $expectedData[] = (object)[
+        $expectedData[] = [
             'event' => 'event-id',
             'organizer' => 'organizer-id',
             'place' => null,
@@ -144,7 +129,7 @@ class DBALRepositoryTest extends TestCase
         ];
         $this->insertTableData($this->tableName, $existingData);
         $eventId = 'event-id';
-        $expectedData[] = (object)[
+        $expectedData[] = [
             'event' => 'event-id',
             'organizer' => null,
             'place' => 'some-place-id',
@@ -174,7 +159,7 @@ class DBALRepositoryTest extends TestCase
         ];
         $this->insertTableData($this->tableName, $existingData);
         $eventId = 'e201cea1-4a79-4834-9501-b28a92900fa1';
-        $expectedData[] = (object)[
+        $expectedData[] = [
             'event' => 'cd996276-7aac-40b7-8bf4-e505dbbf11bf',
             'organizer' => '3a4abf90-1859-49de-a667-b713c81aad28',
             'place' => 'e64362f5-43e1-468b-97d6-8981fb0fe426',

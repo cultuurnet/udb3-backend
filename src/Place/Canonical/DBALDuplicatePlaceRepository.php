@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\Canonical;
 
 use Doctrine\DBAL\Connection;
-use PDO;
 
 class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 {
@@ -23,7 +22,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->from('duplicate_places')
             ->orderBy('cluster_id')
             ->execute()
-            ->fetchAll(PDO::FETCH_COLUMN);
+            ->fetchFirstColumn();
 
         return array_map('intval', $result);
     }
@@ -36,7 +35,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->where('cluster_id = :cluster_id')
             ->setParameter(':cluster_id', $clusterId)
             ->execute()
-            ->fetchAll(PDO::FETCH_COLUMN);
+            ->fetchFirstColumn();
     }
 
     public function setCanonicalOnCluster(int $clusterId, string $canonical): void
@@ -62,7 +61,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->where('place_uuid = :place_uuid')
             ->setParameter(':place_uuid', $placeId)
             ->execute()
-            ->fetchAll(PDO::FETCH_COLUMN);
+            ->fetchFirstColumn();
 
         return count($rows) === 1 ? $rows[0] : null;
     }
@@ -75,7 +74,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->where('canonical = :canonical')
             ->setParameter(':canonical', $placeId)
             ->execute()
-            ->fetchAll(PDO::FETCH_COLUMN);
+            ->fetchFirstColumn();
 
         return count($duplicates) > 0 ? $duplicates : null;
     }

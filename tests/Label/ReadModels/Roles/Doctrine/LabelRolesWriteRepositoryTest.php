@@ -131,6 +131,6 @@ class LabelRolesWriteRepositoryTest extends TestCase
         $sql = 'SELECT * FROM ' . $this->labelRolesTableName;
         $statement = $this->connection->executeQuery($sql);
 
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $statement->fetchAllAssociative();
     }
 }

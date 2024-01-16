@@ -6,8 +6,7 @@ namespace CultuurNet\UDB3\Place\Canonical;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
-use PDO;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 
 class DBALDuplicatePlaceRepositoryTest extends TestCase
@@ -19,9 +18,9 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
     public function setUp(): void
     {
         $table = new Table('duplicate_places');
-        $table->addColumn('cluster_id', Type::BIGINT)->setNotnull(true);
-        $table->addColumn('place_uuid', Type::GUID)->setLength(36)->setNotnull(true);
-        $table->addColumn('canonical', Type::GUID)->setLength(36)->setNotnull(false)->setDefault(null);
+        $table->addColumn('cluster_id', Types::BIGINT)->setNotnull(true);
+        $table->addColumn('place_uuid', Types::GUID)->setLength(36)->setNotnull(true);
+        $table->addColumn('canonical', Types::GUID)->setLength(36)->setNotnull(false)->setDefault(null);
         $this->createTable($table);
 
         $this->getConnection()->insert(
@@ -102,7 +101,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
             ->select('*')
             ->from('duplicate_places')
             ->execute()
-            ->fetchAll(PDO::FETCH_NUM);
+            ->fetchAllNumeric();
 
         $this->assertEquals(
             [

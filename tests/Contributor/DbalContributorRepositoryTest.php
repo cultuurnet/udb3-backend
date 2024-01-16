@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 
 final class DbalContributorRepositoryTest extends TestCase
@@ -29,9 +29,9 @@ final class DbalContributorRepositoryTest extends TestCase
     {
         $table = $schema->createTable(self::TABLE_NAME);
 
-        $table->addColumn('uuid', Type::GUID)->setLength(36)->setNotnull(true);
-        $table->addColumn('email', Type::TEXT)->setNotnull(true);
-        $table->addColumn('type', Type::STRING)->setLength(255)->setNotnull(true);
+        $table->addColumn('uuid', Types::GUID)->setLength(36)->setNotnull(true);
+        $table->addColumn('email', Types::TEXT)->setNotnull(true);
+        $table->addColumn('type', Types::STRING)->setLength(255)->setNotnull(true);
 
         return $table;
     }
@@ -157,7 +157,7 @@ final class DbalContributorRepositoryTest extends TestCase
             ->andWhere('type = :type')
             ->setParameter(':type', $itemType->toString())
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         $this->assertEquals(2, count($result));
     }

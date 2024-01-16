@@ -811,7 +811,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $body = $this->project($event, $event->getEventId());
 
-        $this->assertObjectNotHasAttribute('image', $body);
+        $this->assertObjectNotHasProperty('image', $body);
     }
 
     /**
@@ -889,7 +889,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $body = $this->project($event, $event->getEventId());
 
-        $this->assertObjectNotHasAttribute('bookingInfo', $body);
+        $this->assertObjectNotHasProperty('bookingInfo', $body);
     }
 
     /**

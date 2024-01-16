@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Creates the search index table for variations.
- */
 class Version20150615114627 extends AbstractMigration
 {
     public function up(Schema $schema): void

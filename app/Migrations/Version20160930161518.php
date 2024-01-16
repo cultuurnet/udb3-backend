@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 class Version20160930161518 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
         $table = $schema->createTable('organizer_unique_websites');
 
-        $table->addColumn('uuid_col', Type::GUID)
+        $table->addColumn('uuid_col', Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 
-        $table->addColumn('unique_col', Type::STRING)
+        $table->addColumn('unique_col', Types::STRING)
             ->setLength(255)
             ->setNotnull(true);
 

@@ -12,7 +12,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
 {
@@ -73,11 +73,11 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
 
         $table = $schema->createTable($tableName);
 
-        $table->addColumn(self::UUID_COLUMN, Type::GUID)
+        $table->addColumn(self::UUID_COLUMN, Types::GUID)
             ->setLength(36)
             ->setNotnull(true);
 
-        $table->addColumn(self::UNIQUE_COLUMN, Type::STRING)
+        $table->addColumn(self::UNIQUE_COLUMN, Types::STRING)
             ->setLength(255)
             ->setNotnull(true);
 
@@ -159,7 +159,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
             ->where($likeUniqueValue)
             ->setParameter('uniqueValue', $uniqueValue)
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         if (!empty($rows)) {
             throw new UniqueConstraintException(

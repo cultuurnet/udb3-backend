@@ -205,7 +205,7 @@ class DBALRepositoryTest extends TestCase
         $sql = 'SELECT * FROM ' . $this->tableName;
 
         $statement = $this->connection->executeQuery($sql);
-        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $statement->fetchAllAssociative();
 
         return $rows ? $rows[count($rows) - 1] : null;
     }

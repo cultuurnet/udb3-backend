@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use PDO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -114,7 +113,7 @@ class UpdateUniqueOrganizers extends Command
             ->setFirstResult($offset)
             ->setMaxResults(self::MAX_RESULTS)
             ->execute()
-            ->fetchAll(PDO::FETCH_ASSOC);
+            ->fetchAllAssociative();
     }
 
     private function getAllOrganizerEventsCount(): int
@@ -127,7 +126,7 @@ class UpdateUniqueOrganizers extends Command
                 ->orWhere('type = "' . self::ORGANIZER_WEBSITE_UPDATED . '"')
                 ->orderBy('id')
                 ->execute()
-                ->fetchAll()
+                ->fetchAllAssociative()
         );
     }
 
@@ -147,7 +146,7 @@ class UpdateUniqueOrganizers extends Command
             ->where('uuid_col = :uuid')
             ->setParameter('uuid', $organizerUuid)
             ->execute()
-            ->fetchAll(PDO::FETCH_COLUMN);
+            ->fetchFirstColumn();
 
         $existingOrganizerUrl = count($existingOrganizerUrls) === 1 ? $existingOrganizerUrls[0] : null;
 

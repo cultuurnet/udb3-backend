@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20161220092125 extends AbstractMigration
 {

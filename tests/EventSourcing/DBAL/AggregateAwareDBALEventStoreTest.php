@@ -246,6 +246,6 @@ class AggregateAwareDBALEventStoreTest extends TestCase
             ->where('uuid = :uuid')
             ->setParameter(':uuid', $uuid->toString());
 
-        return $queryBuilder->execute()->fetchAll(\PDO::FETCH_ASSOC);
+        return $queryBuilder->execute()->fetchAllAssociative();
     }
 }

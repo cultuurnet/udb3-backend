@@ -1002,7 +1002,7 @@ class OfferLDProjectorTest extends TestCase
         $imageRemovedEvent = new ImageRemoved($eventId, $image);
         $eventBody = $this->project($imageRemovedEvent, $eventId);
 
-        $this->assertObjectNotHasAttribute('mediaObject', $eventBody);
+        $this->assertObjectNotHasProperty('mediaObject', $eventBody);
     }
 
     /**
@@ -1041,8 +1041,8 @@ class OfferLDProjectorTest extends TestCase
         $imageRemovedEvent = new ImageRemoved($eventId, $image);
         $eventBody = $this->project($imageRemovedEvent, $eventId);
 
-        $this->assertObjectNotHasAttribute('mediaObject', $eventBody);
-        $this->assertObjectNotHasAttribute('image', $eventBody);
+        $this->assertObjectNotHasProperty('mediaObject', $eventBody);
+        $this->assertObjectNotHasProperty('image', $eventBody);
     }
 
     /**
@@ -1132,7 +1132,7 @@ class OfferLDProjectorTest extends TestCase
         $imageRemovedEvent = new ImageRemoved($eventId, $image);
         $eventBody = $this->project($imageRemovedEvent, $eventId);
 
-        $this->assertObjectNotHasAttribute('image', $eventBody);
+        $this->assertObjectNotHasProperty('image', $eventBody);
     }
 
     /**

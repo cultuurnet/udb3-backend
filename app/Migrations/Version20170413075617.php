@@ -5,20 +5,17 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Migrations;
 
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 class Version20170413075617 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
         $this->getLabelsRelationsTable($schema)
-            ->addColumn(SchemaConfigurator::IMPORTED, Type::BOOLEAN)
+            ->addColumn(SchemaConfigurator::IMPORTED, Types::BOOLEAN)
             ->setNotnull(true)
             ->setDefault(false);
     }

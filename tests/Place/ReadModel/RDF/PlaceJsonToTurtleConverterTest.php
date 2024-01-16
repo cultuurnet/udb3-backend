@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
-use CultuurNet\UDB3\Address\AddressParser;
-use CultuurNet\UDB3\Address\FullAddressFormatter;
+use CultuurNet\UDB3\Address\Formatter\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Locality as LegacyLocality;
-use CultuurNet\UDB3\Address\ParsedAddress;
+use CultuurNet\UDB3\Address\Parser\AddressParser;
+use CultuurNet\UDB3\Address\Parser\ParsedAddress;
 use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
 use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -115,8 +116,14 @@ class PlaceJsonToTurtleConverterTest extends TestCase
             ->method('warning')
             ->with('Unable to project place d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
 
-        $this->expectError();
-        $this->expectErrorMessage('Undefined index: name');
+        set_error_handler(
+            static function ($errorNumber, $errorString) {
+                restore_error_handler();
+                throw new Exception($errorString, $errorNumber);
+            },
+            E_ALL
+        );
+        $this->expectException(Exception::class);
 
         $this->placeJsonToTurtleConverter->convert($placeId);
     }

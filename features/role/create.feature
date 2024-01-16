@@ -6,7 +6,7 @@ Feature: Test the UDB3 roles API
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     And I send and accept "application/json"
 
-  Scenario: create role
+  Scenario: Create a new role
   	Given I set the JSON request payload to:
        """
        { "name": "test_role" }

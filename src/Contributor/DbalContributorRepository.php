@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 
 final class DbalContributorRepository implements ContributorRepository
 {
@@ -31,7 +30,7 @@ final class DbalContributorRepository implements ContributorRepository
             ->where('uuid = :id')
             ->setParameter(':id', $id->toString())
             ->execute()
-            ->fetchAll(FetchMode::COLUMN);
+            ->fetchFirstColumn();
 
         return EmailAddresses::fromArray(
             array_map(
@@ -51,7 +50,7 @@ final class DbalContributorRepository implements ContributorRepository
             ->setParameter(':id', $id->toString())
             ->setParameter(':email', $emailAddress->toString())
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         return count($results) > 0;
     }

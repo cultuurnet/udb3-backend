@@ -9,7 +9,6 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -77,7 +76,7 @@ final class ReindexEventsWithRecommendations extends Command
             ->select('DISTINCT recommended_event_id')
             ->from('event_recommendations')
             ->execute()
-            ->fetchAll(FetchMode::COLUMN);
+            ->fetchFirstColumn();
     }
 
     private function askConfirmation(InputInterface $input, OutputInterface $output, int $count): bool

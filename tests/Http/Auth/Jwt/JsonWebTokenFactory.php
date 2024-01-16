@@ -4,33 +4,70 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Auth\Jwt;
 
-use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Signer\Key;
+use DateTimeImmutable;
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
+use Lcobucci\JWT\Token\RegisteredClaims;
 
 final class JsonWebTokenFactory
 {
     public static function createWithClaims(array $claims): JsonWebToken
     {
-        $builder = new Builder();
+        $config = Configuration::forSymmetricSigner(
+            new Sha256(),
+            InMemory::file(__DIR__ . '/samples/private.pem', 'secret')
+        );
+
+        $builder = $config->builder();
         foreach ($claims as $claim => $value) {
-            $builder = $builder->withClaim($claim, $value);
+            if (!in_array($claim, RegisteredClaims::ALL, true)) {
+                $builder = $builder->withClaim($claim, $value);
+            }
+
+            if ($claim === 'iss') {
+                $builder = $builder->issuedBy($value);
+            }
+
+            if ($claim === 'sub') {
+                $builder = $builder->relatedTo($value);
+            }
+
+            if ($claim === 'aud') {
+                $builder = $builder->permittedFor($value);
+            }
+
+            if (in_array($claim, RegisteredClaims::DATE_CLAIMS, true)) {
+                $date = (new DateTimeImmutable())->setTimestamp($value);
+
+                if ($claim === 'iat') {
+                    $builder = $builder->issuedAt($date);
+                }
+
+                if ($claim === 'nbf') {
+                    $builder = $builder->canOnlyBeUsedAfter($date);
+                }
+
+                if ($claim === 'exp') {
+                    $builder = $builder->expiresAt($date);
+                }
+            }
         }
+
         return new JsonWebToken(
-            (string) $builder->getToken(
-                new Sha256(),
-                new Key(file_get_contents(__DIR__ . '/samples/private.pem'), 'secret')
-            )
+            $builder->getToken($config->signer(), $config->signingKey())->toString()
         );
     }
 
     public static function createWithInvalidSignature(): JsonWebToken
     {
+        $config = Configuration::forSymmetricSigner(
+            new Sha256(),
+            InMemory::file(__DIR__ . '/samples/private-invalid.pem', 'secret')
+        );
+
         return new JsonWebToken(
-            (string) (new Builder())->getToken(
-                new Sha256(),
-                new Key(file_get_contents(__DIR__ . '/samples/private-invalid.pem'))
-            )
+            $config->builder()->getToken($config->signer(), $config->signingKey())->toString()
         );
     }
 

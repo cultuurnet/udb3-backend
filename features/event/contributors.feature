@@ -125,7 +125,7 @@ Feature: Test the UDB3 events contributors endpoint
     When I get the event at "%{eventUrl}"
     Then the JSON response should not have "contributors"
 
-  Scenario: It should overwrite all contributors
+  Scenario: Overwrite all contributors
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
     """
@@ -152,7 +152,7 @@ Feature: Test the UDB3 events contributors endpoint
     ]
     """
 
-  Scenario: It should reject invalid emails:
+  Scenario: Invalid emails are rejected
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
     """

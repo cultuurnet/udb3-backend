@@ -271,7 +271,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
         $sql = 'SELECT * FROM ' . $tableName . $where;
 
         $statement = $this->connection->executeQuery($sql, [$uuid]);
-        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $statement->fetchAllAssociative();
 
         return $rows[0][UniqueDBALEventStoreDecorator::UNIQUE_COLUMN];
     }

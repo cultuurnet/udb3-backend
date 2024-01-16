@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Address;
+namespace CultuurNet\UDB3\Address\Formatter;
+
+use CultuurNet\UDB3\Address\Address;
 
 final class FullAddressFormatter implements AddressFormatter
 {

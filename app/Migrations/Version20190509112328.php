@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 class Version20190509112328 extends AbstractMigration
 {
     public function up(Schema $schema): void
@@ -21,7 +19,7 @@ class Version20190509112328 extends AbstractMigration
         $table->changeColumn(
             'constraint_query',
             [
-                'type' => Type::getType(Type::TEXT),
+                'type' => Type::getType(Types::TEXT),
                 'length' => MySqlPlatform::LENGTH_LIMIT_MEDIUMTEXT + 1,
             ]
         );
@@ -35,7 +33,7 @@ class Version20190509112328 extends AbstractMigration
         $table->changeColumn(
             'constraint_query',
             [
-                'type' => Type::getType(Type::STRING),
+                'type' => Type::getType(Types::STRING),
                 'length' => 255,
             ]
         );

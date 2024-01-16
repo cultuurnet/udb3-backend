@@ -1,11 +1,11 @@
 <?php
 
-use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\DBAL\Tools\Console\ConsoleRunner;
+use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
+use Doctrine\Migrations\Tools\Console\Command\GenerateCommand;
+use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
+use Doctrine\Migrations\Tools\Console\Command\StatusCommand;
+use Doctrine\Migrations\Tools\Console\Command\VersionCommand;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Helper\QuestionHelper;
 
