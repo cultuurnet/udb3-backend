@@ -43,7 +43,7 @@ trait UtilitySteps
     /**
      * @Given /^I prevent duplicate creation$/
      */
-    public function iPreventDuplicateCreation()
+    public function iPreventDuplicateCreation(): void
     {
         $this->switchedPreventDuplicateCreation = $this->changePreventDuplicateConfigFile(true);
     }
@@ -51,9 +51,9 @@ trait UtilitySteps
     /**
      * @Then /^I allow duplicate creation$/
      */
-    public function iAllowDuplicateCreation()
+    public function iAllowDuplicateCreation(): void
     {
-        if (! $this->switchedPreventDuplicateCreation) {
+        if (!$this->switchedPreventDuplicateCreation) {
             return;
         }
 
@@ -70,13 +70,13 @@ trait UtilitySteps
 
         $config['prevent_duplicate_creation'] = $bool;
 
-        file_put_contents('config.php', '<?php' . PHP_EOL . PHP_EOL . 'return ' . $this->shorthand_var_export($config) . ';');
+        file_put_contents('config.php', '<?php' . PHP_EOL . PHP_EOL . 'return ' . $this->shorthandVarExport($config) . ';');
 
         return true;
     }
 
     // var_export uses old school array() style, this function converts this to the modern [] standard
-    private function shorthand_var_export($expression)
+    private function shorthandVarExport(array $expression): string
     {
         $export = var_export($expression, true);
         $patterns = [
