@@ -147,12 +147,12 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $commands = [];
         if (!$placeExists) {
             if ($this->preventDuplicatePlaces) {
-                $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceId($place);
+                $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceUri($place);
                 if ($duplicatePlaceId !== null) {
                     return new JsonResponse(
                         [
                             'message' => 'A place with this address / location name combination already exists. Please use the existing place for your purposes.',
-                            'placeId' => $duplicatePlaceId,
+                            'originalPlace' => $duplicatePlaceId,
                         ],
                         StatusCodeInterface::STATUS_CONFLICT
                     );
