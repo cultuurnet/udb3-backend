@@ -100,8 +100,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
     abstract protected function getDeleteTypicalAgeRangeClassName(): string;
 
-    abstract protected function getDeleteCurrentOrganizerClassName(): string;
-
     abstract protected function getUpdateContactPointClassName(): string;
 
     abstract protected function getUpdateBookingInfoClassName(): string;
