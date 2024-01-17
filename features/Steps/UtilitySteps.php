@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Steps;
 
 trait UtilitySteps
 {
+    private bool $switchedPreventDuplicateCreation = false;
+
     /**
      * @Given I create a random name of :nrOfCharacters characters
      */
@@ -37,8 +39,6 @@ trait UtilitySteps
     {
         sleep($seconds);
     }
-
-    private bool $switchedPreventDuplicateCreation = false;
 
     /**
      * @Given /^I prevent duplicate creation$/
