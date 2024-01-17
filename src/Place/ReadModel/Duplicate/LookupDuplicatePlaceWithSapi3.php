@@ -23,9 +23,9 @@ class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
         string $currentUserId
     ) {
         $this->sapi3SearchService = $sapi3SearchService;
-        $this->currentUserId = $currentUserId;
         $this->addressIdentifierFactory = $addressIdentifierFactory;
         $this->placeRepository = $placeRepository;
+        $this->currentUserId = $currentUserId;
     }
 
     /*
