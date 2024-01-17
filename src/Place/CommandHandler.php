@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Place;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\OfferCommandHandler;
 use CultuurNet\UDB3\Place\Commands\AddImage;
-use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
 use CultuurNet\UDB3\Place\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsDuplicate;
