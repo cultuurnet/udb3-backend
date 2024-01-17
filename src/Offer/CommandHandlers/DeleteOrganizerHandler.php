@@ -31,7 +31,7 @@ final class DeleteOrganizerHandler implements CommandHandler
 
         $offer = $this->offerRepository->load($command->getItemId());
 
-        if ($offer->getOrganizerId() === $command->getOrganizerId()) {
+        if ($offer->getOrganizerId() === $command->getOrganizerId() || $command->getOrganizerId() === null) {
             $this->organizerChangeAllowedBasedOnTicketSales->guard($command);
         }
 
