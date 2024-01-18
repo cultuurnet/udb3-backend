@@ -30,7 +30,8 @@ trait PlaceSteps
             '/places',
             $this->fixtures->loadJson('places/place-with-required-fields.json', $this->variableState),
             $jsonPath,
-            $variableName
+            $variableName,
+            201
         );
     }
 
@@ -59,7 +60,8 @@ trait PlaceSteps
             '/places',
             $this->fixtures->loadJson($fileName, $this->variableState),
             $jsonPath,
-            $variableName
+            $variableName,
+            201
         );
     }
 
@@ -72,7 +74,8 @@ trait PlaceSteps
             '/imports/places',
             $this->fixtures->loadJson($fileName, $this->variableState),
             $jsonPath,
-            $variableName
+            $variableName,
+            200
         );
     }
 
@@ -240,7 +243,7 @@ trait PlaceSteps
         $this->theResponseStatusShouldBe(204);
     }
 
-    private function createPlace(string $endpoint, string $json, string $jsonPath, string $variableName, int $responseStatus = null): void
+    private function createPlace(string $endpoint, string $json, string $jsonPath, string $variableName, int $responseStatus): void
     {
         $response = $this->getHttpClient()->postJSON(
             $endpoint,
@@ -248,13 +251,9 @@ trait PlaceSteps
         );
         $this->responseState->setResponse($response);
 
-        $this->theResponseStatusShouldBe($this->getStatusCode($endpoint, $responseStatus));
+        $this->theResponseStatusShouldBe($responseStatus);
         $this->theResponseBodyShouldBeValidJson();
         $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
     }
 
-    private function getStatusCode(string $endpoint, ?int $responseStatus): int
-    {
-        return $responseStatus ?? (str_contains($endpoint, 'imports') ? 200 : 201);
-    }
 }
