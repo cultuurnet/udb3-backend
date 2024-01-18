@@ -27,7 +27,7 @@ use CultuurNet\UDB3\Offer\OfferCommandHandler;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
-class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInterface
+final class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

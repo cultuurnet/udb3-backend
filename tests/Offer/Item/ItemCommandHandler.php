@@ -21,7 +21,7 @@ use CultuurNet\UDB3\Offer\Item\Commands\SelectMainImage;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\OfferCommandHandler;
 
-class ItemCommandHandler extends OfferCommandHandler
+final class ItemCommandHandler extends OfferCommandHandler
 {
     protected function getAddImageClassName(): string
     {

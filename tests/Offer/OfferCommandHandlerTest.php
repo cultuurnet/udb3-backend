@@ -30,7 +30,7 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
+final class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected string $id;
     protected Language $language;

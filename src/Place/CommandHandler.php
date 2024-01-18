@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
-class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
+final class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
