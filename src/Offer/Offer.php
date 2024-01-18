@@ -413,9 +413,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function deleteOrganizer(string $organizerId): void
+    public function deleteOrganizer(?string $organizerId): void
     {
-        if ($this->organizerId === $organizerId) {
+        if (is_null($organizerId)) {
+            $this->deleteCurrentOrganizer();
+        } elseif ($this->organizerId === $organizerId) {
             $this->apply(
                 $this->createOrganizerDeletedEvent($organizerId)
             );
@@ -425,7 +427,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     /**
      * Delete the current organizer regardless of the id.
      */
-    public function deleteCurrentOrganizer(): void
+    private function deleteCurrentOrganizer(): void
     {
         if (!is_null($this->organizerId)) {
             $this->apply(
