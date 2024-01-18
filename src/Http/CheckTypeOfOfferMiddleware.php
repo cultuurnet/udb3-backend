@@ -38,8 +38,7 @@ class CheckTypeOfOfferMiddleware implements MiddlewareInterface
 
         if ($offerType === OfferType::event()) {
             $this->eventRepository->fetch($offerId);
-        }
-        else if ($offerType === OfferType::place()) {
+        } elseif ($offerType === OfferType::place()) {
             $this->placeRepository->fetch($offerId);
         }
 
