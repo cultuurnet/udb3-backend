@@ -255,5 +255,4 @@ trait PlaceSteps
         $this->theResponseBodyShouldBeValidJson();
         $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
     }
-
 }
