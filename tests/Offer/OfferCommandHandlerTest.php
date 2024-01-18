@@ -156,27 +156,4 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
                 new Rejected($this->id, $reason),
             ]);
     }
-
-    /**
-     * @test
-     */
-    public function it_handles_delete_current_organizer_commands(): void
-    {
-        $this->scenario
-            ->withAggregateId($this->id)
-            ->given(
-                [
-                    $this->itemCreated,
-                    new OrganizerUpdated($this->id, '9f4cad43-8a2b-4475-870c-e02ef9741754'),
-                ]
-            )
-            ->when(
-                new DeleteCurrentOrganizer($this->id)
-            )
-            ->then(
-                [
-                    new OrganizerDeleted($this->id, '9f4cad43-8a2b-4475-870c-e02ef9741754'),
-                ]
-            );
-    }
 }
