@@ -60,30 +60,30 @@ trait UtilitySteps
         $this->changePreventDuplicateConfigFile(false);
     }
 
-    private function changePreventDuplicateConfigFile(bool $bool): bool
+    private function changePreventDuplicateConfigFile(bool $changeValueTo): bool
     {
-        $config = require 'config.php';
+        $configFile = file_get_contents('config.php');
 
-        if ($config['prevent_duplicate_creation'] === $bool) {
+        //These values need to be strings for the search replace
+        if($changeValueTo) {
+            $from = 'false';
+            $to = 'true';
+        } else {
+            $from = 'true';
+            $to = 'false';
+        }
+
+        $currentLine = "'prevent_duplicate_creation' => " . $from;
+        $newLine = "'prevent_duplicate_creation' => " . $to;
+
+        if (str_contains($configFile, $newLine)) {
             return false;
         }
 
-        $config['prevent_duplicate_creation'] = $bool;
+        $configFile = str_replace($currentLine, $newLine, $configFile);
 
-        file_put_contents('config.php', '<?php' . PHP_EOL . PHP_EOL . 'return ' . $this->shorthandVarExport($config) . ';');
+        file_put_contents('config.php', $configFile);
 
         return true;
-    }
-
-    // var_export uses old school array() style, this function converts this to the modern [] standard
-    private function shorthandVarExport(array $expression): string
-    {
-        $export = var_export($expression, true);
-        $patterns = [
-            "/array \(/" => '[',
-            "/^([ ]*)\)(,?)$/m" => '$1]$2',
-        ];
-
-        return preg_replace(array_keys($patterns), array_values($patterns), $export);
     }
 }
