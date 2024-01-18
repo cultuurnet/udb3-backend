@@ -36,7 +36,7 @@ class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
     public function getDuplicatePlaceUri(Place $place): ?string
     {
         $results = $this->sapi3SearchService->search(
-            'unique_address_identifier:' . $this->addressIdentifierFactory->hash(
+            'unique_address_identifier:' . $this->addressIdentifierFactory->create(
                 $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
                 $place->getAddress()->getTranslation($place->getMainLanguage()),
                 $this->currentUserId

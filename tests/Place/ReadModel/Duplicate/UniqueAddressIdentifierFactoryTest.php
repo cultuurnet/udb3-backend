@@ -20,7 +20,7 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
     public function testHash(string $title, Address $address, string $currentUserId, string $expectedHash): void
     {
         $actualHash = (new UniqueAddressIdentifierFactory())
-            ->hash($title, $address, $currentUserId);
+            ->create($title, $address, $currentUserId);
 
         $this->assertEquals($expectedHash, $actualHash);
     }
