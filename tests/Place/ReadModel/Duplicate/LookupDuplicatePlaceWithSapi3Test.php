@@ -31,7 +31,6 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Results;
 use CultuurNet\UDB3\Search\Sapi3SearchService;
-use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -45,9 +44,6 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
     protected function setUp(): void
     {
         $this->sapi3SearchService = $this->createMock(Sapi3SearchService::class);
-        $this->sapi3SearchService->expects($this->atMost(2))
-            ->method('getLastRequestedUri')
-            ->willReturn(new Uri('http://www.example.com/last_requested_uri'));
 
         $documentRepositoryMock = $this->createMock(DocumentRepository::class);
 
@@ -131,19 +127,25 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
                 )), 2),
                 'http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
             ],
-            'Multiple results without duplicatedBy field' => [
-                new Results(new ItemIdentifiers(new ItemIdentifier(
-                    new Url('http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831'),
-                    '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
-                    ItemType::place()
-                ), new ItemIdentifier(
-                    new Url('http://www.example.com/place/aadcee95-6180-4924-a8eb-ed829d4957a2'),
-                    'aadcee95-6180-4924-a8eb-ed829d4957a2',
-                    ItemType::place()
-                )), 2),
-                'http://www.example.com/last_requested_uri',
-            ],
         ];
+    }
+
+    public function test_get_duplicate_place_no_canonical_place_found(): void
+    {
+        $searchResult = new Results(new ItemIdentifiers(new ItemIdentifier(
+            new Url('http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831'),
+            '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
+            ItemType::place()
+        ), new ItemIdentifier(
+            new Url('http://www.example.com/place/aadcee95-6180-4924-a8eb-ed829d4957a2'),
+            'aadcee95-6180-4924-a8eb-ed829d4957a2',
+            ItemType::place()
+        )), 2);
+
+        $this->sapi3SearchService->method('search')->willReturn($searchResult);
+
+        $this->expectException(DuplicatePlaceButNoCanonicalPlaceFound::class);
+        $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
     }
 
     private function createPlace(): ImmutablePlace

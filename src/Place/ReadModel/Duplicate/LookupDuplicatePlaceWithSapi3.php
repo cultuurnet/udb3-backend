@@ -35,12 +35,15 @@ class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
     */
     public function getDuplicatePlaceUri(Place $place): ?string
     {
-        $results = $this->sapi3SearchService->search(
-            'unique_address_identifier:' . $this->addressIdentifierFactory->create(
+        $query = 'unique_address_identifier:' .
+            $this->addressIdentifierFactory->create(
                 $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
                 $place->getAddress()->getTranslation($place->getMainLanguage()),
                 $this->currentUserId
-            ),
+            );
+
+        $results = $this->sapi3SearchService->search(
+            $query,
             1
         );
 
@@ -63,11 +66,6 @@ class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
             }
         }
 
-        if ($this->sapi3SearchService->getLastRequestedUri() === null) {
-            // This should never happen, but probably not worth it to crash the Place API request for it
-            return $results->getItems()[0]->getUrl()->toString();
-        }
-
-        return $this->sapi3SearchService->getLastRequestedUri()->__toString();
+        throw new DuplicatePlaceButNoCanonicalPlaceFound($query);
     }
 }

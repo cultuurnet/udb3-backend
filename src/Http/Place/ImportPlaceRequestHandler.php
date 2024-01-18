@@ -45,6 +45,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
+use CultuurNet\UDB3\Place\ReadModel\Duplicate\DuplicatePlaceButNoCanonicalPlaceFound;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
@@ -147,12 +148,22 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $commands = [];
         if (!$placeExists) {
             if ($this->preventDuplicatePlaces) {
-                $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceUri($place);
-                if ($duplicatePlaceId !== null) {
+                try {
+                    $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceUri($place);
+                    if ($duplicatePlaceId !== null) {
+                        return new JsonResponse(
+                            [
+                                'message' => 'A place with this address / location name combination already exists. Please use the existing place for your purposes.',
+                                'originalPlace' => $duplicatePlaceId,
+                            ],
+                            StatusCodeInterface::STATUS_CONFLICT
+                        );
+                    }
+                } catch (DuplicatePlaceButNoCanonicalPlaceFound $e) {
                     return new JsonResponse(
                         [
-                            'message' => 'A place with this address / location name combination already exists. Please use the existing place for your purposes.',
-                            'originalPlace' => $duplicatePlaceId,
+                            'message' => $e->getMessage(),
+                            'originalPlace' => $e->getQuery(),
                         ],
                         StatusCodeInterface::STATUS_CONFLICT
                     );
