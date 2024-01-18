@@ -36,7 +36,6 @@ use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Offer\InvalidWorkflowStatusTransition;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
 use CultuurNet\UDB3\Place\Commands\Moderation\Publish;
