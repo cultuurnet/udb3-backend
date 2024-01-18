@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Offer\Commands\AbstractDeleteCurrentOrganizer;
+use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\UiTPAS\Validation\EventHasTicketSalesGuard;
 
@@ -25,7 +25,7 @@ final class DeleteCurrentOrganizerHandler implements CommandHandler
 
     public function handle($command): void
     {
-        if (!($command instanceof AbstractDeleteCurrentOrganizer)) {
+        if (!($command instanceof DeleteCurrentOrganizer)) {
             return;
         }
 

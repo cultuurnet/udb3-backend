@@ -43,7 +43,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
-use CultuurNet\UDB3\Offer\Commands\AbstractDeleteCurrentOrganizer;
+use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
@@ -272,7 +272,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         if ($organizerId) {
             $commands[] = new UpdateOrganizer($eventId, $organizerId);
         } else {
-            $commands[] = new AbstractDeleteCurrentOrganizer($eventId);
+            $commands[] = new DeleteCurrentOrganizer($eventId);
         }
 
         foreach ($commands as $command) {

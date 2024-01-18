@@ -61,7 +61,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
-use CultuurNet\UDB3\Offer\Commands\AbstractDeleteCurrentOrganizer;
+use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
@@ -198,7 +198,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -280,7 +280,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -399,7 +399,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -474,7 +474,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -744,7 +744,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                         ))->withCopyrightHolder(new CopyrightHolder('publiq vzw')),
                     )
                 ),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -818,7 +818,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -889,7 +889,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1035,7 +1035,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1105,7 +1105,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1185,7 +1185,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1263,7 +1263,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1340,7 +1340,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1421,7 +1421,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1496,7 +1496,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1575,7 +1575,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1648,7 +1648,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1928,7 +1928,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -2739,7 +2739,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -4003,7 +4003,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new DeleteOffer($eventId),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -4330,7 +4330,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -4823,7 +4823,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new AbstractDeleteCurrentOrganizer($eventId),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
