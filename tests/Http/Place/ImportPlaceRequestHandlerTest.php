@@ -59,6 +59,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Offer\Commands\AbstractDeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
@@ -220,7 +221,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
-                new DeleteCurrentOrganizer($placeId),
+                new AbstractDeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -364,7 +365,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
-                new DeleteCurrentOrganizer($placeId),
+                new AbstractDeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -450,7 +451,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
-                new DeleteCurrentOrganizer($placeId),
+                new AbstractDeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -531,7 +532,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
                 new DeleteOffer($placeId),
-                new DeleteCurrentOrganizer($placeId),
+                new AbstractDeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -615,7 +616,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
-                new DeleteCurrentOrganizer($placeId),
+                new AbstractDeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -685,7 +686,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
-                new DeleteCurrentOrganizer($placeId),
+                new AbstractDeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -962,7 +963,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         ),
                     )
                 ),
-                new DeleteCurrentOrganizer($placeId),
+                new AbstractDeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1143,7 +1144,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
-                new DeleteCurrentOrganizer($placeId),
+                new AbstractDeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1231,7 +1232,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
                 new DeleteOffer($placeId),
-                new DeleteCurrentOrganizer($placeId),
+                new AbstractDeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -3819,7 +3820,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
-                new DeleteCurrentOrganizer($placeId),
+                new AbstractDeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );

@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Offer\Commands\AbstractDeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
@@ -223,7 +224,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         if ($organizerId) {
             $commands[] = new UpdateOrganizer($placeId, $organizerId);
         } else {
-            $commands[] = new DeleteCurrentOrganizer($placeId);
+            $commands[] = new AbstractDeleteCurrentOrganizer($placeId);
         }
 
         foreach ($commands as $command) {
