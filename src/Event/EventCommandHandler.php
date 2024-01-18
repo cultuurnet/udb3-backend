@@ -114,11 +114,6 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
         return DeleteTypicalAgeRange::class;
     }
 
-    protected function getDeleteCurrentOrganizerClassName(): string
-    {
-        return DeleteCurrentOrganizer::class;
-    }
-
     protected function getUpdateContactPointClassName(): string
     {
         return UpdateContactPoint::class;

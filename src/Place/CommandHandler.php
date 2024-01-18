@@ -71,11 +71,6 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
         return DeleteTypicalAgeRange::class;
     }
 
-    protected function getDeleteCurrentOrganizerClassName(): string
-    {
-        return DeleteCurrentOrganizer::class;
-    }
-
     protected function getUpdateContactPointClassName(): string
     {
         return UpdateContactPoint::class;

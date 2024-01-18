@@ -100,8 +100,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
     abstract protected function getDeleteTypicalAgeRangeClassName(): string;
 
-    abstract protected function getDeleteCurrentOrganizerClassName(): string;
-
     abstract protected function getUpdateContactPointClassName(): string;
 
     abstract protected function getUpdateBookingInfoClassName(): string;
@@ -187,15 +185,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer = $this->load($deleteTypicalAgeRange->getItemId());
 
         $offer->deleteTypicalAgeRange();
-
-        $this->offerRepository->save($offer);
-    }
-
-    public function handleDeleteCurrentOrganizer(AbstractDeleteCurrentOrganizer $deleteCurrentOrganizer): void
-    {
-        $offer = $this->load($deleteCurrentOrganizer->getItemId());
-
-        $offer->deleteCurrentOrganizer();
 
         $this->offerRepository->save($offer);
     }
