@@ -1692,7 +1692,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item): void {
-                    $item->deleteCurrentOrganizer();
+                    $item->deleteOrganizer(null);
                 }
             )
             ->then([new OrganizerDeleted($itemId, $organizerId)]);
@@ -1714,7 +1714,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item): void {
-                    $item->deleteCurrentOrganizer();
+                    $item->deleteOrganizer(null);
                 }
             )
             ->then([]);
