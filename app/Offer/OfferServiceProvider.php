@@ -57,6 +57,7 @@ use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteCurrentOrganizerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\DeleteDescriptionHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\DeleteOfferHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\DeleteOrganizerHandler;
@@ -125,6 +126,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdatePriceInfoHandler::class,
             UpdateOrganizerHandler::class,
             DeleteOrganizerHandler::class,
+            DeleteCurrentOrganizerHandler::class,
             GetDetailRequestHandler::class,
             DeleteRequestHandler::class,
             UpdateTypicalAgeRangeRequestHandler::class,
@@ -359,6 +361,14 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             DeleteOrganizerHandler::class,
             fn () => new DeleteOrganizerHandler(
+                $container->get(OfferRepository::class),
+                $container->get(EventHasTicketSalesGuard::class)
+            )
+        );
+
+        $container->addShared(
+            DeleteCurrentOrganizerHandler::class,
+            fn () => new DeleteCurrentOrganizerHandler(
                 $container->get(OfferRepository::class),
                 $container->get(EventHasTicketSalesGuard::class)
             )
