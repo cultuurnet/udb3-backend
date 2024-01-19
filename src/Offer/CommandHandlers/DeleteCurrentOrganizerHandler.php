@@ -25,7 +25,7 @@ final class DeleteCurrentOrganizerHandler implements CommandHandler
 
     public function handle($command): void
     {
-        if (!($command instanceof DeleteCurrentOrganizer)) {
+        if (!$command instanceof DeleteCurrentOrganizer) {
             return;
         }
 
