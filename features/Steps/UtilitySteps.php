@@ -65,7 +65,7 @@ trait UtilitySteps
         $configFile = file_get_contents('config.php');
 
         //These values need to be strings for the search replace
-        if($changeValueTo) {
+        if ($changeValueTo) {
             $from = 'false';
             $to = 'true';
         } else {
