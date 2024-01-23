@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
-use Behat\Behat\Tester\Exception\PendingException;
 use CultuurNet\UDB3\Json;
 
 trait EventSteps
@@ -62,7 +61,7 @@ trait EventSteps
     /**
      * @Then /^I get the event at "([^"]*)" and get response code "([^"]*)"$/
      */
-    public function iGetTheEventAtAndGetResponseCode(string $url, int $statusCode)
+    public function iGetTheEventAtAndGetResponseCode(string $url, int $statusCode): void
     {
         $this->responseState->setResponse(
             $this->getHttpClient()->get($url)
