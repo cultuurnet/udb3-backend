@@ -43,13 +43,6 @@ final class AuthServiceProvider extends AbstractServiceProvider
 
         CurrentUser::configureGodUserIds($container->get('config')['user_permissions']['allow_all']);
 
-        $container->addShared(CheckTypeOfOfferMiddleware::class, function () use ($container): CheckTypeOfOfferMiddleware {
-            return new CheckTypeOfOfferMiddleware(
-                $container->get('place_jsonld_repository'),
-                $container->get('event_jsonld_repository'),
-            );
-        });
-
         $container->addShared(
             RequestAuthenticatorMiddleware::class,
             function () use ($container): RequestAuthenticatorMiddleware {
