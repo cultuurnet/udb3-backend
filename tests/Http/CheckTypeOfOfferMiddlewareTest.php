@@ -69,6 +69,4 @@ class CheckTypeOfOfferMiddlewareTest extends TestCase
             'Looking for place on /events' => [['offerType' => 'events', 'offerId' => self::PLACE_ID], true],
         ];
     }
-
-    // And I wait for the place with url "%{placeUrl}" to be indexed
 }
