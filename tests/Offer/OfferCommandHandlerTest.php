@@ -11,7 +11,6 @@ use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
-use CultuurNet\UDB3\Offer\Item\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\FlagAsDuplicate;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\FlagAsInappropriate;
@@ -22,8 +21,6 @@ use CultuurNet\UDB3\Offer\Item\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\FlaggedAsInappropriate;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\Published;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\Rejected;
-use CultuurNet\UDB3\Offer\Item\Events\OrganizerDeleted;
-use CultuurNet\UDB3\Offer\Item\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Offer\Item\ItemCommandHandler;
 use CultuurNet\UDB3\Offer\Item\ItemRepository;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
@@ -33,7 +30,7 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
+final class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected string $id;
     protected Language $language;
@@ -155,28 +152,5 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->then([
                 new Rejected($this->id, $reason),
             ]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_delete_current_organizer_commands(): void
-    {
-        $this->scenario
-            ->withAggregateId($this->id)
-            ->given(
-                [
-                    $this->itemCreated,
-                    new OrganizerUpdated($this->id, '9f4cad43-8a2b-4475-870c-e02ef9741754'),
-                ]
-            )
-            ->when(
-                new DeleteCurrentOrganizer($this->id)
-            )
-            ->then(
-                [
-                    new OrganizerDeleted($this->id, '9f4cad43-8a2b-4475-870c-e02ef9741754'),
-                ]
-            );
     }
 }

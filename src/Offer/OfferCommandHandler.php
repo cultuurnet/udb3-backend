@@ -8,7 +8,6 @@ use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\Properties\Description;
-use CultuurNet\UDB3\Offer\Commands\AbstractDeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
@@ -100,8 +99,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
     abstract protected function getDeleteTypicalAgeRangeClassName(): string;
 
-    abstract protected function getDeleteCurrentOrganizerClassName(): string;
-
     abstract protected function getUpdateContactPointClassName(): string;
 
     abstract protected function getUpdateBookingInfoClassName(): string;
@@ -187,15 +184,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer = $this->load($deleteTypicalAgeRange->getItemId());
 
         $offer->deleteTypicalAgeRange();
-
-        $this->offerRepository->save($offer);
-    }
-
-    public function handleDeleteCurrentOrganizer(AbstractDeleteCurrentOrganizer $deleteCurrentOrganizer): void
-    {
-        $offer = $this->load($deleteCurrentOrganizer->getItemId());
-
-        $offer->deleteCurrentOrganizer();
 
         $this->offerRepository->save($offer);
     }
