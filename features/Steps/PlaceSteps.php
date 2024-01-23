@@ -93,6 +93,19 @@ trait PlaceSteps
     }
 
     /**
+     * @Given I fail to get the place at :url
+     */
+    public function iFailToGetThePlaceAt(string $url): void
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->get($url)
+        );
+
+        $this->theResponseStatusShouldBe(404);
+        $this->theResponseBodyShouldBeValidJson();
+    }
+
+    /**
      * @When I get the RDF of place with id :id
      */
     public function iGetTheRdfOfPlaceWithId(string $id): void

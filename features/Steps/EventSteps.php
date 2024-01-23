@@ -59,6 +59,19 @@ trait EventSteps
     }
 
     /**
+     * @Given I fail to get the event at :url
+     */
+    public function iFailToGetTheEventAt(string $url): void
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->get($url)
+        );
+
+        $this->theResponseStatusShouldBe(404);
+        $this->theResponseBodyShouldBeValidJson();
+    }
+
+    /**
      * @When I get the RDF of event with id :id
      */
     public function iGetTheRdfOfEventWithId(string $id): void
