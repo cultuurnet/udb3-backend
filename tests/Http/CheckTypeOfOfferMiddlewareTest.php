@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http;
 
-use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -35,7 +34,7 @@ class CheckTypeOfOfferMiddlewareTest extends TestCase
         $placeRepository = $this->createMock(DocumentRepository::class);
         $placeRepository->expects($placeRequested ? $this->once() : $this->never())
             ->method('fetch')
-            ->willReturnCallback(function (string $offerId) : JsonDocument {
+            ->willReturnCallback(function (string $offerId): JsonDocument {
                 if ($offerId !== self::PLACE_ID) {
                     throw DocumentDoesNotExist::withId($offerId);
                 }
@@ -45,7 +44,7 @@ class CheckTypeOfOfferMiddlewareTest extends TestCase
         $eventRepository = $this->createMock(DocumentRepository::class);
         $eventRepository->expects($placeRequested ? $this->never() : $this->once())
             ->method('fetch')
-            ->willReturnCallback(function (string $offerId) : JsonDocument {
+            ->willReturnCallback(function (string $offerId): JsonDocument {
                 if ($offerId !== self::EVENT_ID) {
                     throw DocumentDoesNotExist::withId($offerId);
                 }
@@ -54,7 +53,7 @@ class CheckTypeOfOfferMiddlewareTest extends TestCase
 
         $middleware = new CheckTypeOfOfferMiddleware($placeRepository, $eventRepository);
 
-        if($expectException) {
+        if ($expectException) {
             $this->expectException(DocumentDoesNotExist::class);
         }
 
