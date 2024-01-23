@@ -64,7 +64,6 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
         $this->lookupDuplicatePlaceWithSapi3 = new LookupDuplicatePlaceWithSapi3(
             $this->sapi3SearchService,
             new UniqueAddressIdentifierFactory(),
-            $documentRepositoryMock,
             'current-user-id'
         );
     }
@@ -82,7 +81,7 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
 
         $this->sapi3SearchService->expects($this->once())
             ->method('search')
-            ->with('unique_address_identifier:online_kerkstraat_1_2000_antwerpen_be_current-user-id', 1)
+            ->with('unique_address_identifier:online_kerkstraat_1_2000_antwerpen_be_current-user-id')
             ->willReturn(
                 new Results($itemIdentifiers, $itemIdentifiers->count())
             );
@@ -113,18 +112,6 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
                     '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
                     ItemType::place()
                 )), 1),
-                'http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
-            ],
-            'Multiple results with duplicatedBy field' => [
-                new Results(new ItemIdentifiers(new ItemIdentifier(
-                    new Url('http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831'),
-                    '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
-                    ItemType::place()
-                ), new ItemIdentifier(
-                    new Url('http://www.example.com/place/55a4c2bc-4441-1aef-1aef-bd6ab9ccd831'),
-                    '55a4c2bc-4441-1aef-1aef-bd6ab9ccd831',
-                    ItemType::place()
-                )), 2),
                 'http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
             ],
         ];
