@@ -70,12 +70,18 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             InputArgument::OPTIONAL,
             'The id of the cluster to start processing from (useful for resuming a previous run).'
         );
+        $this->addArgument(
+            'only-set-canonical',
+            InputArgument::OPTIONAL,
+            'Execute the script but only set the canonical of the clusters, do not reindex or update event locations.'
+        );
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $dryRun = (bool)$input->getOption('dry-run');
         $startingClusterId = (int)$input->getArgument('start-cluster-id');
+        $onlySetCanonical = (bool)$input->getOption('only-set-canonical');
 
         $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
 
@@ -104,6 +110,10 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             $output->writeln('Setting ' . $canonicalId . ' as canonical of cluster ' . $clusterId);
             if (!$dryRun) {
                 $this->duplicatePlaceRepository->setCanonicalOnCluster($clusterId, $canonicalId);
+            }
+
+            if ($onlySetCanonical) {
+                continue;
             }
 
             // 2. Trigger a SAPI3 reindex on the places in duplicate_places and places removed from duplicate_places
