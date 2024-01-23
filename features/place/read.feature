@@ -7,13 +7,7 @@ Feature: Read places
     And I send and accept "application/json"
 
   @bugfix # https://jira.uitdatabank.be/browse/III-5979
-  Scenario: Try to get a event that actually is a place
-    Given I create a minimal place and save the "url" as "placeUrl"
-    # The line below gets an event which is actually a place - this is on purpose and should fail
-    Then I fail to get the event at "%{placeUrl}"
-
-  @bugfix # https://jira.uitdatabank.be/browse/III-5979
   Scenario: Try to get a place that actually is an event
-    Given I create a minimal permanent event and save the "url" as "eventUrl"
-    # The line below gets a place which is actually a event - this is on purpose and should fail
-    Then I fail to get the place at "%{eventUrl}"
+    Given I create a minimal place and save the "url" as "placeUrl"
+    Given I create a minimal permanent event and save the "id" as "eventId"
+    Then I get the place at "http://host.docker.internal:8000/places/%{eventId}" and get response code "404"

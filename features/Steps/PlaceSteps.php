@@ -93,6 +93,19 @@ trait PlaceSteps
     }
 
     /**
+     * @Then /^I get the place at "([^"]*)" and get response code "([^"]*)"$/
+     */
+    public function iGetThePlaceAtAndGetResponseCode(string $url, int $statusCode)
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->get($url)
+        );
+
+        $this->theResponseStatusShouldBe($statusCode);
+        $this->theResponseBodyShouldBeValidJson();
+    }
+
+    /**
      * @Given I fail to get the place at :url
      */
     public function iFailToGetThePlaceAt(string $url): void

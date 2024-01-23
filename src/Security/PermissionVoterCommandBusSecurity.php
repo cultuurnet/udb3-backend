@@ -13,7 +13,7 @@ final class PermissionVoterCommandBusSecurity implements CommandBusSecurity
     private PermissionVoter $permissionVoter;
 
     public function __construct(
-        ?string $userId,
+        string $userId,
         PermissionVoter $permissionVoter
     ) {
         $this->userId = $userId;

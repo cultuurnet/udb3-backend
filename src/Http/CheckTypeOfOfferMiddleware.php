@@ -25,6 +25,8 @@ class CheckTypeOfOfferMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        return $handler->handle($request);
+
         $routeParameters = new RouteParameters($request);
 
         if (!$routeParameters->hasOfferType() || !$routeParameters->hasOfferId()) {
