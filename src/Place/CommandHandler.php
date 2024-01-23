@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Place;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\OfferCommandHandler;
 use CultuurNet\UDB3\Place\Commands\AddImage;
-use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
 use CultuurNet\UDB3\Place\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsDuplicate;
@@ -27,7 +26,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
-class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
+final class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -69,11 +68,6 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
     protected function getDeleteTypicalAgeRangeClassName(): string
     {
         return DeleteTypicalAgeRange::class;
-    }
-
-    protected function getDeleteCurrentOrganizerClassName(): string
-    {
-        return DeleteCurrentOrganizer::class;
     }
 
     protected function getUpdateContactPointClassName(): string
