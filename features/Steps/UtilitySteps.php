@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Steps;
 
 trait UtilitySteps
 {
-    private bool $switchedPreventDuplicateCreation = false;
+    private bool $initialPreventDuplicateCreationValue;
 
     /**
      * @Given I create a random name of :nrOfCharacters characters
@@ -45,7 +45,23 @@ trait UtilitySteps
      */
     public function iPreventDuplicateCreation(): void
     {
-        $this->switchedPreventDuplicateCreation = $this->changePreventDuplicateConfigFile(true);
+        $configFile = file_get_contents('config.php');
+
+        if (str_contains($configFile, "'prevent_duplicate_creation' => true")) {
+            // The config was already on true, so no futher changes are required
+            $this->initialPreventDuplicateCreationValue = true;
+            return;
+        }
+
+        $configFile = str_replace(
+            "'prevent_duplicate_creation' => false",
+            "'prevent_duplicate_creation' => true",
+            $configFile
+        );
+
+        file_put_contents('config.php', $configFile);
+
+        $this->initialPreventDuplicateCreationValue = false;
     }
 
     /**
@@ -53,37 +69,14 @@ trait UtilitySteps
      */
     public function iAllowDuplicateCreation(): void
     {
-        if (!$this->switchedPreventDuplicateCreation) {
-            return;
-        }
-
-        $this->changePreventDuplicateConfigFile(false);
-    }
-
-    private function changePreventDuplicateConfigFile(bool $changeValueTo): bool
-    {
         $configFile = file_get_contents('config.php');
 
-        //These values need to be strings for the search replace
-        if ($changeValueTo) {
-            $from = 'false';
-            $to = 'true';
-        } else {
-            $from = 'true';
-            $to = 'false';
-        }
-
-        $currentLine = "'prevent_duplicate_creation' => " . $from;
-        $newLine = "'prevent_duplicate_creation' => " . $to;
-
-        if (str_contains($configFile, $newLine)) {
-            return false;
-        }
-
-        $configFile = str_replace($currentLine, $newLine, $configFile);
+        $configFile = str_replace(
+            "'prevent_duplicate_creation' => true",
+            "'prevent_duplicate_creation' => " . ($this->initialPreventDuplicateCreationValue ? 'true' : 'false'),
+            $configFile
+        );
 
         file_put_contents('config.php', $configFile);
-
-        return true;
     }
 }
