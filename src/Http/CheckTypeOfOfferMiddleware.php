@@ -28,17 +28,16 @@ class CheckTypeOfOfferMiddleware implements MiddlewareInterface
     {
         $routeParameters = new RouteParameters($request);
 
-        try {
-            $offerType = $routeParameters->getOfferType();
-        } catch (RuntimeException $e) {
+        if (!$routeParameters->hasOfferType() || !$routeParameters->hasOfferId()) {
             return $handler->handle($request);
         }
 
+        $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
 
         if (OfferType::event()->sameAs($offerType)) {
             $this->eventRepository->fetch($offerId);
-        } elseif (OfferType::place()->sameAs($offerType)) {
+        } else {
             $this->placeRepository->fetch($offerId);
         }
 
