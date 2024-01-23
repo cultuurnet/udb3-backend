@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http;
 
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class CheckTypeOfOfferMiddlewareTest extends TestCase
@@ -19,37 +19,21 @@ class CheckTypeOfOfferMiddlewareTest extends TestCase
     /**
      * @dataProvider offerTypeProvider
      */
-    public function testProcessMiddleware(array $attributes, bool $expectException): void
+    public function testProcessMiddleware(string $offerType, string $offerId, bool $expectException): void
     {
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request->expects($this->once())
-            ->method('getAttributes')
-            ->with()
-            ->willReturn($attributes);
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString(sprintf('/%s/%s', $offerType, $offerId))
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', $offerId)
+            ->build('GET');
 
         $handler = $this->createMock(RequestHandlerInterface::class);
 
-        $placeRequested = $attributes['offerType'] === 'places';
+        $placeRepository = new InMemoryDocumentRepository();
+        $placeRepository->save(new JsonDocument(self::PLACE_ID, '{}'));
 
-        $placeRepository = $this->createMock(DocumentRepository::class);
-        $placeRepository->expects($placeRequested ? $this->once() : $this->never())
-            ->method('fetch')
-            ->willReturnCallback(function (string $offerId): JsonDocument {
-                if ($offerId !== self::PLACE_ID) {
-                    throw DocumentDoesNotExist::withId($offerId);
-                }
-                return new JsonDocument(self::PLACE_ID, '{}');
-            });
-
-        $eventRepository = $this->createMock(DocumentRepository::class);
-        $eventRepository->expects($placeRequested ? $this->never() : $this->once())
-            ->method('fetch')
-            ->willReturnCallback(function (string $offerId): JsonDocument {
-                if ($offerId !== self::EVENT_ID) {
-                    throw DocumentDoesNotExist::withId($offerId);
-                }
-                return new JsonDocument(self::EVENT_ID, '{}');
-            });
+        $eventRepository = new InMemoryDocumentRepository();
+        $eventRepository->save(new JsonDocument(self::EVENT_ID, '{}'));
 
         $middleware = new CheckTypeOfOfferMiddleware($placeRepository, $eventRepository);
 
@@ -63,10 +47,10 @@ class CheckTypeOfOfferMiddlewareTest extends TestCase
     public function offerTypeProvider(): array
     {
         return [
-            'Looking for event on /events' => [['offerType' => 'events', 'offerId' => self::EVENT_ID], false],
-            'Looking for place on /places' => [['offerType' => 'places', 'offerId' => self::PLACE_ID], false],
-            'Looking for event on /places' => [['offerType' => 'places', 'offerId' => self::EVENT_ID], true],
-            'Looking for place on /events' => [['offerType' => 'events', 'offerId' => self::PLACE_ID], true],
+            'Looking for event on /events' => ['events', self::EVENT_ID, false],
+            'Looking for place on /places' => ['places', self::PLACE_ID, false],
+            'Looking for event on /places' => ['places', self::EVENT_ID, true],
+            'Looking for place on /events' => ['events', self::PLACE_ID, true],
         ];
     }
 }
