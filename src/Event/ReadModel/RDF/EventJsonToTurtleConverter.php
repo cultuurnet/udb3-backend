@@ -65,6 +65,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private const TYPE_PERIOD = 'm8g:PeriodOfTime';
     private const TYPE_DATE_TIME = 'xsd:dateTime';
     private const TYPE_VIRTUAL_LOCATION = 'schema:VirtualLocation';
+    private const TYPE_LOCATIE = 'dcterms:Location';
     private const TYPE_VIRTUAL_LOCATION_URL = 'xsd:string';
     private const TYPE_BOEKINGSINFO = 'cpa:Boekingsinfo';
     private const TYPE_ORGANISATOR = 'cp:Organisator';
@@ -82,6 +83,8 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private const PROPERTY_RUIMTE_TIJD = 'cp:ruimtetijd';
     private const PROPERTY_RUIMTE_TIJD_LOCATION = 'cidoc:P161_has_spatial_projection';
     private const PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE = 'cidoc:P160_has_temporal_projection';
+    private const PROPERTY_LOCATIE_ADRES = 'locn:address';
+    private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
 
     private const PROPERTY_VIRTUAL_LOCATION = 'schema:location';
     private const PROPERTY_VIRTUAL_LOCATION_URL = 'schema:url';
@@ -194,7 +197,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
             $this->setVirtualLocation($resource, $event->getOnlineUrl());
         }
 
-        $this->setCalendarWithLocation($resource, $event);
+        $this->setCalendarWithLocation($resource, $event, $eventData['location']);
         (new OpeningHoursEditor())->setOpeningHours($resource, $event->getCalendar());
 
         if ($event->getDescription()) {
@@ -265,13 +268,20 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         $resource->addResource(self::PROPERTY_CARRIED_OUT_BY, $organizerIri);
     }
 
-    private function setCalendarWithLocation(Resource $resource, Event $event): void
+    private function setCalendarWithLocation(Resource $resource, Event $event, array $locationData): void
     {
         $calendar = $event->getCalendar();
         $placeReference = $event->getPlaceReference();
+        $mainLanguage = $event->getMainLanguage();
 
         if ($calendar->getType()->sameAs(CalendarType::permanent())) {
-            $this->setLocation($resource, self::PROPERTY_ACTVITEIT_LOCATIE, $placeReference);
+            $this->setLocation(
+                $resource,
+                self::PROPERTY_ACTVITEIT_LOCATIE,
+                $placeReference,
+                $locationData,
+                $mainLanguage
+            );
 
             return;
         }
@@ -300,7 +310,13 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
             $resource->add(self::PROPERTY_RUIMTE_TIJD, $spaceTimeResource);
 
             if ($addressResource === null) {
-                $addressResource = $this->setLocation($spaceTimeResource, self::PROPERTY_RUIMTE_TIJD_LOCATION, $placeReference);
+                $addressResource = $this->setLocation(
+                    $spaceTimeResource,
+                    self::PROPERTY_RUIMTE_TIJD_LOCATION,
+                    $placeReference,
+                    $locationData,
+                    $mainLanguage
+                );
             } else {
                 $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_LOCATION, $addressResource);
             }
@@ -319,8 +335,13 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
     }
 
-    private function setLocation(Resource $resource, string $property, PlaceReference $placeReference): ?Resource
-    {
+    private function setLocation(
+        Resource $resource,
+        string $property,
+        PlaceReference $placeReference,
+        array $locationData,
+        Language $mainLanguage
+    ): ?Resource {
         if ($placeReference->getPlaceId()) {
             $locationId = new LocationId($placeReference->getPlaceId()->toString());
             if (!$locationId->isNilLocation()) {
@@ -330,14 +351,45 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if ($placeReference->getAddress()) {
-            return (new AddressEditor($this->addressParser))->setAddress(
-                $resource,
-                $property,
+            $locationResource = $resource->getGraph()->newBNode([self::TYPE_LOCATIE]);
+            $resource->add($property, $locationResource);
+
+            $dummyLocationName = $this->getDummyLocationName($locationData, $mainLanguage);
+            if ($dummyLocationName !== '') {
+                $locationResource->addLiteral(
+                    self::PROPERTY_LOCATIE_NAAM,
+                    $dummyLocationName,
+                    $mainLanguage->toString()
+                );
+            }
+
+            (new AddressEditor($this->addressParser))->setAddress(
+                $locationResource,
+                self::PROPERTY_LOCATIE_ADRES,
                 $placeReference->getAddress()
             );
+
+            return $locationResource;
         }
 
         return null;
+    }
+
+    private function getDummyLocationName(array $locationData, Language $mainLanguage): string
+    {
+        if (!isset($locationData['name'])) {
+            return '';
+        }
+
+        if (is_string($locationData['name'])) {
+            return $locationData['name'];
+        }
+
+        if (is_array($locationData['name'])) {
+            return $locationData['name'][$mainLanguage->toString()] ?? reset($locationData['name']);
+        }
+
+        return '';
     }
 
     private function setVirtualLocation(Resource $resource, ?Url $onlineUrl): void
