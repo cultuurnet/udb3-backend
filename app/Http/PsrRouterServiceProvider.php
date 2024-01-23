@@ -229,6 +229,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
         // Determines if a request requires authentication or not, and if yes it checks the JWT and optionally the API
         // key to determine if the request is correctly authenticated.
         $router->middleware($container->get(RequestAuthenticatorMiddleware::class));
+
+        $router->middleware($container->get(CheckTypeOfOfferMiddleware::class));
     }
 
     private function bindNewsArticles(Router $router): void

@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV1JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV2JwtValidator;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
+use CultuurNet\UDB3\Http\CheckTypeOfOfferMiddleware;
 use CultuurNet\UDB3\Impersonator;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -41,6 +42,13 @@ final class AuthServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         CurrentUser::configureGodUserIds($container->get('config')['user_permissions']['allow_all']);
+
+        $container->addShared(CheckTypeOfOfferMiddleware::class, function () use ($container): CheckTypeOfOfferMiddleware {
+            return new CheckTypeOfOfferMiddleware(
+                $container->get('place_jsonld_repository'),
+                $container->get('event_jsonld_repository'),
+            );
+        });
 
         $container->addShared(
             RequestAuthenticatorMiddleware::class,
