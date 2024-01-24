@@ -13,6 +13,7 @@ use EasyRdf\Resource;
 final class VideoEditor
 {
     private const TYPE_VIDEO_OBJECT = 'schema:VideoObject';
+    private const TYPE_URL = 'schema:URL';
 
     private const PROPERTY_VIDEO = 'schema:video';
     private const PROPERTY_VIDEO_IDENTIFIER = 'schema:identifier';
@@ -35,11 +36,26 @@ final class VideoEditor
 
         $videoResource = $resource->getGraph()->newBNode([self::TYPE_VIDEO_OBJECT]);
 
-        $videoResource->set(self::PROPERTY_VIDEO_IDENTIFIER, new Literal($video->getId()));
-        $videoResource->set(self::PROPERTY_VIDEO_URL, new Literal($video->getUrl()->toString()));
-        $videoResource->set(self::PROPERTY_VIDEO_EMBED_URL, new Literal($videoPlatformData['embedUrl'], null));
-        $videoResource->set(self::PROPERTY_VIDEO_COPYRIGHT_HOLDER, new Literal($video->getCopyrightHolder()->toString()));
-        $videoResource->set(self::PROPERTY_VIDEO_IN_LANGUAGE, new Literal($video->getLanguage()->toString()));
+        $videoResource->set(
+            self::PROPERTY_VIDEO_IDENTIFIER,
+            new Literal($video->getId())
+        );
+        $videoResource->set(
+            self::PROPERTY_VIDEO_URL,
+            new Literal($video->getUrl()->toString(), null, self::TYPE_URL)
+        );
+        $videoResource->set(
+            self::PROPERTY_VIDEO_EMBED_URL,
+            new Literal($videoPlatformData['embedUrl'], null, self::TYPE_URL)
+        );
+        $videoResource->set(
+            self::PROPERTY_VIDEO_COPYRIGHT_HOLDER,
+            new Literal($video->getCopyrightHolder()->toString())
+        );
+        $videoResource->set(
+            self::PROPERTY_VIDEO_IN_LANGUAGE,
+            new Literal($video->getLanguage()->toString())
+        );
 
         return $videoResource;
     }

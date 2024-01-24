@@ -31,14 +31,14 @@
     a schema:VideoObject ;
     schema:identifier "6bab1cba-18d0-42e7-b0c9-3b869eb68934" ;
     schema:url "https://youtu.be/fn-4RbxXThE" ;
-    schema:embedUrl "https://www.youtube.com/embed/fn-4RbxXThE" ;
-    schema:copyrightHolder "Copyright afgehandeld door YouTube" ;
+    schema:embedUrl "https://www.youtube.com/embed/fn-4RbxXThE"^^schema:URL ;
+    schema:copyrightHolder "Copyright afgehandeld door YouTube"^^schema:URL ;
     schema:inLanguage "nl"
   ], [
     a schema:VideoObject ;
     schema:identifier "58716d9e-46c8-4145-a0b2-60381ec3bd92" ;
     schema:url "https://youtu.be/fd-5FGTh3se" ;
-    schema:embedUrl "https://www.youtube.com/embed/fd-5FGTh3se" ;
-    schema:copyrightHolder "Copyright afgehandeld door YouTube" ;
+    schema:embedUrl "https://www.youtube.com/embed/fd-5FGTh3se"^^schema:URL ;
+    schema:copyrightHolder "Copyright afgehandeld door YouTube"^^schema:URL ;
     schema:inLanguage "nl"
   ] .
