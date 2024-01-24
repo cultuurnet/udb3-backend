@@ -1,0 +1,44 @@
+@prefix cidoc: <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
+@prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
+@prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix schema: <https://schema.org/> .
+
+<http://host.docker.internal:8080/events/%{eventId}>
+  a cidoc:E7_Activity ;
+  dcterms:created ""^^xsd:dateTime ;
+  dcterms:modified ""^^xsd:dateTime ;
+  adms:identifier [
+    a adms:Identifier ;
+    skos:notation "http://host.docker.internal:8080/events/%{eventId}"^^xsd:anyURI ;
+    generiek:gestructureerdeIdentificator [
+      a generiek:GestructureerdeIdentificator ;
+      generiek:naamruimte "http://host.docker.internal:8080/events/" ;
+      generiek:lokaleIdentificator "%{eventId}"
+    ]
+  ] ;
+  dcterms:title "Permanent event"@nl ;
+  dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
+  udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
+  cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
+  prov:atLocation <http://host.docker.internal:8080/places/%{uuid_place}> ;
+  schema:video [
+    a schema:VideoObject ;
+    schema:identifier "6bab1cba-18d0-42e7-b0c9-3b869eb68934" ;
+    schema:url "https://youtu.be/fn-4RbxXThE" ;
+    schema:embedUrl "https://www.youtube.com/embed/fn-4RbxXThE" ;
+    schema:copyrightHolder "Copyright afgehandeld door YouTube" ;
+    schema:inLanguage "nl"
+  ], [
+    a schema:VideoObject ;
+    schema:identifier "58716d9e-46c8-4145-a0b2-60381ec3bd92" ;
+    schema:url "https://youtu.be/fd-5FGTh3se" ;
+    schema:embedUrl "https://www.youtube.com/embed/fd-5FGTh3se" ;
+    schema:copyrightHolder "Copyright afgehandeld door YouTube" ;
+    schema:inLanguage "nl"
+  ] .

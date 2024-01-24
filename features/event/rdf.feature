@@ -89,6 +89,12 @@ Feature: Test RDF projection of events
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/event-with-price-info.ttl"
 
+  Scenario: Create an event with videos
+    And I create an event from "events/rdf/event-with-videos.json" and save the "id" as "eventId"
+    And I accept "text/turtle"
+    When I get the RDF of event with id "%{eventId}"
+    Then the RDF response should match "events/rdf/event-with-videos.ttl"
+
   Scenario: Create an event with all fields
     Given I create an event from "events/rdf/event-with-all-fields.json" and save the "id" as "eventId"
     And I accept "text/turtle"
