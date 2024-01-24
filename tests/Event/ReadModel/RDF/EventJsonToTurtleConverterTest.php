@@ -420,6 +420,32 @@ class EventJsonToTurtleConverterTest extends TestCase
     /**
      * @test
      */
+    public function it_converts_an_event_with_dummy_location_name(): void
+    {
+        $this->givenThereIsAnEvent([
+            'location' => [
+                'name' => [
+                    'nl' => 'Het Depot',
+                ],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-name.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
     public function it_converts_an_event_with_dummy_location_and_multiple_calendar(): void
     {
         $this->givenThereIsAnEvent([
@@ -456,6 +482,45 @@ class EventJsonToTurtleConverterTest extends TestCase
     /**
      * @test
      */
+    public function it_converts_an_event_with_dummy_location_name_and_multiple_calendar(): void
+    {
+        $this->givenThereIsAnEvent([
+            'calendarType' => 'multiple',
+            'startDate' => '2023-05-06T20:00:00+01:00',
+            'endDate' => '2023-05-07T23:00:00+01:00',
+            'subEvent' => [
+                [
+                    'startDate' => '2023-05-06T20:00:00+01:00',
+                    'endDate' => '2023-05-06T23:00:00+01:00',
+                ],
+                [
+                    'startDate' => '2023-05-07T20:00:00+01:00',
+                    'endDate' => '2023-05-07T23:00:00+01:00',
+                ],
+            ],
+            'location' => [
+                'name' => [
+                    'nl' => 'Het Depot',
+                ],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-name-and-multiple-calendar.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
     public function it_converts_an_event_with_dummy_location_and_single_calendar(): void
     {
         $this->givenThereIsAnEvent([
@@ -477,6 +542,35 @@ class EventJsonToTurtleConverterTest extends TestCase
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
         $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-single-calendar.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_dummy_location_name_and_single_calendar(): void
+    {
+        $this->givenThereIsAnEvent([
+            'calendarType' => 'single',
+            'startDate' => '2023-05-06T20:00:00+01:00',
+            'endDate' => '2023-05-06T23:00:00+01:00',
+            'location' => [
+                'name' => [
+                    'nl' => 'Het Depot',
+                ],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-name-and-single-calendar.ttl'), $turtle);
     }
 
     /**

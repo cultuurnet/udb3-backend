@@ -122,7 +122,10 @@
   ],
   "scripts": {
     "test": "vendor/bin/phpunit",
-    "feature": "vendor/bin/behat",
+    "feature": [
+      "Composer\\Config::disableProcessTimeout",
+      "vendor/bin/behat"
+    ],
     "phpstan": "vendor/bin/phpstan analyse",
     "migrate": "vendor/bin/doctrine-dbal migrations:migrate --no-interaction",
     "ci": [
