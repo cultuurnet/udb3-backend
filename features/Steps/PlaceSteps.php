@@ -93,32 +93,6 @@ trait PlaceSteps
     }
 
     /**
-     * @Then /^I get the place at "([^"]*)" and get response code "([^"]*)"$/
-     */
-    public function iGetThePlaceAtAndGetResponseCode(string $url, int $statusCode): void
-    {
-        $this->responseState->setResponse(
-            $this->getHttpClient()->get($url)
-        );
-
-        $this->theResponseStatusShouldBe($statusCode);
-        $this->theResponseBodyShouldBeValidJson();
-    }
-
-    /**
-     * @Given I fail to get the place at :url
-     */
-    public function iFailToGetThePlaceAt(string $url): void
-    {
-        $this->responseState->setResponse(
-            $this->getHttpClient()->get($url)
-        );
-
-        $this->theResponseStatusShouldBe(404);
-        $this->theResponseBodyShouldBeValidJson();
-    }
-
-    /**
      * @When I get the RDF of place with id :id
      */
     public function iGetTheRdfOfPlaceWithId(string $id): void

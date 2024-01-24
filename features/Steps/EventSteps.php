@@ -59,19 +59,6 @@ trait EventSteps
     }
 
     /**
-     * @Then /^I get the event at "([^"]*)" and get response code "([^"]*)"$/
-     */
-    public function iGetTheEventAtAndGetResponseCode(string $url, int $statusCode): void
-    {
-        $this->responseState->setResponse(
-            $this->getHttpClient()->get($url)
-        );
-
-        $this->theResponseStatusShouldBe($statusCode);
-        $this->theResponseBodyShouldBeValidJson();
-    }
-
-    /**
      * @When I get the RDF of event with id :id
      */
     public function iGetTheRdfOfEventWithId(string $id): void
