@@ -49,6 +49,6 @@ class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
             return $results->getItems()[0]->getUrl()->toString();
         }
 
-        throw new DuplicatePlaceButNoCanonicalPlaceFound($query);
+        throw new MultipleDuplicatePlacesFound($query);
     }
 }

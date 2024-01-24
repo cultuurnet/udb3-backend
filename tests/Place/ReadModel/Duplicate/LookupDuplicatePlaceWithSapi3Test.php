@@ -131,7 +131,7 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
 
         $this->sapi3SearchService->method('search')->willReturn($searchResult);
 
-        $this->expectException(DuplicatePlaceButNoCanonicalPlaceFound::class);
+        $this->expectException(MultipleDuplicatePlacesFound::class);
         $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
     }
 

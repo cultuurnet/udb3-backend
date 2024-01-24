@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
 use DomainException;
 
-class DuplicatePlaceButNoCanonicalPlaceFound extends DomainException
+class MultipleDuplicatePlacesFound extends DomainException
 {
     private string $query;
 

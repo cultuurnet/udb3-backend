@@ -45,7 +45,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
-use CultuurNet\UDB3\Place\ReadModel\Duplicate\DuplicatePlaceButNoCanonicalPlaceFound;
+use CultuurNet\UDB3\Place\ReadModel\Duplicate\MultipleDuplicatePlacesFound;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
@@ -159,7 +159,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
                             StatusCodeInterface::STATUS_CONFLICT
                         );
                     }
-                } catch (DuplicatePlaceButNoCanonicalPlaceFound $e) {
+                } catch (MultipleDuplicatePlacesFound $e) {
                     return new JsonResponse(
                         [
                             'message' => $e->getMessage(),
