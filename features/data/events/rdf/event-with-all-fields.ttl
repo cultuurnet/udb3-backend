@@ -78,4 +78,12 @@
     ] ;
     skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
     cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis>
+  ] ;
+  schema:video [
+    a schema:VideoObject ;
+    schema:identifier "b504cf44-9ab8-4641-9934-38d1cc67242c" ;
+    schema:url "https://www.youtube.com/watch?v=cEItmb_a20D" ;
+    schema:embedUrl "https://www.youtube.com/embed/cEItmb_a20D" ;
+    schema:copyrightHolder "publiq" ;
+    schema:inLanguage "nl"
   ] .
