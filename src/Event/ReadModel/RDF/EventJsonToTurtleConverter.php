@@ -38,6 +38,7 @@ use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
+use CultuurNet\UDB3\RDF\Editor\VideoEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -218,6 +219,10 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
         if ($event->getPriceInfo()) {
             $this->setPriceInfo($resource, $event->getPriceInfo());
+        }
+
+        if (!$event->getVideos()->isEmpty()) {
+            (new VideoEditor())->setVideos($resource, $event->getVideos());
         }
 
         return trim((new Turtle())->serialise($graph, 'turtle'));
