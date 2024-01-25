@@ -14,7 +14,7 @@ trait AuthorizationSteps
     public function iAmUsingTheUDB3BaseURL(): void
     {
         $this->variableState->setVariable('baseUrl', $this->config['base_url']);
-        $this->variableState->setVariable('base_url_sapi3', $this->config['base_url_sapi3']);
+        $this->variableState->setVariable('baseUrlSapi3', $this->config['base_url_sapi3']);
 
         $this->requestState->setBaseUrl($this->config['base_url']);
     }

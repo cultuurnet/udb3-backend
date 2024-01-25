@@ -14,6 +14,6 @@ Feature: Test creating places
     Given I create a minimal place and save the "originalPlace" as "newPlaceUri" then I should get a "409" response code
     Then the JSON response at "originalPlace" should be:
     """
-    "%{base_url_sapi3}/places/%{originalPlaceId}"
+    "%{baseUrlSapi3}/places/%{originalPlaceId}"
     """
     Then I restore the duplicate configuration
