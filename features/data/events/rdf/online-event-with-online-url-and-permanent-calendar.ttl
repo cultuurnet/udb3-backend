@@ -27,5 +27,5 @@
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/online> ;
   schema:location [
     a schema:VirtualLocation ;
-    schema:url "https://www.publiq.be/livestream"^^xsd:string
+    schema:url "https://www.publiq.be/livestream"^^schema:URL
   ] .
