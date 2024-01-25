@@ -996,6 +996,30 @@ class EventJsonToTurtleConverterTest extends TestCase
         $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-videos.ttl'), $turtle);
     }
 
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_images(): void
+    {
+        $this->givenThereIsAnEvent([
+            'mediaObject' => [
+                [
+                    '@id' => 'https://io-acc.uitdatabank.be/images/6bab1cba-18d0-42e7-b0c9-3b869eb68934',
+                    '@type' => 'schema:ImageObject',
+                    'contentUrl' => 'https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg',
+                    'thumbnailUrl' => 'https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg',
+                    'copyrightHolder' => 'publiq vzw',
+                    'description' => 'A cute dog',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-media-object.ttl'), $turtle);
+    }
+
     private function givenThereIsAnEvent(array $extraProperties = []): void
     {
         $event = array_merge($this->event, $extraProperties);

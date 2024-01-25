@@ -37,6 +37,7 @@ use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\LabelEditor;
+use CultuurNet\UDB3\RDF\Editor\MediaObjectEditor;
 use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\VideoEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
@@ -223,6 +224,10 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
         if (!$event->getVideos()->isEmpty()) {
             (new VideoEditor())->setVideos($resource, $event->getVideos());
+        }
+
+        if (!$event->getMediaObjectReferences()->isEmpty()) {
+            (new MediaObjectEditor())->setImages($resource, $event->getMediaObjectReferences());
         }
 
         return trim((new Turtle())->serialise($graph, 'turtle'));
@@ -510,7 +515,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         );
         $priceResource->set(
             self::PROPERTY_VALUE,
-            new Literal((string) ($tariff->getPrice()->getAmount() / 100), null, 'schema:Number')
+            new Literal((string)($tariff->getPrice()->getAmount() / 100), null, 'schema:Number')
         );
         $prijsResource->set(self::PROPERTY_PRICE, $priceResource);
 
