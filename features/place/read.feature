@@ -9,6 +9,6 @@ Feature: Read places
   @bugfix # https://jira.uitdatabank.be/browse/III-5979
   Scenario: Try to get a place that actually is an event
     Given I create a minimal place and save the "url" as "placeUrl"
-    Given I create a minimal permanent event and save the "id" as "eventId"
-    Then I send a GET request to "/places/%{eventId}"
+    And I create a minimal permanent event and save the "id" as "eventId"
+    When I send a GET request to "/places/%{eventId}"
     Then the response status should be "404"
