@@ -12,11 +12,7 @@ use CultuurNet\UDB3\Title;
 
 class CreatePlace extends MajorInfo
 {
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
-
+    private Language $mainLanguage;
 
     public function __construct(
         Language $mainLanguage,
@@ -35,10 +31,7 @@ class CreatePlace extends MajorInfo
         $this->mainLanguage = $mainLanguage;
     }
 
-    /**
-     * @return Language
-     */
-    public function getMainLanguage()
+    public function getMainLanguage(): Language
     {
         return $this->mainLanguage;
     }
