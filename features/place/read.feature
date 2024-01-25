@@ -10,5 +10,5 @@ Feature: Read places
   Scenario: Try to get a place that actually is an event
     Given I create a minimal place and save the "url" as "placeUrl"
     Given I create a minimal permanent event and save the "id" as "eventId"
-    Then I get the place at "/places/%{eventId}"
+    Then I send a GET request to "/places/%{eventId}"
     Then the response status should be "404"
