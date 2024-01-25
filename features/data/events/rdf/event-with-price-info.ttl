@@ -8,7 +8,7 @@
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix schema: <https://schema.org/> .
-@prefix cpp: <https://data.vlaanderen.be/ns/cultuurparticipatie#Prijsinfo> .
+@prefix cpp: <https://data.vlaanderen.be/ns/cultuurparticipatie#Prijsinfo.> .
 
 <http://host.docker.internal:8080/events/%{eventId}>
   a cidoc:E7_Activity ;
