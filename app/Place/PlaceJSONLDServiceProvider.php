@@ -45,13 +45,14 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
 {
     public const PROJECTOR = 'place_jsonld_projector';
     public const JSONLD_PROJECTED_EVENT_FACTORY = 'place_jsonld_projected_event_factory';
+    public const PLACE_JSONLD_REPOSITORY = 'place_jsonld_repository';
 
     protected function getProvidedServiceNames(): array
     {
         return [
             self::PROJECTOR,
             self::JSONLD_PROJECTED_EVENT_FACTORY,
-            'place_jsonld_repository',
+            self::PLACE_JSONLD_REPOSITORY,
             'place_jsonld_cache',
             'place_cdbxml_importer',
         ];
@@ -101,7 +102,7 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            'place_jsonld_repository',
+            self::PLACE_JSONLD_REPOSITORY,
             function () use ($container) {
                 $dummyPlaceIds = [];
                 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {

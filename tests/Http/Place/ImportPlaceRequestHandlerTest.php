@@ -13,11 +13,11 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language as LegacyLanguage;
@@ -76,8 +77,10 @@ use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Place;
+use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
+use Fig\Http\Message\StatusCodeInterface;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -88,75 +91,27 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
+    private const PLACE_ID = 'b19d4090-db47-4520-ac1a-880684357ec9';
+    private const PLACE_URI = 'https://io.uitdatabank.dev/places/';
+
     private MockObject $aggregateRepository;
 
-    private MockObject $uuidGenerator;
+    /** @var MockObject|UuidGeneratorInterface */
+    private object $uuidGenerator;
 
-    private MockObject $uuidFactory;
+    /** @var MockObject|UuidFactoryInterface */
+    private object $uuidFactory;
 
-    private TraceableCommandBus $commandBus;
+    private object $commandBus;
 
-    private MockObject $imageCollectionFactory;
+    /** @var MockObject|ImageCollectionFactory */
+    private object $imageCollectionFactory;
 
     private ImportPlaceRequestHandler $importPlaceRequestHandler;
 
-    protected function setUp(): void
+    private function getSimplePlace(): array
     {
-        $this->aggregateRepository = $this->createMock(Repository::class);
-        $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
-        $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
-        $this->commandBus = new TraceableCommandBus();
-        $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
-
-        $this->importPlaceRequestHandler = new ImportPlaceRequestHandler(
-            $this->aggregateRepository,
-            $this->uuidGenerator,
-            new PlaceDenormalizer(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new VideoDenormalizer($this->uuidFactory)
-            ),
-            new CombinedRequestBodyParser(
-                new LegacyPlaceRequestBodyParser(),
-                RemoveEmptyArraysRequestBodyParser::createForPlaces(),
-                new ImportTermRequestBodyParser(new PlaceCategoryResolver()),
-                new ImportPriceInfoRequestBodyParser(
-                    [
-                        'nl' => 'Basistarief',
-                        'fr' => 'Tarif de base',
-                        'en' => 'Base tariff',
-                        'de' => 'Basisrate',
-                    ]
-                )
-            ),
-            new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
-            $this->commandBus,
-            $this->imageCollectionFactory
-        );
-
-        $this->commandBus->record();
-    }
-
-    /**
-     * @test
-     */
-    public function it_imports_a_new_place_with_only_required_fields(): void
-    {
-        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
-
-        $givenPlace = [
+        return [
             'name' => [
                 'nl' => 'Cafe Den Hemel',
             ],
@@ -178,6 +133,39 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             'calendarType' => 'permanent',
             'mainLanguage' => 'nl',
         ];
+    }
+
+    protected function setUp(): void
+    {
+        $this->aggregateRepository = $this->createMock(Repository::class);
+        $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
+        $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
+        $this->commandBus = new TraceableCommandBus();
+        $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
+
+        $this->importPlaceRequestHandler = new ImportPlaceRequestHandler(
+            $this->aggregateRepository,
+            $this->uuidGenerator,
+            $this->getPlaceDenormalizer(),
+            $this->getRequestBodyParser(),
+            new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
+            $this->commandBus,
+            $this->imageCollectionFactory,
+            true,
+            $this->createMock(LookupDuplicatePlace::class),
+        );
+
+        $this->commandBus->record();
+    }
+
+    /**
+     * @test
+     */
+    public function it_imports_a_new_place_with_only_required_fields(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $givenPlace = $this->getSimplePlace();
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -206,7 +194,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             Json::encode([
                 'id' => $placeId,
                 'placeId' => $placeId,
-                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'url' => self::PLACE_URI . $placeId,
                 'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
@@ -233,28 +221,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     {
         $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
 
-        $givenPlace = [
-            'name' => [
-                'nl' => 'Cafe Den Hemel',
-            ],
-            'terms' => [
-                [
-                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
-                    'domain' => 'eventtype',
-                    'label' => 'Cultuur- of ontmoetingscentrum',
-                ],
-            ],
-            'address' => [
-                'nl' => [
-                    'addressCountry' => 'BE',
-                    'addressLocality' => 'Scherpenheuvel-Zichem',
-                    'postalCode' => '3271',
-                    'streetAddress' => 'Hoornblaas 107',
-                ],
-            ],
-            'calendarType' => 'permanent',
-            'mainLanguage' => 'nl',
-        ];
+        $givenPlace = $this->getSimplePlace();
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -350,7 +317,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             Json::encode([
                 'id' => $placeId,
                 'placeId' => $placeId,
-                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'url' => self::PLACE_URI . $placeId,
                 'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
@@ -436,7 +403,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             Json::encode([
                 'id' => $placeId,
                 'placeId' => $placeId,
-                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'url' => self::PLACE_URI . $placeId,
                 'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
@@ -516,7 +483,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             Json::encode([
                 'id' => $placeId,
                 'placeId' => $placeId,
-                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'url' => self::PLACE_URI . $placeId,
                 'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
@@ -601,7 +568,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             Json::encode([
                 'id' => $placeId,
                 'placeId' => $placeId,
-                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'url' => self::PLACE_URI . $placeId,
                 'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
@@ -671,7 +638,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             Json::encode([
                 'id' => $placeId,
                 'placeId' => $placeId,
-                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'url' => self::PLACE_URI . $placeId,
                 'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
@@ -833,7 +800,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             Json::encode([
                 'id' => $placeId,
                 'placeId' => $placeId,
-                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'url' => self::PLACE_URI . $placeId,
                 'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
@@ -1021,7 +988,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             Json::encode([
                 'id' => $placeId,
                 'placeId' => $placeId,
-                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'url' => self::PLACE_URI . $placeId,
                 'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
@@ -1112,7 +1079,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             Json::encode([
                 'id' => $placeId,
                 'placeId' => $placeId,
-                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'url' => self::PLACE_URI . $placeId,
                 'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
@@ -1200,7 +1167,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             Json::encode([
                 'id' => $placeId,
                 'placeId' => $placeId,
-                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'url' => self::PLACE_URI . $placeId,
                 'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
@@ -3805,7 +3772,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             Json::encode([
                 'id' => $placeId,
                 'placeId' => $placeId,
-                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'url' => self::PLACE_URI . $placeId,
                 'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
@@ -5067,6 +5034,123 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /** @dataProvider dataProviderHandleWithDuplicatePreventionEnabled */
+    public function testHandleWithDuplicatePreventionEnabled(Repository $aggregateRepository, LookupDuplicatePlace $lookupDuplicatePlace, JsonResponse $expectedResponse): void
+    {
+        $handler = new ImportPlaceRequestHandler(
+            $aggregateRepository,
+            $this->uuidGenerator,
+            $this->getPlaceDenormalizer(),
+            $this->getRequestBodyParser(),
+            new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
+            $this->commandBus,
+            $this->imageCollectionFactory,
+            true,
+            $lookupDuplicatePlace,
+        );
+
+        $this->commandBus->record();
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn(self::PLACE_ID);
+
+        $this->imageCollectionFactory->expects($this->atMost(1))
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($this->getSimplePlace())
+            ->build('POST');
+
+        $response = $handler->handle($request);
+        $this->assertEquals($expectedResponse->getBody()->getContents(), $response->getBody()->getContents());
+        $this->assertEquals($expectedResponse->getStatusCode(), $response->getStatusCode());
+    }
+
+    public function dataProviderHandleWithDuplicatePreventionEnabled(): array
+    {
+        $originalPlaceUri = 'http://www.example.com/place/' . self::PLACE_ID;
+
+        $lookupDuplicatePlace = $this->createMock(LookupDuplicatePlace::class);
+        $lookupDuplicatePlace->method('getDuplicatePlaceUri')->willReturn($originalPlaceUri);
+
+        $lookupDuplicatePlaceReturnsNull = $this->createMock(LookupDuplicatePlace::class);
+        $lookupDuplicatePlaceReturnsNull->method('getDuplicatePlaceUri')->willReturn(null);
+
+        $repositoryDoNotSave = $this->createMock(Repository::class);
+        $repositoryDoNotSave->expects($this->never())->method('save'); // because there is a duplicate this should never save
+
+        $repositorySave = $this->createMock(Repository::class);
+        $repositorySave->expects($this->once())->method('save'); // because there is a duplicate this should never save
+
+        return [
+            'There is a duplicate place - give error message' => [
+                $repositoryDoNotSave,
+                $lookupDuplicatePlace,
+                new JsonResponse(
+                    [
+                        'message' => 'A place with this address / location name combination already exists. Please use the existing place for your purposes.',
+                        'originalPlace' => $originalPlaceUri,
+                    ],
+                    StatusCodeInterface::STATUS_CONFLICT
+                ),
+            ],
+            'There is NO duplicate place - save' => [
+                $repositorySave,
+                $lookupDuplicatePlaceReturnsNull,
+                new JsonResponse(
+                    [
+                        'id' => self::PLACE_ID,
+                        'placeId' => self::PLACE_ID,
+                        'url' => self::PLACE_URI . self::PLACE_ID,
+                        'commandId' => '00000000-0000-0000-0000-000000000000',
+                    ],
+                    StatusCodeInterface::STATUS_CREATED
+                ),
+            ],
+        ];
+    }
+
+
+    private function getRequestBodyParser(): CombinedRequestBodyParser
+    {
+        return new CombinedRequestBodyParser(
+            new LegacyPlaceRequestBodyParser(),
+            RemoveEmptyArraysRequestBodyParser::createForPlaces(),
+            new ImportTermRequestBodyParser(new PlaceCategoryResolver()),
+            new ImportPriceInfoRequestBodyParser(
+                [
+                    'nl' => 'Basistarief',
+                    'fr' => 'Tarif de base',
+                    'en' => 'Base tariff',
+                    'de' => 'Basisrate',
+                ]
+            )
+        );
+    }
+
+    private function getPlaceDenormalizer(): PlaceDenormalizer
+    {
+        return new PlaceDenormalizer(
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            new VideoDenormalizer($this->uuidFactory)
+        );
     }
 
     private function assertValidationErrors(array $place, array $expectedErrors): void
