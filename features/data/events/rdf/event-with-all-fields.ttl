@@ -86,4 +86,12 @@
     schema:embedUrl "https://www.youtube.com/embed/cEItmb_a20D"^^schema:URL ;
     schema:copyrightHolder "publiq" ;
     schema:inLanguage "nl"
+  ] ;
+  schema:image [
+    a schema:ImageObject ;
+    schema:identifier "%{imageId}" ;
+    schema:url "https://images.uitdatabank.dev/%{imageId}.jpeg"^^schema:URL ;
+    schema:copyrightHolder "publiq vzw" ;
+    schema:description "A cute dog" ;
+    schema:inLanguage "nl"
   ] .
