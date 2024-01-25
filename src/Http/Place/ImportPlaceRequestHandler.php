@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
@@ -35,7 +36,6 @@ use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Offer\InvalidWorkflowStatusTransition;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
 use CultuurNet\UDB3\Place\Commands\Moderation\Publish;
@@ -45,6 +45,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
+use CultuurNet\UDB3\Place\ReadModel\Duplicate\MultipleDuplicatePlacesFound;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
@@ -147,12 +148,22 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $commands = [];
         if (!$placeExists) {
             if ($this->preventDuplicatePlaces) {
-                $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceUri($place);
-                if ($duplicatePlaceId !== null) {
+                try {
+                    $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceUri($place);
+                    if ($duplicatePlaceId !== null) {
+                        return new JsonResponse(
+                            [
+                                'message' => 'A place with this address / location name combination already exists. Please use the existing place for your purposes.',
+                                'originalPlace' => $duplicatePlaceId,
+                            ],
+                            StatusCodeInterface::STATUS_CONFLICT
+                        );
+                    }
+                } catch (MultipleDuplicatePlacesFound $e) {
                     return new JsonResponse(
                         [
-                            'message' => 'A place with this address / location name combination already exists. Please use the existing place for your purposes.',
-                            'originalPlace' => $duplicatePlaceId,
+                            'message' => $e->getMessage(),
+                            'originalPlace' => $e->getQuery(),
                         ],
                         StatusCodeInterface::STATUS_CONFLICT
                     );

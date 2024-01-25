@@ -19,18 +19,13 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
-use CultuurNet\UDB3\Place\ReadModel\Duplicate\CombinedLookupDuplicatePlace;
-use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlaceWithRedis;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlaceWithSapi3;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\UniqueAddressIdentifierFactory;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
 use CultuurNet\UDB3\User\CurrentUser;
-use GuzzleHttp\Psr7\Uri;
 
 final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
 {
-    public const DUPLICATE_PLACE_IDENTIFIER = 'duplicate_place_identifier';
-
     protected function getProvidedServiceNames(): array
     {
         return [
@@ -84,19 +79,10 @@ final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
                     $container->get('event_command_bus'),
                     $container->get('import_image_collection_factory'),
                     $container->get('config')['prevent_duplicate_creation'] ?? false,
-                    new CombinedLookupDuplicatePlace(
-                        new LookupDuplicatePlaceWithRedis(
-                            $container->get('cache')(self::DUPLICATE_PLACE_IDENTIFIER),
-                            $container->get(UniqueAddressIdentifierFactory::class),
-                            new Uri($container->get('config')['search']['v3']['base_url'] . '/places/'),
-                            $container->get(CurrentUser::class)->getId(),
-                        ),
-                        new LookupDuplicatePlaceWithSapi3(
-                            $container->get(PlacesSapi3SearchService::class),
-                            $container->get(UniqueAddressIdentifierFactory::class),
-                            $container->get(PlaceJSONLDServiceProvider::PLACE_JSONLD_REPOSITORY),
-                            $container->get(CurrentUser::class)->getId(),
-                        )
+                    new LookupDuplicatePlaceWithSapi3(
+                        $container->get(PlacesSapi3SearchService::class),
+                        new UniqueAddressIdentifierFactory(),
+                        $container->get(CurrentUser::class)->getId(),
                     )
                 );
             }
@@ -106,13 +92,6 @@ final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
             UpdateMajorInfoRequestHandler::class,
             function () use ($container) {
                 return new UpdateMajorInfoRequestHandler($container->get('event_command_bus'));
-            }
-        );
-
-        $container->addShared(
-            UniqueAddressIdentifierFactory::class,
-            function () {
-                return new UniqueAddressIdentifierFactory();
             }
         );
     }

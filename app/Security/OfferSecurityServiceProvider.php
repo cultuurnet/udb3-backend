@@ -43,9 +43,7 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
                 $container->get('god_user_voter'),
                 new ResourceOwnerVoter(
                     $container->get('offer_owner_query'),
-                    $container->get(ApiName::class) !== ApiName::CLI &&
-                    isset($container->get('config')['performance']['resource_owner_cache']) &&
-                    $container->get('config')['performance']['resource_owner_cache']
+                    $container->get(ApiName::class) !== ApiName::CLI
                 ),
                 new ContributorVoter(
                     $container->get(UserEmailAddressRepository::class),
