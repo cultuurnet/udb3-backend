@@ -1,0 +1,33 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Permanent event"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "location": {
+    "@id": "%{baseUrl}/places/%{uuid_place}"
+  },
+  "calendarType": "permanent",
+  "videos": [
+    {
+      "id": "6bab1cba-18d0-42e7-b0c9-3b869eb68934",
+      "url": "https://youtu.be/fn-4RbxXThE",
+      "embedUrl": "https://www.youtube.com/embed/fn-4RbxXThE",
+      "language": "nl",
+      "copyrightHolder": "Copyright afgehandeld door YouTube"
+    },
+    {
+      "id": "58716d9e-46c8-4145-a0b2-60381ec3bd92",
+      "url": "https://youtu.be/fd-5FGTh3se",
+      "embedUrl": "https://www.youtube.com/embed/fd-5FGTh3se",
+      "language": "nl",
+      "copyrightHolder": "Copyright afgehandeld door YouTube"
+    }
+  ]
+}
