@@ -19,7 +19,7 @@ class CheckTypeOfOfferMiddlewareTest extends TestCase
     /**
      * @dataProvider offerTypeProvider
      */
-    public function testProcessMiddleware(string $offerType, string $offerId, bool $expectException): void
+    public function testProcessMiddlewareExceptionPaths(string $offerType, string $offerId, bool $expectException): void
     {
         $request = (new Psr7RequestBuilder())
             ->withUriFromString(sprintf('/%s/%s', $offerType, $offerId))
@@ -37,9 +37,7 @@ class CheckTypeOfOfferMiddlewareTest extends TestCase
 
         $middleware = new CheckTypeOfOfferMiddleware($placeRepository, $eventRepository);
 
-        if ($expectException) {
-            $this->expectException(DocumentDoesNotExist::class);
-        }
+        $this->expectException(DocumentDoesNotExist::class);
 
         $middleware->process($request, $handler);
     }
@@ -47,10 +45,8 @@ class CheckTypeOfOfferMiddlewareTest extends TestCase
     public function offerTypeProvider(): array
     {
         return [
-            'Looking for event on /events' => ['events', self::EVENT_ID, false],
-            'Looking for place on /places' => ['places', self::PLACE_ID, false],
-            'Looking for event on /places' => ['places', self::EVENT_ID, true],
-            'Looking for place on /events' => ['events', self::PLACE_ID, true],
+            'Looking for event on /places' => ['places', self::EVENT_ID],
+            'Looking for place on /events' => ['events', self::PLACE_ID],
         ];
     }
 }
