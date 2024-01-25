@@ -35,6 +35,22 @@ trait PlaceSteps
     }
 
     /**
+     * @Given /^I create a minimal place and save the "([^"]*)" as "([^"]*)" then I should get a "([^"]*)" response code$/
+     */
+    public function iCreateAMinimalPlaceAndSaveTheAsThenIShouldGetAResponseCode(string $jsonPath, string $variableName, int $responseCode): void
+    {
+        $json = $this->fixtures->loadJson('places/place-with-required-fields-and-variable-name.json', $this->variableState);
+
+        $this->createPlace(
+            '/places',
+            $json,
+            $jsonPath,
+            $variableName,
+            $responseCode
+        );
+    }
+
+    /**
      * @Given I create a place from :fileName and save the :jsonPath as :variableName
      */
     public function iCreateAPlaceFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName): void
@@ -224,7 +240,7 @@ trait PlaceSteps
         $this->theResponseStatusShouldBe(204);
     }
 
-    private function createPlace(string $endpoint, string $json, string $jsonPath, string $variableName): void
+    private function createPlace(string $endpoint, string $json, string $jsonPath, string $variableName, int $responseStatus = null): void
     {
         $response = $this->getHttpClient()->postJSON(
             $endpoint,
@@ -232,8 +248,13 @@ trait PlaceSteps
         );
         $this->responseState->setResponse($response);
 
-        $this->theResponseStatusShouldBe(str_contains($endpoint, 'imports') ? 200 : 201);
+        $this->theResponseStatusShouldBe($this->getStatusCode($endpoint, $responseStatus));
         $this->theResponseBodyShouldBeValidJson();
         $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
+    }
+
+    private function getStatusCode(string $endpoint, ?int $responseStatus): int
+    {
+        return $responseStatus ?? (str_contains($endpoint, 'imports') ? 200 : 201);
     }
 }
