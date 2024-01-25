@@ -17,7 +17,8 @@ trait EventSteps
             '/events',
             $this->fixtures->loadJson('/events/event-minimal-permanent.json', $this->variableState),
             $jsonPath,
-            $variableName
+            $variableName,
+            201
         );
     }
 
