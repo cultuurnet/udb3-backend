@@ -19,7 +19,7 @@ class CheckTypeOfOfferMiddlewareTest extends TestCase
     /**
      * @dataProvider offerTypeProvider
      */
-    public function testProcessMiddlewareExceptionPaths(string $offerType, string $offerId, bool $expectException): void
+    public function testProcessMiddlewareExceptionPaths(string $offerType, string $offerId): void
     {
         $request = (new Psr7RequestBuilder())
             ->withUriFromString(sprintf('/%s/%s', $offerType, $offerId))
