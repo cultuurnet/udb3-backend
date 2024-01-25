@@ -14,9 +14,7 @@ final class MediaObjectEditor
 {
     private const TYPE_MEDIA_OBJECT = 'schema:ImageObject';
     private const PROPERTY_MEDIA = 'schema:image';
-
     private const TYPE_URL = 'schema:URL';
-
     private const PROPERTY_IDENTIFIER = 'schema:identifier';
     private const PROPERTY_URL = 'schema:url';
     private const PROPERTY_COPYRIGHT_HOLDER = 'schema:copyrightHolder';
