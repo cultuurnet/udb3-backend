@@ -6,6 +6,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use CultuurNet\UDB3\Http\Auth\CorsHeadersResponseDecorator;
 use CultuurNet\UDB3\Http\LegacyPathRewriter;
+use CultuurNet\UDB3\Http\MiddlewareServiceProvider;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Error\WebErrorHandler;
@@ -30,6 +31,8 @@ $container->addServiceProvider(new WebErrorHandlerProvider());
  * completely by-pass the Silex router.
  */
 $container->addServiceProvider(new PsrRouterServiceProvider());
+
+$container->addServiceProvider(new MiddlewareServiceProvider());
 
 /**
  * Register service providers for request handlers.
