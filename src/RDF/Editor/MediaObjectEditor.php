@@ -6,9 +6,9 @@ namespace CultuurNet\UDB3\RDF\Editor;
 
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
+use DomainException;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
-use Exception;
 
 final class MediaObjectEditor
 {
@@ -29,8 +29,8 @@ final class MediaObjectEditor
             try {
                 $mediaResource = $this->createMediaResource($resource, $mediaObjectReference);
                 $resource->add(self::PROPERTY_MEDIA, $mediaResource);
-            } catch (\Exception $e) {
-                $a = 1;
+            } catch (DomainException $e) {
+                // We cannot add media resources without embedded media object
             }
         }
     }
@@ -38,7 +38,7 @@ final class MediaObjectEditor
     private function createMediaResource(Resource $resource, MediaObjectReference $mediaObjectReference): Resource
     {
         if ($mediaObjectReference->getEmbeddedMediaObject() === null) {
-            throw new Exception('everything is wrong');
+            throw new DomainException('We cannot add media resources without embedded media object');
         }
 
         $mediaResource = $resource->getGraph()->newBNode([self::TYPE_MEDIA_OBJECT]);
