@@ -79,7 +79,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     /**
      * @throws ApiProblem
      */
-    public function authenticate(ServerRequestInterface $request): void
+    private function authenticate(ServerRequestInterface $request): void
     {
         if ($this->isCorsPreflightRequest($request) || $this->isPublicRoute($request)) {
             return;
