@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
 use RuntimeException;
 
-final class VideoPlatformData
+final class VideoPlatformFactory
 {
     private const YOUTUBE_EMBED = 'https://www.youtube.com/embed/';
 
@@ -42,7 +42,7 @@ final class VideoPlatformData
         ],
     ];
 
-    public static function fromVideo(Video $video): array
+    public static function fromVideo(Video $video): VideoPlatform
     {
         $matches = [];
         preg_match(
@@ -53,12 +53,12 @@ final class VideoPlatformData
 
         foreach (self::$videoPlatforms as $videoPlatformIndex => $videoPlatformData) {
             if (!empty($matches[$videoPlatformIndex])) {
-                return [
-                    'embed' => $videoPlatformData['embed'],
-                    'name' => $videoPlatformData['name'],
-                    'video_id' => $matches[$videoPlatformIndex],
-                    'embedUrl' => $videoPlatformData['embed'] . $matches[$videoPlatformIndex],
-                ];
+                return new VideoPlatform(
+                    $videoPlatformData['embed'],
+                    $videoPlatformData['name'],
+                    $matches[$videoPlatformIndex],
+                    $videoPlatformData['embed'] . $matches[$videoPlatformIndex],
+                );
             }
         }
         throw new RuntimeException('Unsupported Video Platform');

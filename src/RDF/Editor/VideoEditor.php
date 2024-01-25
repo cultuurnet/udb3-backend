@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\RDF\Editor;
 
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoPlatformData;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoPlatformFactory;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
 
@@ -32,7 +32,7 @@ final class VideoEditor
 
     private function createVideoResource(Resource $resource, Video $video): Resource
     {
-        $videoPlatformData = VideoPlatformData::fromVideo($video);
+        $videoPlatform = VideoPlatformFactory::fromVideo($video);
 
         $videoResource = $resource->getGraph()->newBNode([self::TYPE_VIDEO_OBJECT]);
 
@@ -46,7 +46,7 @@ final class VideoEditor
         );
         $videoResource->set(
             self::PROPERTY_VIDEO_EMBED_URL,
-            new Literal($videoPlatformData['embedUrl'], null, self::TYPE_URL)
+            new Literal($videoPlatform->getEmbedUrl(), null, self::TYPE_URL)
         );
         $videoResource->set(
             self::PROPERTY_VIDEO_COPYRIGHT_HOLDER,
