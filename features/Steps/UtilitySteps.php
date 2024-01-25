@@ -48,7 +48,7 @@ trait UtilitySteps
         $configFile = file_get_contents('config.php');
 
         if (str_contains($configFile, "'prevent_duplicate_creation' => true")) {
-            // The config was already on true, so no futher changes are required
+            // The config was already on true, so no further changes are required
             $this->initialPreventDuplicateCreationValue = true;
             return;
         }
@@ -65,9 +65,9 @@ trait UtilitySteps
     }
 
     /**
-     * @Then /^I allow duplicate creation$/
+     * @Then /^I restore the duplicate configuration/
      */
-    public function iAllowDuplicateCreation(): void
+    public function iRestoreTheDuplicateConfigurationOption(): void
     {
         $configFile = file_get_contents('config.php');
 
