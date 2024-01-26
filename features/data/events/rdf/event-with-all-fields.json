@@ -117,5 +117,16 @@
   ],
   "hiddenLabels": [
     "public-invisible"
+  ],
+  "mediaObject": [
+    {
+      "@id": "%{baseUrl}/images/%{imageId}",
+      "@type": "schema:ImageObject",
+      "contentUrl": "%{imageUrl}",
+      "thumbnailUrl": "%{imageUrl}",
+      "copyrightHolder": "publiq vzw",
+      "description": "A cute dog",
+      "inLanguage": "nl"
+    }
   ]
 }

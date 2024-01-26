@@ -1,0 +1,29 @@
+{
+  "mainLanguage": "nl",
+  "calendarType": "permanent",
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "name": {
+    "nl": "Faith no more"
+  },
+  "location": {
+    "@id": "%{baseUrl}/places/%{uuid_place}"
+  },
+  "mediaObject": [
+    {
+      "@id": "%{baseUrl}/images/%{imageId}",
+      "@type": "schema:ImageObject",
+      "contentUrl": "%{imageUrl}",
+      "thumbnailUrl": "%{imageUrl}",
+      "copyrightHolder": "publiq vzw",
+      "description": "A cute dog",
+      "inLanguage": "nl"
+    }
+  ]
+}
+
