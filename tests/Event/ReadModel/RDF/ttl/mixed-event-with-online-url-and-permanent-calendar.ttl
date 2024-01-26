@@ -30,6 +30,6 @@
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/hybride> ;
   schema:location [
     a schema:VirtualLocation ;
-    schema:url "https://www.publiq.be/livestream"^^xsd:string
+    schema:url "https://www.publiq.be/livestream"^^schema:URL
   ] ;
   prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> .

@@ -28,6 +28,6 @@
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/hybride> ;
   schema:location [
     a schema:VirtualLocation ;
-    schema:url "https://www.publiq.be/livestream"^^xsd:string
+    schema:url "https://www.publiq.be/livestream"^^schema:URL
   ] ;
   prov:atLocation <http://host.docker.internal:8080/places/%{uuid_place}> .
