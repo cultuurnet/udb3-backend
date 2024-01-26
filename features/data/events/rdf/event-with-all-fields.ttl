@@ -11,7 +11,7 @@
 @prefix schema: <https://schema.org/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix labeltype: <https://data.cultuurparticipatie.be/id/concept/LabelType/> .
-@prefix cpp: <https://data.vlaanderen.be/ns/cultuurparticipatie#Prijsinfo> .
+@prefix cpp: <https://data.vlaanderen.be/ns/cultuurparticipatie#Prijsinfo.> .
 
 <http://host.docker.internal:8080/events/%{eventId}>
   a cidoc:E7_Activity ;
