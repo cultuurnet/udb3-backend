@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http;
 
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -36,7 +37,12 @@ class CheckTypeOfOfferMiddleware implements MiddlewareInterface
 
         if (OfferType::event()->sameAs($offerType)) {
             $this->eventRepository->fetch($offerId);
-        } else {
+        }
+
+        if (OfferType::place()->sameAs($offerType)) {
+            if ((new LocationId($offerId))->isNilLocation()) {
+                return $handler->handle($request);
+            }
             $this->placeRepository->fetch($offerId);
         }
 
