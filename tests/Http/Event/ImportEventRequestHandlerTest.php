@@ -106,6 +106,9 @@ final class ImportEventRequestHandlerTest extends TestCase
         $locationRepository = new InMemoryDocumentRepository();
         $locationRepository->save(new JsonDocument('5cf42d51-3a4f-46f0-a8af-1cf672be8c84', '{}'));
 
+        $organizerRepository = new InMemoryDocumentRepository();
+        $organizerRepository->save(new JsonDocument('f4ee4dac-5161-4f5f-98ce-922289b2def3', '{}'));
+
         $this->importEventRequestHandler = new ImportEventRequestHandler(
             $this->aggregateRepository,
             $this->uuidGenerator,
@@ -127,7 +130,8 @@ final class ImportEventRequestHandlerTest extends TestCase
             ),
             $this->commandBus,
             $this->imageCollectionFactory,
-            $locationRepository
+            $locationRepository,
+            $organizerRepository
         );
 
         $this->commandBus->record();
@@ -920,6 +924,40 @@ final class ImportEventRequestHandlerTest extends TestCase
             new SchemaError(
                 '/location',
                 'The location with id "5df22882-0ce9-47ca-84a3-2cd22c79499e" was not found.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_organizer_is_not_found(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'organizer' => [
+                '@id' => 'https://io.uitdatabank.dev/organizers/5df22882-0ce9-47ca-84a3-2cd22c79499e',
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/organizer',
+                'The organizer with id "5df22882-0ce9-47ca-84a3-2cd22c79499e" was not found.'
             ),
         ];
 
