@@ -1064,6 +1064,10 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             'mainLanguage' => 'nl',
         ];
 
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
         $expectedErrors = [
             new SchemaError(
                 '/organizer',
