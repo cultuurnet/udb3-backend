@@ -1067,7 +1067,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/organizer',
-                'The organizer with id "5df22882-0ce9-47ca-84a3-2cd22c79499e" was not found.'
+                'The organizer with id "1c2baf22-26b7-453b-9a96-2d2fcebe2250" was not found.'
             ),
         ];
 
