@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Http\GuardOrganizer;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
@@ -47,6 +48,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\MultipleDuplicatePlacesFound;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -57,6 +59,8 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ImportPlaceRequestHandler implements RequestHandlerInterface
 {
+    use GuardOrganizer;
+
     private Repository $aggregateRepository;
 
     private UuidGeneratorInterface $uuidGenerator;
@@ -75,6 +79,8 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
     private LookupDuplicatePlace $lookupDuplicatePlace;
 
+    private DocumentRepository $organizerDocumentRepository;
+
     public function __construct(
         Repository $aggregateRepository,
         UuidGeneratorInterface $uuidGenerator,
@@ -84,7 +90,8 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         CommandBus $commandBus,
         ImageCollectionFactory $imageCollectionFactory,
         bool $preventDuplicatePlaces,
-        LookupDuplicatePlace $lookupDuplicatePlace
+        LookupDuplicatePlace $lookupDuplicatePlace,
+        DocumentRepository $organizerDocumentRepository
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -95,6 +102,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $this->imageCollectionFactory = $imageCollectionFactory;
         $this->preventDuplicatePlaces = $preventDuplicatePlaces;
         $this->lookupDuplicatePlace = $lookupDuplicatePlace;
+        $this->organizerDocumentRepository = $organizerDocumentRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -254,6 +262,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $organizerId = $placeAdapter->getOrganizerId();
         if ($organizerId) {
+            $this->guardOrganizer($organizerId, $this->organizerDocumentRepository);
             $commands[] = new UpdateOrganizer($placeId, $organizerId);
         } else {
             $commands[] = new DeleteCurrentOrganizer($placeId);
