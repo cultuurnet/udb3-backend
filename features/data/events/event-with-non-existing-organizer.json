@@ -23,7 +23,6 @@
   "startDate": "2018-05-05T18:00:00+01:00",
   "endDate": "2018-05-06T21:00:00+01:00",
   "organizer": {
-    "@id": "%{baseUrl}/organizers/bcbf3a32-0c55-4ece-bb91-66f653725d66",
-    "extraProperty": "includeARandomExtraPropertyToTriggerABugThatTriesToDecodeTheOrganizerAsAnEmbeddedOrganizer"
+    "@id": "%{baseUrl}/organizers/bcbf3a32-0c55-4ece-bb91-66f653725d66"
   }
 }
