@@ -768,6 +768,20 @@ Feature: Test the UDB3 events API
     }
     """
 
+  @bugfix # https://jira.publiq.be/browse/III-4793
+  Scenario: Try creating an event with missing body
+    When I send a POST request to "/events/"
+    Then the response status should be "400"
+    And the response body should be valid JSON
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/body/missing",
+      "title": "Body missing",
+      "status": 400
+    }
+    """
+
   Scenario: Create an event with a non existing organizer
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"

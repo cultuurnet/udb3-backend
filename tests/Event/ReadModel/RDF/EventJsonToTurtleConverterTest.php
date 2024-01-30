@@ -420,6 +420,26 @@ class EventJsonToTurtleConverterTest extends TestCase
     /**
      * @test
      */
+    public function it_logs_an_event_with_dummy_location_but_missing_address(): void
+    {
+        $this->givenThereIsAnEvent([
+            'location' => [
+                'name' => 'Het Depot',
+            ],
+        ]);
+
+        $this->logger->expects($this->once())
+            ->method('warning')
+            ->with('Unable to project event d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
+
+        $this->expectException(JsonDataCouldNotBeConverted::class);
+
+        $this->eventJsonToTurtleConverter->convert($this->eventId);
+    }
+
+    /**
+     * @test
+     */
     public function it_converts_an_event_with_dummy_location_name(): void
     {
         $this->givenThereIsAnEvent([
@@ -441,6 +461,32 @@ class EventJsonToTurtleConverterTest extends TestCase
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
         $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-name.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_dummy_location_null_name(): void
+    {
+        $this->givenThereIsAnEvent([
+            'location' => [
+                'name' => [
+                    'nl' => null,
+                ],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location.ttl'), $turtle);
     }
 
     /**
