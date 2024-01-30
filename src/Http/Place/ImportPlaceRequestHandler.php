@@ -47,6 +47,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\MultipleDuplicatePlacesFound;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -75,6 +76,8 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
     private LookupDuplicatePlace $lookupDuplicatePlace;
 
+    private DocumentRepository $organizerDocumentRepository;
+
     public function __construct(
         Repository $aggregateRepository,
         UuidGeneratorInterface $uuidGenerator,
@@ -84,7 +87,8 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         CommandBus $commandBus,
         ImageCollectionFactory $imageCollectionFactory,
         bool $preventDuplicatePlaces,
-        LookupDuplicatePlace $lookupDuplicatePlace
+        LookupDuplicatePlace $lookupDuplicatePlace,
+        DocumentRepository $organizerDocumentRepository
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -95,6 +99,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $this->imageCollectionFactory = $imageCollectionFactory;
         $this->preventDuplicatePlaces = $preventDuplicatePlaces;
         $this->lookupDuplicatePlace = $lookupDuplicatePlace;
+        $this->organizerDocumentRepository = $organizerDocumentRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
