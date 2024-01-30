@@ -39,6 +39,10 @@ class PlaceReferenceDenormalizer implements DenormalizerInterface
         }
 
         if (!isset($data['@id'])) {
+            if (!isset($data['address'])) {
+                throw new UnsupportedException('Location data should contain either an @id or an address.');
+            }
+
             /** @var TranslatedAddress $translatedAddress */
             $translatedAddress = $this->addressDenormalizer->denormalize(
                 $data['address'],

@@ -420,6 +420,26 @@ class EventJsonToTurtleConverterTest extends TestCase
     /**
      * @test
      */
+    public function it_logs_an_event_with_dummy_location_but_missing_address(): void
+    {
+        $this->givenThereIsAnEvent([
+            'location' => [
+                'name' => 'Het Depot',
+            ],
+        ]);
+
+        $this->logger->expects($this->once())
+            ->method('warning')
+            ->with('Unable to project event d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
+
+        $this->expectException(JsonDataCouldNotBeConverted::class);
+
+        $this->eventJsonToTurtleConverter->convert($this->eventId);
+    }
+
+    /**
+     * @test
+     */
     public function it_converts_an_event_with_dummy_location_name(): void
     {
         $this->givenThereIsAnEvent([
