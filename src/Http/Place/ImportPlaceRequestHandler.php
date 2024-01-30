@@ -8,6 +8,8 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
@@ -47,6 +49,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\MultipleDuplicatePlacesFound;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
@@ -259,7 +262,17 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $organizerId = $placeAdapter->getOrganizerId();
         if ($organizerId) {
-            $commands[] = new UpdateOrganizer($placeId, $organizerId);
+            try {
+                $this->organizerDocumentRepository->fetch($organizerId);
+                $commands[] = new UpdateOrganizer($placeId, $organizerId);
+            } catch (DocumentDoesNotExist $e) {
+                throw ApiProblem::bodyInvalidData(
+                    new SchemaError(
+                        '/organizer',
+                        'The organizer with id "' . $organizerId . '" was not found.'
+                    )
+                );
+            }
         } else {
             $commands[] = new DeleteCurrentOrganizer($placeId);
         }
