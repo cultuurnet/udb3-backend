@@ -74,6 +74,7 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
                     $container->get('event_command_bus'),
                     $container->get('import_image_collection_factory'),
                     $container->get('place_jsonld_repository'),
+                    $container->get('organizer_jsonld_repository')
                 );
             }
         );

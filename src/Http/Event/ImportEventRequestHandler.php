@@ -74,6 +74,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
     private CommandBus $commandBus;
     private ImageCollectionFactory $imageCollectionFactory;
     private DocumentRepository $locationDocumentRepository;
+    private DocumentRepository $organizerDocumentRepository;
 
     public function __construct(
         Repository $aggregateRepository,
@@ -83,7 +84,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         RequestBodyParser $combinedRequestBodyParser,
         CommandBus $commandBus,
         ImageCollectionFactory $imageCollectionFactory,
-        DocumentRepository $locationDocumentRepository
+        DocumentRepository $locationDocumentRepository,
+        DocumentRepository $organizerDocumentRepository
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -93,6 +95,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $this->commandBus = $commandBus;
         $this->imageCollectionFactory = $imageCollectionFactory;
         $this->locationDocumentRepository = $locationDocumentRepository;
+        $this->organizerDocumentRepository = $organizerDocumentRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
