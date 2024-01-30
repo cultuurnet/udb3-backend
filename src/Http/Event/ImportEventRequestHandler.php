@@ -276,7 +276,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $organizerId = $eventAdapter->getOrganizerId();
         if ($organizerId) {
             try {
-                $this->guardOrganization($organizerId, $this->organizerDocumentRepository);
+                $this->guardOrganizer($organizerId, $this->organizerDocumentRepository);
                 $commands[] = new UpdateOrganizer($eventId, $organizerId);
             } catch (DocumentDoesNotExist $e) {
                 throw ApiProblem::bodyInvalidData(

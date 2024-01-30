@@ -11,7 +11,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 trait GuardOrganizer
 {
-    private function guardOrganization(string $organizerId, DocumentRepository $organizerDocumentRepository): void
+    private function guardOrganizer(string $organizerId, DocumentRepository $organizerDocumentRepository): void
     {
         try {
             $organizerDocumentRepository->fetch($organizerId);
