@@ -1036,6 +1036,86 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_creates_a_place_with_an_organizer(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $place = [
+            'name' => [
+                'nl' => 'In De Hel',
+            ],
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'addressCountry' => 'BE',
+                    'addressLocality' => 'Leuven',
+                    'postalCode' => '3000',
+                    'streetAddress' => 'Martelarenplein 1',
+                ],
+            ],
+            'organizer' => [
+                '@id' => 'https://io.uitdatabank.be/organizers/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'mainLanguage' => 'nl',
+        ];
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($placeId);
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save')
+            ->with(
+                $this->callback(
+                    fn (Place $place) => $place->getAggregateRootId() === $placeId
+                )
+            );
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($place)
+            ->build('POST');
+
+        $response = $this->importPlaceRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => self::PLACE_URI . $placeId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateBookingInfo($placeId, new BookingInfo()),
+                new UpdateContactPoint($placeId, new ContactPoint()),
+                new DeleteTypicalAgeRange($placeId),
+                new ImportLabels($placeId, new Labels()),
+                new ImportImages($placeId, new ImageCollection()),
+                new ImportVideos($placeId, new VideoCollection()),
+                new UpdateOrganizer($placeId, '5cf42d51-3a4f-46f0-a8af-1cf672be8c84'),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_organizer_is_not_found(): void
     {
         $place = [
