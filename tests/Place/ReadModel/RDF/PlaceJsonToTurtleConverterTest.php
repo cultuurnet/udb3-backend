@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -126,6 +127,38 @@ class PlaceJsonToTurtleConverterTest extends TestCase
         $this->expectException(Exception::class);
 
         $this->placeJsonToTurtleConverter->convert($placeId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_a_place_with_dummy_location_but_missing_address(): void
+    {
+        $place = [
+            '@id' => 'https://mock.io.uitdatabank.be/places/' . $this->placeId,
+            'mainLanguage' => 'nl',
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '8.48.0.0.0',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'name' => [
+                'nl' => 'Voorbeeld titel',
+            ],
+            'created' => '2023-01-01T12:30:15+01:00',
+            'modified' => '2023-01-01T12:30:15+01:00',
+        ];
+        $this->documentRepository->save(new JsonDocument($this->placeId, json_encode($place)));
+
+        $this->logger->expects($this->once())
+            ->method('warning')
+            ->with('Unable to project place d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
+
+        $this->expectException(JsonDataCouldNotBeConverted::class);
+
+        $this->placeJsonToTurtleConverter->convert($this->placeId);
     }
 
     /**
