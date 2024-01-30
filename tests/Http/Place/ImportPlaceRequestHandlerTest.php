@@ -78,6 +78,8 @@ use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Place;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
@@ -109,6 +111,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
     private ImportPlaceRequestHandler $importPlaceRequestHandler;
 
+    private InMemoryDocumentRepository $organizerRepository;
     private function getSimplePlace(): array
     {
         return [
@@ -142,6 +145,8 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
+        $this->organizerRepository = new InMemoryDocumentRepository();
+        $this->organizerRepository->save(new JsonDocument('5cf42d51-3a4f-46f0-a8af-1cf672be8c84', '{}'));
 
         $this->importPlaceRequestHandler = new ImportPlaceRequestHandler(
             $this->aggregateRepository,
@@ -153,6 +158,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             $this->imageCollectionFactory,
             true,
             $this->createMock(LookupDuplicatePlace::class),
+            $this->organizerRepository
         );
 
         $this->commandBus->record();
@@ -5049,6 +5055,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             $this->imageCollectionFactory,
             true,
             $lookupDuplicatePlace,
+            new InMemoryDocumentRepository()
         );
 
         $this->commandBus->record();
