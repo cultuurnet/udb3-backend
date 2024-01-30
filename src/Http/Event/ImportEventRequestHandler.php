@@ -273,7 +273,17 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         // which might cause race conditions if we're still dispatching other commands here as well.
         $organizerId = $eventAdapter->getOrganizerId();
         if ($organizerId) {
-            $commands[] = new UpdateOrganizer($eventId, $organizerId);
+            try {
+                $this->organizerDocumentRepository->fetch($organizerId);
+                $commands[] = new UpdateOrganizer($eventId, $organizerId);
+            } catch (DocumentDoesNotExist $e) {
+                throw ApiProblem::bodyInvalidData(
+                    new SchemaError(
+                        '/organizer',
+                        'The organizer with id "' . $organizerId . '" was not found.'
+                    )
+                );
+            }
         } else {
             $commands[] = new DeleteCurrentOrganizer($eventId);
         }
