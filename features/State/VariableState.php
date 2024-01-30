@@ -33,6 +33,13 @@ final class VariableState
         return $variable;
     }
 
+    public function setRandomUuid(string $key): string
+    {
+        $variable = \Ramsey\Uuid\Uuid::uuid4()->toString();
+        $this->variables[$key] = $variable;
+        return $variable;
+    }
+
     public function getVariable(string $key): string
     {
         return $this->variables[$key];
