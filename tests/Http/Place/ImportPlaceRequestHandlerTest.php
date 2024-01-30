@@ -1036,6 +1036,47 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_organizer_is_not_found(): void
+    {
+        $place = [
+            'name' => [
+                'nl' => 'In De Hel',
+            ],
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'addressCountry' => 'BE',
+                    'addressLocality' => 'Leuven',
+                    'postalCode' => '3000',
+                    'streetAddress' => 'Martelarenplein 1',
+                ],
+            ],
+            'organizer' => [
+                '@id' => 'https://io.uitdatabank.be/organizers/1c2baf22-26b7-453b-9a96-2d2fcebe2250',
+            ],
+            'calendarType' => 'permanent',
+            'mainLanguage' => 'nl',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/organizer',
+                'The organizer with id "5df22882-0ce9-47ca-84a3-2cd22c79499e" was not found.'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_publishes_an_existing_place_if_workflowStatus_is_ready_for_validation(): void
     {
         $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
