@@ -396,7 +396,10 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if (is_array($locationData['name'])) {
-            return $locationData['name'][$mainLanguage->toString()] ?? reset($locationData['name']);
+            $name = $locationData['name'][$mainLanguage->toString()] ?? reset($locationData['name']);
+            if (is_string($name)) {
+                return $name;
+            }
         }
 
         return '';
