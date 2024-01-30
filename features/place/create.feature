@@ -478,6 +478,26 @@ Feature: Test creating places
     }
     """
 
+  Scenario: Create a place with a non existing organizer
+    Given I set the JSON request payload from "places/place-with-non-existing-organizer.json"
+    When I send a POST request to "/places/"
+    Then the response status should be "400"
+    And the response body should be valid JSON
+    And the JSON response should be:
+    """
+    {
+      "schemaErrors": [
+        {
+          "error": "The organizer with id \"bcbf3a32-0c55-4ece-bb91-66f653725d66\" was not found.",
+          "jsonPointer": "/organizer"
+        }
+      ],
+      "status": 400,
+      "title": "Invalid body data",
+      "type": "https://api.publiq.be/probs/body/invalid-data"
+    }
+    """
+
   @bugfix # https://jira.uitdatabank.be/browse/III-4670
   Scenario: Create place with missing calendar from legacy JSON source
     Given I create a place from "places/legacy/create-place-missing-calendar.json" and save the "url" as "placeUrl"

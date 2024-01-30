@@ -1,0 +1,43 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Cafe Den Hemel"
+  },
+  "terms": [
+    {
+      "id": "Yf4aZBfsUEu2NsQqsprngw"
+    }
+  ],
+  "address": {
+    "nl" : {
+      "addressCountry": "BE",
+      "addressLocality": "Scherpenheuvel-Zichem",
+      "postalCode": "3271",
+      "streetAddress": "Hoornblaas 107"
+    }
+  },
+  "calendarType": "permanent",
+  "openingHours": [
+    {
+      "dayOfWeek": [
+        "monday",
+        "wednesday",
+        "thursday",
+        "friday"
+      ],
+      "opens": "17:00",
+      "closes": "23:59"
+    },
+    {
+      "dayOfWeek": [
+        "saturday",
+        "sunday"
+      ],
+      "opens": "15:00",
+      "closes": "23:59"
+    }
+  ],
+  "organizer": {
+    "@id": "%{baseUrl}/organizers/bcbf3a32-0c55-4ece-bb91-66f653725d66"
+  }
+}
