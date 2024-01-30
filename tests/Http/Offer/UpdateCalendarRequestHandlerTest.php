@@ -1127,4 +1127,20 @@ class UpdateCalendarRequestHandlerTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @test
+     */
+    public function it_throw_if_body_is_missing(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', self::EVENT_ID)
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyMissing(),
+            fn () => $this->updateCalendarRequestHandler->handle($request)
+        );
+    }
 }

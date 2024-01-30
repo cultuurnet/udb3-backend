@@ -493,3 +493,17 @@ Feature: Test creating places
     And the JSON response at "calendarType" should be "periodic"
     And the JSON response at "startDate" should be "2022-01-01T11:22:33+00:00"
     And the JSON response at "endDate" should be "2032-01-01T11:22:33+00:00"
+
+  @bugfix # https://jira.publiq.be/browse/III-4793
+  Scenario: Try creating a place with missing body
+    When I send a POST request to "/places/"
+    Then the response status should be "400"
+    And the response body should be valid JSON
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/body/missing",
+      "title": "Body missing",
+      "status": 400
+    }
+    """

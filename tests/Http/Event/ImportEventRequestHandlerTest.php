@@ -898,6 +898,20 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throw_if_body_is_missing(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyMissing(),
+            fn () => $this->importEventRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_location_is_not_found(): void
     {
         $event = [
