@@ -446,6 +446,32 @@ class EventJsonToTurtleConverterTest extends TestCase
     /**
      * @test
      */
+    public function it_converts_an_event_with_dummy_location_null_name(): void
+    {
+        $this->givenThereIsAnEvent([
+            'location' => [
+                'name' => [
+                    'nl' => null,
+                ],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
     public function it_converts_an_event_with_dummy_location_and_multiple_calendar(): void
     {
         $this->givenThereIsAnEvent([
