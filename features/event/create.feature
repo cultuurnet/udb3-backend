@@ -774,14 +774,21 @@ Feature: Test the UDB3 events API
     Then the response status should be "201"
     And I keep the value of the JSON response at "placeId" as "placeId"
 
-    Given I create a uuid and keep it as "organizerId"
-
-    Given I set the JSON request payload from "events/event-with-organizer.json"
+    Given I set the JSON request payload from "events/event-with-non-existing-organizer.json"
     When I send a POST request to "/events/"
-    Then the response status should be "200"
-    And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
-
-    When I send a GET request to "events/%{eventId}"
-    Then the response status should be "404"
+    Then the response status should be "400"
+    And the response body should be valid JSON
+    And the JSON response should be:
+    """
+    {
+      "schemaErrors": [
+        {
+          "error": "The organizer with id \"bcbf3a32-0c55-4ece-bb91-66f653725d66\" was not found.",
+          "jsonPointer": "/organizer"
+        }
+      ],
+      "status": 400,
+      "title": "Invalid body data",
+      "type": "https://api.publiq.be/probs/body/invalid-data"
+    }
+    """

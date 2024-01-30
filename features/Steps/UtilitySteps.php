@@ -25,14 +25,6 @@ trait UtilitySteps
     }
 
     /**
-     * @Given I create a uuid and keep it as :variableName
-     */
-    public function iCreateAUuidAndKeepItAs(string $variableName): void
-    {
-        $this->variableState->setRandomUuid($variableName);
-    }
-
-    /**
      * @Given I create a random email and keep it as :variableName
      */
     public function iCreateARandomEmailAndKeepItAs(string $variableName): void
