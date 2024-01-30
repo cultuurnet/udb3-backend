@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Http\GuardOrganizer;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
@@ -66,6 +67,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ImportEventRequestHandler implements RequestHandlerInterface
 {
+    use GuardOrganizer;
     private Repository $aggregateRepository;
     private UuidGeneratorInterface $uuidGenerator;
     private IriGeneratorInterface $eventIriGenerator;
@@ -274,7 +276,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $organizerId = $eventAdapter->getOrganizerId();
         if ($organizerId) {
             try {
-                $this->organizerDocumentRepository->fetch($organizerId);
+                $this->guardOrganization($organizerId, $this->organizerDocumentRepository);
                 $commands[] = new UpdateOrganizer($eventId, $organizerId);
             } catch (DocumentDoesNotExist $e) {
                 throw ApiProblem::bodyInvalidData(
