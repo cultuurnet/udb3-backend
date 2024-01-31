@@ -270,11 +270,12 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             return;
         }
 
+
         try {
             $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceUri($place);
             if ($duplicatePlaceId !== null) {
                 throw ApiProblem::statusConflict(
-                    MultipleDuplicatePlacesFound::ERROR_MSG,
+                    'A place with this address / name combination already exists. Please use the existing place for your purposes.',
                     ['query' => $duplicatePlaceId]
                 );
             }

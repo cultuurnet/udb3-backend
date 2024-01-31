@@ -19,7 +19,7 @@ Feature: Test creating places
         "type": "https://api.publiq.be/probs/url/status-conflict",
         "title": "Status conflict",
         "status": 409,
-        "detail": "This place already exists. Use the attached query to get existing place(s) for the place you tried to create."
+        "detail": "A place with this address / name combination already exists. Please use the existing place for your purposes."
     }
     """
     Then I restore the duplicate configuration
