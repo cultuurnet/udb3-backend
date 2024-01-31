@@ -71,7 +71,8 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
                         $container->get(self::JSONLD_PROJECTED_EVENT_FACTORY)
                     ),
                     $container->get('place_iri_generator'),
-                    $container->get('organizer_service'),
+                    $container->get('organizer_iri_generator'),
+                    $container->get('organizer_jsonld_repository'),
                     $container->get('media_object_serializer'),
                     $container->get('place_cdbxml_importer'),
                     new JsonDocumentLanguageEnricher(
