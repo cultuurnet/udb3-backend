@@ -5207,7 +5207,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(ApiProblem::statusConflict(
             'A place with this address / name combination already exists. Please use the existing place for your purposes.',
-            ['query' => $originalPlaceUri]
+            ['duplicatePlaceUri' => $originalPlaceUri]
         ), function () use ($handler, $request): void {
             $handler->handle($request);
         });

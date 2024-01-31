@@ -15,7 +15,7 @@ Feature: Test creating places
     Then the JSON response should be:
     """
     {
-        "query": "%{baseUrl}/place/%{originalPlaceId}",
+        "duplicatePlaceUri": "%{baseUrl}/place/%{originalPlaceId}",
         "type": "https://api.publiq.be/probs/url/status-conflict",
         "title": "Status conflict",
         "status": 409,

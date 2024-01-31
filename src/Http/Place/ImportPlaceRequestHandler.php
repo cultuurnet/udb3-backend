@@ -276,7 +276,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             if ($duplicatePlaceId !== null) {
                 throw ApiProblem::statusConflict(
                     'A place with this address / name combination already exists. Please use the existing place for your purposes.',
-                    ['query' => $duplicatePlaceId]
+                    ['duplicatePlaceUri' => $duplicatePlaceId]
                 );
             }
         } catch (MultipleDuplicatePlacesFound $e) {
