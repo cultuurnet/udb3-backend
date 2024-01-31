@@ -10,7 +10,7 @@
   },
   "email": "john@doe.com",
   "include": [],
-  "order": {
+  "sort": {
     "property": "availableTo",
     "order": "asc"
   },

@@ -9,6 +9,6 @@
   },
   "email": "john@doe.com",
   "include": [],
-  "order": {},
+  "sort": {},
   "perDay": false
 }
