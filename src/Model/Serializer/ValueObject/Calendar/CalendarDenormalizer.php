@@ -76,6 +76,10 @@ class CalendarDenormalizer implements DenormalizerInterface
                 break;
 
             case 'multiple':
+                if (!isset($data['subEvent'])) {
+                    throw new UnsupportedException('Multiple calendar should have at least one subEvent.');
+                }
+
                 $subEvents = array_map(
                     function (array $subEvent) use ($topLevelStatus, $topLevelBookingAvailability) {
                         return $this->denormalizeSubEvent($subEvent, $topLevelStatus, $topLevelBookingAvailability);
