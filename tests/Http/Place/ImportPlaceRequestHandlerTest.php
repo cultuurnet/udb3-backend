@@ -78,7 +78,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Place;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
-use CultuurNet\UDB3\Place\ReadModel\Duplicate\MultipleDuplicatePlacesFound;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
@@ -113,6 +112,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     private ImportPlaceRequestHandler $importPlaceRequestHandler;
 
     private InMemoryDocumentRepository $organizerRepository;
+
     private function getSimplePlace(): array
     {
         return [
@@ -5205,18 +5205,16 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray($this->getSimplePlace())
             ->build('POST');
 
-        $this->expectExceptionObject(ApiProblem::statusConflict(
-            MultipleDuplicatePlacesFound::ERROR_MSG,
+        $this->assertCallableThrowsApiProblem(ApiProblem::statusConflict(
+            'A place with this address / name combination already exists. Please use the existing place for your purposes.',
             ['query' => $originalPlaceUri]
-        ));
-
-        $handler->handle($request);
+        ), function () use ($handler, $request): void {
+            $handler->handle($request);
+        });
     }
 
     public function testHandleWithDuplicatePreventionEnabledHappyPath(): void
     {
-        $originalPlaceUri = 'http://www.example.com/place/' . self::PLACE_ID;
-
         $lookupDuplicatePlace = $this->createMock(LookupDuplicatePlace::class);
         $lookupDuplicatePlace->method('getDuplicatePlaceUri')->willReturn(null);
 
