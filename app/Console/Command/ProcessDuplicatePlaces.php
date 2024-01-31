@@ -70,9 +70,10 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             InputArgument::OPTIONAL,
             'The id of the cluster to start processing from (useful for resuming a previous run).'
         );
-        $this->addArgument(
+        $this->addOption(
             'only-set-canonical',
-            InputArgument::OPTIONAL,
+            'c',
+            InputOption::VALUE_NONE,
             'Execute the script but only set the canonical of the clusters, do not reindex or update event locations.'
         );
     }
