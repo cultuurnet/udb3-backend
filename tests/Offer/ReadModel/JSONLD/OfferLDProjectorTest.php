@@ -8,7 +8,6 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\BookingInfo;
-use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
@@ -55,10 +54,10 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD\ItemLDProjector;
-use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -82,9 +81,9 @@ class OfferLDProjectorTest extends TestCase
     protected ItemLDProjector $projector;
 
     /**
-     * @var OrganizerService|MockObject
+     * @var DocumentRepository|MockObject
      */
-    protected $organizerService;
+    protected $organizerRepository;
 
     protected MediaObjectSerializer $serializer;
 
@@ -94,7 +93,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $this->documentRepository = new InMemoryDocumentRepository();
 
-        $this->organizerService = $this->createMock(OrganizerService::class);
+        $this->organizerRepository = $this->createMock(DocumentRepository::class);
 
         $iriGenerator = new CallableIriGenerator(
             function ($id) {
@@ -107,7 +106,8 @@ class OfferLDProjectorTest extends TestCase
         $this->projector = new ItemLDProjector(
             $this->documentRepository,
             $iriGenerator,
-            $this->organizerService,
+            new CallableIriGenerator(fn ($id) => 'http://example.com/organizers/' . $id),
+            $this->organizerRepository,
             $this->serializer,
             new JsonDocumentNullEnricher(),
             [
@@ -174,7 +174,8 @@ class OfferLDProjectorTest extends TestCase
         $projector = new ItemLDProjector(
             $documentRepository,
             new CallableIriGenerator(fn ($id) => 'http://example.com/entity/' . $id),
-            $this->createMock(OrganizerService::class),
+            new CallableIriGenerator(fn ($id) => 'http://example.com/organizers/' . $id),
+            $this->createMock(DocumentRepository::class),
             $this->createMock(MediaObjectSerializer::class),
             new JsonDocumentNullEnricher(),
             [],
@@ -221,7 +222,8 @@ class OfferLDProjectorTest extends TestCase
         $projector = new ItemLDProjector(
             $documentRepository,
             new CallableIriGenerator(fn ($id) => 'http://example.com/entity/' . $id),
-            $this->createMock(OrganizerService::class),
+            new CallableIriGenerator(fn ($id) => 'http://example.com/organizers/' . $id),
+            $this->createMock(DocumentRepository::class),
             $this->createMock(MediaObjectSerializer::class),
             new JsonDocumentNullEnricher(),
             [],
@@ -268,7 +270,8 @@ class OfferLDProjectorTest extends TestCase
         $projector = new ItemLDProjector(
             $documentRepository,
             new CallableIriGenerator(fn ($id) => 'http://example.com/entity/' . $id),
-            $this->createMock(OrganizerService::class),
+            new CallableIriGenerator(fn ($id) => 'http://example.com/organizers/' . $id),
+            $this->createMock(DocumentRepository::class),
             $this->createMock(MediaObjectSerializer::class),
             new JsonDocumentNullEnricher(),
             [],
@@ -1799,17 +1802,10 @@ class OfferLDProjectorTest extends TestCase
         $id = 'foo';
         $organizerId = 'ORGANIZER-ABC-456';
 
-        $this->organizerService->expects($this->once())
-            ->method('getEntity')
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
             ->with($organizerId)
-            ->willThrowException(new EntityNotFoundException());
-        $this->organizerService->expects($this->once())
-            ->method('iri')
-            ->willReturnCallback(
-                function ($argument) {
-                    return 'http://example.com/entity/' . $argument;
-                }
-            );
+            ->willThrowException(new DocumentDoesNotExist());
 
         $organizerUpdated = new OrganizerUpdated($id, $organizerId);
 
@@ -1818,7 +1814,7 @@ class OfferLDProjectorTest extends TestCase
             Json::encode([
                 'organizer' => [
                     '@type' => 'Organizer',
-                    '@id' => 'http://example.com/entity/ORGANIZER-ABC-123',
+                    '@id' => 'http://example.com/organizers/ORGANIZER-ABC-123',
                 ],
             ])
         );
@@ -1829,7 +1825,7 @@ class OfferLDProjectorTest extends TestCase
         $expectedBody = (object)[
             'organizer' => (object)[
                 '@type' => 'Organizer',
-                '@id' => 'http://example.com/entity/' . $organizerId,
+                '@id' => 'http://example.com/organizers/' . $organizerId,
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
@@ -1846,12 +1842,15 @@ class OfferLDProjectorTest extends TestCase
         $id = 'foo';
         $organizerId = 'ORGANIZER-ABC-456';
 
-        $this->organizerService->expects($this->once())
-            ->method('getEntity')
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
             ->with($organizerId)
             ->willReturnCallback(
                 function ($argument) {
-                    return Json::encode(['id' => $argument, 'name' => 'name']);
+                    return new JsonDocument(
+                        $argument,
+                        Json::encode(['id' => $argument, 'name' => 'name'])
+                    );
                 }
             );
 
