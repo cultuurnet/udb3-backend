@@ -5207,10 +5207,10 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->expectExceptionObject(ApiProblem::statusConflict(
             MultipleDuplicatePlacesFound::ERROR_MSG,
-            ['instance' => $originalPlaceUri]
+            ['query' => $originalPlaceUri]
         ));
 
-        $response = $handler->handle($request);
+        $handler->handle($request);
     }
 
     public function testHandleWithDuplicatePreventionEnabledHappyPath(): void
