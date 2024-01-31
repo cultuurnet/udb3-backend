@@ -112,6 +112,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     private ImportPlaceRequestHandler $importPlaceRequestHandler;
 
     private InMemoryDocumentRepository $organizerRepository;
+
     private function getSimplePlace(): array
     {
         return [
@@ -5167,9 +5168,59 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->assertValidationErrors($place, $expectedErrors);
     }
 
-    /** @dataProvider dataProviderHandleWithDuplicatePreventionEnabled */
-    public function testHandleWithDuplicatePreventionEnabled(Repository $aggregateRepository, LookupDuplicatePlace $lookupDuplicatePlace, JsonResponse $expectedResponse): void
+    public function testHandleWithDuplicatePreventionEnabledDoubleDetected(): void
     {
+        $originalPlaceUri = 'http://www.example.com/place/' . self::PLACE_ID;
+
+        $lookupDuplicatePlace = $this->createMock(LookupDuplicatePlace::class);
+        $lookupDuplicatePlace->method('getDuplicatePlaceUri')->willReturn($originalPlaceUri);
+
+        $aggregateRepository = $this->createMock(Repository::class);
+        $aggregateRepository->expects($this->never())->method('save'); // because there is a duplicate this should never save
+
+        $handler = new ImportPlaceRequestHandler(
+            $aggregateRepository,
+            $this->uuidGenerator,
+            $this->getPlaceDenormalizer(),
+            $this->getRequestBodyParser(),
+            new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
+            $this->commandBus,
+            $this->imageCollectionFactory,
+            true,
+            $lookupDuplicatePlace,
+            new InMemoryDocumentRepository()
+        );
+
+        $this->commandBus->record();
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn(self::PLACE_ID);
+
+        $this->imageCollectionFactory->expects($this->atMost(1))
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($this->getSimplePlace())
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(ApiProblem::statusConflict(
+            'A place with this address / name combination already exists. Please use the existing place for your purposes.',
+            ['duplicatePlaceUri' => $originalPlaceUri]
+        ), function () use ($handler, $request): void {
+            $handler->handle($request);
+        });
+    }
+
+    public function testHandleWithDuplicatePreventionEnabledHappyPath(): void
+    {
+        $lookupDuplicatePlace = $this->createMock(LookupDuplicatePlace::class);
+        $lookupDuplicatePlace->method('getDuplicatePlaceUri')->willReturn(null);
+
+        $aggregateRepository = $this->createMock(Repository::class);
+        $aggregateRepository->expects($this->once())->method('save'); // because there is a duplicate this should never save
+
         $handler = new ImportPlaceRequestHandler(
             $aggregateRepository,
             $this->uuidGenerator,
@@ -5198,54 +5249,20 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->build('POST');
 
         $response = $handler->handle($request);
+
+        $expectedResponse = new JsonResponse(
+            [
+                'id' => self::PLACE_ID,
+                'placeId' => self::PLACE_ID,
+                'url' => self::PLACE_URI . self::PLACE_ID,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
+            ],
+            StatusCodeInterface::STATUS_CREATED
+        );
+
         $this->assertEquals($expectedResponse->getBody()->getContents(), $response->getBody()->getContents());
         $this->assertEquals($expectedResponse->getStatusCode(), $response->getStatusCode());
     }
-
-    public function dataProviderHandleWithDuplicatePreventionEnabled(): array
-    {
-        $originalPlaceUri = 'http://www.example.com/place/' . self::PLACE_ID;
-
-        $lookupDuplicatePlace = $this->createMock(LookupDuplicatePlace::class);
-        $lookupDuplicatePlace->method('getDuplicatePlaceUri')->willReturn($originalPlaceUri);
-
-        $lookupDuplicatePlaceReturnsNull = $this->createMock(LookupDuplicatePlace::class);
-        $lookupDuplicatePlaceReturnsNull->method('getDuplicatePlaceUri')->willReturn(null);
-
-        $repositoryDoNotSave = $this->createMock(Repository::class);
-        $repositoryDoNotSave->expects($this->never())->method('save'); // because there is a duplicate this should never save
-
-        $repositorySave = $this->createMock(Repository::class);
-        $repositorySave->expects($this->once())->method('save'); // because there is a duplicate this should never save
-
-        return [
-            'There is a duplicate place - give error message' => [
-                $repositoryDoNotSave,
-                $lookupDuplicatePlace,
-                new JsonResponse(
-                    [
-                        'message' => 'A place with this address / location name combination already exists. Please use the existing place for your purposes.',
-                        'originalPlace' => $originalPlaceUri,
-                    ],
-                    StatusCodeInterface::STATUS_CONFLICT
-                ),
-            ],
-            'There is NO duplicate place - save' => [
-                $repositorySave,
-                $lookupDuplicatePlaceReturnsNull,
-                new JsonResponse(
-                    [
-                        'id' => self::PLACE_ID,
-                        'placeId' => self::PLACE_ID,
-                        'url' => self::PLACE_URI . self::PLACE_ID,
-                        'commandId' => '00000000-0000-0000-0000-000000000000',
-                    ],
-                    StatusCodeInterface::STATUS_CREATED
-                ),
-            ],
-        ];
-    }
-
 
     private function getRequestBodyParser(): CombinedRequestBodyParser
     {

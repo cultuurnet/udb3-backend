@@ -1508,15 +1508,15 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->assertEquals($expectedTerms, $updatedItem->terms);
     }
 
-
     /**
      * @test
+     * @dataProvider typesThatAreAvailableTillStart
      */
-    public function it_keeps_start_date_for_lessen_reeks_on_calendar_updated(): void
+    public function it_keeps_start_date_for_selected_types_on_calendar_updated(string $termId, string $termName): void
     {
         $eventId = '1a08516e-aba4-47f0-887e-df37b61a1e8d';
 
-        $lessenReeksEvent = new JsonDocument(
+        $eventThatsAvailableTillStart = new JsonDocument(
             $eventId,
             Json::encode([
                 '@id' => $eventId,
@@ -1528,14 +1528,14 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                         'domain' => 'theme',
                     ],
                     (object) [
-                        'id' => '0.3.1.0.0',
-                        'label' => 'Lessenreeks',
+                        'id' => $termId,
+                        'label' => $termName,
                         'domain' => 'eventtype',
                     ],
                 ],
             ])
         );
-        $this->documentRepository->save($lessenReeksEvent);
+        $this->documentRepository->save($eventThatsAvailableTillStart);
 
         $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
         $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
@@ -1614,6 +1614,14 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $expectedMediaObjects,
             $this->documentRepository->fetch(CdbXMLEventFactory::AN_EVENT_ID)->getBody()->mediaObject
         );
+    }
+
+    public function typesThatAreAvailableTillStart(): array
+    {
+        return [
+            ['0.3.1.0.0', 'Lessenreeks'],
+            ['0.57.0.0.0', 'Kamp of vakantie'],
+        ];
     }
 
     public function eventUpdateDataProvider(): array
