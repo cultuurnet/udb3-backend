@@ -8,11 +8,13 @@ use DomainException;
 
 class MultipleDuplicatePlacesFound extends DomainException
 {
+    public const ERROR_MSG = 'This place already exists. Use the attached query to get existing place(s) for the place you tried to create.';
+
     private string $query;
 
     public function __construct(string $query)
     {
-        parent::__construct('This place already exists multiple times in our database. We did not find a canonical place to suggest. Use the attached query to get all possible duplicates.', 0, null);
+        parent::__construct(self::ERROR_MSG, 0, null);
         $this->query = '/places?q=' . $query;
     }
 
