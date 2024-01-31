@@ -85,7 +85,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_expects_order_to_contain_property(): void
+    public function it_expects_sorting_to_contain_property(): void
     {
         $exportData = $this->getJSONStringFromFile('export_pdf_data_without_sorting_property.json');
 
