@@ -84,7 +84,7 @@ final class EventExportService implements EventExportServiceInterface
             $this->resultsGenerator->setLogger($logger);
         }
 
-        if ($this->resultsGenerator instanceof Sortable && isset($sortOrder)) {
+        if ($this->resultsGenerator instanceof Sortable && $sortOrder !== null) {
             $this->resultsGenerator = $this->resultsGenerator->withSorting($sortOrder->toArray());
         }
 

@@ -86,7 +86,7 @@ class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
 
         $sortOrder = SortOrder::fromJson($json);
 
-        if (isset($sortOrder)) {
+        if ($sortOrder !== null) {
             $command = $command->withSortOrder($sortOrder);
         }
 
