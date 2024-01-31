@@ -19,7 +19,7 @@ use Fig\Http\Message\StatusCodeInterface;
  * - Type should be a URI
  * - Title should always be the same for the used type
  * - The "about:blank" type can only be used if the error needs no further explanation than the status code
- *     (for example, 400 is too vague)
+ *     (for example, StatusCodeInterface::STATUS_BAD_REQUEST is too vague)
  * - If the "about:blank" type is used, the title should be the HTTP status phrase for the used status code
  *     (for example, "Internal Server Error" for 500)
  * - Avoid using "about:blank" in cases where extra documentation can be helpful
@@ -198,7 +198,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/auth/unauthorized',
             'Unauthorized',
-            401,
+            StatusCodeInterface::STATUS_UNAUTHORIZED,
             $detail
         );
     }
@@ -208,7 +208,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/auth/forbidden',
             'Forbidden',
-            403,
+            StatusCodeInterface::STATUS_FORBIDDEN,
             $detail
         );
     }
@@ -218,7 +218,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/headers/not-acceptable',
             'Not Acceptable',
-            406,
+            StatusCodeInterface::STATUS_NOT_ACCEPTABLE,
             $detail
         );
     }
@@ -228,7 +228,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/method/not-allowed',
             'Method not allowed',
-            405,
+            StatusCodeInterface::STATUS_METHOD_NOT_ALLOWED,
             $detail
         );
     }
@@ -238,9 +238,25 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/url/not-found',
             'Not Found',
-            404,
+            StatusCodeInterface::STATUS_NOT_FOUND,
             $detail
         );
+    }
+
+    public static function statusConflict(string $detail = null, array $properties = null): self
+    {
+        $apiProblem = self::create(
+            'https://api.publiq.be/probs/url/status-conflict',
+            'Status conflict',
+            StatusCodeInterface::STATUS_CONFLICT,
+            $detail
+        );
+
+        if ($properties !== null) {
+            $apiProblem->setExtraProperties($properties);
+        }
+
+        return $apiProblem;
     }
 
     public static function queryParameterInvalidValue(string $parameterName, string $value, array $allowedValues): self
@@ -305,7 +321,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/body/missing',
             'Body missing',
-            400
+            StatusCodeInterface::STATUS_BAD_REQUEST
         );
     }
 
@@ -323,7 +339,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/body/invalid-syntax',
             'Invalid body syntax',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             'The given request body could not be parsed as ' . $format . '.'
         );
     }
@@ -333,7 +349,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/body/invalid-data',
             'Invalid body data',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             null,
             $schemaErrors
         );
@@ -344,7 +360,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/body/invalid-data',
             'Invalid body data',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             $detail
         );
     }
@@ -354,7 +370,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/uitdatabank/calendar-type-not-supported',
             'Calendar type not supported',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             $detail
         );
     }
@@ -364,7 +380,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/uitdatabank/incompatible-audience-type',
             'Incompatible audience type',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             $detail
         );
     }
@@ -374,7 +390,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/uitdatabank/resource-id-already-in-use',
             'Resource id already in use',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             'The id ' . $id . ' is already in use by a resource of a different type.'
         );
     }
@@ -384,7 +400,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/uitdatabank/duplicate-url',
             'Duplicate URL',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             'The url ' . $originalUrl . ' (normalized to ' . $normalized . ') is already in use.'
         );
     }
@@ -406,7 +422,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/uitdatabank/invalid-workflow-status-transition',
             'Invalid workflowStatus transition',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             'Cannot transition from workflowStatus "' . $from . '" to "' . $to . '".'
         );
     }
@@ -416,7 +432,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/uitdatabank/attendance-mode-not-supported',
             'Attendance mode not supported',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             $detail . ' For more information check the documentation of the update attendance mode endpoint. See: ' . Stoplight::ATTENDANCE_MODE_UPDATE
         );
     }
@@ -434,7 +450,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/uitdatabank/event-has-uitpas-ticket-sales',
             'Event has UiTPAS ticket sales',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             $detail
         );
     }
@@ -444,7 +460,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/body/file-missing',
             'File missing',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             $detail
         );
     }
@@ -454,7 +470,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/body/file-invalid-type',
             'Invalid file type',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             $detail
         );
     }
@@ -464,7 +480,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/body/file-invalid-size',
             'Invalid file size',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             $detail
         );
     }
@@ -482,7 +498,7 @@ final class ApiProblem extends Exception
         return self::create(
             'about:blank',
             'Bad Gateway',
-            502,
+            StatusCodeInterface::STATUS_BAD_GATEWAY,
             $detail
         );
     }
@@ -492,7 +508,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/body/image-must-be-linked-to-resource',
             'Image must be linked to resource',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             'The image with id ' . $imageId . ' is not linked to the resource. Add it first before you can perform an action.'
         );
     }
@@ -502,7 +518,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/probs/body/invalid-json-data',
             'Invalid JSON data for RDF creation',
-            400,
+            StatusCodeInterface::STATUS_BAD_REQUEST,
             $detail
         );
     }
