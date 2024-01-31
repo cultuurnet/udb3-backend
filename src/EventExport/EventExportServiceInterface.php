@@ -28,7 +28,7 @@ interface EventExportServiceInterface
      *  When left empty the whole query will export.
      *
      * @param Sorting|null $sorting
-     *   An optional sorting order for the items that will be included in the export.
+     *   An optional sorting for the items that will be included in the export.
      *   @return bool|string
      *  The destination url of the export file or false if no events were found.
      *@link https://docs.publiq.be/docs/uitdatabank/search-api/sorting
