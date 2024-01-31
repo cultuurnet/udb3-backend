@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\GuardOrganizer;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
@@ -155,28 +156,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $commands = [];
         if (!$placeExists) {
-            if ($this->preventDuplicatePlaces) {
-                try {
-                    $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceUri($place);
-                    if ($duplicatePlaceId !== null) {
-                        return new JsonResponse(
-                            [
-                                'message' => 'A place with this address / location name combination already exists. Please use the existing place for your purposes.',
-                                'originalPlace' => $duplicatePlaceId,
-                            ],
-                            StatusCodeInterface::STATUS_CONFLICT
-                        );
-                    }
-                } catch (MultipleDuplicatePlacesFound $e) {
-                    return new JsonResponse(
-                        [
-                            'message' => $e->getMessage(),
-                            'originalPlace' => $e->getQuery(),
-                        ],
-                        StatusCodeInterface::STATUS_CONFLICT
-                    );
-                }
-            }
+            $this->guardDuplicatePlace($place);
 
             $placeAggregate = PlaceAggregate::create(
                 $placeId,
@@ -282,5 +262,27 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             'commandId' => Uuid::NIL,
         ];
         return new JsonResponse($responseBody, $responseStatus);
+    }
+
+    public function guardDuplicatePlace(Place $place): void
+    {
+        if (! $this->preventDuplicatePlaces) {
+            return;
+        }
+
+        try {
+            $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceUri($place);
+            if ($duplicatePlaceId !== null) {
+                throw ApiProblem::statusConflict(
+                    MultipleDuplicatePlacesFound::ERROR_MSG,
+                    ['query' => $duplicatePlaceId]
+                );
+            }
+        } catch (MultipleDuplicatePlacesFound $e) {
+            throw ApiProblem::statusConflict(
+                $e->getMessage(),
+                ['query' => $e->getQuery()]
+            );
+        }
     }
 }
