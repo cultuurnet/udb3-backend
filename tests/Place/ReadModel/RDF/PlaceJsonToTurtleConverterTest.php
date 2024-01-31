@@ -154,7 +154,14 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $this->logger->expects($this->once())
             ->method('warning')
-            ->with('Unable to project place d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
+            ->with(
+                'Unable to project place d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.',
+                [
+                    'id' => $this->placeId,
+                    'type' => 'place',
+                    'exception' => 'Place data should contain an address.',
+                ]
+            );
 
         $this->expectException(JsonDataCouldNotBeConverted::class);
 
