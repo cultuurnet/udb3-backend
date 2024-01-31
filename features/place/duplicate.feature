@@ -11,7 +11,7 @@ Feature: Test creating places
     Given I create a random name of 6 characters and keep it as "name"
     Given I create a minimal place and save the "id" as "originalPlaceId" then I should get a "201" response code
     Then I wait for the place with url "/places/%{originalPlaceId}" to be indexed
-    Given I create a minimal place and save the "query" as "query" then I should get a "409" response code
+    Given I create a minimal place then I should get a "409" response code
     Then the JSON response should be:
     """
     {
