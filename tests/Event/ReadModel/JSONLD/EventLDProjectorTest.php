@@ -1515,7 +1515,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $eventId = '1a08516e-aba4-47f0-887e-df37b61a1e8d';
 
-        $lessenReeksEvent = new JsonDocument(
+        $eventThatsAvailableTillStart = new JsonDocument(
             $eventId,
             Json::encode([
                 '@id' => $eventId,
@@ -1534,7 +1534,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 ],
             ])
         );
-        $this->documentRepository->save($lessenReeksEvent);
+        $this->documentRepository->save($eventThatsAvailableTillStart);
 
         $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
         $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
