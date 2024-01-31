@@ -140,13 +140,11 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
                     $container->get(CurrentUser::class)->getId()
                 );
 
-                if (isset($container->get('config')['polyfill_duplicate_places']) && $container->get('config')['polyfill_duplicate_places']) {
-                    $repository = new DuplicatePlacesEnrichedPlaceRepository(
-                        $container->get('duplicate_place_repository'),
-                        $container->get('place_iri_generator'),
-                        $repository
-                    );
-                }
+                $repository = new DuplicatePlacesEnrichedPlaceRepository(
+                    $container->get('duplicate_place_repository'),
+                    $container->get('place_iri_generator'),
+                    $repository
+                );
 
                 $repository = new PropertyPolyfillOfferRepository(
                     $repository,
