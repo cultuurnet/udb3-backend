@@ -87,7 +87,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
      */
     public function it_expects_order_to_contain_property(): void
     {
-        $exportData = $this->getJSONStringFromFile('export_pdf_data_without_order_property.json');
+        $exportData = $this->getJSONStringFromFile('export_pdf_data_without_sorting_property.json');
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage("order is incomplete. You should provide a 'property' key.");
@@ -99,7 +99,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
      */
     public function it_expects_order_to_contain_order(): void
     {
-        $exportData = $this->getJSONStringFromFile('export_pdf_data_without_order_order.json');
+        $exportData = $this->getJSONStringFromFile('export_pdf_data_without_sorting_order.json');
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage("order is incomplete. You should provide a 'order' key.");
