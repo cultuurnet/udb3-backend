@@ -52,6 +52,12 @@ final class EventTypeResolver implements TypeResolverInterface
 
     public static function isOnlyAvailableUntilStartDate(EventType $eventType): bool
     {
-        return $eventType->getId() === '0.3.1.0.0';
+        return in_array(
+            $eventType->getId(),
+            [
+                '0.3.1.0.0',
+                '0.57.0.0.0',
+            ]
+        );
     }
 }
