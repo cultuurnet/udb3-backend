@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Organizer;
 
-use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\RDF\JsonToTurtleConverter;
 use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use EasyRdf\Graph;
 use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -20,8 +21,8 @@ class GetOrganizerRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var EntityServiceInterface|MockObject */
-    private $organizerService;
+    /** @var DocumentRepository|MockObject */
+    private $organizerRepository;
 
     private GetOrganizerRequestHandler $getOrganizerRequestHandler;
 
@@ -32,11 +33,11 @@ class GetOrganizerRequestHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->organizerService = $this->createMock(EntityServiceInterface::class);
+        $this->organizerRepository = $this->createMock(DocumentRepository::class);
         $this->jsonToTurtleConverter = $this->createMock(JsonToTurtleConverter::class);
 
         $this->getOrganizerRequestHandler = new GetOrganizerRequestHandler(
-            $this->organizerService,
+            $this->organizerRepository,
             new TurtleResponseFactory(
                 $this->jsonToTurtleConverter
             )
@@ -56,10 +57,12 @@ class GetOrganizerRequestHandlerTest extends TestCase
             ->withRouteParameter('organizerId', $organizerId)
             ->build('GET');
 
-        $this->organizerService->expects($this->once())
-            ->method('getEntity')
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
             ->with($organizerId)
-            ->willReturn('{"id":"a088f396-ac96-45c4-b6b2-e2b6afe8af07"}');
+            ->willReturn(
+                new JsonDocument('a088f396-ac96-45c4-b6b2-e2b6afe8af07', '{"id":"a088f396-ac96-45c4-b6b2-e2b6afe8af07"}')
+            );
 
         $response = $this->getOrganizerRequestHandler->handle($getOrganizerRequest);
 
@@ -82,8 +85,8 @@ class GetOrganizerRequestHandlerTest extends TestCase
             ->withHeader('Accept', 'text/turtle')
             ->build('GET');
 
-        $this->organizerService->expects($this->never())
-            ->method('getEntity');
+        $this->organizerRepository->expects($this->never())
+            ->method('fetch');
 
         $graph = new Graph();
         $resource = $graph->resource($uri);
@@ -115,10 +118,10 @@ class GetOrganizerRequestHandlerTest extends TestCase
             ->withRouteParameter('organizerId', $organizerId)
             ->build('GET');
 
-        $this->organizerService->expects($this->once())
-            ->method('getEntity')
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
             ->with($organizerId)
-            ->willThrowException(new EntityNotFoundException());
+            ->willThrowException(new DocumentDoesNotExist());
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::organizerNotFound($organizerId),
