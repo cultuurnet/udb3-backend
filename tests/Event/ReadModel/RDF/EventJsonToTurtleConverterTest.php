@@ -340,6 +340,27 @@ class EventJsonToTurtleConverterTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_throws_on_multiple_calendar_with_missing_sub_events(): void
+    {
+        $this->givenThereIsAnEvent([
+            'calendarType' => 'multiple',
+            'startDate' => '2023-05-06T20:00:00+01:00',
+            'endDate' => '2023-05-07T23:00:00+01:00',
+        ]);
+
+        $this->logger->expects($this->once())
+            ->method('warning')
+            ->with('Unable to project event d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
+
+        $this->expectException(JsonDataCouldNotBeConverted::class);
+        $this->expectExceptionMessage('Multiple calendar should have at least one subEvent.');
+
+        $this->eventJsonToTurtleConverter->convert($this->eventId);
+    }
+
+    /**
+     * @test
      * @dataProvider workflowStatusDataProvider
      */
     public function it_converts_an_event_with_workflow_status(WorkflowStatus $workflowStatus, string $file): void
