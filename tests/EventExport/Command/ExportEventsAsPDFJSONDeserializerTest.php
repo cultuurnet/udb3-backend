@@ -97,13 +97,12 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_expects_order_to_contain_order(): void
+    public function it_includes_default_sorting_order(): void
     {
         $exportData = $this->getJSONStringFromFile('export_pdf_data_without_sorting_order.json');
+        $command = $this->deserializer->deserialize($exportData);
 
-        $this->expectException(MissingValueException::class);
-        $this->expectExceptionMessage("order is incomplete. You should provide a 'order' key.");
-        $this->deserializer->deserialize($exportData);
+        $this->assertEquals(new Sorting('availableTo', Sorting::DEFAULT_ORDER), $command->getSorting());
     }
 
     /**

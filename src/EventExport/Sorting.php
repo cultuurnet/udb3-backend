@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Deserializer\MissingValueException;
 
 final class Sorting
 {
+    const DEFAULT_ORDER = 'asc';
     private string $property;
     private string $order;
 
@@ -42,24 +43,20 @@ final class Sorting
      */
     public static function fromJson($json): ?Sorting
     {
-        $hasProperty = isset($json->sort->property);
-        $hasOrder = isset($json->sort->order);
+        $property = $json->sort->property ?? null;
+        $order = $json->sort->order ?? null;
 
-        if ($hasProperty && !$hasOrder) {
-            throw new MissingValueException("order is incomplete. You should provide a 'order' key.");
+        if ($property === null && $order === null) {
+            return null;
         }
 
-        if (!$hasProperty && $hasOrder) {
+        if ($property === null) {
             throw new MissingValueException("order is incomplete. You should provide a 'property' key.");
         }
 
-        if ($hasProperty && $hasOrder) { // @phpstan-ignore-line
-            return new Sorting(
-                $json->sort->property,
-                $json->sort->order,
-            );
-        }
-
-        return null;
+        return new Sorting(
+            $property,
+            $order ?? self::DEFAULT_ORDER,
+        );
     }
 }
