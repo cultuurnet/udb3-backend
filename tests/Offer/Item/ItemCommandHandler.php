@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Item;
 
 use CultuurNet\UDB3\Offer\Item\Commands\AddImage;
-use CultuurNet\UDB3\Offer\Item\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Item\Commands\ImportImages;
 use CultuurNet\UDB3\Offer\Item\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\Approve;
@@ -22,7 +21,7 @@ use CultuurNet\UDB3\Offer\Item\Commands\SelectMainImage;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\OfferCommandHandler;
 
-class ItemCommandHandler extends OfferCommandHandler
+final class ItemCommandHandler extends OfferCommandHandler
 {
     protected function getAddImageClassName(): string
     {
@@ -62,11 +61,6 @@ class ItemCommandHandler extends OfferCommandHandler
     protected function getDeleteTypicalAgeRangeClassName(): string
     {
         return DeleteTypicalAgeRange::class;
-    }
-
-    protected function getDeleteCurrentOrganizerClassName(): string
-    {
-        return DeleteCurrentOrganizer::class;
     }
 
     protected function getUpdateContactPointClassName(): string

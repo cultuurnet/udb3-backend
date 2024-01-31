@@ -89,7 +89,37 @@ Feature: Test RDF projection of events
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match "events/rdf/event-with-price-info.ttl"
 
+  Scenario: Create an event with videos
+    And I create an event from "events/rdf/event-with-videos.json" and save the "id" as "eventId"
+    And I accept "text/turtle"
+    When I get the RDF of event with id "%{eventId}"
+    Then the RDF response should match "events/rdf/event-with-videos.ttl"
+
+  Scenario: Create an event with images
+    Given I set the form data properties to:
+      | description     | logo |
+      | copyrightHolder | me   |
+      | language        | nl   |
+    When I upload "file" from path "images/UDB.jpg" to "/images/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "imageId" as "imageId"
+    And I keep the value of the JSON response at "@id" as "imageUrl"
+
+    And I create an event from "events/rdf/event-with-images.json" and save the "id" as "eventId"
+    And I accept "text/turtle"
+    When I get the RDF of event with id "%{eventId}"
+    Then the RDF response should match "events/rdf/event-with-image-object.ttl"
+
   Scenario: Create an event with all fields
+    Given I set the form data properties to:
+      | description     | logo |
+      | copyrightHolder | me   |
+      | language        | nl   |
+    When I upload "file" from path "images/UDB.jpg" to "/images/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "imageId" as "imageId"
+    And I keep the value of the JSON response at "@id" as "imageUrl"
+
     Given I create an event from "events/rdf/event-with-all-fields.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"

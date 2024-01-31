@@ -30,7 +30,24 @@ trait PlaceSteps
             '/places',
             $this->fixtures->loadJson('places/place-with-required-fields.json', $this->variableState),
             $jsonPath,
-            $variableName
+            $variableName,
+            201
+        );
+    }
+
+    /**
+     * @Given /^I create a minimal place and save the "([^"]*)" as "([^"]*)" then I should get a "([^"]*)" response code$/
+     */
+    public function iCreateAMinimalPlaceAndSaveTheAsThenIShouldGetAResponseCode(string $jsonPath, string $variableName, int $responseCode): void
+    {
+        $json = $this->fixtures->loadJson('places/place-with-required-fields-and-variable-name.json', $this->variableState);
+
+        $this->createPlace(
+            '/places',
+            $json,
+            $jsonPath,
+            $variableName,
+            $responseCode
         );
     }
 
@@ -43,7 +60,8 @@ trait PlaceSteps
             '/places',
             $this->fixtures->loadJson($fileName, $this->variableState),
             $jsonPath,
-            $variableName
+            $variableName,
+            201
         );
     }
 
@@ -56,7 +74,8 @@ trait PlaceSteps
             '/imports/places',
             $this->fixtures->loadJson($fileName, $this->variableState),
             $jsonPath,
-            $variableName
+            $variableName,
+            200
         );
     }
 
@@ -224,7 +243,7 @@ trait PlaceSteps
         $this->theResponseStatusShouldBe(204);
     }
 
-    private function createPlace(string $endpoint, string $json, string $jsonPath, string $variableName): void
+    private function createPlace(string $endpoint, string $json, string $jsonPath, string $variableName, int $responseStatus): void
     {
         $response = $this->getHttpClient()->postJSON(
             $endpoint,
@@ -232,7 +251,7 @@ trait PlaceSteps
         );
         $this->responseState->setResponse($response);
 
-        $this->theResponseStatusShouldBe(str_contains($endpoint, 'imports') ? 200 : 201);
+        $this->theResponseStatusShouldBe($responseStatus);
         $this->theResponseBodyShouldBeValidJson();
         $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
     }

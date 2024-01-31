@@ -12,7 +12,6 @@ use Opis\JsonSchema\SchemaLoader;
 use Opis\JsonSchema\Validator;
 use Opis\Uri\Uri;
 use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
 
 final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
 {
@@ -41,7 +40,7 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
     {
         $data = $request->getParsedBody();
         if ($data === null) {
-            throw new RuntimeException('Given ServerRequestInterface has no parsed body.');
+            throw ApiProblem::bodyMissing();
         }
 
         $result = $this->validator->validate($data, $this->jsonSchema);

@@ -420,6 +420,78 @@ class EventJsonToTurtleConverterTest extends TestCase
     /**
      * @test
      */
+    public function it_logs_an_event_with_dummy_location_but_missing_address(): void
+    {
+        $this->givenThereIsAnEvent([
+            'location' => [
+                'name' => 'Het Depot',
+            ],
+        ]);
+
+        $this->logger->expects($this->once())
+            ->method('warning')
+            ->with('Unable to project event d4b46fba-6433-4f86-bcb5-edeef6689fea with invalid JSON to RDF.');
+
+        $this->expectException(JsonDataCouldNotBeConverted::class);
+
+        $this->eventJsonToTurtleConverter->convert($this->eventId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_dummy_location_name(): void
+    {
+        $this->givenThereIsAnEvent([
+            'location' => [
+                'name' => [
+                    'nl' => 'Het Depot',
+                ],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-name.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_dummy_location_null_name(): void
+    {
+        $this->givenThereIsAnEvent([
+            'location' => [
+                'name' => [
+                    'nl' => null,
+                ],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
     public function it_converts_an_event_with_dummy_location_and_multiple_calendar(): void
     {
         $this->givenThereIsAnEvent([
@@ -456,6 +528,45 @@ class EventJsonToTurtleConverterTest extends TestCase
     /**
      * @test
      */
+    public function it_converts_an_event_with_dummy_location_name_and_multiple_calendar(): void
+    {
+        $this->givenThereIsAnEvent([
+            'calendarType' => 'multiple',
+            'startDate' => '2023-05-06T20:00:00+01:00',
+            'endDate' => '2023-05-07T23:00:00+01:00',
+            'subEvent' => [
+                [
+                    'startDate' => '2023-05-06T20:00:00+01:00',
+                    'endDate' => '2023-05-06T23:00:00+01:00',
+                ],
+                [
+                    'startDate' => '2023-05-07T20:00:00+01:00',
+                    'endDate' => '2023-05-07T23:00:00+01:00',
+                ],
+            ],
+            'location' => [
+                'name' => [
+                    'nl' => 'Het Depot',
+                ],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-name-and-multiple-calendar.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
     public function it_converts_an_event_with_dummy_location_and_single_calendar(): void
     {
         $this->givenThereIsAnEvent([
@@ -477,6 +588,35 @@ class EventJsonToTurtleConverterTest extends TestCase
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
         $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-single-calendar.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_dummy_location_name_and_single_calendar(): void
+    {
+        $this->givenThereIsAnEvent([
+            'calendarType' => 'single',
+            'startDate' => '2023-05-06T20:00:00+01:00',
+            'endDate' => '2023-05-06T23:00:00+01:00',
+            'location' => [
+                'name' => [
+                    'nl' => 'Het Depot',
+                ],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-name-and-single-calendar.ttl'), $turtle);
     }
 
     /**
@@ -871,6 +1011,59 @@ class EventJsonToTurtleConverterTest extends TestCase
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
         $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-price-info.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_videos(): void
+    {
+        $this->givenThereIsAnEvent([
+            'videos' => [
+                [
+                    'id' => '6bab1cba-18d0-42e7-b0c9-3b869eb68934',
+                    'url' => 'https://youtu.be/fn-4RbxXThE',
+                    'embedUrl' => 'https://www.youtube.com/embed/fn-4RbxXThE',
+                    'language' => 'nl',
+                    'copyrightHolder' => 'Copyright afgehandeld door YouTube',
+                ],
+                [
+                    'id' => '58716d9e-46c8-4145-a0b2-60381ec3bd92',
+                    'url' => 'https://youtu.be/fd-5FGTh3se',
+                    'embedUrl' => 'https://www.youtube.com/embed/fd-5FGTh3se',
+                    'language' => 'nl',
+                    'copyrightHolder' => 'Copyright afgehandeld door YouTube',
+                ],
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-videos.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_an_event_with_images(): void
+    {
+        $this->givenThereIsAnEvent([
+            'mediaObject' => [
+                [
+                    '@id' => 'https://io-acc.uitdatabank.be/images/6bab1cba-18d0-42e7-b0c9-3b869eb68934',
+                    '@type' => 'schema:ImageObject',
+                    'contentUrl' => 'https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg',
+                    'thumbnailUrl' => 'https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg',
+                    'copyrightHolder' => 'publiq vzw',
+                    'description' => 'A cute dog',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-media-object.ttl'), $turtle);
     }
 
     private function givenThereIsAnEvent(array $extraProperties = []): void

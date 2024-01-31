@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Event;
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Event\Commands\AddImage;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
-use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
 use CultuurNet\UDB3\Event\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsDuplicate;
@@ -28,7 +27,7 @@ use CultuurNet\UDB3\Offer\OfferCommandHandler;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
-class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInterface
+final class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -112,11 +111,6 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
     protected function getDeleteTypicalAgeRangeClassName(): string
     {
         return DeleteTypicalAgeRange::class;
-    }
-
-    protected function getDeleteCurrentOrganizerClassName(): string
-    {
-        return DeleteCurrentOrganizer::class;
     }
 
     protected function getUpdateContactPointClassName(): string

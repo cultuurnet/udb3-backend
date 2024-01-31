@@ -29,11 +29,14 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation [
-    a locn:Address ;
-    locn:adminUnitL1 "BE" ;
-    locn:postcode "3000" ;
-    locn:locatorDesignator "1" ;
-    locn:fullAddress "Martelarenplein 1, 3000 Leuven, BE"@nl ;
-    locn:postName "Leuven"@nl ;
-    locn:thoroughfare "Martelarenlaan"@nl
+    a dcterms:Location ;
+    locn:address [
+      a locn:Address ;
+      locn:adminUnitL1 "BE" ;
+      locn:postcode "3000" ;
+      locn:locatorDesignator "1" ;
+      locn:fullAddress "Martelarenplein 1, 3000 Leuven, BE"@nl ;
+      locn:postName "Leuven"@nl ;
+      locn:thoroughfare "Martelarenlaan"@nl
+    ]
   ] .

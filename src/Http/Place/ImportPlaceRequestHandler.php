@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Http\GuardOrganizer;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
@@ -25,17 +26,17 @@ use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateOrganizer;
-use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
+use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Offer\InvalidWorkflowStatusTransition;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
 use CultuurNet\UDB3\Place\Commands\Moderation\Publish;
@@ -45,6 +46,9 @@ use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
+use CultuurNet\UDB3\Place\ReadModel\Duplicate\MultipleDuplicatePlacesFound;
+use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -55,6 +59,8 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ImportPlaceRequestHandler implements RequestHandlerInterface
 {
+    use GuardOrganizer;
+
     private Repository $aggregateRepository;
 
     private UuidGeneratorInterface $uuidGenerator;
@@ -69,6 +75,12 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
     private ImageCollectionFactory $imageCollectionFactory;
 
+    private bool $preventDuplicatePlaces;
+
+    private LookupDuplicatePlace $lookupDuplicatePlace;
+
+    private DocumentRepository $organizerDocumentRepository;
+
     public function __construct(
         Repository $aggregateRepository,
         UuidGeneratorInterface $uuidGenerator,
@@ -76,7 +88,10 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         RequestBodyParser $importPreProcessingRequestBodyParser,
         IriGeneratorInterface $iriGenerator,
         CommandBus $commandBus,
-        ImageCollectionFactory $imageCollectionFactory
+        ImageCollectionFactory $imageCollectionFactory,
+        bool $preventDuplicatePlaces,
+        LookupDuplicatePlace $lookupDuplicatePlace,
+        DocumentRepository $organizerDocumentRepository
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -85,6 +100,9 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $this->iriGenerator = $iriGenerator;
         $this->commandBus = $commandBus;
         $this->imageCollectionFactory = $imageCollectionFactory;
+        $this->preventDuplicatePlaces = $preventDuplicatePlaces;
+        $this->lookupDuplicatePlace = $lookupDuplicatePlace;
+        $this->organizerDocumentRepository = $organizerDocumentRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -137,6 +155,29 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $commands = [];
         if (!$placeExists) {
+            if ($this->preventDuplicatePlaces) {
+                try {
+                    $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceUri($place);
+                    if ($duplicatePlaceId !== null) {
+                        return new JsonResponse(
+                            [
+                                'message' => 'A place with this address / location name combination already exists. Please use the existing place for your purposes.',
+                                'originalPlace' => $duplicatePlaceId,
+                            ],
+                            StatusCodeInterface::STATUS_CONFLICT
+                        );
+                    }
+                } catch (MultipleDuplicatePlacesFound $e) {
+                    return new JsonResponse(
+                        [
+                            'message' => $e->getMessage(),
+                            'originalPlace' => $e->getQuery(),
+                        ],
+                        StatusCodeInterface::STATUS_CONFLICT
+                    );
+                }
+            }
+
             $placeAggregate = PlaceAggregate::create(
                 $placeId,
                 $mainLanguage,
@@ -221,6 +262,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $organizerId = $placeAdapter->getOrganizerId();
         if ($organizerId) {
+            $this->guardOrganizer($organizerId, $this->organizerDocumentRepository);
             $commands[] = new UpdateOrganizer($placeId, $organizerId);
         } else {
             $commands[] = new DeleteCurrentOrganizer($placeId);

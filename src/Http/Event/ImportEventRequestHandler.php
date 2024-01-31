@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
@@ -25,6 +24,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Http\GuardOrganizer;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
@@ -44,6 +44,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
@@ -66,6 +67,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ImportEventRequestHandler implements RequestHandlerInterface
 {
+    use GuardOrganizer;
     private Repository $aggregateRepository;
     private UuidGeneratorInterface $uuidGenerator;
     private IriGeneratorInterface $eventIriGenerator;
@@ -74,6 +76,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
     private CommandBus $commandBus;
     private ImageCollectionFactory $imageCollectionFactory;
     private DocumentRepository $locationDocumentRepository;
+    private DocumentRepository $organizerDocumentRepository;
 
     public function __construct(
         Repository $aggregateRepository,
@@ -83,7 +86,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         RequestBodyParser $combinedRequestBodyParser,
         CommandBus $commandBus,
         ImageCollectionFactory $imageCollectionFactory,
-        DocumentRepository $locationDocumentRepository
+        DocumentRepository $locationDocumentRepository,
+        DocumentRepository $organizerDocumentRepository
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -93,6 +97,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $this->commandBus = $commandBus;
         $this->imageCollectionFactory = $imageCollectionFactory;
         $this->locationDocumentRepository = $locationDocumentRepository;
+        $this->organizerDocumentRepository = $organizerDocumentRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -270,7 +275,17 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         // which might cause race conditions if we're still dispatching other commands here as well.
         $organizerId = $eventAdapter->getOrganizerId();
         if ($organizerId) {
-            $commands[] = new UpdateOrganizer($eventId, $organizerId);
+            try {
+                $this->guardOrganizer($organizerId, $this->organizerDocumentRepository);
+                $commands[] = new UpdateOrganizer($eventId, $organizerId);
+            } catch (DocumentDoesNotExist $e) {
+                throw ApiProblem::bodyInvalidData(
+                    new SchemaError(
+                        '/organizer',
+                        'The organizer with id "' . $organizerId . '" was not found.'
+                    )
+                );
+            }
         } else {
             $commands[] = new DeleteCurrentOrganizer($eventId);
         }
