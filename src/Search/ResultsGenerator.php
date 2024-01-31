@@ -9,7 +9,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterface, SortableInterface
+class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterface, Sortable
 {
     use LoggerAwareTrait;
 

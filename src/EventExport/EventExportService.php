@@ -16,7 +16,7 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
-use CultuurNet\UDB3\Search\SortableInterface;
+use CultuurNet\UDB3\Search\Sortable;
 use Generator;
 use Http\Client\Exception;
 use Psr\Log\LoggerAwareInterface;
@@ -84,7 +84,7 @@ final class EventExportService implements EventExportServiceInterface
             $this->resultsGenerator->setLogger($logger);
         }
 
-        if ($this->resultsGenerator instanceof SortableInterface && isset($sortOrder)) {
+        if ($this->resultsGenerator instanceof Sortable && isset($sortOrder)) {
             $this->resultsGenerator = $this->resultsGenerator->withSorting($sortOrder->toArray());
         }
 
