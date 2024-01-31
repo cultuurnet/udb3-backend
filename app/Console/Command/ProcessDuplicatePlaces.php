@@ -65,16 +65,16 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             InputOption::VALUE_NONE,
             'Execute a dry-run of the process-duplicates script.'
         );
-        $this->addArgument(
-            'start-cluster-id',
-            InputArgument::OPTIONAL,
-            'The id of the cluster to start processing from (useful for resuming a previous run).'
-        );
         $this->addOption(
             'only-set-canonical',
             'c',
             InputOption::VALUE_NONE,
             'Execute the script but only set the canonical of the clusters, do not reindex or update event locations.'
+        );
+        $this->addArgument(
+            'start-cluster-id',
+            InputArgument::OPTIONAL,
+            'The id of the cluster to start processing from (useful for resuming a previous run).'
         );
     }
 
