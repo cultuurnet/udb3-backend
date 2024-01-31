@@ -11,9 +11,15 @@ Feature: Test creating places
     Given I create a random name of 6 characters and keep it as "name"
     Given I create a minimal place and save the "id" as "originalPlaceId" then I should get a "201" response code
     Then I wait for the place with url "/places/%{originalPlaceId}" to be indexed
-    Given I create a minimal place and save the "originalPlace" as "newPlaceUri" then I should get a "409" response code
-    Then the JSON response at "originalPlace" should be:
+    Given I create a minimal place and save the "query" as "query" then I should get a "409" response code
+    Then the JSON response should be:
     """
-    "%{baseUrl}/place/%{originalPlaceId}"
+    {
+        "query": "%{baseUrl}/place/%{originalPlaceId}",
+        "type": "https://api.publiq.be/probs/url/status-conflict",
+        "title": "Status conflict",
+        "status": 409,
+        "detail": "This place already exists. Use the attached query to get existing place(s) for the place you tried to create."
+    }
     """
     Then I restore the duplicate configuration
