@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\EventExport\Command;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
-use CultuurNet\UDB3\EventExport\SortOrder;
+use CultuurNet\UDB3\EventExport\Sorting;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 /**
@@ -46,10 +46,10 @@ abstract class ExportEventsJSONDeserializer extends JSONDeserializer
             $selection
         );
 
-        $sortOrder = SortOrder::fromJson($json);
+        $sorting = Sorting::fromJson($json);
 
-        if ($sortOrder !== null) {
-            $command = $command->withSortOrder($sortOrder);
+        if ($sorting !== null) {
+            $command = $command->withSorting($sorting);
         }
 
         return $command;

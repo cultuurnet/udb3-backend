@@ -12,7 +12,7 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Footer;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Publisher;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Subtitle;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
-use CultuurNet\UDB3\EventExport\SortOrder;
+use CultuurNet\UDB3\EventExport\Sorting;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 class ExportEventsAsPDF implements ExportEventsInterface, AsyncCommand
@@ -42,7 +42,7 @@ class ExportEventsAsPDF implements ExportEventsInterface, AsyncCommand
 
     private string $template;
 
-    private ?SortOrder $sortOrder;
+    private ?Sorting $sorting;
 
     public function __construct(
         EventExportQuery $query,
@@ -62,7 +62,7 @@ class ExportEventsAsPDF implements ExportEventsInterface, AsyncCommand
         $this->subtitle = null;
         $this->footer = null;
         $this->publisher = null;
-        $this->sortOrder = null;
+        $this->sorting = null;
     }
 
     public function withEmailNotificationTo(EmailAddress $address): ExportEventsAsPDF
@@ -78,10 +78,10 @@ class ExportEventsAsPDF implements ExportEventsInterface, AsyncCommand
         $this->address = $address;
     }
 
-    public function withSortOrder(SortOrder $sortOrder): ExportEventsAsPDF
+    public function withSorting(Sorting $sorting): ExportEventsAsPDF
     {
         $exportEvents = clone $this;
-        $exportEvents->sortOrder = $sortOrder;
+        $exportEvents->sorting = $sorting;
 
         return $exportEvents;
     }
@@ -197,8 +197,8 @@ class ExportEventsAsPDF implements ExportEventsInterface, AsyncCommand
         return $this->selection;
     }
 
-    public function getSortOrder(): ?SortOrder
+    public function getSorting(): ?Sorting
     {
-        return $this->sortOrder;
+        return $this->sorting;
     }
 }

@@ -74,7 +74,7 @@ final class EventExportService implements EventExportServiceInterface
         EmailAddress $address = null,
         LoggerInterface $logger = null,
         ?array $selection = null,
-        ?SortOrder $sortOrder = null
+        ?Sorting $sorting = null
     ) {
         if (!$logger instanceof LoggerInterface) {
             $logger = new NullLogger();
@@ -84,8 +84,8 @@ final class EventExportService implements EventExportServiceInterface
             $this->resultsGenerator->setLogger($logger);
         }
 
-        if ($this->resultsGenerator instanceof Sortable && $sortOrder !== null) {
-            $this->resultsGenerator = $this->resultsGenerator->withSorting($sortOrder->toArray());
+        if ($this->resultsGenerator instanceof Sortable && $sorting !== null) {
+            $this->resultsGenerator = $this->resultsGenerator->withSorting($sorting->toArray());
         }
 
         if (is_array($selection) && !empty($selection)) {
@@ -107,7 +107,7 @@ final class EventExportService implements EventExportServiceInterface
         } else {
             // do a pre query to test if the query is valid and check the item count
             try {
-                $sort = $sortOrder ? $sortOrder->toArray() : null;
+                $sort = $sorting ? $sorting->toArray() : null;
                 $preQueryResult = $this->searchService->search($query->toString(), 1, 0, $sort);
                 $totalItemCount = $preQueryResult->getTotalItems();
             } catch (Exception $e) {

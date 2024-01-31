@@ -27,12 +27,12 @@ interface EventExportServiceInterface
      *  A selection of items that will be included in the export.
      *  When left empty the whole query will export.
      *
-     * @param SortOrder|null $sortOrder
+     * @param Sorting|null $sorting
      *   An optional sorting order for the items that will be included in the export.
-     *   @link https://docs.publiq.be/docs/uitdatabank/search-api/sorting
-     *
-     * @return bool|string
+     *   @return bool|string
      *  The destination url of the export file or false if no events were found.
+     *@link https://docs.publiq.be/docs/uitdatabank/search-api/sorting
+     *
      */
     public function exportEvents(
         FileFormatInterface $fileFormat,
@@ -40,6 +40,6 @@ interface EventExportServiceInterface
         EmailAddress $address = null,
         LoggerInterface $logger = null,
         ?array $selection = null,
-        ?SortOrder $sortOrder = null
+        ?Sorting $sorting = null
     );
 }

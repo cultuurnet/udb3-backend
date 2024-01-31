@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Command;
 
 use CultuurNet\UDB3\EventExport\EventExportQuery;
-use CultuurNet\UDB3\EventExport\SortOrder;
+use CultuurNet\UDB3\EventExport\Sorting;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 interface ExportEventsInterface
@@ -19,7 +19,7 @@ interface ExportEventsInterface
      */
     public function getSelection(): ?array;
 
-    public function getSortOrder(): ?SortOrder;
+    public function getSorting(): ?Sorting;
 
-    public function withSortOrder(SortOrder $sortOrder): object;
+    public function withSorting(Sorting $sorting): object;
 }
