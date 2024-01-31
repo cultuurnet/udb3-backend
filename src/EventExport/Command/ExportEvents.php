@@ -80,11 +80,6 @@ abstract class ExportEvents implements ExportEventsInterface, AsyncCommand
         return $this->include;
     }
 
-    private function setSortOrder(SortOrder $sortOrder): void
-    {
-        $this->sortOrder = $sortOrder;
-    }
-
     public function getSortOrder(): ?SortOrder
     {
         return $this->sortOrder;
@@ -93,7 +88,7 @@ abstract class ExportEvents implements ExportEventsInterface, AsyncCommand
     public function withSortOrder(SortOrder $sortOrder): ExportEvents
     {
         $exportEvents = clone $this;
-        $exportEvents->setSortOrder($sortOrder);
+        $exportEvents->sortOrder = $sortOrder;
 
         return $exportEvents;
     }
