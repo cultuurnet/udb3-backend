@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Deserializer\MissingValueException;
 
 final class Sorting
 {
-    const DEFAULT_ORDER = 'asc';
+    public const DEFAULT_ORDER = 'asc';
     private string $property;
     private string $order;
 
