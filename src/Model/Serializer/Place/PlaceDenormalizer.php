@@ -86,6 +86,10 @@ class PlaceDenormalizer extends OfferDenormalizer
         Calendar $calendar,
         Categories $categories
     ): ImmutablePlace {
+        if (!isset($originalData['address'])) {
+            throw new UnsupportedException('Place data should contain an address.');
+        }
+
         /* @var TranslatedAddress $address */
         $address = $this->addressDenormalizer->denormalize(
             $originalData['address'],
