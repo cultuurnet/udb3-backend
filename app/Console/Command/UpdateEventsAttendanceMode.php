@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use CultuurNet\UDB3\Search\Sorting;
 use Exception;
 use RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -28,7 +29,7 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
     {
         $this->searchResultsGenerator = new ResultsGenerator(
             $searchService,
-            ['created' => 'asc'],
+            new Sorting('created', 'asc'),
             100
         );
 

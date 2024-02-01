@@ -5,10 +5,14 @@
     "title": "a title",
     "subtitle": "a subtitle",
     "footer": "a footer",
-    "publisher": "a publisher"
+    "publisher": "a publisher",
+    "template": "map"
   },
   "email": "john@doe.com",
   "include": [],
-  "sort": {},
-  "perDay": false
+  "sort": {
+    "property": "availableTo"
+  },
+  "perDay": false,
+  "query": "city:doetown"
 }

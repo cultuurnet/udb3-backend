@@ -11,4 +11,8 @@ interface ResultsGeneratorInterface
     public function count(string $query): int;
 
     public function search(string $query): Generator;
+
+    public function getSorting(): Sorting;
+
+    public function withSorting(Sorting $sorting): object;
 }

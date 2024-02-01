@@ -16,6 +16,7 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use CultuurNet\UDB3\Search\Sorting;
 use Generator;
 use Http\Client\Exception;
 use Psr\Log\LoggerAwareInterface;
@@ -72,7 +73,8 @@ final class EventExportService implements EventExportServiceInterface
         EventExportQuery $query,
         EmailAddress $address = null,
         LoggerInterface $logger = null,
-        ?array $selection = null
+        ?array $selection = null,
+        ?Sorting $sorting = null
     ) {
         if (!$logger instanceof LoggerInterface) {
             $logger = new NullLogger();
@@ -80,6 +82,10 @@ final class EventExportService implements EventExportServiceInterface
 
         if ($this->resultsGenerator instanceof LoggerAwareInterface) {
             $this->resultsGenerator->setLogger($logger);
+        }
+
+        if ($sorting !== null) {
+            $this->resultsGenerator = $this->resultsGenerator->withSorting($sorting);
         }
 
         if (is_array($selection) && !empty($selection)) {
@@ -101,7 +107,8 @@ final class EventExportService implements EventExportServiceInterface
         } else {
             // do a pre query to test if the query is valid and check the item count
             try {
-                $preQueryResult = $this->searchService->search($query->toString(), 1);
+                $sort = $sorting ? $sorting->toArray() : null;
+                $preQueryResult = $this->searchService->search($query->toString(), 1, 0, $sort);
                 $totalItemCount = $preQueryResult->getTotalItems();
             } catch (Exception $e) {
                 $logger->error(

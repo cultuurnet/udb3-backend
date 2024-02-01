@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Search\Sorting;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -30,7 +31,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         parent::__construct($commandBus);
         $this->searchResultsGenerator = new ResultsGenerator(
             $searchService,
-            ['created' => 'asc'],
+            new Sorting('created', 'asc'),
             100
         );
         $this->documentRepository = $documentRepository;

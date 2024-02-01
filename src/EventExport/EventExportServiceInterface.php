@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Search\Sorting;
 use Psr\Log\LoggerInterface;
 
 interface EventExportServiceInterface
@@ -27,14 +28,19 @@ interface EventExportServiceInterface
      *  A selection of items that will be included in the export.
      *  When left empty the whole query will export.
      *
-     * @return bool|string
+     * @param Sorting|null $sorting
+     *   An optional sorting for the items that will be included in the export.
+     *   @return bool|string
      *  The destination url of the export file or false if no events were found.
+     *@link https://docs.publiq.be/docs/uitdatabank/search-api/sorting
+     *
      */
     public function exportEvents(
         FileFormatInterface $fileFormat,
         EventExportQuery $query,
         EmailAddress $address = null,
         LoggerInterface $logger = null,
-        ?array $selection = null
+        ?array $selection = null,
+        ?Sorting $sorting = null
     );
 }

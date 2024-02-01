@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\EventExport\Command;
 use CultuurNet\UDB3\CommandHandling\AsyncCommand;
 use CultuurNet\UDB3\CommandHandling\AsyncCommandTrait;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
+use CultuurNet\UDB3\Search\Sorting;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 /**
@@ -25,6 +26,8 @@ abstract class ExportEvents implements ExportEventsInterface, AsyncCommand
      */
     private ?array $selection;
 
+    private ?Sorting $sorting;
+
     /**
      * @var string[]
      */
@@ -38,12 +41,14 @@ abstract class ExportEvents implements ExportEventsInterface, AsyncCommand
         EventExportQuery $query,
         array $include,
         EmailAddress $address = null,
-        ?array $selection = null
+        ?array $selection = null,
+        ?Sorting $sorting = null
     ) {
         $this->query = $query;
         $this->include = $include;
         $this->address = $address;
         $this->selection = $selection;
+        $this->sorting = $sorting;
     }
 
     /**
@@ -73,5 +78,18 @@ abstract class ExportEvents implements ExportEventsInterface, AsyncCommand
     public function getInclude(): array
     {
         return $this->include;
+    }
+
+    public function getSorting(): ?Sorting
+    {
+        return $this->sorting;
+    }
+
+    public function withSorting(Sorting $sorting): ExportEvents
+    {
+        $exportEvents = clone $this;
+        $exportEvents->sorting = $sorting;
+
+        return $exportEvents;
     }
 }

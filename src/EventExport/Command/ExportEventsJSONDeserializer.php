@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\EventExport\Command;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
+use CultuurNet\UDB3\Search\Sorting;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 /**
@@ -17,33 +18,41 @@ abstract class ExportEventsJSONDeserializer extends JSONDeserializer
 {
     public function deserialize(string $data): ExportEvents
     {
-        $data = parent::deserialize($data);
+        $json = parent::deserialize($data);
 
-        if (!isset($data->query)) {
+        if (!isset($json->query)) {
             throw new MissingValueException('query is missing');
         }
-        $query = new EventExportQuery($data->query);
+        $query = new EventExportQuery($json->query);
 
         $email = $selection = $include = null;
         // @todo This throws an exception when the e-mail is invalid. How do we handle this?
-        if (isset($data->email)) {
-            $email = new EmailAddress($data->email);
+        if (isset($json->email)) {
+            $email = new EmailAddress($json->email);
         }
 
-        if (isset($data->selection)) {
-            $selection = $data->selection;
+        if (isset($json->selection)) {
+            $selection = $json->selection;
         }
 
-        if (isset($data->include)) {
-            $include = $data->include;
+        if (isset($json->include)) {
+            $include = $json->include;
         }
 
-        return $this->createCommand(
+        $command = $this->createCommand(
             $query,
             $include,
             $email,
             $selection
         );
+
+        $sorting = Sorting::fromJson($json);
+
+        if ($sorting !== null) {
+            $command = $command->withSorting($sorting);
+        }
+
+        return $command;
     }
 
     /**

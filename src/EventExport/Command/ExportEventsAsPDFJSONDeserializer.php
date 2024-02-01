@@ -12,6 +12,7 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Footer;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Publisher;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Subtitle;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
+use CultuurNet\UDB3\Search\Sorting;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 /**
@@ -80,6 +81,13 @@ class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
 
         if (isset($json->selection)) {
             $command = $command->withSelection($json->selection);
+        }
+
+
+        $sorting = Sorting::fromJson($json);
+
+        if ($sorting !== null) {
+            $command = $command->withSorting($sorting);
         }
 
         if (isset($customizations->subtitle)) {

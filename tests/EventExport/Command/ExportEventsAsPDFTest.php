@@ -10,6 +10,7 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Footer;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Publisher;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Subtitle;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
+use CultuurNet\UDB3\Search\Sorting;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use PHPUnit\Framework\TestCase;
 
@@ -86,6 +87,19 @@ class ExportEventsAsPDFTest extends TestCase
         $newExport = $this->export->withSubtitle($subtitle);
 
         $this->assertEquals($subtitle, $newExport->getSubtitle());
+
+        $this->assertNotSame($this->export, $newExport);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_to_specify_a_sort_order(): void
+    {
+        $sorting = new Sorting('availableFrom', 'desc');
+        $newExport = $this->export->withSorting($sorting);
+
+        $this->assertEquals($sorting, $newExport->getSorting());
 
         $this->assertNotSame($this->export, $newExport);
     }

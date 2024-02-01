@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use CultuurNet\UDB3\Search\Sorting;
 use Exception;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,7 +27,7 @@ class UpdateBookingAvailabilityCommand extends AbstractCommand
     {
         $this->searchResultsGenerator = new ResultsGenerator(
             $searchService,
-            ['created' => 'asc'],
+            new Sorting('created', 'asc'),
             100
         );
 
