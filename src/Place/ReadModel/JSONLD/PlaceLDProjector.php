@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
-use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
@@ -83,7 +82,8 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
-        EntityServiceInterface $organizerService,
+        IriGeneratorInterface $organizerIriGenerator,
+        DocumentRepository $organizerRepository,
         MediaObjectSerializer $mediaObjectSerializer,
         CdbXMLImporter $cdbXMLImporter,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
@@ -93,7 +93,8 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         parent::__construct(
             $repository,
             $iriGenerator,
-            $organizerService,
+            $organizerIriGenerator,
+            $organizerRepository,
             $mediaObjectSerializer,
             $jsonDocumentMetaDataEnricher,
             $basePriceTranslations,

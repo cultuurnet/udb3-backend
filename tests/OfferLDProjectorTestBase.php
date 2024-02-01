@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
@@ -38,9 +39,9 @@ abstract class OfferLDProjectorTestBase extends TestCase
     protected RecordedOn $recordedOn;
 
     /**
-     * @var OrganizerService|MockObject
+     * @var DocumentRepository|MockObject
      */
-    protected $organizerService;
+    protected $organizerRepository;
 
 
     public function __construct(?string $name, array $data, $dataName, string $eventNamespace)
@@ -61,7 +62,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     {
         $this->documentRepository = new InMemoryDocumentRepository();
 
-        $this->organizerService = $this->createMock(OrganizerService::class);
+        $this->organizerRepository = $this->createMock(DocumentRepository::class);
     }
 
     protected function project(

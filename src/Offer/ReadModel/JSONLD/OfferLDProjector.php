@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Category;
 use CultuurNet\UDB3\CulturefeedSlugger;
-use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\OrganizerServiceInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
@@ -78,7 +76,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected IriGeneratorInterface $iriGenerator;
 
-    protected EntityServiceInterface $organizerService;
+    protected IriGeneratorInterface $organizerIriGenerator;
+
+    protected DocumentRepository $organizerRepository;
 
     protected JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher;
 
@@ -108,7 +108,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
-        EntityServiceInterface $organizerService,
+        IriGeneratorInterface $organizerIriGenerator,
+        DocumentRepository $organizerRepository,
         MediaObjectSerializer $mediaObjectSerializer,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         array $basePriceTranslations,
@@ -116,7 +117,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
-        $this->organizerService = $organizerService;
+        $this->organizerIriGenerator = $organizerIriGenerator;
+        $this->organizerRepository = $organizerRepository;
         $this->jsonDocumentMetaDataEnricher = $jsonDocumentMetaDataEnricher;
         $this->mediaObjectSerializer = $mediaObjectSerializer;
         $this->basePriceTranslations = $basePriceTranslations;
@@ -930,15 +932,13 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     public function organizerJSONLD(string $organizerId): array
     {
         try {
-            $organizerJSONLD = $this->organizerService->getEntity(
-                $organizerId
-            );
+            $organizerJSONLD = $this->organizerRepository->fetch($organizerId)->getRawBody();
 
             return (array)json_decode($organizerJSONLD);
-        } catch (EntityNotFoundException $e) {
+        } catch (DocumentDoesNotExist $e) {
             // In case the place can not be found at the moment, just add its ID
             return [
-                '@id' => $this->organizerService->iri($organizerId),
+                '@id' => $this->organizerIriGenerator->iri($organizerId),
             ];
         }
     }

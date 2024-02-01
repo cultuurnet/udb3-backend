@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Offer\OfferLocator;
-use CultuurNet\UDB3\OrganizerService;
 
 final class OrganizerServiceProvider extends AbstractServiceProvider
 {
@@ -60,15 +59,6 @@ final class OrganizerServiceProvider extends AbstractServiceProvider
                     $container->get('event_stream_metadata_enricher'),
                     $container->get('organizers_locator_event_stream_decorator'),
                 ]
-            )
-        );
-
-        $container->addShared(
-            'organizer_service',
-            fn () => new OrganizerService(
-                $container->get('organizer_jsonld_repository'),
-                $container->get('organizer_repository'),
-                $container->get('organizer_iri_generator'),
             )
         );
     }
