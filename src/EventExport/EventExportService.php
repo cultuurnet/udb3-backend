@@ -16,7 +16,7 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
-use CultuurNet\UDB3\Sorting;
+use CultuurNet\UDB3\Search\Sorting;
 use Generator;
 use Http\Client\Exception;
 use Psr\Log\LoggerAwareInterface;
