@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use CultuurNet\UDB3\EventExport\Sorting;
+use CultuurNet\UDB3\Sorting;
 use Generator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterface, Sortable
+class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterface
 {
     use LoggerAwareTrait;
 

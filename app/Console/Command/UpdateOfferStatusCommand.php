@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use CultuurNet\UDB3\Sorting;
 use Exception;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,7 +35,7 @@ class UpdateOfferStatusCommand extends AbstractCommand
     ) {
         $this->searchResultsGenerator = new ResultsGenerator(
             $searchService,
-            ['created' => 'asc'],
+            new Sorting('created', 'asc'),
             100
         );
         $this->offerType = $offerType;

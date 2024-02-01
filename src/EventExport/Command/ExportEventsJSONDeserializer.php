@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\EventExport\Command;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
-use CultuurNet\UDB3\EventExport\Sorting;
+use CultuurNet\UDB3\Sorting;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 /**
