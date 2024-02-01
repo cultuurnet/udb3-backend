@@ -95,7 +95,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             GetOrganizerRequestHandler::class,
             function () use ($container) {
                 return new GetOrganizerRequestHandler(
-                    $container->get('organizer_service'),
+                    $container->get('organizer_jsonld_repository'),
                     new TurtleResponseFactory(
                         $container->get(OrganizerJsonToTurtleConverter::class)
                     )

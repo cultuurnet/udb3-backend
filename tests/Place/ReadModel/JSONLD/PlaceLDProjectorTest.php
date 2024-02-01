@@ -93,7 +93,8 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $this->projector = new PlaceLDProjector(
             $this->documentRepository,
             $iriGenerator,
-            $this->organizerService,
+            new CallableIriGenerator(fn ($id) => 'https://io.uitdatabank.dev/organizers/' . $id),
+            $this->organizerRepository,
             $serializer,
             $cdbXMLImporter,
             new JsonDocumentLanguageEnricher(

@@ -77,7 +77,6 @@ use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
-use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\PlaceTypeResolver;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -87,13 +86,6 @@ use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 use CultuurNet\UDB3\Theme;
 
-/**
- * Projects state changes on Event entities to a JSON-LD read model in a
- * document repository.
- *
- * Implements PlaceServiceInterface and OrganizerServiceInterface to do a double
- * dispatch with CdbXMLImporter.
- */
 final class EventLDProjector extends OfferLDProjector implements
     EventListener,
     PlaceServiceInterface
@@ -119,8 +111,9 @@ final class EventLDProjector extends OfferLDProjector implements
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
         IriGeneratorInterface $placeIriGenerator,
+        IriGeneratorInterface $organizerIriGenerator,
         LocalPlaceService $placeService,
-        OrganizerService $organizerService,
+        DocumentRepository $organizerRepository,
         MediaObjectSerializer $mediaObjectSerializer,
         IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory,
         CdbXMLImporter $cdbXMLImporter,
@@ -132,7 +125,8 @@ final class EventLDProjector extends OfferLDProjector implements
         parent::__construct(
             $repository,
             $iriGenerator,
-            $organizerService,
+            $organizerIriGenerator,
+            $organizerRepository,
             $mediaObjectSerializer,
             $jsonDocumentMetaDataEnricher,
             $basePriceTranslations,
