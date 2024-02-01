@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
+use CultuurNet\UDB3\EventExport\Sorting;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
@@ -19,10 +20,7 @@ class ResultsGeneratorTest extends TestCase
      */
     private $searchService;
 
-    /**
-     * @var string[]
-     */
-    private array $sorting;
+    private Sorting $sorting;
 
     private ResultsGenerator $generator;
 
@@ -37,7 +35,7 @@ class ResultsGeneratorTest extends TestCase
     {
         $this->searchService = $this->createMock(SearchServiceInterface::class);
 
-        $this->sorting = ['created' => 'asc'];
+        $this->sorting = new Sorting('created', 'asc');
 
         $this->generator = new ResultsGenerator(
             $this->searchService,
@@ -88,14 +86,14 @@ class ResultsGeneratorTest extends TestCase
     {
         $generator = new ResultsGenerator($this->searchService);
 
-        $this->assertEquals(['created' => 'asc'], $generator->getSorting());
+        $this->assertEquals(new Sorting('created', 'asc'), $generator->getSorting());
         $this->assertEquals(10, $generator->getPageSize());
 
         /* @var ResultsGenerator $generator */
-        $generator = $generator->withSorting(['created' => 'desc'])
+        $generator = $generator->withSorting(new Sorting('created', 'desc'))
             ->withPageSize(5);
 
-        $this->assertEquals(['created' => 'desc'], $generator->getSorting());
+        $this->assertEquals(new Sorting('created', 'desc'), $generator->getSorting());
         $this->assertEquals(5, $generator->getPageSize());
     }
 
@@ -149,7 +147,7 @@ class ResultsGeneratorTest extends TestCase
                     $this->assertEquals($this->query, $query);
                     $this->assertEquals($givenPageSize, $pageSize);
                     $this->assertEquals($givenPageSize * $currentPage, $start);
-                    $this->assertEquals($this->sorting, $sorting);
+                    $this->assertEquals($this->sorting->toArray(), $sorting);
 
                     $pageResults = $givenPages[$currentPage];
 

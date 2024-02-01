@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
+use CultuurNet\UDB3\EventExport\Sorting;
 use Generator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -13,27 +14,25 @@ class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterfac
 {
     use LoggerAwareTrait;
 
-    /**
-     * Default sorting method because it's ideal for getting consistent paging results.
-     */
-    private const SORT_CREATED_ASC = ['created' => 'asc'];
+    private const DEFAULT_SORTING_PROPERTY = 'created';
+    private const DEFAULT_SORTING_ORDER = 'asc';
 
     private const COUNT_PAGE_LIMIT = 1;
     private const COUNT_PAGE_START = 0;
 
     private SearchServiceInterface $searchService;
 
-    private ?array $sorting;
+    private Sorting $sorting;
 
     private int $pageSize;
 
     public function __construct(
         SearchServiceInterface $searchService,
-        array $sorting = null,
+        Sorting $sorting = null,
         int $pageSize = 10
     ) {
         if ($sorting === null) {
-            $sorting = self::SORT_CREATED_ASC;
+            $sorting = new Sorting(self::DEFAULT_SORTING_PROPERTY, self::DEFAULT_SORTING_ORDER);
         }
 
         $this->searchService = $searchService;
@@ -46,14 +45,14 @@ class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterfac
         $this->setLogger(new NullLogger());
     }
 
-    public function withSorting(array $sorting): ResultsGenerator
+    public function withSorting(Sorting $sorting): ResultsGenerator
     {
         $c = clone $this;
         $c->sorting = $sorting;
         return $c;
     }
 
-    public function getSorting(): array
+    public function getSorting(): Sorting
     {
         return $this->sorting;
     }
@@ -91,7 +90,7 @@ class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterfac
                 $query,
                 $this->pageSize,
                 $this->pageSize * $currentPage,
-                $this->sorting
+                $this->sorting->toArray()
             );
 
             $total = $results->getTotalItems();
