@@ -155,7 +155,7 @@ final class ApiProblem extends Exception
         }
 
         if (count($this->extraProperties) > 0) {
-            $json = array_merge($this->extraProperties, $json);
+            $json = array_merge($json, $this->extraProperties);
         }
 
         /** @deprecated Remove once withValidationMessages() is removed. */
@@ -243,11 +243,11 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function statusConflict(string $detail = null, array $properties = null): self
+    public static function duplicatePlaceDetected(string $detail = null, array $properties = null): self
     {
         $apiProblem = self::create(
-            'https://api.publiq.be/probs/url/status-conflict',
-            'Status conflict',
+            'https://api.publiq.be/probs/url/duplicate-place',
+            'Duplicate place',
             StatusCodeInterface::STATUS_CONFLICT,
             $detail
         );

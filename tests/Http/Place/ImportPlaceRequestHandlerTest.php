@@ -5205,7 +5205,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray($this->getSimplePlace())
             ->build('POST');
 
-        $this->assertCallableThrowsApiProblem(ApiProblem::statusConflict(
+        $this->assertCallableThrowsApiProblem(ApiProblem::duplicatePlaceDetected(
             'A place with this address / name combination already exists. Please use the existing place for your purposes.',
             ['duplicatePlaceUri' => $originalPlaceUri]
         ), function () use ($handler, $request): void {
