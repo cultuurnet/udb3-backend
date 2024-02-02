@@ -127,7 +127,13 @@ class GoogleMapsAddressParserTest extends TestCase
         $this->geocoder->expects($this->once())
             ->method('geocode')
             ->with('Martelarenplein 1, 3000 Leuven, BE')
-            ->willThrowException(new CollectionIsEmpty());
+            ->willThrowException(new CollectionIsEmpty('Collection is empty.'));
+
+        $this->logger->expects($this->once())
+            ->method('warning')
+            ->with(
+                'No results for address: "Martelarenplein 1, 3000 Leuven, BE". Exception message: Collection is empty.'
+            );
 
         $parsedAddress = $this->parser->parse('Martelarenplein 1, 3000 Leuven, BE');
 
