@@ -15,11 +15,11 @@ Feature: Test creating places
     Then the JSON response should be:
     """
     {
-        "duplicatePlaceUri": "%{baseUrl}/place/%{originalPlaceId}",
-        "type": "https://api.publiq.be/probs/url/status-conflict",
-        "title": "Status conflict",
+        "type": "https://api.publiq.be/probs/url/duplicate-place",
+        "title": "Duplicate place",
         "status": 409,
-        "detail": "A place with this address / name combination already exists. Please use the existing place for your purposes."
+        "detail": "A place with this address / name combination already exists. Please use the existing place for your purposes.",
+        "duplicatePlaceUri": "%{baseUrl}/place/%{originalPlaceId}"
     }
     """
     Then I restore the duplicate configuration
