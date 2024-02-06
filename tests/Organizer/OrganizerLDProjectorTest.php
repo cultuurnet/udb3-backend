@@ -196,6 +196,7 @@ final class OrganizerLDProjectorTest extends TestCase
         $jsonLD->languages = ['nl'];
         $jsonLD->completedLanguages = ['nl'];
         $jsonLD->modified = $this->recordedOn->toString();
+        $jsonLD->completeness = 50;
 
         $expectedDocument = (new JsonDocument($id))
             ->withBody($jsonLD);
@@ -246,6 +247,7 @@ final class OrganizerLDProjectorTest extends TestCase
         $jsonLD->languages = ['en'];
         $jsonLD->completedLanguages = ['en'];
         $jsonLD->modified = $this->recordedOn->toString();
+        $jsonLD->completeness = 40;
 
         $expectedDocument = (new JsonDocument($id))
             ->withBody($jsonLD);
