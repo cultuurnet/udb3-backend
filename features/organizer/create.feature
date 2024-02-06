@@ -12,6 +12,7 @@ Feature: Test creating organizers
     And the JSON response at "mainLanguage" should be "nl"
     And the JSON response at "name/nl" should be "%{name}"
     And the JSON response at "url" should be "https://www.%{name}.be"
+    And the JSON response at "completeness" should be 40
 
   Scenario: Create a new organizer with missing contact point fields
     Given I create an organizer from "organizers/organizer-contact-point-missing-fields.json" and save the "url" as "organizerUrl"
@@ -24,6 +25,7 @@ Feature: Test creating organizers
       "url": []
     }
     """
+    And the JSON response at "completeness" should be 60
 
   Scenario: Create a new organizer with all properties
     Given I create an organizer from "organizers/organizer.json" and save the "url" as "organizerUrl"
@@ -91,6 +93,7 @@ Feature: Test creating organizers
       "en": "English educational description"
     }
     """
+    And the JSON response at "completeness" should be 85
 
   @bugfix # https://jira.uitdatabank.be/browse/III-4669
   Scenario: Create a new organizer with all properties and remove them with null values or empty lists in the JSON
@@ -107,6 +110,7 @@ Feature: Test creating organizers
       "url": []
     }
     """
+    And the JSON response at "completeness" should be 60
 
   Scenario: Create a new organizer with an existing url
     Given I create a random name of 10 characters
