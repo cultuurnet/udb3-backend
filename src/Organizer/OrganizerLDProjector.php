@@ -108,18 +108,22 @@ class OrganizerLDProjector implements EventListener
 
     private NormalizerInterface $imageNormalizer;
 
+    private array $weights;
+
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         NormalizerInterface $imageNormalizer,
-        CdbXMLImporter $cdbXMLImporter
+        CdbXMLImporter $cdbXMLImporter,
+        array $weights
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
         $this->jsonDocumentMetaDataEnricher = $jsonDocumentMetaDataEnricher;
         $this->imageNormalizer = $imageNormalizer;
         $this->cdbXMLImporter = $cdbXMLImporter;
+        $this->weights = $weights;
         $this->addressNormalizer = new AddressNormalizer();
         $this->contactPointNormalizer = new ContactPointNormalizer();
     }

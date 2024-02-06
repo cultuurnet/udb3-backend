@@ -103,7 +103,15 @@ final class OrganizerLDProjectorTest extends TestCase
             ),
             new CdbXMLImporter(
                 new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class))
-            )
+            ),
+            [
+                'name' => 20,
+                'url' => 20,
+                'contactPoint' => 20,
+                'description' => 15,
+                'images' => 15,
+                'address' => 10,
+            ],
         );
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(
