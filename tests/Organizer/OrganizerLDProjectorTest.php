@@ -558,6 +558,29 @@ final class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_contactpoint_updated_with_empty_values(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, 'organizer.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new ContactPointUpdated(
+                $organizerId,
+                [],
+                [],
+                []
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_empty_contactpoint.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_adding_an_initial_image(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';

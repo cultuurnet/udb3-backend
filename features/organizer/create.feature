@@ -110,7 +110,7 @@ Feature: Test creating organizers
       "url": []
     }
     """
-    And the JSON response at "completeness" should be 60
+    And the JSON response at "completeness" should be 40
 
   Scenario: Create a new organizer with an existing url
     Given I create a random name of 10 characters

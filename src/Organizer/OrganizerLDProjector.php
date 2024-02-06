@@ -696,17 +696,26 @@ class OrganizerLDProjector implements EventListener
 
     private function updateCompleteness(JsonDocument $jsonDocument): JsonDocument
     {
-        $body = $jsonDocument->getBody();
+        $body = $jsonDocument->getAssocBody();
 
         $completeness = 0;
         foreach ($this->weights as $key => $weight) {
-            if (isset($body->{$key})) {
+            if (isset($body[$key])) {
+                if ($key === 'contactPoint' && $this->isContactPointEmpty($body[$key])) {
+                    continue;
+                }
+
                 $completeness += $weight;
             }
         }
 
-        $body->completeness = $completeness;
+        $body['completeness'] = $completeness;
 
-        return $jsonDocument->withBody($body);
+        return $jsonDocument->withAssocBody($body);
+    }
+
+    private function isContactPointEmpty(array $contactPoint): bool
+    {
+        return empty($contactPoint['phone']) && empty($contactPoint['email']) && empty($contactPoint['url']);
     }
 }
