@@ -68,10 +68,7 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_duplicate_place_based_on_search_result(): void
+    public function test_it_returns_duplicate_place_based_on_search_result(): void
     {
         $itemIdentifiers = new ItemIdentifiers(new ItemIdentifier(
             new Url('http://example.com/place/aadcee95-6180-4924-a8eb-ed829d4957a2'),
@@ -97,6 +94,36 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
     public function test_get_duplicate_place_uri(Results $searchResult, ?string $expectedResult): void
     {
         $this->sapi3SearchService->method('search')->willReturn($searchResult);
+
+        $duplicatePlaceUri = $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
+        $this->assertEquals($expectedResult, $duplicatePlaceUri);
+    }
+
+    public function test_get_duplicate_place_uri_when_multiple_places_found(): void
+    {
+        $expectedResult = 'http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831';
+
+        $this->sapi3SearchService->method('search')->willReturnOnConsecutiveCalls(
+            new Results(new ItemIdentifiers(
+                new ItemIdentifier(
+                    new Url('http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831'),
+                    '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
+                    ItemType::place()
+                ),
+                new ItemIdentifier(
+                    new Url('http://www.example.com/place/55a4c2bc-1aef-4441-bb51-bd6ab9ccd123'),
+                    '55a4c2bc-1aef-4441-bb51-bd6ab9ccd123',
+                    ItemType::place()
+                )
+            ), 2),
+            new Results(new ItemIdentifiers(
+                new ItemIdentifier(
+                    new Url('http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831'),
+                    '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
+                    ItemType::place()
+                )
+            ), 1)
+        );
 
         $duplicatePlaceUri = $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
         $this->assertEquals($expectedResult, $duplicatePlaceUri);
