@@ -144,6 +144,8 @@ class OrganizerLDProjector implements EventListener
 
             $jsonDocument = $this->updateModified($jsonDocument, $domainMessage);
 
+            $jsonDocument = $this->updateCompleteness($jsonDocument);
+
             $this->repository->save($jsonDocument);
         }
     }
@@ -688,6 +690,22 @@ class OrganizerLDProjector implements EventListener
 
         $recordedDateTime = RecordedOn::fromDomainMessage($domainMessage);
         $body->modified = $recordedDateTime->toString();
+
+        return $jsonDocument->withBody($body);
+    }
+
+    private function updateCompleteness(JsonDocument $jsonDocument): JsonDocument
+    {
+        $body = $jsonDocument->getBody();
+
+        $completeness = 0;
+        foreach ($this->weights as $key => $weight) {
+            if (isset($body->{$key})) {
+                $completeness += $weight;
+            }
+        }
+
+        $body->completeness = $completeness;
 
         return $jsonDocument->withBody($body);
     }
