@@ -535,7 +535,7 @@ final class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_contactpoint_updated(): void
+    public function it_handles_contact_point_updated(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
@@ -550,7 +550,7 @@ final class OrganizerLDProjectorTest extends TestCase
             )
         );
 
-        $this->expectSave($organizerId, 'organizer_with_updated_contactpoint.json');
+        $this->expectSave($organizerId, 'organizer_with_updated_contact_point.json');
 
         $this->projector->handle($domainMessage);
     }
@@ -558,7 +558,7 @@ final class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_contactpoint_updated_with_empty_values(): void
+    public function it_handles_contact_point_updated_with_empty_values(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
@@ -573,7 +573,7 @@ final class OrganizerLDProjectorTest extends TestCase
             )
         );
 
-        $this->expectSave($organizerId, 'organizer_with_empty_contactpoint.json');
+        $this->expectSave($organizerId, 'organizer_with_empty_contact_point.json');
 
         $this->projector->handle($domainMessage);
     }
