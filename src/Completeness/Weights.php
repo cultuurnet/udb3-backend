@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
 final class Weights extends Collection
 {
-    private function __construct(Weight ...$weights)
+    public function __construct(Weight ...$weights)
     {
         parent::__construct(...$weights);
     }
