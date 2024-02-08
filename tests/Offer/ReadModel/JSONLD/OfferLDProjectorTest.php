@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\BookingInfo;
+use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\EventType;
@@ -125,21 +126,23 @@ class OfferLDProjectorTest extends TestCase
                     'en' => 'Copyright handled by %s',
                 ]
             ),
-            Weights::fromConfig([
-                'type' => 12,
-                'theme' => 5,
-                'calendarType' => 12,
-                'address' => 12,
-                'name' => 12,
-                'typicalAgeRange' => 12,
-                'mediaObject' => 8,
-                'description' => 9,
-                'priceInfo' => 7,
-                'contactPoint' => 3,
-                'bookingInfo' => 3,
-                'organizer' => 3,
-                'videos' => 2,
-            ])
+            new CompletenessFromWeights(
+                Weights::fromConfig([
+                    'type' => 12,
+                    'theme' => 5,
+                    'calendarType' => 12,
+                    'address' => 12,
+                    'name' => 12,
+                    'typicalAgeRange' => 12,
+                    'mediaObject' => 8,
+                    'description' => 9,
+                    'priceInfo' => 7,
+                    'contactPoint' => 3,
+                    'bookingInfo' => 3,
+                    'organizer' => 3,
+                    'videos' => 2,
+                ])
+            )
         );
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(
@@ -196,7 +199,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            Weights::fromConfig([])
+            new CompletenessFromWeights(Weights::fromConfig([]))
         );
 
         $documentRepository->expects($this->exactly(4))
@@ -245,7 +248,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            Weights::fromConfig([])
+            new CompletenessFromWeights(Weights::fromConfig([]))
         );
 
         $documentRepository->expects($this->once())
@@ -294,7 +297,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            Weights::fromConfig([])
+            new CompletenessFromWeights(Weights::fromConfig([]))
         );
 
         $documentRepository->expects($this->exactly(2))

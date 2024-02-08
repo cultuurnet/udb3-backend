@@ -11,6 +11,7 @@ use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
@@ -167,21 +168,23 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     'en' => 'Copyright handled by %s',
                 ]
             ),
-            Weights::fromConfig([
-                'type' => 12,
-                'theme' => 5,
-                'calendarType' => 12,
-                'address' => 12,
-                'name' => 12,
-                'typicalAgeRange' => 12,
-                'mediaObject' => 8,
-                'description' => 9,
-                'priceInfo' => 7,
-                'contactPoint' => 3,
-                'bookingInfo' => 3,
-                'organizer' => 3,
-                'videos' => 2,
-            ])
+            new CompletenessFromWeights(
+                Weights::fromConfig([
+                    'type' => 12,
+                    'theme' => 5,
+                    'calendarType' => 12,
+                    'address' => 12,
+                    'name' => 12,
+                    'typicalAgeRange' => 12,
+                    'mediaObject' => 8,
+                    'description' => 9,
+                    'priceInfo' => 7,
+                    'contactPoint' => 3,
+                    'bookingInfo' => 3,
+                    'organizer' => 3,
+                    'videos' => 2,
+                ])
+            )
         );
     }
 
