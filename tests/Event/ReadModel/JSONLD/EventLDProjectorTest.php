@@ -216,7 +216,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventCreated = new EventCreated(
             $eventId,
             new Language('en'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.14.0.0.0', 'Monument'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(
@@ -530,7 +530,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventCreated = new EventCreated(
             '1',
             new Language('en'),
-            new Title('Workshop with single day'),
+            'Workshop with single day',
             $eventType,
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             $calendar
@@ -567,7 +567,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventCreated = new EventCreated(
             '1',
             new Language('en'),
-            new Title('Workshop with single day'),
+            'Workshop with single day',
             $eventType,
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             $calendar
@@ -1275,7 +1275,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventCreated = new EventCreated(
             '1',
             new Language('en'),
-            new Title('Online workshop'),
+            'Online workshop',
             new EventType('0.3.1.0.0', 'Cursus of workshop'),
             new LocationId(LocationId::NIL_LOCATION),
             new Calendar(CalendarType::PERMANENT())
@@ -1689,7 +1689,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         return new EventCreated(
             $eventId,
             new Language('en'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             $calendar,

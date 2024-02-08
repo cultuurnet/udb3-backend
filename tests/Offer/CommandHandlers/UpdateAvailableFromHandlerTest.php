@@ -24,7 +24,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateAvailableFrom;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 
 final class UpdateAvailableFromHandlerTest extends CommandHandlerScenarioTestCase
@@ -63,7 +62,7 @@ final class UpdateAvailableFromHandlerTest extends CommandHandlerScenarioTestCas
         $eventCreated = new EventCreated(
             $eventId,
             new Language('nl'),
-            new Title('Permanent Event'),
+            'Permanent Event',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(CalendarType::PERMANENT())
@@ -122,7 +121,7 @@ final class UpdateAvailableFromHandlerTest extends CommandHandlerScenarioTestCas
         $eventCreated = new EventCreated(
             $eventId,
             new Language('nl'),
-            new Title('Permanent Event'),
+            'Permanent Event',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(CalendarType::PERMANENT())

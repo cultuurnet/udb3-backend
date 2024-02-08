@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
@@ -184,7 +183,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         $eventCreated = new EventCreated(
             self::EVENT_ID,
             new Language('en'),
-            new Title('Faith no More'),
+            'Faith no More',
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),
             new Calendar(CalendarType::PERMANENT()),
