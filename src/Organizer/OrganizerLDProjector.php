@@ -703,12 +703,12 @@ class OrganizerLDProjector implements EventListener
             if (!isset($body[$key])) {
                 continue;
             }
-            
+
             if ($key === 'contactPoint' && $this->isContactPointEmpty($body[$key])) {
                 continue;
             }
 
-           $completeness += $weight;
+            $completeness += $weight;
         }
 
         $body['completeness'] = $completeness;
