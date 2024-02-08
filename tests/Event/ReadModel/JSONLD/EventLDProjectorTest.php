@@ -165,7 +165,22 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     'de' => 'Urheberrecht gehandhabt von %s',
                     'en' => 'Copyright handled by %s',
                 ]
-            )
+            ),
+            [
+                'type' => 12,
+                'theme' => 5,
+                'calendarType' => 12,
+                'address' => 12,
+                'name' => 12,
+                'typicalAgeRange' => 12,
+                'mediaObject' => 8,
+                'description' => 9,
+                'priceInfo' => 7,
+                'contactPoint' => 3,
+                'bookingInfo' => 3,
+                'organizer' => 3,
+                'videos' => 2,
+            ]
         );
     }
 
