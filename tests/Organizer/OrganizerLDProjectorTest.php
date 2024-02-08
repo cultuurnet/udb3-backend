@@ -103,7 +103,15 @@ final class OrganizerLDProjectorTest extends TestCase
             ),
             new CdbXMLImporter(
                 new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class))
-            )
+            ),
+            [
+                'name' => 20,
+                'url' => 20,
+                'contactPoint' => 20,
+                'description' => 15,
+                'images' => 15,
+                'address' => 10,
+            ],
         );
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(
@@ -188,6 +196,7 @@ final class OrganizerLDProjectorTest extends TestCase
         $jsonLD->languages = ['nl'];
         $jsonLD->completedLanguages = ['nl'];
         $jsonLD->modified = $this->recordedOn->toString();
+        $jsonLD->completeness = 50;
 
         $expectedDocument = (new JsonDocument($id))
             ->withBody($jsonLD);
@@ -238,6 +247,7 @@ final class OrganizerLDProjectorTest extends TestCase
         $jsonLD->languages = ['en'];
         $jsonLD->completedLanguages = ['en'];
         $jsonLD->modified = $this->recordedOn->toString();
+        $jsonLD->completeness = 40;
 
         $expectedDocument = (new JsonDocument($id))
             ->withBody($jsonLD);
@@ -525,7 +535,7 @@ final class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_contactpoint_updated(): void
+    public function it_handles_contact_point_updated(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
@@ -540,7 +550,30 @@ final class OrganizerLDProjectorTest extends TestCase
             )
         );
 
-        $this->expectSave($organizerId, 'organizer_with_updated_contactpoint.json');
+        $this->expectSave($organizerId, 'organizer_with_updated_contact_point.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_contact_point_updated_with_empty_values(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, 'organizer.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new ContactPointUpdated(
+                $organizerId,
+                [],
+                [],
+                []
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_empty_contact_point.json');
 
         $this->projector->handle($domainMessage);
     }

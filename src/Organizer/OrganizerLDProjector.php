@@ -108,18 +108,22 @@ class OrganizerLDProjector implements EventListener
 
     private NormalizerInterface $imageNormalizer;
 
+    private array $weights;
+
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         NormalizerInterface $imageNormalizer,
-        CdbXMLImporter $cdbXMLImporter
+        CdbXMLImporter $cdbXMLImporter,
+        array $weights
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
         $this->jsonDocumentMetaDataEnricher = $jsonDocumentMetaDataEnricher;
         $this->imageNormalizer = $imageNormalizer;
         $this->cdbXMLImporter = $cdbXMLImporter;
+        $this->weights = $weights;
         $this->addressNormalizer = new AddressNormalizer();
         $this->contactPointNormalizer = new ContactPointNormalizer();
     }
@@ -139,6 +143,8 @@ class OrganizerLDProjector implements EventListener
             $jsonDocument = $this->jsonDocumentMetaDataEnricher->enrich($jsonDocument, $domainMessage->getMetadata());
 
             $jsonDocument = $this->updateModified($jsonDocument, $domainMessage);
+
+            $jsonDocument = $this->updateCompleteness($jsonDocument);
 
             $this->repository->save($jsonDocument);
         }
@@ -686,5 +692,32 @@ class OrganizerLDProjector implements EventListener
         $body->modified = $recordedDateTime->toString();
 
         return $jsonDocument->withBody($body);
+    }
+
+    private function updateCompleteness(JsonDocument $jsonDocument): JsonDocument
+    {
+        $body = $jsonDocument->getAssocBody();
+
+        $completeness = 0;
+        foreach ($this->weights as $key => $weight) {
+            if (!isset($body[$key])) {
+                continue;
+            }
+
+            if ($key === 'contactPoint' && $this->isContactPointEmpty($body[$key])) {
+                continue;
+            }
+
+            $completeness += $weight;
+        }
+
+        $body['completeness'] = $completeness;
+
+        return $jsonDocument->withAssocBody($body);
+    }
+
+    private function isContactPointEmpty(array $contactPoint): bool
+    {
+        return empty($contactPoint['phone']) && empty($contactPoint['email']) && empty($contactPoint['url']);
     }
 }

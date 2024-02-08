@@ -120,7 +120,8 @@ final class EventLDProjector extends OfferLDProjector implements
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         EventTypeResolver $eventTypeResolver,
         array $basePriceTranslations,
-        VideoNormalizer $videoNormalizer
+        VideoNormalizer $videoNormalizer,
+        array $weights
     ) {
         parent::__construct(
             $repository,
@@ -130,7 +131,8 @@ final class EventLDProjector extends OfferLDProjector implements
             $mediaObjectSerializer,
             $jsonDocumentMetaDataEnricher,
             $basePriceTranslations,
-            $videoNormalizer
+            $videoNormalizer,
+            $weights
         );
 
         $this->placeIriGenerator = $placeIriGenerator;

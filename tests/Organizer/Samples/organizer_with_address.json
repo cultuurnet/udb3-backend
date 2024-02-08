@@ -26,5 +26,6 @@
   "geo": {
     "latitude": 51.0018006,
     "longitude": 4.985957099999999
-  }
+  },
+  "completeness": 70
 }
