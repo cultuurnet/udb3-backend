@@ -175,6 +175,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         foreach ($jsonDocuments as $jsonDocument) {
             $jsonDocument = $this->jsonDocumentMetaDataEnricher->enrich($jsonDocument, $domainMessage->getMetadata());
             $jsonDocument = $this->updateModified($jsonDocument, $domainMessage);
+            $jsonDocument = $this->updateCompleteness($jsonDocument);
             $jsonDocument = $this->updatePlayhead($jsonDocument, $domainMessage);
 
             $this->repository->save($jsonDocument);
@@ -955,6 +956,27 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $body->modified = $recordedDateTime->toString();
 
         return $jsonDocument->withBody($body);
+    }
+
+    private function updateCompleteness(JsonDocument $jsonDocument): JsonDocument
+    {
+        $body = $jsonDocument->getAssocBody();
+
+        $completeness = 0;
+        foreach ($this->weights as $key => $weight) {
+            if (!isset($body[$key])) {
+                continue;
+            }
+            $completeness += $weight;
+        }
+
+        if ($completeness === 0) {
+            return $jsonDocument;
+        }
+
+        $body['completeness'] = $completeness;
+
+        return $jsonDocument->withAssocBody($body);
     }
 
     private function updatePlayhead(JsonDocument $jsonDocument, DomainMessage $domainMessage): JsonDocument
