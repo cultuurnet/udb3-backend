@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
@@ -104,14 +105,14 @@ final class OrganizerLDProjectorTest extends TestCase
             new CdbXMLImporter(
                 new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class))
             ),
-            [
+            Weights::fromConfig([
                 'name' => 20,
                 'url' => 20,
                 'contactPoint' => 20,
                 'description' => 15,
                 'images' => 15,
                 'address' => 10,
-            ],
+            ]),
         );
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(

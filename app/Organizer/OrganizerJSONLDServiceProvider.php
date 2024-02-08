@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Contributor\ContributorEnrichedRepository;
 use CultuurNet\UDB3\Contributor\ContributorRepository;
@@ -56,7 +57,7 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
                     new CdbXMLImporter(
                         $container->get(CdbXMLToJsonLDLabelImporter::class)
                     ),
-                    $container->get('config')['completeness']['organizer']
+                    Weights::fromConfig($container->get('config')['completeness']['organizer'])
                 );
             }
         );

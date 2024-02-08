@@ -9,6 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
+use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
@@ -108,7 +109,7 @@ class OrganizerLDProjector implements EventListener
 
     private NormalizerInterface $imageNormalizer;
 
-    private array $weights;
+    private Weights $weights;
 
     public function __construct(
         DocumentRepository $repository,
@@ -116,7 +117,7 @@ class OrganizerLDProjector implements EventListener
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         NormalizerInterface $imageNormalizer,
         CdbXMLImporter $cdbXMLImporter,
-        array $weights
+        Weights $weights
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
@@ -699,16 +700,17 @@ class OrganizerLDProjector implements EventListener
         $body = $jsonDocument->getAssocBody();
 
         $completeness = 0;
-        foreach ($this->weights as $key => $weight) {
-            if (!isset($body[$key])) {
+        foreach ($this->weights as $weight) {
+            $weightName = $weight->getName();
+            if (!isset($body[$weightName])) {
                 continue;
             }
 
-            if ($key === 'contactPoint' && $this->isContactPointEmpty($body[$key])) {
+            if ($weightName === 'contactPoint' && $this->isContactPointEmpty($body[$weightName])) {
                 continue;
             }
 
-            $completeness += $weight;
+            $completeness += $weight->getValue();
         }
 
         $body['completeness'] = $completeness;
