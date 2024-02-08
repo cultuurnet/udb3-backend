@@ -24,15 +24,10 @@
     "nl"
   ],
   "contactPoint":{
-    "phone":[
-      "02\/551 18 70"
-    ],
-    "email":[
-      "info@publiq.be"
-    ],
-    "url":[
-      "https:\/\/www.publiq.be"
-    ]
+    "phone":[],
+    "email":[],
+    "url":[]
   },
-  "modified":"2018-01-18T13:57:09+00:00"
+  "modified":"2018-01-18T13:57:09+00:00",
+  "completeness": 50
 }
