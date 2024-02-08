@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\BookingInfo;
+use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
@@ -124,7 +125,7 @@ class OfferLDProjectorTest extends TestCase
                     'en' => 'Copyright handled by %s',
                 ]
             ),
-            [
+            Weights::fromConfig([
                 'type' => 12,
                 'theme' => 5,
                 'calendarType' => 12,
@@ -138,7 +139,7 @@ class OfferLDProjectorTest extends TestCase
                 'bookingInfo' => 3,
                 'organizer' => 3,
                 'videos' => 2,
-            ]
+            ])
         );
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(
@@ -195,7 +196,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            []
+            Weights::fromConfig([])
         );
 
         $documentRepository->expects($this->exactly(4))
@@ -244,7 +245,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            []
+            Weights::fromConfig([])
         );
 
         $documentRepository->expects($this->once())
@@ -293,7 +294,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            []
+            Weights::fromConfig([])
         );
 
         $documentRepository->expects($this->exactly(2))

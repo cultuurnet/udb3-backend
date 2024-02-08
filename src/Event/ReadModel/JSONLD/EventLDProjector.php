@@ -10,6 +10,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
+use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
@@ -121,7 +122,7 @@ final class EventLDProjector extends OfferLDProjector implements
         EventTypeResolver $eventTypeResolver,
         array $basePriceTranslations,
         VideoNormalizer $videoNormalizer,
-        array $weights
+        Weights $weights
     ) {
         parent::__construct(
             $repository,

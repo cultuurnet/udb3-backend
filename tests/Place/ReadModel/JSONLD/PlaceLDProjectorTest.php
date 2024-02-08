@@ -10,6 +10,7 @@ use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -114,7 +115,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                     'en' => 'Copyright handled by %s',
                 ]
             ),
-            [
+            Weights::fromConfig([
                 'type' => 17,
                 'calendarType' => 12,
                 'address' => 12,
@@ -127,7 +128,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 'bookingInfo' => 3,
                 'organizer' => 3,
                 'videos' => 2,
-            ]
+            ])
         );
 
         $street = new Street('Kerkstraat 69');

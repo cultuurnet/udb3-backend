@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Category;
+use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\CulturefeedSlugger;
 use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\OrganizerServiceInterface;
@@ -100,7 +101,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected VideoNormalizer $videoNormalizer;
 
-    private array $weights;
+    private Weights $weights;
 
     private ?int $playhead = null;
 
@@ -116,7 +117,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         array $basePriceTranslations,
         VideoNormalizer $videoNormalizer,
-        array $weights
+        Weights $weights
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
@@ -963,11 +964,11 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $body = $jsonDocument->getAssocBody();
 
         $completeness = 0;
-        foreach ($this->weights as $key => $weight) {
-            if (!isset($body[$key])) {
+        foreach ($this->weights as $weight) {
+            if (!isset($body[$weight->getName()])) {
                 continue;
             }
-            $completeness += $weight;
+            $completeness += $weight->getValue();
         }
 
         $body['completeness'] = $completeness;
