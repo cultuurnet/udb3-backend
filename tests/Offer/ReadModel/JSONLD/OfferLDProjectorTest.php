@@ -124,7 +124,21 @@ class OfferLDProjectorTest extends TestCase
                     'en' => 'Copyright handled by %s',
                 ]
             ),
-            []
+            [
+                'type' => 12,
+                'theme' => 5,
+                'calendarType' => 12,
+                'address' => 12,
+                'name' => 12,
+                'typicalAgeRange' => 12,
+                'mediaObject' => 8,
+                'description' => 9,
+                'priceInfo' => 7,
+                'contactPoint' => 3,
+                'bookingInfo' => 3,
+                'organizer' => 3,
+                'videos' => 2,
+            ]
         );
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(
@@ -374,6 +388,7 @@ class OfferLDProjectorTest extends TestCase
                 'hiddenLabels' => ['label B'],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
+                'completeness' => 0,
             ],
             $body
         );
@@ -540,6 +555,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
+                'completeness' => 12,
             ])
         );
 
@@ -593,6 +609,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
+                'completeness' => 21,
             ],
             $body
         );
@@ -636,6 +653,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
+                'completeness' => 21,
             ],
             $body
         );
@@ -679,6 +697,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
+                'completeness' => 21,
             ],
             $body
         );
@@ -718,6 +737,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
+                'completeness' => 12,
             ],
             $body
         );
@@ -794,6 +814,7 @@ class OfferLDProjectorTest extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 7,
         ];
 
         $this->documentRepository->save($initialDocument);
@@ -910,6 +931,7 @@ class OfferLDProjectorTest extends TestCase
             ],
             'modified' => '2018-01-01T08:30:00+01:00',
             'playhead' => 1,
+            'completeness' => 8,
         ];
 
         $expectedWithoutFirstImage = (object) [
@@ -927,6 +949,7 @@ class OfferLDProjectorTest extends TestCase
             ],
             'modified' => '2018-01-01T08:30:00+01:00',
             'playhead' => 1,
+            'completeness' => 8,
         ];
 
 
@@ -1484,6 +1507,7 @@ class OfferLDProjectorTest extends TestCase
                     ],
                 ],
                 'playhead' => 1,
+                'completeness' => 14,
             ],
             $eventBody
         );
@@ -1551,6 +1575,7 @@ class OfferLDProjectorTest extends TestCase
                     ],
                 ],
                 'playhead' => 1,
+                'completeness' => 14,
             ],
             $eventBody
         );
@@ -1599,6 +1624,7 @@ class OfferLDProjectorTest extends TestCase
                     ],
                 ],
                 'playhead' => 1,
+                'completeness' => 14,
             ],
             $eventBody
         );
@@ -1667,6 +1693,7 @@ class OfferLDProjectorTest extends TestCase
                     ],
                 ],
                 'playhead' => 1,
+                'completeness' => 14,
             ],
             $eventBody
         );
@@ -1709,6 +1736,7 @@ class OfferLDProjectorTest extends TestCase
                     'nl' => 'Titel',
                 ],
                 'playhead' => 1,
+                'completeness' => 12,
             ],
             $eventBody
         );
@@ -1796,6 +1824,7 @@ class OfferLDProjectorTest extends TestCase
                     ],
                 ],
                 'playhead' => 1,
+                'completeness' => 14,
             ],
             $eventBody
         );
@@ -1836,6 +1865,7 @@ class OfferLDProjectorTest extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 3,
         ];
 
         $this->assertEquals($expectedBody, $body);
@@ -1874,6 +1904,7 @@ class OfferLDProjectorTest extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 3,
         ];
 
         $body = $this->project($organizerUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -2242,6 +2273,7 @@ class OfferLDProjectorTest extends TestCase
             'completedLanguages' => ['nl'],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 12,
         ];
 
         $body = $this->project($facilitiesUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -2387,6 +2419,7 @@ class OfferLDProjectorTest extends TestCase
             'name' => (object)['nl' => 'Foo'],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 12,
         ];
 
         $event = new BookingInfoUpdated($id, new BookingInfo());
@@ -2426,6 +2459,7 @@ class OfferLDProjectorTest extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 15,
         ];
 
         $event = new BookingInfoUpdated($id, new BookingInfo(
