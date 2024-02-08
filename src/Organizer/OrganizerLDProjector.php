@@ -9,7 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
-use CultuurNet\UDB3\Completeness\Weights;
+use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
@@ -109,7 +109,7 @@ class OrganizerLDProjector implements EventListener
 
     private NormalizerInterface $imageNormalizer;
 
-    private Weights $weights;
+    private Completeness $completeness;
 
     public function __construct(
         DocumentRepository $repository,
@@ -117,14 +117,14 @@ class OrganizerLDProjector implements EventListener
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         NormalizerInterface $imageNormalizer,
         CdbXMLImporter $cdbXMLImporter,
-        Weights $weights
+        Completeness $completeness
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
         $this->jsonDocumentMetaDataEnricher = $jsonDocumentMetaDataEnricher;
         $this->imageNormalizer = $imageNormalizer;
         $this->cdbXMLImporter = $cdbXMLImporter;
-        $this->weights = $weights;
+        $this->completeness = $completeness;
         $this->addressNormalizer = new AddressNormalizer();
         $this->contactPointNormalizer = new ContactPointNormalizer();
     }
@@ -699,18 +699,11 @@ class OrganizerLDProjector implements EventListener
     {
         $body = $jsonDocument->getAssocBody();
 
-        $completeness = 0;
-        foreach ($this->weights as $weight) {
-            $weightName = $weight->getName();
-            if (!isset($body[$weightName])) {
-                continue;
-            }
+        $completeness = $this->completeness->forDocument($jsonDocument);
 
-            if ($weightName === 'contactPoint' && $this->isContactPointEmpty($body[$weightName])) {
-                continue;
-            }
-
-            $completeness += $weight->getValue();
+        if (isset($body['contactPoint']) && $this->isContactPointEmpty($body['contactPoint'])) {
+            $weight = $this->completeness->getWeight('contactPoint');
+            $completeness -= $weight->getValue();
         }
 
         $body['completeness'] = $completeness;
