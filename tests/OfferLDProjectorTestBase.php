@@ -131,6 +131,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             'modified' => $this->recordedOn->toString(),
             'languages' => ['nl'],
             'playhead' => 3,
+            'completeness' => 3,
         ];
 
         $body = $this->project($bookingInfoUpdated, $id, null, $this->recordedOn->toBroadwayDateTime(), 3);
@@ -164,6 +165,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 3,
         ];
 
         $this->assertEquals(
@@ -206,6 +208,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             'completedLanguages' => ['nl'],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 21,
         ];
 
         $body = $this->project($descriptionUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -249,6 +252,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 8,
         ];
 
         $body = $this->project($imageAdded, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -300,6 +304,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 8,
         ];
 
         $body = $this->project($imageUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -328,6 +333,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             'typicalAgeRange' => '0-18',
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 12,
         ];
 
         $body = $this->project($typicalAgeRangeUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -356,6 +362,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             'typicalAgeRange' => '-',
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 12,
         ];
 
         $body = $this->project($typicalAgeRangeDeleted, $id, null, $this->recordedOn->toBroadwayDateTime());

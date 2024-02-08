@@ -123,7 +123,8 @@ class OfferLDProjectorTest extends TestCase
                     'de' => 'Urheberrecht gehandhabt von %s',
                     'en' => 'Copyright handled by %s',
                 ]
-            )
+            ),
+            []
         );
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(
@@ -179,7 +180,8 @@ class OfferLDProjectorTest extends TestCase
             $this->createMock(MediaObjectSerializer::class),
             new JsonDocumentNullEnricher(),
             [],
-            new VideoNormalizer([])
+            new VideoNormalizer([]),
+            []
         );
 
         $documentRepository->expects($this->exactly(4))
@@ -227,7 +229,8 @@ class OfferLDProjectorTest extends TestCase
             $this->createMock(MediaObjectSerializer::class),
             new JsonDocumentNullEnricher(),
             [],
-            new VideoNormalizer([])
+            new VideoNormalizer([]),
+            []
         );
 
         $documentRepository->expects($this->once())
@@ -275,7 +278,8 @@ class OfferLDProjectorTest extends TestCase
             $this->createMock(MediaObjectSerializer::class),
             new JsonDocumentNullEnricher(),
             [],
-            new VideoNormalizer([])
+            new VideoNormalizer([]),
+            []
         );
 
         $documentRepository->expects($this->exactly(2))
