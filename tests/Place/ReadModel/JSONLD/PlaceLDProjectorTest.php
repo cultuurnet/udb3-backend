@@ -814,6 +814,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'workflowStatus' => 'DELETED',
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 0,
         ];
 
         $this->assertEquals($expectedJson, $body);
@@ -899,6 +900,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedBody->labels = ['label B'];
         $expectedBody->modified = $this->recordedOn->toString();
         $expectedBody->playhead = 1;
+        $expectedBody->completeness = 0;
 
         $this->assertEquals(
             $expectedBody,

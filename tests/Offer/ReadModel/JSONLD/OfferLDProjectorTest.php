@@ -434,6 +434,7 @@ class OfferLDProjectorTest extends TestCase
                 'labels' => ['label A', 'label B'],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
+                'completeness' => 0,
             ],
             $body
         );
@@ -465,6 +466,7 @@ class OfferLDProjectorTest extends TestCase
         $expectedBody->labels = ['label B'];
         $expectedBody->modified = $this->recordedOn->toString();
         $expectedBody->playhead = 1;
+        $expectedBody->completeness = 0;
 
         $this->assertEquals(
             $expectedBody,
@@ -501,6 +503,7 @@ class OfferLDProjectorTest extends TestCase
                 'hiddenLabels' => ['label C'],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
+                'completeness' => 0,
             ],
             $body
         );
@@ -1906,6 +1909,7 @@ class OfferLDProjectorTest extends TestCase
             (object)[
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
+                'completeness' => 0,
             ],
             $body
         );
@@ -1934,6 +1938,7 @@ class OfferLDProjectorTest extends TestCase
             'workflowStatus' => 'DRAFT',
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 0,
         ];
 
         $this->documentRepository->save($itemDocumentReadyDraft);
@@ -1975,6 +1980,7 @@ class OfferLDProjectorTest extends TestCase
             'workflowStatus' => 'READY_FOR_VALIDATION',
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 0,
         ];
 
         $this->documentRepository->save($itemDocumentReadyDraft);
@@ -2006,6 +2012,7 @@ class OfferLDProjectorTest extends TestCase
             'workflowStatus' => 'APPROVED',
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 0,
         ];
 
         $this->documentRepository->save($itemDocumentReadyForValidation);
@@ -2038,6 +2045,7 @@ class OfferLDProjectorTest extends TestCase
             'workflowStatus' => 'REJECTED',
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 0,
         ];
 
         $this->documentRepository->save($itemDocumentReadyForValidation);
@@ -2452,6 +2460,7 @@ class OfferLDProjectorTest extends TestCase
             (object) [
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
+                'completeness' => 0,
             ],
             $body
         );

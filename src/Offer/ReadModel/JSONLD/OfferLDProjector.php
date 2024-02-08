@@ -970,10 +970,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             $completeness += $weight;
         }
 
-        if ($completeness === 0) {
-            return $jsonDocument;
-        }
-
         $body['completeness'] = $completeness;
 
         return $jsonDocument->withAssocBody($body);
