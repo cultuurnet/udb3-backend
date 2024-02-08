@@ -165,7 +165,22 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     'de' => 'Urheberrecht gehandhabt von %s',
                     'en' => 'Copyright handled by %s',
                 ]
-            )
+            ),
+            [
+                'type' => 12,
+                'theme' => 5,
+                'calendarType' => 12,
+                'address' => 12,
+                'name' => 12,
+                'typicalAgeRange' => 12,
+                'mediaObject' => 8,
+                'description' => 9,
+                'priceInfo' => 7,
+                'contactPoint' => 3,
+                'bookingInfo' => 3,
+                'organizer' => 3,
+                'videos' => 2,
+            ]
         );
     }
 
@@ -194,6 +209,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
+        $jsonLD->completeness = 36;
 
         $this->mockPlaceService();
 
@@ -251,6 +267,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->created = $recordedOn;
         $jsonLD->modified = $recordedOn;
         $jsonLD->playhead = 1;
+        $jsonLD->completeness = 36;
 
         $body = $this->project(
             $eventCopied,
@@ -292,6 +309,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
+        $jsonLD->completeness = 36;
 
         $this->mockPlaceService();
 
@@ -340,6 +358,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->creator = $expectedCreator;
         $jsonLD->playhead = 1;
+        $jsonLD->completeness = 36;
 
         $this->mockPlaceService();
 
@@ -469,6 +488,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = '20a72430-7e3e-4b75-ab59-043156b3169c';
+        $expectedJsonLD->completeness = 36;
 
         $this->assertEquals($expectedJsonLD, $body);
     }
@@ -505,6 +525,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = $userId;
+        $expectedJsonLD->completeness = 36;
 
         $this->assertEquals($expectedJsonLD, $body);
     }
@@ -652,6 +673,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
+        $jsonLD->completeness = 36;
 
         $this->mockPlaceService();
 
@@ -973,6 +995,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedBody->labels = ['label B'];
         $expectedBody->modified = $this->recordedOn->toString();
         $expectedBody->playhead = 1;
+        $expectedBody->completeness = 0;
 
         $this->assertEquals(
             $expectedBody,
@@ -1059,6 +1082,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $expectedJsonLD->playhead = 1;
+        $expectedJsonLD->completeness = 24;
 
         $body = $this->project($majorInfoUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
 
@@ -1103,6 +1127,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $expectedJsonLD->playhead = 1;
+        $expectedJsonLD->completeness = 12;
 
         $body = $this->project($calendarUpdated, $eventId, null, $this->recordedOn->toBroadwayDateTime());
 
@@ -1143,6 +1168,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $expectedJsonLD->modified = $this->recordedOn->toString();
         $expectedJsonLD->playhead = 1;
+        $expectedJsonLD->completeness = 0;
 
         $body = $this->project($locationUpdated, $eventId, null, $this->recordedOn->toBroadwayDateTime());
 
@@ -1200,6 +1226,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 ],
             ],
             'modified' => $this->recordedOn->toString(),
+            'completeness' => 12,
         ];
         $expectedBody->playhead = 1;
 
@@ -1335,6 +1362,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'attendanceMode' => AttendanceMode::online()->toString(),
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 0,
         ];
 
         $this->assertEquals($expectedJson, $body);
@@ -1357,6 +1385,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'onlineUrl' => 'https://www.publiq.be/livestream',
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 0,
         ];
 
         $this->assertEquals($expectedJson, $body);
@@ -1387,6 +1416,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             '@context' => '/contexts/event',
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 0,
         ];
 
         $this->assertEquals($expectedJson, $body);
@@ -1407,12 +1437,13 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $body = $this->project($audienceUpdated, $eventId, null, $this->recordedOn->toBroadwayDateTime());
 
         $expectedJson = (object) [
-                '@id' => 'http://example.com/entity/' . $eventId,
-                '@context' => '/contexts/event',
-                'audience' => (object) ['audienceType' => 'education'],
-                'modified' => $this->recordedOn->toString(),
-                'playhead' => 1,
-            ];
+            '@id' => 'http://example.com/entity/' . $eventId,
+            '@context' => '/contexts/event',
+            'audience' => (object) ['audienceType' => 'education'],
+            'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
+            'completeness' => 0,
+        ];
 
         $this->assertEquals($expectedJson, $body);
     }
@@ -1434,6 +1465,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'workflowStatus' => 'DELETED',
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 0,
         ];
 
         $this->assertEquals($expectedJson, $body);
