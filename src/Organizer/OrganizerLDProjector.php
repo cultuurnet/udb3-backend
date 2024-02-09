@@ -699,7 +699,7 @@ class OrganizerLDProjector implements EventListener
     {
         $body = $jsonDocument->getAssocBody();
 
-        $completeness = $this->completeness->forDocument($jsonDocument);
+        $completeness = $this->completeness->calculateForDocument($jsonDocument);
 
         if (isset($body['contactPoint']) && $this->isContactPointEmpty($body['contactPoint'])) {
             $weight = $this->completeness->getWeight('contactPoint');

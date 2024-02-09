@@ -963,7 +963,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         $body = $jsonDocument->getAssocBody();
 
-        $body['completeness'] = $this->completeness->forDocument($jsonDocument);
+        $body['completeness'] = $this->completeness->calculateForDocument($jsonDocument);
 
         return $jsonDocument->withAssocBody($body);
     }

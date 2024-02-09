@@ -15,7 +15,7 @@ final class CompletenessFromWeights implements Completeness
         $this->weights = $weights;
     }
 
-    public function forDocument(JsonDocument $jsonDocument): int
+    public function calculateForDocument(JsonDocument $jsonDocument): int
     {
         $body = $jsonDocument->getAssocBody();
 

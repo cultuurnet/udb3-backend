@@ -8,7 +8,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 interface Completeness
 {
-    public function forDocument(JsonDocument $jsonDocument): int;
+    public function calculateForDocument(JsonDocument $jsonDocument): int;
 
     public function getWeight(string $name): Weight;
 }
