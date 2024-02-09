@@ -13,7 +13,7 @@ final class Weights extends Collection
         parent::__construct(...$weights);
     }
 
-    public static function fromConfig(array $config): Weights
+    public static function fromConfig(array $config): self
     {
         $weights = [];
         foreach ($config as $name => $value) {
