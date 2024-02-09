@@ -20,20 +20,24 @@ final class CompletenessFromWeights implements Completeness
         $body = $jsonDocument->getAssocBody();
 
         $completeness = 0;
+        /** @var Weight $weight */
         foreach ($this->weights as $weight) {
             if (!isset($body[$weight->getName()])) {
                 continue;
             }
+
+            if ($weight->getName() === 'contactPoint' && $this->isContactPointEmpty($body['contactPoint'])) {
+                continue;
+            }
+
             $completeness += $weight->getValue();
         }
 
         return $completeness;
     }
 
-    public function getWeight(string $name): Weight
+    private function isContactPointEmpty(array $contactPoint): bool
     {
-        return $this->weights->filter(
-            fn (Weight $weight) => $weight->getName() === $name
-        )->getFirst();
+        return empty($contactPoint['phone']) && empty($contactPoint['email']) && empty($contactPoint['url']);
     }
 }
