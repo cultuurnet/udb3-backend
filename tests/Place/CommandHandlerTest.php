@@ -55,7 +55,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new UpdateMajorInfo($id, $title, $eventType, $address, $calendar)
             )
-            ->then([new MajorInfoUpdated($id, $title, $eventType, $address, $calendar)]);
+            ->then([new MajorInfoUpdated($id, $title->toString(), $eventType, $address, $calendar)]);
     }
 
     /**
