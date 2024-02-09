@@ -1321,7 +1321,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new MajorInfoUpdated(
             self::EVENT_ID_1,
-            new Title('title'),
+            'title',
             new EventType('0.0.0.0', 'event type'),
             new LocationId('a0c6c66e-d933-4817-a335-2a5a51df1fa7'),
             new Calendar(CalendarType::PERMANENT())

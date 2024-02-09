@@ -66,7 +66,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -988,7 +987,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->mockPlaceService();
 
         $id = 'foo';
-        $title = new Title('new title');
+        $title = 'new title';
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
         $calendar = new Calendar(
@@ -1217,7 +1216,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'samples/event_with_empty_keyword.cdbxml.xml'
         );
 
-        $title = new Title('new title');
+        $title = 'new title';
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
         $calendar = new Calendar(

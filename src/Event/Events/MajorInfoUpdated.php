@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Title;
 
 final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranularEvents
 {
-    private Title $title;
+    private string $title;
     private EventType $eventType;
     private ?Theme $theme;
     private LocationId $location;
@@ -22,7 +22,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
 
     public function __construct(
         string $eventId,
-        Title $title,
+        string $title,
         EventType $eventType,
         LocationId $location,
         Calendar $calendar,
@@ -37,7 +37,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         $this->theme = $theme;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -67,7 +67,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         return array_values(
             array_filter(
                 [
-                    new TitleUpdated($this->itemId, $this->title),
+                    new TitleUpdated($this->itemId, new Title($this->title)),
                     new TypeUpdated($this->itemId, $this->eventType),
                     $this->theme ? new ThemeUpdated($this->itemId, $this->theme) : null,
                     new LocationUpdated($this->itemId, $this->location),
@@ -84,7 +84,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
             $theme = $this->getTheme()->serialize();
         }
         return parent::serialize() + [
-            'title' => $this->getTitle()->toString(),
+            'title' => $this->getTitle(),
             'event_type' => $this->getEventType()->serialize(),
             'theme' => $theme,
             'location' => $this->getLocation()->toString(),
@@ -96,7 +96,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
     {
         return new self(
             $data['item_id'],
-            new Title($data['title']),
+            $data['title'],
             EventType::deserialize($data['event_type']),
             new LocationId($data['location']),
             Calendar::deserialize($data['calendar']),
