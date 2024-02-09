@@ -989,7 +989,7 @@ class HistoryProjectorTest extends TestCase
         return new PlaceCreated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             new LegacyLanguage('en'),
-            new Title('Foo'),
+            'Foo',
             new EventType('1.8.2', 'PARTY!'),
             new Address(
                 new Street('acmelane 12'),

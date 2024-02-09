@@ -43,7 +43,7 @@ class PlaceCreatedTest extends TestCase
         $this->placeCreated = new PlaceCreated(
             'id',
             new Language('es'),
-            new Title('title'),
+            'title',
             new EventType('id', 'label'),
             $this->address,
             new Calendar(CalendarType::PERMANENT()),
@@ -91,7 +91,7 @@ class PlaceCreatedTest extends TestCase
      */
     public function it_stores_a_place_title(): void
     {
-        $this->assertEquals(new Title('title'), $this->placeCreated->getTitle());
+        $this->assertEquals('title', $this->placeCreated->getTitle());
     }
 
     /**
@@ -185,7 +185,7 @@ class PlaceCreatedTest extends TestCase
                 new PlaceCreated(
                     'test 456',
                     new Language('es'),
-                    new Title('title'),
+                    'title',
                     new EventType('bar_id', 'bar'),
                     new Address(
                         new Street('De straat'),
@@ -228,7 +228,7 @@ class PlaceCreatedTest extends TestCase
                 new PlaceCreated(
                     'test 456',
                     new Language('es'),
-                    new Title('title'),
+                    'title',
                     new EventType('bar_id', 'bar'),
                     new Address(
                         new Street('De straat'),
@@ -271,7 +271,7 @@ class PlaceCreatedTest extends TestCase
                 new PlaceCreated(
                     'test 456',
                     new Language('es'),
-                    new Title('title'),
+                    'title',
                     new EventType('bar_id', 'bar'),
                     new Address(
                         new Street('De straat'),

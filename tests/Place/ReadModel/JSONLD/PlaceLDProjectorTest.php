@@ -135,7 +135,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $placeCreated = new PlaceCreated(
             $id,
             new Language('en'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             $this->address,
             new Calendar(CalendarType::PERMANENT())
@@ -200,7 +200,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $placeCreated = new PlaceCreated(
             $id,
             new Language('en'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             $this->address,
             new Calendar(CalendarType::PERMANENT())
@@ -469,7 +469,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $placeCreated = new PlaceCreated(
             $placeId,
             new Language('en'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             $this->address,
             new Calendar(CalendarType::PERMANENT())
