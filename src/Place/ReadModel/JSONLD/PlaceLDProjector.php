@@ -88,7 +88,8 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         CdbXMLImporter $cdbXMLImporter,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         array $basePriceTranslations,
-        VideoNormalizer $videoNormalizer
+        VideoNormalizer $videoNormalizer,
+        array $weights
     ) {
         parent::__construct(
             $repository,
@@ -98,7 +99,8 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $mediaObjectSerializer,
             $jsonDocumentMetaDataEnricher,
             $basePriceTranslations,
-            $videoNormalizer
+            $videoNormalizer,
+            $weights
         );
 
         $this->cdbXMLImporter = $cdbXMLImporter;

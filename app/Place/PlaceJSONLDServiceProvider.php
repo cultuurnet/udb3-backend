@@ -79,7 +79,8 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
                         new PlaceJsonDocumentLanguageAnalyzer()
                     ),
                     $container->get('config')['base_price_translations'],
-                    new VideoNormalizer($container->get('config')['media']['video_default_copyright'])
+                    new VideoNormalizer($container->get('config')['media']['video_default_copyright']),
+                    $container->get('config')['completeness']['place']
                 );
 
                 $placeLDProjector->setNrOfRetries(

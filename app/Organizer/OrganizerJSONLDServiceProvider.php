@@ -55,7 +55,8 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
                     ),
                     new CdbXMLImporter(
                         $container->get(CdbXMLToJsonLDLabelImporter::class)
-                    )
+                    ),
+                    $container->get('config')['completeness']['organizer']
                 );
             }
         );

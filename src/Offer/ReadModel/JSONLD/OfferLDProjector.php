@@ -100,6 +100,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected VideoNormalizer $videoNormalizer;
 
+    private array $weights;
+
     private ?int $playhead = null;
 
     /**
@@ -113,7 +115,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         MediaObjectSerializer $mediaObjectSerializer,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         array $basePriceTranslations,
-        VideoNormalizer $videoNormalizer
+        VideoNormalizer $videoNormalizer,
+        array $weights
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
@@ -123,6 +126,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $this->mediaObjectSerializer = $mediaObjectSerializer;
         $this->basePriceTranslations = $basePriceTranslations;
         $this->videoNormalizer = $videoNormalizer;
+        $this->weights = $weights;
 
         $this->slugger = new CulturefeedSlugger();
 
@@ -171,6 +175,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         foreach ($jsonDocuments as $jsonDocument) {
             $jsonDocument = $this->jsonDocumentMetaDataEnricher->enrich($jsonDocument, $domainMessage->getMetadata());
             $jsonDocument = $this->updateModified($jsonDocument, $domainMessage);
+            $jsonDocument = $this->updateCompleteness($jsonDocument);
             $jsonDocument = $this->updatePlayhead($jsonDocument, $domainMessage);
 
             $this->repository->save($jsonDocument);
@@ -951,6 +956,23 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $body->modified = $recordedDateTime->toString();
 
         return $jsonDocument->withBody($body);
+    }
+
+    private function updateCompleteness(JsonDocument $jsonDocument): JsonDocument
+    {
+        $body = $jsonDocument->getAssocBody();
+
+        $completeness = 0;
+        foreach ($this->weights as $key => $weight) {
+            if (!isset($body[$key])) {
+                continue;
+            }
+            $completeness += $weight;
+        }
+
+        $body['completeness'] = $completeness;
+
+        return $jsonDocument->withAssocBody($body);
     }
 
     private function updatePlayhead(JsonDocument $jsonDocument, DomainMessage $domainMessage): JsonDocument
