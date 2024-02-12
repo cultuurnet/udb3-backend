@@ -579,7 +579,7 @@ class OfferLDProjectorTest extends TestCase
         $titleTranslated = new TitleTranslated(
             'foo',
             new LegacyLanguage('en'),
-            new Title('English title')
+            'English title'
         );
 
         $initialDocument = new JsonDocument(

@@ -57,7 +57,7 @@ trait EventFromUDB2
                 $granularEvents[] = new TitleTranslated(
                     $this->eventId,
                     new Language($detail['@attributes']['lang']),
-                    new LegacyTitle($detail['title'][0]['_text'])
+                    $detail['title'][0]['_text']
                 );
             }
         }

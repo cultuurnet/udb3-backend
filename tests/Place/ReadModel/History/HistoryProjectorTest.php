@@ -1054,7 +1054,7 @@ class HistoryProjectorTest extends TestCase
         return new TitleTranslated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             new LegacyLanguage('en'),
-            new Title('Title')
+            'Title'
         );
     }
 

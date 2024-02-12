@@ -348,7 +348,7 @@ class HistoryProjectorTest extends TestCase
         $titleTranslated = new TitleTranslated(
             self::EVENT_ID_1,
             new LegacyLanguage('fr'),
-            new Title('Titre en français')
+            'Titre en français'
         );
 
         $translatedDate = '2015-03-26T10:17:19.176169+02:00';

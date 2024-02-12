@@ -1767,7 +1767,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([
-                new TitleTranslated($itemId, $language, $title),
+                new TitleTranslated($itemId, $language, $title->toString()),
             ]);
     }
 
@@ -1796,7 +1796,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([
-                new TitleTranslated($itemId, $language, $title),
+                new TitleTranslated($itemId, $language, $title->toString()),
             ]);
     }
 

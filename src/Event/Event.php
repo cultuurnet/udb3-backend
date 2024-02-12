@@ -582,7 +582,7 @@ final class Event extends Offer
 
     protected function createTitleTranslatedEvent(LegacyLanguage $language, Title $title): TitleTranslated
     {
-        return new TitleTranslated($this->eventId, $language, $title);
+        return new TitleTranslated($this->eventId, $language, $title->toString());
     }
 
     protected function createTitleUpdatedEvent(Title $title): TitleUpdated
