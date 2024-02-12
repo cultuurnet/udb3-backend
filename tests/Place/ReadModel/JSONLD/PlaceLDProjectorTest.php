@@ -10,6 +10,8 @@ use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
+use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -113,6 +115,22 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                     'de' => 'Urheberrecht gehandhabt von %s',
                     'en' => 'Copyright handled by %s',
                 ]
+            ),
+            new CompletenessFromWeights(
+                Weights::fromConfig([
+                    'type' => 17,
+                    'calendarType' => 12,
+                    'address' => 12,
+                    'name' => 12,
+                    'typicalAgeRange' => 12,
+                    'mediaObject' => 8,
+                    'description' => 9,
+                    'priceInfo' => 7,
+                    'contactPoint' => 3,
+                    'bookingInfo' => 3,
+                    'organizer' => 3,
+                    'videos' => 2,
+                ])
             )
         );
 
@@ -175,6 +193,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $jsonLD->playhead = 1;
+        $jsonLD->completeness = 36;
 
         $body = $this->project(
             $placeCreated,
@@ -241,6 +260,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $jsonLD->playhead = 1;
+        $jsonLD->completeness = 36;
 
         $metadata = new Metadata(
             [
@@ -340,6 +360,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->completedLanguages = ['nl'];
         $expectedJsonLD->modified = $this->recordedOn->toString();
         $expectedJsonLD->playhead = 1;
+        $expectedJsonLD->completeness = 36;
 
         $addressUpdated = new AddressUpdated(
             '66f30742-dee9-4794-ac92-fa44634692b8',
@@ -424,6 +445,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->completedLanguages = ['nl'];
         $expectedJsonLD->modified = $this->recordedOn->toString();
         $expectedJsonLD->playhead = 1;
+        $expectedJsonLD->completeness = 36;
 
         $addressTranslated = new AddressTranslated(
             '66f30742-dee9-4794-ac92-fa44634692b8',
@@ -676,6 +698,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->languages = ['en'];
         $jsonLD->completedLanguages = ['en'];
+        $jsonLD->completeness = 36;
 
         $initialDocument = (new JsonDocument('foo'))
             ->withBody($jsonLD);
@@ -715,6 +738,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $expectedJsonLD->playhead = 1;
+        $expectedJsonLD->completeness = 36;
 
         $body = $this->project(
             $majorInfoUpdated,
@@ -770,6 +794,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 12,
         ];
 
         $body = $this->project($coordinatesUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -793,6 +818,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'workflowStatus' => 'DELETED',
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
+            'completeness' => 0,
         ];
 
         $this->assertEquals($expectedJson, $body);
@@ -878,6 +904,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedBody->labels = ['label B'];
         $expectedBody->modified = $this->recordedOn->toString();
         $expectedBody->playhead = 1;
+        $expectedBody->completeness = 0;
 
         $this->assertEquals(
             $expectedBody,
@@ -904,6 +931,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                     'terms' => [],
                     'languages' => ['nl'],
                     'completedLanguages' => ['nl'],
+                    'completeness' => 36,
                 ]
             )
         );
