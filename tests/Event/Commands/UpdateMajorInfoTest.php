@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -14,10 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class UpdateMajorInfoTest extends TestCase
 {
-    /**
-     * @var UpdateMajorInfo
-     */
-    protected $updateMajorInfo;
+    protected UpdateMajorInfo $updateMajorInfo;
 
     public function setUp(): void
     {

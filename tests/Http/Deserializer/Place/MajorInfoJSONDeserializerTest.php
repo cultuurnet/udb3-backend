@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Title as LegacyTitle;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use PHPUnit\Framework\TestCase;
 
 final class MajorInfoJSONDeserializerTest extends TestCase
@@ -35,7 +35,7 @@ final class MajorInfoJSONDeserializerTest extends TestCase
             new CountryCode('BE')
         );
 
-        $this->assertEquals(new LegacyTitle('Test place'), $majorInfo->getTitle());
+        $this->assertEquals(new Title('Test place'), $majorInfo->getTitle());
         $this->assertEquals(new EventType('3CuHvenJ+EGkcvhXLg9Ykg', 'Archeologische Site'), $majorInfo->getType());
         $this->assertEquals($expectedAddress, $majorInfo->getAddress());
         $this->assertEquals(new Calendar(CalendarType::PERMANENT()), $majorInfo->getCalendar());

@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 
 class CreateEvent
@@ -53,27 +53,27 @@ class CreateEvent
         return $this->mainLanguage;
     }
 
-    public function getTitle() : Title
+    public function getTitle(): Title
     {
         return $this->title;
     }
 
-    public function getEventType() : EventType
+    public function getEventType(): EventType
     {
         return $this->eventType;
     }
 
-    public function getTheme() : Theme
+    public function getTheme(): Theme
     {
         return $this->theme;
     }
 
-    public function getCalendar() : Calendar
+    public function getCalendar(): Calendar
     {
         return $this->calendar;
     }
 
-    public function getLocation() : LocationId
+    public function getLocation(): LocationId
     {
         return $this->location;
     }

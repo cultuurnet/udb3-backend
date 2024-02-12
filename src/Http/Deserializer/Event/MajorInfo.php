@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 class MajorInfo
 {
@@ -36,7 +36,7 @@ class MajorInfo
         $this->theme = $theme;
     }
 
-    public function getTitle() : Title
+    public function getTitle(): Title
     {
         return $this->title;
     }
@@ -56,7 +56,7 @@ class MajorInfo
         return $this->calendar;
     }
 
-    public function getTheme() : ?Theme
+    public function getTheme(): ?Theme
     {
         return $this->theme;
     }

@@ -9,15 +9,11 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 class CreateEvent extends MajorInfo
 {
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
-
+    private Language $mainLanguage;
 
     public function __construct(
         Language $mainLanguage,
@@ -38,10 +34,7 @@ class CreateEvent extends MajorInfo
         $this->mainLanguage = $mainLanguage;
     }
 
-    /**
-     * @return Language
-     */
-    public function getMainLanguage()
+    public function getMainLanguage(): Language
     {
         return $this->mainLanguage;
     }
