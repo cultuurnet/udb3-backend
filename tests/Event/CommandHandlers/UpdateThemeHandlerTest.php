@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 
 class UpdateThemeHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -99,7 +98,7 @@ class UpdateThemeHandlerTest extends CommandHandlerScenarioTestCase
         return new EventCreated(
             $id,
             new Language('nl'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(CalendarType::PERMANENT()),

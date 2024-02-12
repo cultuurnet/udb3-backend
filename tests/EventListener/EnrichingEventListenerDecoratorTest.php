@@ -62,7 +62,7 @@ class EnrichingEventListenerDecoratorTest extends TestCase
             new EventCreated(
                 '97d50997-2f60-47f2-9861-05be747038fa',
                 new Language('nl'),
-                new Title('test title'),
+                'test title',
                 new EventType('0.0.1', 'label'),
                 new LocationId('8bec7ce3-25d0-4677-926f-ac20df8898f1'),
                 new Calendar(CalendarType::PERMANENT())
