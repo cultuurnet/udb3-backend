@@ -93,7 +93,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new LegacyTitle('Blubblub')),
+                new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', 'Blubblub'),
                 new TypeUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new EventType('0.3.1.0.0', 'Cursus of workshop')
@@ -143,7 +143,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new LegacyTitle('Het evenement!')),
+                new TitleUpdated($eventId, 'Het evenement!'),
                 new TitleTranslated($eventId, new Language('fr'), 'L\'événement!'),
                 new TitleTranslated($eventId, new Language('de'), 'Das Ereignis!'),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
@@ -193,7 +193,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new LegacyTitle('Het evenement!')),
+                new TitleUpdated($eventId, 'Het evenement!'),
                 new TitleTranslated($eventId, new Language('fr'), 'L\'événement!'),
                 new TitleTranslated($eventId, new Language('de'), 'Das Ereignis!'),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
@@ -231,7 +231,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new LegacyTitle('Het evenement!')),
+                new TitleUpdated($eventId, 'Het evenement!'),
                 new TitleTranslated($eventId, new Language('fr'), 'L\'événement!'),
                 new TitleTranslated($eventId, new Language('de'), 'Das Ereignis!'),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
@@ -287,7 +287,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new LegacyTitle('Oscar et la Dame Rose')),
+                new TitleUpdated($eventId, 'Oscar et la Dame Rose'),
                 new TitleTranslated($eventId, new Language('fr'), 'Oscar et la Dame Rose'),
                 new TitleTranslated($eventId, new Language('en'), 'Oscar et la Dame Rose'),
                 new TypeUpdated($eventId, new EventType('0.55.0.0.0', 'Theatervoorstelling')),
@@ -372,7 +372,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new LegacyTitle('Werken met de \'nailliner\'')),
+                new TitleUpdated($eventId, 'Werken met de \'nailliner\''),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
                 new DummyLocationUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
@@ -432,7 +432,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new LegacyTitle('Juwelen maken VOORJAAR 2017')),
+                new TitleUpdated($eventId, 'Juwelen maken VOORJAAR 2017'),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
                 new DummyLocationUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
@@ -495,7 +495,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new LegacyTitle('De Smoestuinier | Low Impact man')),
+                new TitleUpdated($eventId, 'De Smoestuinier | Low Impact man'),
                 new TypeUpdated($eventId, new EventType('0.55.0.0.0', 'Theatervoorstelling')),
                 new CalendarUpdated(
                     $eventId,
@@ -534,7 +534,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new LegacyTitle('Punt sparen')),
+                new TitleUpdated($eventId, 'Punt sparen'),
                 new TypeUpdated($eventId, new EventType('0.0.0.0.0', 'Tentoonstelling')),
                 new LocationUpdated($eventId, new LocationId('66b69120-45d2-4b3d-a34c-aca115ebc2f0')),
                 new CalendarUpdated(
@@ -566,7 +566,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new LegacyTitle('Punt sparen')),
+                new TitleUpdated($eventId, 'Punt sparen'),
                 new TypeUpdated($eventId, new EventType('0.0.0.0.0', 'Tentoonstelling')),
                 new LocationUpdated($eventId, new LocationId('66b69120-45d2-4b3d-a34c-aca115ebc2f0')),
                 new CalendarUpdated(

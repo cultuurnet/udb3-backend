@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\Title;
-
 abstract class AbstractTitleUpdated extends AbstractEvent
 {
-    protected Title $title;
+    protected string $title;
 
-    final public function __construct(string $id, Title $title)
+    final public function __construct(string $id, string $title)
     {
         parent::__construct($id);
         $this->title = $title;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -24,12 +22,12 @@ abstract class AbstractTitleUpdated extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'title' => $this->title->toString(),
+            'title' => $this->title,
         ];
     }
 
     public static function deserialize(array $data): AbstractTitleUpdated
     {
-        return new static($data['item_id'], new Title($data['title']));
+        return new static($data['item_id'], $data['title']);
     }
 }

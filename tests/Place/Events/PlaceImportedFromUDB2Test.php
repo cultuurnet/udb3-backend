@@ -44,7 +44,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new Title('CC Palethe')),
+                new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', 'CC Palethe'),
                 new AddressUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Address(
@@ -73,7 +73,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($placeId, new Title('CC Palethe')),
+                new TitleUpdated($placeId, 'CC Palethe'),
                 new TitleTranslated($placeId, new Language('fr'), 'Centre culturel Palethe'),
                 new TitleTranslated($placeId, new Language('de'), 'Kulturzentrum Palethe'),
                 new AddressUpdated(
@@ -104,7 +104,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($placeId, new Title('CC Palethe')),
+                new TitleUpdated($placeId, 'CC Palethe'),
                 new AddressUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Address(
@@ -133,7 +133,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($placeId, new Title('CC Palethe')),
+                new TitleUpdated($placeId, 'CC Palethe'),
                 new AddressUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Address(
@@ -162,7 +162,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($placeId, new Title('cultuurcentrum Tessenderlo/Vismarkt')),
+                new TitleUpdated($placeId, 'cultuurcentrum Tessenderlo/Vismarkt'),
             ],
             $placeImportedFromUDB2->toGranularEvents()
         );
@@ -189,7 +189,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
             '3.3' => [
                 '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                 [
-                    new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', new Title('Bogardenkapel')),
+                    new TitleUpdated('0452b4ae-7c18-4b33-a6c6-eba2288c9ac3', 'Bogardenkapel'),
                     new AddressUpdated(
                         '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                         new Address(
@@ -209,7 +209,7 @@ final class PlaceImportedFromUDB2Test extends TestCase
             'root_node' => [
                 '782c9792-6067-438d-a246-064bb448f086',
                 [
-                    new TitleUpdated('782c9792-6067-438d-a246-064bb448f086', new Title('Bogardenkapel')),
+                    new TitleUpdated('782c9792-6067-438d-a246-064bb448f086', 'Bogardenkapel'),
                     new AddressUpdated(
                         '782c9792-6067-438d-a246-064bb448f086',
                         new Address(

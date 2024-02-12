@@ -168,7 +168,7 @@ final class Item extends Offer
 
     protected function createTitleUpdatedEvent(Title $title): TitleUpdated
     {
-        return new TitleUpdated($this->id, $title);
+        return new TitleUpdated($this->id, $title->toString());
     }
 
     protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated

@@ -907,7 +907,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new TitleUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Title('new title')
+            'new title'
         );
 
         $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);

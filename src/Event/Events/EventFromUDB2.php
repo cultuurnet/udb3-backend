@@ -52,7 +52,7 @@ trait EventFromUDB2
 
         foreach ($details as $key => $detail) {
             if ($key == 0) {
-                $granularEvents[] = new TitleUpdated($this->eventId, new LegacyTitle($detail['title'][0]['_text']));
+                $granularEvents[] = new TitleUpdated($this->eventId, $detail['title'][0]['_text']);
             } else {
                 $granularEvents[] = new TitleTranslated(
                     $this->eventId,

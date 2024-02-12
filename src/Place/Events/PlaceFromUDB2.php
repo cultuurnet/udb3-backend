@@ -23,7 +23,7 @@ trait PlaceFromUDB2
 
         foreach ($details as $key => $detail) {
             if ($key == 0) {
-                $granularEvents[] = new TitleUpdated($this->actorId, new Title($detail['title'][0]['_text']));
+                $granularEvents[] = new TitleUpdated($this->actorId, $detail['title'][0]['_text']);
             } else {
                 $granularEvents[] = new TitleTranslated(
                     $this->actorId,

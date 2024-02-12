@@ -38,7 +38,7 @@ final class MajorInfoUpdatedTest extends TestCase
         );
 
         $expected = [
-            new TitleUpdated($placeId, new Title('Title')),
+            new TitleUpdated($placeId, 'Title'),
             new TypeUpdated($placeId, new EventType('0.14.0.0.0', 'Monument')),
             new AddressUpdated(
                 $placeId,

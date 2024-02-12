@@ -1608,7 +1608,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_title_updated(): void
     {
-        $event = new TitleUpdated(self::EVENT_ID_1, new Title('new title'));
+        $event = new TitleUpdated(self::EVENT_ID_1, 'new title');
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

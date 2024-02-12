@@ -57,7 +57,7 @@ class PlaceCreatedTest extends TestCase
     public function it_converts_to_granular_events(): void
     {
         $expected = [
-            new TitleUpdated('id', new Title('title')),
+            new TitleUpdated('id', 'title'),
             new TypeUpdated('id', new EventType('id', 'label')),
             new AddressUpdated('id', $this->address),
             new CalendarUpdated('id', new Calendar(CalendarType::PERMANENT())),
