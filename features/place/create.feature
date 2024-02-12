@@ -296,7 +296,7 @@ Feature: Test creating places
     And the JSON response should not have "bookingInfo"
     # Note that priceInfo cannot be removed once set currently
     And the JSON response should have "priceInfo"
-    And the JSON response at "completeness" should be 46
+    And the JSON response at "completeness" should be 43
 
   Scenario: Create place with permanent calendar from legacy JSON source
     Given I create a place from "places/legacy/create-permanent-place.json" and save the "url" as "placeUrl"
