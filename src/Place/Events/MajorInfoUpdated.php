@@ -13,14 +13,14 @@ use CultuurNet\UDB3\Title;
 
 final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEvents
 {
-    private Title $title;
+    private string $title;
     private EventType $eventType;
     private Address $address;
     private Calendar $calendar;
 
     final public function __construct(
         string $placeId,
-        Title $title,
+        string $title,
         EventType $eventType,
         Address $address,
         Calendar $calendar
@@ -33,7 +33,7 @@ final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEve
         $this->calendar = $calendar;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -58,7 +58,7 @@ final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEve
         return array_values(
             array_filter(
                 [
-                    new TitleUpdated($this->placeId, $this->title),
+                    new TitleUpdated($this->placeId, new Title($this->title)),
                     new TypeUpdated($this->placeId, $this->eventType),
                     new AddressUpdated($this->placeId, $this->address),
                     new CalendarUpdated($this->placeId, $this->calendar),
@@ -70,7 +70,7 @@ final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEve
     public function serialize(): array
     {
         return parent::serialize() + [
-            'title' => $this->getTitle()->toString(),
+            'title' => $this->getTitle(),
             'event_type' => $this->getEventType()->serialize(),
             'address' => $this->getAddress()->serialize(),
             'calendar' => $this->getCalendar()->serialize(),
@@ -81,7 +81,7 @@ final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEve
     {
         return new static(
             $data['place_id'],
-            new Title($data['title']),
+            $data['title'],
             EventType::deserialize($data['event_type']),
             Address::deserialize($data['address']),
             Calendar::deserialize($data['calendar'])

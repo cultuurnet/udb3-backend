@@ -746,7 +746,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new MajorInfoUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Title('title'),
+            'title',
             new EventType('0.0.0.0', 'event type'),
             new Address(
                 new Street('straat'),

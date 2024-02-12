@@ -153,7 +153,7 @@ class Place extends Offer
         $this->apply(
             new MajorInfoUpdated(
                 $this->placeId,
-                $title,
+                $title->toString(),
                 $eventType,
                 $address,
                 $calendar
