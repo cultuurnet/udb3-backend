@@ -65,7 +65,6 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentNullEnricher;
 use CultuurNet\UDB3\RecordedOn;
-use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use DateTimeInterface;

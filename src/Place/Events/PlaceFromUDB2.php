@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\SerializableSimpleXmlElement;
-use CultuurNet\UDB3\Title;
 
 trait PlaceFromUDB2
 {

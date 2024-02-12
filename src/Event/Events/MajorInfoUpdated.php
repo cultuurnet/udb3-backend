@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 
 final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranularEvents
 {

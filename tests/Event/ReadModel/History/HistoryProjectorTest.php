@@ -81,7 +81,6 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Money\Currency;

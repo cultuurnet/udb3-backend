@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\Place\PlaceEvent;
-use CultuurNet\UDB3\Title;
 
 final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEvents
 {

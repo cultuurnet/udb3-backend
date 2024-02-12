@@ -39,7 +39,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\SerializableSimpleXmlElement;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeZone;
 
 trait EventFromUDB2

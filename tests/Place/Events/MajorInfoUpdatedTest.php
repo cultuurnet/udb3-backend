@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
 final class MajorInfoUpdatedTest extends TestCase

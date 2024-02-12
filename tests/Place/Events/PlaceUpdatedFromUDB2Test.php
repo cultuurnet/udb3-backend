@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
 final class PlaceUpdatedFromUDB2Test extends TestCase
