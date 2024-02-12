@@ -37,7 +37,7 @@ Feature: Test creating places
     """
     And the JSON response at "workflowStatus" should be "DRAFT"
     And the JSON response at "calendarType" should be "permanent"
-    And the JSON response at "completeness" should be 36
+    And the JSON response at "completeness" should be 53
 
   Scenario: Create a place with contact point with missing fields
     Given I create a place from "places/place-with-contact-point-with-missing-fields.json" and save the "url" as "placeUrl"
@@ -50,7 +50,7 @@ Feature: Test creating places
       "url": []
     }
     """
-    And the JSON response at "completeness" should be 39
+    And the JSON response at "completeness" should be 56
 
   Scenario: Create a place with workflowStatus set to APPROVED
     Given I create a place from "places/place-with-workflow-status-approved.json" and save the "url" as "placeUrl"
@@ -98,7 +98,7 @@ Feature: Test creating places
     """
     And the JSON response at "workflowStatus" should be "READY_FOR_VALIDATION"
     And the JSON response at "calendarType" should be "permanent"
-    And the JSON response at "completeness" should be 36
+    And the JSON response at "completeness" should be 53
 
   Scenario: Create a place with only the required fields and workflowStatus approved via legacy imports path
     Given I import a new place from "places/place-with-workflow-status-approved.json" and save the "url" as "placeUrl"
@@ -275,7 +275,7 @@ Feature: Test creating places
       "public-invisible"
     ]
     """
-    And the JSON response at "completeness" should be 51
+    And the JSON response at "completeness" should be 68
 
   @bugfix # https://jira.uitdatabank.be/browse/III-4669
   Scenario: Create a place with all fields and remove the optional ones again using null values and empty lists
@@ -296,7 +296,7 @@ Feature: Test creating places
     And the JSON response should not have "bookingInfo"
     # Note that priceInfo cannot be removed once set currently
     And the JSON response should have "priceInfo"
-    And the JSON response at "completeness" should be 43
+    And the JSON response at "completeness" should be 60
 
   Scenario: Create place with permanent calendar from legacy JSON source
     Given I create a place from "places/legacy/create-permanent-place.json" and save the "url" as "placeUrl"
