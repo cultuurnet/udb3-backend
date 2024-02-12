@@ -74,8 +74,8 @@ final class PlaceImportedFromUDB2Test extends TestCase
         $this->assertEquals(
             [
                 new TitleUpdated($placeId, new Title('CC Palethe')),
-                new TitleTranslated($placeId, new Language('fr'), new Title('Centre culturel Palethe')),
-                new TitleTranslated($placeId, new Language('de'), new Title('Kulturzentrum Palethe')),
+                new TitleTranslated($placeId, new Language('fr'), 'Centre culturel Palethe'),
+                new TitleTranslated($placeId, new Language('de'), 'Kulturzentrum Palethe'),
                 new AddressUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Address(
