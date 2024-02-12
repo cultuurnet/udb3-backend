@@ -121,7 +121,7 @@ class Place extends Offer
         $place->apply(new PlaceCreated(
             $id,
             $mainLanguage,
-            $title,
+            $title->toString(),
             $eventType,
             $address,
             $calendar,
@@ -134,7 +134,7 @@ class Place extends Offer
     protected function applyPlaceCreated(PlaceCreated $placeCreated): void
     {
         $this->mainLanguage = $placeCreated->getMainLanguage();
-        $this->titles[$this->mainLanguage->getCode()] = $placeCreated->getTitle();
+        $this->titles[$this->mainLanguage->getCode()] = new Title($placeCreated->getTitle());
         $this->calendar = $placeCreated->getCalendar();
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
@@ -153,7 +153,7 @@ class Place extends Offer
         $this->apply(
             new MajorInfoUpdated(
                 $this->placeId,
-                $title,
+                $title->toString(),
                 $eventType,
                 $address,
                 $calendar

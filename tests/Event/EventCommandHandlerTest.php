@@ -141,7 +141,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new UpdateMajorInfo($id, $title, $eventType, $location, $calendar)
             )
-            ->then([new MajorInfoUpdated($id, $title, $eventType, $location, $calendar)]);
+            ->then([new MajorInfoUpdated($id, $title->toString(), $eventType, $location, $calendar)]);
     }
 
     /**
@@ -167,7 +167,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             )
             ->then(
                 [
-                    new MajorInfoUpdated($id, $title, $eventType, $location, $calendar),
+                    new MajorInfoUpdated($id, $title->toString(), $eventType, $location, $calendar),
                     new AudienceUpdated($id, new Audience(AudienceType::education())),
                 ]
             );

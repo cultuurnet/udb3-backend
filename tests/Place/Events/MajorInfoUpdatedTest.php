@@ -26,7 +26,7 @@ final class MajorInfoUpdatedTest extends TestCase
 
         $event = new MajorInfoUpdated(
             $placeId,
-            new Title('Title'),
+            'Title',
             new EventType('0.14.0.0.0', 'Monument'),
             new Address(
                 new Street('Martelarenlaan 1'),
