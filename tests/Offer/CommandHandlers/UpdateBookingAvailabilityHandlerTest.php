@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use CultuurNet\UDB3\Title;
 use DateTime;
 
 final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioTestCase
@@ -45,7 +44,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
         $permanentEventCreated = new EventCreated(
             '1',
             new Language('nl'),
-            new Title('Permanent Event'),
+            'Permanent Event',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(CalendarType::PERMANENT())
@@ -68,7 +67,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
         $periodicEventCreated = new EventCreated(
             '1',
             new Language('nl'),
-            new Title('Periodic Event'),
+            'Periodic Event',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(
@@ -95,7 +94,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
         $singleEventCreated = new EventCreated(
             '1',
             new Language('nl'),
-            new Title('Single Event'),
+            'Single Event',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(
@@ -143,7 +142,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
         $multipleEventCreated = new EventCreated(
             '1',
             new Language('nl'),
-            new Title('Multiple Event'),
+            'Multiple Event',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(

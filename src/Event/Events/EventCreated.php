@@ -19,7 +19,7 @@ use DateTimeInterface;
 final class EventCreated extends EventEvent implements ConvertsToGranularEvents, MainLanguageDefined
 {
     private Language $mainLanguage;
-    private Title $title;
+    private string $title;
     private EventType $eventType;
     private ?Theme $theme;
     private LocationId $location;
@@ -29,7 +29,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
     public function __construct(
         string $eventId,
         Language $mainLanguage,
-        Title $title,
+        string $title,
         EventType $eventType,
         LocationId $location,
         Calendar $calendar,
@@ -52,7 +52,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         return $this->mainLanguage;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -87,7 +87,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         return array_values(
             array_filter(
                 [
-                    new TitleUpdated($this->eventId, $this->title),
+                    new TitleUpdated($this->eventId, new Title($this->title)),
                     new TypeUpdated($this->eventId, $this->eventType),
                     $this->theme ? new ThemeUpdated($this->eventId, $this->theme) : null,
                     new LocationUpdated($this->eventId, $this->location),
@@ -109,7 +109,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         }
         return parent::serialize() + [
             'main_language' => $this->mainLanguage->getCode(),
-            'title' => $this->getTitle()->toString(),
+            'title' => $this->getTitle(),
             'event_type' => $this->getEventType()->serialize(),
             'theme' => $theme,
             'location' => $this->getLocation()->toString(),
@@ -134,7 +134,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         return new self(
             $data['event_id'],
             new Language($data['main_language']),
-            new Title($data['title']),
+            $data['title'],
             EventType::deserialize($data['event_type']),
             new LocationId($data['location']),
             Calendar::deserialize($data['calendar']),

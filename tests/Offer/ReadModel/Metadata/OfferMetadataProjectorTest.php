@@ -204,7 +204,7 @@ class OfferMetadataProjectorTest extends TestCase
         return new EventCreated(
             self::OFFER_ID,
             new Language('en'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(CalendarType::PERMANENT())
