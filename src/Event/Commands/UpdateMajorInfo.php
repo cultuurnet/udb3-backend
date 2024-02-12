@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 /**
  * Provides a command to update the major info of the event.
@@ -42,27 +42,27 @@ class UpdateMajorInfo extends AbstractCommand
         $this->theme = $theme;
     }
 
-    public function getTitle() : Title
+    public function getTitle(): Title
     {
         return $this->title;
     }
 
-    public function getEventType() : EventType
+    public function getEventType(): EventType
     {
         return $this->eventType;
     }
 
-    public function getTheme() : ?Theme
+    public function getTheme(): ?Theme
     {
         return $this->theme;
     }
 
-    public function getLocation() : LocationId
+    public function getLocation(): LocationId
     {
         return $this->location;
     }
 
-    public function getCalendar() : Calendar
+    public function getCalendar(): Calendar
     {
         return $this->calendar;
     }
