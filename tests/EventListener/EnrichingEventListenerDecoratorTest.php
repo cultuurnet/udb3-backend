@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -77,7 +76,7 @@ class EnrichingEventListenerDecoratorTest extends TestCase
             new PlaceCreated(
                 'fd9e986d-6a23-470c-bf0c-4ad40aa4515e',
                 new Language('nl'),
-                new Title('test title'),
+                'test title',
                 new EventType('0.0.1', 'label'),
                 new Address(
                     new Street('street'),

@@ -249,7 +249,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                     new PlaceCreated(
                         'c5c1b435-0f3c-4b75-9f28-94d93be7078b',
                         new Language('nl'),
-                        new Title('Test place'),
+                        'Test place',
                         new EventType('0.1.1', 'Jeugdhuis'),
                         $originalAddress,
                         new Calendar(CalendarType::PERMANENT())
@@ -427,7 +427,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                     new PlaceCreated(
                         'c5c1b435-0f3c-4b75-9f28-94d93be7078b',
                         new Language('nl'),
-                        new Title('Test place'),
+                        'Test place',
                         new EventType('0.1.1', 'Jeugdhuis'),
                         $originalAddress,
                         new Calendar(CalendarType::PERMANENT())
@@ -622,7 +622,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
         return  new PlaceCreated(
             $placeId,
             new Language('nl'),
-            new Title('Test place'),
+            'Test place',
             new EventType('0.1.1', 'Jeugdhuis'),
             $address,
             new Calendar(CalendarType::PERMANENT())
