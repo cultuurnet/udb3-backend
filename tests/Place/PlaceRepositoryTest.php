@@ -94,7 +94,7 @@ class PlaceRepositoryTest extends TestCase
             new PlaceCreated(
                 '41c94f16-9edf-4eaf-914a-cfc01336b66e',
                 new Language('nl'),
-                new Title('Test title 1'),
+                'Test title 1',
                 new EventType('0.0.0.1', 'Fake event type'),
                 new Address(
                     new Street('Kerkstraat 1'),
@@ -111,7 +111,7 @@ class PlaceRepositoryTest extends TestCase
             new PlaceCreated(
                 'aed3f3cd-e3de-4361-8e53-1099cce8fef6',
                 new Language('nl'),
-                new Title('Test title 2'),
+                'Test title 2',
                 new EventType('0.0.0.1', 'Fake event type'),
                 new Address(
                     new Street('Kerkstraat 2'),

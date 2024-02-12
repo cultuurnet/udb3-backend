@@ -55,7 +55,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new UpdateMajorInfo($id, $title, $eventType, $address, $calendar)
             )
-            ->then([new MajorInfoUpdated($id, $title, $eventType, $address, $calendar)]);
+            ->then([new MajorInfoUpdated($id, $title->toString(), $eventType, $address, $calendar)]);
     }
 
     /**
@@ -138,7 +138,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         return new PlaceCreated(
             $id,
             new Language('nl'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new Address(
                 new Street('Kerkstraat 69'),

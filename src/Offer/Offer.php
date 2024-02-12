@@ -332,7 +332,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function applyTitleTranslated(AbstractTitleTranslated $titleTranslated): void
     {
-        $this->titles[$titleTranslated->getLanguage()->getCode()] = $titleTranslated->getTitle();
+        $this->titles[$titleTranslated->getLanguage()->getCode()] = new Title($titleTranslated->getTitle());
     }
 
     public function applyTitleUpdated(AbstractTitleUpdated $titleUpdated): void

@@ -28,7 +28,7 @@ trait PlaceFromUDB2
                 $granularEvents[] = new TitleTranslated(
                     $this->actorId,
                     new Language($detail['@attributes']['lang']),
-                    new Title($detail['title'][0]['_text'])
+                    $detail['title'][0]['_text']
                 );
             }
         }

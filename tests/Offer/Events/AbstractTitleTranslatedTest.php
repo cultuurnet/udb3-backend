@@ -6,36 +6,23 @@ namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
 class AbstractTitleTranslatedTest extends TestCase
 {
-    /**
-     * @var AbstractTitleTranslated
-     */
-    protected $titleTranslatedEvent;
+    protected AbstractTitleTranslated $titleTranslatedEvent;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var Language
-     */
-    protected $language;
+    protected Language $language;
 
-    /**
-     * @var Title
-     */
-    protected $title;
+    protected string $title;
 
     public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->language = new Language('en');
-        $this->title = new Title('Title');
+        $this->title = 'Title';
         $this->titleTranslatedEvent = new TitleTranslated($this->itemId, $this->language, $this->title);
     }
 
@@ -46,11 +33,10 @@ class AbstractTitleTranslatedTest extends TestCase
     {
         $expectedItemId = 'Foo';
         $expectedLanguage = new Language('en');
-        $expectedTitle = new Title('Title');
         $expectedTitleTranslated = new TitleTranslated(
             $expectedItemId,
             $expectedLanguage,
-            $expectedTitle
+            'Title'
         );
 
         $this->assertEquals($expectedTitleTranslated, $this->titleTranslatedEvent);
@@ -63,7 +49,7 @@ class AbstractTitleTranslatedTest extends TestCase
     {
         $expectedItemId = 'Foo';
         $expectedLanguage = new Language('en');
-        $expectedTitle = new Title('Title');
+        $expectedTitle = 'Title';
 
         $itemId = $this->titleTranslatedEvent->getItemId();
         $language = $this->titleTranslatedEvent->getLanguage();
@@ -117,7 +103,7 @@ class AbstractTitleTranslatedTest extends TestCase
                 new TitleTranslated(
                     'madId',
                     new Language('en'),
-                    new Title('Title')
+                    'Title'
                 ),
             ],
         ];
