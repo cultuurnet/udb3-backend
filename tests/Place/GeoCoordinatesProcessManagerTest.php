@@ -181,7 +181,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new PlaceCreated(
                         '4b735422-2bf3-4241-aabb-d70609d2d1d3',
                         new Language('es'),
-                        new Title('Het depot'),
+                        'Het depot',
                         new EventType('mock.1', 'Mock'),
                         new Address(
                             new Street('Teststraat 1'),

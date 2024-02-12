@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -128,7 +127,7 @@ final class ProjectorTest extends TestCase
         $payload = new PlaceCreated(
             $placeId,
             new Language('en'),
-            new Title('test 123'),
+            'test 123',
             new EventType('0.50.4.0.0', 'concert'),
             new Address(
                 new Street('Kerkstraat 69'),
