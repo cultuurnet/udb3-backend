@@ -16,37 +16,18 @@ use CultuurNet\UDB3\Title;
  */
 class UpdateMajorInfo extends AbstractCommand
 {
-    /**
-     * @var Title
-     */
-    private $title;
+    private Title $title;
 
-    /**
-     * @var EventType
-     */
-    private $eventType;
+    private EventType $eventType;
 
-    /**
-     * @var Theme|null
-     */
-    private $theme;
+    private ?Theme $theme;
 
-    /**
-     * @var LocationId
-     */
-    private $location;
+    private LocationId $location;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
-    /**
-     * UpdateMajorInfo constructor.
-     * @param string $eventId
-     */
     public function __construct(
-        $eventId,
+        string $eventId,
         Title $title,
         EventType $eventType,
         LocationId $location,
@@ -61,42 +42,27 @@ class UpdateMajorInfo extends AbstractCommand
         $this->theme = $theme;
     }
 
-    /**
-     * @return Title
-     */
-    public function getTitle()
+    public function getTitle() : Title
     {
         return $this->title;
     }
 
-    /**
-     * @return EventType
-     */
-    public function getEventType()
+    public function getEventType() : EventType
     {
         return $this->eventType;
     }
 
-    /**
-     * @return Theme|null
-     */
-    public function getTheme()
+    public function getTheme() : ?Theme
     {
         return $this->theme;
     }
 
-    /**
-     * @return LocationId
-     */
-    public function getLocation()
+    public function getLocation() : LocationId
     {
         return $this->location;
     }
 
-    /**
-     * @return Calendar
-     */
-    public function getCalendar()
+    public function getCalendar() : Calendar
     {
         return $this->calendar;
     }
