@@ -11,6 +11,8 @@ use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
+use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
+use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Contributor\ContributorEnrichedRepository;
 use CultuurNet\UDB3\Contributor\ContributorRepository;
@@ -79,7 +81,10 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
                         new PlaceJsonDocumentLanguageAnalyzer()
                     ),
                     $container->get('config')['base_price_translations'],
-                    new VideoNormalizer($container->get('config')['media']['video_default_copyright'])
+                    new VideoNormalizer($container->get('config')['media']['video_default_copyright']),
+                    new CompletenessFromWeights(
+                        Weights::fromConfig($container->get('config')['completeness']['place'])
+                    )
                 );
 
                 $placeLDProjector->setNrOfRetries(

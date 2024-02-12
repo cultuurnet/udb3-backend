@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Category;
+use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\CulturefeedSlugger;
 use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\OrganizerServiceInterface;
@@ -100,6 +101,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected VideoNormalizer $videoNormalizer;
 
+    private Completeness $completeness;
+
     private ?int $playhead = null;
 
     /**
@@ -113,7 +116,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         MediaObjectSerializer $mediaObjectSerializer,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         array $basePriceTranslations,
-        VideoNormalizer $videoNormalizer
+        VideoNormalizer $videoNormalizer,
+        Completeness $completeness
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
@@ -123,6 +127,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $this->mediaObjectSerializer = $mediaObjectSerializer;
         $this->basePriceTranslations = $basePriceTranslations;
         $this->videoNormalizer = $videoNormalizer;
+        $this->completeness = $completeness;
 
         $this->slugger = new CulturefeedSlugger();
 
@@ -171,6 +176,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         foreach ($jsonDocuments as $jsonDocument) {
             $jsonDocument = $this->jsonDocumentMetaDataEnricher->enrich($jsonDocument, $domainMessage->getMetadata());
             $jsonDocument = $this->updateModified($jsonDocument, $domainMessage);
+            $jsonDocument = $this->updateCompleteness($jsonDocument);
             $jsonDocument = $this->updatePlayhead($jsonDocument, $domainMessage);
 
             $this->repository->save($jsonDocument);
@@ -951,6 +957,15 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $body->modified = $recordedDateTime->toString();
 
         return $jsonDocument->withBody($body);
+    }
+
+    private function updateCompleteness(JsonDocument $jsonDocument): JsonDocument
+    {
+        $body = $jsonDocument->getAssocBody();
+
+        $body['completeness'] = $this->completeness->calculateForDocument($jsonDocument);
+
+        return $jsonDocument->withAssocBody($body);
     }
 
     private function updatePlayhead(JsonDocument $jsonDocument, DomainMessage $domainMessage): JsonDocument

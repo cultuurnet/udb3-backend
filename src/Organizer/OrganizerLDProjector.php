@@ -9,6 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
+use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
@@ -108,18 +109,22 @@ class OrganizerLDProjector implements EventListener
 
     private NormalizerInterface $imageNormalizer;
 
+    private Completeness $completeness;
+
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         NormalizerInterface $imageNormalizer,
-        CdbXMLImporter $cdbXMLImporter
+        CdbXMLImporter $cdbXMLImporter,
+        Completeness $completeness
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
         $this->jsonDocumentMetaDataEnricher = $jsonDocumentMetaDataEnricher;
         $this->imageNormalizer = $imageNormalizer;
         $this->cdbXMLImporter = $cdbXMLImporter;
+        $this->completeness = $completeness;
         $this->addressNormalizer = new AddressNormalizer();
         $this->contactPointNormalizer = new ContactPointNormalizer();
     }
@@ -139,6 +144,8 @@ class OrganizerLDProjector implements EventListener
             $jsonDocument = $this->jsonDocumentMetaDataEnricher->enrich($jsonDocument, $domainMessage->getMetadata());
 
             $jsonDocument = $this->updateModified($jsonDocument, $domainMessage);
+
+            $jsonDocument = $this->updateCompleteness($jsonDocument);
 
             $this->repository->save($jsonDocument);
         }
@@ -686,5 +693,16 @@ class OrganizerLDProjector implements EventListener
         $body->modified = $recordedDateTime->toString();
 
         return $jsonDocument->withBody($body);
+    }
+
+    private function updateCompleteness(JsonDocument $jsonDocument): JsonDocument
+    {
+        $body = $jsonDocument->getAssocBody();
+
+        $completeness = $this->completeness->calculateForDocument($jsonDocument);
+
+        $body['completeness'] = $completeness;
+
+        return $jsonDocument->withAssocBody($body);
     }
 }

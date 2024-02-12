@@ -9,9 +9,9 @@ final class ParsedAddress
     private ?string $thoroughfare;
     private ?string $houseNumber;
     private ?string $postalCode;
-    private string $municipality;
+    private ?string $municipality;
 
-    public function __construct(?string $thoroughfare, ?string $houseNumber, ?string $postalCode, string $municipality)
+    public function __construct(?string $thoroughfare, ?string $houseNumber, ?string $postalCode, ?string $municipality)
     {
         $this->thoroughfare = $thoroughfare;
         $this->houseNumber = $houseNumber;
@@ -34,7 +34,7 @@ final class ParsedAddress
         return $this->postalCode;
     }
 
-    public function getMunicipality(): string
+    public function getMunicipality(): ?string
     {
         return $this->municipality;
     }

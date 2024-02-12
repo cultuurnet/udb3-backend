@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
+use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
@@ -88,7 +89,8 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         CdbXMLImporter $cdbXMLImporter,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         array $basePriceTranslations,
-        VideoNormalizer $videoNormalizer
+        VideoNormalizer $videoNormalizer,
+        Completeness $completeness
     ) {
         parent::__construct(
             $repository,
@@ -98,7 +100,8 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $mediaObjectSerializer,
             $jsonDocumentMetaDataEnricher,
             $basePriceTranslations,
-            $videoNormalizer
+            $videoNormalizer,
+            $completeness
         );
 
         $this->cdbXMLImporter = $cdbXMLImporter;
