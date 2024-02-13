@@ -81,7 +81,6 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Money\Currency;
@@ -1608,7 +1607,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_title_updated(): void
     {
-        $event = new TitleUpdated(self::EVENT_ID_1, new Title('new title'));
+        $event = new TitleUpdated(self::EVENT_ID_1, 'new title');
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

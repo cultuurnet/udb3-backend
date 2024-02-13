@@ -75,7 +75,6 @@ use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Money\Currency;
@@ -907,7 +906,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new TitleUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Title('new title')
+            'new title'
         );
 
         $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);

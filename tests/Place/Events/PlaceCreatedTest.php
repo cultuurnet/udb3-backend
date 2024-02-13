@@ -15,7 +15,6 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
@@ -57,7 +56,7 @@ class PlaceCreatedTest extends TestCase
     public function it_converts_to_granular_events(): void
     {
         $expected = [
-            new TitleUpdated('id', new Title('title')),
+            new TitleUpdated('id', 'title'),
             new TypeUpdated('id', new EventType('id', 'label')),
             new AddressUpdated('id', $this->address),
             new CalendarUpdated('id', new Calendar(CalendarType::PERMANENT())),

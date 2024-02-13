@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 
 final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranularEvents
 {
@@ -67,7 +66,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         return array_values(
             array_filter(
                 [
-                    new TitleUpdated($this->itemId, new Title($this->title)),
+                    new TitleUpdated($this->itemId, $this->title),
                     new TypeUpdated($this->itemId, $this->eventType),
                     $this->theme ? new ThemeUpdated($this->itemId, $this->theme) : null,
                     new LocationUpdated($this->itemId, $this->location),

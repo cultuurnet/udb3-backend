@@ -1733,7 +1733,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId),
-                    new TitleUpdated($itemId, $title),
+                    new TitleUpdated($itemId, $title->toString()),
                 ]
             )
             ->when(
@@ -1758,7 +1758,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId),
-                    new TitleUpdated($itemId, new Title('Een titel')),
+                    new TitleUpdated($itemId, 'Een titel'),
                 ]
             )
             ->when(
@@ -1785,7 +1785,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId),
-                    new TitleUpdated($itemId, new Title('Een titel')),
+                    new TitleUpdated($itemId, 'Een titel'),
                 ]
             )
             ->when(

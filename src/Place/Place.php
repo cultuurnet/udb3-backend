@@ -400,7 +400,7 @@ class Place extends Offer
 
     protected function createTitleUpdatedEvent(Title $title): TitleUpdated
     {
-        return new TitleUpdated($this->placeId, $title);
+        return new TitleUpdated($this->placeId, $title->toString());
     }
 
     protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated
