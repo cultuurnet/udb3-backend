@@ -94,7 +94,7 @@ Feature: Test the UDB3 events API
     # Note that description and priceInfo cannot be removed via complete overwrite once set currently
     And the JSON response should have "description"
     And the JSON response should have "priceInfo"
-    And the JSON response at "completeness" should be 81
+    And the JSON response at "completeness" should be 72
 
   Scenario: Create an event with a workflow status ready for validation
     Given I set the JSON request payload from "places/place.json"

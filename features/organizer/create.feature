@@ -27,6 +27,17 @@ Feature: Test creating organizers
     """
     And the JSON response at "completeness" should be 60
 
+  Scenario: Create a new organizer with long description
+    Given I create an organizer from "organizers/organizer-with-long-description.json" and save the "url" as "organizerUrl"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "description" should be:
+    """
+    {
+      "nl": "This is a very long description of the organizer, it has more then 200 characters and because of that the description is taken into account for the completeness of the organizer. That makes this string difficult to read and understand."
+    }
+    """
+    And the JSON response at "completeness" should be 55
+
   Scenario: Create a new organizer with all properties
     Given I create an organizer from "organizers/organizer.json" and save the "url" as "organizerUrl"
     When I get the organizer at "%{organizerUrl}"
@@ -93,7 +104,7 @@ Feature: Test creating organizers
       "en": "English educational description"
     }
     """
-    And the JSON response at "completeness" should be 85
+    And the JSON response at "completeness" should be 70
 
   @bugfix # https://jira.uitdatabank.be/browse/III-4669
   Scenario: Create a new organizer with all properties and remove them with null values or empty lists in the JSON
