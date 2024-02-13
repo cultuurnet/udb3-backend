@@ -25,7 +25,7 @@ use CultuurNet\UDB3\Offer\Item\ItemCommandHandler;
 use CultuurNet\UDB3\Offer\Item\ItemRepository;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
