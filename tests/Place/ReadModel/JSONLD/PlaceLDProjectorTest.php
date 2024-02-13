@@ -192,7 +192,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 36;
+        $jsonLD->completeness = 53;
 
         $body = $this->project(
             $placeCreated,
@@ -259,7 +259,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 36;
+        $jsonLD->completeness = 53;
 
         $metadata = new Metadata(
             [
@@ -359,7 +359,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->completedLanguages = ['nl'];
         $expectedJsonLD->modified = $this->recordedOn->toString();
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 36;
+        $expectedJsonLD->completeness = 53;
 
         $addressUpdated = new AddressUpdated(
             '66f30742-dee9-4794-ac92-fa44634692b8',
@@ -444,7 +444,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->completedLanguages = ['nl'];
         $expectedJsonLD->modified = $this->recordedOn->toString();
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 36;
+        $expectedJsonLD->completeness = 53;
 
         $addressTranslated = new AddressTranslated(
             '66f30742-dee9-4794-ac92-fa44634692b8',
@@ -697,7 +697,6 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->languages = ['en'];
         $jsonLD->completedLanguages = ['en'];
-        $jsonLD->completeness = 36;
 
         $initialDocument = (new JsonDocument('foo'))
             ->withBody($jsonLD);
@@ -737,7 +736,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 36;
+        $expectedJsonLD->completeness = 53;
 
         $body = $this->project(
             $majorInfoUpdated,

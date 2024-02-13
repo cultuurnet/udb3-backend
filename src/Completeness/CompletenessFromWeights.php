@@ -22,6 +22,24 @@ final class CompletenessFromWeights implements Completeness
         $completeness = 0;
         /** @var Weight $weight */
         foreach ($this->weights as $weight) {
+            if ($weight->getName() === 'type' && isset($body['terms'])) {
+                foreach ($body['terms'] as $term) {
+                    if ($term['domain'] === 'eventtype') {
+                        $completeness += $weight->getValue();
+                    }
+                }
+                continue;
+            }
+
+            if ($weight->getName() === 'theme' && isset($body['terms'])) {
+                foreach ($body['terms'] as $term) {
+                    if ($term['domain'] === 'theme') {
+                        $completeness += $weight->getValue();
+                    }
+                }
+                continue;
+            }
+
             if (!isset($body[$weight->getName()])) {
                 continue;
             }
