@@ -48,6 +48,15 @@ final class CompletenessFromWeights implements Completeness
                 continue;
             }
 
+            if ($weight->getName() === 'description' && isset($body['description'])) {
+                $language = $body['mainLanguage'] ?? array_key_first($body['description']);
+                if (isset($body['description'][$language]) && strlen($body['description'][$language]) > 200) {
+                    $completeness += $weight->getValue();
+                }
+
+                continue;
+            }
+
             $completeness += $weight->getValue();
         }
 
