@@ -22,26 +22,20 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class PlaceRepositoryTest extends TestCase
 {
-    /**
-     * @var PlaceRepository
-     */
-    private $placeRepository;
+    private PlaceRepository $placeRepository;
 
     /**
      * @var EventStore|MockObject
      */
     private $eventStore;
 
-    /**
-     * @var TraceableEventBus
-     */
-    private $eventBus;
+    private TraceableEventBus $eventBus;
 
     public function setUp(): void
     {
