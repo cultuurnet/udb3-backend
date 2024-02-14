@@ -124,7 +124,7 @@ final class ApiProblemFactory
                 return ApiProblem::blank($e->getMessage(), $e->getCode() ?: 400);
 
             case $e instanceof MaxLengthExceeded:
-                return ApiProblem::bodyInvalidData(new SchemaError($e->getPath(), $e->getMessage()));
+                return ApiProblem::bodyInvalidData(new SchemaError('title', $e->getMessage()));
 
             // Because almost any exception will be an instance of \Exception, we need to do a strict comparison of the
             // class name here to convert generic \Exception exceptions specifically.

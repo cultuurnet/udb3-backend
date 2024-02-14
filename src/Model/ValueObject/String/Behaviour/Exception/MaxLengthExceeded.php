@@ -17,9 +17,4 @@ class MaxLengthExceeded extends InvalidArgumentException
     {
         return new self(sprintf('Given string should not be longer than %d characters.', $maxLength));
     }
-
-    public function getPath(): string
-    {
-        return '/0/title';
-    }
 }
