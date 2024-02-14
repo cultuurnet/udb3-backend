@@ -6,15 +6,15 @@ namespace CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Exception;
 
 use InvalidArgumentException;
 
-class MaxLengthExceeded extends InvalidArgumentException
+class StringIsInvalid extends InvalidArgumentException
 {
     private function __construct(string $message)
     {
         parent::__construct($message);
     }
 
-    public static function maxLengthExceeded(int $maxLength): self
+    public static function becauseMaxLengthIsExceeded(string $field, int $maxLength): self
     {
-        return new self(sprintf('Given string should not be longer than %d characters.', $maxLength));
+        return new self(sprintf('Given %s should not be longer than %d characters.', $field, $maxLength));
     }
 }

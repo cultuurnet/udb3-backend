@@ -12,7 +12,7 @@ class MockHasMaxLengthString
 
     public function __construct(string $value, int $maxLength)
     {
-        $this->guardTooLong($value, $maxLength);
+        $this->guardTooLong('title', $value, $maxLength);
         $this->value = $value;
     }
 
