@@ -245,3 +245,23 @@ Feature: Test creating organizers
       "en": "English educational description"
     }
     """
+
+  Scenario: I should not be able to create an organizer with a very long title
+    Given I create a random name of 100 characters and keep it as "name"
+    Given I create a minimal organizer and save the "url" as "organizerUrl"
+    Then the response status should be "400"
+    And the response body should be valid JSON
+    Then the JSON response should be:
+    """
+    {
+        "type": "https://api.publiq.be/probs/body/invalid-data",
+        "title": "Invalid body data",
+        "status": 400,
+        "schemaErrors": [
+            {
+                "jsonPointer": "/title",
+                "error": "Given string should not be longer than 90 characters."
+            }
+        ]
+    }
+    """
