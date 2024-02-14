@@ -612,7 +612,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
-                'completeness' => 21,
+                'completeness' => 12,
             ],
             $body
         );
@@ -656,7 +656,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
-                'completeness' => 21,
+                'completeness' => 12,
             ],
             $body
         );
@@ -700,7 +700,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
-                'completeness' => 21,
+                'completeness' => 12,
             ],
             $body
         );
