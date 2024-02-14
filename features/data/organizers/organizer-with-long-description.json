@@ -1,0 +1,10 @@
+{
+  "mainLanguage":"nl",
+  "name": {
+    "nl": "%{name}"
+  },
+  "url": "https://www.%{name}.be",
+  "description": {
+    "nl": "This is a very long description of the organizer, it has more then 200 characters and because of that the description is taken into account for the completeness of the organizer. That makes this string difficult to read and understand."
+  }
+}
