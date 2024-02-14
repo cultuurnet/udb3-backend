@@ -196,16 +196,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_title(): void
-    {
-        $expected = new Title('Voorbeeld titel');
-        $actual = $this->adapter->getTitle();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_return_a_type(): void
     {
         $expected = new EventType('0.6.0.0.0', 'Beurs');

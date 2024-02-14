@@ -91,6 +91,11 @@ abstract class TranslatedValueObject
         );
     }
 
+    public function getOriginalValue(): object
+    {
+        return $this->getTranslation($this->getOriginalLanguage());
+    }
+
     private function guardValueObjectClassName(object $valueObject): void
     {
         $className = $this->getValueObjectClassName();
