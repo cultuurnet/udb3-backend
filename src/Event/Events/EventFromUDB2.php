@@ -39,7 +39,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\SerializableSimpleXmlElement;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTimeZone;
 
 trait EventFromUDB2
@@ -52,7 +51,7 @@ trait EventFromUDB2
 
         foreach ($details as $key => $detail) {
             if ($key == 0) {
-                $granularEvents[] = new TitleUpdated($this->eventId, new LegacyTitle($detail['title'][0]['_text']));
+                $granularEvents[] = new TitleUpdated($this->eventId, $detail['title'][0]['_text']);
             } else {
                 $granularEvents[] = new TitleTranslated(
                     $this->eventId,

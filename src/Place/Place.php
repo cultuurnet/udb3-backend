@@ -70,7 +70,7 @@ use CultuurNet\UDB3\Place\Events\VideoAdded;
 use CultuurNet\UDB3\Place\Events\VideoDeleted;
 use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3Language;
@@ -400,7 +400,7 @@ class Place extends Offer
 
     protected function createTitleUpdatedEvent(Title $title): TitleUpdated
     {
-        return new TitleUpdated($this->placeId, $title);
+        return new TitleUpdated($this->placeId, $title->toString());
     }
 
     protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated
