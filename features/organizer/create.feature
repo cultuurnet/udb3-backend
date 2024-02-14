@@ -261,6 +261,7 @@ Feature: Test creating organizers
     Given I create a random name of 100 characters and keep it as "name"
     Given I create a random name of 10 characters and keep it as "url"
     # I had to create a new data file, because there is also a check on the length of the URL, which runs first
+    # The max length is 63 - https://www.nic.ad.jp/timeline/en/20th/appendix1.html#:~:text=Format%20of%20a%20domain%20name,or%20end%20with%20a%20hyphen.
     Given I set the JSON request payload from "organizers/organizer-minimal-title-separate-from-url.json"
     When I send a POST request to "/organizers/"
     Then the response status should be "400"
