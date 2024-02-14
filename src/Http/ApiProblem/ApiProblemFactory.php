@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Event\Productions\EventCannotBeAddedToProduction;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeRemovedFromProduction;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Exception\MaxLengthExceeded;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\UiTPAS\Validation\ChangeNotAllowedByTicketSales;
@@ -121,6 +122,9 @@ final class ApiProblemFactory
             case $e instanceof EventCannotBeRemovedFromProduction:
             case $e instanceof EndDateCanNotBeEarlierThanStartDate:
                 return ApiProblem::blank($e->getMessage(), $e->getCode() ?: 400);
+
+            case $e instanceof MaxLengthExceeded:
+                return ApiProblem::bodyInvalidData(new SchemaError($e->getPath(), $e->getMessage()));
 
             // Because almost any exception will be an instance of \Exception, we need to do a strict comparison of the
             // class name here to convert generic \Exception exceptions specifically.

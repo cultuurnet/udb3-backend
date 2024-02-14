@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\String\Behaviour;
 
-class MockHasMaxLength
+class MockHasMaxLengthString
 {
     use HasMaxLength;
 
-    private bool $success;
+    private string $value;
 
     public function __construct(string $value, int $maxLength)
     {
-        $this->hasMaxLength($value, $maxLength);
-
-        $this->success = true;
+        $this->guardTooLong($value, $maxLength);
+        $this->value = $value;
     }
 
-    public function isSuccess(): bool
+    public function getValue(): string
     {
-        return $this->success;
+        return $this->value;
     }
 }
