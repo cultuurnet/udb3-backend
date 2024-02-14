@@ -544,8 +544,8 @@ Feature: Test creating places
         "status": 400,
         "schemaErrors": [
             {
-                "jsonPointer": "/title",
-                "error": "Given string should not be longer than 90 characters."
+                "jsonPointer": "/",
+                "error": "Given title should not be longer than 90 characters."
             }
         ]
     }

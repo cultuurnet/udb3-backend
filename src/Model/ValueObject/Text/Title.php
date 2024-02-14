@@ -22,7 +22,7 @@ class Title
     {
         $value = $this->trim($value);
         $this->guardNotEmpty($value);
-        $this->hasMaxLength($value, self::MAX_LENGTH, '/title');
+        $this->guardTooLong('title', $value, self::MAX_LENGTH);
         $this->setValue($value);
     }
 }
