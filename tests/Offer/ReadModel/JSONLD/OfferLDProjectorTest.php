@@ -130,7 +130,7 @@ class OfferLDProjectorTest extends TestCase
                     'type' => 12,
                     'theme' => 5,
                     'calendarType' => 12,
-                    'address' => 12,
+                    'location' => 12,
                     'name' => 12,
                     'typicalAgeRange' => 12,
                     'mediaObject' => 8,
@@ -612,7 +612,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
-                'completeness' => 21,
+                'completeness' => 12,
             ],
             $body
         );
@@ -656,7 +656,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
-                'completeness' => 21,
+                'completeness' => 12,
             ],
             $body
         );
@@ -700,7 +700,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
-                'completeness' => 21,
+                'completeness' => 12,
             ],
             $body
         );

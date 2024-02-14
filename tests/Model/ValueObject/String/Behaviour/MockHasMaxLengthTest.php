@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\String\Behaviour;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Exception\StringIsInvalid;
 use PHPUnit\Framework\TestCase;
 
 class MockHasMaxLengthTest extends TestCase
@@ -15,13 +15,13 @@ class MockHasMaxLengthTest extends TestCase
     public function testMaxLengthValidation(string $value, int $maxLength, bool $expectException): void
     {
         if ($expectException) {
-            $this->expectException(ApiProblem::class);
+            $this->expectException(StringIsInvalid::class);
         }
 
-        $mock = new MockHasMaxLength($value, $maxLength);
+        $mock = new MockHasMaxLengthString($value, $maxLength);
 
         // Check for the happy path
-        $this->assertTrue($mock->isSuccess());
+        $this->assertEquals($value, $mock->getValue());
     }
 
     public function dataProvider(): array

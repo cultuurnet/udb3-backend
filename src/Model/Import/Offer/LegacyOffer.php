@@ -25,8 +25,6 @@ interface LegacyOffer
 
     public function getMainLanguage(): Language;
 
-    public function getTitle(): Title;
-
     public function getDescription(): ?Description;
 
     public function getType(): EventType;
