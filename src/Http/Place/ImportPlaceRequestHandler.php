@@ -139,7 +139,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $placeAdapter = new Udb3ModelToLegacyPlaceAdapter($place);
 
         $mainLanguage = $placeAdapter->getMainLanguage();
-        $title = $placeAdapter->getTitle();
+        $title = $place->getTitle()->getOriginalValue();
         $type = $placeAdapter->getType();
         $address = $placeAdapter->getAddress();
         $calendar = $placeAdapter->getCalendar();
@@ -161,7 +161,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $placeAggregate = PlaceAggregate::create(
                 $placeId,
                 $mainLanguage,
-                new Title($title->toString()),
+                $title,
                 $type,
                 $address,
                 $calendar,
@@ -269,7 +269,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         if (! $this->preventDuplicatePlaces) {
             return;
         }
-
 
         try {
             $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceUri($place);
