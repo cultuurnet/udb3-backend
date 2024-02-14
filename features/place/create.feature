@@ -532,3 +532,21 @@ Feature: Test creating places
       "status": 400
     }
     """
+
+  Scenario: I should not be able to create a place with a very long title
+    Given I create a random name of 100 characters and keep it as "name"
+    Given I create a minimal place then I should get a "400" response code
+    Then the JSON response should be:
+    """
+    {
+        "type": "https://api.publiq.be/probs/body/invalid-data",
+        "title": "Invalid body data",
+        "status": 400,
+        "schemaErrors": [
+            {
+                "jsonPointer": "/title",
+                "error": "Given string should not be longer than 90 characters."
+            }
+        ]
+    }
+    """
