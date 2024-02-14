@@ -139,7 +139,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $placeAdapter = new Udb3ModelToLegacyPlaceAdapter($place);
 
         $mainLanguage = $placeAdapter->getMainLanguage();
-        $title = $placeAdapter->getTitle();
+        $title = $place->getTitle()->getTranslation($place->getTitle()->getOriginalLanguage());
         $type = $placeAdapter->getType();
         $address = $placeAdapter->getAddress();
         $calendar = $placeAdapter->getCalendar();
