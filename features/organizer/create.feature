@@ -248,7 +248,10 @@ Feature: Test creating organizers
 
   Scenario: I should not be able to create an organizer with a very long title
     Given I create a random name of 100 characters and keep it as "name"
-    Given I create a minimal organizer and save the "url" as "organizerUrl"
+    Given I create a random name of 10 characters and keep it as "url"
+    # I had to create a new data file, because there is also a check on the length of the URL, which runs first
+    Given I set the JSON request payload from "organizers/organizer-minimal-title-separate-from-url.json"
+    When I send a POST request to "/organizers/"
     Then the response status should be "400"
     And the response body should be valid JSON
     Then the JSON response should be:
