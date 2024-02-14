@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
 class MajorInfoUpdatedTest extends TestCase
@@ -39,7 +38,7 @@ class MajorInfoUpdatedTest extends TestCase
         );
 
         $expectedWithTheme = [
-            new TitleUpdated($eventId, new Title('title')),
+            new TitleUpdated($eventId, 'title'),
             new TypeUpdated($eventId, new EventType('0.50.4.0.0', 'Concert')),
             new ThemeUpdated($eventId, new Theme('1.8.3.5.0', 'Amusementsmuziek')),
             new LocationUpdated($eventId, new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e')),
@@ -47,7 +46,7 @@ class MajorInfoUpdatedTest extends TestCase
         ];
 
         $expectedWithoutTheme = [
-            new TitleUpdated($eventId, new Title('title')),
+            new TitleUpdated($eventId, 'title'),
             new TypeUpdated($eventId, new EventType('0.50.4.0.0', 'Concert')),
             new LocationUpdated($eventId, new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e')),
             new CalendarUpdated($eventId, new Calendar(CalendarType::PERMANENT())),

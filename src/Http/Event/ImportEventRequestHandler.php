@@ -132,7 +132,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $eventAdapter = new Udb3ModelToLegacyEventAdapter($event);
 
         $mainLanguage = $eventAdapter->getMainLanguage();
-        $title = $eventAdapter->getTitle();
+        $title = new Title($eventAdapter->getTitle()->toString());
         $type = $eventAdapter->getType();
         $location = $eventAdapter->getLocation();
         $calendar = $eventAdapter->getCalendar();

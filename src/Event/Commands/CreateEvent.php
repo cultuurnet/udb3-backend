@@ -8,53 +8,23 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Offer\Commands\AbstractCreateCommand;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 
-class CreateEvent extends AbstractCreateCommand
+class CreateEvent
 {
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
+    private string $itemId;
+    private Language $mainLanguage;
+    private Title $title;
+    private EventType $eventType;
+    private Theme $theme;
+    private LocationId $location;
+    private Calendar $calendar;
+    private ?DateTimeImmutable $publicationDate;
 
-    /**
-     * @var Title
-     */
-    private $title;
-
-    /**
-     * @var EventType
-     */
-    private $eventType;
-
-    /**
-     * @var Theme
-     */
-    private $theme;
-
-    /**
-     * @var LocationId
-     */
-    private $location;
-
-    /**
-     * @var Calendar
-     */
-    private $calendar;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    private $publicationDate;
-
-    /**
-     * @param string $eventId
-     */
     public function __construct(
-        $eventId,
+        string $itemId,
         Language $mainLanguage,
         Title $title,
         EventType $eventType,
@@ -63,8 +33,7 @@ class CreateEvent extends AbstractCreateCommand
         Theme $theme = null,
         DateTimeImmutable $publicationDate = null
     ) {
-        parent::__construct($eventId);
-
+        $this->itemId = $itemId;
         $this->mainLanguage = $mainLanguage;
         $this->title = $title;
         $this->eventType = $eventType;
@@ -74,50 +43,37 @@ class CreateEvent extends AbstractCreateCommand
         $this->publicationDate = $publicationDate;
     }
 
-    /**
-     * @return Language
-     */
-    public function getMainLanguage()
+    public function getItemId(): string
+    {
+        return $this->itemId;
+    }
+
+    public function getMainLanguage(): Language
     {
         return $this->mainLanguage;
     }
 
-    /**
-     * @return Title
-     */
-    public function getTitle()
+    public function getTitle(): Title
     {
         return $this->title;
     }
 
-    /**
-     * @return EventType
-     */
-    public function getEventType()
+    public function getEventType(): EventType
     {
         return $this->eventType;
     }
 
-    /**
-     * @return Theme
-     */
-    public function getTheme()
+    public function getTheme(): Theme
     {
         return $this->theme;
     }
 
-    /**
-     * @return Calendar
-     */
-    public function getCalendar()
+    public function getCalendar(): Calendar
     {
         return $this->calendar;
     }
 
-    /**
-     * @return LocationId
-     */
-    public function getLocation()
+    public function getLocation(): LocationId
     {
         return $this->location;
     }

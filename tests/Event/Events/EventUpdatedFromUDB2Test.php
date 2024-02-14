@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\TestCase;
 
 final class EventUpdatedFromUDB2Test extends TestCase
@@ -64,7 +63,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new LegacyTitle('Het evenement!')),
+                new TitleUpdated($eventId, 'Het evenement!'),
                 new TitleTranslated($eventId, new Language('fr'), 'L\'événement!'),
                 new TitleTranslated($eventId, new Language('de'), 'Das Ereignis!'),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
@@ -87,7 +86,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new LegacyTitle('Het evenement!')),
+                new TitleUpdated($eventId, 'Het evenement!'),
                 new TitleTranslated($eventId, new Language('fr'), 'L\'événement!'),
                 new TitleTranslated($eventId, new Language('de'), 'Das Ereignis!'),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
@@ -125,7 +124,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
 
         $this->assertEquals(
             [
-                new TitleUpdated($eventId, new LegacyTitle('Het evenement!')),
+                new TitleUpdated($eventId, 'Het evenement!'),
                 new TitleTranslated($eventId, new Language('fr'), 'L\'événement!'),
                 new TitleTranslated($eventId, new Language('de'), 'Das Ereignis!'),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),

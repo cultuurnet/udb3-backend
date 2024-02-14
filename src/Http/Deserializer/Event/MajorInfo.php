@@ -8,35 +8,19 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 class MajorInfo
 {
-    /**
-     * @var Title
-     */
-    private $title;
+    private Title $title;
 
-    /**
-     * @var EventType
-     */
-    private $type;
+    private EventType $type;
 
-    /**
-     * @var LocationId
-     */
-    private $location;
+    private LocationId $location;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
-    /**
-     * @var Theme|null
-     */
-    private $theme;
-
+    private ?Theme $theme;
 
     public function __construct(
         Title $title,
@@ -52,42 +36,27 @@ class MajorInfo
         $this->theme = $theme;
     }
 
-    /**
-     * @return Title
-     */
-    public function getTitle()
+    public function getTitle(): Title
     {
         return $this->title;
     }
 
-    /**
-     * @return EventType
-     */
-    public function getType()
+    public function getType(): EventType
     {
         return $this->type;
     }
 
-    /**
-     * @return LocationId
-     */
-    public function getLocation()
+    public function getLocation(): LocationId
     {
         return $this->location;
     }
 
-    /**
-     * @return Calendar
-     */
-    public function getCalendar()
+    public function getCalendar(): Calendar
     {
         return $this->calendar;
     }
 
-    /**
-     * @return Theme|null
-     */
-    public function getTheme()
+    public function getTheme(): ?Theme
     {
         return $this->theme;
     }

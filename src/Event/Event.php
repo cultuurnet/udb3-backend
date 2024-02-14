@@ -96,7 +96,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -587,7 +587,7 @@ final class Event extends Offer
 
     protected function createTitleUpdatedEvent(Title $title): TitleUpdated
     {
-        return new TitleUpdated($this->eventId, $title);
+        return new TitleUpdated($this->eventId, $title->toString());
     }
 
     protected function createDescriptionTranslatedEvent(LegacyLanguage $language, Description $description): DescriptionTranslated

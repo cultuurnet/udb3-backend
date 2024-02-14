@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\SerializableSimpleXmlElement;
-use CultuurNet\UDB3\Title;
 
 trait PlaceFromUDB2
 {
@@ -23,7 +22,7 @@ trait PlaceFromUDB2
 
         foreach ($details as $key => $detail) {
             if ($key == 0) {
-                $granularEvents[] = new TitleUpdated($this->actorId, new Title($detail['title'][0]['_text']));
+                $granularEvents[] = new TitleUpdated($this->actorId, $detail['title'][0]['_text']);
             } else {
                 $granularEvents[] = new TitleTranslated(
                     $this->actorId,
