@@ -69,7 +69,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -174,7 +173,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     'type' => 12,
                     'theme' => 5,
                     'calendarType' => 12,
-                    'address' => 12,
+                    'location' => 12,
                     'name' => 12,
                     'typicalAgeRange' => 12,
                     'mediaObject' => 8,
@@ -214,7 +213,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 36;
+        $jsonLD->completeness = 60;
 
         $this->mockPlaceService();
 
@@ -237,7 +236,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventCreated = new EventCreated(
             $eventId,
             new Language('en'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.14.0.0.0', 'Monument'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(
@@ -272,7 +271,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->created = $recordedOn;
         $jsonLD->modified = $recordedOn;
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 36;
+        $jsonLD->completeness = 60;
 
         $body = $this->project(
             $eventCopied,
@@ -314,7 +313,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 36;
+        $jsonLD->completeness = 65;
 
         $this->mockPlaceService();
 
@@ -363,7 +362,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->creator = $expectedCreator;
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 36;
+        $jsonLD->completeness = 65;
 
         $this->mockPlaceService();
 
@@ -493,7 +492,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = '20a72430-7e3e-4b75-ab59-043156b3169c';
-        $expectedJsonLD->completeness = 36;
+        $expectedJsonLD->completeness = 60;
 
         $this->assertEquals($expectedJsonLD, $body);
     }
@@ -530,7 +529,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = $userId;
-        $expectedJsonLD->completeness = 36;
+        $expectedJsonLD->completeness = 60;
 
         $this->assertEquals($expectedJsonLD, $body);
     }
@@ -556,7 +555,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventCreated = new EventCreated(
             '1',
             new Language('en'),
-            new Title('Workshop with single day'),
+            'Workshop with single day',
             $eventType,
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             $calendar
@@ -593,7 +592,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventCreated = new EventCreated(
             '1',
             new Language('en'),
-            new Title('Workshop with single day'),
+            'Workshop with single day',
             $eventType,
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             $calendar
@@ -678,7 +677,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 36;
+        $jsonLD->completeness = 65;
 
         $this->mockPlaceService();
 
@@ -1016,7 +1015,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->mockPlaceService();
 
         $id = 'foo';
-        $title = new Title('new title');
+        $title = 'new title';
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
         $calendar = new Calendar(
@@ -1087,7 +1086,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 24;
+        $expectedJsonLD->completeness = 53;
 
         $body = $this->project($majorInfoUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
 
@@ -1173,7 +1172,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $expectedJsonLD->modified = $this->recordedOn->toString();
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 0;
+        $expectedJsonLD->completeness = 12;
 
         $body = $this->project($locationUpdated, $eventId, null, $this->recordedOn->toBroadwayDateTime());
 
@@ -1231,7 +1230,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 ],
             ],
             'modified' => $this->recordedOn->toString(),
-            'completeness' => 12,
+            'completeness' => 24,
         ];
         $expectedBody->playhead = 1;
 
@@ -1249,7 +1248,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'samples/event_with_empty_keyword.cdbxml.xml'
         );
 
-        $title = new Title('new title');
+        $title = 'new title';
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
         $calendar = new Calendar(
@@ -1307,7 +1306,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventCreated = new EventCreated(
             '1',
             new Language('en'),
-            new Title('Online workshop'),
+            'Online workshop',
             new EventType('0.3.1.0.0', 'Cursus of workshop'),
             new LocationId(LocationId::NIL_LOCATION),
             new Calendar(CalendarType::PERMANENT())
@@ -1825,7 +1824,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         return new EventCreated(
             $eventId,
             new Language('en'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             $calendar,

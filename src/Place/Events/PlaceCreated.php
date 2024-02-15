@@ -11,14 +11,13 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Place\PlaceEvent;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 
 final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents, MainLanguageDefined
 {
     private Language $mainLanguage;
-    private Title $title;
+    private string $title;
     private EventType $eventType;
     private Address $address;
     private Calendar $calendar;
@@ -27,7 +26,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
     public function __construct(
         string $placeId,
         Language $mainLanguage,
-        Title $title,
+        string $title,
         EventType $eventType,
         Address $address,
         Calendar $calendar,
@@ -48,7 +47,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
         return $this->mainLanguage;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -91,7 +90,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
         }
         return parent::serialize() + [
             'main_language' => $this->mainLanguage->getCode(),
-            'title' => $this->getTitle()->toString(),
+            'title' => $this->getTitle(),
             'event_type' => $this->getEventType()->serialize(),
             'address' => $this->getAddress()->serialize(),
             'calendar' => $this->getCalendar()->serialize(),
@@ -111,7 +110,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
         return new static(
             $data['place_id'],
             new Language($data['main_language']),
-            new Title($data['title']),
+            $data['title'],
             EventType::deserialize($data['event_type']),
             Address::deserialize($data['address']),
             Calendar::deserialize($data['calendar']),

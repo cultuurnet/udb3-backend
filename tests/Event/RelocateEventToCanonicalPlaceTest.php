@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
 use CultuurNet\UDB3\Place\Place;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -61,7 +60,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
             new EventCreated(
                 $eventId,
                 new Language('en'),
-                new Title('Faith no More'),
+                'Faith no More',
                 new EventType('0.50.4.0.0', 'Concert'),
                 $locationId,
                 new Calendar(CalendarType::PERMANENT()),
@@ -89,7 +88,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
             new EventCreated(
                 $eventId,
                 new Language('en'),
-                new Title('Faith no More'),
+                'Faith no More',
                 new EventType('0.50.4.0.0', 'Concert'),
                 $locationId,
                 new Calendar(CalendarType::PERMANENT()),

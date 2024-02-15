@@ -65,7 +65,6 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentNullEnricher;
 use CultuurNet\UDB3\RecordedOn;
-use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -131,7 +130,7 @@ class OfferLDProjectorTest extends TestCase
                     'type' => 12,
                     'theme' => 5,
                     'calendarType' => 12,
-                    'address' => 12,
+                    'location' => 12,
                     'name' => 12,
                     'typicalAgeRange' => 12,
                     'mediaObject' => 8,
@@ -535,7 +534,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $titleUpdatedEvent = new TitleUpdated(
             '5582FCA5-38FD-40A0-B8FB-9FA70AB7ADA3',
-            new Title('A cycling adventure')
+            'A cycling adventure'
         );
 
         $initialDocument = new JsonDocument(
@@ -583,7 +582,7 @@ class OfferLDProjectorTest extends TestCase
         $titleTranslated = new TitleTranslated(
             'foo',
             new LegacyLanguage('en'),
-            new Title('English title')
+            'English title'
         );
 
         $initialDocument = new JsonDocument(
@@ -613,7 +612,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
-                'completeness' => 21,
+                'completeness' => 12,
             ],
             $body
         );
@@ -657,7 +656,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
-                'completeness' => 21,
+                'completeness' => 12,
             ],
             $body
         );
@@ -701,7 +700,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
-                'completeness' => 21,
+                'completeness' => 12,
             ],
             $body
         );

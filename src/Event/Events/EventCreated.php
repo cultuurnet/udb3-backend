@@ -12,14 +12,13 @@ use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 
 final class EventCreated extends EventEvent implements ConvertsToGranularEvents, MainLanguageDefined
 {
     private Language $mainLanguage;
-    private Title $title;
+    private string $title;
     private EventType $eventType;
     private ?Theme $theme;
     private LocationId $location;
@@ -29,7 +28,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
     public function __construct(
         string $eventId,
         Language $mainLanguage,
-        Title $title,
+        string $title,
         EventType $eventType,
         LocationId $location,
         Calendar $calendar,
@@ -52,7 +51,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         return $this->mainLanguage;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -109,7 +108,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         }
         return parent::serialize() + [
             'main_language' => $this->mainLanguage->getCode(),
-            'title' => $this->getTitle()->toString(),
+            'title' => $this->getTitle(),
             'event_type' => $this->getEventType()->serialize(),
             'theme' => $theme,
             'location' => $this->getLocation()->toString(),
@@ -134,7 +133,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         return new self(
             $data['event_id'],
             new Language($data['main_language']),
-            new Title($data['title']),
+            $data['title'],
             EventType::deserialize($data['event_type']),
             new LocationId($data['location']),
             Calendar::deserialize($data['calendar']),

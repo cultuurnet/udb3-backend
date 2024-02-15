@@ -8,35 +8,20 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 class UpdateMajorInfo extends AbstractCommand
 {
-    /**
-     * @var Title
-     */
-    private $title;
+    private Title $title;
 
-    /**
-     * @var EventType
-     */
-    private $eventType;
+    private EventType $eventType;
 
-    /**
-     * @var Address
-     */
-    private $address;
+    private Address $address;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
-    /**
-     * @param string $placeId
-     */
     public function __construct(
-        $placeId,
+        string $placeId,
         Title $title,
         EventType $eventType,
         Address $address,
@@ -49,34 +34,22 @@ class UpdateMajorInfo extends AbstractCommand
         $this->calendar = $calendar;
     }
 
-    /**
-     * @return Title
-     */
-    public function getTitle()
+    public function getTitle(): Title
     {
         return $this->title;
     }
 
-    /**
-     * @return EventType
-     */
-    public function getEventType()
+    public function getEventType(): EventType
     {
         return $this->eventType;
     }
 
-    /**
-     * @return Address
-     */
-    public function getAddress()
+    public function getAddress(): Address
     {
         return $this->address;
     }
 
-    /**
-     * @return Calendar
-     */
-    public function getCalendar()
+    public function getCalendar(): Calendar
     {
         return $this->calendar;
     }

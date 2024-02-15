@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 
 final class DeleteOnlineUrlHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -84,7 +83,7 @@ final class DeleteOnlineUrlHandlerTest extends CommandHandlerScenarioTestCase
         return new EventCreated(
             $id,
             new Language('nl'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('bfc60a14-6208-4372-942e-86e63744769a'),
             new Calendar(CalendarType::PERMANENT()),

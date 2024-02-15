@@ -208,7 +208,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             'completedLanguages' => ['nl'],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
-            'completeness' => 21,
+            'completeness' => 12,
         ];
 
         $body = $this->project($descriptionUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());

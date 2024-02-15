@@ -70,7 +70,7 @@ use CultuurNet\UDB3\Place\Events\VideoAdded;
 use CultuurNet\UDB3\Place\Events\VideoDeleted;
 use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3Language;
@@ -121,7 +121,7 @@ class Place extends Offer
         $place->apply(new PlaceCreated(
             $id,
             $mainLanguage,
-            $title,
+            $title->toString(),
             $eventType,
             $address,
             $calendar,
@@ -134,7 +134,7 @@ class Place extends Offer
     protected function applyPlaceCreated(PlaceCreated $placeCreated): void
     {
         $this->mainLanguage = $placeCreated->getMainLanguage();
-        $this->titles[$this->mainLanguage->getCode()] = $placeCreated->getTitle();
+        $this->titles[$this->mainLanguage->getCode()] = new Title($placeCreated->getTitle());
         $this->calendar = $placeCreated->getCalendar();
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
@@ -153,7 +153,7 @@ class Place extends Offer
         $this->apply(
             new MajorInfoUpdated(
                 $this->placeId,
-                $title,
+                $title->toString(),
                 $eventType,
                 $address,
                 $calendar
@@ -395,12 +395,12 @@ class Place extends Offer
 
     protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
     {
-        return new TitleTranslated($this->placeId, $language, $title);
+        return new TitleTranslated($this->placeId, $language, $title->toString());
     }
 
     protected function createTitleUpdatedEvent(Title $title): TitleUpdated
     {
-        return new TitleUpdated($this->placeId, $title);
+        return new TitleUpdated($this->placeId, $title->toString());
     }
 
     protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated

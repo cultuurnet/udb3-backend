@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 
 /**
@@ -40,17 +39,6 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
     {
         return Language::fromUdb3ModelLanguage(
             $this->offer->getMainLanguage()
-        );
-    }
-
-    public function getTitle(): Title
-    {
-        $translatedTitle = $this->offer->getTitle();
-
-        return Title::fromUdb3ModelTitle(
-            $translatedTitle->getTranslation(
-                $translatedTitle->getOriginalLanguage()
-            )
         );
     }
 
@@ -160,9 +148,7 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         /* @var \CultuurNet\UDB3\Model\ValueObject\Translation\Language $language */
         $translatedTitle = $this->offer->getTitle();
         foreach ($translatedTitle->getLanguagesWithoutOriginal() as $language) {
-            $titles[$language->toString()] = Title::fromUdb3ModelTitle(
-                $translatedTitle->getTranslation($language)
-            );
+            $titles[$language->toString()] = $translatedTitle->getTranslation($language);
         }
 
         return $titles;

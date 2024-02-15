@@ -12,7 +12,6 @@ use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +36,7 @@ class EventCreatedTest extends TestCase
         $this->eventCreated = new EventCreated(
             'id',
             new Language('es'),
-            new Title('title'),
+            'title',
             new EventType('id', 'label'),
             $this->location,
             new Calendar(CalendarType::PERMANENT()),
@@ -56,7 +55,7 @@ class EventCreatedTest extends TestCase
         $eventWithTheme = new EventCreated(
             $eventId,
             new Language('nl'),
-            new Title('Example title'),
+            'Example title',
             new EventType('0.50.4.0.0', 'Concert'),
             $this->location,
             new Calendar(CalendarType::PERMANENT()),
@@ -66,14 +65,14 @@ class EventCreatedTest extends TestCase
         $eventWithoutTheme = new EventCreated(
             $eventId,
             new Language('nl'),
-            new Title('Example title'),
+            'Example title',
             new EventType('0.50.4.0.0', 'Concert'),
             $this->location,
             new Calendar(CalendarType::PERMANENT())
         );
 
         $expectedWithTheme = [
-            new TitleUpdated($eventId, new Title('Example title')),
+            new TitleUpdated($eventId, 'Example title'),
             new TypeUpdated($eventId, new EventType('0.50.4.0.0', 'Concert')),
             new ThemeUpdated($eventId, new Theme('1.8.3.5.0', 'Amusementsmuziek')),
             new LocationUpdated($eventId, $this->location),
@@ -81,7 +80,7 @@ class EventCreatedTest extends TestCase
         ];
 
         $expectedWithoutTheme = [
-            new TitleUpdated($eventId, new Title('Example title')),
+            new TitleUpdated($eventId, 'Example title'),
             new TypeUpdated($eventId, new EventType('0.50.4.0.0', 'Concert')),
             new LocationUpdated($eventId, $this->location),
             new CalendarUpdated($eventId, new Calendar(CalendarType::PERMANENT())),
@@ -101,7 +100,7 @@ class EventCreatedTest extends TestCase
         $event = new EventCreated(
             '09994540-289f-4ab4-bf77-b83443d3d0fc',
             new Language('fr'),
-            new Title('Example title'),
+            'Example title',
             new EventType('0.50.4.0.0', 'Concert'),
             $this->location,
             new Calendar(CalendarType::PERMANENT()),
@@ -133,7 +132,7 @@ class EventCreatedTest extends TestCase
      */
     public function it_stores_an_event_title(): void
     {
-        $this->assertEquals(new Title('title'), $this->eventCreated->getTitle());
+        $this->assertEquals('title', $this->eventCreated->getTitle());
     }
 
     /**
@@ -223,7 +222,7 @@ class EventCreatedTest extends TestCase
                 new EventCreated(
                     'test 456',
                     new Language('es'),
-                    new Title('title'),
+                    'title',
                     new EventType('bar_id', 'bar'),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
                     new Calendar(
@@ -261,7 +260,7 @@ class EventCreatedTest extends TestCase
                 new EventCreated(
                     'test 456',
                     new Language('es'),
-                    new Title('title'),
+                    'title',
                     new EventType('bar_id', 'bar'),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
                     new Calendar(
@@ -296,7 +295,7 @@ class EventCreatedTest extends TestCase
                 new EventCreated(
                     'test 456',
                     new Language('es'),
-                    new Title('title'),
+                    'title',
                     new EventType('bar_id', 'bar'),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
                     new Calendar(

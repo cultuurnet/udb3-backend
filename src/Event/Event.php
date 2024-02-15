@@ -96,7 +96,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -135,7 +135,7 @@ final class Event extends Offer
             new EventCreated(
                 $eventId,
                 $mainLanguage,
-                $title,
+                $title->toString(),
                 $eventType,
                 $location,
                 $calendar,
@@ -209,7 +209,7 @@ final class Event extends Offer
     protected function applyEventCreated(EventCreated $eventCreated): void
     {
         $this->eventId = $eventCreated->getEventId();
-        $this->titles[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
+        $this->titles[$eventCreated->getMainLanguage()->getCode()] = new Title($eventCreated->getTitle());
         $this->calendar = $eventCreated->getCalendar();
         $this->audience = new Audience(AudienceType::everyone());
         $this->contactPoint = new ContactPoint();
@@ -303,7 +303,7 @@ final class Event extends Offer
         Calendar $calendar,
         Theme $theme = null
     ): void {
-        $this->apply(new MajorInfoUpdated($this->eventId, $title, $eventType, $location, $calendar, $theme));
+        $this->apply(new MajorInfoUpdated($this->eventId, $title->toString(), $eventType, $location, $calendar, $theme));
 
         if ($location->isDummyPlaceForEducation()) {
             // Bookable education events should get education as their audience type. We record this explicitly so we
@@ -582,12 +582,12 @@ final class Event extends Offer
 
     protected function createTitleTranslatedEvent(LegacyLanguage $language, Title $title): TitleTranslated
     {
-        return new TitleTranslated($this->eventId, $language, $title);
+        return new TitleTranslated($this->eventId, $language, $title->toString());
     }
 
     protected function createTitleUpdatedEvent(Title $title): TitleUpdated
     {
-        return new TitleUpdated($this->eventId, $title);
+        return new TitleUpdated($this->eventId, $title->toString());
     }
 
     protected function createDescriptionTranslatedEvent(LegacyLanguage $language, Description $description): DescriptionTranslated

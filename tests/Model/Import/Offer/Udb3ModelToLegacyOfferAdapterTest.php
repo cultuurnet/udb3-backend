@@ -196,16 +196,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_title(): void
-    {
-        $expected = new \CultuurNet\UDB3\Title('Voorbeeld titel');
-        $actual = $this->adapter->getTitle();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_return_a_type(): void
     {
         $expected = new EventType('0.6.0.0.0', 'Beurs');
@@ -434,8 +424,8 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     public function it_should_return_the_title_translations(): void
     {
         $expected = [
-            'fr' => new \CultuurNet\UDB3\Title('Titre example'),
-            'en' => new \CultuurNet\UDB3\Title('Example title'),
+            'fr' => new Title('Titre example'),
+            'en' => new Title('Example title'),
         ];
         $actual = $this->adapter->getTitleTranslations();
         $this->assertEquals($expected, $actual);

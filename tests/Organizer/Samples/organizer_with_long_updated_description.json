@@ -17,12 +17,11 @@
   "url": [],
   "created": "2016-09-28T10:01:28+00:00",
   "creator": "20a72430-7e3e-4b75-ab59-043156b3169c (LucW)",
-  "languages": ["nl", "en", "fr"],
+  "languages": ["nl", "en"],
   "completedLanguages": ["nl"],
   "description": {
-    "en": "Description of the organizer",
-    "fr": "Description de l'organisation"
+    "en": "This is a very long description of the organizer, it has more then 200 characters and because of that the description is taken into account for the completeness of the organizer. That makes this string difficult to read and understand."
   },
   "modified": "2018-01-18T13:57:09+00:00",
-  "completeness": 50
+  "completeness": 65
 }

@@ -25,7 +25,6 @@ use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -181,7 +180,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new PlaceCreated(
                         '4b735422-2bf3-4241-aabb-d70609d2d1d3',
                         new Language('es'),
-                        new Title('Het depot'),
+                        'Het depot',
                         new EventType('mock.1', 'Mock'),
                         new Address(
                             new Street('Teststraat 1'),
@@ -209,7 +208,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new MajorInfoUpdated(
                         '4b735422-2bf3-4241-aabb-d70609d2d1d3',
-                        new Title('Het depot'),
+                        'Het depot',
                         new EventType('mock.1', 'Mock'),
                         new Address(
                             new Street('Teststraat 1'),

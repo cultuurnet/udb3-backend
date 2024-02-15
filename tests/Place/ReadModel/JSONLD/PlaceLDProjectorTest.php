@@ -47,7 +47,6 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
-use CultuurNet\UDB3\Title;
 use DateTimeInterface;
 use stdClass;
 
@@ -153,7 +152,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $placeCreated = new PlaceCreated(
             $id,
             new Language('en'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             $this->address,
             new Calendar(CalendarType::PERMANENT())
@@ -193,7 +192,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 36;
+        $jsonLD->completeness = 53;
 
         $body = $this->project(
             $placeCreated,
@@ -219,7 +218,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $placeCreated = new PlaceCreated(
             $id,
             new Language('en'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             $this->address,
             new Calendar(CalendarType::PERMANENT())
@@ -260,7 +259,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 36;
+        $jsonLD->completeness = 53;
 
         $metadata = new Metadata(
             [
@@ -360,7 +359,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->completedLanguages = ['nl'];
         $expectedJsonLD->modified = $this->recordedOn->toString();
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 36;
+        $expectedJsonLD->completeness = 53;
 
         $addressUpdated = new AddressUpdated(
             '66f30742-dee9-4794-ac92-fa44634692b8',
@@ -445,7 +444,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->completedLanguages = ['nl'];
         $expectedJsonLD->modified = $this->recordedOn->toString();
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 36;
+        $expectedJsonLD->completeness = 53;
 
         $addressTranslated = new AddressTranslated(
             '66f30742-dee9-4794-ac92-fa44634692b8',
@@ -491,7 +490,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $placeCreated = new PlaceCreated(
             $placeId,
             new Language('en'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             $this->address,
             new Calendar(CalendarType::PERMANENT())
@@ -667,7 +666,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     public function it_projects_the_updating_of_major_info(): void
     {
         $id = 'foo';
-        $title = new Title('new title');
+        $title = 'new title';
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
@@ -698,7 +697,6 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->languages = ['en'];
         $jsonLD->completedLanguages = ['en'];
-        $jsonLD->completeness = 36;
 
         $initialDocument = (new JsonDocument('foo'))
             ->withBody($jsonLD);
@@ -738,7 +736,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 36;
+        $expectedJsonLD->completeness = 53;
 
         $body = $this->project(
             $majorInfoUpdated,
@@ -940,7 +938,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $majorInfoUpdated = new MajorInfoUpdated(
             '3c4850d7-689a-4729-8c5f-5f6c172ba52d',
-            new Title('New title'),
+            'New title',
             new EventType('1.0.0.0', 'Mock'),
             new Address(
                 new Street('Natieplein 2'),

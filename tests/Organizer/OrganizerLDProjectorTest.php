@@ -362,6 +362,28 @@ final class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_long_description_updated(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, 'organizer.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new DescriptionUpdated(
+                $organizerId,
+                'This is a very long description of the organizer, it has more then 200 characters and because of that the description is taken into account for the completeness of the organizer. That makes this string difficult to read and understand.',
+                'en'
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_long_updated_description.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_description_translated(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';

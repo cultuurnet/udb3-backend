@@ -30,7 +30,7 @@ use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -61,7 +61,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         return new EventCreated(
             $id,
             new Language('nl'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(CalendarType::PERMANENT())
@@ -99,7 +99,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($id)
             ->when($command)
-            ->then([new EventCreated($id, $language, $title, $type, $location, $calendar, $theme, $now)]);
+            ->then([new EventCreated($id, $language, $title->toString(), $type, $location, $calendar, $theme, $now)]);
 
         // reset mocked time
         Chronos::setTestNow();
@@ -141,7 +141,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new UpdateMajorInfo($id, $title, $eventType, $location, $calendar)
             )
-            ->then([new MajorInfoUpdated($id, $title, $eventType, $location, $calendar)]);
+            ->then([new MajorInfoUpdated($id, $title->toString(), $eventType, $location, $calendar)]);
     }
 
     /**
@@ -167,7 +167,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             )
             ->then(
                 [
-                    new MajorInfoUpdated($id, $title, $eventType, $location, $calendar),
+                    new MajorInfoUpdated($id, $title->toString(), $eventType, $location, $calendar),
                     new AudienceUpdated($id, new Audience(AudienceType::education())),
                 ]
             );

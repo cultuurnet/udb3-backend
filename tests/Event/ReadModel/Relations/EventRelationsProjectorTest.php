@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -292,7 +291,7 @@ class EventRelationsProjectorTest extends TestCase
         $locationId = 'location-id';
         $majorInfoUpdatedEvent = new MajorInfoUpdated(
             $eventId,
-            new Title('Test'),
+            'Test',
             new EventType('0.1.1.1', 'Test label'),
             new LocationId($locationId),
             new Calendar(

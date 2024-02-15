@@ -10,17 +10,14 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use PHPUnit\Framework\TestCase;
 
 class UpdateMajorInfoTest extends TestCase
 {
-    /**
-     * @var UpdateMajorInfo
-     */
-    protected $updateMajorInfo;
+    protected UpdateMajorInfo $updateMajorInfo;
 
     public function setUp(): void
     {

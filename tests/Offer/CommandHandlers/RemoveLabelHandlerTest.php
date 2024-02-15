@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Title;
 
 final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -90,7 +89,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
         return new EventCreated(
             $id,
             new Language('nl'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(CalendarType::PERMANENT())

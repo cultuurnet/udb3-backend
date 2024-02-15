@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -125,7 +124,7 @@ final class ProjectorTest extends TestCase
         $payload = new EventCreated(
             $eventId,
             new Language('nl'),
-            new Title('test 123'),
+            'test 123',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(

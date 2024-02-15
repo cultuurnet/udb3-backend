@@ -163,4 +163,17 @@ class TranslatedValueObjectTest extends TestCase
         $expectedLanguages = new Languages($fr, $en);
         $this->assertEquals($expectedLanguages, $translated->getLanguagesWithoutOriginal());
     }
+
+    public function test_original_value_returns_first_created_title(): void
+    {
+        $nlValue = new MockValueObjectString('foo');
+        $frValue = new MockValueObjectString('bar');
+        $enValue = new MockValueObjectString('lorem');
+
+        $translated = (new TranslatedMockValueObjectString(new Language('nl'), $nlValue))
+            ->withTranslation(new Language('fr'), $frValue)
+            ->withTranslation(new Language('en'), $enValue);
+
+        $this->assertEquals($nlValue, $translated->getOriginalValue());
+    }
 }

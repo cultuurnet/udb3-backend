@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
 final class MajorInfoUpdatedTest extends TestCase
@@ -26,7 +25,7 @@ final class MajorInfoUpdatedTest extends TestCase
 
         $event = new MajorInfoUpdated(
             $placeId,
-            new Title('Title'),
+            'Title',
             new EventType('0.14.0.0.0', 'Monument'),
             new Address(
                 new Street('Martelarenlaan 1'),
@@ -38,7 +37,7 @@ final class MajorInfoUpdatedTest extends TestCase
         );
 
         $expected = [
-            new TitleUpdated($placeId, new Title('Title')),
+            new TitleUpdated($placeId, 'Title'),
             new TypeUpdated($placeId, new EventType('0.14.0.0.0', 'Monument')),
             new AddressUpdated(
                 $placeId,

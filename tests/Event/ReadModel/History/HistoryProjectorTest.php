@@ -81,7 +81,6 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Money\Currency;
@@ -269,7 +268,7 @@ class HistoryProjectorTest extends TestCase
         $eventCreated = new EventCreated(
             $eventId,
             new LegacyLanguage('en'),
-            new Title('Faith no More'),
+            'Faith no More',
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),
             new Calendar(CalendarType::PERMANENT()),
@@ -348,7 +347,7 @@ class HistoryProjectorTest extends TestCase
         $titleTranslated = new TitleTranslated(
             self::EVENT_ID_1,
             new LegacyLanguage('fr'),
-            new Title('Titre en français')
+            'Titre en français'
         );
 
         $translatedDate = '2015-03-26T10:17:19.176169+02:00';
@@ -1321,7 +1320,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new MajorInfoUpdated(
             self::EVENT_ID_1,
-            new Title('title'),
+            'title',
             new EventType('0.0.0.0', 'event type'),
             new LocationId('a0c6c66e-d933-4817-a335-2a5a51df1fa7'),
             new Calendar(CalendarType::PERMANENT())
@@ -1608,7 +1607,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_title_updated(): void
     {
-        $event = new TitleUpdated(self::EVENT_ID_1, new Title('new title'));
+        $event = new TitleUpdated(self::EVENT_ID_1, 'new title');
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

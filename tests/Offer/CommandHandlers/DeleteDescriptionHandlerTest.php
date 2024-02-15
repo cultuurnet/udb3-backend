@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\DeleteDescription;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Title;
 
 class DeleteDescriptionHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -85,7 +84,7 @@ class DeleteDescriptionHandlerTest extends CommandHandlerScenarioTestCase
         return new EventCreated(
             $eventId,
             new LegacyLanguage('nl'),
-            new Title('some representative title'),
+            'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(CalendarType::PERMANENT())

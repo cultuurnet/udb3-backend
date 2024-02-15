@@ -28,7 +28,6 @@ use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
@@ -92,7 +91,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         $placeCreated = new PlaceCreated(
             self::PLACE_ID,
             new Language('en'),
-            new Title('Some place'),
+            'Some place',
             new EventType('01.01', 'Some category'),
             $address,
             new Calendar(CalendarType::PERMANENT())
@@ -134,7 +133,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         $placeCreated = new PlaceCreated(
             self::PLACE_ID,
             new Language('en'),
-            new Title('Some place'),
+            'Some place',
             new EventType('01.01', 'Some category'),
             $address,
             new Calendar(CalendarType::PERMANENT())

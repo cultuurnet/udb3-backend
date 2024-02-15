@@ -75,7 +75,6 @@ use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
-use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Money\Currency;
@@ -746,7 +745,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new MajorInfoUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Title('title'),
+            'title',
             new EventType('0.0.0.0', 'event type'),
             new Address(
                 new Street('straat'),
@@ -907,7 +906,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new TitleUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Title('new title')
+            'new title'
         );
 
         $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
@@ -989,7 +988,7 @@ class HistoryProjectorTest extends TestCase
         return new PlaceCreated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             new LegacyLanguage('en'),
-            new Title('Foo'),
+            'Foo',
             new EventType('1.8.2', 'PARTY!'),
             new Address(
                 new Street('acmelane 12'),
@@ -1054,7 +1053,7 @@ class HistoryProjectorTest extends TestCase
         return new TitleTranslated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             new LegacyLanguage('en'),
-            new Title('Title')
+            'Title'
         );
     }
 

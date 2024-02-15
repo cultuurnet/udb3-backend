@@ -69,7 +69,7 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractPublished;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
@@ -332,12 +332,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function applyTitleTranslated(AbstractTitleTranslated $titleTranslated): void
     {
-        $this->titles[$titleTranslated->getLanguage()->getCode()] = $titleTranslated->getTitle();
+        $this->titles[$titleTranslated->getLanguage()->getCode()] = new Title($titleTranslated->getTitle());
     }
 
     public function applyTitleUpdated(AbstractTitleUpdated $titleUpdated): void
     {
-        $this->titles[$this->mainLanguage->getCode()] = $titleUpdated->getTitle();
+        $this->titles[$this->mainLanguage->getCode()] = new Title($titleUpdated->getTitle());
     }
 
     public function updateDescription(Description $description, LegacyLanguage $language): void

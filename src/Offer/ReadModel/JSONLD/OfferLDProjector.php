@@ -565,7 +565,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $document = $this->loadDocumentFromRepository($titleTranslated);
 
         $offerLd = $document->getBody();
-        $offerLd->name->{$titleTranslated->getLanguage()->getCode()} = $titleTranslated->getTitle()->toString();
+        $offerLd->name->{$titleTranslated->getLanguage()->getCode()} = $titleTranslated->getTitle();
 
         return $document->withBody($offerLd);
     }
@@ -574,9 +574,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         $document = $this->loadDocumentFromRepository($titleUpdated);
         $offerLd = $document->getBody();
-        $mainLanguage = isset($offerLd->mainLanguage) ? $offerLd->mainLanguage : 'nl';
+        $mainLanguage = $offerLd->mainLanguage ?? 'nl';
 
-        $offerLd->name->{$mainLanguage} = $titleUpdated->getTitle()->toString();
+        $offerLd->name->{$mainLanguage} = $titleUpdated->getTitle();
 
         return $document->withBody($offerLd);
     }
