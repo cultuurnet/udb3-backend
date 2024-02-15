@@ -465,6 +465,15 @@ Feature: Test the UDB3 events API
     Then the response status should be "200"
     And the JSON response at "terms/1/id" should be "0.5.0.0.0"
 
+  Scenario: Update event type with type that is available till start
+    When I send a GET request to "/events/%{uuid_testevent}"
+    Then the response status should be "200"
+    And the JSON response at "availableTo" should be "2020-05-12T21:00:00+00:00"
+    When I send a PUT request to "/events/%{uuid_testevent}/type/0.57.0.0.0"
+    And I send a GET request to "/events/%{uuid_testevent}"
+    Then the JSON response at "availableTo" should be "2020-05-05T18:00:00+00:00"
+    And the JSON response at "terms/1/id" should be "0.57.0.0.0"
+
   Scenario: Update event type with term id that is not an eventtype
     When I send a PUT request to "/events/%{uuid_testevent}/type/1.17.0.0.0"
     Then the response status should be "404"
