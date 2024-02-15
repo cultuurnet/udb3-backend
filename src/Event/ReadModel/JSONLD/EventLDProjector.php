@@ -75,6 +75,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
+use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
@@ -370,6 +371,20 @@ final class EventLDProjector extends OfferLDProjector implements
         $offerLd->availableTo = (string)$availableTo;
 
         return $document->withBody($offerLd);
+    }
+
+    protected function applyTypeUpdated(AbstractTypeUpdated $typeUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($typeUpdated);
+
+        if (EventTypeResolver::isOnlyAvailableUntilStartDate($typeUpdated->getType())) {
+            $offerLd = $document->getBody();
+            var_dump($offerLd);
+            $offerLd->availableTo = $offerLd->startDate ?? $offerLd->availableTo;
+            $document = $document->withBody($offerLd);
+        }
+
+        return $this->updateTerm($document, $typeUpdated->getType());
     }
 
     private function getEventType(\stdClass $eventJsonLD): ?EventType
