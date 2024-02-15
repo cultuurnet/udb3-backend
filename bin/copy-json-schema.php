@@ -25,5 +25,4 @@ function copyDirectory($src, $dst): void
 // Copy the directory
 copyDirectory($sourceDir, $destinationDir);
 
-echo "Copied json schema from apidocs!" . PHP_EOL;
-
+echo 'Copied json schema from apidocs!' . PHP_EOL;
