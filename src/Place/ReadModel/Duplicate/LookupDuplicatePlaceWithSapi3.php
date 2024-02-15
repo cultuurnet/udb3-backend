@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Search\Sapi3SearchService;
 
