@@ -379,7 +379,6 @@ final class EventLDProjector extends OfferLDProjector implements
 
         if (EventTypeResolver::isOnlyAvailableUntilStartDate($typeUpdated->getType())) {
             $offerLd = $document->getBody();
-            var_dump($offerLd);
             $offerLd->availableTo = $offerLd->startDate ?? $offerLd->availableTo;
             $document = $document->withBody($offerLd);
         }
