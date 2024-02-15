@@ -52,6 +52,7 @@ class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
 
         // We have more than 1 result, lets do the call again with isDuplicate=false to see if without duplicates,
         // we only get 1 place back
+        $originalQuery = $query;
         $query .= '&isDuplicate=false';
 
         $results = $this->sapi3SearchService->search(
@@ -59,9 +60,7 @@ class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
         );
 
         if ($results->getTotalItems() === 0) {
-            // This should be absolutely impossible to occur, but you never know.
-            // There is no clean solution in this case, we just give a fatal error to the user
-            throw ApiProblem::internalServerError('Duplicate places detected, but isDuplicate=false returns no duplicates.');
+            throw new MultipleDuplicatePlacesFound($originalQuery);
         }
 
         if ($results->getTotalItems() === 1) {
