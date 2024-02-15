@@ -1682,13 +1682,13 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
         $this->documentRepository->save($eventThatShouldAvailableTillStart);
 
-        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
 
         $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0'));
 
         $updatedItem = $this->project($typeUpdated, $eventId);
 
-        $this->assertEquals($startDate->format(DATE_ATOM), $updatedItem->availableTo);
+        $this->assertEquals($endDate->format(DATE_ATOM), $updatedItem->availableTo);
     }
 
     /**
