@@ -637,14 +637,16 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
 
         foreach ($updatedImages as $updatedImage) {
-            $this->apply(
-                $this->createImageUpdatedEvent(
-                    $updatedImage->getMediaObjectId(),
-                    $updatedImage->getDescription(),
-                    $updatedImage->getCopyrightHolder(),
-                    $updatedImage->getLanguage()->getCode()
-                )
-            );
+            if ($this->updateImageAllowed($updatedImage->getMediaObjectId(), $updatedImage->getDescription(), $updatedImage->getCopyrightHolder())) {
+                $this->apply(
+                    $this->createImageUpdatedEvent(
+                        $updatedImage->getMediaObjectId(),
+                        $updatedImage->getDescription(),
+                        $updatedImage->getCopyrightHolder(),
+                        $updatedImage->getLanguage()->getCode()
+                    )
+                );
+            }
         }
 
         foreach ($removedImages as $removedImage) {
