@@ -612,7 +612,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public function importImages(ImageCollection $imageCollection): void
     {
         $currentImageCollection = $this->images;
+
+        $oldMainImage = $this->images->getMain();
         $newMainImage = $imageCollection->getMain();
+
+        $selectNewMainImage = isset($oldMainImage, $newMainImage) && !$oldMainImage->getMediaObjectId()->sameAs($newMainImage->getMediaObjectId());
 
         $importImages = $imageCollection->toArray();
         $currentImages = $currentImageCollection->toArray();
@@ -637,21 +641,23 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
 
         foreach ($updatedImages as $updatedImage) {
-            $this->apply(
-                $this->createImageUpdatedEvent(
-                    $updatedImage->getMediaObjectId(),
-                    $updatedImage->getDescription(),
-                    $updatedImage->getCopyrightHolder(),
-                    $updatedImage->getLanguage()->getCode()
-                )
-            );
+            if ($this->updateImageAllowed($updatedImage->getMediaObjectId(), $updatedImage->getDescription(), $updatedImage->getCopyrightHolder())) {
+                $this->apply(
+                    $this->createImageUpdatedEvent(
+                        $updatedImage->getMediaObjectId(),
+                        $updatedImage->getDescription(),
+                        $updatedImage->getCopyrightHolder(),
+                        $updatedImage->getLanguage()->getCode()
+                    )
+                );
+            }
         }
 
         foreach ($removedImages as $removedImage) {
             $this->apply($this->createImageRemovedEvent($removedImage));
         }
 
-        if ($newMainImage) {
+        if ($selectNewMainImage) {
             $this->apply($this->createMainImageSelectedEvent($newMainImage));
         }
     }

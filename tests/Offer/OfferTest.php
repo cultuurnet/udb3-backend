@@ -125,6 +125,57 @@ class OfferTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
+     * @dataProvider imageCollectionDataProvider
+     */
+    public function it_should_not_create_events_for_unaltered_images(Image $image): void
+    {
+        $itemId = '77b4df58-b7e9-40cf-979f-ec741a072282';
+
+        $updatedImage = new Image(
+            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/jpg'),
+            new Description('my updated pic'),
+            new CopyrightHolder('Dirk Dirkingn updated'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
+            new LegacyLanguage('en')
+        );
+        $secondImage = new Image(
+            new UUID('837bd340-e939-4210-8af9-e4baedd0d44e'),
+            new MIMEType('image/jpg'),
+            new Description('my second pic'),
+            new CopyrightHolder('Dirk Dirkingn again'),
+            new Url('http://foo.bar/media/my_2nd_pic.jpg'),
+            new LegacyLanguage('en')
+        );
+        $updatedImageCollection = ImageCollection::fromArray([$updatedImage])->withMain($secondImage);
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+                new ImageAdded($itemId, $secondImage),
+                new MainImageSelected($itemId, $image),
+            ])
+            ->when(
+                function (Item $item) use ($updatedImageCollection): void {
+                    $item->importImages($updatedImageCollection);
+                    $item->importImages($updatedImageCollection);
+                    $item->importImages($updatedImageCollection);
+                }
+            )
+            ->then([
+                new ImageUpdated(
+                    $itemId,
+                    'de305d54-75b4-431b-adb2-eb6b9e546014',
+                    'my updated pic',
+                    'Dirk Dirkingn updated',
+                    'en'
+                ),
+                new MainImageSelected($itemId, $secondImage),
+            ]);
+    }
+
+    /**
+     * @test
      */
     public function it_updates_facilities_when_changed(): void
     {
