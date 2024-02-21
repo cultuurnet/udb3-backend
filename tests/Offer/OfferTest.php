@@ -152,7 +152,6 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 new ItemCreated($itemId),
-                new ImageAdded($itemId, $image),
                 new ImageAdded($itemId, $secondImage),
                 new MainImageSelected($itemId, $image),
             ])
