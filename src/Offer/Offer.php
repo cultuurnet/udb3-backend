@@ -99,7 +99,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected ?PriceInfo $priceInfo = null;
 
     /**
-     * @var Title[]
+     * @var string[]
      */
     protected array $titles;
 
@@ -332,12 +332,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function applyTitleTranslated(AbstractTitleTranslated $titleTranslated): void
     {
-        $this->titles[$titleTranslated->getLanguage()->getCode()] = new Title($titleTranslated->getTitle());
+        $this->titles[$titleTranslated->getLanguage()->getCode()] = $titleTranslated->getTitle();
     }
 
     public function applyTitleUpdated(AbstractTitleUpdated $titleUpdated): void
     {
-        $this->titles[$this->mainLanguage->getCode()] = new Title($titleUpdated->getTitle());
+        $this->titles[$this->mainLanguage->getCode()] = $titleUpdated->getTitle();
     }
 
     public function updateDescription(Description $description, LegacyLanguage $language): void
@@ -866,7 +866,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $languageCode = $language->getCode();
 
         return !isset($this->titles[$languageCode]) ||
-            !$title->sameAs($this->titles[$languageCode]);
+            $title->toString() !== $this->titles[$languageCode];
     }
 
     private function isDescriptionChanged(Description $description, LegacyLanguage $language): bool

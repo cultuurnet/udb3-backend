@@ -63,7 +63,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
     private ?Url $website = null;
 
     /**
-     * @var Title[]
+     * @var string[]
      */
     private array $titles;
 
@@ -564,7 +564,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
 
         $this->mainLanguage = new Language('nl');
 
-        $this->setTitle(new Title($organizerCreated->getTitle()), $this->mainLanguage);
+        $this->setTitle($organizerCreated->getTitle(), $this->mainLanguage);
     }
 
     protected function applyOrganizerCreatedWithUniqueWebsite(OrganizerCreatedWithUniqueWebsite $organizerCreated): void
@@ -576,7 +576,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         $this->website = new Url($organizerCreated->getWebsite());
 
         $this->setTitle(
-            new Title($organizerCreated->getTitle()),
+            $organizerCreated->getTitle(),
             $this->mainLanguage
         );
     }
@@ -597,7 +597,8 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
             $organizerImported->getCdbXml()
         );
 
-        $this->setTitle($this->getTitle($actor), $this->mainLanguage);
+        $title = $this->getTitle($actor) ? $this->getTitle($actor)->toString() : '';
+        $this->setTitle($title, $this->mainLanguage);
 
         $this->labels = LabelsArray::createFromKeywords($actor->getKeywords(true));
     }
@@ -615,7 +616,8 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
             $organizerUpdatedFromUDB2->getCdbXml()
         );
 
-        $this->setTitle($this->getTitle($actor), $this->mainLanguage);
+        $title = $this->getTitle($actor) ? $this->getTitle($actor)->toString() : '';
+        $this->setTitle($title, $this->mainLanguage);
 
         $this->labels = LabelsArray::createFromKeywords($actor->getKeywords(true));
     }
@@ -628,7 +630,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
     protected function applyTitleUpdated(TitleUpdated $titleUpdated): void
     {
         $this->setTitle(
-            new Title($titleUpdated->getTitle()),
+            $titleUpdated->getTitle(),//todo
             $this->mainLanguage
         );
     }
@@ -636,7 +638,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
     protected function applyTitleTranslated(TitleTranslated $titleTranslated): void
     {
         $this->setTitle(
-            new Title($titleTranslated->getTitle()),
+            $titleTranslated->getTitle(),
             new Language($titleTranslated->getLanguage())
         );
     }
@@ -785,15 +787,17 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         return null;
     }
 
-    private function setTitle(Title $title, Language $language): void
+    private function setTitle(string $title, Language $language): void
     {
         $this->titles[$language->toString()] = $title;
     }
 
     private function isTitleChanged(Title $title, Language $language): bool
     {
-        return !isset($this->titles[$language->getCode()]) ||
-            $title->toString() !== $this->titles[$language->getCode()]->toString();
+        $languageCode = $language->getCode();
+
+        return !isset($this->titles[$languageCode]) ||
+            $title->toString() !== $this->titles[$languageCode];
     }
 
     private function setAddress(Address $address, Language $language): void
