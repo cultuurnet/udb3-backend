@@ -134,7 +134,7 @@ class Place extends Offer
     protected function applyPlaceCreated(PlaceCreated $placeCreated): void
     {
         $this->mainLanguage = $placeCreated->getMainLanguage();
-        $this->titles[$this->mainLanguage->getCode()] = new Title($placeCreated->getTitle());
+        $this->titles[$this->mainLanguage->getCode()] = $placeCreated->getTitle();
         $this->calendar = $placeCreated->getCalendar();
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
