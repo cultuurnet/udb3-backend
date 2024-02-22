@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
+use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -1589,6 +1590,105 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $updatedItem = $this->project($calendarUpdated, $eventId);
 
         $this->assertEquals($startDate->format(DATE_ATOM), $updatedItem->availableTo);
+    }
+
+    /**
+     * @test
+     * @dataProvider typesThatAreAvailableTillStart
+     */
+    public function it_updates_available_to_for_selected_types_on_type_updated(string $termId): void
+    {
+        $eventId = '1a08516e-aba4-47f0-887e-df37b61a1e8d';
+
+        $eventThatShouldAvailableTillStart = new JsonDocument(
+            $eventId,
+            Json::encode([
+                '@id' => $eventId,
+                '@type' => 'event',
+                'calendar' => [
+                    'calendarType' => 'single',
+                    'timeSpans' => [
+                        [
+                            'start' => '2018-01-01T12:00:00+01:00',
+                            'end' => '2020-01-01T12:00:00+01:00',
+                        ],
+                    ],
+                ],
+                'startDate' => '2018-01-01T12:00:00+01:00',
+                'endDate' => '2020-01-01T12:00:00+01:00',
+                'availableTo' => '2020-01-01T12:00:00+01:00',
+                'terms' => [
+                    (object) [
+                        'id' => '1.51.12.0.0',
+                        'label' => 'Omnisport en andere',
+                        'domain' => 'theme',
+                    ],
+                    (object) [
+                        'id' => '0.7.0.0.0',
+                        'label' => 'Begeleide uitstap of rondleiding',
+                        'domain' => 'eventtype',
+                    ],
+                ],
+            ])
+        );
+        $this->documentRepository->save($eventThatShouldAvailableTillStart);
+
+        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+
+        $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId($termId));
+
+        $updatedItem = $this->project($typeUpdated, $eventId);
+
+        $this->assertEquals($startDate->format(DATE_ATOM), $updatedItem->availableTo);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_available_to_for_standard_types_on_type_updated(): void
+    {
+        $eventId = '1a08516e-aba4-47f0-887e-df37b61a1e8d';
+
+        $eventThatShouldAvailableTillStart = new JsonDocument(
+            $eventId,
+            Json::encode([
+                '@id' => $eventId,
+                '@type' => 'event',
+                'calendar' => [
+                    'calendarType' => 'single',
+                    'timeSpans' => [
+                        [
+                            'start' => '2018-01-01T12:00:00+01:00',
+                            'end' => '2020-01-01T12:00:00+01:00',
+                        ],
+                    ],
+                ],
+                'startDate' => '2018-01-01T12:00:00+01:00',
+                'endDate' => '2020-01-01T12:00:00+01:00',
+                'availableTo' => '2020-01-01T12:00:00+01:00',
+                'terms' => [
+                    (object) [
+                        'id' => '1.51.12.0.0',
+                        'label' => 'Omnisport en andere',
+                        'domain' => 'theme',
+                    ],
+                    (object) [
+                        'id' => '0.7.0.0.0',
+                        'label' => 'Begeleide uitstap of rondleiding',
+                        'domain' => 'eventtype',
+                    ],
+                ],
+            ])
+        );
+        $this->documentRepository->save($eventThatShouldAvailableTillStart);
+
+        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+
+        $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0'));
+
+        $updatedItem = $this->project($typeUpdated, $eventId);
+
+        $this->assertEquals($endDate->format(DATE_ATOM), $updatedItem->availableTo);
     }
 
     /**
