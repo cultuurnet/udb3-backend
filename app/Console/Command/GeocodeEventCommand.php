@@ -19,10 +19,15 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
             ->setDescription('Geocode events with missing or outdated coordinates.');
     }
 
-    protected function getQueryForMissingCoordinates(): string
+    protected function getQueryForMissingCoordinates(bool $all): string
     {
-        // Only geo-code events without location id. Events with a location id can only be geo-coded by geo-coding the
+        // Only geocode events without location id. Events with a location id can only be geocoded by geocoding the
         // linked place.
+
+        if ($all) {
+            return '_exists_:address NOT(_exists_:location.id OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
+        }
+
         return '_exists:address NOT(_exists_:geo OR _exists_:location.id OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
     }
 

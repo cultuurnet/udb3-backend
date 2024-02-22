@@ -19,6 +19,8 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 abstract class AbstractGeocodeCommand extends AbstractCommand
 {
+    private const OPT_ALL = 'all';
+
     private ResultsGeneratorInterface $searchResultsGenerator;
 
     private DocumentRepository $documentRepository;
@@ -51,6 +53,12 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
                 null,
                 InputOption::VALUE_NONE,
                 'Skip confirmation.'
+            )
+            ->addOption(
+                self::OPT_ALL,
+                null,
+                InputOption::VALUE_NONE,
+                'Update all places that are not rejected or deleted.'
             );
     }
 
@@ -85,7 +93,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
 
     private function geocodeByQuery(InputInterface $input, OutputInterface $output): int
     {
-        $query = $this->getQueryForMissingCoordinates();
+        $query = $this->getQueryForMissingCoordinates($input->getOption(self::OPT_ALL));
         $count = $this->searchResultsGenerator->count($query);
 
         if ($count === 0) {
@@ -134,5 +142,5 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
 
     abstract protected function dispatchGeocodingCommand(string $itemId, OutputInterface $output): void;
 
-    abstract protected function getQueryForMissingCoordinates(): string;
+    abstract protected function getQueryForMissingCoordinates(bool $all): string;
 }

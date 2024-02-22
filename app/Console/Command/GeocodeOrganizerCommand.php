@@ -19,8 +19,12 @@ class GeocodeOrganizerCommand extends AbstractGeocodeCommand
             ->setDescription('Geocode organizers with missing or outdated coordinates.');
     }
 
-    protected function getQueryForMissingCoordinates(): string
+    protected function getQueryForMissingCoordinates(bool $all): string
     {
+        if ($all) {
+            return '_exists_:address NOT(workflowStatus:DELETED OR workflowStatus:REJECTED)';
+        }
+
         return '_exists_:address NOT(_exists_:geo OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
     }
 
