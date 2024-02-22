@@ -130,10 +130,11 @@ final class ReplayCommand extends AbstractCommand
 
         $cdbids = $input->getOption(self::OPTION_CDBID);
 
-        if ($cdbids !== null) {
-            foreach ($cdbids as $cdbid) {
-                $this->purgeReadmodels($cdbid);
-            }
+        // since we cannot catch errors when multiple cdbids are giving
+        // and this Command is mostly run via Jenkins with exactly 1 cdbid
+        // we will only fix this for the first cdbid
+        if ($cdbids !== null && $cdbids[0] !== null) {
+            $this->purgeReadmodels($cdbids[0]);
         }
 
         $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
