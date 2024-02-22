@@ -597,8 +597,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
             $organizerImported->getCdbXml()
         );
 
-        $title = $this->getTitle($actor) ? $this->getTitle($actor)->toString() : '';
-        $this->setTitle($title, $this->mainLanguage);
+        $this->setTitle($this->getTitle($actor), $this->mainLanguage);
 
         $this->labels = LabelsArray::createFromKeywords($actor->getKeywords(true));
     }
@@ -616,8 +615,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
             $organizerUpdatedFromUDB2->getCdbXml()
         );
 
-        $title = $this->getTitle($actor) ? $this->getTitle($actor)->toString() : '';
-        $this->setTitle($title, $this->mainLanguage);
+        $this->setTitle($this->getTitle($actor), $this->mainLanguage);
 
         $this->labels = LabelsArray::createFromKeywords($actor->getKeywords(true));
     }
@@ -630,7 +628,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
     protected function applyTitleUpdated(TitleUpdated $titleUpdated): void
     {
         $this->setTitle(
-            $titleUpdated->getTitle(),//todo
+            $titleUpdated->getTitle(),
             $this->mainLanguage
         );
     }
@@ -772,7 +770,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         $this->workflowStatus = WorkflowStatus::DELETED();
     }
 
-    private function getTitle(\CultureFeed_Cdb_Item_Actor $actor): ?Title
+    private function getTitle(\CultureFeed_Cdb_Item_Actor $actor): string
     {
         $details = $actor->getDetails();
         $details->rewind();
@@ -781,10 +779,10 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         // properties from which in UDB3 are not any longer considered
         // to be language specific.
         if ($details->valid()) {
-            return new Title($details->current()->getTitle());
+            return $details->current()->getTitle();
         }
 
-        return null;
+        return '';
     }
 
     private function setTitle(string $title, Language $language): void
