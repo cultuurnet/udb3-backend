@@ -133,7 +133,7 @@ final class ReplayCommand extends AbstractCommand
         // since we cannot catch errors when multiple cdbids are giving
         // and this Command is mostly run via Jenkins with exactly 1 cdbid
         // we will only fix this for the first cdbid
-        if ($cdbids !== null && $cdbids[0] !== null) {
+        if ($cdbids !== null && sizeof($cdbids) === 1) {
             $this->purgeReadmodels($cdbids[0]);
         }
 
