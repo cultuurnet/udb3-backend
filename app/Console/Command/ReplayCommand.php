@@ -121,6 +121,12 @@ final class ReplayCommand extends AbstractCommand
 
         $cdbids = $input->getOption(self::OPTION_CDBID);
 
+        if ($cdbids !== null) {
+            foreach ($cdbids as $cdbid) {
+                $this->purgePermissionReadmodels($cdbid);
+            }
+        }
+
         $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
 
         ReplayFlaggingMiddleware::startReplayMode();
@@ -229,6 +235,22 @@ final class ReplayCommand extends AbstractCommand
         }
 
         return $eventStream;
+    }
+
+    private function purgePermissionReadmodels(string $cdbid): void
+    {
+        $this->connection->delete(
+            'event_permission_readmodel',
+            ['event_id' => $cdbid]
+        );
+        $this->connection->delete(
+            'place_permission_readmodel',
+            ['place_id' => $cdbid]
+        );
+        $this->connection->delete(
+            'organizer_permission_readmodel',
+            ['organizer_id' => $cdbid]
+        );
     }
 
     private function getAggregateType(InputInterface $input): ?AggregateType
