@@ -28,6 +28,20 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class ReplayCommand extends AbstractCommand
 {
+    private const TABLES_TO_PURGE = [
+        'event_permission_readmodel' => 'event_id',
+        'event_relations' => '',
+        'labels_json' => 'place_id',
+        'label_roles' => '',
+        'labels_relations' => '',
+        'organizer_permission_readmodel' => '',
+        'place_permission_readmodel'=> '',
+        'place_relations' => '',
+        'role_permissions' => '',
+        'roles_search_v3' => '',
+        'user_roles' => '',
+        'offer_metadata' => '',
+    ];
     public const OPTION_START_ID = 'start-id';
     public const OPTION_DELAY = 'delay';
     public const OPTION_CDBID = 'cdbid';
@@ -239,18 +253,12 @@ final class ReplayCommand extends AbstractCommand
 
     private function purgePermissionReadmodels(string $cdbid): void
     {
-        $this->connection->delete(
-            'event_permission_readmodel',
-            ['event_id' => $cdbid]
-        );
-        $this->connection->delete(
-            'place_permission_readmodel',
-            ['place_id' => $cdbid]
-        );
-        $this->connection->delete(
-            'organizer_permission_readmodel',
-            ['organizer_id' => $cdbid]
-        );
+        foreach (self::TABLES_TO_PURGE as $tableName => $columnName) {
+            $this->connection->delete(
+                $tableName,
+                [$columnName => $cdbid]
+            );
+        }
     }
 
     private function getAggregateType(InputInterface $input): ?AggregateType
