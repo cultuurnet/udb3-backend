@@ -132,7 +132,7 @@ final class ReplayCommand extends AbstractCommand
 
         if ($cdbids !== null) {
             foreach ($cdbids as $cdbid) {
-                $this->purgePermissionReadmodels($cdbid);
+                $this->purgeReadmodels($cdbid);
             }
         }
 
@@ -246,7 +246,7 @@ final class ReplayCommand extends AbstractCommand
         return $eventStream;
     }
 
-    private function purgePermissionReadmodels(string $cdbid): void
+    private function purgeReadmodels(string $cdbid): void
     {
         foreach (self::TABLES_TO_PURGE as $tableName => $columnName) {
             $this->connection->delete(
