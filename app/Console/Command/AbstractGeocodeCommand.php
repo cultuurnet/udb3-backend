@@ -58,7 +58,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
                 self::OPT_ALL,
                 null,
                 InputOption::VALUE_NONE,
-                'Update all places that are not rejected or deleted.'
+                'Update all items that are not rejected or deleted.'
             );
     }
 
