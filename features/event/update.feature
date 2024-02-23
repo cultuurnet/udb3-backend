@@ -474,6 +474,16 @@ Feature: Test the UDB3 events API
     Then the JSON response at "availableTo" should be "2020-05-05T18:00:00+00:00"
     And the JSON response at "terms/1/id" should be "0.57.0.0.0"
 
+  Scenario: Update event type from type that is available till start
+    When I create a place from "places/place.json" and save the "url" as "placeUrl"
+    And I create an event from "events/event-with-eventtype-lessenreeks.json" and save the "url" as "eventUrl"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response at "availableTo" should be "2021-05-17T08:00:00+00:00"
+    When I send a PUT request to "%{eventUrl}/type/0.50.4.0.0"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response at "availableTo" should be "2021-05-18T22:00:00+00:00"
+    And the JSON response at "terms/1/id" should be "0.50.4.0.0"
+
   Scenario: Update event type with term id that is not an eventtype
     When I send a PUT request to "/events/%{uuid_testevent}/type/1.17.0.0.0"
     Then the response status should be "404"
