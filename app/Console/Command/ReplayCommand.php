@@ -131,14 +131,28 @@ final class ReplayCommand extends AbstractCommand
 
         $cdbids = $input->getOption(self::OPTION_CDBID);
 
+        if ($cdbids !== null) {
+            $cdbids = array_map(
+                fn (string $cdbid) => new UUID($cdbid),
+                $cdbids
+            );
+        }
+
         // since we cannot catch errors when multiple cdbids are giving
         // and this Command is mostly run via Jenkins with exactly 1 cdbid
         // we will only fix this for the first cdbid
         if ($cdbids !== null && sizeof($cdbids) === 1) {
-            $this->purgeReadmodels(new UUID($cdbids[0]));
+            $this->purgeReadmodels($cdbids[0]);
         }
 
-        $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
+        $stream = $this->getEventStream(
+            $startId,
+            $aggregateType,
+            array_map(
+                fn (UUID $cdbid) => $cdbid->toString(),
+                $cdbids
+            )
+        );
 
         ReplayFlaggingMiddleware::startReplayMode();
         InterceptingMiddleware::startIntercepting(
