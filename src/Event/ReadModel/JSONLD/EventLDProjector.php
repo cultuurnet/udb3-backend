@@ -383,7 +383,7 @@ final class EventLDProjector extends OfferLDProjector implements
         } else {
             $offerLd->availableTo = $offerLd->endDate ?? $offerLd->availableTo;
         }
-        return $document->withBody($offerLd);
+        return $this->updateTerm($document->withBody($offerLd), $typeUpdated->getType());
     }
 
     private function getEventType(\stdClass $eventJsonLD): ?EventType
