@@ -477,7 +477,6 @@ Feature: Test the UDB3 events API
   Scenario: Update event type from type that is available till start
     When I create a place from "places/place.json" and save the "url" as "placeUrl"
     And I create an event from "events/event-with-eventtype-lessenreeks.json" and save the "url" as "eventUrl"
-    And show me the unparsed response
     And I get the event at "%{eventUrl}"
     Then the JSON response at "availableTo" should be "2021-05-17T08:00:00+00:00"
     When I send a PUT request to "%{eventUrl}/type/0.50.4.0.0"
