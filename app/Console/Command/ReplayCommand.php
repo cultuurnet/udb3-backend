@@ -28,6 +28,15 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class ReplayCommand extends AbstractCommand
 {
+    private const TABLES_TO_PURGE = [
+        'event_permission_readmodel' => 'event_id',
+        'event_relations' => 'event',
+        'offer_metadata' => 'id',
+        'organizer_permission_readmodel' => 'organizer_id',
+        'place_permission_readmodel'=> 'place_id',
+        'place_relations' => 'place',
+    ];
+
     public const OPTION_START_ID = 'start-id';
     public const OPTION_DELAY = 'delay';
     public const OPTION_CDBID = 'cdbid';
@@ -120,6 +129,13 @@ final class ReplayCommand extends AbstractCommand
         }
 
         $cdbids = $input->getOption(self::OPTION_CDBID);
+
+        // since we cannot catch errors when multiple cdbids are giving
+        // and this Command is mostly run via Jenkins with exactly 1 cdbid
+        // we will only fix this for the first cdbid
+        if ($cdbids !== null && sizeof($cdbids) === 1) {
+            $this->purgeReadmodels($cdbids[0]);
+        }
 
         $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
 
@@ -229,6 +245,16 @@ final class ReplayCommand extends AbstractCommand
         }
 
         return $eventStream;
+    }
+
+    private function purgeReadmodels(string $cdbid): void
+    {
+        foreach (self::TABLES_TO_PURGE as $tableName => $columnName) {
+            $this->connection->delete(
+                $tableName,
+                [$columnName => $cdbid]
+            );
+        }
     }
 
     private function getAggregateType(InputInterface $input): ?AggregateType
