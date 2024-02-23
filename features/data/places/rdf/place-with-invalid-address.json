@@ -1,6 +1,6 @@
 {
   "name": {
-    "nl": "Nowhere"
+    "nl": "xxxx"
   },
   "terms": [
     {
@@ -10,9 +10,9 @@
   "address": {
     "nl" : {
       "addressCountry": "BE",
-      "addressLocality": "Gemeente",
-      "postalCode": "Postcode",
-      "streetAddress": "Straat 1"
+      "addressLocality": "aaaa",
+      "postalCode": "bbbb",
+      "streetAddress": "cccc"
     }
   },
   "calendarType": "permanent",
