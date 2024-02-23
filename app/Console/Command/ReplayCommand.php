@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\AggregateType;
@@ -134,7 +135,7 @@ final class ReplayCommand extends AbstractCommand
         // and this Command is mostly run via Jenkins with exactly 1 cdbid
         // we will only fix this for the first cdbid
         if ($cdbids !== null && sizeof($cdbids) === 1) {
-            $this->purgeReadmodels($cdbids[0]);
+            $this->purgeReadmodels(new UUID($cdbids[0]));
         }
 
         $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
@@ -247,12 +248,12 @@ final class ReplayCommand extends AbstractCommand
         return $eventStream;
     }
 
-    private function purgeReadmodels(string $cdbid): void
+    private function purgeReadmodels(UUID $cdbid): void
     {
         foreach (self::TABLES_TO_PURGE as $tableName => $columnName) {
             $this->connection->delete(
                 $tableName,
-                [$columnName => $cdbid]
+                [$columnName => $cdbid->toString()]
             );
         }
     }
