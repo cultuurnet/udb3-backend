@@ -1596,7 +1596,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      * @test
      * @dataProvider typesThatAreAvailableTillStart
      */
-    public function it_updates_available_to_for_selected_types_on_type_updated(string $termId): void
+    public function it_sets_available_to_start_date_for_selected_types_on_type_updated(string $termId): void
     {
         $eventId = '1a08516e-aba4-47f0-887e-df37b61a1e8d';
 
