@@ -9,10 +9,7 @@ use Symfony\Component\Console\Command\Command as BaseCommand;
 
 abstract class AbstractCommand extends BaseCommand
 {
-    /**
-     * @var CommandBus
-     */
-    protected $commandBus;
+    protected CommandBus $commandBus;
 
     public function __construct(CommandBus $commandBus)
     {
