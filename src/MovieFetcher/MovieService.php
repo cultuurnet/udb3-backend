@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\MovieFetcher;
 use CultuurNet\UDB3\Json;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\UriInterface;
 
 final class MovieService
 {
@@ -69,7 +68,6 @@ final class MovieService
 
         $response = $this->client->sendRequest($request)->getBody()->getContents();
         return Json::decode($response);
-
     }
 
     private function getHeaders(string $token = null): array
