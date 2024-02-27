@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
 use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Console\Command\IncludeLabel;
+use CultuurNet\UDB3\Console\Command\MarkDuplicatePlaceAsDeleted;
 use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
@@ -56,6 +57,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.event:ancestors',
         'console.purge',
         'console.place:geocode',
+        'console.place:delete',
         'console.event:geocode',
         'console.organizer:geocode',
         'console.fire-projected-to-jsonld-for-relations',
@@ -377,6 +379,15 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('event_command_bus'),
                 $container->get(OrganizersSapi3SearchService::class),
                 new CacheDocumentRepository($container->get('organizer_jsonld_cache'))
+            )
+        );
+
+        $container->addShared(
+            'console.place:delete',
+            fn () => new MarkDuplicatePlaceAsDeleted(
+                $container->get('event_command_bus'),
+                $container->get(EventRelationsRepository::class),
+                $container->get('place_jsonld_repository')
             )
         );
     }
