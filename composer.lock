@@ -775,25 +775,23 @@
         },
         {
             "name": "cultuurnet/calendar-summary-v3",
-            "version": "v4.0.4",
+            "version": "v4.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "80e07464d081471242e6c8f45176eb4d8d6a06fc"
+                "reference": "becbc9768b567d1288824fb63985d9e350ac35fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/80e07464d081471242e6c8f45176eb4d8d6a06fc",
-                "reference": "80e07464d081471242e6c8f45176eb4d8d6a06fc",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/becbc9768b567d1288824fb63985d9e350ac35fe",
+                "reference": "becbc9768b567d1288824fb63985d9e350ac35fe",
                 "shasum": ""
             },
             "require": {
-                "delfimov/translate": "^2.4",
                 "ext-intl": "*",
                 "ext-json": "*",
                 "nesbot/carbon": "^2.63",
-                "php": "^7.4 || ^8.0",
-                "psr/container": "^1.0"
+                "php": "^7.4 || ^8.0"
             },
             "require-dev": {
                 "phpstan/phpstan": "^1.8",
@@ -821,9 +819,9 @@
             "description": "Library to convert cultuurnet dates to a readable summary",
             "support": {
                 "issues": "https://github.com/cultuurnet/calendar-summary-v3/issues",
-                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.0.4"
+                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.0.6"
             },
-            "time": "2023-08-22T07:41:30+00:00"
+            "time": "2024-02-22T10:28:22+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -1020,61 +1018,6 @@
                 "utils"
             ],
             "time": "2017-06-12T01:10:27+00:00"
-        },
-        {
-            "name": "delfimov/translate",
-            "version": "v2.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/delfimov/Translate.git",
-                "reference": "8a9a470a591074129170f11e24379b465c3e2974"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/delfimov/Translate/zipball/8a9a470a591074129170f11e24379b465c3e2974",
-                "reference": "8a9a470a591074129170f11e24379b465c3e2974",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "phpdocumentor/phpdocumentor": "2.*",
-                "phpunit/phpunit": "5.*",
-                "psr/log": "1.0.*",
-                "satooshi/php-coveralls": "^1.0",
-                "scrutinizer/ocular": "~1.3",
-                "squizlabs/php_codesniffer": "3.*"
-            },
-            "suggest": {
-                "monolog/monolog": "@stable"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "DElfimov\\Translate\\": "./src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Dmitry Elfimov",
-                    "email": "elfimov@gmail.com"
-                }
-            ],
-            "description": "Easy to use i18n translation PHP class for multi-language websites",
-            "homepage": "https://github.com/delfimov/Translate/",
-            "keywords": [
-                "i18n",
-                "language",
-                "multi-language",
-                "plural",
-                "translate"
-            ],
-            "time": "2019-02-13T12:48:20+00:00"
         },
         {
             "name": "doctrine/cache",
