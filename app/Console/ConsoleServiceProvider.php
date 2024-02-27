@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Console\Command\ConvertDescriptionToEducationalDescriptionFo
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
+use CultuurNet\UDB3\Console\Command\FetchMovies;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
@@ -83,6 +84,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.offer:import-auto-classification-labels',
         'console.article:replace-publisher',
         'console.organizer:convert-educational-description',
+        'console.movies:fetch',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -377,6 +379,13 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('event_command_bus'),
                 $container->get(OrganizersSapi3SearchService::class),
                 new CacheDocumentRepository($container->get('organizer_jsonld_cache'))
+            )
+        );
+
+        $container->addShared(
+            'console.movies:fetch',
+            fn () => new FetchMovies(
+                $container->get('event_command_bus')
             )
         );
     }
