@@ -19,12 +19,12 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 /**
  * @url https://jira.publiq.be/browse/III-6109
  */
-class MarkDuplicatePlaceAsDeleted extends AbstractCommand
+class DeletePlace extends AbstractCommand
 {
     private const FORCE = 'force';
     private const DRY_RUN = 'dry-run';
-    private const PLACE_UUID = 'place_uuid';
-    private const CANONICAL_UUID = 'canonical_uuid';
+    private const PLACE_UUID = 'place-uuid';
+    private const CANONICAL_UUID = 'canonical-uuid';
 
     private EventRelationsRepository $eventRelationsRepository;
     private DocumentRepository $documentRepository;
@@ -98,9 +98,6 @@ class MarkDuplicatePlaceAsDeleted extends AbstractCommand
             $commands[] = new UpdateLocation($eventLocatedAtDuplicatePlace, new LocationId($canonicalUuid));
         }
 
-        //input place_uuid + canonical
-        //have event - move event to canonical
-
         foreach ($commands as $command) {
             $output->writeln('Dispatching UpdateLocation for event with id ' . $command->getItemId());
             if (!$input->getOption(self::DRY_RUN)) {
@@ -109,7 +106,10 @@ class MarkDuplicatePlaceAsDeleted extends AbstractCommand
         }
 
         $output->writeln('Dispatching DeleteOffer for place with id ' . $placeUuid);
-        $this->commandBus->dispatch(new DeleteOffer($placeUuid));
+
+        if (!$input->getOption(self::DRY_RUN)) {
+            $this->commandBus->dispatch(new DeleteOffer($placeUuid));
+        }
 
         return 1;
     }
