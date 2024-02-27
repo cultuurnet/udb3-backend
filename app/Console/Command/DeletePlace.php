@@ -28,12 +28,11 @@ class DeletePlace extends AbstractCommand
 
     public function __construct(
         CommandBus $commandBus,
-        EventRelationsRepository $eventRelationsRepository,
+        EventRelationsRepository $eventRelationsRepository
     ) {
         parent::__construct($commandBus);
         $this->eventRelationsRepository = $eventRelationsRepository;
     }
-
 
     public function configure(): void
     {
