@@ -26,7 +26,7 @@ class ExecuteCommandFromCsv extends Command
             ->setDescription('Execute a CLI command for each row in a CSV file')
             ->addArgument(self::FILE, InputArgument::REQUIRED, 'The path to the CSV file')
             ->addArgument(self::COMMAND, InputArgument::REQUIRED, 'The CLI command to execute. You can use %1, %2, ... as a placeholder for the arguments/options in the command.')
-            ->addOption(self::SKIP_HEADERS, null,InputOption::VALUE_NONE, 'Skip the first row of the csv, because it contains headers');
+            ->addOption(self::SKIP_HEADERS, null, InputOption::VALUE_NONE, 'Skip the first row of the csv, because it contains headers');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

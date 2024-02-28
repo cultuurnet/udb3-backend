@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\ConvertDescriptionToEducationalDescriptionForCultuurkuur;
+use CultuurNet\UDB3\Console\Command\DeletePlace;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
@@ -57,6 +58,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.event:ancestors',
         'console.purge',
         'console.place:geocode',
+        'console.place:delete',
         'console.event:geocode',
         'console.organizer:geocode',
         'console.fire-projected-to-jsonld-for-relations',
@@ -379,6 +381,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('event_command_bus'),
                 $container->get(OrganizersSapi3SearchService::class),
                 new CacheDocumentRepository($container->get('organizer_jsonld_cache'))
+            )
+        );
+
+        $container->addShared(
+            'console.place:delete',
+            fn () => new DeletePlace(
+                $container->get('event_command_bus'),
+                $container->get(EventRelationsRepository::class),
             )
         );
 
