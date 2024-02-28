@@ -48,7 +48,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray([
                 'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'itemType' => 'organizer',
-                'ownerId' => 'auth0|63e22626e39a8ca1264bd29b'
+                'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
             ])
             ->build('POST');
 
