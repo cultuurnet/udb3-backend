@@ -19,7 +19,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 class DeletePlace extends AbstractCommand
 {
-    private const FORCE = 'force';
     private const DRY_RUN = 'dry-run';
     private const PLACE_UUID = 'place-uuid';
     private const CANONICAL_UUID = 'canonical-uuid';
@@ -50,12 +49,6 @@ class DeletePlace extends AbstractCommand
                 'Canonical place uuid to move all events towards.'
             )
             ->addOption(
-                self::FORCE,
-                null,
-                InputOption::VALUE_NONE,
-                'Skip confirmation.'
-            )
-            ->addOption(
                 self::DRY_RUN,
                 null,
                 InputOption::VALUE_NONE,
@@ -65,26 +58,22 @@ class DeletePlace extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        if (!$this->askConfirmation($input, $output)) {
-            return 0;
-        }
-
         $placeUuid = $input->getArgument(self::PLACE_UUID);
         $canonicalUuid = $input->getArgument(self::CANONICAL_UUID);
 
         if ($placeUuid === null || $canonicalUuid === null) {
-            $output->writeln(sprintf('<error>Missing argument, the correct syntax is: place:delete place_uuid_to_delete canonical_place_uuid</error>'));
+            $output->writeln('<error>Missing argument, the correct syntax is: place:delete place_uuid_to_delete canonical_place_uuid</error>');
             return 0;
         }
 
-        $eventsLocatedAtDuplicatePlace = $this->eventRelationsRepository->getEventsLocatedAtPlace($placeUuid);
-
-        $commands = [];
-        foreach ($eventsLocatedAtDuplicatePlace as $eventLocatedAtDuplicatePlace) {
-            $commands[] = new UpdateLocation($eventLocatedAtDuplicatePlace, new LocationId($canonicalUuid));
+        if (!$this->askConfirmation($input, $output)) {
+            return 0;
         }
 
-        foreach ($commands as $command) {
+        $eventsLocatedAtPlaces = $this->eventRelationsRepository->getEventsLocatedAtPlace($placeUuid);
+
+        foreach ($eventsLocatedAtPlaces as $eventsLocatedAtPlace) {
+            $command = new UpdateLocation($eventsLocatedAtPlace, new LocationId($canonicalUuid));
             $output->writeln('Dispatching UpdateLocation for event with id ' . $command->getItemId());
             if (!$input->getOption(self::DRY_RUN)) {
                 $this->commandBus->dispatch($command);
@@ -102,10 +91,6 @@ class DeletePlace extends AbstractCommand
 
     private function askConfirmation(InputInterface $input, OutputInterface $output): bool
     {
-        if ($input->getOption(self::FORCE)) {
-            return true;
-        }
-
         return $this
             ->getHelper('question')
             ->ask(
