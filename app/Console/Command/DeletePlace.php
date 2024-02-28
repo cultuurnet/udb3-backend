@@ -19,6 +19,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 class DeletePlace extends AbstractCommand
 {
+    private const FORCE = 'force';
     private const DRY_RUN = 'dry-run';
     private const PLACE_UUID = 'place-uuid';
     private const CANONICAL_UUID = 'canonical-uuid';
@@ -49,6 +50,12 @@ class DeletePlace extends AbstractCommand
                 'Canonical place uuid to move all events towards.'
             )
             ->addOption(
+                self::FORCE,
+                null,
+                InputOption::VALUE_NONE,
+                'Skip confirmation.'
+            )
+            ->addOption(
                 self::DRY_RUN,
                 null,
                 InputOption::VALUE_NONE,
@@ -70,10 +77,8 @@ class DeletePlace extends AbstractCommand
             return 0;
         }
 
-        $eventsLocatedAtPlaces = $this->eventRelationsRepository->getEventsLocatedAtPlace($placeUuid);
-
-        foreach ($eventsLocatedAtPlaces as $eventsLocatedAtPlace) {
-            $command = new UpdateLocation($eventsLocatedAtPlace, new LocationId($canonicalUuid));
+        foreach ($this->eventRelationsRepository->getEventsLocatedAtPlace($placeUuid) as $eventLocatedAtPlace) {
+            $command = new UpdateLocation($eventLocatedAtPlace, new LocationId($canonicalUuid));
             $output->writeln('Dispatching UpdateLocation for event with id ' . $command->getItemId());
             if (!$input->getOption(self::DRY_RUN)) {
                 $this->commandBus->dispatch($command);
@@ -91,6 +96,10 @@ class DeletePlace extends AbstractCommand
 
     private function askConfirmation(InputInterface $input, OutputInterface $output): bool
     {
+        if ($input->getOption(self::FORCE)) {
+            return true;
+        }
+
         return $this
             ->getHelper('question')
             ->ask(
