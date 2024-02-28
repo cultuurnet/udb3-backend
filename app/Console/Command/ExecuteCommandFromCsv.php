@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
@@ -15,6 +16,8 @@ class ExecuteCommandFromCsv extends Command
 {
     private const FILE = 'file';
     private const COMMAND = 'script';
+    private const SKIP_HEADERS = 'skip-headers';
+
     protected static $defaultName = 'execute-command-from-csv';
 
     protected function configure(): void
@@ -22,7 +25,8 @@ class ExecuteCommandFromCsv extends Command
         $this
             ->setDescription('Execute a CLI command for each row in a CSV file')
             ->addArgument(self::FILE, InputArgument::REQUIRED, 'The path to the CSV file')
-            ->addArgument(self::COMMAND, InputArgument::REQUIRED, 'The CLI command to execute. You can use %1, %2, ... as a placeholder for the arguments/options in the command.');
+            ->addArgument(self::COMMAND, InputArgument::REQUIRED, 'The CLI command to execute. You can use %1, %2, ... as a placeholder for the arguments/options in the command.')
+            ->addOption(self::SKIP_HEADERS, null,InputOption::VALUE_NONE, 'Skip the first row of the csv, because it contains headers');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -40,10 +44,10 @@ class ExecuteCommandFromCsv extends Command
         $progressBar = new ProgressBar($output, count(file($file)));
         $progressBar->start();
 
-        $firstRow = true;
+        $skipFirstRow = $input->getOption(self::SKIP_HEADERS);
         while (($arguments = fgetcsv($handle)) !== false) {
-            if ($firstRow) {
-                $firstRow = false;
+            if ($skipFirstRow) {
+                $skipFirstRow = false;
                 continue;
             }
 
