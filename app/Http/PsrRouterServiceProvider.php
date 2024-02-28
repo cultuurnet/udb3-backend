@@ -67,6 +67,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateWorkflowStatusRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteEducationalDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateEducationalDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Ownership\RequestOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
@@ -182,6 +183,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
                 $this->bindPlaces($router);
 
                 $this->bindOrganizers($router);
+
+                $this->bindOwnerships($router);
 
                 $this->bindNewsArticles($router);
 
@@ -357,6 +360,13 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
             $routeGroup->get('{organizerId}/contributors/', GetContributorsOrganizerRequestHandler::class);
             $routeGroup->put('{organizerId}/contributors/', UpdateContributorsOrganizerRequestHandler::class);
+        });
+    }
+
+    private function bindOwnerships(Router $router): void
+    {
+        $router->group('ownerships', function (RouteGroup $routeGroup): void {
+            $routeGroup->post('', RequestOwnershipRequestHandler::class);
         });
     }
 
