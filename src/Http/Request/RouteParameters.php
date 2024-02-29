@@ -92,6 +92,16 @@ final class RouteParameters
         return $this->get('organizerId');
     }
 
+    public function hasOwnershipId(): bool
+    {
+        return $this->has('ownershipId');
+    }
+
+    public function getOwnershipId(): string
+    {
+        return $this->get('ownershipId');
+    }
+
     public function getLabelId(): string
     {
         return $this->get('labelId');
