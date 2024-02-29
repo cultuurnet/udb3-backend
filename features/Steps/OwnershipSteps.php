@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
-use Behat\Behat\Tester\Exception\PendingException;
-
 trait OwnershipSteps
 {
     /**
