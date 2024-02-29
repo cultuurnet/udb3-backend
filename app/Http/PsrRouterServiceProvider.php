@@ -67,6 +67,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateWorkflowStatusRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteEducationalDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateEducationalDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Ownership\GetOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\RequestOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
@@ -367,6 +368,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
     {
         $router->group('ownerships', function (RouteGroup $routeGroup): void {
             $routeGroup->post('', RequestOwnershipRequestHandler::class);
+            $routeGroup->get('{ownershipId}/', GetOwnershipRequestHandler::class);
         });
     }
 
