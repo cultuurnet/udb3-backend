@@ -11,9 +11,11 @@ use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\ConvertDescriptionToEducationalDescriptionForCultuurkuur;
+use CultuurNet\UDB3\Console\Command\DeletePlace;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
+use CultuurNet\UDB3\Console\Command\ExecuteCommandFromCsv;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
@@ -56,6 +58,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.event:ancestors',
         'console.purge',
         'console.place:geocode',
+        'console.place:delete',
         'console.event:geocode',
         'console.organizer:geocode',
         'console.fire-projected-to-jsonld-for-relations',
@@ -83,6 +86,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.offer:import-auto-classification-labels',
         'console.article:replace-publisher',
         'console.organizer:convert-educational-description',
+        'console.execute-command-from-csv',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -378,6 +382,19 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get(OrganizersSapi3SearchService::class),
                 new CacheDocumentRepository($container->get('organizer_jsonld_cache'))
             )
+        );
+
+        $container->addShared(
+            'console.place:delete',
+            fn () => new DeletePlace(
+                $container->get('event_command_bus'),
+                $container->get(EventRelationsRepository::class),
+            )
+        );
+
+        $container->addShared(
+            'console.execute-command-from-csv',
+            fn () => new ExecuteCommandFromCsv()
         );
     }
 }
