@@ -27,8 +27,12 @@ final class OwnershipRepository extends EventSourcingRepository
 
     public function load($id): Ownership
     {
-        /** @var Ownership $ownership */
         $ownership = parent::load($id);
+
+        if (!$ownership instanceof Ownership) {
+            throw new \RuntimeException('Expected an Ownership aggregate.');
+        }
+
         return $ownership;
     }
 }
