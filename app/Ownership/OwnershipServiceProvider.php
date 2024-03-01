@@ -12,11 +12,13 @@ use CultuurNet\UDB3\Ownership\Readmodels\OwnershipLDProjector;
 
 final class OwnershipServiceProvider extends AbstractServiceProvider
 {
+    public const OWNERSHIP_JSONLD_REPOSITORY = 'ownership_jsonld_repository';
+
     protected function getProvidedServiceNames(): array
     {
         return [
             OwnershipRepository::class,
-            'ownership_jsonld_repository',
+            OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY,
             OwnershipLDProjector::class,
         ];
     }
@@ -37,7 +39,7 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            'ownership_jsonld_repository',
+            OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY,
             fn () => new CacheDocumentRepository(
                 $container->get('cache')('ownership_jsonld'),
             )
@@ -46,7 +48,7 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
         $container->addShared(
             OwnershipLDProjector::class,
             fn () => new OwnershipLDProjector(
-                $container->get('ownership_jsonld_repository')
+                $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY)
             )
         );
     }
