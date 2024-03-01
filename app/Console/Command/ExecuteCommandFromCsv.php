@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -41,16 +40,12 @@ class ExecuteCommandFromCsv extends Command
 
         $handle = fopen($file, 'rb');
 
-        $progressBar = new ProgressBar($output, count(file($file)));
-        $progressBar->start();
-
         $skipFirstRow = $input->getOption(self::SKIP_HEADERS);
         while (($arguments = fgetcsv($handle)) !== false) {
             if ($skipFirstRow) {
                 $skipFirstRow = false;
                 continue;
             }
-
             $commandWithParam = $this->getCommandWithArguments($command, $arguments);
 
             $process = Process::fromShellCommandline($commandWithParam);
@@ -62,12 +57,9 @@ class ExecuteCommandFromCsv extends Command
                 $output->writeln(sprintf('<error>Failed to execute command: %s</error>', $commandWithParam));
                 $output->writeln(sprintf('<error>Error: %s</error>', $process->getErrorOutput()));
             }
-
-            $progressBar->advance();
         }
 
         fclose($handle);
-        $progressBar->finish();
 
         return 1;
     }
