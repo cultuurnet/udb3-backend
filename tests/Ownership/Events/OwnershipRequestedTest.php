@@ -18,7 +18,8 @@ class OwnershipRequestedTest extends TestCase
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
-            'auth0|63e22626e39a8ca1264bd29b'
+            'auth0|63e22626e39a8ca1264bd29b',
+            'google-oauth2|102486314601596809843'
         );
     }
 
@@ -69,6 +70,17 @@ class OwnershipRequestedTest extends TestCase
     /**
      * @test
      */
+    public function it_stores_a_requester_id(): void
+    {
+        $this->assertEquals(
+            'google-oauth2|102486314601596809843',
+            $this->ownershipRequested->getRequesterId()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_be_serialized(): void
     {
         $expected = [
@@ -76,6 +88,7 @@ class OwnershipRequestedTest extends TestCase
             'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'itemType' => 'organizer',
             'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
+            'requesterId' => 'google-oauth2|102486314601596809843',
         ];
 
         $this->assertEquals($expected, $this->ownershipRequested->serialize());
@@ -91,6 +104,7 @@ class OwnershipRequestedTest extends TestCase
             'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'itemType' => 'organizer',
             'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
+            'requesterId' => 'google-oauth2|102486314601596809843',
         ];
 
         $this->assertEquals($this->ownershipRequested, OwnershipRequested::deserialize($data));

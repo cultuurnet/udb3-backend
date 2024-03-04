@@ -12,13 +12,15 @@ final class OwnershipRequested implements Serializable
     private string $itemId;
     private string $itemType;
     private string $ownerId;
+    private string $requesterId;
 
-    public function __construct(string $id, string $itemId, string $itemType, string $ownerId)
+    public function __construct(string $id, string $itemId, string $itemType, string $ownerId, string $requesterId)
     {
         $this->id = $id;
         $this->itemId = $itemId;
         $this->itemType = $itemType;
         $this->ownerId = $ownerId;
+        $this->requesterId = $requesterId;
     }
 
     public function getId(): string
@@ -41,13 +43,19 @@ final class OwnershipRequested implements Serializable
         return $this->ownerId;
     }
 
+    public function getRequesterId(): string
+    {
+        return $this->requesterId;
+    }
+
     public static function deserialize(array $data): self
     {
         return new OwnershipRequested(
             $data['ownershipId'],
             $data['itemId'],
             $data['itemType'],
-            $data['ownerId']
+            $data['ownerId'],
+            $data['requesterId']
         );
     }
 
@@ -58,6 +66,7 @@ final class OwnershipRequested implements Serializable
             'itemId' => $this->itemId,
             'itemType' => $this->itemType,
             'ownerId' => $this->ownerId,
+            'requesterId' => $this->requesterId,
         ];
     }
 }
