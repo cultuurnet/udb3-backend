@@ -68,6 +68,8 @@
     "sentry/sentry": "^3.6",
     "slim/psr7": "^1.4",
     "swiftmailer/swiftmailer": "~5.3",
+    "symfony/console": "^5.4",
+    "symfony/process": "4.4.30",
     "symfony/serializer": "^v3.1.10",
     "twig/extensions": "^1.5",
     "twig/twig": "~1.0",

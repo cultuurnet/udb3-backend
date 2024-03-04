@@ -246,7 +246,7 @@ final class ApiProblem extends Exception
     public static function duplicatePlaceDetected(string $detail = null, array $properties = null): self
     {
         $apiProblem = self::create(
-            'https://api.publiq.be/probs/url/duplicate-place',
+            'https://api.publiq.be/probs/uitdatabank/duplicate-place',
             'Duplicate place',
             StatusCodeInterface::STATUS_CONFLICT,
             $detail
