@@ -13,3 +13,4 @@ Feature: Test requesting ownership
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "auth0|631748dba64ea78e3983b207"
+    And the JSON response at "state" should be "requested"

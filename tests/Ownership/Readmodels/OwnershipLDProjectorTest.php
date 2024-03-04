@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
+use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\RecordedOn;
@@ -60,6 +61,7 @@ class OwnershipLDProjectorTest extends TestCase
         $jsonLD->{'itemId'} = '9e68dafc-01d8-4c1c-9612-599c918b981d';
         $jsonLD->{'itemType'} = 'organizer';
         $jsonLD->{'ownerId'} = 'auth0|63e22626e39a8ca1264bd29b';
+        $jsonLD->{'state'} = OwnershipState::requested()->toString();
         $jsonLD->{'created'} = $recordedOn->toString();
         $jsonLD->{'modified'} = $recordedOn->toString();
 
