@@ -53,6 +53,7 @@ final class OwnershipLDProjector implements EventListener
         $body->itemId = $ownershipRequested->getItemId();
         $body->itemType = $ownershipRequested->getItemType();
         $body->ownerId = $ownershipRequested->getOwnerId();
+        $body->requesterId = $ownershipRequested->getRequesterId();
         $body->state = OwnershipState::requested()->toString();
 
         $body->created = \DateTime::createFromFormat(

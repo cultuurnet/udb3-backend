@@ -28,7 +28,8 @@ final class RequestOwnershipHandler implements CommandHandler
             $command->getId(),
             $command->getItemId(),
             $command->getItemType(),
-            $command->getOwnerId()
+            $command->getOwnerId(),
+            $command->getRequesterId()
         );
 
         $this->ownershipRepository->save($ownership);
