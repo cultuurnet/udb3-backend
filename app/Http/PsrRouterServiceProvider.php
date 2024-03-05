@@ -185,7 +185,9 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
                 $this->bindOrganizers($router);
 
-                $this->bindOwnerships($router);
+                if ($container->get('config')['enable_ownership_endpoints'] ?? false) {
+                    $this->bindOwnerships($router);
+                }
 
                 $this->bindNewsArticles($router);
 
