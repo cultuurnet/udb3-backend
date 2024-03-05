@@ -62,6 +62,36 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
         $queryBuilder->execute();
     }
 
+    public function update(
+        string $id,
+        string $userId,
+        string $name,
+        QueryString $queryString
+    ): void {
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->update($this->tableName)
+            ->values(
+                [
+                    SchemaConfigurator::NAME => '?',
+                    SchemaConfigurator::QUERY => '?',
+                ]
+            )
+            ->where([
+                SchemaConfigurator::ID => '?',
+                SchemaConfigurator::USER => '?',
+            ])
+            ->setParameters(
+                [
+                    $name,
+                    $queryString->toString(),
+                    $id,
+                    $userId,
+                ]
+            );
+
+        $queryBuilder->execute();
+    }
+
     public function delete(
         string $userId,
         string $searchId

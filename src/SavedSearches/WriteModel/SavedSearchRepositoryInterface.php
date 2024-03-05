@@ -14,6 +14,12 @@ interface SavedSearchRepositoryInterface
         QueryString $queryString
     ): void;
 
+    public function update(
+        string $id,
+        string $userId,
+        string $name,
+        QueryString $queryString
+    ): void;
 
     public function delete(
         string $userId,

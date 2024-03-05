@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\UpdateSavedSearchRequestHandler;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
@@ -82,7 +83,17 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
             CreateSavedSearchRequestHandler::class,
             function () use ($container) {
                 return new CreateSavedSearchRequestHandler(
-                    $container->get(CurrentUser::class)->getId(),
+                    $container->get(CurrentUser::class)->getId() ?? '',
+                    $container->get('event_command_bus')
+                );
+            }
+        );
+
+        $container->addShared(
+            UpdateSavedSearchRequestHandler::class,
+            function () use ($container) {
+                return new UpdateSavedSearchRequestHandler(
+                    $container->get(CurrentUser::class)->getId() ?? '',
                     $container->get('event_command_bus')
                 );
             }
