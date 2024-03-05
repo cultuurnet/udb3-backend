@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Http\Ownership;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
@@ -36,6 +38,7 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::OWNERSHIP_POST),
             new DenormalizingRequestBodyParser(
                 new RequestOwnershipDenormalizer(
                     $this->uuidFactory,

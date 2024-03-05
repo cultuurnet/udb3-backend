@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Ownership;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
@@ -18,6 +21,8 @@ use Ramsey\Uuid\UuidFactoryInterface;
 
 class RequestOwnershipRequestHandlerTest extends TestCase
 {
+    use AssertApiProblemTrait;
+
     private TraceableCommandBus $commandBus;
 
     /** @var UuidFactoryInterface|MockObject */
@@ -83,6 +88,185 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 ),
             ],
             $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throw_if_body_is_missing(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyMissing(),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_missing_item_id(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemType' => 'organizer',
+                'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
+            ])
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/',
+                    'The required properties (itemId) are missing'
+                ),
+            ),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_missing_item_type(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
+            ])
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/',
+                    'The required properties (itemType) are missing'
+                ),
+            ),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_missing_owner_id(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'itemType' => 'organizer',
+            ])
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/',
+                    'The required properties (ownerId) are missing'
+                ),
+            ),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_invalid_item_id(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '123',
+                'itemType' => 'organizer',
+                'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
+            ])
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/itemId',
+                    'The string should match pattern: [0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12}'
+                ),
+            ),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_invalid_item_type(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'itemType' => 'invalid',
+                'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
+            ])
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/itemType',
+                    'The data should match one item from enum'
+                ),
+            ),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_empty_owner_id(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'itemType' => 'organizer',
+                'ownerId' => '',
+            ])
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/ownerId',
+                    'Minimum string length is 1, found 0'
+                ),
+            ),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_invalid_owner_id_type(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'itemType' => 'organizer',
+                'ownerId' => 123,
+            ])
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/ownerId',
+                    'The data (integer) must match the type: string'
+                ),
+            ),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 }
