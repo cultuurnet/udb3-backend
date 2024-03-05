@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Steps\CuratorSteps;
 use CultuurNet\UDB3\Steps\EventSteps;
 use CultuurNet\UDB3\Steps\LabelSteps;
 use CultuurNet\UDB3\Steps\OrganizerSteps;
+use CultuurNet\UDB3\Steps\OwnershipSteps;
 use CultuurNet\UDB3\Steps\PlaceSteps;
 use CultuurNet\UDB3\Steps\RequestSteps;
 use CultuurNet\UDB3\Steps\ResponseSteps;
@@ -30,6 +31,7 @@ final class FeatureContext implements Context
     use CuratorSteps;
     use EventSteps;
     use OrganizerSteps;
+    use OwnershipSteps;
     use PlaceSteps;
     use LabelSteps;
     use RoleSteps;
