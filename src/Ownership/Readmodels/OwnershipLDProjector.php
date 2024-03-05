@@ -9,6 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
+use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\RecordedOn;
@@ -52,6 +53,8 @@ final class OwnershipLDProjector implements EventListener
         $body->itemId = $ownershipRequested->getItemId();
         $body->itemType = $ownershipRequested->getItemType();
         $body->ownerId = $ownershipRequested->getOwnerId();
+        $body->requesterId = $ownershipRequested->getRequesterId();
+        $body->state = OwnershipState::requested()->toString();
 
         $body->created = \DateTime::createFromFormat(
             DateTime::FORMAT_STRING,

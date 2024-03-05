@@ -23,7 +23,8 @@ final class Ownership extends EventSourcedAggregateRoot
         UUID $id,
         UUID $itemId,
         ItemType $itemType,
-        UserId $ownerId
+        UserId $ownerId,
+        UserId $requesterId
     ): self {
         $ownership = new Ownership();
 
@@ -32,7 +33,8 @@ final class Ownership extends EventSourcedAggregateRoot
                 $id->toString(),
                 $itemId->toString(),
                 $itemType->toString(),
-                $ownerId->toString()
+                $ownerId->toString(),
+                $requesterId->toString()
             )
         );
 

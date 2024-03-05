@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
 use CultuurNet\UDB3\Ownership\Serializers\RequestOwnershipDenormalizer;
+use CultuurNet\UDB3\User\CurrentUser;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,18 +21,26 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
     private UuidFactoryInterface $uuidFactory;
+    private CurrentUser $currentUser;
 
-    public function __construct(CommandBus $commandBus, UuidFactoryInterface $uuidFactory)
-    {
+    public function __construct(
+        CommandBus $commandBus,
+        UuidFactoryInterface $uuidFactory,
+        CurrentUser $currentUser
+    ) {
         $this->commandBus = $commandBus;
         $this->uuidFactory = $uuidFactory;
+        $this->currentUser = $currentUser;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new DenormalizingRequestBodyParser(
-                new RequestOwnershipDenormalizer($this->uuidFactory),
+                new RequestOwnershipDenormalizer(
+                    $this->uuidFactory,
+                    $this->currentUser
+                ),
                 RequestOwnership::class
             )
         );

@@ -7,16 +7,20 @@ namespace CultuurNet\UDB3\Steps;
 trait OwnershipSteps
 {
     /**
-     * @When I request ownership of the organizer with organizerId :organizerId and save the :jsonPath as :variableName
+     * @When I request ownership for :ownerId on the organizer with organizerId :organizerId and save the :jsonPath as :variableName
      */
-    public function iRequestOwnershipOfTheOrganizerWithOrganizerIdAndSaveTheAs(string $organizerId, string $jsonPath, string $variableName): void
-    {
+    public function iRequestOwnershipForOnTheOrganizerWithOrganizerIdAndSaveTheAs(
+        string $ownerId,
+        string $organizerId,
+        string $jsonPath,
+        string $variableName
+    ): void {
         $this->requestOwnership(
             '/ownerships',
             $this->variableState->replaceVariables(json_encode([
                 'itemId' => $organizerId,
                 'itemType' => 'organizer',
-                'ownerId' => 'auth0|631748dba64ea78e3983b207',
+                'ownerId' => $ownerId,
             ])),
             $jsonPath,
             $variableName

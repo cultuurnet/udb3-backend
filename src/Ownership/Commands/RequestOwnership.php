@@ -14,13 +14,20 @@ final class RequestOwnership
     private UUID $itemId;
     private ItemType $itemType;
     private UserId $ownerId;
+    private UserId $requesterId;
 
-    public function __construct(UUID $id, UUID $itemId, ItemType $itemType, UserId $ownerId)
-    {
+    public function __construct(
+        UUID $id,
+        UUID $itemId,
+        ItemType $itemType,
+        UserId $ownerId,
+        UserId $requesterId
+    ) {
         $this->id = $id;
         $this->itemId = $itemId;
         $this->itemType = $itemType;
         $this->ownerId = $ownerId;
+        $this->requesterId = $requesterId;
     }
 
     public function getId(): UUID
@@ -41,5 +48,10 @@ final class RequestOwnership
     public function getOwnerId(): UserId
     {
         return $this->ownerId;
+    }
+
+    public function getRequesterId(): UserId
+    {
+        return $this->requesterId;
     }
 }
