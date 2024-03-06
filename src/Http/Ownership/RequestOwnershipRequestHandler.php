@@ -88,8 +88,12 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
             }
         }
 
+        // Make sure the current user has access to the owner
+        if (!$this->currentUser->isGodUser() && $this->currentUser->getId() !== $requestOwnership->getOwnerId()->toString()) {
+            throw ApiProblem::forbidden('You are not allowed to request ownership for another owner');
+        }
+
         // TODO: Check if owner exists
-        // TODO: Check if current user has permission to request ownership
 
         $this->commandBus->dispatch($requestOwnership);
 
