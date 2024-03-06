@@ -63,14 +63,11 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
                 $requestOwnership->getItemId()->toString(),
                 $requestOwnership->getOwnerId()->toString()
             );
-        } catch (OwnershipItemNotFound $e) {
-            $ownershipItem = null;
-        }
 
-        if ($ownershipItem !== null) {
             throw ApiProblem::ownerShipAlreadyExists(
                 'An ownership request for this item and owner already exists with id ' . $ownershipItem->getId()
             );
+        } catch (OwnershipItemNotFound $e) {
         }
 
         $this->commandBus->dispatch($requestOwnership);
