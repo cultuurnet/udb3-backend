@@ -16,6 +16,8 @@ use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\User\CurrentUser;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -47,11 +49,15 @@ class RequestOwnershipRequestHandlerTest extends TestCase
 
         $this->ownerShipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
 
+        $organizerRepository = new InMemoryDocumentRepository();
+        $organizerRepository->save(new JsonDocument('9e68dafc-01d8-4c1c-9612-599c918b981d'));
+
         $this->requestOwnershipRequestHandler = new RequestOwnershipRequestHandler(
             $this->commandBus,
             $this->uuidFactory,
             new CurrentUser('google-oauth2|102486314601596809843'),
-            $this->ownerShipSearchRepository
+            $this->ownerShipSearchRepository,
+            $organizerRepository
         );
     }
 
@@ -145,6 +151,40 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::ownerShipAlreadyExists(
                 'An ownership request for this item and owner already exists with id e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'
             ),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_requesting_ownership_for_non_existing_organizer(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => 'fc93ceb0-e170-4d92-b496-846b2a194f1c',
+                'itemType' => 'organizer',
+                'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
+            ])
+            ->build('POST');
+
+        $this->uuidFactory->expects($this->once())
+            ->method('uuid4')
+            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('getByItemIdAndOwnerId')
+            ->with(
+                'fc93ceb0-e170-4d92-b496-846b2a194f1c',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willThrowException(OwnershipItemNotFound::byItemIdAndOwnerId(
+                'fc93ceb0-e170-4d92-b496-846b2a194f1c',
+                'auth0|63e22626e39a8ca1264bd29b'
+            ));
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::organizerNotFound('fc93ceb0-e170-4d92-b496-846b2a194f1c'),
             fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
