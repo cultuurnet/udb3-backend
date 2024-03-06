@@ -72,6 +72,8 @@ final class JsonSchemaLocator
     public const ORGANIZER_IMAGES_PATCH = 'organizer-images-patch.json';
     public const ORGANIZER_CONTRIBUTORS_PUT = 'organizer-contributors-put.json';
 
+    public const OWNERSHIP_POST = 'ownership-post.json';
+
     public const NEWS_ARTICLE_POST = 'newsArticle-post.json';
 
     public static function setSchemaDirectory(string $schemaDirectory): void

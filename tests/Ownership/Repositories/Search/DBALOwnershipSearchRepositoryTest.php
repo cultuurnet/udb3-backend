@@ -1,0 +1,162 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Ownership\Repositories\Search;
+
+use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use PHPUnit\Framework\TestCase;
+
+class DBALOwnershipSearchRepositoryTest extends TestCase
+{
+    use DBALTestConnectionTrait;
+
+    private DBALOwnershipSearchRepository $ownershipSearchRepository;
+
+    protected function setUp(): void
+    {
+        $this->ownershipSearchRepository = new DBALOwnershipSearchRepository($this->getConnection());
+
+        $this->createTable(OwnershipSearchSchemaConfigurator::getTableDefinition($this->createSchema()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_save_ownership_items(): void
+    {
+        $ownershipItem = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b'
+        );
+
+        $this->ownershipSearchRepository->save($ownershipItem);
+
+        $this->assertEquals(
+            $ownershipItem,
+            $this->ownershipSearchRepository->getById('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_ownership_items_by_item_id_and_owner_id(): void
+    {
+        $ownershipItem = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b'
+        );
+
+        $this->ownershipSearchRepository->save($ownershipItem);
+
+        $this->assertEquals(
+            $ownershipItem,
+            $this->ownershipSearchRepository->getByItemIdAndOwnerId(
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_ownership_items_by_item_id(): void
+    {
+        $ownershipItem = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b'
+        );
+        $this->ownershipSearchRepository->save($ownershipItem);
+
+        $anotherOwnershipItem = new OwnershipItem(
+            '672265b6-d4d0-416e-9b0b-c29de7d18125',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'a75aa571-8131-4fd6-ab9b-59c7672095e5'
+        );
+        $this->ownershipSearchRepository->save($anotherOwnershipItem);
+
+        $this->assertEquals(
+            new OwnershipItemCollection($ownershipItem, $anotherOwnershipItem),
+            $this->ownershipSearchRepository->getByItemId('9e68dafc-01d8-4c1c-9612-599c918b981d')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function item_id_and_owner_id_are_unique(): void
+    {
+        $ownershipItem = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b'
+        );
+
+        $this->ownershipSearchRepository->save($ownershipItem);
+
+        $otherOwnershipItem = new OwnershipItem(
+            '7d085b01-e8ac-4bc0-95f2-e639c7aaadaa',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b'
+        );
+
+        $this->expectException(UniqueConstraintViolationException::class);
+
+        $this->ownershipSearchRepository->save($otherOwnershipItem);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_ownership_not_found_by_id(): void
+    {
+        $ownershipItem = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b'
+        );
+
+        $this->ownershipSearchRepository->save($ownershipItem);
+
+        $this->expectException(OwnershipItemNotFound::class);
+        $this->expectExceptionMessage('Ownership with id "wrong-id" was not found.');
+
+        $this->ownershipSearchRepository->getById('wrong-id');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_ownership_not_found_by_item_id_and_owner_id(): void
+    {
+        $ownershipItem = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b'
+        );
+
+        $this->ownershipSearchRepository->save($ownershipItem);
+
+        $this->expectException(OwnershipItemNotFound::class);
+        $this->expectExceptionMessage('Ownership with item id "wrong-item-id" and owner id "wrong-owner-id" was not found.');
+
+        $this->ownershipSearchRepository->getByItemIdAndOwnerId('wrong-item-id', 'wrong-owner-id');
+    }
+}

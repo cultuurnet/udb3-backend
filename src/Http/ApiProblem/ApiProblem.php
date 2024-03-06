@@ -259,6 +259,16 @@ final class ApiProblem extends Exception
         return $apiProblem;
     }
 
+    public static function ownerShipAlreadyExists(string $detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/ownership-already-exists',
+            'Ownership already exists',
+            StatusCodeInterface::STATUS_CONFLICT,
+            $detail
+        );
+    }
+
     public static function queryParameterInvalidValue(string $parameterName, string $value, array $allowedValues): self
     {
         return self::urlNotFound(
