@@ -40,7 +40,6 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
                 return new UDB3SavedSearchRepository(
                     $container->get('dbal_connection'),
                     'saved_searches_sapi3',
-                    new Version4Generator(),
                     $container->get(CurrentUser::class)->getId()
                 );
             }
@@ -83,7 +82,8 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 return new CreateSavedSearchRequestHandler(
                     $container->get(CurrentUser::class)->getId(),
-                    $container->get('event_command_bus')
+                    $container->get('event_command_bus'),
+                    new Version4Generator(),
                 );
             }
         );
