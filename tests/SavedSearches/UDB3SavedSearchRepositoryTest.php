@@ -23,10 +23,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
      */
     private $uuidGenerator;
 
-    /**
-     * @var UDB3SavedSearchRepository
-     */
-    private $udb3SavedSearchRepository;
+    private UDB3SavedSearchRepository $udb3SavedSearchRepository;
 
     protected function setUp(): void
     {
@@ -65,6 +62,32 @@ class UDB3SavedSearchRepositoryTest extends TestCase
                     'In Leuven',
                     new QueryString('q=city:leuven'),
                     '73bf2160-058c-4e4e-bbee-6bcbe9298596'
+                ),
+            ],
+            $savedSearches
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_a_query_with_name_for_a_user(): void
+    {
+        $this->udb3SavedSearchRepository->update(
+            '1c483d5e40cc-4dd1-4dd1-eaab-96fd6c13',
+            '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
+            'In Leuven',
+            new QueryString('q=city:leuven')
+        );
+
+        $savedSearches = $this->getSavedSearches();
+
+        $this->assertEquals(
+            [
+                new SavedSearch(
+                    'In Leuven',
+                    new QueryString('q=city:leuven'),
+                    '1c483d5e40cc-4dd1-4dd1-eaab-96fd6c13'
                 ),
             ],
             $savedSearches

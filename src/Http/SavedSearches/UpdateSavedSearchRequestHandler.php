@@ -13,15 +13,15 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class UpdateSavedSearchRequestHandler
+final class UpdateSavedSearchRequestHandler implements RequestHandlerInterface
 {
     private string $userId;
 
     private CommandBus $commandBus;
 
     public function __construct(
-        $userId,
-        $commandBus
+        string $userId,
+        CommandBus $commandBus
     ) {
         $this->userId = $userId;
         $this->commandBus = $commandBus;

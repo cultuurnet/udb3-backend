@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SavedSearches;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
@@ -67,29 +68,23 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
         string $userId,
         string $name,
         QueryString $queryString
-    ): void {
+    ): int {
         $queryBuilder = $this->connection->createQueryBuilder()
             ->update($this->tableName)
-            ->values(
-                [
-                    SchemaConfigurator::NAME => '?',
-                    SchemaConfigurator::QUERY => '?',
-                ]
-            )
-            ->where([
-                SchemaConfigurator::ID => '?',
-                SchemaConfigurator::USER => '?',
-            ])
+            ->set(SchemaConfigurator::NAME, '?')
+            ->set(SchemaConfigurator::QUERY, '?')
+            ->where(SchemaConfigurator::USER . ' = ?')
+            ->andWhere(SchemaConfigurator::ID . ' = ?')
             ->setParameters(
                 [
                     $name,
                     $queryString->toString(),
-                    $id,
                     $userId,
+                    $id
                 ]
             );
 
-        $queryBuilder->execute();
+        return $queryBuilder->execute();
     }
 
     public function delete(

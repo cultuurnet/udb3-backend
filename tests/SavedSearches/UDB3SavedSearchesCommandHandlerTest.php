@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\SavedSearches;
 
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
+use CultuurNet\UDB3\SavedSearches\Command\UpdateSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,10 +19,7 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
      */
     private $savedSearchesRepository;
 
-    /**
-     * @var UDB3SavedSearchesCommandHandler
-     */
-    private $udb3SavedSearchesCommandHandler;
+    private UDB3SavedSearchesCommandHandler $udb3SavedSearchesCommandHandler;
 
     protected function setUp(): void
     {
@@ -43,6 +41,30 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
         $this->savedSearchesRepository->expects($this->once())
             ->method('write')
             ->with(
+                $userId,
+                $name,
+                $query
+            );
+
+        $this->udb3SavedSearchesCommandHandler->handle($subscribeToSavedSearch);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_handle_updates_to_saved_search_commands(): void
+    {
+        $id = '9b68b83c-366e-4d64-9d5d-fba58ef8b94f ';
+        $userId = '2bf5b8bf-7dbf-4a21-ab31-6da376cb315b';
+        $name = 'My very first saved search!';
+        $query = new QueryString('city:"Leuven"');
+
+        $subscribeToSavedSearch = new UpdateSavedSearch($id, $userId, $name, $query);
+
+        $this->savedSearchesRepository->expects($this->once())
+            ->method('update')
+            ->with(
+                $id,
                 $userId,
                 $name,
                 $query

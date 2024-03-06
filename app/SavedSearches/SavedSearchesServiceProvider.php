@@ -28,6 +28,7 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
             ReadSavedSearchesRequestHandler::class,
             CreateSavedSearchRequestHandler::class,
             DeleteSavedSearchRequestHandler::class,
+            UpdateSavedSearchRequestHandler::class,
         ];
     }
 

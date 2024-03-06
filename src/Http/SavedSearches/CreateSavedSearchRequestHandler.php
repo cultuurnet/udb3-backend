@@ -32,10 +32,12 @@ final class CreateSavedSearchRequestHandler implements RequestHandlerInterface
             $this->userId
         );
 
+        
+
         $command = $commandDeserializer->deserialize($request->getBody()->getContents());
 
         $this->commandBus->dispatch($command);
 
-        return new JsonResponse(null, StatusCodeInterface::STATUS_CREATED);
+        return new JsonResponse(['id' => $command->], StatusCodeInterface::STATUS_CREATED);
     }
 }
