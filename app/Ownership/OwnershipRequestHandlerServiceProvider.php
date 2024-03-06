@@ -31,7 +31,8 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
                 $container->get('event_command_bus'),
                 new UuidFactory(),
                 $container->get(CurrentUser::class),
-                $container->get(OwnershipSearchRepository::class)
+                $container->get(OwnershipSearchRepository::class),
+                $container->get('organizer_jsonld_repository')
             )
         );
 
