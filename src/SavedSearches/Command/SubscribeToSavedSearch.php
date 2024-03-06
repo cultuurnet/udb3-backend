@@ -10,18 +10,18 @@ class SubscribeToSavedSearch extends SavedSearchCommand
 {
     protected string $name;
 
-    /**
-     * @var QueryString
-     */
-    protected $query;
+    protected QueryString $query;
 
+    private string $id;
 
     public function __construct(
+        string $id,
         string $userId,
         string $name,
         QueryString $query
     ) {
         parent::__construct($userId);
+        $this->id = $id;
         $this->name = $name;
         $this->query = $query;
     }
@@ -31,11 +31,13 @@ class SubscribeToSavedSearch extends SavedSearchCommand
         return $this->name;
     }
 
-    /**
-     * @return QueryString
-     */
-    public function getQuery()
+    public function getQuery(): QueryString
     {
         return $this->query;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 }

@@ -9,11 +9,11 @@ use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 interface SavedSearchRepositoryInterface
 {
     public function write(
+        string $id,
         string $userId,
         string $name,
         QueryString $queryString
     ): void;
-
 
     public function delete(
         string $userId,
