@@ -13,6 +13,9 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
+use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\User\CurrentUser;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -28,6 +31,9 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     /** @var UuidFactoryInterface|MockObject */
     private $uuidFactory;
 
+    /** @var OwnershipSearchRepository|MockObject */
+    private $ownerShipSearchRepository;
+
     private RequestOwnershipRequestHandler $requestOwnershipRequestHandler;
 
     protected function setUp(): void
@@ -39,10 +45,13 @@ class RequestOwnershipRequestHandlerTest extends TestCase
 
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
 
+        $this->ownerShipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
+
         $this->requestOwnershipRequestHandler = new RequestOwnershipRequestHandler(
             $this->commandBus,
             $this->uuidFactory,
-            new CurrentUser('google-oauth2|102486314601596809843')
+            new CurrentUser('google-oauth2|102486314601596809843'),
+            $this->ownerShipSearchRepository
         );
     }
 
@@ -62,6 +71,17 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('getByItemIdAndOwnerId')
+            ->with(
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willThrowException(OwnershipItemNotFound::byItemIdAndOwnerId(
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            ));
 
         $response = $this->requestOwnershipRequestHandler->handle($request);
 
@@ -88,6 +108,44 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 ),
             ],
             $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_requesting_same_ownership(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'itemType' => 'organizer',
+                'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
+            ])
+            ->build('POST');
+
+        $this->uuidFactory->expects($this->once())
+            ->method('uuid4')
+            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('getByItemIdAndOwnerId')
+            ->with(
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willReturn(new OwnershipItem(
+                'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'organizer',
+                'auth0|63e22626e39a8ca1264bd29b'
+            ));
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::ownerShipAlreadyExists(
+                'An ownership request for this item and owner already exists with id e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'
+            ),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
