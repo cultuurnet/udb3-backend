@@ -14,3 +14,4 @@ Feature: Test the UDB3 saved searches API
        """
     When I send a POST request to "/saved-searches/v3"
     Then the response status should be "201"
+    And the JSON response should have "id"
