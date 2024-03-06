@@ -15,10 +15,12 @@ use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 final class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
 {
     private string $userId;
+    private string $id;
 
-    public function __construct(string $userId)
+    public function __construct(string $id, string $userId)
     {
         parent::__construct();
+        $this->id = $id;
         $this->userId = $userId;
     }
 
@@ -35,6 +37,7 @@ final class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
         }
 
         return new SubscribeToSavedSearch(
+            $this->id,
             $this->userId,
             $json->name,
             new QueryString($json->query)

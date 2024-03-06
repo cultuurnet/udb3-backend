@@ -18,10 +18,7 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
      */
     private $savedSearchesRepository;
 
-    /**
-     * @var UDB3SavedSearchesCommandHandler
-     */
-    private $udb3SavedSearchesCommandHandler;
+    private UDB3SavedSearchesCommandHandler $udb3SavedSearchesCommandHandler;
 
     protected function setUp(): void
     {
@@ -34,15 +31,17 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
      */
     public function it_can_handle_subscribe_to_saved_search_commands(): void
     {
+        $id = '3c504b25-b221-4aa5-ad75-5510379ba502';
         $userId = 'some-user-id';
         $name = 'My very first saved search!';
         $query = new QueryString('city:"Leuven"');
 
-        $subscribeToSavedSearch = new SubscribeToSavedSearch($userId, $name, $query);
+        $subscribeToSavedSearch = new SubscribeToSavedSearch($id, $userId, $name, $query);
 
         $this->savedSearchesRepository->expects($this->once())
             ->method('write')
             ->with(
+                $id,
                 $userId,
                 $name,
                 $query

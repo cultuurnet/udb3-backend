@@ -11,10 +11,7 @@ use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface;
 
 class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
 {
-    /**
-     * @var SavedSearchRepositoryInterface
-     */
-    private $savedSearchRepository;
+    private SavedSearchRepositoryInterface $savedSearchRepository;
 
     public function __construct(SavedSearchRepositoryInterface $savedSearchRepository)
     {
@@ -23,11 +20,12 @@ class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
 
     public function handleSubscribeToSavedSearch(SubscribeToSavedSearch $subscribeToSavedSearch): void
     {
+        $id = $subscribeToSavedSearch->getId();
         $userId = $subscribeToSavedSearch->getUserId();
         $name = $subscribeToSavedSearch->getName();
         $query = $subscribeToSavedSearch->getQuery();
 
-        $this->savedSearchRepository->write($userId, $name, $query);
+        $this->savedSearchRepository->write($id, $userId, $name, $query);
     }
 
     public function handleUnsubscribeFromSavedSearch(UnsubscribeFromSavedSearch $unsubscribeFromSavedSearch): void

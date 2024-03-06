@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 final class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 {
+    private const ID = '3c504b25-b221-4aa5-ad75-5510379ba502';
     private string $userId;
 
     private SubscribeToSavedSearchJSONDeserializer $deserializer;
@@ -19,6 +20,7 @@ final class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
         $this->userId ='xyx';
 
         $this->deserializer = new SubscribeToSavedSearchJSONDeserializer(
+            self::ID,
             $this->userId
         );
     }
@@ -34,6 +36,7 @@ final class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 
         $this->assertEquals(
             new SubscribeToSavedSearch(
+                self::ID,
                 $this->userId,
                 'My very first saved search.',
                 new QueryString('city:"Leuven"')
