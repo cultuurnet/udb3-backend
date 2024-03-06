@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Ownership;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Ownership\GetOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\RequestOwnershipRequestHandler;
+use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\User\CurrentUser;
 use Ramsey\Uuid\UuidFactory;
 
@@ -29,7 +30,8 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             fn () => new RequestOwnershipRequestHandler(
                 $container->get('event_command_bus'),
                 new UuidFactory(),
-                $container->get(CurrentUser::class)
+                $container->get(CurrentUser::class),
+                $container->get(OwnershipSearchRepository::class)
             )
         );
 
