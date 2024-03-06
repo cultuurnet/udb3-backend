@@ -19,6 +19,7 @@ final class OwnershipLDProjector implements EventListener
     use DelegateEventHandlingToSpecificMethodTrait {
         DelegateEventHandlingToSpecificMethodTrait::handle as handleMethodSpecificEvents;
     }
+
     private DocumentRepository $repository;
 
     public function __construct(DocumentRepository $repository)
