@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches;
 
-use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class UDB3SavedSearchRepositoryTest extends TestCase
@@ -18,26 +16,16 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 
     private string $tableName;
 
-    /**
-     * @var UuidGeneratorInterface|MockObject
-     */
-    private $uuidGenerator;
-
-    /**
-     * @var UDB3SavedSearchRepository
-     */
-    private $udb3SavedSearchRepository;
+    private UDB3SavedSearchRepository $udb3SavedSearchRepository;
 
     protected function setUp(): void
     {
         $this->createTable();
 
-        $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
 
         $this->udb3SavedSearchRepository = new UDB3SavedSearchRepository(
             $this->getConnection(),
             $this->tableName,
-            $this->uuidGenerator,
             '6f072ba8-c510-40ac-b387-51f582650e26'
         );
     }
@@ -47,11 +35,8 @@ class UDB3SavedSearchRepositoryTest extends TestCase
      */
     public function it_can_save_a_query_with_name_for_a_user(): void
     {
-        $this->uuidGenerator->expects($this->once())
-            ->method('generate')
-            ->willReturn('73bf2160-058c-4e4e-bbee-6bcbe9298596');
-
         $this->udb3SavedSearchRepository->write(
+            '73bf2160-058c-4e4e-bbee-6bcbe9298596',
             '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
             'In Leuven',
             new QueryString('q=city:leuven')
@@ -163,27 +148,22 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 
     private function seedSavedSearches(): void
     {
-        $this->uuidGenerator->expects($this->exactly(3))
-            ->method('generate')
-            ->willReturnOnConsecutiveCalls(
-                '73bf2160-058c-4e4e-bbee-6bcbe9298596',
-                'db4c4690-84fb-4ed9-9a64-fccdd6e29f53',
-                '4de79378-d9a9-47ec-9b38-6f76f9d6df37'
-            );
-
         $this->udb3SavedSearchRepository->write(
+            '73bf2160-058c-4e4e-bbee-6bcbe9298596',
             '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
             'In Leuven',
             new QueryString('q=city:leuven')
         );
 
         $this->udb3SavedSearchRepository->write(
+            'db4c4690-84fb-4ed9-9a64-fccdd6e29f53',
             '6f072ba8-c510-40ac-b387-51f582650e26',
             'Permanent in Rotselaar',
             new QueryString('q=city:Rotselaar AND permanent:TRUE')
         );
 
         $this->udb3SavedSearchRepository->write(
+            '4de79378-d9a9-47ec-9b38-6f76f9d6df37',
             '6f072ba8-c510-40ac-b387-51f582650e26',
             'Alles in Tienen',
             new QueryString('q=city:Tienen')
