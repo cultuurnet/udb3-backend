@@ -149,7 +149,6 @@ final class ApiProblem extends Exception
                 fn (SchemaError $schemaError) => [
                     'jsonPointer' => $schemaError->getJsonPointer(),
                     'error' => $schemaError->getError(),
-                    'errorType' => $schemaError->getErrorType() ?? '',
                 ],
                 $this->schemaErrors
             );
