@@ -38,3 +38,24 @@ Feature: Test requesting ownership
      "detail": "An ownership request for this item and owner already exists with id %{ownershipId}"
     }
     """
+
+  Scenario: Requesting the ownership of a non-existing organizer is not allowed
+    When I set the JSON request payload to:
+      """
+      {
+        "itemId": "b192b05f-9294-4c07-a3f9-6a15e267d746",
+        "itemType": "organizer",
+        "ownerId": "auth0|631748dba64ea78e3983b207"
+      }
+      """
+    When I send a POST request to '/ownerships'
+    Then the response status should be 404
+    And the JSON response should be:
+    """
+    {
+     "type": "https://api.publiq.be/probs/url/not-found",
+     "title": "Not Found",
+     "status": 404,
+     "detail": "The Organizer with id \"b192b05f-9294-4c07-a3f9-6a15e267d746\" was not found."
+    }
+    """
