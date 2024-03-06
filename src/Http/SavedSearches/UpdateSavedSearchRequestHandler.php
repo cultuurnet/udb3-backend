@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\SavedSearches;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearchJSONDeserializer;
 use CultuurNet\UDB3\SavedSearches\Command\UpdateSavedSearchJSONDeserializer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

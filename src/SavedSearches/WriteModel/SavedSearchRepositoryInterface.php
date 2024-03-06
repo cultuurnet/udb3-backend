@@ -8,7 +8,7 @@ use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 
 interface SavedSearchRepositoryInterface
 {
-    public function write(
+    public function insert(
         string $id,
         string $userId,
         string $name,

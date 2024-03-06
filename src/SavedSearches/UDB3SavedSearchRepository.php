@@ -30,7 +30,7 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
         $this->userId = $userId;
     }
 
-    public function write(
+    public function insert(
         string $id,
         string $userId,
         string $name,
@@ -75,7 +75,7 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
                     $name,
                     $queryString->toString(),
                     $userId,
-                    $id
+                    $id,
                 ]
             );
 

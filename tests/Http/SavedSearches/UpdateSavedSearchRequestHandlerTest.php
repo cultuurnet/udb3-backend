@@ -9,9 +9,6 @@ use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
-use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Command\UpdateSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use Fig\Http\Message\StatusCodeInterface;
@@ -85,6 +82,7 @@ class UpdateSavedSearchRequestHandlerTest extends TestCase
     public function it_will_throw_when_name_is_missing(): void
     {
         $createSavedSearchRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('id', 'c269632a-a887-4f21-8455-1631c31e4df5')
             ->withJsonBodyFromArray(
                 [
                     'query' => 'regions:nis-44021 AND (typicalAgeRange:[18 TO *] AND name.*:Avondlessen)',
@@ -104,6 +102,7 @@ class UpdateSavedSearchRequestHandlerTest extends TestCase
     public function it_will_throw_when_query_is_missing(): void
     {
         $createSavedSearchRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('id', 'c269632a-a887-4f21-8455-1631c31e4df5')
             ->withJsonBodyFromArray(
                 [
                     'name' => 'Avondlessen in Gent',

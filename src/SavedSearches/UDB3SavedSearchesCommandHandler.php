@@ -27,7 +27,7 @@ class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
         $name = $subscribeToSavedSearch->getName();
         $query = $subscribeToSavedSearch->getQuery();
 
-        $this->savedSearchRepository->write($id, $userId, $name, $query);
+        $this->savedSearchRepository->insert($id, $userId, $name, $query);
     }
 
     public function handleUpdateSavedSearch(UpdateSavedSearch $subscribeToSavedSearch): void
@@ -39,8 +39,8 @@ class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
 
         $howManyRowsAffected = $this->savedSearchRepository->update($id, $userId, $name, $query);
 
-        if($howManyRowsAffected === 0) {
-            throw ApiProblem::resourceNotFound('saved search', $id);
+        if ($howManyRowsAffected === 0) {
+            throw ApiProblem::savedSearchNotFound($id);
         }
     }
 
