@@ -92,7 +92,7 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
         if (!$this->currentUser->isGodUser() && $this->currentUser->getId() !== $requestOwnership->getOwnerId()->toString()) {
             throw ApiProblem::forbidden('You are not allowed to request ownership for another owner');
         }
-        
+
         $this->commandBus->dispatch($requestOwnership);
 
         return new JsonResponse(
