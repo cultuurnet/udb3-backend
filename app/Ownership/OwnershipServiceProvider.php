@@ -9,6 +9,9 @@ use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Ownership\Readmodels\OwnershipLDProjector;
+use CultuurNet\UDB3\Ownership\Readmodels\OwnershipSearchProjector;
+use CultuurNet\UDB3\Ownership\Repositories\Search\DBALOwnershipSearchRepository;
+use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 
 final class OwnershipServiceProvider extends AbstractServiceProvider
 {
@@ -20,6 +23,8 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
             OwnershipRepository::class,
             OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY,
             OwnershipLDProjector::class,
+            OwnershipSearchRepository::class,
+            OwnershipSearchProjector::class,
         ];
     }
 
@@ -49,6 +54,18 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
             OwnershipLDProjector::class,
             fn () => new OwnershipLDProjector(
                 $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY)
+            )
+        );
+
+        $container->addShared(
+            OwnershipSearchRepository::class,
+            fn () => new DBALOwnershipSearchRepository($this->container->get('dbal_connection'))
+        );
+
+        $container->addShared(
+            OwnershipSearchProjector::class,
+            fn () => new OwnershipSearchProjector(
+                $container->get(OwnershipSearchRepository::class)
             )
         );
     }
