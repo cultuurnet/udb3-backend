@@ -22,11 +22,12 @@ class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
 
     public function handleSubscribeToSavedSearch(SubscribeToSavedSearch $subscribeToSavedSearch): void
     {
+        $id = $subscribeToSavedSearch->getId();
         $userId = $subscribeToSavedSearch->getUserId();
         $name = $subscribeToSavedSearch->getName();
         $query = $subscribeToSavedSearch->getQuery();
 
-        $this->savedSearchRepository->write($userId, $name, $query);
+        $this->savedSearchRepository->write($id, $userId, $name, $query);
     }
 
     public function handleUpdateSavedSearch(UpdateSavedSearch $subscribeToSavedSearch): void

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\SavedSearches;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
@@ -21,6 +22,7 @@ class CreateSavedSearchRequestHandlerTest extends TestCase
     use AssertJsonResponseTrait;
 
     private const USER_ID = 'b9dc94df-c96b-4b71-8880-bd46e4e9a644';
+    private const ID = '3c504b25-b221-4aa5-ad75-5510379ba502';
 
     private TraceableCommandBus $commandBus;
 
@@ -30,11 +32,17 @@ class CreateSavedSearchRequestHandlerTest extends TestCase
 
     protected function setUp(): void
     {
+        $mockVersion4Generator = $this->getMockBuilder(Version4Generator::class)->getMock();
+        $mockVersion4Generator->expects($this->once())
+            ->method('generate')
+            ->willReturn(self::ID);
+
         $this->commandBus = new TraceableCommandBus();
 
         $this->createSavedSearchRequestHandler = new CreateSavedSearchRequestHandler(
             self::USER_ID,
-            $this->commandBus
+            $this->commandBus,
+            $mockVersion4Generator,
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
@@ -62,6 +70,7 @@ class CreateSavedSearchRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new SubscribeToSavedSearch(
+                    self::ID,
                     self::USER_ID,
                     'Avondlessen in Gent',
                     new QueryString('regions:nis-44021 AND (typicalAgeRange:[18 TO *] AND name.*:Avondlessen)')
@@ -71,7 +80,7 @@ class CreateSavedSearchRequestHandlerTest extends TestCase
         );
 
         $this->assertJsonResponse(
-            new JsonResponse(null, StatusCodeInterface::STATUS_CREATED),
+            new JsonResponse(['id' => self::ID], StatusCodeInterface::STATUS_CREATED),
             $response
         );
     }

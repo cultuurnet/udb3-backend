@@ -34,6 +34,11 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
 
         $jsonLd = Json::decodeAssociatively($document->getRawBody());
 
+        if (!isset($jsonLd['address'])) {
+            $output->writeln("Skipping {$placeId}. (JSON-LD does not contain an address.)");
+            return;
+        }
+
         $addressLanguage = $jsonLd->mainLanguage ?? 'nl';
 
         if (!isset($jsonLd['address'][$addressLanguage])) {

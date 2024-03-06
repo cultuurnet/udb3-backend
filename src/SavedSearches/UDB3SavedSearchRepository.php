@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches;
 
-use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
@@ -19,24 +17,21 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
 
     private string $tableName;
 
-    private UuidGeneratorInterface $uuidGenerator;
-
     private string $userId;
 
 
     public function __construct(
         Connection $connection,
         string $tableName,
-        UuidGeneratorInterface $uuidGenerator,
         string $userId
     ) {
         $this->connection = $connection;
         $this->tableName = $tableName;
-        $this->uuidGenerator = $uuidGenerator;
         $this->userId = $userId;
     }
 
     public function write(
+        string $id,
         string $userId,
         string $name,
         QueryString $queryString
@@ -53,7 +48,7 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
             )
             ->setParameters(
                 [
-                    $this->uuidGenerator->generate(),
+                    $id,
                     $userId,
                     $name,
                     $queryString->toString(),
