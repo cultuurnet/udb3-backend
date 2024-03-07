@@ -95,6 +95,7 @@ use CultuurNet\UDB3\Http\Role\UpdateRoleRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\UpdateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
@@ -529,6 +530,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->get('v3/', ReadSavedSearchesRequestHandler::class);
 
             $routeGroup->post('v3/', CreateSavedSearchRequestHandler::class);
+            $routeGroup->put('v3/{id}/', UpdateSavedSearchRequestHandler::class);
+
             $routeGroup->delete('v3/{id}/', DeleteSavedSearchRequestHandler::class);
         });
     }

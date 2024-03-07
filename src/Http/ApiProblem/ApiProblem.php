@@ -331,6 +331,11 @@ final class ApiProblem extends Exception
         return self::resourceNotFound('media object', $mediaObjectId);
     }
 
+    public static function savedSearchNotFound(string $id): self
+    {
+        return self::resourceNotFound('saved search', $id);
+    }
+
     public static function bodyMissing(): self
     {
         return self::create(

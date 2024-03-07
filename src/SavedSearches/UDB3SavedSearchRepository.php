@@ -30,7 +30,7 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
         $this->userId = $userId;
     }
 
-    public function write(
+    public function insert(
         string $id,
         string $userId,
         string $name,
@@ -56,6 +56,30 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
             );
 
         $queryBuilder->execute();
+    }
+
+    public function update(
+        string $id,
+        string $userId,
+        string $name,
+        QueryString $queryString
+    ): int {
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->update($this->tableName)
+            ->set(SchemaConfigurator::NAME, '?')
+            ->set(SchemaConfigurator::QUERY, '?')
+            ->where(SchemaConfigurator::USER . ' = ?')
+            ->andWhere(SchemaConfigurator::ID . ' = ?')
+            ->setParameters(
+                [
+                    $name,
+                    $queryString->toString(),
+                    $userId,
+                    $id,
+                ]
+            );
+
+        return $queryBuilder->execute();
     }
 
     public function delete(

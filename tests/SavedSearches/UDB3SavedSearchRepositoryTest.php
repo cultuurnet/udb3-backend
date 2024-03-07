@@ -35,7 +35,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
      */
     public function it_can_save_a_query_with_name_for_a_user(): void
     {
-        $this->udb3SavedSearchRepository->write(
+        $this->udb3SavedSearchRepository->insert(
             '73bf2160-058c-4e4e-bbee-6bcbe9298596',
             '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
             'In Leuven',
@@ -50,6 +50,38 @@ class UDB3SavedSearchRepositoryTest extends TestCase
                     'In Leuven',
                     new QueryString('q=city:leuven'),
                     '73bf2160-058c-4e4e-bbee-6bcbe9298596'
+                ),
+            ],
+            $savedSearches
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_a_query_with_name_for_a_user(): void
+    {
+        $this->udb3SavedSearchRepository->insert(
+            '1c483d5e40cc-4dd1-4dd1-eaab-96fd6c13',
+            '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
+            'In Leuven',
+            new QueryString('q=city:leuven')
+        );
+        $this->udb3SavedSearchRepository->update(
+            '1c483d5e40cc-4dd1-4dd1-eaab-96fd6c13',
+            '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
+            'In Antwerpen, de echte stad',
+            new QueryString('q=city:antwerpen')
+        );
+
+        $savedSearches = $this->getSavedSearches();
+
+        $this->assertEquals(
+            [
+                new SavedSearch(
+                    'In Antwerpen, de echte stad',
+                    new QueryString('q=city:antwerpen'),
+                    '1c483d5e40cc-4dd1-4dd1-eaab-96fd6c13'
                 ),
             ],
             $savedSearches
@@ -148,21 +180,21 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 
     private function seedSavedSearches(): void
     {
-        $this->udb3SavedSearchRepository->write(
+        $this->udb3SavedSearchRepository->insert(
             '73bf2160-058c-4e4e-bbee-6bcbe9298596',
             '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
             'In Leuven',
             new QueryString('q=city:leuven')
         );
 
-        $this->udb3SavedSearchRepository->write(
+        $this->udb3SavedSearchRepository->insert(
             'db4c4690-84fb-4ed9-9a64-fccdd6e29f53',
             '6f072ba8-c510-40ac-b387-51f582650e26',
             'Permanent in Rotselaar',
             new QueryString('q=city:Rotselaar AND permanent:TRUE')
         );
 
-        $this->udb3SavedSearchRepository->write(
+        $this->udb3SavedSearchRepository->insert(
             '4de79378-d9a9-47ec-9b38-6f76f9d6df37',
             '6f072ba8-c510-40ac-b387-51f582650e26',
             'Alles in Tienen',
