@@ -45,7 +45,7 @@ class UpdateSavedSearchRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_save_a_search(): void
+    public function it_can_update_a_search(): void
     {
         $id = 'c269632a-a887-4f21-8455-1631c31e4df5';
         $createSavedSearchRequest = $this->psr7RequestBuilder
@@ -56,7 +56,7 @@ class UpdateSavedSearchRequestHandlerTest extends TestCase
                     'query' => 'regions:nis-44021 AND (typicalAgeRange:[18 TO *] AND name.*:Avondlessen)',
                 ]
             )
-            ->build('POST');
+            ->build('PUT');
 
         $response = $this->updateSavedSearchRequestHandler->handle($createSavedSearchRequest);
 
@@ -88,7 +88,7 @@ class UpdateSavedSearchRequestHandlerTest extends TestCase
                     'query' => 'regions:nis-44021 AND (typicalAgeRange:[18 TO *] AND name.*:Avondlessen)',
                 ]
             )
-            ->build('POST');
+            ->build('PUT');
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('name is missing');
@@ -108,7 +108,7 @@ class UpdateSavedSearchRequestHandlerTest extends TestCase
                     'name' => 'Avondlessen in Gent',
                 ]
             )
-            ->build('POST');
+            ->build('PUT');
 
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('query is missing');
