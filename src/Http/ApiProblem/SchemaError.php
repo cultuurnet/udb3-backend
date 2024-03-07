@@ -8,13 +8,11 @@ final class SchemaError
 {
     private string $jsonPointer;
     private string $error;
-    private ?string $errorType;
 
-    public function __construct(string $jsonPointer, string $error, string $errorType = null)
+    public function __construct(string $jsonPointer, string $error)
     {
         $this->jsonPointer = $jsonPointer;
         $this->error = $error;
-        $this->errorType = $errorType;
     }
 
     public function getJsonPointer(): string
@@ -25,10 +23,5 @@ final class SchemaError
     public function getError(): string
     {
         return $this->error;
-    }
-
-    public function getErrorType(): ?string
-    {
-        return $this->errorType;
     }
 }
