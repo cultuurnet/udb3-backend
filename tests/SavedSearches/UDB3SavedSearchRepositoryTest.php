@@ -67,7 +67,8 @@ class UDB3SavedSearchRepositoryTest extends TestCase
             'In Leuven',
             new QueryString('q=city:leuven')
         );
-        $affectedRows = $this->udb3SavedSearchRepository->update(
+
+        $this->udb3SavedSearchRepository->update(
             '1c483d5e40cc-4dd1-4dd1-eaab-96fd6c13',
             '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
             'In Antwerpen, de echte stad',
@@ -76,7 +77,6 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 
         $savedSearches = $this->getSavedSearches();
 
-        $this->assertEquals(1, $affectedRows);
         $this->assertEquals(
             [
                 new SavedSearch(
@@ -87,21 +87,6 @@ class UDB3SavedSearchRepositoryTest extends TestCase
             ],
             $savedSearches
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_0_when_updating_search_that_does_not_exist(): void
-    {
-        $affectedRows = $this->udb3SavedSearchRepository->update(
-            '1c483d5e40cc-4dd1-4dd1-eaab-96fd6c13',
-            '96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc',
-            'El Dorado',
-            new QueryString('q=city:eldorado')
-        );
-
-        $this->assertEquals(0, $affectedRows);
     }
 
     /**

@@ -37,11 +37,11 @@ class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
         $query = $subscribeToSavedSearch->getQuery();
         $id = $subscribeToSavedSearch->getId();
 
-        $howManyRowsAffected = $this->savedSearchRepository->update($id, $userId, $name, $query);
-
-        if ($howManyRowsAffected === 0) {
+        if ($this->savedSearchRepository->findSavedSearchOwnedByCurrentUser($id) === null) {
             throw ApiProblem::savedSearchNotFound($id);
         }
+
+        $this->savedSearchRepository->update($id, $userId, $name, $query);
     }
 
     public function handleUnsubscribeFromSavedSearch(UnsubscribeFromSavedSearch $unsubscribeFromSavedSearch): void

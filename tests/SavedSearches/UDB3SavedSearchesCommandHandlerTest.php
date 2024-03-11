@@ -10,6 +10,7 @@ use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Command\UpdateSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -74,10 +75,41 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
                 $userId,
                 $name,
                 $query
+            );
+
+        $this->savedSearchesRepository->expects($this->once())
+            ->method('findSavedSearchOwnedByCurrentUser')
+            ->with(
+                $id
             )
-            ->willReturn(1);
+            ->willReturn(new SavedSearch($name, $query, $id));
 
         $this->udb3SavedSearchesCommandHandler->handle($subscribeToSavedSearch);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_which_saving_nonexisting_saved_search(): void
+    {
+        $id = '9b68b83c-366e-4d64-9d5d-fba58ef8b94f';
+        $userId = '2bf5b8bf-7dbf-4a21-ab31-6da376cb315b';
+        $name = 'My very first saved search!';
+        $query = new QueryString('city:"Leuven"');
+
+        $subscribeToSavedSearch = new UpdateSavedSearch($id, $userId, $name, $query);
+
+        $this->savedSearchesRepository->expects($this->once())
+            ->method('findSavedSearchOwnedByCurrentUser')
+            ->with(
+                $id
+            )
+            ->willReturn(null);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::savedSearchNotFound($id),
+            fn () => $this->udb3SavedSearchesCommandHandler->handle($subscribeToSavedSearch)
+        );
     }
 
     public function it_will_fail_to_update_a_nonexisting_saved_search(): void

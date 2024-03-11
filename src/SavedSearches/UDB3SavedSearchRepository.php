@@ -63,8 +63,8 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
         string $userId,
         string $name,
         QueryString $queryString
-    ): int {
-        $queryBuilder = $this->connection->createQueryBuilder()
+    ): void {
+        $this->connection->createQueryBuilder()
             ->update($this->tableName)
             ->set(SchemaConfigurator::NAME, '?')
             ->set(SchemaConfigurator::QUERY, '?')
@@ -77,9 +77,8 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
                     $userId,
                     $id,
                 ]
-            );
-
-        return $queryBuilder->execute();
+            )
+            ->execute();
     }
 
     public function delete(
@@ -129,5 +128,35 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
 
 
         return $savedSearches;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function findSavedSearchOwnedByCurrentUser(string $id): ?SavedSearch
+    {
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->select('*')
+            ->from($this->tableName)
+            ->where(SchemaConfigurator::USER . ' = ?')
+            ->andWhere(SchemaConfigurator::ID . ' = ?')
+            ->setParameters(
+                [
+                    $this->userId,
+                    $id,
+                ]
+            );
+
+        $row = $queryBuilder->execute()->fetchAssociative();
+
+        if ($row === false) {
+            return null;
+        }
+
+        return new SavedSearch(
+            $row[SchemaConfigurator::NAME],
+            new QueryString($row[SchemaConfigurator::QUERY]),
+            $row[SchemaConfigurator::ID]
+        );
     }
 }
