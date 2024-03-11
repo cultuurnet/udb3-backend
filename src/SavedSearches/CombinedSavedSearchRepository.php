@@ -12,7 +12,7 @@ class CombinedSavedSearchRepository implements SavedSearchRepositoryInterface
     /**
      * @var SavedSearchRepositoryInterface[]
      */
-    protected $repositories;
+    protected array $repositories;
 
     public function __construct(SavedSearchRepositoryInterface ...$repositories)
     {
@@ -28,7 +28,9 @@ class CombinedSavedSearchRepository implements SavedSearchRepositoryInterface
 
         foreach ($this->repositories as $repository) {
             $append = array_values($repository->ownedByCurrentUser());
-            $savedSearches = array_merge($savedSearches, $append);
+            foreach ($append as $item) {
+                $savedSearches[] = $item;
+            }
         }
 
         return $savedSearches;
