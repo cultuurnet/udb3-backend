@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SavedSearches;
 
 use Broadway\CommandHandling\SimpleCommandHandler;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Command\UpdateSavedSearch;
@@ -37,11 +36,7 @@ class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
         $query = $subscribeToSavedSearch->getQuery();
         $id = $subscribeToSavedSearch->getId();
 
-        $howManyRowsAffected = $this->savedSearchRepository->update($id, $userId, $name, $query);
-
-        if ($howManyRowsAffected === 0) {
-            throw ApiProblem::savedSearchNotFound($id);
-        }
+        $this->savedSearchRepository->update($id, $userId, $name, $query);
     }
 
     public function handleUnsubscribeFromSavedSearch(UnsubscribeFromSavedSearch $unsubscribeFromSavedSearch): void

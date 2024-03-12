@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\SavedSearches;
 use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
-use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface as SavedSearchReadModelRepositoryInterface;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchesOwnedByCurrentUser as SavedSearchReadModelRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface as SavedSearchWriteModelRepositoryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -63,8 +63,8 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
         string $userId,
         string $name,
         QueryString $queryString
-    ): int {
-        $queryBuilder = $this->connection->createQueryBuilder()
+    ): void {
+        $this->connection->createQueryBuilder()
             ->update($this->tableName)
             ->set(SchemaConfigurator::NAME, '?')
             ->set(SchemaConfigurator::QUERY, '?')
@@ -77,9 +77,8 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
                     $userId,
                     $id,
                 ]
-            );
-
-        return $queryBuilder->execute();
+            )
+            ->execute();
     }
 
     public function delete(
@@ -123,7 +122,8 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
             $savedSearches[] = new SavedSearch(
                 $row[SchemaConfigurator::NAME],
                 new QueryString($row[SchemaConfigurator::QUERY]),
-                $row[SchemaConfigurator::ID]
+                $row[SchemaConfigurator::ID],
+                $row[SchemaConfigurator::USER]
             );
         }
 

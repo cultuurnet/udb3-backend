@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\SavedSearches;
 use CultuurNet\UDB3\SavedSearches\Properties\CreatedByQueryString;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
-use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchesOwnedByCurrentUser;
 use PHPUnit\Framework\TestCase;
 
 class CombinedSavedSearchRepositoryTest extends TestCase
@@ -36,14 +36,14 @@ class CombinedSavedSearchRepositoryTest extends TestCase
             ),
         ];
 
-        $firstRepository = $this->createMock(SavedSearchRepositoryInterface::class);
+        $firstRepository = $this->createMock(SavedSearchesOwnedByCurrentUser::class);
         $firstRepository->expects($this->once())
             ->method('ownedByCurrentUser')
             ->willReturn([
                 $savedSearches[0],
             ]);
 
-        $secondRepository = $this->createMock(SavedSearchRepositoryInterface::class);
+        $secondRepository = $this->createMock(SavedSearchesOwnedByCurrentUser::class);
         $secondRepository->expects($this->once())
             ->method('ownedByCurrentUser')
             ->willReturn([
@@ -51,7 +51,7 @@ class CombinedSavedSearchRepositoryTest extends TestCase
                 $savedSearches[2],
             ]);
 
-        $thirdRepository = $this->createMock(SavedSearchRepositoryInterface::class);
+        $thirdRepository = $this->createMock(SavedSearchesOwnedByCurrentUser::class);
         $thirdRepository->expects($this->once())
             ->method('ownedByCurrentUser')
             ->willReturn([

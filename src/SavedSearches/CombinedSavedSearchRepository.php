@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SavedSearches;
 
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
-use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchesOwnedByCurrentUser;
 
-class CombinedSavedSearchRepository implements SavedSearchRepositoryInterface
+class CombinedSavedSearchRepository implements SavedSearchesOwnedByCurrentUser
 {
     /**
-     * @var SavedSearchRepositoryInterface[]
+     * @var SavedSearchesOwnedByCurrentUser[]
      */
     protected array $repositories;
 
-    public function __construct(SavedSearchRepositoryInterface ...$repositories)
+    public function __construct(SavedSearchesOwnedByCurrentUser ...$repositories)
     {
         $this->repositories = $repositories;
     }

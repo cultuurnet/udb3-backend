@@ -20,7 +20,7 @@ interface SavedSearchRepositoryInterface
         string $userId,
         string $name,
         QueryString $queryString
-    ): int;
+    ): void;
 
     public function delete(
         string $userId,

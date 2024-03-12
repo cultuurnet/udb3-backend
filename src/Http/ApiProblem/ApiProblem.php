@@ -203,6 +203,11 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function unauthorizedSavedSearch(): self
+    {
+        return self::unauthorized('You do not own this saved search');
+    }
+
     public static function forbidden(string $detail = null): self
     {
         return self::create(
