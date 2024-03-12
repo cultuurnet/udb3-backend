@@ -11,7 +11,8 @@ use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\UpdateSavedSearchRequestHandler;
-use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchesOwnedByCurrentUser;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchReadRepository;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\User\CurrentUser;
@@ -23,12 +24,13 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
     {
         return [
             'udb3_saved_searches_repo_sapi3',
-            SavedSearchRepositoryInterface::class,
+            SavedSearchesOwnedByCurrentUser::class,
             'saved_searches_command_handler',
             ReadSavedSearchesRequestHandler::class,
             CreateSavedSearchRequestHandler::class,
             DeleteSavedSearchRequestHandler::class,
             UpdateSavedSearchRequestHandler::class,
+            SavedSearchReadRepository::class,
         ];
     }
 
@@ -48,7 +50,7 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            SavedSearchRepositoryInterface::class,
+            SavedSearchesOwnedByCurrentUser::class,
             function () use ($container) {
                 return new CombinedSavedSearchRepository(
                     new Sapi3FixedSavedSearchRepository(
@@ -74,7 +76,7 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
             ReadSavedSearchesRequestHandler::class,
             function () use ($container) {
                 return new ReadSavedSearchesRequestHandler(
-                    $container->get(SavedSearchRepositoryInterface::class)
+                    $container->get(SavedSearchesOwnedByCurrentUser::class)
                 );
             }
         );
@@ -95,7 +97,8 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 return new UpdateSavedSearchRequestHandler(
                     $container->get(CurrentUser::class)->getId() ?? '',
-                    $container->get('event_command_bus')
+                    $container->get('event_command_bus'),
+                    $container->get(SavedSearchReadRepository::class)
                 );
             }
         );
@@ -106,6 +109,16 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
                 return new DeleteSavedSearchRequestHandler(
                     $container->get(CurrentUser::class)->getId(),
                     $container->get('event_command_bus')
+                );
+            }
+        );
+
+        $container->addShared(
+            SavedSearchReadRepository::class,
+            function () use ($container) {
+                return new SavedSearchReadRepository(
+                    $container->get('dbal_connection'),
+                    'saved_searches_sapi3'
                 );
             }
         );

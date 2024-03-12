@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SavedSearches\WriteModel;
 
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
-use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 
 interface SavedSearchRepositoryInterface
 {
@@ -27,6 +26,4 @@ interface SavedSearchRepositoryInterface
         string $userId,
         string $searchId
     ): void;
-
-    public function findSavedSearchOwnedByCurrentUser(string $id): ?SavedSearch;
 }

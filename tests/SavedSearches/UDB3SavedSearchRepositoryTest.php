@@ -14,6 +14,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
+    private const USERID = '6f072ba8-c510-40ac-b387-51f582650e26';
     private string $tableName;
 
     private UDB3SavedSearchRepository $udb3SavedSearchRepository;
@@ -26,7 +27,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $this->udb3SavedSearchRepository = new UDB3SavedSearchRepository(
             $this->getConnection(),
             $this->tableName,
-            '6f072ba8-c510-40ac-b387-51f582650e26'
+            self::USERID
         );
     }
 
@@ -97,7 +98,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $this->seedSavedSearches();
 
         $this->udb3SavedSearchRepository->delete(
-            '6f072ba8-c510-40ac-b387-51f582650e26',
+            self::USERID,
             'db4c4690-84fb-4ed9-9a64-fccdd6e29f53'
         );
 
@@ -134,12 +135,14 @@ class UDB3SavedSearchRepositoryTest extends TestCase
                 new SavedSearch(
                     'Permanent in Rotselaar',
                     new QueryString('q=city:Rotselaar AND permanent:TRUE'),
-                    'db4c4690-84fb-4ed9-9a64-fccdd6e29f53'
+                    'db4c4690-84fb-4ed9-9a64-fccdd6e29f53',
+                    self::USERID
                 ),
                 new SavedSearch(
                     'Alles in Tienen',
                     new QueryString('q=city:Tienen'),
-                    '4de79378-d9a9-47ec-9b38-6f76f9d6df37'
+                    '4de79378-d9a9-47ec-9b38-6f76f9d6df37',
+                    self::USERID
                 ),
             ],
             $savedSearches
@@ -190,14 +193,14 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 
         $this->udb3SavedSearchRepository->insert(
             'db4c4690-84fb-4ed9-9a64-fccdd6e29f53',
-            '6f072ba8-c510-40ac-b387-51f582650e26',
+            self::USERID,
             'Permanent in Rotselaar',
             new QueryString('q=city:Rotselaar AND permanent:TRUE')
         );
 
         $this->udb3SavedSearchRepository->insert(
             '4de79378-d9a9-47ec-9b38-6f76f9d6df37',
-            '6f072ba8-c510-40ac-b387-51f582650e26',
+            self::USERID,
             'Alles in Tienen',
             new QueryString('q=city:Tienen')
         );

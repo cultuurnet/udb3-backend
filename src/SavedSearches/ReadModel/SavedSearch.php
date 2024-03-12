@@ -9,16 +9,23 @@ use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 class SavedSearch implements \JsonSerializable
 {
     protected ?string $id;
+    protected ?string $userId;
 
     protected string $name;
 
     protected QueryString $query;
 
-    public function __construct(string $name, QueryString $query, string $id = null)
+    public function __construct(string $name, QueryString $query, string $id = null, string $userId = null)
     {
         $this->name = $name;
         $this->query = $query;
         $this->id = $id;
+        $this->userId = $userId;
+    }
+
+    public function getUserId(): ?string
+    {
+        return $this->userId;
     }
 
     /**

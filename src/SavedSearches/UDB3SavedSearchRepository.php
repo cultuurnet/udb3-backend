@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\SavedSearches;
 use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
-use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface as SavedSearchReadModelRepositoryInterface;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchesOwnedByCurrentUser as SavedSearchReadModelRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface as SavedSearchWriteModelRepositoryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -122,41 +122,12 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
             $savedSearches[] = new SavedSearch(
                 $row[SchemaConfigurator::NAME],
                 new QueryString($row[SchemaConfigurator::QUERY]),
-                $row[SchemaConfigurator::ID]
+                $row[SchemaConfigurator::ID],
+                $row[SchemaConfigurator::USER]
             );
         }
 
 
         return $savedSearches;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function findSavedSearchOwnedByCurrentUser(string $id): ?SavedSearch
-    {
-        $queryBuilder = $this->connection->createQueryBuilder()
-            ->select('*')
-            ->from($this->tableName)
-            ->where(SchemaConfigurator::USER . ' = ?')
-            ->andWhere(SchemaConfigurator::ID . ' = ?')
-            ->setParameters(
-                [
-                    $this->userId,
-                    $id,
-                ]
-            );
-
-        $row = $queryBuilder->execute()->fetchAssociative();
-
-        if ($row === false) {
-            return null;
-        }
-
-        return new SavedSearch(
-            $row[SchemaConfigurator::NAME],
-            new QueryString($row[SchemaConfigurator::QUERY]),
-            $row[SchemaConfigurator::ID]
-        );
     }
 }

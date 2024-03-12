@@ -7,11 +7,11 @@ namespace CultuurNet\UDB3\SavedSearches;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\SavedSearches\Properties\CreatorQueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
-use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchesOwnedByCurrentUser;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 
-class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
+class Sapi3FixedSavedSearchRepository implements SavedSearchesOwnedByCurrentUser
 {
     private JsonWebToken $token;
 
