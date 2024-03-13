@@ -24,6 +24,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class ProcessDuplicatePlaces extends AbstractCommand
 {
+    private const ONLY_RUN_CLUSTER_ID = 'only-run-cluster-id';
     private DuplicatePlaceRepository $duplicatePlaceRepository;
 
     private CanonicalService $canonicalService;
@@ -76,6 +77,12 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             InputArgument::OPTIONAL,
             'The id of the cluster to start processing from (useful for resuming a previous run).'
         );
+        $this->addOption(
+            self::ONLY_RUN_CLUSTER_ID,
+            'id',
+            InputOption::VALUE_REQUIRED,
+            'The id of the cluster you want to proces.'
+        );
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -83,8 +90,13 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         $dryRun = (bool)$input->getOption('dry-run');
         $startingClusterId = (int)$input->getArgument('start-cluster-id');
         $onlySetCanonical = (bool)$input->getOption('only-set-canonical');
+        $onlyRunClusterId = $input->getOption(self::ONLY_RUN_CLUSTER_ID);
 
-        $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
+        if ($onlyRunClusterId) {
+            $clusterIds = [(int)$onlyRunClusterId];
+        } else {
+            $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
+        }
 
         if (count($clusterIds) === 0) {
             $output->writeln('No clusters found to process');
