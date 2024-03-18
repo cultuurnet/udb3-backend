@@ -6,8 +6,11 @@ namespace CultuurNet\UDB3\Address;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\JsonLdSerializableInterface;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Address as Udb3ModelAddress;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address as Udb3ModelAddress;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality as Udb3Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode as Udb3PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street as Udb3Street;
 
 /**
  * @deprecated
@@ -94,6 +97,16 @@ final class Address implements Serializable, JsonLdSerializableInterface
             new PostalCode($address->getPostalCode()->toString()),
             new Locality($address->getLocality()->toString()),
             new CountryCode($address->getCountryCode()->toString())
+        );
+    }
+
+    public function toUdb3ModelAddress(): Udb3ModelAddress
+    {
+        return new Udb3ModelAddress(
+            new Udb3Street($this->getStreetAddress()->toString()),
+            new Udb3PostalCode($this->getPostalCode()->toString()),
+            new Udb3Locality($this->getLocality()->toString()),
+            new CountryCode($this->getCountryCode()->toString())
         );
     }
 }
