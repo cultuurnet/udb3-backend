@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Address\Formatter\AddressFormatter;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateGeoCoordinatesFromAddress;
+use CultuurNet\UDB3\Place\ReadModel\Duplicate\CleanPlaceName;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use JsonException;
@@ -53,7 +54,11 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
         AbstractUpdateGeoCoordinatesFromAddress $updateGeoCoordinates
     ): void {
         $offerId = $updateGeoCoordinates->getItemId();
-        $locationName = $this->fetchOfferName($offerId);
+
+        $locationName = CleanPlaceName::transform(
+            $updateGeoCoordinates->getAddress()->toUdb3ModelAddress(),
+            $this->fetchOfferName($offerId)
+        );
 
         $exactAddress = $this->defaultAddressFormatter->format(
             $updateGeoCoordinates->getAddress()
@@ -94,8 +99,6 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
         $offer->updateGeoCoordinates($coordinates);
         $this->offerRepository->save($offer);
     }
-
-
 
     private function fetchOfferName(string $offerId): string
     {

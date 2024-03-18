@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
-use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 
 /**
@@ -18,17 +17,15 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
  * */
 class CleanPlaceName
 {
-    public static function transform(Place $place): string
+    public static function transform(Address $address, string $title): string
     {
-        $title = $place->getTitle()->getOriginalValue();
-
-        $title = str_replace(['.', ''], '', mb_strtolower(trim($title->toString())));
+        $title = str_replace(['.', ''], '', mb_strtolower(trim($title)));
 
         $title = self::removeAccents($title);
 
         $title = str_replace(['"', '\'', '?', '!', '(', ')', '&', ',', '_', ':'], ' ', $title);
 
-        $title = self::removeCityName($place, $title);
+        $title = self::removeCityName($address, $title);
 
         $title = self::removeDuplicateWords($title);
 
@@ -241,13 +238,9 @@ class CleanPlaceName
         return implode(' ', $uniqueWords);
     }
 
-    private static function removeCityName(Place $place, string $title): string
+    private static function removeCityName(Address $address, string $title): string
     {
-        $address = $place->getAddress()->getOriginalValue();
-        if ($address instanceof Address) {
-            $title = str_replace(mb_strtolower($address->getLocality()->toString()), '', $title);
-        }
-        return $title;
+        return str_replace(mb_strtolower($address->getLocality()->toString()), '', $title);
     }
 
     private static function reduceMultipleSpaces(string $title): string
