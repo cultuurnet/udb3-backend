@@ -39,6 +39,6 @@ class CleanPlaceName
         $title = str_replace([' BE', 'BE ', ' NL', 'NL '], [' Belgium', 'Belgium ', ' Netherlands', 'Netherlands '], $title);
 
         //Decode the unicode characters
-        return json_decode('"' . $title . '"', true);
+        return Json::decodeAssociatively('"' . $title . '"');
     }
 }
