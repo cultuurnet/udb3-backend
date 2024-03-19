@@ -6,15 +6,6 @@ namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 
-/**
- * This class converts place names (title) with the following rules:
- * Lowercase all letters
- * Remove dots
- * Remove accents
- * Replace these symbols ["'?!()&_,:] by a white space
- * Remove duplicate words
- * Remove city name out of location name
- * */
 class CleanPlaceName
 {
     private const MAX_LENGTH_TITLE = 150;
