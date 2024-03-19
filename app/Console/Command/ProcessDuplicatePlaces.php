@@ -25,6 +25,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 final class ProcessDuplicatePlaces extends AbstractCommand
 {
     private const ONLY_RUN_CLUSTER_ID = 'only-run-cluster-id';
+    private const FORCE = 'force';
     private DuplicatePlaceRepository $duplicatePlaceRepository;
 
     private CanonicalService $canonicalService;
@@ -83,6 +84,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             InputOption::VALUE_REQUIRED,
             'The id of the cluster you want to proces.'
         );
+        $this->addOption(self::FORCE, 'f', InputOption::VALUE_NONE, 'Skip confirmation.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -173,6 +175,11 @@ final class ProcessDuplicatePlaces extends AbstractCommand
 
     private function askConfirmation(InputInterface $input, OutputInterface $output, int $count): bool
     {
+        if ($input->getOption(self::FORCE) === true) {
+            $output->writeln("This action will process {$count} clusters");
+            return true;
+        }
+
         return $this
             ->getHelper('question')
             ->ask(
