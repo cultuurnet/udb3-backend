@@ -31,17 +31,14 @@ class CleanPlaceNameTest extends TestCase
     public function dataProvider(): array
     {
         return [
-            // Test cases with various transformations
-            'happy path - nothing changed' => ['BELGIE', 'belgie'],
-            'Lowercase all letters' => ['BELGIE', 'belgie'],
-            'Remove dots' => ['b.e.l', 'bel'],
-            'Remove accents - simple' => ['belgië', 'belgie'],
-            'Remove accents - complex 1' => ['Élèvê', 'eleve'],
-            'Remove accents - complex 2' => ['garçon', 'garcon'],
-            'Remove accents - complex 3' => ['àá', 'aa'],
-            'Replace these symbols' => ["belgie\"'?&_,:(brussel)!", 'belgie brussel'],
-            'Remove duplicate words' => ['De gezellige mosterpot - gezellige sfeer', 'de gezellige mosterpot - sfeer'],
-            'Remove city name out of location name' => ['belgie antwerpen', 'belgie'],
+            ['Café de lindekens', 'Café de lindekens'],
+            ['<b>Café de lindekens</b>', '&lt;b&gt;Café de lindekens&lt;/b&gt;'],
+            ['\u0062\u0061\u0072 la cantina', 'bar la cantina'],
+            ['none', ''],
+            ['aan de hoek van het kruispunt om 15 uur vertrekken we aan de hoek van het kruispunt om 15 uur vertrekken we aan de hoek van het kruispunt om 15 uur vertrekken we', ''],
+            ['Speelplaats aan de Kerkstraat 1', ''],
+            ['Café de lindekens BE', 'Café de lindekens Belgium'],
+            ['dit is belachelijk om te veranderen', 'dit is belachelijk om te veranderen'],
         ];
     }
 }
