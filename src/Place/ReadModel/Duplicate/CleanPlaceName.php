@@ -26,11 +26,16 @@ class CleanPlaceName
             return '';
         }
 
-        $title = htmlspecialchars($title);
+        // the goal is to remove as much HTML as we can, if strip_tags misses a tag, we decode the html chars
+        $title = htmlspecialchars_decode(strip_tags($title));
 
         $title = str_replace([' BE', 'BE ', ' NL', 'NL '], [' Belgium', 'Belgium ', ' Netherlands', 'Netherlands '], $title);
 
-        //Decode the unicode characters
-        return Json::decodeAssociatively('"' . $title . '"');
+        // A specific hack to fix a location, because it gives errors in the google maps api
+        // Based on the Ai Python script
+        $title = str_replace('Tennisclub%20Kouterslag', 'Tennisclub_Kouterslag', $title);
+
+        // Decode the unicode characters
+        return Json::decode('"' . $title . '"');
     }
 }
