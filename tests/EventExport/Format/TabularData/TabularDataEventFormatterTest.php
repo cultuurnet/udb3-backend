@@ -816,7 +816,10 @@ class TabularDataEventFormatterTest extends TestCase
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);
     }
 
-    public function it_formats_completeness()
+    /**
+     * @test
+     */
+    public function it_formats_completeness(): void
     {
         $includedProperties = [
             'id',
