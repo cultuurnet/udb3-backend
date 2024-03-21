@@ -823,7 +823,7 @@ class TabularDataEventFormatterTest extends TestCase
     {
         $includedProperties = [
             'id',
-            'status',
+            'completeness',
         ];
 
         $event = $this->getJSONEventFromFile('event_with_completeness.json');
