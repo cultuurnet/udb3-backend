@@ -76,7 +76,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
     private ImageCollectionFactory $imageCollectionFactory;
 
-    private bool $preventDuplicatePlaces;
+    private bool $preventDuplicatePlacesCreation;
 
     private LookupDuplicatePlace $lookupDuplicatePlace;
 
@@ -90,7 +90,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         IriGeneratorInterface $iriGenerator,
         CommandBus $commandBus,
         ImageCollectionFactory $imageCollectionFactory,
-        bool $preventDuplicatePlaces,
+        bool $preventDuplicatePlacesCreation,
         LookupDuplicatePlace $lookupDuplicatePlace,
         DocumentRepository $organizerDocumentRepository
     ) {
@@ -101,7 +101,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $this->iriGenerator = $iriGenerator;
         $this->commandBus = $commandBus;
         $this->imageCollectionFactory = $imageCollectionFactory;
-        $this->preventDuplicatePlaces = $preventDuplicatePlaces;
+        $this->preventDuplicatePlacesCreation = $preventDuplicatePlacesCreation;
         $this->lookupDuplicatePlace = $lookupDuplicatePlace;
         $this->organizerDocumentRepository = $organizerDocumentRepository;
     }
@@ -266,7 +266,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
     public function guardDuplicatePlace(Place $place): void
     {
-        if (! $this->preventDuplicatePlaces) {
+        if (! $this->preventDuplicatePlacesCreation) {
             return;
         }
 

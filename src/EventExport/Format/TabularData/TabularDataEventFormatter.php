@@ -677,6 +677,13 @@ class TabularDataEventFormatter
                 'include' => fn ($event) => $event->onlineUrl ?? '',
                 'property' => 'onlineUrl',
             ],
+            'completeness' => [
+                'name' => 'Volledigheid',
+                'include' => function ($event) {
+                    return $event->completeness ?? '';
+                },
+                'property' => 'completeness',
+            ],
         ];
     }
 
