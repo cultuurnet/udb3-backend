@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Steps;
 
 trait UtilitySteps
 {
-    private bool $initialPreventDuplicateCreationValue;
+    private bool $initialPreventDuplicatePlaceCreationValue;
 
     /**
      * @Given I create a random name of :nrOfCharacters characters
@@ -41,27 +41,27 @@ trait UtilitySteps
     }
 
     /**
-     * @Given /^I prevent duplicate creation$/
+     * @Given /^I prevent duplicate place creation$/
      */
-    public function iPreventDuplicateCreation(): void
+    public function iPreventDuplicatePlaceCreation(): void
     {
         $configFile = file_get_contents('config.php');
 
-        if (str_contains($configFile, "'prevent_duplicate_creation' => true")) {
+        if (str_contains($configFile, "'prevent_duplicate_places_creation' => true")) {
             // The config was already on true, so no further changes are required
-            $this->initialPreventDuplicateCreationValue = true;
+            $this->initialPreventDuplicatePlaceCreationValue = true;
             return;
         }
 
         $configFile = str_replace(
-            "'prevent_duplicate_creation' => false",
-            "'prevent_duplicate_creation' => true",
+            "'prevent_duplicate_places_creation' => false",
+            "'prevent_duplicate_places_creation' => true",
             $configFile
         );
 
         file_put_contents('config.php', $configFile);
 
-        $this->initialPreventDuplicateCreationValue = false;
+        $this->initialPreventDuplicatePlaceCreationValue = false;
     }
 
     /**
@@ -72,8 +72,8 @@ trait UtilitySteps
         $configFile = file_get_contents('config.php');
 
         $configFile = str_replace(
-            "'prevent_duplicate_creation' => true",
-            "'prevent_duplicate_creation' => " . ($this->initialPreventDuplicateCreationValue ? 'true' : 'false'),
+            "'prevent_duplicate_places_creation' => true",
+            "'prevent_duplicate_places_creation' => " . ($this->initialPreventDuplicatePlaceCreationValue ? 'true' : 'false'),
             $configFile
         );
 
