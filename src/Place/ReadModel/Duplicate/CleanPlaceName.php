@@ -17,7 +17,14 @@ class CleanPlaceName
             return '';
         }
 
-        if (str_contains($title, $address->getStreet()->toString())) {
+        $locationName = implode(' ', [
+            $address->getStreet()->toString(),
+            $address->getPostalCode()->toString(),
+            $address->getLocality()->toString(),
+            $address->getCountryCode()->toString(),
+        ]);
+
+        if (str_contains($title, $locationName)) {
             return '';
         }
 

@@ -35,7 +35,7 @@ class CleanPlaceNameTest extends TestCase
             ['<b>Café de lindekens</b>', 'Café de lindekens'],
             ['\u0062\u0061\u0072 la cantina', 'bar la cantina'],
             ['aan de hoek van het kruispunt om 15 uur vertrekken we aan de hoek van het kruispunt om 15 uur vertrekken we aan de hoek van het kruispunt om 15 uur vertrekken we', ''],
-            ['Speelplaats aan de Kerkstraat 1', ''],
+            ['Speelplaats aan de Kerkstraat 1 2000 Antwerpen BE', ''],
         ];
     }
 }
