@@ -20,6 +20,7 @@ final class PlaceGeoCoordinatesServiceProvider extends AbstractServiceProvider
         return [
             'place_geocoordinates_command_handler',
             'place_geocoordinates_process_manager',
+            ExtendedGeoCoordinatesCommandHandler::class,
         ];
     }
 
@@ -42,6 +43,15 @@ final class PlaceGeoCoordinatesServiceProvider extends AbstractServiceProvider
                 $handler->setLogger(LoggerFactory::create($container, LoggerName::forService('geo-coordinates', 'place')));
 
                 return $handler;
+            }
+        );
+
+        $container->addShared(
+            ExtendedGeoCoordinatesCommandHandler::class,
+            function () use ($container) {
+                return new ExtendedGeoCoordinatesCommandHandler(
+                    LoggerFactory::create($container, LoggerName::forService('extended-geo-coordinates', 'place'))
+                );
             }
         );
 
