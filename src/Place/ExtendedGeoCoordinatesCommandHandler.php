@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
-use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
-use CultuurNet\UDB3\Security\AuthorizableCommand;
 use Psr\Log\LoggerInterface;
 
 final class ExtendedGeoCoordinatesCommandHandler extends Udb3CommandHandler
@@ -21,16 +19,10 @@ final class ExtendedGeoCoordinatesCommandHandler extends Udb3CommandHandler
 
     public function handleUpdateGeoCoordinatesFromAddress(UpdateGeoCoordinatesFromAddress $updateGeoCoordinates): void
     {
-        $this->saveExtendedCoordinates($updateGeoCoordinates);
-    }
-
-    public function handleUpdateTitle(UpdateTitle $updateTitle): void
-    {
-        $this->saveExtendedCoordinates($updateTitle);
-    }
-
-    private function saveExtendedCoordinates(AuthorizableCommand $command): void
-    {
-        $this->logger->info(sprintf('Handling %s command for place with id: %s', get_class($command), $command->getItemId()));
+        $this->logger->info(sprintf(
+            'Handling %s command for place with id: %s',
+            UpdateGeoCoordinatesFromAddress::class,
+            $updateGeoCoordinates->getItemId()
+        ));
     }
 }

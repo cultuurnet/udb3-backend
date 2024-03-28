@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
-use CultuurNet\UDB3\Place\Events\TitleUpdated;
 
 class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
 {
@@ -26,7 +25,6 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
             AddressUpdated::class => 'handleAddressUpdated',
             PlaceImportedFromUDB2::class => 'handleActorImportedFromUDB2',
             PlaceUpdatedFromUDB2::class => 'handleActorImportedFromUDB2',
-            TitleUpdated::class => 'handleTitleUpdated',
         ];
     }
 
