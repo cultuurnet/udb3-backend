@@ -1,4 +1,4 @@
-Feature: Test approving ownership
+Feature: Test rejecting ownership
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
