@@ -8,11 +8,13 @@ use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 
 final class Ownership extends EventSourcedAggregateRoot
 {
     private string $id;
+    private OwnershipState $state;
 
     public function getAggregateRootId(): string
     {
@@ -41,8 +43,26 @@ final class Ownership extends EventSourcedAggregateRoot
         return $ownership;
     }
 
+    public function approve(UserId $approverId): void
+    {
+        if ($this->state->sameAs(OwnershipState::requested())) {
+            $this->apply(
+                new OwnershipApproved(
+                    $this->id,
+                    $approverId->toString()
+                )
+            );
+        }
+    }
+
     protected function applyOwnershipRequested(OwnershipRequested $ownershipRequested): void
     {
         $this->id = $ownershipRequested->getId();
+        $this->state = OwnershipState::requested();
+    }
+
+    protected function applyOwnershipApproved(OwnershipApproved $ownershipApproved): void
+    {
+        $this->state = OwnershipState::approved();
     }
 }
