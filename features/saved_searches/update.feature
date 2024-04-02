@@ -84,6 +84,7 @@ Feature: Test the UDB3 saved searches API
     Then the response status should be "401"
 
   Scenario: I cannot update a saved search that does not exist
+    Given I create a random name of 12 characters
     Given I set the JSON request payload to:
        """
        {"name":"%{name}","query":"Lessen in de avond"}
