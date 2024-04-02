@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Ownership;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Ownership\ApproveOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\GetOwnershipRequestHandler;
+use CultuurNet\UDB3\Http\Ownership\OwnershipStatusGuard;
 use CultuurNet\UDB3\Http\Ownership\RejectOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\RequestOwnershipRequestHandler;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
@@ -22,6 +23,7 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             GetOwnershipRequestHandler::class,
             ApproveOwnershipRequestHandler::class,
             RejectOwnershipRequestHandler::class,
+            OwnershipStatusGuard::class,
         ];
     }
 
@@ -48,12 +50,19 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
         );
 
         $container->addShared(
+            OwnershipStatusGuard::class,
+            fn () => new OwnershipStatusGuard(
+                $container->get(OwnershipSearchRepository::class),
+                $container->get('organizer_permission_voter')
+            )
+        );
+
+        $container->addShared(
             ApproveOwnershipRequestHandler::class,
             fn () => new ApproveOwnershipRequestHandler(
                 $container->get('event_command_bus'),
-                $container->get(OwnershipSearchRepository::class),
                 $container->get(CurrentUser::class),
-                $container->get('organizer_permission_voter')
+                $container->get(OwnershipStatusGuard::class)
             )
         );
 
@@ -61,9 +70,8 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             RejectOwnershipRequestHandler::class,
             fn () => new RejectOwnershipRequestHandler(
                 $container->get('event_command_bus'),
-                $container->get(OwnershipSearchRepository::class),
                 $container->get(CurrentUser::class),
-                $container->get('organizer_permission_voter')
+                $container->get(OwnershipStatusGuard::class)
             )
         );
     }
