@@ -149,4 +149,37 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_api_problem_if_requester_is_not_allowed_to_approve_ownership(): void
+    {
+        $ownershipId = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
+        CurrentUser::configureGodUserIds([]);
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('getById')
+            ->willReturn(new OwnershipItem(
+                $ownershipId,
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'organizer',
+                'auth0|63e22626e39a8ca1264bd29b'
+            ));
+
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->willReturn(false);
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('ownershipId', $ownershipId)
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::forbidden('You are not allowed to approve this ownership'),
+            fn () => $this->approveOwnershipRequestHandler->handle($request)
+        );
+
+        $this->assertEquals([], $this->commandBus->getRecordedCommands());
+    }
 }
