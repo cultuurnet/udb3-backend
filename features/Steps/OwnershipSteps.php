@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use Behat\Behat\Tester\Exception\PendingException;
+
 trait OwnershipSteps
 {
     /**
@@ -25,6 +27,21 @@ trait OwnershipSteps
             $jsonPath,
             $variableName
         );
+    }
+
+    /**
+     * @When I approve the ownership with ownershipId :ownershipId
+     */
+    public function iApproveTheOwnershipWithOwnershipId(string $ownershipId): void
+    {
+        $response = $this->getHttpClient()->postJSON(
+            '/ownerships/' . $this->variableState->replaceVariables($ownershipId) . '/approve',
+            ''
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseStatusShouldBe(202);
+        $this->theResponseBodyShouldBeValidJson();
     }
 
     /**
