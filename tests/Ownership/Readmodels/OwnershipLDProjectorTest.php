@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
+use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -106,6 +107,49 @@ class OwnershipLDProjectorTest extends TestCase
                 $ownershipId,
                 $recordedOn,
                 OwnershipState::approved()
+            ),
+            $jsonDocument
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_ownership_rejected(): void
+    {
+        $ownershipId = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
+        $recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::fromString('2024-02-19T14:15:16Z'));
+
+        $this->ownershipRepository->save(
+            $this->createOwnershipJsonDocument(
+                $ownershipId,
+                $recordedOn,
+                OwnershipState::requested()
+            )
+        );
+
+        $ownershipRejected = new OwnershipRejected(
+            $ownershipId,
+            '9e68dafc-01d8-4c1c-9612-599c918b981d'
+        );
+
+        $domainMessage = new DomainMessage(
+            $ownershipId,
+            0,
+            new Metadata(),
+            $ownershipRejected,
+            $recordedOn->toBroadwayDateTime()
+        );
+
+        $this->ownershipLDProjector->handle($domainMessage);
+
+        $jsonDocument = $this->ownershipRepository->fetch($ownershipId);
+
+        $this->assertEquals(
+            $this->createOwnershipJsonDocument(
+                $ownershipId,
+                $recordedOn,
+                OwnershipState::rejected()
             ),
             $jsonDocument
         );
