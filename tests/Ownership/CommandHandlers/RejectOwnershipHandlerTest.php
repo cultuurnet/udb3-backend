@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Commands\RejectOwnership;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
@@ -38,15 +37,11 @@ class RejectOwnershipHandlerTest extends CommandHandlerScenarioTestCase
                     'google-oauth2|102486314601596809843'
                 ),
             ])
-            ->when(new RejectOwnership(
-                new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
-                new UserId('google-oauth2|102486314601596809843')
-            ))
+            ->when(
+                new RejectOwnership(new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'))
+            )
             ->then([
-                new OwnershipRejected(
-                    'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-                    'google-oauth2|102486314601596809843'
-                ),
+                new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
             ]);
     }
 }

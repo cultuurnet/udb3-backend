@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Ownership;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Commands\ApproveOwnership;
 use CultuurNet\UDB3\User\CurrentUser;
@@ -40,12 +39,12 @@ final class ApproveOwnershipRequestHandler implements RequestHandlerInterface
         $this->ownershipStatusGuard->isAllowedToApprove($ownershipId, $this->currentUser);
 
         $this->commandBus->dispatch(
-            new ApproveOwnership(new UUID($ownershipId), new UserId($this->currentUser->getId()))
+            new ApproveOwnership(new UUID($ownershipId))
         );
 
         return new JsonResponse(
             [],
-            StatusCodeInterface::STATUS_ACCEPTED
+            StatusCodeInterface::STATUS_NO_CONTENT
         );
     }
 }

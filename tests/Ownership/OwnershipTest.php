@@ -62,13 +62,10 @@ class OwnershipTest extends AggregateRootScenarioTestCase
                 ),
             ])
             ->when(function (Ownership $ownership) {
-                $ownership->approve(new UserId('google-oauth2|102486314601596809843'));
+                $ownership->approve();
             })
             ->then([
-                new OwnershipApproved(
-                    'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-                    'google-oauth2|102486314601596809843'
-                ),
+                new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
             ]);
     }
 
@@ -87,13 +84,10 @@ class OwnershipTest extends AggregateRootScenarioTestCase
                     'auth0|63e22626e39a8ca1264bd29b',
                     'google-oauth2|102486314601596809843'
                 ),
-                new OwnershipApproved(
-                    'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-                    'google-oauth2|102486314601596809843'
-                ),
+                new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
             ])
             ->when(function (Ownership $ownership) {
-                $ownership->approve(new UserId('google-oauth2|102486314601596809843'));
+                $ownership->approve();
             })
             ->then([]);
     }
@@ -115,13 +109,10 @@ class OwnershipTest extends AggregateRootScenarioTestCase
                 ),
             ])
             ->when(function (Ownership $ownership) {
-                $ownership->reject(new UserId('google-oauth2|102486314601596809843'));
+                $ownership->reject();
             })
             ->then([
-                new OwnershipRejected(
-                    'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-                    'google-oauth2|102486314601596809843'
-                ),
+                new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
             ]);
     }
 
@@ -140,13 +131,10 @@ class OwnershipTest extends AggregateRootScenarioTestCase
                     'auth0|63e22626e39a8ca1264bd29b',
                     'google-oauth2|102486314601596809843'
                 ),
-                new OwnershipRejected(
-                    'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-                    'google-oauth2|102486314601596809843'
-                ),
+                new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
             ])
             ->when(function (Ownership $ownership) {
-                $ownership->reject(new UserId('google-oauth2|102486314601596809843'));
+                $ownership->reject();
             })
             ->then([]);
     }

@@ -85,10 +85,7 @@ class OwnershipLDProjectorTest extends TestCase
             )
         );
 
-        $ownershipApproved = new OwnershipApproved(
-            $ownershipId,
-            '9e68dafc-01d8-4c1c-9612-599c918b981d'
-        );
+        $ownershipApproved = new OwnershipApproved($ownershipId);
 
         $domainMessage = new DomainMessage(
             $ownershipId,
@@ -128,10 +125,7 @@ class OwnershipLDProjectorTest extends TestCase
             )
         );
 
-        $ownershipRejected = new OwnershipRejected(
-            $ownershipId,
-            '9e68dafc-01d8-4c1c-9612-599c918b981d'
-        );
+        $ownershipRejected = new OwnershipRejected($ownershipId, );
 
         $domainMessage = new DomainMessage(
             $ownershipId,

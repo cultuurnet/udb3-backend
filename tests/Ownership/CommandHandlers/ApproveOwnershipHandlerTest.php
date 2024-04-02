@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Commands\ApproveOwnership;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
@@ -39,13 +38,11 @@ class ApproveOwnershipHandlerTest extends CommandHandlerScenarioTestCase
                 ),
             ])
             ->when(new ApproveOwnership(
-                new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
-                new UserId('google-oauth2|102486314601596809843')
+                new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
             ))
             ->then([
                 new OwnershipApproved(
-                    'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-                    'google-oauth2|102486314601596809843'
+                    'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'
                 ),
             ]);
     }
