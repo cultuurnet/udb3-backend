@@ -32,9 +32,8 @@ trait OwnershipSteps
      */
     public function iApproveTheOwnershipWithOwnershipId(string $ownershipId): void
     {
-        $response = $this->getHttpClient()->postJSON(
+        $response = $this->getHttpClient()->postEmpty(
             '/ownerships/' . $this->variableState->replaceVariables($ownershipId) . '/approve',
-            ''
         );
         $this->responseState->setResponse($response);
 
@@ -46,9 +45,8 @@ trait OwnershipSteps
      */
     public function iRejectTheOwnershipWithOwnershipId(string $ownershipId): void
     {
-        $response = $this->getHttpClient()->postJSON(
+        $response = $this->getHttpClient()->postEmpty(
             '/ownerships/' . $this->variableState->replaceVariables($ownershipId) . '/reject',
-            ''
         );
         $this->responseState->setResponse($response);
 
