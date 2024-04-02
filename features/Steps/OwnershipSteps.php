@@ -43,6 +43,21 @@ trait OwnershipSteps
     }
 
     /**
+     * @When I reject the ownership with ownershipId :ownershipId
+     */
+    public function iRejectTheOwnershipWithOwnershipId(string $ownershipId): void
+    {
+        $response = $this->getHttpClient()->postJSON(
+            '/ownerships/' . $this->variableState->replaceVariables($ownershipId) . '/reject',
+            ''
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseStatusShouldBe(202);
+        $this->theResponseBodyShouldBeValidJson();
+    }
+
+    /**
      * @When I get the ownership with ownershipId :ownershipId
      */
     public function iGetTheOwnershipWithOwnershipId(string $ownershipId): void
