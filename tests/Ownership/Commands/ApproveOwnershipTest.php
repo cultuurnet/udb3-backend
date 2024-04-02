@@ -36,11 +36,11 @@ class ApproveOwnershipTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_approver_id(): void
+    public function it_stores_a_requester_id(): void
     {
         $this->assertEquals(
             new UserId('auth0|63e22626e39a8ca1264bd29b'),
-            $this->approveOwnership->getApproverId()
+            $this->approveOwnership->getRequesterId()
         );
     }
 }

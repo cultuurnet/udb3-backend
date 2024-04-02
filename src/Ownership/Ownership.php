@@ -43,13 +43,13 @@ final class Ownership extends EventSourcedAggregateRoot
         return $ownership;
     }
 
-    public function approve(UserId $approverId): void
+    public function approve(UserId $requesterId): void
     {
         if ($this->state->sameAs(OwnershipState::requested())) {
             $this->apply(
                 new OwnershipApproved(
                     $this->id,
-                    $approverId->toString()
+                    $requesterId->toString()
                 )
             );
         }

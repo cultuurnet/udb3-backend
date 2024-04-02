@@ -10,12 +10,12 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 final class ApproveOwnership
 {
     private UUID $id;
-    private UserId $approverId;
+    private UserId $requesterId;
 
     public function __construct(UUID $id, UserId $requesterId)
     {
         $this->id = $id;
-        $this->approverId = $requesterId;
+        $this->requesterId = $requesterId;
     }
 
     public function getId(): UUID
@@ -23,8 +23,8 @@ final class ApproveOwnership
         return $this->id;
     }
 
-    public function getApproverId(): UserId
+    public function getRequesterId(): UserId
     {
-        return $this->approverId;
+        return $this->requesterId;
     }
 }
