@@ -39,7 +39,6 @@ trait OwnershipSteps
         $this->responseState->setResponse($response);
 
         $this->theResponseStatusShouldBe(204);
-        $this->theResponseBodyShouldBeValidJson();
     }
 
     /**
@@ -54,7 +53,6 @@ trait OwnershipSteps
         $this->responseState->setResponse($response);
 
         $this->theResponseStatusShouldBe(204);
-        $this->theResponseBodyShouldBeValidJson();
     }
 
     /**
