@@ -62,7 +62,8 @@ final class PlaceGeoCoordinatesServiceProvider extends AbstractServiceProvider
                     new GeoCoordinatesProcessManager(
                         $container->get('event_command_bus'),
                         new CultureFeedAddressFactory(),
-                        LoggerFactory::create($container, LoggerName::forService('geo-coordinates', 'place'))
+                        LoggerFactory::create($container, LoggerName::forService('geo-coordinates', 'place')),
+                        $container->get('place_jsonld_repository'),
                     )
                 );
             }

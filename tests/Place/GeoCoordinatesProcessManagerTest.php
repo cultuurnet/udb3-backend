@@ -158,7 +158,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             ->willThrowException(new \InvalidArgumentException('The given cdbxml address is missing a city'));
 
         $this->commandBus->expects($this->never())
-           ->method('dispatch');
+            ->method('dispatch');
 
         $this->logger->expects($this->once())
             ->method('error')
@@ -402,8 +402,8 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_dispatches_a_geocoding_command_when_an_place_title_has_changed(
-    ): void {
+    public function it_dispatches_a_geocoding_command_when_an_place_title_has_changed(): void
+    {
         $this->documentRepository->expects($this->once())
             ->method('fetch')
             ->with('4b735422-2bf3-4241-aabb-d70609d2d1d3')
