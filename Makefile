@@ -33,8 +33,11 @@ test-group:
 feature-init:
 	docker exec -it php.uitdatabank composer feature -- --tags @init
 
+feature-tag:
+	docker exec -it php.uitdatabank composer feature -- --tags $(tag)
+
 feature:
-	docker exec -it php.uitdatabank composer feature  -- --tags "~@init"
+	docker exec -it php.uitdatabank composer feature -- --tags "~@init"
 
 feature-filter:
 	docker exec -it php.uitdatabank composer feature -- $(path)

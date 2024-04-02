@@ -1,3 +1,4 @@
+@sapi3
 Feature: Test the permissions in UDB3
 
   Background:
