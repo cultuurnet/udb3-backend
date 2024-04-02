@@ -13,6 +13,8 @@ use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\EventCommandHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
+use CultuurNet\UDB3\Ownership\CommandHandlers\ApproveOwnershipHandler;
+use CultuurNet\UDB3\Ownership\CommandHandlers\RejectOwnershipHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\RequestOwnershipHandler;
 use CultuurNet\UDB3\Place\CommandHandler as PlaceCommandHandler;
 use CultuurNet\UDB3\Place\ExtendedGeoCoordinatesCommandHandler;
@@ -213,6 +215,8 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateContributorsHandler::class));
 
                         $commandBus->subscribe($container->get(RequestOwnershipHandler::class));
+                        $commandBus->subscribe($container->get(ApproveOwnershipHandler::class));
+                        $commandBus->subscribe($container->get(RejectOwnershipHandler::class));
 
                         $commandBus->subscribe($container->get(LabelServiceProvider::COMMAND_HANDLER));
                     }

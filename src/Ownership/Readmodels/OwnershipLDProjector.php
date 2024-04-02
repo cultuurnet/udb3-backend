@@ -8,6 +8,8 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
+use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -61,6 +63,26 @@ final class OwnershipLDProjector implements EventListener
             DateTime::FORMAT_STRING,
             $domainMessage->getRecordedOn()->toString()
         )->format('c');
+
+        return $jsonDocument->withBody($body);
+    }
+
+    public function applyOwnershipApproved(OwnershipApproved $ownershipApproved, DomainMessage $domainMessage): JsonDocument
+    {
+        $jsonDocument = $this->repository->fetch($ownershipApproved->getId());
+
+        $body = $jsonDocument->getBody();
+        $body->state = OwnershipState::approved()->toString();
+
+        return $jsonDocument->withBody($body);
+    }
+
+    public function applyOwnershipRejected(OwnershipRejected $ownershipRejected, DomainMessage $domainMessage): JsonDocument
+    {
+        $jsonDocument = $this->repository->fetch($ownershipRejected->getId());
+
+        $body = $jsonDocument->getBody();
+        $body->state = OwnershipState::rejected()->toString();
 
         return $jsonDocument->withBody($body);
     }

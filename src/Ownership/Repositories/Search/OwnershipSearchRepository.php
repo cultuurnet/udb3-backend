@@ -11,6 +11,8 @@ interface OwnershipSearchRepository
 {
     public function save(OwnershipItem $ownershipSearchItem): void;
 
+    public function getById(string $id): OwnershipItem;
+
     public function getByItemIdAndOwnerId(string $itemId, string $ownerId): OwnershipItem;
 
     public function getByItemId(string $itemId): OwnershipItemCollection;
