@@ -25,6 +25,9 @@ use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
+use CultuurNet\UDB3\Place\Events\TitleUpdated;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -36,31 +39,32 @@ class GeoCoordinatesProcessManagerTest extends TestCase
      */
     private $commandBus;
 
-    /**
-     * @var CultureFeedAddressFactoryInterface
-     */
-    private $addressFactory;
+    private CultureFeedAddressFactoryInterface $addressFactory;
 
     /**
      * @var LoggerInterface|MockObject
      */
     private $logger;
 
+    private GeoCoordinatesProcessManager $processManager;
+
     /**
-     * @var GeoCoordinatesProcessManager
+     * @var DocumentRepository|MockObject
      */
-    private $processManager;
+    private $documentRepository;
 
     public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
         $this->addressFactory = new CultureFeedAddressFactory();
         $this->logger = $this->createMock(LoggerInterface::class);
+        $this->documentRepository = $this->createMock(DocumentRepository::class);
 
         $this->processManager = new GeoCoordinatesProcessManager(
             $this->commandBus,
             $this->addressFactory,
-            $this->logger
+            $this->logger,
+            $this->documentRepository
         );
     }
 
@@ -140,10 +144,13 @@ class GeoCoordinatesProcessManagerTest extends TestCase
         /** @var CultureFeedAddressFactory|MockObject $addressFactory */
         $addressFactory = $this->createMock(CultureFeedAddressFactoryInterface::class);
 
+        $documentRepository = $this->createMock(DocumentRepository::class);
+
         $processManager = new GeoCoordinatesProcessManager(
             $this->commandBus,
             $addressFactory,
-            $this->logger
+            $this->logger,
+            $documentRepository
         );
 
         $addressFactory->expects($this->once())
@@ -390,5 +397,52 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                 ),
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_dispatches_a_geocoding_command_when_an_place_title_has_changed(
+    ): void {
+        $this->documentRepository->expects($this->once())
+            ->method('fetch')
+            ->with('4b735422-2bf3-4241-aabb-d70609d2d1d3')
+            ->willReturn(new JsonDocument('4b735422-2bf3-4241-aabb-d70609d2d1d3', json_encode([
+                'mainLanguage' => 'nl',
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Bondgenotenlaan 1',
+                    ],
+                ],
+            ], JSON_THROW_ON_ERROR)));
+
+        $expectedCommand = new UpdateGeoCoordinatesFromAddress(
+            '4b735422-2bf3-4241-aabb-d70609d2d1d3',
+            new Address(
+                new Street('Bondgenotenlaan 1'),
+                new PostalCode('3000'),
+                new Locality('Leuven'),
+                new CountryCode('BE')
+            )
+        );
+
+        $this->commandBus->expects($this->once())
+            ->method('dispatch')
+            ->with($expectedCommand);
+
+        $this->processManager->handle(
+            DomainMessage::recordNow(
+                '4b735422-2bf3-4241-aabb-d70609d2d1d3',
+                1,
+                new Metadata([]),
+                new TitleUpdated(
+                    '4b735422-2bf3-4241-aabb-d70609d2d1d3',
+                    'Nieuwe plaatsnaam'
+                ),
+            ),
+        );
     }
 }
