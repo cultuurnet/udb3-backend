@@ -77,7 +77,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
         $response = $this->approveOwnershipRequestHandler->handle($request);
 
-        $this->assertEquals(202, $response->getStatusCode());
+        $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
             [
                 new ApproveOwnership(
@@ -115,7 +115,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
         $response = $this->approveOwnershipRequestHandler->handle($request);
 
-        $this->assertEquals(202, $response->getStatusCode());
+        $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
             [
                 new ApproveOwnership(
