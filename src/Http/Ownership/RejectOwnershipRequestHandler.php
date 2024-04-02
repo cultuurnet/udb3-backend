@@ -66,7 +66,7 @@ final class RejectOwnershipRequestHandler implements RequestHandlerInterface
 
         return new JsonResponse(
             [],
-            StatusCodeInterface::STATUS_ACCEPTED
+            StatusCodeInterface::STATUS_NO_CONTENT
         );
     }
 

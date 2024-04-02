@@ -77,7 +77,7 @@ class RejectOwnershipRequestHandlerTest extends TestCase
 
         $response = $this->rejectOwnershipRequestHandler->handle($request);
 
-        $this->assertEquals(202, $response->getStatusCode());
+        $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
             [
                 new RejectOwnership(
@@ -115,7 +115,7 @@ class RejectOwnershipRequestHandlerTest extends TestCase
 
         $response = $this->rejectOwnershipRequestHandler->handle($request);
 
-        $this->assertEquals(202, $response->getStatusCode());
+        $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
             [
                 new RejectOwnership(
