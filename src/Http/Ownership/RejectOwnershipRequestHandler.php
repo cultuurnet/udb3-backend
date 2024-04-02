@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Commands\RejectOwnership;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
@@ -60,9 +59,7 @@ final class RejectOwnershipRequestHandler implements RequestHandlerInterface
             throw ApiProblem::forbidden('You are not allowed to reject this ownership');
         }
 
-        $this->commandBus->dispatch(
-            new RejectOwnership(new UUID($ownershipId), new UserId($this->currentUser->getId()))
-        );
+        $this->commandBus->dispatch(new RejectOwnership(new UUID($ownershipId)));
 
         return new JsonResponse(
             [],

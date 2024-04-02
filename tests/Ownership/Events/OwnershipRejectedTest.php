@@ -14,10 +14,7 @@ class OwnershipRejectedTest extends TestCase
     {
         parent::setUp();
 
-        $this->ownershipRejected = new OwnershipRejected(
-            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-            'auth0|63e22626e39a8ca1264bd29b'
-        );
+        $this->ownershipRejected = new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e');
     }
 
     /**
@@ -34,11 +31,25 @@ class OwnershipRejectedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_requester_id(): void
+    public function it_can_be_serialized(): void
     {
         $this->assertEquals(
-            'auth0|63e22626e39a8ca1264bd29b',
-            $this->ownershipRejected->getRequesterId()
+            [
+                'ownershipId' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            ],
+            $this->ownershipRejected->serialize()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_deserialized(): void
+    {
+        $serialized = [
+            'ownershipId' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+        ];
+
+        $this->assertEquals($this->ownershipRejected, OwnershipRejected::deserialize($serialized));
     }
 }
