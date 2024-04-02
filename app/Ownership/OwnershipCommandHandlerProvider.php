@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Ownership;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Ownership\CommandHandlers\ApproveOwnershipHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\RequestOwnershipHandler;
 
 final class OwnershipCommandHandlerProvider extends AbstractServiceProvider
@@ -13,6 +14,7 @@ final class OwnershipCommandHandlerProvider extends AbstractServiceProvider
     {
         return [
             RequestOwnershipHandler::class,
+            ApproveOwnershipHandler::class,
         ];
     }
 
@@ -23,6 +25,13 @@ final class OwnershipCommandHandlerProvider extends AbstractServiceProvider
         $container->addShared(
             RequestOwnershipHandler::class,
             fn () => new RequestOwnershipHandler(
+                $container->get(OwnershipRepository::class)
+            )
+        );
+
+        $container->addShared(
+            ApproveOwnershipHandler::class,
+            fn () => new ApproveOwnershipHandler(
                 $container->get(OwnershipRepository::class)
             )
         );

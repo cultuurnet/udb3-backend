@@ -28,6 +28,21 @@ trait OwnershipSteps
     }
 
     /**
+     * @When I approve the ownership with ownershipId :ownershipId
+     */
+    public function iApproveTheOwnershipWithOwnershipId(string $ownershipId): void
+    {
+        $response = $this->getHttpClient()->postJSON(
+            '/ownerships/' . $this->variableState->replaceVariables($ownershipId) . '/approve',
+            ''
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseStatusShouldBe(202);
+        $this->theResponseBodyShouldBeValidJson();
+    }
+
+    /**
      * @When I get the ownership with ownershipId :ownershipId
      */
     public function iGetTheOwnershipWithOwnershipId(string $ownershipId): void

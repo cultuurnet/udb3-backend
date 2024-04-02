@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Ownership\Readmodels;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -57,19 +58,74 @@ class OwnershipLDProjectorTest extends TestCase
 
         $jsonDocument = $this->ownershipRepository->fetch($ownershipId);
 
+        $this->assertEquals(
+            $this->createOwnershipJsonDocument(
+                $ownershipId,
+                $recordedOn,
+                OwnershipState::requested()
+            ),
+            $jsonDocument
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_ownership_approved(): void
+    {
+        $ownershipId = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
+        $recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::fromString('2024-02-19T14:15:16Z'));
+
+        $this->ownershipRepository->save(
+            $this->createOwnershipJsonDocument(
+                $ownershipId,
+                $recordedOn,
+                OwnershipState::requested()
+            )
+        );
+
+        $ownershipApproved = new OwnershipApproved(
+            $ownershipId,
+            '9e68dafc-01d8-4c1c-9612-599c918b981d'
+        );
+
+        $domainMessage = new DomainMessage(
+            $ownershipId,
+            0,
+            new Metadata(),
+            $ownershipApproved,
+            $recordedOn->toBroadwayDateTime()
+        );
+
+        $this->ownershipLDProjector->handle($domainMessage);
+
+        $jsonDocument = $this->ownershipRepository->fetch($ownershipId);
+
+        $this->assertEquals(
+            $this->createOwnershipJsonDocument(
+                $ownershipId,
+                $recordedOn,
+                OwnershipState::approved()
+            ),
+            $jsonDocument
+        );
+    }
+
+    private function createOwnershipJsonDocument(
+        string $ownershipId,
+        RecordedOn $recordedOn,
+        OwnershipState $state
+    ): JsonDocument {
         $jsonLD = new \stdClass();
         $jsonLD->{'id'} = $ownershipId;
         $jsonLD->{'itemId'} = '9e68dafc-01d8-4c1c-9612-599c918b981d';
         $jsonLD->{'itemType'} = 'organizer';
         $jsonLD->{'ownerId'} = 'auth0|63e22626e39a8ca1264bd29b';
         $jsonLD->{'requesterId'} = 'google-oauth2|102486314601596809843';
-        $jsonLD->{'state'} = OwnershipState::requested()->toString();
+        $jsonLD->{'state'} = $state->toString();
         $jsonLD->{'created'} = $recordedOn->toString();
         $jsonLD->{'modified'} = $recordedOn->toString();
 
-        $this->assertEquals(
-            (new JsonDocument($ownershipId))->withBody($jsonLD),
-            $jsonDocument
-        );
+        return (new JsonDocument($ownershipId))->withBody($jsonLD);
     }
 }
