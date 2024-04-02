@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Ownership\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Ownership\Commands\ApproveOwnership;
+use CultuurNet\UDB3\Ownership\Commands\RejectOwnership;
 use CultuurNet\UDB3\Ownership\OwnershipRepository;
 
-final class ApproveOwnershipHandler implements CommandHandler
+final class RejectOwnershipHandler implements CommandHandler
 {
     private OwnershipRepository $ownershipRepository;
 
@@ -19,13 +19,13 @@ final class ApproveOwnershipHandler implements CommandHandler
 
     public function handle($command): void
     {
-        if (!$command instanceof ApproveOwnership) {
+        if (!$command instanceof RejectOwnership) {
             return;
         }
 
         $ownership = $this->ownershipRepository->load($command->getId()->toString());
 
-        $ownership->approve();
+        $ownership->reject();
 
         $this->ownershipRepository->save($ownership);
     }

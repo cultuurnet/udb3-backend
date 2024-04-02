@@ -32,14 +32,25 @@ trait OwnershipSteps
      */
     public function iApproveTheOwnershipWithOwnershipId(string $ownershipId): void
     {
-        $response = $this->getHttpClient()->postJSON(
+        $response = $this->getHttpClient()->postEmpty(
             '/ownerships/' . $this->variableState->replaceVariables($ownershipId) . '/approve',
-            ''
         );
         $this->responseState->setResponse($response);
 
-        $this->theResponseStatusShouldBe(202);
-        $this->theResponseBodyShouldBeValidJson();
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
+     * @When I reject the ownership with ownershipId :ownershipId
+     */
+    public function iRejectTheOwnershipWithOwnershipId(string $ownershipId): void
+    {
+        $response = $this->getHttpClient()->postEmpty(
+            '/ownerships/' . $this->variableState->replaceVariables($ownershipId) . '/reject',
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseStatusShouldBe(204);
     }
 
     /**

@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Ownership\Commands\ApproveOwnership;
+use CultuurNet\UDB3\Ownership\Commands\RejectOwnership;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
@@ -18,7 +18,7 @@ use CultuurNet\UDB3\User\CurrentUser;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class ApproveOwnershipRequestHandlerTest extends TestCase
+class RejectOwnershipRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
@@ -30,7 +30,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
     /** @var PermissionVoter&MockObject */
     private $permissionVoter;
 
-    private ApproveOwnershipRequestHandler $approveOwnershipRequestHandler;
+    private RejectOwnershipRequestHandler $rejectOwnershipRequestHandler;
 
     public function setUp(): void
     {
@@ -41,7 +41,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
         $this->permissionVoter = $this->createMock(PermissionVoter::class);
 
-        $this->approveOwnershipRequestHandler = new ApproveOwnershipRequestHandler(
+        $this->rejectOwnershipRequestHandler = new RejectOwnershipRequestHandler(
             $this->commandBus,
             $this->ownerShipSearchRepository,
             new CurrentUser('auth0|63e22626e39a8ca1264bd29b'),
@@ -52,7 +52,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_approving_an_ownership(): void
+    public function it_handles_rejecting_an_ownership(): void
     {
         CurrentUser::configureGodUserIds([]);
 
@@ -74,12 +74,12 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
             ->method('isAllowed')
             ->willReturn(true);
 
-        $response = $this->approveOwnershipRequestHandler->handle($request);
+        $response = $this->rejectOwnershipRequestHandler->handle($request);
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
             [
-                new ApproveOwnership(new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
+                new RejectOwnership(new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -88,7 +88,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_approving_an_ownership_as_god_user(): void
+    public function it_handles_rejecting_an_ownership_as_god_user(): void
     {
         CurrentUser::configureGodUserIds(['auth0|63e22626e39a8ca1264bd29b']);
 
@@ -109,12 +109,12 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
         $this->permissionVoter->expects($this->never())
             ->method('isAllowed');
 
-        $response = $this->approveOwnershipRequestHandler->handle($request);
+        $response = $this->rejectOwnershipRequestHandler->handle($request);
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
             [
-                new ApproveOwnership(new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
+                new RejectOwnership(new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -137,7 +137,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::ownershipNotFound('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
-            fn () => $this->approveOwnershipRequestHandler->handle($request)
+            fn () => $this->rejectOwnershipRequestHandler->handle($request)
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
@@ -146,10 +146,14 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_api_problem_if_requester_is_not_allowed_to_approve_ownership(): void
+    public function it_throws_an_api_problem_when_the_user_is_not_allowed_to_reject_the_ownership(): void
     {
         $ownershipId = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
         CurrentUser::configureGodUserIds([]);
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('ownershipId', $ownershipId)
+            ->build('POST');
 
         $this->ownerShipSearchRepository->expects($this->once())
             ->method('getById')
@@ -164,13 +168,9 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
             ->method('isAllowed')
             ->willReturn(false);
 
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('ownershipId', $ownershipId)
-            ->build('POST');
-
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::forbidden('You are not allowed to approve this ownership'),
-            fn () => $this->approveOwnershipRequestHandler->handle($request)
+            ApiProblem::forbidden('You are not allowed to reject this ownership'),
+            fn () => $this->rejectOwnershipRequestHandler->handle($request)
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());

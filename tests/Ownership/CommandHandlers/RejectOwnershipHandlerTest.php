@@ -9,16 +9,16 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Ownership\Commands\ApproveOwnership;
-use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
+use CultuurNet\UDB3\Ownership\Commands\RejectOwnership;
+use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 use CultuurNet\UDB3\Ownership\OwnershipRepository;
 
-class ApproveOwnershipHandlerTest extends CommandHandlerScenarioTestCase
+class RejectOwnershipHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
-        return new ApproveOwnershipHandler(new OwnershipRepository($eventStore, $eventBus));
+        return new RejectOwnershipHandler(new OwnershipRepository($eventStore, $eventBus));
     }
 
     /**
@@ -37,13 +37,11 @@ class ApproveOwnershipHandlerTest extends CommandHandlerScenarioTestCase
                     'google-oauth2|102486314601596809843'
                 ),
             ])
-            ->when(new ApproveOwnership(
-                new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
-            ))
+            ->when(
+                new RejectOwnership(new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'))
+            )
             ->then([
-                new OwnershipApproved(
-                    'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'
-                ),
+                new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
             ]);
     }
 }

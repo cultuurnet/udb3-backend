@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Ownership\Events;
 
 use Broadway\Serializer\Serializable;
 
-final class OwnershipApproved implements Serializable
+final class OwnershipRejected implements Serializable
 {
     private string $id;
 
@@ -22,7 +22,7 @@ final class OwnershipApproved implements Serializable
 
     public static function deserialize(array $data): self
     {
-        return new OwnershipApproved($data['ownershipId']);
+        return new OwnershipRejected($data['ownershipId']);
     }
 
     public function serialize(): array

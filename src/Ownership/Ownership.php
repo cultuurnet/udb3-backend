@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
+use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 
 final class Ownership extends EventSourcedAggregateRoot
@@ -43,15 +44,19 @@ final class Ownership extends EventSourcedAggregateRoot
         return $ownership;
     }
 
-    public function approve(UserId $approverId): void
+    public function approve(): void
     {
         if ($this->state->sameAs(OwnershipState::requested())) {
             $this->apply(
-                new OwnershipApproved(
-                    $this->id,
-                    $approverId->toString()
-                )
+                new OwnershipApproved($this->id)
             );
+        }
+    }
+
+    public function reject(): void
+    {
+        if ($this->state->sameAs(OwnershipState::requested())) {
+            $this->apply(new OwnershipRejected($this->id));
         }
     }
 
@@ -64,5 +69,10 @@ final class Ownership extends EventSourcedAggregateRoot
     protected function applyOwnershipApproved(OwnershipApproved $ownershipApproved): void
     {
         $this->state = OwnershipState::approved();
+    }
+
+    protected function applyOwnershipRejected(OwnershipRejected $ownershipRejected): void
+    {
+        $this->state = OwnershipState::rejected();
     }
 }

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Ownership\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
-final class ApproveOwnership
+final class RejectOwnership
 {
     private UUID $id;
 

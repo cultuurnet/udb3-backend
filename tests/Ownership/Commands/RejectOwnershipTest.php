@@ -7,17 +7,15 @@ namespace CultuurNet\UDB3\Ownership\Commands;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
-class ApproveOwnershipTest extends TestCase
+class RejectOwnershipTest extends TestCase
 {
-    private ApproveOwnership $approveOwnership;
+    private RejectOwnership $rejectOwnership;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->approveOwnership = new ApproveOwnership(
-            new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
-        );
+        $this->rejectOwnership = new RejectOwnership(new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
     }
 
     /**
@@ -27,7 +25,7 @@ class ApproveOwnershipTest extends TestCase
     {
         $this->assertEquals(
             new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
-            $this->approveOwnership->getId()
+            $this->rejectOwnership->getId()
         );
     }
 }

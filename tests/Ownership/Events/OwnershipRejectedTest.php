@@ -6,15 +6,15 @@ namespace CultuurNet\UDB3\Ownership\Events;
 
 use PHPUnit\Framework\TestCase;
 
-class OwnershipApprovedTest extends TestCase
+class OwnershipRejectedTest extends TestCase
 {
-    private OwnershipApproved $ownershipApproved;
+    private OwnershipRejected $ownershipRejected;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->ownershipApproved = new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e');
+        $this->ownershipRejected = new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e');
     }
 
     /**
@@ -24,32 +24,32 @@ class OwnershipApprovedTest extends TestCase
     {
         $this->assertEquals(
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-            $this->ownershipApproved->getId()
+            $this->ownershipRejected->getId()
         );
     }
 
     /**
      * @test
-    */
+     */
     public function it_can_be_serialized(): void
     {
         $this->assertEquals(
             [
                 'ownershipId' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             ],
-            $this->ownershipApproved->serialize()
+            $this->ownershipRejected->serialize()
         );
     }
 
     /**
      * @test
-    */
+     */
     public function it_can_be_deserialized(): void
     {
         $serialized = [
             'ownershipId' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
         ];
 
-        $this->assertEquals($this->ownershipApproved, OwnershipApproved::deserialize($serialized));
+        $this->assertEquals($this->ownershipRejected, OwnershipRejected::deserialize($serialized));
     }
 }

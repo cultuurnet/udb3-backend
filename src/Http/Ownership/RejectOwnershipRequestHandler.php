@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Ownership\Commands\ApproveOwnership;
+use CultuurNet\UDB3\Ownership\Commands\RejectOwnership;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class ApproveOwnershipRequestHandler implements RequestHandlerInterface
+final class RejectOwnershipRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
     private OwnershipSearchRepository $ownershipSearchRepository;
@@ -52,16 +52,14 @@ final class ApproveOwnershipRequestHandler implements RequestHandlerInterface
             throw ApiProblem::ownershipNotFound($ownershipId);
         }
 
-        // Make sure the current user can approve the ownership
+        // Make sure the current user can reject the ownership
         // This means that the current user is a god user
         // Or that the current user is the owner of the item
-        if (!$this->isAllowedToApproveOwnership($ownership)) {
-            throw ApiProblem::forbidden('You are not allowed to approve this ownership');
+        if (!$this->isAllowedToRejectOwnership($ownership)) {
+            throw ApiProblem::forbidden('You are not allowed to reject this ownership');
         }
 
-        $this->commandBus->dispatch(
-            new ApproveOwnership(new UUID($ownershipId))
-        );
+        $this->commandBus->dispatch(new RejectOwnership(new UUID($ownershipId)));
 
         return new JsonResponse(
             [],
@@ -69,7 +67,7 @@ final class ApproveOwnershipRequestHandler implements RequestHandlerInterface
         );
     }
 
-    private function isAllowedToApproveOwnership(OwnershipItem $ownership): bool
+    private function isAllowedToRejectOwnership(OwnershipItem $ownership): bool
     {
         if ($this->currentUser->isGodUser()) {
             return true;
