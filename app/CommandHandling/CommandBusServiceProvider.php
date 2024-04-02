@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\ApproveOwnershipHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\RequestOwnershipHandler;
 use CultuurNet\UDB3\Place\CommandHandler as PlaceCommandHandler;
+use CultuurNet\UDB3\Place\ExtendedGeoCoordinatesCommandHandler;
 use CultuurNet\UDB3\Role\CommandHandler as RoleCommandHandler;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionSwitchVoter;
@@ -150,6 +151,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe($container->get('place_geocoordinates_command_handler'));
                         $commandBus->subscribe($container->get('event_geocoordinates_command_handler'));
                         $commandBus->subscribe($container->get('organizer_geocoordinates_command_handler'));
+                        $commandBus->subscribe($container->get(ExtendedGeoCoordinatesCommandHandler::class));
                         $commandBus->subscribe($container->get(ProductionCommandHandler::class));
 
                         // Offer command handlers
