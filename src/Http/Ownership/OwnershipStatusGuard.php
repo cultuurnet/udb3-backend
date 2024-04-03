@@ -35,6 +35,11 @@ final class OwnershipStatusGuard
         $this->isAllowed($ownershipId, $currentUser, 'reject');
     }
 
+    public function isAllowedToDelete(string $ownershipId, CurrentUser $currentUser): void
+    {
+        $this->isAllowed($ownershipId, $currentUser, 'delete');
+    }
+
     private function isAllowed(string $ownershipId, CurrentUser $currentUser, string $change): void
     {
         try {
