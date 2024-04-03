@@ -65,10 +65,12 @@ final class FetchMovies extends AbstractCommand
             foreach ($screenings as $screeningLocation => $screening) {
                 $movieId = $this->movieParser->generateMovieId($mid, $screeningLocation, '2D');
                 $eventId = $this->movieRepository->getEventIdByMovieId($movieId);
+                var_dump($eventId);
                 $locationId = new LocationId($this->movieParser->getLocationId($screeningLocation));
+                var_dump(sizeof($screening['2D']));
                 $calendar = sizeof($screening['2D']) === 1 ?
-                    new MultipleSubEventsCalendar(new SubEvents(...$screening['2D'])) :
-                    new SingleSubEventCalendar(...$screening['2D']);
+                    new SingleSubEventCalendar(...$screening['2D']) :
+                    new MultipleSubEventsCalendar(new SubEvents(...$screening['2D']));
                 if (is_null($eventId)) {
                     $this->createMovie($title, $locationId, $calendar, $theme);
                 }
