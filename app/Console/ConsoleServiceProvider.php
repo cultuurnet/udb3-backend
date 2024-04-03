@@ -42,11 +42,15 @@ use CultuurNet\UDB3\Console\Command\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
+use CultuurNet\UDB3\Movie\MovieParser;
+use CultuurNet\UDB3\Movie\MovieRepository;
+use CultuurNet\UDB3\Movie\MovieService;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
+use Http\Adapter\Guzzle7\Client;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
@@ -402,7 +406,18 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.movies:fetch',
             fn () => new FetchMovies(
-                $container->get('event_command_bus')
+                $container->get('event_command_bus'),
+                new MovieRepository($container->get(('dbal_connection'))),
+                new MovieService(
+                    $container->get('config')['kinepolis']['url'],
+                    new Client(),
+                    $container->get('config')['kinepolis']['authentication']['key'],
+                    $container->get('config')['kinepolis']['authentication']['secret'],
+                ),
+                new MovieParser(
+                    $container->get('config')['kinepolis']['terms'],
+                    $container->get('config')['kinepolis']['theaters']
+                )
             )
         );
     }
