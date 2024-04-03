@@ -41,9 +41,7 @@ class ApproveOwnershipHandlerTest extends CommandHandlerScenarioTestCase
                 new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
             ))
             ->then([
-                new OwnershipApproved(
-                    'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'
-                ),
+                new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
             ]);
     }
 }

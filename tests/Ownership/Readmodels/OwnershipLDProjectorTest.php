@@ -126,7 +126,7 @@ class OwnershipLDProjectorTest extends TestCase
             )
         );
 
-        $ownershipRejected = new OwnershipRejected($ownershipId, );
+        $ownershipRejected = new OwnershipRejected($ownershipId);
 
         $domainMessage = new DomainMessage(
             $ownershipId,
