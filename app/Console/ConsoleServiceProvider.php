@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
 use CultuurNet\UDB3\Console\Command\ExecuteCommandFromCsv;
+use CultuurNet\UDB3\Console\Command\FetchMovies;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
@@ -87,6 +88,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.article:replace-publisher',
         'console.organizer:convert-educational-description',
         'console.execute-command-from-csv',
+        'console.movies:fetch',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -395,6 +397,13 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.execute-command-from-csv',
             fn () => new ExecuteCommandFromCsv()
+        );
+
+        $container->addShared(
+            'console.movies:fetch',
+            fn () => new FetchMovies(
+                $container->get('event_command_bus')
+            )
         );
     }
 }
