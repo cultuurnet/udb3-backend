@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
+use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 use CultuurNet\UDB3\Ownership\OwnershipState;
@@ -125,7 +126,7 @@ class OwnershipLDProjectorTest extends TestCase
             )
         );
 
-        $ownershipRejected = new OwnershipRejected($ownershipId, );
+        $ownershipRejected = new OwnershipRejected($ownershipId);
 
         $domainMessage = new DomainMessage(
             $ownershipId,
@@ -144,6 +145,46 @@ class OwnershipLDProjectorTest extends TestCase
                 $ownershipId,
                 $recordedOn,
                 OwnershipState::rejected()
+            ),
+            $jsonDocument
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_ownership_deleted(): void
+    {
+        $ownershipId = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
+        $recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::fromString('2024-02-19T14:15:16Z'));
+
+        $this->ownershipRepository->save(
+            $this->createOwnershipJsonDocument(
+                $ownershipId,
+                $recordedOn,
+                OwnershipState::requested()
+            )
+        );
+
+        $ownershipRejected = new OwnershipDeleted($ownershipId);
+
+        $domainMessage = new DomainMessage(
+            $ownershipId,
+            0,
+            new Metadata(),
+            $ownershipRejected,
+            $recordedOn->toBroadwayDateTime()
+        );
+
+        $this->ownershipLDProjector->handle($domainMessage);
+
+        $jsonDocument = $this->ownershipRepository->fetch($ownershipId);
+
+        $this->assertEquals(
+            $this->createOwnershipJsonDocument(
+                $ownershipId,
+                $recordedOn,
+                OwnershipState::deleted()
             ),
             $jsonDocument
         );

@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
+use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 
@@ -60,6 +61,13 @@ final class Ownership extends EventSourcedAggregateRoot
         }
     }
 
+    public function delete(): void
+    {
+        if (!$this->state->sameAs(OwnershipState::deleted())) {
+            $this->apply(new OwnershipDeleted($this->id));
+        }
+    }
+
     protected function applyOwnershipRequested(OwnershipRequested $ownershipRequested): void
     {
         $this->id = $ownershipRequested->getId();
@@ -74,5 +82,10 @@ final class Ownership extends EventSourcedAggregateRoot
     protected function applyOwnershipRejected(OwnershipRejected $ownershipRejected): void
     {
         $this->state = OwnershipState::rejected();
+    }
+
+    protected function applyOwnershipDeleted(OwnershipDeleted $ownershipDeleted): void
+    {
+        $this->state = OwnershipState::deleted();
     }
 }

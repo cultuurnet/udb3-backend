@@ -9,22 +9,22 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Ownership\Commands\ApproveOwnership;
-use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
+use CultuurNet\UDB3\Ownership\Commands\DeleteOwnership;
+use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 use CultuurNet\UDB3\Ownership\OwnershipRepository;
 
-class ApproveOwnershipHandlerTest extends CommandHandlerScenarioTestCase
+class DeleteOwnershipHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
-        return new ApproveOwnershipHandler(new OwnershipRepository($eventStore, $eventBus));
+        return new DeleteOwnershipHandler(new OwnershipRepository($eventStore, $eventBus));
     }
 
     /**
      * @test
      */
-    public function it_handles_approving_ownership(): void
+    public function it_handles_deleting_ownership(): void
     {
         $this->scenario
             ->withAggregateId('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
@@ -37,11 +37,11 @@ class ApproveOwnershipHandlerTest extends CommandHandlerScenarioTestCase
                     'google-oauth2|102486314601596809843'
                 ),
             ])
-            ->when(new ApproveOwnership(
+            ->when(new DeleteOwnership(
                 new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
             ))
             ->then([
-                new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                new OwnershipDeleted('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
             ]);
     }
 }
