@@ -9,9 +9,11 @@ use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Ownership\Readmodels\OwnershipLDProjector;
+use CultuurNet\UDB3\Ownership\Readmodels\OwnershipPermissionProjector;
 use CultuurNet\UDB3\Ownership\Readmodels\OwnershipSearchProjector;
 use CultuurNet\UDB3\Ownership\Repositories\Search\DBALOwnershipSearchRepository;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
+use Ramsey\Uuid\UuidFactory;
 
 final class OwnershipServiceProvider extends AbstractServiceProvider
 {
@@ -25,6 +27,7 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
             OwnershipLDProjector::class,
             OwnershipSearchRepository::class,
             OwnershipSearchProjector::class,
+            OwnershipPermissionProjector::class,
         ];
     }
 
@@ -66,6 +69,16 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
             OwnershipSearchProjector::class,
             fn () => new OwnershipSearchProjector(
                 $container->get(OwnershipSearchRepository::class)
+            )
+        );
+
+        $container->addShared(
+            OwnershipPermissionProjector::class,
+            fn () => new OwnershipPermissionProjector(
+                $container->get('event_command_bus'),
+                $container->get(OwnershipSearchRepository::class),
+                new UuidFactory(),
+                $container->get('role_search_v3_repository')
             )
         );
     }
