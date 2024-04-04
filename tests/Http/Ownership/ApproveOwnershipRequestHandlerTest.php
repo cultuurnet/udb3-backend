@@ -43,9 +43,11 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
         $this->approveOwnershipRequestHandler = new ApproveOwnershipRequestHandler(
             $this->commandBus,
-            $this->ownerShipSearchRepository,
             new CurrentUser('auth0|63e22626e39a8ca1264bd29b'),
-            $this->permissionVoter
+            new OwnershipStatusGuard(
+                $this->ownerShipSearchRepository,
+                $this->permissionVoter
+            )
         );
     }
 
