@@ -9,6 +9,7 @@ use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Description;
+use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\EventThemeResolver;
@@ -25,6 +26,7 @@ use CultuurNet\UDB3\Movie\MovieProduction;
 use CultuurNet\UDB3\Movie\MovieRepository;
 use CultuurNet\UDB3\Movie\MovieService;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\InvalidWorkflowStatusTransition;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Theme as LegacyTheme;
 use DateTimeImmutable;
@@ -107,22 +109,33 @@ final class FetchMovies extends AbstractCommand
             new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
         if (!$eventExists) {
             $eventId = $this->uuidGenerator->generate();
-            $this->createMovie($eventId, $movieProduction->getTitle(), $locationId, $calendar, $movieProduction->getTheme());
+             $this->createMovie(
+                $eventId,
+                $movieProduction->getTitle(),
+                $locationId,
+                $calendar,
+                $movieProduction->getTheme()
+            );
+
             $commands[] = new Publish($eventId, new DateTimeImmutable());
             $this->movieRepository->addRelation($eventId, $movieId);
         } else {
-            $calendarUpdated = new UpdateCalendar($eventId, LegacyCalendar::fromUdb3ModelCalendar($calendar));
-            $commands[] = $calendarUpdated;
+            $updateCalendar = new UpdateCalendar($eventId, LegacyCalendar::fromUdb3ModelCalendar($calendar));
+            $commands[] = $updateCalendar;
         }
-        $descriptionUpdated = new UpdateDescription(
+
+        $updateDescription = new UpdateDescription(
             $eventId,
             new LegacyLanguage('nl'),
             $movieProduction->getDescription()
         );
-        $commands[] = $descriptionUpdated;
+        $commands[] = $updateDescription;
 
         foreach ($commands as $command) {
+            try {
             $this->commandBus->dispatch($command);
+            } catch (InvalidWorkflowStatusTransition $notAllowedToPublish) {
+            }
         }
     }
 
