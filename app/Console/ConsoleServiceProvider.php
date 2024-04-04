@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console;
 
 use Broadway\EventHandling\EventBus;
+use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
@@ -407,6 +408,8 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.movies:fetch',
             fn () => new FetchMovies(
                 $container->get('event_command_bus'),
+                $container->get('event_repository'),
+                new Version4Generator(),
                 new MovieRepository($container->get(('dbal_connection'))),
                 new MovieService(
                     $container->get('config')['kinepolis']['url'],
