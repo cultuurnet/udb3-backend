@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Ownership\Readmodels;
 
-use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBusInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
@@ -29,13 +29,13 @@ final class OwnershipPermissionProjector implements EventListener
         DelegateEventHandlingToSpecificMethodTrait::handle as handleMethodSpecificEvents;
     }
 
-    private CommandBus $commandBus;
+    private AuthorizedCommandBusInterface $commandBus;
     private OwnershipSearchRepository $ownershipSearchRepository;
     private UuidFactoryInterface $uuidFactory;
     private RepositoryInterface $roleSearchRepository;
 
     public function __construct(
-        CommandBus $commandBus,
+        AuthorizedCommandBusInterface $commandBus,
         OwnershipSearchRepository $ownershipSearchRepository,
         UuidFactoryInterface $uuidFactory,
         RepositoryInterface $roleSearchRepository
@@ -62,12 +62,18 @@ final class OwnershipPermissionProjector implements EventListener
     {
         $ownershipItem = $this->ownershipSearchRepository->getById($ownershipApproved->getId());
 
+        $this->commandBus->disableAuthorization();
+
         $this->createOrganizationRole($ownershipItem);
         $this->createEventRole($ownershipItem);
+
+        $this->commandBus->enableAuthorization();
     }
 
     protected function applyOwnershipDeleted(OwnershipDeleted $ownershipDeleted): void
     {
+        $this->commandBus->disableAuthorization();
+
         $roles = $this->roleSearchRepository->search(
             $this->createRoleName($ownershipDeleted->getId())
         );
@@ -77,6 +83,8 @@ final class OwnershipPermissionProjector implements EventListener
                 new DeleteRole(new UUID($role['uuid']))
             );
         }
+
+        $this->commandBus->enableAuthorization();
     }
 
     private function createOrganizationRole(OwnershipItem $ownershipItem): void
