@@ -97,7 +97,8 @@ class OwnershipPermissionProjectorTest extends TestCase
             ->method('uuid4')
             ->willReturnCallback(
                 function () use ($organizationRoleId, $eventRoleId) {
-                    static $count = 0; $count++;
+                    static $count = 0;
+                    $count++;
                     return $count === 1 ? $organizationRoleId : $eventRoleId;
                 }
             );
