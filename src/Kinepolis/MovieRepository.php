@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Movie;
+namespace CultuurNet\UDB3\Kinepolis;
 
 use Doctrine\DBAL\Connection;
 

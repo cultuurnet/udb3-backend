@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Movie;
+namespace CultuurNet\UDB3\Kinepolis;
 
 use CultuurNet\UDB3\Json;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 
-final class MovieService
+final class AutenticatedKinepolisClient implements KinepolisClient
 {
     private string $movieApiBaseUrl;
 

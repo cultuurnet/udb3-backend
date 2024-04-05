@@ -43,9 +43,11 @@ use CultuurNet\UDB3\Console\Command\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
-use CultuurNet\UDB3\Movie\MovieParser;
-use CultuurNet\UDB3\Movie\MovieRepository;
-use CultuurNet\UDB3\Movie\MovieService;
+use CultuurNet\UDB3\Kinepolis\KinepolisDateParser;
+use CultuurNet\UDB3\Kinepolis\KinepolisParser;
+use CultuurNet\UDB3\Kinepolis\KinepolisService;
+use CultuurNet\UDB3\Kinepolis\MovieRepository;
+use CultuurNet\UDB3\Kinepolis\AutenticatedKinepolisClient;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
@@ -409,18 +411,21 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new FetchMovies(
                 $container->get('event_command_bus'),
                 $container->get('event_repository'),
+                new KinepolisService(
+                    new AutenticatedKinepolisClient(
+                        $container->get('config')['kinepolis']['url'],
+                        new Client(),
+                        $container->get('config')['kinepolis']['authentication']['key'],
+                        $container->get('config')['kinepolis']['authentication']['secret'],
+                    ),
+                    new KinepolisParser(
+                        $container->get('config')['kinepolis']['terms'],
+                        $container->get('config')['kinepolis']['theaters'],
+                        new KinepolisDateParser()
+                    )
+                ),
                 new Version4Generator(),
                 new MovieRepository($container->get(('dbal_connection'))),
-                new MovieService(
-                    $container->get('config')['kinepolis']['url'],
-                    new Client(),
-                    $container->get('config')['kinepolis']['authentication']['key'],
-                    $container->get('config')['kinepolis']['authentication']['secret'],
-                ),
-                new MovieParser(
-                    $container->get('config')['kinepolis']['terms'],
-                    $container->get('config')['kinepolis']['theaters']
-                )
             )
         );
     }
