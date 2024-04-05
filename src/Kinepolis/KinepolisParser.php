@@ -36,6 +36,7 @@ final class KinepolisParser
     public function getParsedMovies(array $moviesToParse): array
     {
         $parsedMovies = [];
+        $mid = $moviesToParse['mid'];
         $title = $moviesToParse['title'];
         $description = $moviesToParse['desc'];
         $themeId = $this->getThemeId($moviesToParse['genre']);
@@ -52,7 +53,7 @@ final class KinepolisParser
                     new SingleSubEventCalendar(...$subEvents) :
                     new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
                 $parsedMovies[] = new ParsedMovie(
-                    $this->generateMovieId(1, $theatreId, $version),
+                    $this->generateMovieId($mid, $theatreId, $version),
                     new Title($title),
                     new LocationId($this->getLocationId($theatreId)),
                     new Description($description),
@@ -83,7 +84,6 @@ final class KinepolisParser
 
     private function generateMovieId(int $mid, string $tid, string $version): string
     {
-        $v = $version === '3D' ? 'v3D' : '';
-        return 'Kinepolis:' . 't' . $tid . 'm' . $mid . $v;
+        return 'Kinepolis:' . 't' . $tid . 'm' . $mid . $version === '3D' ? 'v3D' : '';
     }
 }
