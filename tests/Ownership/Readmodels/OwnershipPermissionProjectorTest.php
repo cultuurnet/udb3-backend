@@ -29,7 +29,7 @@ use Ramsey\Uuid\UuidFactory;
 
 class OwnershipPermissionProjectorTest extends TestCase
 {
-    private TraceableCommandBus $commandBus;
+    private TraceableAuthorizedCommandBus $commandBus;
 
     /** @var OwnershipSearchRepository&MockObject */
     private $ownershipSearchRepository;
@@ -44,7 +44,7 @@ class OwnershipPermissionProjectorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->commandBus = new TraceableCommandBus();
+        $this->commandBus = new TraceableAuthorizedCommandBus(new TraceableCommandBus());
         $this->commandBus->record();
 
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);

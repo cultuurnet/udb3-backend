@@ -75,7 +75,7 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
         $container->addShared(
             OwnershipPermissionProjector::class,
             fn () => new OwnershipPermissionProjector(
-                $container->get('event_command_bus'),
+                $container->get('authorized_command_bus'),
                 $container->get(OwnershipSearchRepository::class),
                 new UuidFactory(),
                 $container->get('role_search_v3_repository')
