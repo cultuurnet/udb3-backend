@@ -1,0 +1,508 @@
+{
+  "mid": 32696,
+  "muuid": 32696,
+  "dates": {
+    "2024-04-10": [
+      {
+        "prid": "1006122676",
+        "tid": "KKOR",
+        "screen": 4,
+        "time": "17:15:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          82
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1006122695",
+        "tid": "KKOR",
+        "screen": 9,
+        "time": "10:45:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          85
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1006122696",
+        "tid": "KKOR",
+        "screen": 9,
+        "time": "13:45:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          85
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1006122698",
+        "tid": "KKOR",
+        "screen": 9,
+        "time": "20:00:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          85
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1006122699",
+        "tid": "KKOR",
+        "screen": 9,
+        "time": "22:45:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          85
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1007106129",
+        "tid": "SL",
+        "screen": 1,
+        "time": "19:50:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          824
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1007106130",
+        "tid": "SL",
+        "screen": 1,
+        "time": "22:40:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          824
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1007106160",
+        "tid": "SL",
+        "screen": 2,
+        "time": "16:30:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          82
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1007106287",
+        "tid": "SL",
+        "screen": 7,
+        "time": "11:00:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          85
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1007106288",
+        "tid": "SL",
+        "screen": 7,
+        "time": "13:50:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          85
+        ],
+        "language": "NL"
+      }
+    ],
+    "2024-04-11": [
+      {
+        "prid": "1006122781",
+        "tid": "KKOR",
+        "screen": 4,
+        "time": "16:45:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          82
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1006122884",
+        "tid": "KKOR",
+        "screen": 9,
+        "time": "10:45:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          85
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1006122885",
+        "tid": "KKOR",
+        "screen": 9,
+        "time": "13:45:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          85
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1006122887",
+        "tid": "KKOR",
+        "screen": 9,
+        "time": "20:00:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          85
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1006122888",
+        "tid": "KKOR",
+        "screen": 9,
+        "time": "22:45:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          85
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1007106134",
+        "tid": "SL",
+        "screen": 1,
+        "time": "19:50:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          824
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1007106135",
+        "tid": "SL",
+        "screen": 1,
+        "time": "22:40:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          824
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1007106165",
+        "tid": "SL",
+        "screen": 2,
+        "time": "16:30:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          82
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1007106291",
+        "tid": "SL",
+        "screen": 7,
+        "time": "11:00:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          85
+        ],
+        "language": "NL"
+      },
+      {
+        "prid": "1007106292",
+        "tid": "SL",
+        "screen": 7,
+        "time": "13:50:00",
+        "variant": "HO00010201",
+        "saleable": 1,
+        "soldout": 0,
+        "time_saleable": null,
+        "version": [
+          61
+        ],
+        "sub": [
+          72
+        ],
+        "format": [
+          85
+        ],
+        "language": "NL"
+      }
+    ]
+  },
+  "presale": true,
+  "coming": true,
+  "active": true,
+  "spokenLanguage": {
+    "code": "OV",
+    "name": "Originele Versie",
+    "id": "1"
+  },
+  "variants": {
+    "HO00010201": {
+      "title": "Godzilla x Kong: The New Empire",
+      "poster": "\/MovieService\/cdn.kinepolis.be\/images\/BE\/65459BAD-CA99-4711-A97B-E049A5FA94D2\/HO00010201\/0000024163\/Godzilla_x_Kong:_The_New_Empire.jpg",
+      "hq_poster": "\/MovieService\/cdn.kinepolis.be\/images\/BE\/65459BAD-CA99-4711-A97B-E049A5FA94D2\/HO00010201\/0000024163\/Godzilla_x_Kong:_The_New_Empire.jpg"
+    },
+    "HO00010442": {
+      "title": "Godzilla x Kong: Le Nouvel Empire",
+      "poster": "\/MovieService\/cdn.kinepolis.be\/images\/BE\/65459BAD-CA99-4711-A97B-E049A5FA94D2\/HO00010442\/0000024161\/Godzilla_x_Kong:_Le_Nouvel_Empire.jpg",
+      "hq_poster": "\/MovieService\/cdn.kinepolis.be\/images\/BE\/65459BAD-CA99-4711-A97B-E049A5FA94D2\/HO00010442\/0000024161\/Godzilla_x_Kong:_Le_Nouvel_Empire.jpg"
+    }
+  },
+  "poster": "\/MovieService\/cdn.kinepolis.be\/images\/BE\/65459BAD-CA99-4711-A97B-E049A5FA94D2\/HO00010201\/0000024163\/Godzilla_x_Kong:_The_New_Empire.jpg",
+  "hq_poster": "\/MovieService\/cdn.kinepolis.be\/images\/BE\/65459BAD-CA99-4711-A97B-E049A5FA94D2\/HO00010201\/0000024163\/Godzilla_x_Kong:_The_New_Empire.jpg",
+  "title": "Godzilla x Kong: The New Empire",
+  "order": 35,
+  "rating": [
+    110,
+    19946,
+    19949
+  ],
+  "category": null,
+  "audience": null,
+  "genre": [
+    25,
+    214
+  ],
+  "country": [
+    5227
+  ],
+  "actors": [
+    69776,
+    70003,
+    70060,
+    97048,
+    99047,
+    99048,
+    99049,
+    99050,
+    99051
+  ],
+  "directors": [
+    71030
+  ],
+  "length": 115,
+  "release_date": "2024-04-03",
+  "imdb": "0",
+  "score": "6.5",
+  "stills": [
+    "\/MovieService\/cdn.kinepolis.be\/images\/BE\/65459BAD-CA99-4711-A97B-E049A5FA94D2\/HO00010201\/0000024163\/Godzilla_x_Kong:_The_New_Empire.jpg",
+    "\/MovieService\/cdn.kinepolis.be\/images\/BE\/386E7CF0-8904-4D23-B644-ECCFA8E912CA\/HO00010201\/0000024357\/Godzilla_x_Kong:_The_New_Empire.jpg",
+    "\/MovieService\/cdn.kinepolis.be\/images\/BE\/51277512-4CEC-4DDB-B8F1-30D60F7EE274\/HO00010201\/0000024358\/Godzilla_x_Kong:_The_New_Empire.jpg",
+    "\/MovieService\/cdn.kinepolis.be\/images\/BE\/51277512-4CEC-4DDB-B8F1-30D60F7EE274\/HO00010201\/0000024359\/Godzilla_x_Kong:_The_New_Empire.jpg",
+    "\/MovieService\/cdn.kinepolis.be\/images\/BE\/51277512-4CEC-4DDB-B8F1-30D60F7EE274\/HO00010201\/0000024360\/Godzilla_x_Kong:_The_New_Empire.jpg"
+  ],
+  "trailers": [
+    {
+      "image": "\/MovieService\/cdn.kinepolis.be\/images\/BE\/65459BAD-CA99-4711-A97B-E049A5FA94D2\/HO00010201\/0000024163\/Godzilla_x_Kong:_The_New_Empire.jpg",
+      "360p": [
+        {
+          "filename": "deMU1xuO.m3u8",
+          "uri": "public:\/\/MovieService\/cdn.jwplayer.com\/manifests\/deMU1xuO.m3u8",
+          "filemime": "video\/stream"
+        },
+        {
+          "filename": "deMU1xuO.m3u8",
+          "uri": "public:\/\/MovieService\/cdn.jwplayer.com\/manifests\/deMU1xuO.m3u8",
+          "filemime": "video\/mp4"
+        }
+      ],
+      "400p": [
+        {
+          "filename": "deMU1xuO.m3u8",
+          "uri": "public:\/\/MovieService\/cdn.jwplayer.com\/manifests\/deMU1xuO.m3u8",
+          "filemime": "video\/stream"
+        },
+        {
+          "filename": "deMU1xuO.m3u8",
+          "uri": "public:\/\/MovieService\/cdn.jwplayer.com\/manifests\/deMU1xuO.m3u8",
+          "filemime": "video\/mp4"
+        }
+      ]
+    }
+  ],
+  "desc": "Het epische gevecht gaat verder! In het Monsterverse van Legendary Pictures volgt na de sensationele krachtmeting van \u201cGodzilla vs. Kong\u201d nu een geheel nieuw avontuur waarin de machtige Kong en de angstaanjagende Godzilla het opnemen tegen een van onder het aardoppervlak afkomstige dreiging die hun bestaan \u2013 en dat van onszelf \u2013 op het spel zet. In \u201cGodzilla x Kong: The New Empire\u201d ontdekken we meer over de geschiedenis van deze Titans en de geheimen van Skull Island en zijn we getuige van de mythische strijd die bijdroeg aan het ontstaan van deze buitengewone wezens en die hun lot voor altijd aan dat van de mensheid heeft verbonden.",
+  "user_reviews": null,
+  "critic_reviews": null,
+  "event": false,
+  "event_title": null,
+  "modified": 1712311694
+}
