@@ -11,6 +11,7 @@ use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddPermission;
@@ -61,14 +62,26 @@ final class OwnershipPermissionProjector implements EventListener
     {
         $ownershipItem = $this->ownershipSearchRepository->getById($ownershipApproved->getId());
 
-        $roleId = new UUID($this->uuidFactory->uuid4()->toString());
+        $this->createOrganizationRole($ownershipItem);
+        $this->createEventRole($ownershipItem);
+    }
 
-        $this->commandBus->dispatch(
-            new CreateRole(
-                $roleId,
-                $this->createRoleName($ownershipItem->getId())
-            )
+    protected function applyOwnershipDeleted(OwnershipDeleted $ownershipDeleted): void
+    {
+        $roles = $this->roleSearchRepository->search(
+            $this->createRoleName($ownershipDeleted->getId())
         );
+
+        foreach ($roles->getMember() as $role) {
+            $this->commandBus->dispatch(
+                new DeleteRole(new UUID($role['uuid']))
+            );
+        }
+    }
+
+    private function createOrganizationRole(OwnershipItem $ownershipItem): void
+    {
+        $roleId = $this->createRole($ownershipItem);
 
         $this->commandBus->dispatch(
             new AddConstraint(
@@ -83,6 +96,37 @@ final class OwnershipPermissionProjector implements EventListener
                 Permission::organisatiesBewerken()
             )
         );
+    }
+
+    private function createEventRole(OwnershipItem $ownershipItem): void
+    {
+        $roleId = $this->createRole($ownershipItem);
+
+        $this->commandBus->dispatch(
+            new AddConstraint(
+                $roleId,
+                new Query('organizer.id:' . $ownershipItem->getItemId())
+            )
+        );
+
+        $this->commandBus->dispatch(
+            new AddPermission(
+                $roleId,
+                Permission::aanbodBewerken()
+            )
+        );
+    }
+
+    private function createRole(OwnershipItem $ownershipItem): UUID
+    {
+        $roleId = new UUID($this->uuidFactory->uuid4()->toString());
+
+        $this->commandBus->dispatch(
+            new CreateRole(
+                $roleId,
+                $this->createRoleName($ownershipItem->getId())
+            )
+        );
 
         $this->commandBus->dispatch(
             new AddUser(
@@ -90,19 +134,8 @@ final class OwnershipPermissionProjector implements EventListener
                 $ownershipItem->getOwnerId()
             )
         );
-    }
 
-    protected function applyOwnershipDeleted(OwnershipDeleted $ownershipDeleted): void
-    {
-        $roles = $this->roleSearchRepository->search(
-            $this->createRoleName($ownershipDeleted->getId())
-        );
-
-        foreach ($roles->getMember() as $role) {
-            $this->commandBus->dispatch(
-                new DeleteRole(new UUID($role['uuid']))
-            );
-        }
+        return $roleId;
     }
 
     private function createRoleName(string $ownershipId): string

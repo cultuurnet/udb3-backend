@@ -91,30 +91,53 @@ class OwnershipPermissionProjectorTest extends TestCase
                 )
             );
 
-        $roleId = new UUID('8d17cffe-6f28-459c-8627-1f6345f8b296');
-        $this->uuidFactory->expects($this->once())
+        $organizationRoleId = new UUID('8d17cffe-6f28-459c-8627-1f6345f8b296');
+        $eventRoleId = new UUID('e8f8e2bc-2666-47f3-9290-ae3e7229a2c1');
+        $this->uuidFactory->expects($this->exactly(2))
             ->method('uuid4')
-            ->willReturn(\Ramsey\Uuid\Uuid::fromString($roleId->toString()));
+            ->willReturnCallback(
+                function () use ($organizationRoleId, $eventRoleId) {
+                    static $count = 0;
+                    $count++;
+                    return $count === 1 ? $organizationRoleId : $eventRoleId;
+                }
+            );
 
         $this->ownershipPermissionProjector->handle($domainMessage);
 
         $this->assertEquals(
             [
                 new CreateRole(
-                    $roleId,
+                    $organizationRoleId,
                     'Ownership ' . $ownershipId
                 ),
+                new AddUser(
+                    $organizationRoleId,
+                    'auth0|63e22626e39a8ca1264bd29b'
+                ),
                 new AddConstraint(
-                    $roleId,
+                    $organizationRoleId,
                     new Query('id:9e68dafc-01d8-4c1c-9612-599c918b981d')
                 ),
                 new AddPermission(
-                    $roleId,
+                    $organizationRoleId,
                     Permission::organisatiesBewerken()
                 ),
+                new CreateRole(
+                    $eventRoleId,
+                    'Ownership ' . $ownershipId
+                ),
                 new AddUser(
-                    $roleId,
+                    $eventRoleId,
                     'auth0|63e22626e39a8ca1264bd29b'
+                ),
+                new AddConstraint(
+                    $eventRoleId,
+                    new Query('organizer.id:9e68dafc-01d8-4c1c-9612-599c918b981d')
+                ),
+                new AddPermission(
+                    $eventRoleId,
+                    Permission::aanbodBewerken()
                 ),
             ],
             $this->commandBus->getRecordedCommands()
