@@ -113,7 +113,7 @@ final class OwnershipPermissionProjector implements EventListener
         $this->commandBus->dispatch(
             new AddConstraint(
                 $roleId,
-                new Query('organizer.id:' . $ownershipItem->getItemId())
+                new Query('organizer.id:' . $ownershipItem->getItemId() . ' AND _type:event')
             )
         );
 
