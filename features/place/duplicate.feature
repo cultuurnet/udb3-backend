@@ -26,7 +26,7 @@ Feature: Test creating places
     Then the JSON response should be:
     """
     {
-        "type": "https://api.publiq.be/probs/url/duplicate-place",
+        "type": "https://api.publiq.be/probs/uitdatabank/duplicate-place",
         "title": "Duplicate place",
         "status": 409,
         "detail": "A place with this address / name combination already exists. Please use the existing place for your purposes.",
