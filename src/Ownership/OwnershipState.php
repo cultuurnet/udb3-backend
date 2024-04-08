@@ -8,8 +8,9 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
 /**
  * @method static OwnershipState requested()
- * @method static OwnershipState claimed()
+ * @method static OwnershipState approved()
  * @method static OwnershipState rejected()
+ * @method static OwnershipState deleted()
  */
 final class OwnershipState extends Enum
 {
@@ -17,8 +18,9 @@ final class OwnershipState extends Enum
     {
         return [
             'requested',
-            'claimed',
+            'approved',
             'rejected',
+            'deleted',
         ];
     }
 }
