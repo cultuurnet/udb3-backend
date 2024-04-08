@@ -20,6 +20,8 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
 
     private CommandBusSecurity $security;
 
+    private bool $disableAuthorization = false;
+
     public function __construct(
         CommandBus $decoratee,
         string $userId,
@@ -51,6 +53,10 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
 
     public function isAuthorized(AuthorizableCommand $command): bool
     {
+        if ($this->disableAuthorization) {
+            return true;
+        }
+
         return $this->security->isAuthorized($command);
     }
 
@@ -73,5 +79,15 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
         if ($this->decoratee instanceof ContextAwareInterface) {
             $this->decoratee->setContext($context);
         }
+    }
+
+    public function disableAuthorization(): void
+    {
+        $this->disableAuthorization = true;
+    }
+
+    public function enableAuthorization(): void
+    {
+        $this->disableAuthorization = false;
     }
 }

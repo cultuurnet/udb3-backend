@@ -1,3 +1,4 @@
+@sapi3
 Feature: Test the Search API v3 contributors
 
   Background:

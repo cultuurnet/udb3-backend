@@ -65,6 +65,9 @@ final class RoleServiceProvider extends AbstractServiceProvider
             fn () => new RoleRepository(
                 $container->get('role_store'),
                 $container->get(EventBus::class),
+                [
+                    $container->get('event_stream_metadata_enricher'),
+                ]
             )
         );
 

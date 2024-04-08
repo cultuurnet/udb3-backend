@@ -281,6 +281,11 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function queryParameterMissing(string $parameterName): self
+    {
+        return self::urlNotFound('Query parameter ' . $parameterName . ' is missing.');
+    }
+
     public static function resourceNotFound(string $resourceType, string $resourceId): self
     {
         return self::urlNotFound('The ' . $resourceType . ' with id "' . $resourceId . '" was not found.');
