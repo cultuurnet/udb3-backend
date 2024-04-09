@@ -10,7 +10,7 @@ final class MovieRepository
 {
     private Connection $connection;
 
-    private const TABLE = 'movie_mapping';
+    private const TABLE = 'kinepolis_movie_mapping';
 
     public function __construct(Connection $connection)
     {

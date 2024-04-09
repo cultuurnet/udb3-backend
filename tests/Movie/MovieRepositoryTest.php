@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 final class MovieRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
-    public const TABLE_NAME = 'movie_mapping';
+    public const TABLE_NAME = 'kinepolis_movie_mapping';
 
     private string $eventId;
 
