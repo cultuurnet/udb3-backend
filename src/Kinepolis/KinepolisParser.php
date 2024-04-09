@@ -48,6 +48,7 @@ final class KinepolisParser
         $parsedDates = $this->dateParser->processDates($dates, $length);
         foreach ($parsedDates as $theatreId => $versions) {
             foreach ($versions as $version => $subEvents) {
+                // Content Requirement for UiV
                 $title = $version === '3D' ? $title . ' 3D' : $title;
                 $calendar = sizeof($subEvents) === 1 ?
                     new SingleSubEventCalendar(...$subEvents) :
@@ -82,8 +83,12 @@ final class KinepolisParser
         return '1.7.14.0.0'; // Use "Meerdere filmgenres" as a fallback
     }
 
+    // The external movieApi has no unique ID for what the publiqApi defines to be an Event
+    // The function creates an externalId based ont the movieId, locationId & version
+    // to create a unique identifier that is useable by UiTdatabank.
     private function generateMovieId(int $mid, string $tid, string $version): string
     {
-        return 'Kinepolis:' . 't' . $tid . 'm' . $mid . $version === '3D' ? 'v3D' : '';
+        $version = $version === '3D' ? 'v3D' : '';
+        return 'Kinepolis:' . 't' . $tid . 'm' . $mid . $version;
     }
 }

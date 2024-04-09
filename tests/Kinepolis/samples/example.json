@@ -440,7 +440,8 @@
   "audience": null,
   "genre": [
     25,
-    214
+    214,
+    616
   ],
   "country": [
     5227
@@ -499,7 +500,7 @@
       ]
     }
   ],
-  "desc": "Het epische gevecht gaat verder! In het Monsterverse van Legendary Pictures volgt na de sensationele krachtmeting van \u201cGodzilla vs. Kong\u201d nu een geheel nieuw avontuur waarin de machtige Kong en de angstaanjagende Godzilla het opnemen tegen een van onder het aardoppervlak afkomstige dreiging die hun bestaan \u2013 en dat van onszelf \u2013 op het spel zet. In \u201cGodzilla x Kong: The New Empire\u201d ontdekken we meer over de geschiedenis van deze Titans en de geheimen van Skull Island en zijn we getuige van de mythische strijd die bijdroeg aan het ontstaan van deze buitengewone wezens en die hun lot voor altijd aan dat van de mensheid heeft verbonden.",
+  "desc": "Het epische gevecht gaat verder! In het Monsterverse van Legendary Pictures volgt na de sensationele krachtmeting van \u201cGodzilla vs. Kong\u201d nu een geheel nieuw avontuur waarin de machtige Kong en de angstaanjagende Godzilla het opnemen tegen elkaar.",
   "user_reviews": null,
   "critic_reviews": null,
   "event": false,
