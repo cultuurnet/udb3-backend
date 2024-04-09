@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Kinepolis;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
@@ -47,7 +49,7 @@ final class KinepolisDateParserTest extends TestCase
                                     'variant' => 'HO00010442',
                                     'saleable' => 1,
                                     'soldout' => 0,
-                                    'time_saleable' => NULL,
+                                    'time_saleable' => null,
                                     'version' =>
                                         [
                                             0 => 62,
@@ -71,7 +73,7 @@ final class KinepolisDateParserTest extends TestCase
                                     'variant' => 'HO00010201',
                                     'saleable' => 1,
                                     'soldout' => 0,
-                                    'time_saleable' => NULL,
+                                    'time_saleable' => null,
                                     'version' =>
                                         [
                                             0 => 61,
@@ -95,7 +97,7 @@ final class KinepolisDateParserTest extends TestCase
                                     'variant' => 'HO00010201',
                                     'saleable' => 1,
                                     'soldout' => 0,
-                                    'time_saleable' => NULL,
+                                    'time_saleable' => null,
                                     'version' =>
                                         [
                                             0 => 61,
@@ -119,7 +121,7 @@ final class KinepolisDateParserTest extends TestCase
                                     'variant' => 'HO00010201',
                                     'saleable' => 1,
                                     'soldout' => 0,
-                                    'time_saleable' => NULL,
+                                    'time_saleable' => null,
                                     'version' =>
                                         [
                                             0 => 61,
@@ -146,7 +148,7 @@ final class KinepolisDateParserTest extends TestCase
                                     'variant' => 'HO00010442',
                                     'saleable' => 1,
                                     'soldout' => 0,
-                                    'time_saleable' => NULL,
+                                    'time_saleable' => null,
                                     'version' =>
                                         [
                                             0 => 62,
@@ -170,7 +172,7 @@ final class KinepolisDateParserTest extends TestCase
                                     'variant' => 'HO00010442',
                                     'saleable' => 1,
                                     'soldout' => 0,
-                                    'time_saleable' => NULL,
+                                    'time_saleable' => null,
                                     'version' =>
                                         [
                                             0 => 62,
@@ -194,7 +196,7 @@ final class KinepolisDateParserTest extends TestCase
                                     'variant' => 'HO00010201',
                                     'saleable' => 1,
                                     'soldout' => 0,
-                                    'time_saleable' => NULL,
+                                    'time_saleable' => null,
                                     'version' =>
                                         [
                                             0 => 61,
@@ -218,7 +220,7 @@ final class KinepolisDateParserTest extends TestCase
                                     'variant' => 'HO00010201',
                                     'saleable' => 1,
                                     'soldout' => 0,
-                                    'time_saleable' => NULL,
+                                    'time_saleable' => null,
                                     'version' =>
                                         [
                                             0 => 61,
@@ -242,7 +244,7 @@ final class KinepolisDateParserTest extends TestCase
                                     'variant' => 'HO00010201',
                                     'saleable' => 1,
                                     'soldout' => 0,
-                                    'time_saleable' => NULL,
+                                    'time_saleable' => null,
                                     'version' =>
                                         [
                                             0 => 61,
@@ -295,7 +297,7 @@ final class KinepolisDateParserTest extends TestCase
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available())
                             ),
-                        ]
+                        ],
                     ],
                     'KOOST' => [
                         '2D' => [
@@ -339,14 +341,14 @@ final class KinepolisDateParserTest extends TestCase
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available())
                             ),
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'two' => [
                 'data' => [],
                 'length' => 0,
-                'result' => []
+                'result' => [],
             ],
         ];
     }
