@@ -10,16 +10,17 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 
-final class MovieRepositoryTest extends TestCase
+final class MovieMappingRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
-    public const TABLE_NAME = 'movie_mapping';
+
+    public const TABLE_NAME = 'kinepolis_movie_mapping';
 
     private string $eventId;
 
     private string $movieId;
 
-    private MovieRepository $movieRepository;
+    private MovieMappingRepository $movieMappingRepository;
 
     private static function getTableDefinition(Schema $schema): Table
     {
@@ -51,7 +52,7 @@ final class MovieRepositoryTest extends TestCase
             ]
         );
 
-        $this->movieRepository = new MovieRepository(
+        $this->movieMappingRepository = new MovieMappingRepository(
             $this->getConnection()
         );
     }
@@ -59,21 +60,21 @@ final class MovieRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_get_the_event_id_for_a_given_movie(): void
+    public function it_gets_the_event_id_for_a_given_movie(): void
     {
         $this->assertEquals(
             $this->eventId,
-            $this->movieRepository->getEventIdByMovieId($this->movieId)
+            $this->movieMappingRepository->getByMovieId($this->movieId)
         );
     }
 
     /**
      * @test
      */
-    public function it_returns_null_for_an_new_movie_id(): void
+    public function it_returns_null_for_a_new_movie_id(): void
     {
         $this->assertNull(
-            $this->movieRepository->getEventIdByMovieId('Kinepolis:tKOOSTm21298')
+            $this->movieMappingRepository->getByMovieId('Kinepolis:tKOOSTm21298')
         );
     }
 
@@ -85,11 +86,11 @@ final class MovieRepositoryTest extends TestCase
         $newEventId = 'a25ec271-a19b-4881-9498-44b1ad4711a3';
         $newMovieId = 'Kinepolis:tKOOSTm21298';
 
-        $this->movieRepository->addRelation($newEventId, $newMovieId);
+        $this->movieMappingRepository->create($newEventId, $newMovieId);
 
         $this->assertEquals(
             $newEventId,
-            $this->movieRepository->getEventIdByMovieId($newMovieId)
+            $this->movieMappingRepository->getByMovieId($newMovieId)
         );
     }
 }
