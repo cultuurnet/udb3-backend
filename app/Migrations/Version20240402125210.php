@@ -12,7 +12,7 @@ final class Version20240402125210 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $table = $schema->createTable('movie_mapping');
+        $table = $schema->createTable('kinepolis_movie_mapping');
 
         $table->addColumn('event_id', Types::GUID)->setLength(36)->setNotnull(true);
         $table->addColumn('movie_id', Types::STRING)->setNotnull(true);
@@ -24,6 +24,6 @@ final class Version20240402125210 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $schema->dropTable('movie_mapping');
+        $schema->dropTable('kinepolis_movie_mapping');
     }
 }
