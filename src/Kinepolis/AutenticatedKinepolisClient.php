@@ -72,6 +72,20 @@ final class AutenticatedKinepolisClient implements KinepolisClient
         return $contents['movies'][0];
     }
 
+    public function getPrices(string $token, string $tid): array
+    {
+        $request = new Request(
+            'GET',
+            $this->movieApiBaseUrl . 'services/content/1.1/theaters/' . $tid,
+            $this->getHeaders($token)
+        );
+
+        $response = $this->client->sendRequest($request)->getBody()->getContents();
+        $contents = Json::decodeAssociatively($response);
+
+        return $contents['theatres'][0]['tariffs'][0]['tarifs'];
+    }
+
     public function getHeaders(string $token = null): array
     {
         $headers = [
