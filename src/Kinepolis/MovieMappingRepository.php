@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Movie;
+namespace CultuurNet\UDB3\Kinepolis;
 
 use Doctrine\DBAL\Connection;
 
-final class MovieRepository
+final class MovieMappingRepository
 {
     private Connection $connection;
 
@@ -17,7 +17,7 @@ final class MovieRepository
         $this->connection = $connection;
     }
 
-    public function getEventIdByMovieId(string $movieId): ?string
+    public function getByMovieId(string $movieId): ?string
     {
         $result = $this->connection->createQueryBuilder()
             ->select('event_id')
@@ -30,7 +30,7 @@ final class MovieRepository
         return sizeof($result) === 0 ? null : $result[0];
     }
 
-    public function addRelation(string $eventId, string $movieId): void
+    public function create(string $eventId, string $movieId): void
     {
         $this->connection->insert(
             self::TABLE,

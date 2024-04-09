@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Movie;
+namespace CultuurNet\UDB3\Kinepolis;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use Doctrine\DBAL\Schema\Schema;
@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 
-final class MovieRepositoryTest extends TestCase
+final class MovieMappingRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
@@ -20,7 +20,7 @@ final class MovieRepositoryTest extends TestCase
 
     private string $movieId;
 
-    private MovieRepository $movieRepository;
+    private MovieMappingRepository $movieMappingRepository;
 
     private static function getTableDefinition(Schema $schema): Table
     {
@@ -52,7 +52,7 @@ final class MovieRepositoryTest extends TestCase
             ]
         );
 
-        $this->movieRepository = new MovieRepository(
+        $this->movieMappingRepository = new MovieMappingRepository(
             $this->getConnection()
         );
     }
@@ -64,7 +64,7 @@ final class MovieRepositoryTest extends TestCase
     {
         $this->assertEquals(
             $this->eventId,
-            $this->movieRepository->getEventIdByMovieId($this->movieId)
+            $this->movieMappingRepository->getByMovieId($this->movieId)
         );
     }
 
@@ -74,7 +74,7 @@ final class MovieRepositoryTest extends TestCase
     public function it_returns_null_for_a_new_movie_id(): void
     {
         $this->assertNull(
-            $this->movieRepository->getEventIdByMovieId('Kinepolis:tKOOSTm21298')
+            $this->movieMappingRepository->getByMovieId('Kinepolis:tKOOSTm21298')
         );
     }
 
@@ -86,11 +86,11 @@ final class MovieRepositoryTest extends TestCase
         $newEventId = 'a25ec271-a19b-4881-9498-44b1ad4711a3';
         $newMovieId = 'Kinepolis:tKOOSTm21298';
 
-        $this->movieRepository->addRelation($newEventId, $newMovieId);
+        $this->movieMappingRepository->create($newEventId, $newMovieId);
 
         $this->assertEquals(
             $newEventId,
-            $this->movieRepository->getEventIdByMovieId($newMovieId)
+            $this->movieMappingRepository->getByMovieId($newMovieId)
         );
     }
 }
