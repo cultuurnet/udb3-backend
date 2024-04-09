@@ -46,7 +46,7 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Kinepolis\KinepolisDateParser;
 use CultuurNet\UDB3\Kinepolis\KinepolisParser;
 use CultuurNet\UDB3\Kinepolis\KinepolisService;
-use CultuurNet\UDB3\Kinepolis\MovieRepository;
+use CultuurNet\UDB3\Kinepolis\MovieMappingRepository;
 use CultuurNet\UDB3\Kinepolis\AutenticatedKinepolisClient;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
@@ -425,7 +425,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     )
                 ),
                 new Version4Generator(),
-                new MovieRepository($container->get(('dbal_connection'))),
+                new MovieMappingRepository($container->get(('dbal_connection'))),
             )
         );
     }

@@ -11,9 +11,9 @@ use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Kinepolis\KinepolisService;
+use CultuurNet\UDB3\Kinepolis\MovieMappingRepository;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Kinepolis\ParsedMovie;
-use CultuurNet\UDB3\Kinepolis\MovieRepository;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,20 +27,20 @@ final class FetchMovies extends AbstractCommand
 
     private UuidGeneratorInterface $uuidGenerator;
 
-    private MovieRepository $movieRepository;
+    private MovieMappingRepository $movieMappingRepository;
 
     public function __construct(
         CommandBus $commandBus,
         Repository $aggregateRepository,
         KinepolisService $service,
         UuidGeneratorInterface $uuidGenerator,
-        MovieRepository $movieRepository
+        MovieMappingRepository $movieMappingRepository
     ) {
         parent::__construct($commandBus);
         $this->aggregateRepository = $aggregateRepository;
         $this->service = $service;
         $this->uuidGenerator = $uuidGenerator;
-        $this->movieRepository = $movieRepository;
+        $this->movieMappingRepository = $movieMappingRepository;
     }
     public function configure(): void
     {
@@ -69,7 +69,7 @@ final class FetchMovies extends AbstractCommand
     private function dispatch(ParsedMovie $parsedMovie): void
     {
         $commands = [];
-        $eventId = $this->movieRepository->getEventIdByMovieId($parsedMovie->getExternalId());
+        $eventId = $this->movieMappingRepository->getByMovieId($parsedMovie->getExternalId());
         $eventExists = $eventId !== null;
         if (!$eventExists) {
             $eventId = $this->createNewMovie($parsedMovie);
@@ -104,7 +104,7 @@ final class FetchMovies extends AbstractCommand
         );
 
         $this->aggregateRepository->save($eventAggregate);
-        $this->movieRepository->addRelation($eventId, $parsedMovie->getExternalId());
+        $this->movieMappingRepository->create($eventId, $parsedMovie->getExternalId());
         return $eventId;
     }
 }
