@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 final class MovieRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
+
     public const TABLE_NAME = 'kinepolis_movie_mapping';
 
     private string $eventId;
@@ -59,7 +60,7 @@ final class MovieRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_get_the_event_id_for_a_given_movie(): void
+    public function it_gets_the_event_id_for_a_given_movie(): void
     {
         $this->assertEquals(
             $this->eventId,
@@ -70,7 +71,7 @@ final class MovieRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_for_an_new_movie_id(): void
+    public function it_returns_null_for_a_new_movie_id(): void
     {
         $this->assertNull(
             $this->movieRepository->getEventIdByMovieId('Kinepolis:tKOOSTm21298')

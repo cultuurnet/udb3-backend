@@ -22,7 +22,7 @@ final class MovieRepository
         $result = $this->connection->createQueryBuilder()
             ->select('event_id')
             ->from(self::TABLE)
-            ->where('movie_id' . ' = :movie_id')
+            ->where('movie_id = :movie_id')
             ->setParameter('movie_id', $movieId)
             ->execute()
             ->fetchFirstColumn();
