@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Kinepolis;
 
 use Doctrine\DBAL\Connection;
 
-final class MovieMappingRepository
+final class MovieMappingRepository implements MappingRepository
 {
     private Connection $connection;
 

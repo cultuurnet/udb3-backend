@@ -24,7 +24,7 @@ final class KinepolisService
 
     private Parser $parser;
 
-    private MovieMappingRepository $movieMappingRepository;
+    private MappingRepository $movieMappingRepository;
 
     private UuidGeneratorInterface $uuidGenerator;
 
@@ -33,7 +33,7 @@ final class KinepolisService
         Repository $aggregateRepository,
         KinepolisClient $client,
         Parser $parser,
-        MovieMappingRepository $movieMappingRepository,
+        MappingRepository $movieMappingRepository,
         UuidGeneratorInterface $uuidGenerator
     ) {
         $this->commandBus = $commandBus;
