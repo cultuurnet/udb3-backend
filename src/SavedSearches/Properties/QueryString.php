@@ -43,7 +43,7 @@ class QueryString
         $value = $this->value;
 
         // Use preg_replace_callback to apply stripslashes() only to the part between square brackets
-        $value = preg_replace_callback('/\[([^]]+)\]/', function($matches) {
+        $value = preg_replace_callback('/\[([^]]+)\]/', function ($matches) {
             return '[' . stripslashes($matches[1]) . ']';
         }, $value);
 

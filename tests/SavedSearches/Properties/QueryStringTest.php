@@ -49,8 +49,8 @@ class QueryStringTest extends TestCase
             ['%2B', '+'],
             ['Hello%20World%21', 'Hello World!'],
             [
-                'address.\*.addressLocality:Scherpenheuvel-Zichem AND dateRange:[2015-05-31T22\:00\:00%2B00\:00 TO 2015-07-31T21\:59\:59%2B00\:00]',
-                'address.\*.addressLocality:Scherpenheuvel-Zichem AND dateRange:[2015-05-31T22:00:00+00:00 TO 2015-07-31T21:59:59+00:00]',
+                'address.*.addressLocality:Scherpenheuvel-Zichem AND dateRange:[2015-05-31T22\:00\:00%2B00\:00 TO 2015-07-31T21\:59\:59%2B00\:00]',
+                'address.*.addressLocality:Scherpenheuvel-Zichem AND dateRange:[2015-05-31T22:00:00+00:00 TO 2015-07-31T21:59:59+00:00]',
             ],
         ];
     }
