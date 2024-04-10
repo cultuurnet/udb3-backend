@@ -8,14 +8,14 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Ownership\Commands\RejectOwnership;
+use CultuurNet\UDB3\Ownership\Commands\DeleteOwnership;
 use CultuurNet\UDB3\User\CurrentUser;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class RejectOwnershipRequestHandler implements RequestHandlerInterface
+final class DeleteOwnershipRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
     private CurrentUser $currentUser;
@@ -36,9 +36,11 @@ final class RejectOwnershipRequestHandler implements RequestHandlerInterface
         $routeParameters = new RouteParameters($request);
         $ownershipId = $routeParameters->getOwnershipId();
 
-        $this->ownershipStatusGuard->isAllowedToReject($ownershipId, $this->currentUser);
+        $this->ownershipStatusGuard->isAllowedToDelete($ownershipId, $this->currentUser);
 
-        $this->commandBus->dispatch(new RejectOwnership(new UUID($ownershipId)));
+        $this->commandBus->dispatch(
+            new DeleteOwnership(new UUID($ownershipId))
+        );
 
         return new JsonResponse(
             [],

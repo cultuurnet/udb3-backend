@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
  * @method static OwnershipState requested()
  * @method static OwnershipState approved()
  * @method static OwnershipState rejected()
+ * @method static OwnershipState deleted()
  */
 final class OwnershipState extends Enum
 {
@@ -19,6 +20,7 @@ final class OwnershipState extends Enum
             'requested',
             'approved',
             'rejected',
+            'deleted',
         ];
     }
 }
