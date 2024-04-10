@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Json;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 
-final class AutenticatedKinepolisClient implements KinepolisClient
+final class AuthenticatedKinepolisClient implements KinepolisClient
 {
     private string $movieApiBaseUrl;
 
@@ -35,7 +35,7 @@ final class AutenticatedKinepolisClient implements KinepolisClient
         $request = new Request(
             'POST',
             $this->movieApiBaseUrl . '/services/jwt/1.0/token',
-            $this->getHeaders(),
+            $this->createHeaders(),
             Json::encode([
                 'client' => $this->key,
                 'secret' => $this->secret,
@@ -51,7 +51,7 @@ final class AutenticatedKinepolisClient implements KinepolisClient
         $request = new Request(
             'GET',
             $this->movieApiBaseUrl . '/services/content/1.1/movies?progList=2',
-            $this->getHeaders($token)
+            $this->createHeaders($token)
         );
 
         $response = $this->client->sendRequest($request)->getBody()->getContents();
@@ -64,7 +64,7 @@ final class AutenticatedKinepolisClient implements KinepolisClient
         $request = new Request(
             'GET',
             $this->movieApiBaseUrl . 'services/content/1.1/movies/' . $mid,
-            $this->getHeaders($token)
+            $this->createHeaders($token)
         );
 
         $response = $this->client->sendRequest($request)->getBody()->getContents();
@@ -72,7 +72,7 @@ final class AutenticatedKinepolisClient implements KinepolisClient
         return $contents['movies'][0];
     }
 
-    public function getHeaders(string $token = null): array
+    private function createHeaders(string $token = null): array
     {
         $headers = [
             'content-type' => 'application/json',

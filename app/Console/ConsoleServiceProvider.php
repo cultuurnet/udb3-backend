@@ -47,7 +47,7 @@ use CultuurNet\UDB3\Kinepolis\KinepolisDateParser;
 use CultuurNet\UDB3\Kinepolis\KinepolisParser;
 use CultuurNet\UDB3\Kinepolis\KinepolisService;
 use CultuurNet\UDB3\Kinepolis\MovieMappingRepository;
-use CultuurNet\UDB3\Kinepolis\AutenticatedKinepolisClient;
+use CultuurNet\UDB3\Kinepolis\AuthenticatedKinepolisClient;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
@@ -412,7 +412,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('event_command_bus'),
                 $container->get('event_repository'),
                 new KinepolisService(
-                    new AutenticatedKinepolisClient(
+                    new AuthenticatedKinepolisClient(
                         $container->get('config')['kinepolis']['url'],
                         new Client(),
                         $container->get('config')['kinepolis']['authentication']['key'],
