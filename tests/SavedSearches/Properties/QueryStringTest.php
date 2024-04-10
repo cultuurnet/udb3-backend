@@ -31,4 +31,27 @@ class QueryStringTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         QueryString::fromURLQueryString($invalidUrlQueryString);
     }
+
+
+    /**
+     * @test
+     * @dataProvider dataproviderBrokenQueries
+     */
+    public function it_cleans_broken_queries(string $brokenQuery, string $fixedQuery): void
+    {
+        $this->assertEquals($fixedQuery, (new QueryString($brokenQuery))->clean()->toString());
+    }
+
+    public function dataproviderBrokenQueries(): array
+    {
+        return [
+            ['\:', ':'],
+            ['%2B', '+'],
+            ['Hello%20World%21', 'Hello World!'],
+            [
+                'address.\*.addressLocality:Scherpenheuvel-Zichem AND dateRange:[2015-05-31T22\:00\:00%2B00\:00 TO 2015-07-31T21\:59\:59%2B00\:00]',
+                'address.*.addressLocality:Scherpenheuvel-Zichem AND dateRange:[2015-05-31T22:00:00+00:00 TO 2015-07-31T21:59:59+00:00]',
+            ],
+        ];
+    }
 }
