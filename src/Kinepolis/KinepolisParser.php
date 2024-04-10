@@ -84,7 +84,7 @@ final class KinepolisParser implements Parser
     }
 
     // The external movieApi has no unique ID for what the publiqApi defines to be an Event
-    // The function creates an externalId based ont the movieId, locationId & version
+    // The function creates an externalId based on the movieId, locationId & version
     // to create a unique identifier that is useable by UiTdatabank.
     private function generateMovieId(int $mid, string $tid, string $version): string
     {
