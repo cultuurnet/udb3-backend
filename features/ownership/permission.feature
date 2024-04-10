@@ -91,3 +91,25 @@ Feature: Test permissions based on ownership
     """
     And I send a PUT request to "/events/%{eventId}/name/nl"
     Then the response status should be "403"
+
+  Scenario: Approving the ownership of an organizer doesn't give permission on the place associated with the organizer
+    Given I create a minimal organizer and save the "id" as "organizerId"
+    And I keep the value of the JSON response at "url" as "organizerUrl"
+    And I create a place from "places/place-with-organizer.json" and save the "id" as "placeId"
+    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I set the JSON request payload to:
+    """
+        {"name": "madewithlove"}
+    """
+    And I send a PUT request to "/places/%{placeId}/name/nl"
+    And the response status should be "403"
+    And I request ownership for "40fadfd3-c4a6-4936-b1fe-20542ac56610" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    When I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I approve the ownership with ownershipId "%{ownershipId}"
+    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I set the JSON request payload to:
+    """
+        {"name": "madewithlove"}
+    """
+    And I send a PUT request to "/places/%{placeId}/name/nl"
+    Then the response status should be "403"
