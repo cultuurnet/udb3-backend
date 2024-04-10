@@ -18,7 +18,6 @@ final class Version20240402125210 extends AbstractMigration
         $table->addColumn('movie_id', Types::STRING)->setNotnull(true);
 
         $table->setPrimaryKey(['event_id']);
-        $table->addIndex(['movie_id']);
         $table->addUniqueIndex(['movie_id', 'event_id']);
     }
 
