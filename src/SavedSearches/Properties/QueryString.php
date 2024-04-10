@@ -39,6 +39,14 @@ class QueryString
         It will give problems with newly entered faulty queries, they will be escaped twice (saving + loading), this could corrupt to query
         Example: %2B -> change to + -> change to ""
         */
-        return new QueryString(urldecode(stripslashes($this->value)));
+
+        $value = $this->value;
+
+        // Use preg_replace_callback to apply stripslashes() only to the part between square brackets
+        $value = preg_replace_callback('/\[([^]]+)\]/', function($matches) {
+            return '[' . stripslashes($matches[1]) . ']';
+        }, $value);
+
+        return new QueryString(urldecode($value));
     }
 }

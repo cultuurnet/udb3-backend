@@ -43,7 +43,7 @@ class SavedSearchTest extends TestCase
         $jsonEncoded = Json::encode($savedSearch);
 
         $this->assertEquals(
-            '{"name":"In Leuven","query":"address.*.addressLocality:Scherpenheuvel-Zichem AND dateRange:[2015-05-31T22:00:00+00:00 TO 2015-07-31T21:59:59+00:00]","id":"101"}',
+            '{"name":"In Leuven","query":"address.\*.addressLocality:Scherpenheuvel-Zichem AND dateRange:[2015-05-31T22:00:00+00:00 TO 2015-07-31T21:59:59+00:00]","id":"101"}',
             $jsonEncoded
         );
     }
