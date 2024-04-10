@@ -49,7 +49,7 @@ final class KinepolisService
         return $this->client;
     }
 
-    public function getParser(): KinepolisParser
+    public function getParser(): Parser
     {
         return $this->parser;
     }
