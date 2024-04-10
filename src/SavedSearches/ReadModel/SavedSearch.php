@@ -28,14 +28,11 @@ class SavedSearch implements \JsonSerializable
         return $this->userId;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $serializedSavedSearch = [
             'name' => $this->name,
-            'query' => $this->query->toString(),
+            'query' => $this->query->clean()->toString(),
         ];
 
         if ($this->id) {
