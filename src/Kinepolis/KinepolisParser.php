@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
-final class KinepolisParser
+final class KinepolisParser implements Parser
 {
     private array $termsMapper;
 

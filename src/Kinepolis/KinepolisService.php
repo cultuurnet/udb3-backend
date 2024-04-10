@@ -22,7 +22,7 @@ final class KinepolisService
 
     private KinepolisClient $client;
 
-    private KinepolisParser $parser;
+    private Parser $parser;
 
     private MovieMappingRepository $movieMappingRepository;
 
@@ -32,7 +32,7 @@ final class KinepolisService
         CommandBus $commandBus,
         Repository $aggregateRepository,
         KinepolisClient $client,
-        KinepolisParser $parser,
+        Parser $parser,
         MovieMappingRepository $movieMappingRepository,
         UuidGeneratorInterface $uuidGenerator
     ) {
