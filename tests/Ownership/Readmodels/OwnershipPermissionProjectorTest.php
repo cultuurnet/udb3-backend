@@ -133,7 +133,7 @@ class OwnershipPermissionProjectorTest extends TestCase
                 ),
                 new AddConstraint(
                     $eventRoleId,
-                    new Query('organizer.id:9e68dafc-01d8-4c1c-9612-599c918b981d')
+                    new Query('organizer.id:9e68dafc-01d8-4c1c-9612-599c918b981d AND _type:event')
                 ),
                 new AddPermission(
                     $eventRoleId,
