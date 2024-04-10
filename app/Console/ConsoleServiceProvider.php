@@ -409,9 +409,9 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.movies:fetch',
             fn () => new FetchMovies(
-                $container->get('event_command_bus'),
-                $container->get('event_repository'),
                 new KinepolisService(
+                    $container->get('event_command_bus'),
+                    $container->get('event_repository'),
                     new AuthenticatedKinepolisClient(
                         $container->get('config')['kinepolis']['url'],
                         new Client(),
@@ -422,10 +422,10 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                         $container->get('config')['kinepolis']['terms'],
                         $container->get('config')['kinepolis']['theaters'],
                         new KinepolisDateParser()
-                    )
+                    ),
+                    new MovieMappingRepository($container->get(('dbal_connection'))),
+                    new Version4Generator()
                 ),
-                new Version4Generator(),
-                new MovieMappingRepository($container->get(('dbal_connection'))),
             )
         );
     }
