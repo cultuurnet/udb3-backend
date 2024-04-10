@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
 use CultuurNet\UDB3\Console\Command\ExecuteCommandFromCsv;
-use CultuurNet\UDB3\Console\Command\FetchMovies;
+use CultuurNet\UDB3\Console\Command\FetchMoviesFromKinepolisApi;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
@@ -408,7 +408,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'console.movies:fetch',
-            fn () => new FetchMovies(
+            fn () => new FetchMoviesFromKinepolisApi(
                 new KinepolisService(
                     $container->get('event_command_bus'),
                     $container->get('event_repository'),

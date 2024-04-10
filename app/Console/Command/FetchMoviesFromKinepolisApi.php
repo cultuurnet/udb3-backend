@@ -9,7 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class FetchMovies extends Command
+final class FetchMoviesFromKinepolisApi extends Command
 {
     private KinepolisService $service;
 
@@ -26,7 +26,7 @@ final class FetchMovies extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->service->start();
+        $this->service->fetch();
         return 0;
     }
 }

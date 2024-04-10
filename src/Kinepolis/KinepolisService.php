@@ -54,7 +54,7 @@ final class KinepolisService
         return $this->parser;
     }
 
-    public function start(): void
+    public function fetch(): void
     {
         $token = $this->getClient()->getToken();
         $movies = $this->getClient()->getMovies($token);
