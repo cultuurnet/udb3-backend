@@ -54,6 +54,19 @@ trait OwnershipSteps
     }
 
     /**
+     * @When I delete the ownership with ownershipId :ownershipId
+     */
+    public function iDeleteTheOwnershipWithOwnershipId(string $ownershipId): void
+    {
+        $response = $this->getHttpClient()->delete(
+            '/ownerships/' . $this->variableState->replaceVariables($ownershipId),
+        );
+        $this->responseState->setResponse($response);
+
+        $this->theResponseStatusShouldBe(204);
+    }
+
+    /**
      * @When I get the ownership with ownershipId :ownershipId
      */
     public function iGetTheOwnershipWithOwnershipId(string $ownershipId): void

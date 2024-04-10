@@ -9,6 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
+use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 use CultuurNet\UDB3\Ownership\OwnershipState;
@@ -83,6 +84,16 @@ final class OwnershipLDProjector implements EventListener
 
         $body = $jsonDocument->getBody();
         $body->state = OwnershipState::rejected()->toString();
+
+        return $jsonDocument->withBody($body);
+    }
+
+    public function applyOwnershipDeleted(OwnershipDeleted $ownershipDeleted, DomainMessage $domainMessage): JsonDocument
+    {
+        $jsonDocument = $this->repository->fetch($ownershipDeleted->getId());
+
+        $body = $jsonDocument->getBody();
+        $body->state = OwnershipState::deleted()->toString();
 
         return $jsonDocument->withBody($body);
     }
