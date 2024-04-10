@@ -73,7 +73,7 @@ final class KinepolisParser implements Parser
 
     private function getThemeId(array $genreIds): string
     {
-        // This is a best effort to match the External categorization to a valid theme in the publiq Taxonomy
+        // This is the best effort to match the External categorization to a valid theme in the publiq Taxonomy
         // A Match is not guaranteed
         foreach ($genreIds as $genreId) {
             if (array_key_exists($genreId, $this->termsMapper)) {
