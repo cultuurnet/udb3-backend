@@ -28,10 +28,7 @@ class SavedSearch implements \JsonSerializable
         return $this->userId;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $serializedSavedSearch = [
             'name' => $this->name,
