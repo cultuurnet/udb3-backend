@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
-final class KinepolisParser
+final class KinepolisParser implements Parser
 {
     private array $termsMapper;
 
@@ -73,7 +73,7 @@ final class KinepolisParser
 
     private function getThemeId(array $genreIds): string
     {
-        // This is a best effort to match the External categorization to a valid theme in the publiq Taxonomy
+        // This is the best effort to match the External categorization to a valid theme in the publiq Taxonomy
         // A Match is not guaranteed
         foreach ($genreIds as $genreId) {
             if (array_key_exists($genreId, $this->termsMapper)) {
@@ -84,7 +84,7 @@ final class KinepolisParser
     }
 
     // The external movieApi has no unique ID for what the publiqApi defines to be an Event
-    // The function creates an externalId based ont the movieId, locationId & version
+    // The function creates an externalId based on the movieId, locationId & version
     // to create a unique identifier that is useable by UiTdatabank.
     private function generateMovieId(int $mid, string $tid, string $version): string
     {

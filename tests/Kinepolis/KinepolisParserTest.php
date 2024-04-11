@@ -143,7 +143,7 @@ final class KinepolisParserTest extends TestCase
                     ))
                 ),
             ],
-            $this->parser->getParsedMovies(Json::decodeAssociatively(file_get_contents(__DIR__ . '/samples/example.json')))
+            $this->parser->getParsedMovies(Json::decodeAssociatively(file_get_contents(__DIR__ . '/samples/KinepolisMovieDetailResponse.json')))
         );
     }
 }

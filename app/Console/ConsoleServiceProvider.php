@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
 use CultuurNet\UDB3\Console\Command\ExecuteCommandFromCsv;
-use CultuurNet\UDB3\Console\Command\FetchMovies;
+use CultuurNet\UDB3\Console\Command\FetchMoviesFromKinepolisApi;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
@@ -42,12 +42,14 @@ use CultuurNet\UDB3\Console\Command\UpdateUniqueLabels;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Kinepolis\KinepolisDateParser;
 use CultuurNet\UDB3\Kinepolis\KinepolisParser;
 use CultuurNet\UDB3\Kinepolis\KinepolisService;
 use CultuurNet\UDB3\Kinepolis\MovieMappingRepository;
-use CultuurNet\UDB3\Kinepolis\AutenticatedKinepolisClient;
+use CultuurNet\UDB3\Kinepolis\AuthenticatedKinepolisClient;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
@@ -408,11 +410,11 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'console.movies:fetch',
-            fn () => new FetchMovies(
-                $container->get('event_command_bus'),
-                $container->get('event_repository'),
+            fn () => new FetchMoviesFromKinepolisApi(
                 new KinepolisService(
-                    new AutenticatedKinepolisClient(
+                    $container->get('event_command_bus'),
+                    $container->get('event_repository'),
+                    new AuthenticatedKinepolisClient(
                         $container->get('config')['kinepolis']['url'],
                         new Client(),
                         $container->get('config')['kinepolis']['authentication']['key'],
@@ -422,10 +424,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                         $container->get('config')['kinepolis']['terms'],
                         $container->get('config')['kinepolis']['theaters'],
                         new KinepolisDateParser()
+                    ),
+                    new MovieMappingRepository($container->get(('dbal_connection'))),
+                    new Version4Generator(),
+                    LoggerFactory::create(
+                        $container,
+                        LoggerName::forService('fetching-movies', 'kinepolis')
                     )
                 ),
-                new Version4Generator(),
-                new MovieMappingRepository($container->get(('dbal_connection'))),
             )
         );
     }
