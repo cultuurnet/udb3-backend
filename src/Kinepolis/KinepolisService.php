@@ -49,7 +49,7 @@ final class KinepolisService
         $this->logger = $logger;
     }
 
-    public function fetch(): void
+    public function import(): void
     {
         try {
             $token = $this->client->getToken();
