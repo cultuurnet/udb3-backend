@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 final class KinepolisServiceTest extends TestCase
 {
@@ -77,7 +78,8 @@ final class KinepolisServiceTest extends TestCase
             $this->client,
             $this->parser,
             $this->mappingRepository,
-            $this->uuidGenerator
+            $this->uuidGenerator,
+            $this->createMock(LoggerInterface::class)
         );
 
         $this->commandBus->record();
