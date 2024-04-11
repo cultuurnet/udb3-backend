@@ -78,8 +78,8 @@ final class KinepolisService
     {
         $commands = [];
         $eventId = $this->movieMappingRepository->getByMovieId($parsedMovie->getExternalId());
-        $eventExists = $eventId !== null;
-        if (!$eventExists) {
+
+        if ($eventId === null) {
             $eventId = $this->createNewMovie($parsedMovie);
         } else {
             $updateCalendar = new UpdateCalendar($eventId, LegacyCalendar::fromUdb3ModelCalendar($parsedMovie->getCalendar()));
