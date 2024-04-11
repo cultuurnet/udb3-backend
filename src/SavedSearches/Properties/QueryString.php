@@ -18,7 +18,7 @@ class QueryString
     {
         $value = $this->trim($value);
         $this->guardNotEmpty($value);
-        $this->setValue($value);
+        $this->setValue($this->clean($value));
     }
 
     public static function fromURLQueryString(string $queryString): QueryString
@@ -30,5 +30,17 @@ class QueryString
         }
 
         return new QueryString($queryArray['q']);
+    }
+
+    private function clean(string $value): string
+    {
+        /* Bugfix https://jira.publiq.be/browse/III-6131 */
+
+        // Use preg_replace_callback to apply stripslashes() only to the part between square brackets
+        $value = preg_replace_callback('/\[([^]]+)\]/', function ($matches) {
+            return '[' . stripslashes($matches[1]) . ']';
+        }, $value);
+
+        return str_replace('%2B', '+', $value);
     }
 }
