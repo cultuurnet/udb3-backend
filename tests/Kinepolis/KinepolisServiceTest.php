@@ -177,6 +177,13 @@ final class KinepolisServiceTest extends TestCase
             ->method('generate')
             ->willReturn($this->eventId);
 
+        $this->mappingRepository
+            ->expects($this->once())
+            ->method('create')
+            ->with($this->eventId, $this->movieId);
+
+        $this->repository->expects($this->once())->method('save');
+
         $this->service->fetch();
         $this->assertEquals(
             [
@@ -250,6 +257,14 @@ final class KinepolisServiceTest extends TestCase
         $this->uuidGenerator
             ->expects($this->never())
             ->method('generate');
+
+        $this->mappingRepository
+            ->expects($this->never())
+            ->method('create');
+
+        $this->repository
+            ->expects($this->never())
+            ->method('save');
 
         $this->service->fetch();
         $this->assertEquals(
