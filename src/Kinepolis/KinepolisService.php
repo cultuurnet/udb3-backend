@@ -69,12 +69,12 @@ final class KinepolisService
             $this->logger->info('Found ' . sizeof($parsedMovies) . ' screenings for movie with kinepolisId ' . $mid);
 
             foreach ($parsedMovies as $parsedMovie) {
-                $this->dispatch($parsedMovie);
+                $this->process($parsedMovie);
             }
         }
     }
 
-    private function dispatch(ParsedMovie $parsedMovie): void
+    private function process(ParsedMovie $parsedMovie): void
     {
         $commands = [];
         $eventId = $this->movieMappingRepository->getByMovieId($parsedMovie->getExternalId());
