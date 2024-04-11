@@ -49,32 +49,22 @@ final class KinepolisService
         $this->logger = $logger;
     }
 
-    public function getClient(): KinepolisClient
-    {
-        return $this->client;
-    }
-
-    public function getParser(): Parser
-    {
-        return $this->parser;
-    }
-
     public function fetch(): void
     {
         try {
-            $token = $this->getClient()->getToken();
+            $token = $this->client->getToken();
         } catch (\Exception $exception) {
             $this->logger->error('Problem with Kinepolis Service: ' . $exception->getMessage());
             return;
         }
-        $movies = $this->getClient()->getMovies($token);
+        $movies = $this->client->getMovies($token);
 
         $this->logger->info('Found ' . sizeof($movies) . ' movie productions.');
 
         foreach ($movies as $movie) {
             $mid = $movie['mid'];
-            $movieDetail = $this->getClient()->getMovieDetail($token, $mid);
-            $parsedMovies = $this->getParser()->getParsedMovies($movieDetail);
+            $movieDetail = $this->client->getMovieDetail($token, $mid);
+            $parsedMovies = $this->parser->getParsedMovies($movieDetail);
 
             $this->logger->info('Found ' . sizeof($parsedMovies) . ' screenings for movie with kinepolisId ' . $mid);
 
