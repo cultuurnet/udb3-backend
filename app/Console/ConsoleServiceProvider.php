@@ -42,6 +42,8 @@ use CultuurNet\UDB3\Console\Command\UpdateUniqueLabels;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Kinepolis\KinepolisDateParser;
 use CultuurNet\UDB3\Kinepolis\KinepolisParser;
@@ -424,7 +426,11 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                         new KinepolisDateParser()
                     ),
                     new MovieMappingRepository($container->get(('dbal_connection'))),
-                    new Version4Generator()
+                    new Version4Generator(),
+                    LoggerFactory::create(
+                        $container,
+                        LoggerName::forService('fetching-movies', 'kinepolis')
+                    )
                 ),
             )
         );

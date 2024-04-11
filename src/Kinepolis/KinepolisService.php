@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use Psr\Log\LoggerInterface;
 
 final class KinepolisService
 {
@@ -28,13 +29,16 @@ final class KinepolisService
 
     private UuidGeneratorInterface $uuidGenerator;
 
+    private LoggerInterface $logger;
+
     public function __construct(
         CommandBus $commandBus,
         Repository $aggregateRepository,
         KinepolisClient $client,
         Parser $parser,
         MappingRepository $movieMappingRepository,
-        UuidGeneratorInterface $uuidGenerator
+        UuidGeneratorInterface $uuidGenerator,
+        LoggerInterface $logger
     ) {
         $this->commandBus = $commandBus;
         $this->aggregateRepository = $aggregateRepository;
@@ -42,6 +46,7 @@ final class KinepolisService
         $this->parser = $parser;
         $this->movieMappingRepository = $movieMappingRepository;
         $this->uuidGenerator = $uuidGenerator;
+        $this->logger = $logger;
     }
 
     public function getClient(): KinepolisClient
