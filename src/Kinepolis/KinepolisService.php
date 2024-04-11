@@ -61,13 +61,22 @@ final class KinepolisService
 
     public function fetch(): void
     {
-        $token = $this->getClient()->getToken();
+        try {
+            $token = $this->getClient()->getToken();
+        } catch (\Exception $exception) {
+            $this->logger->error('Problem with Kinepolis Service: ' . $exception->getMessage());
+            return;
+        }
         $movies = $this->getClient()->getMovies($token);
+
+        $this->logger->info('Found ' . sizeof($movies) . ' movie productions.');
 
         foreach ($movies as $movie) {
             $mid = $movie['mid'];
             $movieDetail = $this->getClient()->getMovieDetail($token, $mid);
             $parsedMovies = $this->getParser()->getParsedMovies($movieDetail);
+
+            $this->logger->info('Found ' . sizeof($parsedMovies) . ' screenings for movie with kinepolisId ' . $mid);
 
             foreach ($parsedMovies as $parsedMovie) {
                 $this->dispatch($parsedMovie);
@@ -85,6 +94,7 @@ final class KinepolisService
         } else {
             $updateCalendar = new UpdateCalendar($eventId, LegacyCalendar::fromUdb3ModelCalendar($parsedMovie->getCalendar()));
             $commands[] = $updateCalendar;
+            $this->logger->info('Event with id ' . $eventId . ' updated');
         }
 
         $updateDescription = new UpdateDescription(
@@ -114,6 +124,7 @@ final class KinepolisService
 
         $this->aggregateRepository->save($eventAggregate);
         $this->movieMappingRepository->create($eventId, $parsedMovie->getExternalId());
+        $this->logger->info('Event created with id ' . $eventId);
         return $eventId;
     }
 }
