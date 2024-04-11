@@ -32,7 +32,7 @@ class SavedSearch implements \JsonSerializable
     {
         $serializedSavedSearch = [
             'name' => $this->name,
-            'query' => $this->query->clean()->toString(),
+            'query' => $this->query->toString(),
         ];
 
         if ($this->id) {
