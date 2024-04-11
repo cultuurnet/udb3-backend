@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
+use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\EventType;
@@ -90,7 +91,7 @@ final class KinepolisService
         $updateDescription = new UpdateDescription(
             $eventId,
             new LegacyLanguage('nl'),
-            $parsedMovie->getDescription()
+            Description::fromUdb3ModelDescription($parsedMovie->getDescription())
         );
         $commands[] = $updateDescription;
 
