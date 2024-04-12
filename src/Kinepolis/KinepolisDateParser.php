@@ -26,6 +26,13 @@ final class KinepolisDateParser implements DateParser
     // hierarchy
     private array $timeTableList;
 
+    // This function receives and array from the external API,
+    // with dates as key, and then an array of info with the dimension,
+    // location, and Time.
+    // For compatibility with our API, we transform this in an associative array
+    // with as key the Location, the dimension as second-level Key which contains
+    // an array of Timestamps.
+    // TODO: Look for a way to make a typed Object(refactor ParsedMovie?) and return those.
     public function processDates(array $dates, int $length): array
     {
         $this->timeTableList = [];
