@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
+use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\EventType;
@@ -49,47 +50,37 @@ final class KinepolisService
         $this->logger = $logger;
     }
 
-    public function getClient(): KinepolisClient
-    {
-        return $this->client;
-    }
-
-    public function getParser(): Parser
-    {
-        return $this->parser;
-    }
-
-    public function fetch(): void
+    public function import(): void
     {
         try {
-            $token = $this->getClient()->getToken();
+            $token = $this->client->getToken();
         } catch (\Exception $exception) {
             $this->logger->error('Problem with Kinepolis Service: ' . $exception->getMessage());
             return;
         }
-        $movies = $this->getClient()->getMovies($token);
+        $movies = $this->client->getMovies($token);
 
         $this->logger->info('Found ' . sizeof($movies) . ' movie productions.');
 
         foreach ($movies as $movie) {
             $mid = $movie['mid'];
-            $movieDetail = $this->getClient()->getMovieDetail($token, $mid);
-            $parsedMovies = $this->getParser()->getParsedMovies($movieDetail);
+            $movieDetail = $this->client->getMovieDetail($token, $mid);
+            $parsedMovies = $this->parser->getParsedMovies($movieDetail);
 
             $this->logger->info('Found ' . sizeof($parsedMovies) . ' screenings for movie with kinepolisId ' . $mid);
 
             foreach ($parsedMovies as $parsedMovie) {
-                $this->dispatch($parsedMovie);
+                $this->process($parsedMovie);
             }
         }
     }
 
-    private function dispatch(ParsedMovie $parsedMovie): void
+    private function process(ParsedMovie $parsedMovie): void
     {
         $commands = [];
         $eventId = $this->movieMappingRepository->getByMovieId($parsedMovie->getExternalId());
-        $eventExists = $eventId !== null;
-        if (!$eventExists) {
+
+        if ($eventId === null) {
             $eventId = $this->createNewMovie($parsedMovie);
         } else {
             $updateCalendar = new UpdateCalendar($eventId, LegacyCalendar::fromUdb3ModelCalendar($parsedMovie->getCalendar()));
@@ -100,7 +91,7 @@ final class KinepolisService
         $updateDescription = new UpdateDescription(
             $eventId,
             new LegacyLanguage('nl'),
-            $parsedMovie->getDescription()
+            Description::fromUdb3ModelDescription($parsedMovie->getDescription())
         );
         $commands[] = $updateDescription;
 

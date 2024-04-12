@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Kinepolis;
 
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventThemeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 final class KinepolisParser implements Parser
@@ -47,14 +47,18 @@ final class KinepolisParser implements Parser
         $dates = $moviesToParse['dates'];
         $parsedDates = $this->dateParser->processDates($dates, $length);
         foreach ($parsedDates as $theatreId => $versions) {
-            foreach ($versions as $version => $subEvents) {
-                // Content Requirement for UiV
-                $title = $version === '3D' ? $title . ' 3D' : $title;
+            foreach ($versions as $dimension => $subEvents) {
+                // Add 3D to the title if it's a 3D version
+                // Needed to show the difference on the Ouput Channels
+                // like UiTinVlaanderen
+                $is3D = $dimension === '3D';
+                $title = $is3D ? $title . ' 3D' : $title;
+
                 $calendar = sizeof($subEvents) === 1 ?
                     new SingleSubEventCalendar(...$subEvents) :
                     new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
                 $parsedMovies[] = new ParsedMovie(
-                    $this->generateMovieId($mid, $theatreId, $version),
+                    $this->generateMovieId($mid, $theatreId, $is3D),
                     new Title($title),
                     new LocationId($this->getLocationId($theatreId)),
                     new Description($description),
@@ -86,9 +90,9 @@ final class KinepolisParser implements Parser
     // The external movieApi has no unique ID for what the publiqApi defines to be an Event
     // The function creates an externalId based on the movieId, locationId & version
     // to create a unique identifier that is useable by UiTdatabank.
-    private function generateMovieId(int $mid, string $tid, string $version): string
+    private function generateMovieId(int $mid, string $tid, bool $is3D): string
     {
-        $version = $version === '3D' ? 'v3D' : '';
+        $version = $is3D ? 'v3D' : '';
         return 'Kinepolis:' . 't' . $tid . 'm' . $mid . $version;
     }
 }

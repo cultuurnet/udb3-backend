@@ -8,7 +8,7 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Description;
+use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\EventThemeResolver;
@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -94,7 +95,7 @@ final class KinepolisServiceTest extends TestCase
     public function it_will_only_call_a_token_once(): void
     {
         $this->client->expects($this->once())->method('getToken')->willReturn('dummyToken');
-        $this->service->fetch();
+        $this->service->import();
     }
 
     /**
@@ -112,7 +113,7 @@ final class KinepolisServiceTest extends TestCase
             ]);
         $this->client->expects($this->exactly(3))->method('getMovieDetail');
 
-        $this->service->fetch();
+        $this->service->import();
     }
 
     /**
@@ -184,13 +185,13 @@ final class KinepolisServiceTest extends TestCase
 
         $this->repository->expects($this->once())->method('save');
 
-        $this->service->fetch();
+        $this->service->import();
         $this->assertEquals(
             [
                 new UpdateDescription(
                     $this->eventId,
                     new Language('nl'),
-                    new Description('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')
+                    new LegacyDescription('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')
                 ),
             ],
             $this->commandBus->getRecordedCommands()
@@ -266,7 +267,7 @@ final class KinepolisServiceTest extends TestCase
             ->expects($this->never())
             ->method('save');
 
-        $this->service->fetch();
+        $this->service->import();
         $this->assertEquals(
             [
                 new UpdateCalendar(
@@ -297,7 +298,7 @@ final class KinepolisServiceTest extends TestCase
                 new UpdateDescription(
                     $this->eventId,
                     new Language('nl'),
-                    new Description('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')
+                    new LegacyDescription('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')
                 ),
             ],
             $this->commandBus->getRecordedCommands()

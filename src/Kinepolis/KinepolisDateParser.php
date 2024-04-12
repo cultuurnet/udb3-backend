@@ -26,6 +26,13 @@ final class KinepolisDateParser implements DateParser
     // hierarchy
     private array $timeTableList;
 
+    // This function receives and array from the external API,
+    // with dates as key, and then an array of info with the dimension,
+    // location, and Time.
+    // For compatibility with our API, we transform this in an associative array
+    // with as key the Location, the dimension as second-level Key which contains
+    // an array of Timestamps.
+    // TODO: Look for a way to make a typed Object(refactor ParsedMovie?) and return those.
     public function processDates(array $dates, int $length): array
     {
         $this->timeTableList = [];
@@ -40,10 +47,10 @@ final class KinepolisDateParser implements DateParser
     private function processDay(string $day, array $timeList, int $length): void
     {
         foreach ($timeList as $info) {
-            $format = $this->getFormat($info['format']);
+            $is3D = $this->is3D($info['format']);
             $from = $this->getFromTime($day, $info['time']);
             $to = $this->getToTime($from, $length);
-            $this->timeTableList[$info['tid']][$format][] = new SubEvent(
+            $this->timeTableList[$info['tid']][$is3D ? '3D' : '2D'][] = new SubEvent(
                 new DateRange($from, $to),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available())
@@ -64,7 +71,7 @@ final class KinepolisDateParser implements DateParser
         return $dt->setTimezone($timeZoneUtc);
     }
 
-    private function getFormat(array $formats): string
+    private function is3D(array $formats): bool
     {
         // These "magic" numbers are all the ids which are 3D screenings in the external taxonomy.
         $formats3D = [
@@ -82,6 +89,6 @@ final class KinepolisDateParser implements DateParser
             1145,
             1147,
         ];
-        return sizeof(array_intersect($formats, $formats3D)) === 0 ? '2D' : '3D';
+        return sizeof(array_intersect($formats, $formats3D)) > 0;
     }
 }

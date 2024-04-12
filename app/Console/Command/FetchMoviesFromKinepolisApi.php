@@ -35,7 +35,7 @@ final class FetchMoviesFromKinepolisApi extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($this->askConfirmation($input, $output)) {
-            $this->service->fetch();
+            $this->service->import();
         }
         return 0;
     }
