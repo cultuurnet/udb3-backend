@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Mailinglist\Client\MailinglistClient;
-use CultuurNet\UDB3\Mailinglist\Client\MailinglistSubscriptionFailed;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -103,5 +102,4 @@ class SubscribeUserToMailinglistRequestHandlerTest extends TestCase
             $this->handler->handle($request);
         });
     }
-
 }

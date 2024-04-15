@@ -49,11 +49,9 @@ class SubscribeUserToMailinglistRequestHandler implements RequestHandlerInterfac
 
         try {
             $this->client->subscribe(new EmailAddress($body['email']), $mailingListId);
-        }
-        catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             throw ApiProblem::failedToSubscribeToNewsletter($e->getMessage());
-        }
-        catch (MailinglistSubscriptionFailed $e) {
+        } catch (MailinglistSubscriptionFailed $e) {
             $this->logger->error('Failed to subscribe to newsletter: ' . $e->getMessage());
             throw ApiProblem::failedToSubscribeToNewsletter($e->getMessage());
         }
