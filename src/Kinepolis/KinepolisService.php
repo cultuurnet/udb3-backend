@@ -55,17 +55,32 @@ final class KinepolisService
         try {
             $token = $this->client->getToken();
         } catch (\Exception $exception) {
-            $this->logger->error('Problem with Kinepolis Service: ' . $exception->getMessage());
+            $this->logger->error('Problem with Kinepolis Service Authentication: ' . $exception->getMessage());
             return;
         }
-        $movies = $this->client->getMovies($token);
+        try {
+            $movies = $this->client->getMovies($token);
+        } catch (\Exception $exception) {
+            $this->logger->error('Problem with fetching movies from Kinepolis Service: ' . $exception->getMessage());
+            return;
+        }
 
         $this->logger->info('Found ' . sizeof($movies) . ' movie productions.');
 
         foreach ($movies as $movie) {
             $mid = $movie['mid'];
-            $movieDetail = $this->client->getMovieDetail($token, $mid);
-            $parsedMovies = $this->parser->getParsedMovies($movieDetail);
+            try {
+                $movieDetail = $this->client->getMovieDetail($token, $mid);
+            } catch (\Exception $exception) {
+                $this->logger->error('Problem with fetching movieDetails from movie with id ' . $mid . ': ' . $exception->getMessage());
+                return;
+            }
+            try {
+                $parsedMovies = $this->parser->getParsedMovies($movieDetail);
+            } catch (\Exception $exception) {
+                $this->logger->error('Problem with parsing movie with id ' . $mid . ': ' . $exception->getMessage());
+                return;
+            }
 
             $this->logger->info('Found ' . sizeof($parsedMovies) . ' screenings for movie with kinepolisId ' . $mid);
 
