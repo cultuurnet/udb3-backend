@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailinglist;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Mailinglist\Client\MailinglistClient;
 use CultuurNet\UDB3\Mailinglist\Client\MailinglistSubscriptionFailed;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use Fig\Http\Message\StatusCodeInterface;
+use InvalidArgumentException;
+use JsonException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
+use Slim\Psr7\Response;
 
 class SubscribeUserToMailinglistRequestHandler implements RequestHandlerInterface
 {
@@ -25,18 +30,34 @@ class SubscribeUserToMailinglistRequestHandler implements RequestHandlerInterfac
         $this->logger = $logger;
     }
 
+    /**
+     * @throws ApiProblem
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $email = (new RouteParameters($request))->get('email');
         $mailingListId = (new RouteParameters($request))->get('mailingListId');
 
         try {
-            $this->client->subscribe($email, $mailingListId);
-        } catch (MailinglistSubscriptionFailed $e) {
-            $this->logger->error('Failed to subscribe to newsletter: ' . $e->getMessage());
-            return new JsonResponse(['status' => $e->getMessage()], StatusCodeInterface::STATUS_BAD_REQUEST);
+            $body = Json::decodeAssociatively($request->getBody()->getContents());
+        } catch (JsonException $e) {
+            throw ApiProblem::bodyInvalidSyntax('json');
         }
 
-        return new JsonResponse(['status' => 'ok']);
+        if (empty($body['email'])) {
+            throw ApiProblem::requiredFieldMissing('email');
+        }
+
+        try {
+            $this->client->subscribe(new EmailAddress($body['email']), $mailingListId);
+        }
+        catch (InvalidArgumentException $e) {
+            throw ApiProblem::failedToSubscribeToNewsletter($e->getMessage());
+        }
+        catch (MailinglistSubscriptionFailed $e) {
+            $this->logger->error('Failed to subscribe to newsletter: ' . $e->getMessage());
+            throw ApiProblem::failedToSubscribeToNewsletter($e->getMessage());
+        }
+
+        return new Response(StatusCodeInterface::STATUS_NO_CONTENT);
     }
 }

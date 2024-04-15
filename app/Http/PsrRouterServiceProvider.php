@@ -586,6 +586,6 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindMailinglist(Router $router): void
     {
-        $router->put('mailinglist/{email}/{mailingListId}/', SubscribeUserToMailinglistRequestHandler::class);
+        $router->put('mailinglist/{mailingListId}/', SubscribeUserToMailinglistRequestHandler::class);
     }
 }

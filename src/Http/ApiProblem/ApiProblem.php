@@ -552,4 +552,14 @@ final class ApiProblem extends Exception
             $detail
         );
     }
+
+    public static function failedToSubscribeToNewsletter(string $detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/body/failed-subscription-to-newsletter',
+            'Failed to subscribe to newsletter',
+            StatusCodeInterface::STATUS_BAD_REQUEST,
+            $detail
+        );
+    }
 }

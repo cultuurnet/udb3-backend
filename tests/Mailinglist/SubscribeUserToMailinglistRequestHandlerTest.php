@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailinglist;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Mailinglist\Client\MailinglistClient;
 use CultuurNet\UDB3\Mailinglist\Client\MailinglistSubscriptionFailed;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -15,6 +18,11 @@ use Psr\Log\LoggerInterface;
 
 class SubscribeUserToMailinglistRequestHandlerTest extends TestCase
 {
+    use AssertApiProblemTrait;
+
+    private const EMAIL = 'test@publiq.be';
+    private const MAILINGLIST_ID = 1;
+
     private SubscribeUserToMailinglistRequestHandler $handler;
 
     /**
@@ -26,6 +34,7 @@ class SubscribeUserToMailinglistRequestHandlerTest extends TestCase
      * @var MockObject|LoggerInterface
      */
     private $logger;
+
     private ServerRequestInterface $request;
 
     protected function setUp(): void
@@ -38,13 +47,10 @@ class SubscribeUserToMailinglistRequestHandlerTest extends TestCase
             $this->logger
         );
 
-        $email = urlencode('test@publiq.be');
-        $mailingListId = '1';
-
         $this->request = (new Psr7RequestBuilder())
-            ->withUriFromString('/mailinglist/{$email}/{$mailingListId}')
-            ->withRouteParameter('email', $email)
-            ->withRouteParameter('mailingListId', $mailingListId)
+            ->withUriFromString('/mailinglist/' . self::MAILINGLIST_ID)
+            ->withRouteParameter('mailingListId', (string) self::MAILINGLIST_ID)
+            ->withJsonBodyFromArray(['email' => self::EMAIL])
             ->build('PUT');
     }
 
@@ -52,30 +58,50 @@ class SubscribeUserToMailinglistRequestHandlerTest extends TestCase
     {
         $this->mailinglistClient->expects($this->once())
             ->method('subscribe')
-            ->with('test@publiq.be', 1);
+            ->with(new EmailAddress(self::EMAIL), self::MAILINGLIST_ID);
 
         $response = $this->handler->handle($this->request);
 
-        $this->assertEquals(['status' => 'ok'], json_decode($response->getBody()->getContents(), true));
+        $this->assertEquals(StatusCodeInterface::STATUS_NO_CONTENT, $response->getStatusCode());
     }
 
-    public function testHandleFailure(): void
+    public function testHandleFailureInvalidEmail(): void
     {
-        $errorMessage = 'Failed to subscribe';
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('/mailinglist/' . self::MAILINGLIST_ID)
+            ->withRouteParameter('mailingListId', (string) self::MAILINGLIST_ID)
+            ->withJsonBodyFromArray(['email' => 'koen'])
+            ->build('PUT');
 
-        $this->mailinglistClient->expects($this->once())
-            ->method('subscribe')
-            ->with('test@publiq.be', 1)
-            ->willThrowException(new MailinglistSubscriptionFailed($errorMessage));
-
-        $this->logger->expects($this->once())
-            ->method('error')
-            ->with("Failed to subscribe to newsletter: $errorMessage");
-
-        $response = $this->handler->handle($this->request);
-
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals(['status' => $errorMessage], json_decode($response->getBody()->getContents(), true));
-        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertCallableThrowsApiProblem(ApiProblem::failedToSubscribeToNewsletter('Given string is not a valid e-mail address.'), function () use ($request) {
+            $this->handler->handle($request);
+        });
     }
+
+    public function testHandleFailureNoEmail(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('/mailinglist/' . self::MAILINGLIST_ID)
+            ->withRouteParameter('mailingListId', (string) self::MAILINGLIST_ID)
+            ->withJsonBodyFromArray([])
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(ApiProblem::requiredFieldMissing('email'), function () use ($request) {
+            $this->handler->handle($request);
+        });
+    }
+
+    public function testHandleFailureInvalidBody(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('/mailinglist/' . self::MAILINGLIST_ID)
+            ->withRouteParameter('mailingListId', (string) self::MAILINGLIST_ID)
+            ->withBodyFromString('<xml>bet you did not see that coming</xml>')
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(ApiProblem::bodyInvalidSyntax('json'), function () use ($request) {
+            $this->handler->handle($request);
+        });
+    }
+
 }
