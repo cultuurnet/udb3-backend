@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console;
 
 use Broadway\EventHandling\EventBus;
+use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
@@ -16,6 +17,7 @@ use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
 use CultuurNet\UDB3\Console\Command\ExecuteCommandFromCsv;
+use CultuurNet\UDB3\Console\Command\FetchMoviesFromKinepolisApi;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
@@ -40,12 +42,20 @@ use CultuurNet\UDB3\Console\Command\UpdateUniqueLabels;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
+use CultuurNet\UDB3\Kinepolis\KinepolisDateParser;
+use CultuurNet\UDB3\Kinepolis\KinepolisParser;
+use CultuurNet\UDB3\Kinepolis\KinepolisService;
+use CultuurNet\UDB3\Kinepolis\MovieMappingRepository;
+use CultuurNet\UDB3\Kinepolis\AuthenticatedKinepolisClient;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
+use Http\Adapter\Guzzle7\Client;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
@@ -87,6 +97,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.article:replace-publisher',
         'console.organizer:convert-educational-description',
         'console.execute-command-from-csv',
+        'console.movies:fetch',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -395,6 +406,33 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.execute-command-from-csv',
             fn () => new ExecuteCommandFromCsv()
+        );
+
+        $container->addShared(
+            'console.movies:fetch',
+            fn () => new FetchMoviesFromKinepolisApi(
+                new KinepolisService(
+                    $container->get('event_command_bus'),
+                    $container->get('event_repository'),
+                    new AuthenticatedKinepolisClient(
+                        $container->get('config')['kinepolis']['url'],
+                        new Client(),
+                        $container->get('config')['kinepolis']['authentication']['key'],
+                        $container->get('config')['kinepolis']['authentication']['secret'],
+                    ),
+                    new KinepolisParser(
+                        $container->get('config')['kinepolis']['terms'],
+                        $container->get('config')['kinepolis']['theaters'],
+                        new KinepolisDateParser()
+                    ),
+                    new MovieMappingRepository($container->get(('dbal_connection'))),
+                    new Version4Generator(),
+                    LoggerFactory::create(
+                        $container,
+                        LoggerName::forService('fetching-movies', 'kinepolis')
+                    )
+                ),
+            )
         );
     }
 }
