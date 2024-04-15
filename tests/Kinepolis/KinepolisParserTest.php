@@ -26,6 +26,8 @@ final class KinepolisParserTest extends TestCase
     {
         $dateParser = $this->createMock(DateParser::class);
 
+        $priceParser = $this->createMock(PriceParser::class);
+
         $dateParser->method('processDates')
             ->willReturn([
                 'DECA' => [
@@ -74,7 +76,8 @@ final class KinepolisParserTest extends TestCase
                 'KOOST' => 'b4ed748a-dfc4-432f-b242-ed1db62b76e2',
                 'DECA' => 'cbf8ddad-9aa7-4add-9133-228a752a87a5',
             ],
-            $dateParser
+            $dateParser,
+            $priceParser
         );
     }
 

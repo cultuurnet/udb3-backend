@@ -20,14 +20,18 @@ final class KinepolisParser implements Parser
 
     private DateParser $dateParser;
 
+    private PriceParser $priceParser;
+
     public function __construct(
         array $termsMapper,
         array $theatreMapper,
-        DateParser $dateParser
+        DateParser $dateParser,
+        PriceParser $priceParser
     ) {
         $this->termsMapper = $termsMapper;
         $this->theatreMapper = $theatreMapper;
         $this->dateParser = $dateParser;
+        $this->priceParser = $priceParser;
     }
 
     /**
@@ -46,6 +50,8 @@ final class KinepolisParser implements Parser
         $length = $moviesToParse['length'] ?? 0;
         $dates = $moviesToParse['dates'];
         $parsedDates = $this->dateParser->processDates($dates, $length);
+
+        $this->priceParser->processPrices($moviesToParse, $length);
         foreach ($parsedDates as $theatreId => $versions) {
             foreach ($versions as $dimension => $subEvents) {
                 // Add 3D to the title if it's a 3D version
