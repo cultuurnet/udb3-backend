@@ -33,7 +33,8 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
-            'auth0|63e22626e39a8ca1264bd29b'
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::requested()->toString()
         );
 
         $this->ownershipSearchRepository->save($ownershipItem);
@@ -53,7 +54,8 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
-            'auth0|63e22626e39a8ca1264bd29b'
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::requested()->toString()
         );
 
         $this->ownershipSearchRepository->save($ownershipItem);
@@ -76,7 +78,8 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
-            'auth0|63e22626e39a8ca1264bd29b'
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::requested()->toString()
         );
         $this->ownershipSearchRepository->save($ownershipItem);
 
@@ -103,7 +106,8 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
-            'auth0|63e22626e39a8ca1264bd29b'
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::requested()->toString()
         );
 
         $this->ownershipSearchRepository->save($ownershipItem);
@@ -112,7 +116,8 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
             '7d085b01-e8ac-4bc0-95f2-e639c7aaadaa',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
-            'auth0|63e22626e39a8ca1264bd29b'
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::requested()->toString()
         );
 
         $this->expectException(UniqueConstraintViolationException::class);
@@ -129,7 +134,8 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
-            'auth0|63e22626e39a8ca1264bd29b'
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::requested()->toString()
         );
 
         $this->ownershipSearchRepository->save($ownershipItem);
@@ -149,7 +155,8 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
-            'auth0|63e22626e39a8ca1264bd29b'
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::requested()->toString()
         );
 
         $this->ownershipSearchRepository->save($ownershipItem);

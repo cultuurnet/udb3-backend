@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
+use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
@@ -242,7 +243,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'organizer',
-                'auth0|63e22626e39a8ca1264bd29b'
+                'auth0|63e22626e39a8ca1264bd29b',
+                OwnershipState::requested()->toString()
             ));
 
         $this->assertCallableThrowsApiProblem(

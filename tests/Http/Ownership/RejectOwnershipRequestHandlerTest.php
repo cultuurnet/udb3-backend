@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Commands\RejectOwnership;
+use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
@@ -69,7 +70,8 @@ class RejectOwnershipRequestHandlerTest extends TestCase
                 $ownershipId,
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'organizer',
-                'auth0|63e22626e39a8ca1264bd29b'
+                'auth0|63e22626e39a8ca1264bd29b',
+                OwnershipState::requested()->toString()
             ));
 
         $this->permissionVoter->expects($this->once())
@@ -105,7 +107,8 @@ class RejectOwnershipRequestHandlerTest extends TestCase
                 $ownershipId,
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'organizer',
-                'auth0|63e22626e39a8ca1264bd29b'
+                'auth0|63e22626e39a8ca1264bd29b',
+                OwnershipState::requested()->toString()
             ));
 
         $this->permissionVoter->expects($this->never())
@@ -163,7 +166,8 @@ class RejectOwnershipRequestHandlerTest extends TestCase
                 $ownershipId,
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'organizer',
-                'auth0|63e22626e39a8ca1264bd29b'
+                'auth0|63e22626e39a8ca1264bd29b',
+                OwnershipState::requested()->toString()
             ));
 
         $this->permissionVoter->expects($this->once())
