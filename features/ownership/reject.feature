@@ -7,7 +7,7 @@ Feature: Test rejecting ownership
 
   Scenario: Rejecting ownership of an organizer as admin
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I am authorized as JWT provider v1 user "invoerder_ownserhip"
+    And I am authorized as JWT provider v1 user "invoerder_ownership"
     And I request ownership for "40fadfd3-c4a6-4936-b1fe-20542ac56610" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     When I reject the ownership with ownershipId "%{ownershipId}"
@@ -20,7 +20,7 @@ Feature: Test rejecting ownership
     And the JSON response at "state" should be "rejected"
 
   Scenario: Rejecting ownership of an organizer as creator
-    And I am authorized as JWT provider v1 user "invoerder_ownserhip"
+    And I am authorized as JWT provider v1 user "invoerder_ownership"
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "40fadfd3-c4a6-4936-b1fe-20542ac56610" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I reject the ownership with ownershipId "%{ownershipId}"
@@ -47,7 +47,7 @@ Feature: Test rejecting ownership
 
   Scenario: Rejecting an organizer as non-authorized user
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I am authorized as JWT provider v1 user "invoerder_ownserhip"
+    And I am authorized as JWT provider v1 user "invoerder_ownership"
     And I request ownership for "40fadfd3-c4a6-4936-b1fe-20542ac56610" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I send a POST request to '/ownerships/%{ownershipId}/reject'
     Then the response status should be 403
