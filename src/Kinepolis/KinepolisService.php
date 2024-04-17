@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use Psr\Log\LoggerInterface;
 
 final class KinepolisService
@@ -26,6 +27,8 @@ final class KinepolisService
 
     private Parser $parser;
 
+    private PriceParser $priceParser;
+
     private MappingRepository $movieMappingRepository;
 
     private UuidGeneratorInterface $uuidGenerator;
@@ -37,6 +40,7 @@ final class KinepolisService
         Repository $aggregateRepository,
         KinepolisClient $client,
         Parser $parser,
+        PriceParser $priceParser,
         MappingRepository $movieMappingRepository,
         UuidGeneratorInterface $uuidGenerator,
         LoggerInterface $logger
@@ -45,6 +49,7 @@ final class KinepolisService
         $this->aggregateRepository = $aggregateRepository;
         $this->client = $client;
         $this->parser = $parser;
+        $this->priceParser = $priceParser;
         $this->movieMappingRepository = $movieMappingRepository;
         $this->uuidGenerator = $uuidGenerator;
         $this->logger = $logger;
@@ -58,6 +63,35 @@ final class KinepolisService
             $this->logger->error('Problem with Kinepolis Service Authentication: ' . $exception->getMessage());
             return;
         }
+
+        try {
+            $theaters = $this->client->getTheaters($token);
+        } catch (\Exception $exception) {
+            $this->logger->error('Problem with fetching theatres from Kinepolis Service: ' . $exception->getMessage());
+            return;
+        }
+
+        /**
+         * @var ParsedPrice[] $parsedPrices
+         */
+        $parsedPrices = [];
+        foreach ($theaters as $theater) {
+            try {
+                var_dump($theater['tid']);
+                $pricesToParse = $this->client->getPricesForTheater($token, $theater['tid']);
+            } catch (\Exception $exception) {
+                $this->logger->error('Problem with fetching the prices from Theater ' . $theater['tid'] . ': ' . $exception->getMessage());
+                return;
+            }
+
+            try {
+                $parsedPrices[$theater['tid']] = $this->priceParser->parseTheaterPrices($pricesToParse);
+            } catch (\Exception $exception) {
+                $this->logger->error('Problem with parsing the prices from Theater ' . $theater['tid'] . ': ' . $exception->getMessage());
+                return;
+            }
+        }
+
         try {
             $movies = $this->client->getMovies($token);
         } catch (\Exception $exception) {
@@ -76,7 +110,7 @@ final class KinepolisService
                 return;
             }
             try {
-                $parsedMovies = $this->parser->getParsedMovies($movieDetail);
+                $parsedMovies = $this->parser->getParsedMovies($movieDetail, $parsedPrices);
             } catch (\Exception $exception) {
                 $this->logger->error('Problem with parsing movie with id ' . $mid . ': ' . $exception->getMessage());
                 return;
@@ -109,6 +143,12 @@ final class KinepolisService
             Description::fromUdb3ModelDescription($parsedMovie->getDescription())
         );
         $commands[] = $updateDescription;
+
+        $updatePriceInfo = new UpdatePriceInfo(
+            $eventId,
+            $parsedMovie->getPriceInfo()
+        );
+        $commands[] = $updatePriceInfo;
 
         foreach ($commands as $command) {
             $this->commandBus->dispatch($command);

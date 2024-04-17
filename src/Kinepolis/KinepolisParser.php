@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
@@ -20,24 +21,21 @@ final class KinepolisParser implements Parser
 
     private DateParser $dateParser;
 
-    private PriceParser $priceParser;
-
     public function __construct(
         array $termsMapper,
         array $theatreMapper,
-        DateParser $dateParser,
-        PriceParser $priceParser
+        DateParser $dateParser
     ) {
         $this->termsMapper = $termsMapper;
         $this->theatreMapper = $theatreMapper;
         $this->dateParser = $dateParser;
-        $this->priceParser = $priceParser;
     }
 
     /**
+     * @param ParsedPrice[] $parsedPrices
      * @return ParsedMovie[]
      */
-    public function getParsedMovies(array $moviesToParse): array
+    public function getParsedMovies(array $moviesToParse, array $parsedPrices): array
     {
         $parsedMovies = [];
         $mid = $moviesToParse['mid'];
@@ -49,9 +47,9 @@ final class KinepolisParser implements Parser
         // so we put the endTime equal to the startTime as a fallback.
         $length = $moviesToParse['length'] ?? 0;
         $dates = $moviesToParse['dates'];
+
         $parsedDates = $this->dateParser->processDates($dates, $length);
 
-        $this->priceParser->processPrices($moviesToParse, $length);
         foreach ($parsedDates as $theatreId => $versions) {
             foreach ($versions as $dimension => $subEvents) {
                 // Add 3D to the title if it's a 3D version
@@ -59,6 +57,10 @@ final class KinepolisParser implements Parser
                 // like UiTinVlaanderen
                 $is3D = $dimension === '3D';
                 $title = $is3D ? $title . ' 3D' : $title;
+
+                $isLong = $length >= 135;
+
+                $parsedPrice = $parsedPrices[$theatreId];
 
                 $calendar = sizeof($subEvents) === 1 ?
                     new SingleSubEventCalendar(...$subEvents) :
@@ -69,7 +71,11 @@ final class KinepolisParser implements Parser
                     new LocationId($this->getLocationId($theatreId)),
                     new Description($description),
                     (new EventThemeResolver())->byId($themeId),
-                    $calendar
+                    $calendar,
+                    new PriceInfo(
+                        $parsedPrice->getBaseTariff($isLong, $is3D),
+                        $parsedPrice->getOtherTariffs($isLong, $is3D)
+                    )
                 );
             }
         }

@@ -424,9 +424,9 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     new KinepolisParser(
                         $container->get('config')['kinepolis']['terms'],
                         $container->get('config')['kinepolis']['theaters'],
-                        new KinepolisDateParser(),
-                        new KinepolisPriceParser()
+                        new KinepolisDateParser()
                     ),
+                    new KinepolisPriceParser(),
                     new MovieMappingRepository($container->get(('dbal_connection'))),
                     new Version4Generator(),
                     LoggerFactory::create(
