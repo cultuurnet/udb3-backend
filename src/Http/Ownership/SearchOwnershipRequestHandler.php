@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Ownership;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -28,14 +30,20 @@ final class SearchOwnershipRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $itemId = $request->getQueryParams()['itemId'] ?? '';
+        $searchParameters = [];
+        foreach (SearchParameter::SUPPORTED_URL_PARAMETERS as $key) {
+            $value = $request->getQueryParams()[$key] ?? '';
+            if (!empty($value)) {
+                $searchParameters[] = new SearchParameter($key, $value);
+            }
+        }
 
-        if (empty($itemId)) {
-            throw ApiProblem::queryParameterMissing('itemId');
+        if (count($searchParameters) === 0) {
+            throw ApiProblem::queryParameterMissing('itemId or state');
         }
 
         $ownerships = [];
-        $ownershipCollection = $this->ownershipSearchRepository->getByItemId($itemId);
+        $ownershipCollection = $this->ownershipSearchRepository->search(new SearchQuery($searchParameters));
         foreach ($ownershipCollection as $ownership) {
             $ownerships[] = $this->ownershipRepository->fetch($ownership->getId())->getAssocBody();
         }
