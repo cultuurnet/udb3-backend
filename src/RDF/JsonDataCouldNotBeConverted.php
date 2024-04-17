@@ -17,6 +17,6 @@ final class JsonDataCouldNotBeConverted extends Exception implements ConvertsToA
 
     public function toApiProblem(): ApiProblem
     {
-        return ApiProblem::invalidJsonData($this->message);
+        return ApiProblem::invalidJsonDataForRdfCreation($this->message);
     }
 }
