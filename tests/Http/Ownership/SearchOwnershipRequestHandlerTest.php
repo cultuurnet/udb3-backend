@@ -80,7 +80,7 @@ class SearchOwnershipRequestHandlerTest extends TestCase
                     'itemId' => $ownership->getItemId(),
                     'ownerId' => $ownership->getOwnerId(),
                     'ownerType' => $ownership->getItemType(),
-                    'status' => 'approved',
+                    'status' => $ownership->getState(),
                 ])
             );
             $jsonDocuments[] = $jsonDocument->getAssocBody();
@@ -91,6 +91,69 @@ class SearchOwnershipRequestHandlerTest extends TestCase
             ->method('search')
             ->with(new SearchQuery([new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d')]))
             ->willReturn($ownershipCollection);
+
+        $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode($jsonDocuments),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_searching_ownerships_by_state(): void
+    {
+        $getOwnershipRequest = (new Psr7RequestBuilder())
+            ->withUriFromString('?state=rejected')
+            ->build('GET');
+
+        $approvedOwnership = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29a',
+            OwnershipState::approved()->toString()
+        );
+
+        $rejectedOwnership = new OwnershipItem(
+            '5c7dd3bb-fa44-4c84-b499-303ecc01cba1',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::rejected()->toString()
+        );
+
+        $ownershipCollection = new OwnershipItemCollection(
+            $approvedOwnership,
+            $rejectedOwnership
+        );
+
+        $jsonDocuments = [];
+        /** @var OwnershipItem $ownership */
+        foreach ($ownershipCollection as $ownership) {
+            $jsonDocument = new JsonDocument(
+                $ownership->getId(),
+                Json::encode([
+                    'id' => $ownership->getId(),
+                    'itemId' => $ownership->getItemId(),
+                    'ownerId' => $ownership->getOwnerId(),
+                    'ownerType' => $ownership->getItemType(),
+                    'status' => $ownership->getState(),
+                ])
+            );
+            if ($ownership->getState() === OwnershipState::rejected()->toString()) {
+                $jsonDocuments[] = $jsonDocument->getAssocBody();
+            }
+            $this->ownershipRepository->save($jsonDocument);
+        }
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with(new SearchQuery([new SearchParameter('state', 'rejected')]))
+            ->willReturn(new OwnershipItemCollection($rejectedOwnership));
 
         $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
 
