@@ -12,15 +12,17 @@ Feature: Test searching ownerships
     And I request ownership for "auth0|631748dba64ea78e3983b203" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId3"
     When I send a GET request to '/ownerships/?itemId=%{organizerId}'
     Then the response status should be 200
-    And the JSON response at "0/id" should be "%{ownershipId1}"
-    And the JSON response at "0/ownerId" should be "auth0|631748dba64ea78e3983b201"
-    And the JSON response at "0/state" should be "requested"
-    And the JSON response at "1/id" should be "%{ownershipId2}"
-    And the JSON response at "1/ownerId" should be "auth0|631748dba64ea78e3983b202"
-    And the JSON response at "1/state" should be "requested"
-    And the JSON response at "2/id" should be "%{ownershipId3}"
-    And the JSON response at "2/ownerId" should be "auth0|631748dba64ea78e3983b203"
-    And the JSON response at "2/state" should be "requested"
+    And the JSON response at "itemsPerPage" should be 3
+    And the JSON response at "totalItems" should be 3
+    And the JSON response at "member/0/id" should be "%{ownershipId1}"
+    And the JSON response at "member/0/ownerId" should be "auth0|631748dba64ea78e3983b201"
+    And the JSON response at "member/0/state" should be "requested"
+    And the JSON response at "member/1/id" should be "%{ownershipId2}"
+    And the JSON response at "member/1/ownerId" should be "auth0|631748dba64ea78e3983b202"
+    And the JSON response at "member/1/state" should be "requested"
+    And the JSON response at "member/2/id" should be "%{ownershipId3}"
+    And the JSON response at "member/2/ownerId" should be "auth0|631748dba64ea78e3983b203"
+    And the JSON response at "member/2/state" should be "requested"
 
   Scenario: Searching ownership of an organizer by state
     Given I create a minimal organizer and save the "id" as "organizerId"
@@ -32,12 +34,14 @@ Feature: Test searching ownerships
     When I approve the ownership with ownershipId "%{ownershipId3}"
     When I send a GET request to '/ownerships/?state=approved&itemId=%{organizerId}'
     Then the response status should be 200
-    And the JSON response at "0/id" should be "%{ownershipId2}"
-    And the JSON response at "0/ownerId" should be "auth0|631748dba64ea78e3983b202"
-    And the JSON response at "0/state" should be "approved"
-    And the JSON response at "1/id" should be "%{ownershipId3}"
-    And the JSON response at "1/ownerId" should be "auth0|631748dba64ea78e3983b203"
-    And the JSON response at "1/state" should be "approved"
+    And the JSON response at "itemsPerPage" should be 2
+    And the JSON response at "totalItems" should be 2
+    And the JSON response at "member/0/id" should be "%{ownershipId2}"
+    And the JSON response at "member/0/ownerId" should be "auth0|631748dba64ea78e3983b202"
+    And the JSON response at "member/0/state" should be "approved"
+    And the JSON response at "member/1/id" should be "%{ownershipId3}"
+    And the JSON response at "member/1/ownerId" should be "auth0|631748dba64ea78e3983b203"
+    And the JSON response at "member/1/state" should be "approved"
 
   Scenario: Searching ownership of an organizer by state and with offset and limit
     Given I create a minimal organizer and save the "id" as "organizerId"
@@ -48,12 +52,14 @@ Feature: Test searching ownerships
     And I request ownership for "auth0|631748dba64ea78e3983b205" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId5"
     When I send a GET request to '/ownerships/?itemId=%{organizerId}&limit=2&offset=2'
     Then the response status should be 200
-    And the JSON response at "0/id" should be "%{ownershipId3}"
-    And the JSON response at "0/ownerId" should be "auth0|631748dba64ea78e3983b203"
-    And the JSON response at "0/state" should be "requested"
-    And the JSON response at "1/id" should be "%{ownershipId4}"
-    And the JSON response at "1/ownerId" should be "auth0|631748dba64ea78e3983b204"
-    And the JSON response at "1/state" should be "requested"
+    And the JSON response at "itemsPerPage" should be 2
+    And the JSON response at "totalItems" should be 5
+    And the JSON response at "member/0/id" should be "%{ownershipId3}"
+    And the JSON response at "member/0/ownerId" should be "auth0|631748dba64ea78e3983b203"
+    And the JSON response at "member/0/state" should be "requested"
+    And the JSON response at "member/1/id" should be "%{ownershipId4}"
+    And the JSON response at "member/1/ownerId" should be "auth0|631748dba64ea78e3983b204"
+    And the JSON response at "member/1/state" should be "requested"
 
   Scenario: No ownerships found
     Given I create a minimal organizer and save the "id" as "organizerId"
@@ -61,5 +67,11 @@ Feature: Test searching ownerships
     Then the response status should be 200
     And the JSON response should be:
     """
-    []
+    {
+      "@context":"http://www.w3.org/ns/hydra/context.jsonld",
+      "@type":"PagedCollection",
+      "itemsPerPage":0,
+      "totalItems":0,
+      "member":[]
+    }
     """
