@@ -48,7 +48,7 @@ class SubscribeUserToMailinglistRequestHandler implements RequestHandlerInterfac
         } catch (JsonException $e) {
             throw ApiProblem::bodyInvalidSyntax('json');
         } catch (InvalidArgumentException $e) {
-            throw ApiProblem::failedToSubscribeToNewsletter($e->getMessage());
+            throw ApiProblem::bodyInvalidDataWithDetail($e->getMessage());
         } catch (MailinglistSubscriptionFailed $e) {
             $this->logger->error('Failed to subscribe to newsletter: ' . $e->getMessage());
             throw ApiProblem::failedToSubscribeToNewsletter($e->getMessage());
