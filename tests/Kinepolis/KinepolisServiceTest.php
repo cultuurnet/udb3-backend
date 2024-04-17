@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\EventThemeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -22,9 +22,18 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -51,6 +60,11 @@ final class KinepolisServiceTest extends TestCase
     private $parser;
 
     /**
+     * @var PriceParser|MockObject
+     */
+    private $priceParser;
+
+    /**
      * @var MappingRepository|MockObject
      */
     private $mappingRepository;
@@ -70,6 +84,7 @@ final class KinepolisServiceTest extends TestCase
         $this->repository = $this->createMock(EventRepository::class);
         $this->client = $this->createMock(KinepolisClient::class);
         $this->parser = $this->createMock(Parser::class);
+        $this->priceParser = $this->createMock(PriceParser::class);
         $this->mappingRepository = $this->createMock(MappingRepository::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
 
@@ -78,6 +93,7 @@ final class KinepolisServiceTest extends TestCase
             $this->repository,
             $this->client,
             $this->parser,
+            $this->priceParser,
             $this->mappingRepository,
             $this->uuidGenerator,
             $this->createMock(LoggerInterface::class)
@@ -95,6 +111,35 @@ final class KinepolisServiceTest extends TestCase
     public function it_will_only_call_a_token_once(): void
     {
         $this->client->expects($this->once())->method('getToken')->willReturn('dummyToken');
+        $this->service->import();
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_get_prices_foreach_theater(): void
+    {
+        $this->client
+            ->expects($this->once())
+            ->method('getTheaters')
+            ->willReturn([
+                0 => ['tid' => 'KOOST'],
+                1 => ['tid' => 'DECA'],
+            ]);
+
+        $this->priceParser
+            ->expects($this->exactly(2))
+            ->method('parseTheaterPrices')
+            ->willReturn(new ParsedPrice(
+                0,
+                0,
+                0,
+                0,
+                0
+            ));
+
+        $this->client->expects($this->exactly(2))->method('getPricesForTheater');
+
         $this->service->import();
     }
 
@@ -161,6 +206,31 @@ final class KinepolisServiceTest extends TestCase
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available())
                                 ),
+                            ),
+                        ),
+                        new PriceInfo(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Basistarief')
+                                ),
+                                new Money(1100, new Currency('EUR'))
+                            ),
+                            new Tariffs(
+                                new Tariff(
+                                    new TranslatedTariffName(
+                                        new Language('nl'),
+                                        new TariffName('Kinepolis Student Card')
+                                    ),
+                                    new Money(900, new Currency('EUR'))
+                                ),
+                                new Tariff(
+                                    new TranslatedTariffName(
+                                        new Language('nl'),
+                                        new TariffName('Kortingstarief')
+                                    ),
+                                    new Money(1000, new Currency('EUR'))
+                                ),
                             )
                         )
                     ),
@@ -190,8 +260,36 @@ final class KinepolisServiceTest extends TestCase
             [
                 new UpdateDescription(
                     $this->eventId,
-                    new Language('nl'),
+                    new LegacyLanguage('nl'),
                     new LegacyDescription('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')
+                ),
+                new UpdatePriceInfo(
+                    $this->eventId,
+                    new PriceInfo(
+                        new Tariff(
+                            new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('Basistarief')
+                            ),
+                            new Money(1100, new Currency('EUR'))
+                        ),
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Kinepolis Student Card')
+                                ),
+                                new Money(900, new Currency('EUR'))
+                            ),
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Kortingstarief')
+                                ),
+                                new Money(1000, new Currency('EUR'))
+                            ),
+                        )
+                    )
                 ),
             ],
             $this->commandBus->getRecordedCommands()
@@ -242,6 +340,31 @@ final class KinepolisServiceTest extends TestCase
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available())
+                                ),
+                            )
+                        ),
+                        new PriceInfo(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Basistarief')
+                                ),
+                                new Money(1200, new Currency('EUR'))
+                            ),
+                            new Tariffs(
+                                new Tariff(
+                                    new TranslatedTariffName(
+                                        new Language('nl'),
+                                        new TariffName('Kinepolis Student Card')
+                                    ),
+                                    new Money(1000, new Currency('EUR'))
+                                ),
+                                new Tariff(
+                                    new TranslatedTariffName(
+                                        new Language('nl'),
+                                        new TariffName('Kortingstarief')
+                                    ),
+                                    new Money(1100, new Currency('EUR'))
                                 ),
                             )
                         )
@@ -297,8 +420,36 @@ final class KinepolisServiceTest extends TestCase
                 ),
                 new UpdateDescription(
                     $this->eventId,
-                    new Language('nl'),
+                    new LegacyLanguage('nl'),
                     new LegacyDescription('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')
+                ),
+                new UpdatePriceInfo(
+                    $this->eventId,
+                    new PriceInfo(
+                        new Tariff(
+                            new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('Basistarief')
+                            ),
+                            new Money(1200, new Currency('EUR'))
+                        ),
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Kinepolis Student Card')
+                                ),
+                                new Money(1000, new Currency('EUR'))
+                            ),
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Kortingstarief')
+                                ),
+                                new Money(1100, new Currency('EUR'))
+                            ),
+                        )
+                    )
                 ),
             ],
             $this->commandBus->getRecordedCommands()
