@@ -12,5 +12,7 @@ interface KinepolisClient
 
     public function getMovieDetail(string $token, int $mid): array;
 
-    public function getPrices(string $token, string $tid): array;
+    public function getTheaters(string $token): array;
+
+    public function getPricesForTheater(string $token, string $tid): array;
 }
