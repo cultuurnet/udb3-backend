@@ -250,7 +250,7 @@ class SearchOwnershipRequestHandlerTest extends TestCase
 
         $searchQuery = new SearchQuery(
             [
-                new SearchParameter('state', 'approved')
+                new SearchParameter('state', 'approved'),
             ],
             1,
             1
