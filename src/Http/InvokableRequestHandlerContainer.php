@@ -34,6 +34,6 @@ final class InvokableRequestHandlerContainer implements ContainerInterface
 
     public function has($id): bool
     {
-        return (bool) $this->container->has($id);
+        return $this->container->has($id);
     }
 }

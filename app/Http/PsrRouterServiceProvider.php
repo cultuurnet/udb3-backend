@@ -142,6 +142,7 @@ use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
+use CultuurNet\UDB3\Mailinglist\SubscribeUserToMailinglistRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
@@ -219,6 +220,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
                 $this->bindUiTPASLabels($router);
 
                 $this->bindUiTPASOrganizers($router);
+
+                $this->bindMailinglist($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
@@ -579,5 +582,10 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
         $router->group('uitpas/organizers', function (RouteGroup $routeGroup): void {
             $routeGroup->get('{organizerId}/card-systems/', GetCardSystemsFromOrganizerRequestHandler::class);
         });
+    }
+
+    private function bindMailinglist(Router $router): void
+    {
+        $router->put('mailinglist/{mailingListId}/', SubscribeUserToMailinglistRequestHandler::class);
     }
 }
