@@ -43,7 +43,13 @@ final class SearchOwnershipRequestHandler implements RequestHandlerInterface
         }
 
         $ownerships = [];
-        $ownershipCollection = $this->ownershipSearchRepository->search(new SearchQuery($searchParameters));
+        $ownershipCollection = $this->ownershipSearchRepository->search(
+            new SearchQuery(
+                $searchParameters,
+                !empty($request->getQueryParams()['offset']) ? (int) $request->getQueryParams()['offset'] : 0,
+                !empty($request->getQueryParams()['limit']) ? (int) $request->getQueryParams()['limit'] : 50
+            )
+        );
         foreach ($ownershipCollection as $ownership) {
             $ownerships[] = $this->ownershipRepository->fetch($ownership->getId())->getAssocBody();
         }
