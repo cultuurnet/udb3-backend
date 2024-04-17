@@ -95,6 +95,14 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
                 ->setParameter($column, $parameter->getValue());
         }
 
+        if ($searchQuery->getOffset()) {
+            $queryBuilder->setFirstResult($searchQuery->getOffset());
+        }
+
+        if ($searchQuery->getLimit()) {
+            $queryBuilder->setMaxResults($searchQuery->getLimit());
+        }
+
         $ownershipSearchRows = $queryBuilder
             ->execute()
             ->fetchAllAssociative();
