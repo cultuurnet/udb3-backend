@@ -77,7 +77,6 @@ final class KinepolisService
         $parsedPrices = [];
         foreach ($theaters as $theater) {
             try {
-                var_dump($theater['tid']);
                 $pricesToParse = $this->client->getPricesForTheater($token, $theater['tid']);
             } catch (\Exception $exception) {
                 $this->logger->error('Problem with fetching the prices from Theater ' . $theater['tid'] . ': ' . $exception->getMessage());
