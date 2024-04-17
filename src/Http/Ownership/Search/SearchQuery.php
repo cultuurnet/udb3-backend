@@ -14,12 +14,12 @@ final class SearchQuery
     /**
      * @param SearchParameter[] $parameters
      */
-    public function __construct(array $parameters, int $offset = 0, int $limit = 50)
+    public function __construct(array $parameters, ?int $offset = null, ?int $limit = null)
     {
         $this->parameters = $parameters;
 
-        $this->offset = $offset;
-        $this->limit = $limit;
+        $this->offset = $offset !== null ? $offset : 0;
+        $this->limit = $limit !== null ? $limit : 50;
     }
 
     public function getOffset(): int

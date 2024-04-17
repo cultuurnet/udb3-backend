@@ -87,16 +87,29 @@ class SearchOwnershipRequestHandlerTest extends TestCase
             $this->ownershipRepository->save($jsonDocument);
         }
 
+        $searchQuery = new SearchQuery([new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d')]);
+
         $this->ownershipSearchRepository->expects($this->once())
             ->method('search')
-            ->with(new SearchQuery([new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d')]))
+            ->with($searchQuery)
             ->willReturn($ownershipCollection);
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('searchTotal')
+            ->with($searchQuery)
+            ->willReturn(2);
 
         $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode($jsonDocuments),
+            Json::encode([
+                '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+                '@type' => 'PagedCollection',
+                'itemsPerPage' => 2,
+                'totalItems' => 2,
+                'member' => $jsonDocuments,
+            ]),
             $response->getBody()->getContents()
         );
     }
@@ -150,16 +163,29 @@ class SearchOwnershipRequestHandlerTest extends TestCase
             $this->ownershipRepository->save($jsonDocument);
         }
 
+        $searchQuery = new SearchQuery([new SearchParameter('state', 'rejected')]);
+
         $this->ownershipSearchRepository->expects($this->once())
             ->method('search')
-            ->with(new SearchQuery([new SearchParameter('state', 'rejected')]))
+            ->with($searchQuery)
             ->willReturn(new OwnershipItemCollection($rejectedOwnership));
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('searchTotal')
+            ->with($searchQuery)
+            ->willReturn(1);
 
         $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode($jsonDocuments),
+            Json::encode([
+                '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+                '@type' => 'PagedCollection',
+                'itemsPerPage' => 1,
+                'totalItems' => 1,
+                'member' => $jsonDocuments,
+            ]),
             $response->getBody()->getContents()
         );
     }
@@ -222,20 +248,35 @@ class SearchOwnershipRequestHandlerTest extends TestCase
             $this->ownershipRepository->save($jsonDocument);
         }
 
+        $searchQuery = new SearchQuery(
+            [
+                new SearchParameter('state', 'approved'),
+            ],
+            1,
+            1
+        );
+
         $this->ownershipSearchRepository->expects($this->once())
             ->method('search')
-            ->with(new SearchQuery(
-                [new SearchParameter('state', 'approved')],
-                1,
-                1
-            ))
+            ->with($searchQuery)
             ->willReturn(new OwnershipItemCollection($approvedOwnership2));
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('searchTotal')
+            ->with($searchQuery)
+            ->willReturn(1);
 
         $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode($jsonDocuments),
+            Json::encode([
+                '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+                '@type' => 'PagedCollection',
+                'itemsPerPage' => 1,
+                'totalItems' => 1,
+                'member' => $jsonDocuments,
+            ]),
             $response->getBody()->getContents()
         );
     }
@@ -249,16 +290,29 @@ class SearchOwnershipRequestHandlerTest extends TestCase
             ->withUriFromString('?itemId=9e68dafc-01d8-4c1c-9612-599c918b981d')
             ->build('GET');
 
+        $searchQuery = new SearchQuery([new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d')]);
+
         $this->ownershipSearchRepository->expects($this->once())
             ->method('search')
-            ->with(new SearchQuery([new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d')]))
+            ->with($searchQuery)
             ->willReturn(new OwnershipItemCollection());
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('searchTotal')
+            ->with($searchQuery)
+            ->willReturn(0);
 
         $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(
-            '[]',
+            Json::encode([
+                '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+                '@type' => 'PagedCollection',
+                'itemsPerPage' => 0,
+                'totalItems' => 0,
+                'member' => [],
+            ]),
             $response->getBody()->getContents()
         );
     }
