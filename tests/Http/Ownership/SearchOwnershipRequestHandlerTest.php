@@ -6,8 +6,11 @@ namespace CultuurNet\UDB3\Http\Ownership;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
@@ -44,7 +47,7 @@ class SearchOwnershipRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_searching_ownerships(): void
+    public function it_handles_searching_ownerships_by_item_id(): void
     {
         $getOwnershipRequest = (new Psr7RequestBuilder())
             ->withUriFromString('?itemId=9e68dafc-01d8-4c1c-9612-599c918b981d')
@@ -55,13 +58,15 @@ class SearchOwnershipRequestHandlerTest extends TestCase
                 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'organizer',
-                'auth0|63e22626e39a8ca1264bd29a'
+                'auth0|63e22626e39a8ca1264bd29a',
+                OwnershipState::approved()->toString()
             ),
             new OwnershipItem(
                 '5c7dd3bb-fa44-4c84-b499-303ecc01cba1',
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'organizer',
-                'auth0|63e22626e39a8ca1264bd29b'
+                'auth0|63e22626e39a8ca1264bd29b',
+                OwnershipState::rejected()->toString()
             )
         );
 
@@ -83,8 +88,8 @@ class SearchOwnershipRequestHandlerTest extends TestCase
         }
 
         $this->ownershipSearchRepository->expects($this->once())
-            ->method('getByItemId')
-            ->with('9e68dafc-01d8-4c1c-9612-599c918b981d')
+            ->method('search')
+            ->with(new SearchQuery([new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d')]))
             ->willReturn($ownershipCollection);
 
         $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
@@ -106,8 +111,8 @@ class SearchOwnershipRequestHandlerTest extends TestCase
             ->build('GET');
 
         $this->ownershipSearchRepository->expects($this->once())
-            ->method('getByItemId')
-            ->with('9e68dafc-01d8-4c1c-9612-599c918b981d')
+            ->method('search')
+            ->with(new SearchQuery([new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d')]))
             ->willReturn(new OwnershipItemCollection());
 
         $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
@@ -128,7 +133,7 @@ class SearchOwnershipRequestHandlerTest extends TestCase
             ->build('GET');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::queryParameterMissing('itemId'),
+            ApiProblem::queryParameterMissing('itemId or state'),
             fn () => $this->getOwnershipRequestHandler->handle($getOwnershipRequest)
         );
     }
