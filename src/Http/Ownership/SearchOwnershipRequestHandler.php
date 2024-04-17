@@ -43,8 +43,8 @@ final class SearchOwnershipRequestHandler implements RequestHandlerInterface
 
         $searchQuery = new SearchQuery(
             $searchParameters,
-            !empty($request->getQueryParams()['offset']) ? (int) $request->getQueryParams()['offset'] : 0,
-            !empty($request->getQueryParams()['limit']) ? (int) $request->getQueryParams()['limit'] : 50
+            !empty($request->getQueryParams()['offset']) ? (int) $request->getQueryParams()['offset'] : null,
+            !empty($request->getQueryParams()['limit']) ? (int) $request->getQueryParams()['limit'] : null
         );
 
         $ownerships = [];
