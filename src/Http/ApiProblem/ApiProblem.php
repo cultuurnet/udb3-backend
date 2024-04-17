@@ -556,7 +556,7 @@ final class ApiProblem extends Exception
     public static function failedToSubscribeToNewsletter(string $detail): self
     {
         return self::create(
-            'https://api.publiq.be/probs/body/failed-subscription-to-newsletter',
+            'https://api.publiq.be/probs/uitdatabank/failed-subscription-to-newsletter',
             'Failed to subscribe to newsletter',
             StatusCodeInterface::STATUS_BAD_REQUEST,
             $detail

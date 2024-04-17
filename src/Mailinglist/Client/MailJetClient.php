@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use Mailjet\Client;
 use Mailjet\Resources;
 
-class MailingJetClient implements MailinglistClient
+class MailJetClient implements MailinglistClient
 {
     private Client $client;
 

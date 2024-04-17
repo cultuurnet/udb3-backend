@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Mailinglist\Client\MailinglistClient;
+use CultuurNet\UDB3\Mailinglist\Client\MailinglistSubscriptionFailed;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -53,7 +54,8 @@ class SubscribeUserToMailinglistRequestHandlerTest extends TestCase
             ->build('PUT');
     }
 
-    public function testHandleSuccess(): void
+    /** @test */
+    public function it_handles_subscribing(): void
     {
         $this->mailinglistClient->expects($this->once())
             ->method('subscribe')
@@ -64,7 +66,23 @@ class SubscribeUserToMailinglistRequestHandlerTest extends TestCase
         $this->assertEquals(StatusCodeInterface::STATUS_NO_CONTENT, $response->getStatusCode());
     }
 
-    public function testHandleFailureInvalidEmail(): void
+    /** @test */
+    public function it_handles_mailinglist_client_throwing_exception(): void
+    {
+        $errorMessage = 'Failed to subscribe to newsletter"';
+
+        $this->mailinglistClient->expects($this->once())
+            ->method('subscribe')
+            ->with(new EmailAddress(self::EMAIL), self::MAILINGLIST_ID)
+            ->willThrowException(new MailinglistSubscriptionFailed($errorMessage));
+
+        $this->assertCallableThrowsApiProblem(ApiProblem::failedToSubscribeToNewsletter($errorMessage), function () {
+            $this->handler->handle($this->request);
+        });
+    }
+
+    /** @test */
+    public function it_handles_invalid_email_failure(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withUriFromString('/mailinglist/' . self::MAILINGLIST_ID)
@@ -77,7 +95,8 @@ class SubscribeUserToMailinglistRequestHandlerTest extends TestCase
         });
     }
 
-    public function testHandleFailureNoEmail(): void
+    /** @test */
+    public function it_handles_no_email_failure(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withUriFromString('/mailinglist/' . self::MAILINGLIST_ID)
@@ -90,7 +109,8 @@ class SubscribeUserToMailinglistRequestHandlerTest extends TestCase
         });
     }
 
-    public function testHandleFailureInvalidBody(): void
+    /** @test */
+    public function it_handles_invalid_body_failure(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withUriFromString('/mailinglist/' . self::MAILINGLIST_ID)

@@ -39,16 +39,14 @@ class SubscribeUserToMailinglistRequestHandler implements RequestHandlerInterfac
 
         try {
             $body = Json::decodeAssociatively($request->getBody()->getContents());
+
+            if (empty($body['email'])) {
+                throw ApiProblem::requiredFieldMissing('email');
+            }
+
+            $this->client->subscribe(new EmailAddress($body['email']), $mailingListId);
         } catch (JsonException $e) {
             throw ApiProblem::bodyInvalidSyntax('json');
-        }
-
-        if (empty($body['email'])) {
-            throw ApiProblem::requiredFieldMissing('email');
-        }
-
-        try {
-            $this->client->subscribe(new EmailAddress($body['email']), $mailingListId);
         } catch (InvalidArgumentException $e) {
             throw ApiProblem::failedToSubscribeToNewsletter($e->getMessage());
         } catch (MailinglistSubscriptionFailed $e) {
