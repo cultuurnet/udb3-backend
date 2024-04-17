@@ -52,6 +52,7 @@
     "league/route": "^5.1",
     "league/uri": "^6.3",
     "league/uri-components": "^2.4",
+    "mailjet/mailjet-apiv3-php": "^1.6",
     "mathiasverraes/money": "^v1.3.0",
     "monolog/monolog": "~1.11",
     "opis/json-schema": "^2.1",
