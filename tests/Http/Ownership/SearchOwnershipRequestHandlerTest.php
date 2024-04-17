@@ -167,6 +167,82 @@ class SearchOwnershipRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_searching_ownerships_with_offset_and_limit(): void
+    {
+        $getOwnershipRequest = (new Psr7RequestBuilder())
+            ->withUriFromString('?state=approved&offset=1&limit=1')
+            ->build('GET');
+
+        $approvedOwnership1 = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29a',
+            OwnershipState::approved()->toString()
+        );
+
+        $approvedOwnership2 = new OwnershipItem(
+            '5c7dd3bb-fa44-4c84-b499-303ecc01cba1',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::approved()->toString()
+        );
+
+        $approvedOwnership3 = new OwnershipItem(
+            '4db19a63-44d3-4626-93fe-c53ccbe32762',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29c',
+            OwnershipState::approved()->toString()
+        );
+
+        $ownershipCollection = new OwnershipItemCollection(
+            $approvedOwnership1,
+            $approvedOwnership2,
+            $approvedOwnership3
+        );
+
+        $jsonDocuments = [];
+        /** @var OwnershipItem $ownership */
+        foreach ($ownershipCollection as $ownership) {
+            $jsonDocument = new JsonDocument(
+                $ownership->getId(),
+                Json::encode([
+                    'id' => $ownership->getId(),
+                    'itemId' => $ownership->getItemId(),
+                    'ownerId' => $ownership->getOwnerId(),
+                    'ownerType' => $ownership->getItemType(),
+                    'status' => $ownership->getState(),
+                ])
+            );
+            if ($ownership->getId() === $approvedOwnership2->getId()) {
+                $jsonDocuments[] = $jsonDocument->getAssocBody();
+            }
+            $this->ownershipRepository->save($jsonDocument);
+        }
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with(new SearchQuery(
+                [new SearchParameter('state', 'approved')],
+                1,
+                1
+            ))
+            ->willReturn(new OwnershipItemCollection($approvedOwnership2));
+
+        $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode($jsonDocuments),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_empty_collection_when_no_ownerships_found(): void
     {
         $getOwnershipRequest = (new Psr7RequestBuilder())
