@@ -7,7 +7,11 @@ namespace CultuurNet\UDB3\Ownership\Readmodels;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
+use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
+use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
+use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 
@@ -33,18 +37,43 @@ final class OwnershipSearchProjector implements EventListener
             return;
         }
 
-        $ownershipSearchItem = $this->{$handleMethod}($event, $domainMessage);
-
-        $this->ownershipSearchRepository->save($ownershipSearchItem);
+        $this->{$handleMethod}($event, $domainMessage);
     }
 
-    public function applyOwnershipRequested(OwnershipRequested $ownershipRequested): OwnershipItem
+    public function applyOwnershipRequested(OwnershipRequested $ownershipRequested): void
     {
-        return new OwnershipItem(
+        $ownershipItem = new OwnershipItem(
             $ownershipRequested->getId(),
             $ownershipRequested->getItemId(),
             $ownershipRequested->getItemType(),
             $ownershipRequested->getOwnerId(),
+            OwnershipState::requested()->toString()
+        );
+
+        $this->ownershipSearchRepository->save($ownershipItem);
+    }
+
+    public function applyOwnershipApproved(OwnershipApproved $ownershipApproved): void
+    {
+        $this->ownershipSearchRepository->updateState(
+            $ownershipApproved->getId(),
+            OwnershipState::approved()
+        );
+    }
+
+    public function applyOwnershipRejected(OwnershipRejected $ownershipRejected): void
+    {
+        $this->ownershipSearchRepository->updateState(
+            $ownershipRejected->getId(),
+            OwnershipState::rejected()
+        );
+    }
+
+    public function applyOwnershipDeleted(OwnershipDeleted $ownershipDeleted): void
+    {
+        $this->ownershipSearchRepository->updateState(
+            $ownershipDeleted->getId(),
+            OwnershipState::deleted()
         );
     }
 }

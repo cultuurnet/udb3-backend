@@ -10,13 +10,20 @@ final class OwnershipItem
     private string $itemId;
     private string $itemType;
     private string $ownerId;
+    private string $state;
 
-    public function __construct(string $id, string $itemId, string $itemType, string $ownerId)
-    {
+    public function __construct(
+        string $id,
+        string $itemId,
+        string $itemType,
+        string $ownerId,
+        string $state
+    ) {
         $this->id = $id;
         $this->itemId = $itemId;
         $this->itemType = $itemType;
         $this->ownerId = $ownerId;
+        $this->state = $state;
     }
 
     public function getId(): string
@@ -37,5 +44,10 @@ final class OwnershipItem
     public function getOwnerId(): string
     {
         return $this->ownerId;
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
     }
 }
