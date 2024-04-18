@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Kinepolis;
 
 final class KinepolisPriceParser implements PriceParser
 {
-    public function parseTheaterPrices(array $theaterPrices): ParsedPrice
+    public function parseTheaterPrices(array $theaterPrices): ParsedPriceForATheater
     {
         $basePrice = 0;
         $discountPrice = 0;
@@ -36,7 +36,7 @@ final class KinepolisPriceParser implements PriceParser
             }
         }
 
-        return new ParsedPrice(
+        return new ParsedPriceForATheater(
             $basePrice,
             $discountPrice,
             $studentPrice,

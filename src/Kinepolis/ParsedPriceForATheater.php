@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use Money\Currency;
 use Money\Money;
 
-final class ParsedPrice
+final class ParsedPriceForATheater
 {
     private int $basePrice;
 

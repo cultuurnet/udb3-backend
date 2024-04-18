@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Kinepolis;
 interface Parser
 {
     /**
-     * @param ParsedPrice[] $parsedPrices
+     * @param ParsedPriceForATheater[] $parsedPrices
      * @return ParsedMovie[]
      */
     public function getParsedMovies(array $moviesToParse, array $parsedPrices): array;

@@ -72,12 +72,12 @@ final class KinepolisService
         }
 
         /**
-         * @var ParsedPrice[] $parsedPrices
+         * @var ParsedPriceForATheater[] $parsedPrices
          */
         $parsedPrices = [];
         foreach ($theaters as $theater) {
             try {
-                $pricesToParse = $this->client->getPricesForTheater($token, $theater['tid']);
+                $pricesToParse = $this->client->getPricesForATheater($token, $theater['tid']);
             } catch (\Exception $exception) {
                 $this->logger->error('Problem with fetching the prices from Theater ' . $theater['tid'] . ': ' . $exception->getMessage());
                 return;

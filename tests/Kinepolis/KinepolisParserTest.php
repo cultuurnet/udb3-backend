@@ -229,14 +229,14 @@ final class KinepolisParserTest extends TestCase
             $this->parser->getParsedMovies(
                 Json::decodeAssociatively(file_get_contents(__DIR__ . '/samples/KinepolisMovieDetailResponse.json')),
                 [
-                    'KOOST' => new ParsedPrice(
+                    'KOOST' => new ParsedPriceForATheater(
                         1000,
                         900,
                         800,
                         250,
                         200
                     ),
-                    'DECA' => new ParsedPrice(
+                    'DECA' => new ParsedPriceForATheater(
                         1100,
                         1000,
                         900,

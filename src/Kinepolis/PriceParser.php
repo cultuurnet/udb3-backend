@@ -6,5 +6,5 @@ namespace CultuurNet\UDB3\Kinepolis;
 
 interface PriceParser
 {
-    public function parseTheaterPrices(array $theaterPrices): ParsedPrice;
+    public function parseTheaterPrices(array $theaterPrices): ParsedPriceForATheater;
 }

@@ -21,7 +21,7 @@ final class KinepolisPriceParserTest extends TestCase
     public function it_parses_prices_from_a_theater(): void
     {
         $this->assertEquals(
-            new ParsedPrice(
+            new ParsedPriceForATheater(
                 1380,
                 1280,
                 1035,

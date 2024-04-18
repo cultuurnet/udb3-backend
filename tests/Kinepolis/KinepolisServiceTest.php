@@ -130,7 +130,7 @@ final class KinepolisServiceTest extends TestCase
         $this->priceParser
             ->expects($this->exactly(2))
             ->method('parseTheaterPrices')
-            ->willReturn(new ParsedPrice(
+            ->willReturn(new ParsedPriceForATheater(
                 0,
                 0,
                 0,
@@ -138,7 +138,7 @@ final class KinepolisServiceTest extends TestCase
                 0
             ));
 
-        $this->client->expects($this->exactly(2))->method('getPricesForTheater');
+        $this->client->expects($this->exactly(2))->method('getPricesForATheater');
 
         $this->service->import();
     }

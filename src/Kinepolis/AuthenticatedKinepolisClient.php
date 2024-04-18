@@ -86,7 +86,7 @@ final class AuthenticatedKinepolisClient implements KinepolisClient
         return $contents['theatres'];
     }
 
-    public function getPricesForTheater(string $token, string $tid): array
+    public function getPricesForATheater(string $token, string $tid): array
     {
         $request = new Request(
             'GET',

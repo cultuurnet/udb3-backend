@@ -32,7 +32,7 @@ final class KinepolisParser implements Parser
     }
 
     /**
-     * @param ParsedPrice[] $parsedPrices
+     * @param ParsedPriceForATheater[] $parsedPrices
      * @return ParsedMovie[]
      */
     public function getParsedMovies(array $moviesToParse, array $parsedPrices): array
