@@ -7,24 +7,24 @@ Feature: Test requesting ownership
 
   Scenario: Requesting ownership of an organizer
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I request ownership for "auth0|631748dba64ea78e3983b207" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
-    And the JSON response at "ownerId" should be "auth0|631748dba64ea78e3983b207"
+    And the JSON response at "ownerId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "requesterId" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
     And the JSON response at "state" should be "requested"
 
   Scenario: Requesting the same ownership of an organizer is not allowed
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I request ownership for "auth0|631748dba64ea78e3983b207" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I set the JSON request payload to:
       """
       {
         "itemId": "%{organizerId}",
         "itemType": "organizer",
-        "ownerId": "auth0|631748dba64ea78e3983b207"
+        "ownerId": "auth0|64089494e980aedd96740212"
       }
       """
     When I send a POST request to '/ownerships'
@@ -45,7 +45,7 @@ Feature: Test requesting ownership
       {
         "itemId": "b192b05f-9294-4c07-a3f9-6a15e267d746",
         "itemType": "organizer",
-        "ownerId": "auth0|631748dba64ea78e3983b207"
+        "ownerId": "auth0|64089494e980aedd96740212"
       }
       """
     When I send a POST request to '/ownerships'
