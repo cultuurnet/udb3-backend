@@ -16,7 +16,7 @@ final class KinepolisPriceParser implements PriceParser
 
         // This is done because the array of prices of Kinepolis
         // is always random and includes prices that are irrelevant for us
-        // like prices for various models of 3d prices
+        // like prices for various models of 3d glasses
         // We assume the values below are always present
         foreach ($theaterPrices as $theaterPrice) {
             if ($theaterPrice[1] === 'Normaal tarief') {
