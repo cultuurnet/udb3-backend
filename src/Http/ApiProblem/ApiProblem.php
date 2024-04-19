@@ -543,10 +543,10 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function invalidJsonData(string $detail): self
+    public static function invalidJsonDataForRdfCreation(string $detail): self
     {
         return self::create(
-            'https://api.publiq.be/probs/body/invalid-json-data',
+            'https://api.publiq.be/probs/body/invalid-json-data-for-rdf-creation',
             'Invalid JSON data for RDF creation',
             StatusCodeInterface::STATUS_BAD_REQUEST,
             $detail
