@@ -89,6 +89,6 @@ final class KinepolisDateParser implements DateParser
             1145,
             1147,
         ];
-        return sizeof(array_intersect($formats, $formats3D)) > 0;
+        return count(array_intersect($formats, $formats3D)) > 0;
     }
 }

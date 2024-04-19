@@ -62,7 +62,7 @@ final class KinepolisParser implements Parser
 
                 $parsedPrice = $parsedPrices[$theatreId];
 
-                $calendar = sizeof($subEvents) === 1 ?
+                $calendar = count($subEvents) === 1 ?
                     new SingleSubEventCalendar(...$subEvents) :
                     new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
                 $parsedMovies[] = new ParsedMovie(

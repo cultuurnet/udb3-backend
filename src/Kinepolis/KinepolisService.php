@@ -98,7 +98,7 @@ final class KinepolisService
             return;
         }
 
-        $this->logger->info('Found ' . sizeof($movies) . ' movie productions.');
+        $this->logger->info('Found ' . count($movies) . ' movie productions.');
 
         foreach ($movies as $movie) {
             $mid = $movie['mid'];
@@ -115,7 +115,7 @@ final class KinepolisService
                 return;
             }
 
-            $this->logger->info('Found ' . sizeof($parsedMovies) . ' screenings for movie with kinepolisId ' . $mid);
+            $this->logger->info('Found ' . count($parsedMovies) . ' screenings for movie with kinepolisId ' . $mid);
 
             foreach ($parsedMovies as $parsedMovie) {
                 $this->process($parsedMovie);
