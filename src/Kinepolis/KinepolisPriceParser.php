@@ -20,19 +20,19 @@ final class KinepolisPriceParser implements PriceParser
         // We assume the values below are always present
         foreach ($theaterPrices as $theaterPrice) {
             if ($theaterPrice[1] === 'Normaal tarief') {
-                $basePrice = $this->normalizePrice($theaterPrice[0]);
+                $basePrice = $this->normalizePriceToCents($theaterPrice[0]);
             }
             if ($theaterPrice[1] === 'Kortingstarief') {
-                $discountPrice = $this->normalizePrice($theaterPrice[0]);
+                $discountPrice = $this->normalizePriceToCents($theaterPrice[0]);
             }
             if ($theaterPrice[1] === 'Kinepolis Student Card') {
-                $studentPrice = $this->normalizePrice($theaterPrice[0]);
+                $studentPrice = $this->normalizePriceToCents($theaterPrice[0]);
             }
             if ($theaterPrice[1] === 'Supplement Film Lange Speelduur (>/=2u15)') {
-                $surchargeForLongMovie = $this->normalizePrice($theaterPrice[0]);
+                $surchargeForLongMovie = $this->normalizePriceToCents($theaterPrice[0]);
             }
             if ($theaterPrice[1] === 'Supplement 3D') {
-                $surchargeFor3D = $this->normalizePrice($theaterPrice[0]);
+                $surchargeFor3D = $this->normalizePriceToCents($theaterPrice[0]);
             }
         }
 
@@ -48,7 +48,7 @@ final class KinepolisPriceParser implements PriceParser
     // All their prices are in the format of € 0,00
     // The result is returned in cents. Because
     // The Money Class expects cents and not Euros
-    private function normalizePrice(string $price): int
+    private function normalizePriceToCents(string $price): int
     {
         return (int) (preg_replace('/[^0-9]/', '', $price));
     }
