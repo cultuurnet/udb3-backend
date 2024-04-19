@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Query\QueryBuilder;
 
 final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
 {
@@ -83,16 +84,15 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
 
     public function search(SearchQuery $searchQuery): OwnershipItemCollection
     {
-        $queryBuilder = $this->connection->createQueryBuilder()
-            ->select('*')
-            ->from('ownership_search');
+        $queryBuilder = $this->createSearchQueryBuilder($searchQuery)
+            ->select('*');
 
-        foreach ($searchQuery->getParameters() as $parameter) {
-            $column = self::URL_PARAMETER_TO_COLUMN[$parameter->getUrlParameter()];
+        if ($searchQuery->getOffset()) {
+            $queryBuilder->setFirstResult($searchQuery->getOffset());
+        }
 
-            $queryBuilder
-                ->andWhere($column . ' = :' . $column)
-                ->setParameter($column, $parameter->getValue());
+        if ($searchQuery->getLimit()) {
+            $queryBuilder->setMaxResults($searchQuery->getLimit());
         }
 
         $ownershipSearchRows = $queryBuilder
@@ -105,6 +105,32 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
                 $ownershipSearchRows
             )
         );
+    }
+
+    public function searchTotal(SearchQuery $searchQuery): int
+    {
+        $queryBuilder = $this->createSearchQueryBuilder($searchQuery)
+            ->select('COUNT(*)');
+
+        return (int) $queryBuilder
+            ->execute()
+            ->fetchOne();
+    }
+
+    private function createSearchQueryBuilder(SearchQuery $searchQuery): QueryBuilder
+    {
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->from('ownership_search');
+
+        foreach ($searchQuery->getParameters() as $parameter) {
+            $column = self::URL_PARAMETER_TO_COLUMN[$parameter->getUrlParameter()];
+
+            $queryBuilder
+                ->andWhere($column . ' = :' . $column)
+                ->setParameter($column, $parameter->getValue());
+        }
+
+        return $queryBuilder;
     }
 
     private function createOwnershipSearchItem(array $ownershipSearchRow): OwnershipItem

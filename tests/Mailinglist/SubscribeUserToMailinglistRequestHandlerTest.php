@@ -90,7 +90,7 @@ class SubscribeUserToMailinglistRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray(['email' => 'koen'])
             ->build('PUT');
 
-        $this->assertCallableThrowsApiProblem(ApiProblem::failedToSubscribeToNewsletter('Given string is not a valid e-mail address.'), function () use ($request) {
+        $this->assertCallableThrowsApiProblem(ApiProblem::bodyInvalidDataWithDetail('Given string is not a valid e-mail address.'), function () use ($request) {
             $this->handler->handle($request);
         });
     }
