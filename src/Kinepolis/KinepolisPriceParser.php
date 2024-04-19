@@ -46,6 +46,8 @@ final class KinepolisPriceParser implements PriceParser
     }
 
     // All their prices are in the format of € 0,00
+    // The result is returned in cents. Because
+    // The Money Class expects cents and not Euros
     private function normalizePrice(string $price): int
     {
         return (int) (preg_replace('/[^0-9]/', '', $price));
