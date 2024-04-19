@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Kinepolis;
+namespace CultuurNet\UDB3\Kinepolis\Parser;
 
 use CultuurNet\UDB3\Event\EventThemeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Kinepolis\Parser\DateParser;
-use CultuurNet\UDB3\Kinepolis\Parser\KinepolisParser;
+use CultuurNet\UDB3\Kinepolis\ParsedMovie;
+use CultuurNet\UDB3\Kinepolis\ParsedPriceForATheater;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -229,7 +229,7 @@ final class KinepolisParserTest extends TestCase
                 ),
             ],
             $this->parser->getParsedMovies(
-                Json::decodeAssociatively(file_get_contents(__DIR__ . '/samples/KinepolisMovieDetailResponse.json')),
+                Json::decodeAssociatively(file_get_contents(__DIR__ . '/../samples/KinepolisMovieDetailResponse.json')),
                 [
                     'KOOST' => new ParsedPriceForATheater(
                         1000,

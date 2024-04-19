@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Kinepolis;
+namespace CultuurNet\UDB3\Kinepolis\Parser;
 
-use CultuurNet\UDB3\Kinepolis\Parser\KinepolisDateParser;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -38,7 +37,7 @@ final class KinepolisDateParserTest extends TestCase
     {
         return [
             'movie_without_length' => [
-                'data' => require __DIR__ . '/samples/MovieWithoutLength.php',
+                'data' => require __DIR__ . '/../samples/MovieWithoutLength.php',
                 'length' => 0,
                 'result' => [
                     'DECA' => [
@@ -124,7 +123,7 @@ final class KinepolisDateParserTest extends TestCase
                 ],
             ],
             'movie_with_length' =>  [
-                'data' => require  __DIR__ . '/samples/MovieWithLength.php',
+                'data' => require  __DIR__ . '/../samples/MovieWithLength.php',
                 'length' => 99,
                 'result' => [
                     'DECA' => [
@@ -210,7 +209,7 @@ final class KinepolisDateParserTest extends TestCase
                 ],
             ],
             'movie_with_2D_and_3D_version' => [
-                'data' => require __DIR__ . '/samples/MovieWith2DAnd3DVersion.php',
+                'data' => require __DIR__ . '/../samples/MovieWith2DAnd3DVersion.php',
                 'length' => 120,
                 'result' => [
                     'DECA' => [
