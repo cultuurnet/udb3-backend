@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Kinepolis;
 use CultuurNet\UDB3\Event\EventThemeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Kinepolis\Parser\DateParser;
+use CultuurNet\UDB3\Kinepolis\Parser\KinepolisParser;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
