@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 final class KinepolisParser implements Parser
 {
+    public const LONG_MOVIE_MINIMUM_LENGTH = 135;
     private array $termsMapper;
 
     private array $theatreMapper;
@@ -58,7 +59,7 @@ final class KinepolisParser implements Parser
                 $is3D = $dimension === '3D';
                 $title = $is3D ? $title . ' 3D' : $title;
 
-                $isLong = $length >= 135;
+                $isLong = $length >= self::LONG_MOVIE_MINIMUM_LENGTH;
 
                 $parsedPrice = $parsedPrices[$theatreId];
 
