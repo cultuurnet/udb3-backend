@@ -1,3 +1,4 @@
+@sapi3
 Feature: Test the UDB3 search proxy
 
   Background:

@@ -8,24 +8,15 @@ use CultuurNet\UDB3\Address\Address;
 
 abstract class AbstractUpdateGeoCoordinatesFromAddress extends AbstractCommand
 {
-    /**
-     * @var Address
-     */
-    private $address;
+    private Address $address;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, Address $address)
+    public function __construct(string $itemId, Address $address)
     {
         parent::__construct($itemId);
         $this->address = $address;
     }
 
-    /**
-     * @return Address
-     */
-    public function getAddress()
+    public function getAddress(): Address
     {
         return $this->address;
     }

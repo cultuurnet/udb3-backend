@@ -78,7 +78,7 @@ final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
                     $container->get('place_iri_generator'),
                     $container->get('event_command_bus'),
                     $container->get('import_image_collection_factory'),
-                    $container->get('config')['prevent_duplicate_creation'] ?? false,
+                    $container->get('config')['prevent_duplicate_places_creation'] ?? false,
                     new LookupDuplicatePlaceWithSapi3(
                         $container->get(PlacesSapi3SearchService::class),
                         new UniqueAddressIdentifierFactory(),

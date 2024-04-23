@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
  * @method static AggregateType media_object()
  * @method static AggregateType role()
  * @method static AggregateType label()
+ * @method static AggregateType ownership()
  */
 final class AggregateType extends Enum
 {
@@ -27,6 +28,7 @@ final class AggregateType extends Enum
             'media_object',
             'role',
             'label',
+            'ownership',
         ];
     }
 }

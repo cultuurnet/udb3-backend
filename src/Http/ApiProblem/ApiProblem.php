@@ -203,6 +203,11 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function unauthorizedSavedSearch(): self
+    {
+        return self::unauthorized('You do not own this saved search');
+    }
+
     public static function forbidden(string $detail = null): self
     {
         return self::create(
@@ -246,7 +251,7 @@ final class ApiProblem extends Exception
     public static function duplicatePlaceDetected(string $detail = null, array $properties = null): self
     {
         $apiProblem = self::create(
-            'https://api.publiq.be/probs/url/duplicate-place',
+            'https://api.publiq.be/probs/uitdatabank/duplicate-place',
             'Duplicate place',
             StatusCodeInterface::STATUS_CONFLICT,
             $detail
@@ -259,11 +264,26 @@ final class ApiProblem extends Exception
         return $apiProblem;
     }
 
+    public static function ownerShipAlreadyExists(string $detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/ownership-already-exists',
+            'Ownership already exists',
+            StatusCodeInterface::STATUS_CONFLICT,
+            $detail
+        );
+    }
+
     public static function queryParameterInvalidValue(string $parameterName, string $value, array $allowedValues): self
     {
         return self::urlNotFound(
             'Query parameter ' . $parameterName . ' has invalid value "' . $value . '". Should be one of ' . implode(', ', $allowedValues)
         );
+    }
+
+    public static function queryParameterMissing(string $parameterName): self
+    {
+        return self::urlNotFound('Query parameter ' . $parameterName . ' is missing.');
     }
 
     public static function resourceNotFound(string $resourceType, string $resourceId): self
@@ -291,6 +311,11 @@ final class ApiProblem extends Exception
         return self::resourceNotFound('Organizer', $organizerId);
     }
 
+    public static function ownershipNotFound(string $ownershipId): self
+    {
+        return self::resourceNotFound('Ownership', $ownershipId);
+    }
+
     public static function newsArticleNotFound(string $articleId): self
     {
         return self::resourceNotFound('News Article', $articleId);
@@ -314,6 +339,11 @@ final class ApiProblem extends Exception
     public static function mediaObjectNotFound(string $mediaObjectId): self
     {
         return self::resourceNotFound('media object', $mediaObjectId);
+    }
+
+    public static function savedSearchNotFound(string $id): self
+    {
+        return self::resourceNotFound('saved search', $id);
     }
 
     public static function bodyMissing(): self
@@ -513,11 +543,21 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function invalidJsonData(string $detail): self
+    public static function invalidJsonDataForRdfCreation(string $detail): self
     {
         return self::create(
-            'https://api.publiq.be/probs/body/invalid-json-data',
+            'https://api.publiq.be/probs/body/invalid-json-data-for-rdf-creation',
             'Invalid JSON data for RDF creation',
+            StatusCodeInterface::STATUS_BAD_REQUEST,
+            $detail
+        );
+    }
+
+    public static function failedToSubscribeToNewsletter(string $detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/failed-subscription-to-newsletter',
+            'Failed to subscribe to newsletter',
             StatusCodeInterface::STATUS_BAD_REQUEST,
             $detail
         );

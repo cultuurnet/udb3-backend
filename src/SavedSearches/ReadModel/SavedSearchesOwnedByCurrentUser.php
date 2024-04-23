@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches\ReadModel;
 
-interface SavedSearchRepositoryInterface
+interface SavedSearchesOwnedByCurrentUser
 {
     /**
      * @return SavedSearch[]

@@ -50,6 +50,11 @@ final class HttpClient
         ]);
     }
 
+    public function postEmpty(string $url): ResponseInterface
+    {
+        return $this->client->post($url);
+    }
+
     public function postJSON(string $url, string $json): ResponseInterface
     {
         return $this->client->post(

@@ -30,6 +30,9 @@ use CultuurNet\UDB3\EventStore\EventStoreServiceProvider;
 use CultuurNet\UDB3\Export\ExportServiceProvider;
 use CultuurNet\UDB3\Geocoding\GeocodingServiceProvider;
 use CultuurNet\UDB3\Jobs\JobsServiceProvider;
+use CultuurNet\UDB3\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Mailinglist\MailinglistServiceProvider;
+use CultuurNet\UDB3\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Media\MediaImportServiceProvider;
 use CultuurNet\UDB3\Media\MediaServiceProvider;
 use CultuurNet\UDB3\Metadata\MetadataServiceProvider;
@@ -42,11 +45,17 @@ use CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerRdfServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
+use CultuurNet\UDB3\Ownership\OwnershipCommandHandlerProvider;
+use CultuurNet\UDB3\Ownership\OwnershipRequestHandlerServiceProvider;
+use CultuurNet\UDB3\Ownership\OwnershipServiceProvider;
 use CultuurNet\UDB3\Place\PlaceEditingServiceProvider;
 use CultuurNet\UDB3\Place\PlaceGeoCoordinatesServiceProvider;
+use CultuurNet\UDB3\Place\PlaceHistoryServiceProvider;
+use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Place\PlacePermissionServiceProvider;
 use CultuurNet\UDB3\Place\PlaceRdfServiceProvider;
 use CultuurNet\UDB3\Place\PlaceReadServiceProvider;
+use CultuurNet\UDB3\Place\PlaceRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Place\PlaceServiceProvider;
 use CultuurNet\UDB3\RDF\RdfNamespaces;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
@@ -54,22 +63,17 @@ use CultuurNet\UDB3\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Role\RoleServiceProvider;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\SavedSearches\SavedSearchesServiceProvider;
+use CultuurNet\UDB3\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
-use CultuurNet\UDB3\Labels\LabelServiceProvider;
-use CultuurNet\UDB3\Media\ImageStorageProvider;
-use CultuurNet\UDB3\Place\PlaceHistoryServiceProvider;
-use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
-use CultuurNet\UDB3\Place\PlaceRequestHandlerServiceProvider;
-use CultuurNet\UDB3\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\SwiftMailer\SwiftMailerServiceProvider;
+use CultuurNet\UDB3\Term\TermServiceProvider;
 use CultuurNet\UDB3\UDB2\UDB2EventServicesProvider;
 use CultuurNet\UDB3\UiTPAS\UiTPASIncomingEventServicesProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceLabelsServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceOrganizerServiceProvider;
-use CultuurNet\UDB3\Term\TermServiceProvider;
 use CultuurNet\UDB3\User\UserServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -207,6 +211,14 @@ $container->addServiceProvider(new RdfServiceProvider());
 $container->addServiceProvider(new PlaceRdfServiceProvider());
 $container->addServiceProvider(new EventRdfServiceProvider());
 $container->addServiceProvider(new OrganizerRdfServiceProvider());
+
+/** Ownership */
+$container->addServiceProvider(new OwnershipServiceProvider());
+$container->addServiceProvider(new OwnershipCommandHandlerProvider());
+$container->addServiceProvider(new OwnershipRequestHandlerServiceProvider());
+
+/** Mailinglist */
+$container->addServiceProvider(new MailinglistServiceProvider());
 
 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);

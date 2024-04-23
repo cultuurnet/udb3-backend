@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\AggregateType;
@@ -28,6 +29,15 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class ReplayCommand extends AbstractCommand
 {
+    private const TABLES_TO_PURGE = [
+        'event_permission_readmodel' => 'event_id',
+        'event_relations' => 'event',
+        'offer_metadata' => 'id',
+        'organizer_permission_readmodel' => 'organizer_id',
+        'place_permission_readmodel'=> 'place_id',
+        'place_relations' => 'place',
+    ];
+
     public const OPTION_START_ID = 'start-id';
     public const OPTION_DELAY = 'delay';
     public const OPTION_CDBID = 'cdbid';
@@ -121,7 +131,28 @@ final class ReplayCommand extends AbstractCommand
 
         $cdbids = $input->getOption(self::OPTION_CDBID);
 
-        $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
+        if ($cdbids !== null) {
+            $cdbids = array_map(
+                fn (string $cdbid) => new UUID($cdbid),
+                $cdbids
+            );
+        }
+
+        // since we cannot catch errors when multiple cdbids are giving
+        // and this Command is mostly run via Jenkins with exactly 1 cdbid
+        // we will only fix this for the first cdbid
+        if ($cdbids !== null && sizeof($cdbids) === 1) {
+            $this->purgeReadmodels($cdbids[0]);
+        }
+
+        $stream = $this->getEventStream(
+            $startId,
+            $aggregateType,
+            array_map(
+                fn (UUID $cdbid) => $cdbid->toString(),
+                $cdbids
+            )
+        );
 
         ReplayFlaggingMiddleware::startReplayMode();
         InterceptingMiddleware::startIntercepting(
@@ -229,6 +260,16 @@ final class ReplayCommand extends AbstractCommand
         }
 
         return $eventStream;
+    }
+
+    private function purgeReadmodels(UUID $cdbid): void
+    {
+        foreach (self::TABLES_TO_PURGE as $tableName => $columnName) {
+            $this->connection->delete(
+                $tableName,
+                [$columnName => $cdbid->toString()]
+            );
+        }
     }
 
     private function getAggregateType(InputInterface $input): ?AggregateType

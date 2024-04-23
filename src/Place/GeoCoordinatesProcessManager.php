@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
+use Broadway\CommandHandling\CommandBus;
 use CultureFeed_Cdb_Data_Address;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
+use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Offer\AbstractGeoCoordinatesProcessManager;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
@@ -14,9 +16,27 @@ use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
+use CultuurNet\UDB3\Place\Events\TitleUpdated;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use Psr\Log\LoggerInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\Address\Address;
 
 class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
 {
+    private DocumentRepository $placeRepository;
+
+    public function __construct(
+        CommandBus $commandBus,
+        CultureFeedAddressFactoryInterface $addressFactory,
+        LoggerInterface $logger,
+        DocumentRepository $placeRepository
+    ) {
+        parent::__construct($commandBus, $addressFactory, $logger);
+
+        $this->placeRepository = $placeRepository;
+    }
+
     protected function getEventHandlers(): array
     {
         return [
@@ -25,6 +45,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
             AddressUpdated::class => 'handleAddressUpdated',
             PlaceImportedFromUDB2::class => 'handleActorImportedFromUDB2',
             PlaceUpdatedFromUDB2::class => 'handleActorImportedFromUDB2',
+            TitleUpdated::class => 'handleTitleUpdated',
         ];
     }
 
@@ -120,6 +141,26 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
         $command = new UpdateGeoCoordinatesFromAddress(
             $actorImportedFromUDB2->getActorId(),
             $address
+        );
+
+        $this->commandBus->dispatch($command);
+    }
+
+
+    public function handleTitleUpdated(TitleUpdated $titleUpdated): void
+    {
+        try {
+            $place = $this->placeRepository->fetch($titleUpdated->getItemId());
+        } catch (DocumentDoesNotExist $e) {
+            return;
+        }
+
+        $body = $place->getAssocBody();
+        $language = $body['mainLanguage'] ?? array_key_first($body['address']);
+
+        $command = new UpdateGeoCoordinatesFromAddress(
+            $titleUpdated->getItemId(),
+            Address::deserialize($body['address'][$language])
         );
 
         $this->commandBus->dispatch($command);
