@@ -13,7 +13,12 @@ use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\EventCommandHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
+use CultuurNet\UDB3\Ownership\CommandHandlers\ApproveOwnershipHandler;
+use CultuurNet\UDB3\Ownership\CommandHandlers\DeleteOwnershipHandler;
+use CultuurNet\UDB3\Ownership\CommandHandlers\RejectOwnershipHandler;
+use CultuurNet\UDB3\Ownership\CommandHandlers\RequestOwnershipHandler;
 use CultuurNet\UDB3\Place\CommandHandler as PlaceCommandHandler;
+use CultuurNet\UDB3\Place\ExtendedGeoCoordinatesCommandHandler;
 use CultuurNet\UDB3\Role\CommandHandler as RoleCommandHandler;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionSwitchVoter;
@@ -148,6 +153,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe($container->get('place_geocoordinates_command_handler'));
                         $commandBus->subscribe($container->get('event_geocoordinates_command_handler'));
                         $commandBus->subscribe($container->get('organizer_geocoordinates_command_handler'));
+                        $commandBus->subscribe($container->get(ExtendedGeoCoordinatesCommandHandler::class));
                         $commandBus->subscribe($container->get(ProductionCommandHandler::class));
 
                         // Offer command handlers
@@ -208,6 +214,11 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\ImportImagesHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\ChangeOwnerHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateContributorsHandler::class));
+
+                        $commandBus->subscribe($container->get(RequestOwnershipHandler::class));
+                        $commandBus->subscribe($container->get(ApproveOwnershipHandler::class));
+                        $commandBus->subscribe($container->get(RejectOwnershipHandler::class));
+                        $commandBus->subscribe($container->get(DeleteOwnershipHandler::class));
 
                         $commandBus->subscribe($container->get(LabelServiceProvider::COMMAND_HANDLER));
                     }

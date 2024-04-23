@@ -1596,7 +1596,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      * @test
      * @dataProvider typesThatAreAvailableTillStart
      */
-    public function it_updates_available_to_for_selected_types_on_type_updated(string $termId): void
+    public function it_sets_available_to_start_date_for_selected_types_on_type_updated(string $termId): void
     {
         $eventId = '1a08516e-aba4-47f0-887e-df37b61a1e8d';
 
@@ -1640,6 +1640,56 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $updatedItem = $this->project($typeUpdated, $eventId);
 
         $this->assertEquals($startDate->format(DATE_ATOM), $updatedItem->availableTo);
+    }
+
+    /**
+     * @test
+     * @dataProvider typesThatAreAvailableTillStart
+     */
+    public function it_sets_available_to_end_date_on_type_updated_from_selected_types(string $termId, string $termName): void
+    {
+        $eventId = '1a08516e-aba4-47f0-887e-df37b61a1e8d';
+
+        $eventThatShouldAvailableTillStart = new JsonDocument(
+            $eventId,
+            Json::encode([
+                '@id' => $eventId,
+                '@type' => 'event',
+                'calendar' => [
+                    'calendarType' => 'single',
+                    'timeSpans' => [
+                        [
+                            'start' => '2018-01-01T12:00:00+01:00',
+                            'end' => '2020-01-01T12:00:00+01:00',
+                        ],
+                    ],
+                ],
+                'startDate' => '2018-01-01T12:00:00+01:00',
+                'endDate' => '2020-01-01T12:00:00+01:00',
+                'availableTo' => '2018-01-01T12:00:00+01:00',
+                'terms' => [
+                    (object) [
+                        'id' => $termId,
+                        'label' => $termName,
+                        'domain' => 'theme',
+                    ],
+                    (object) [
+                        'id' => '0.7.0.0.0',
+                        'label' => 'Begeleide uitstap of rondleiding',
+                        'domain' => 'eventtype',
+                    ],
+                ],
+            ])
+        );
+        $this->documentRepository->save($eventThatShouldAvailableTillStart);
+
+        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+
+        $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0'));
+
+        $updatedItem = $this->project($typeUpdated, $eventId);
+
+        $this->assertEquals($endDate->format(DATE_ATOM), $updatedItem->availableTo);
     }
 
     /**

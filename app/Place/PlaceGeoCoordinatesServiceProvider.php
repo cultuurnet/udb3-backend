@@ -20,6 +20,7 @@ final class PlaceGeoCoordinatesServiceProvider extends AbstractServiceProvider
         return [
             'place_geocoordinates_command_handler',
             'place_geocoordinates_process_manager',
+            ExtendedGeoCoordinatesCommandHandler::class,
         ];
     }
 
@@ -46,13 +47,23 @@ final class PlaceGeoCoordinatesServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
+            ExtendedGeoCoordinatesCommandHandler::class,
+            function () use ($container) {
+                return new ExtendedGeoCoordinatesCommandHandler(
+                    LoggerFactory::create($container, LoggerName::forService('extended-geo-coordinates', 'place'))
+                );
+            }
+        );
+
+        $container->addShared(
             'place_geocoordinates_process_manager',
             function () use ($container) {
                 return new ReplayFilteringEventListener(
                     new GeoCoordinatesProcessManager(
                         $container->get('event_command_bus'),
                         new CultureFeedAddressFactory(),
-                        LoggerFactory::create($container, LoggerName::forService('geo-coordinates', 'place'))
+                        LoggerFactory::create($container, LoggerName::forService('geo-coordinates', 'place')),
+                        $container->get('place_jsonld_repository'),
                     )
                 );
             }

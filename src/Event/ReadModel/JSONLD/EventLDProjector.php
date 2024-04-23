@@ -376,14 +376,14 @@ final class EventLDProjector extends OfferLDProjector implements
     protected function applyTypeUpdated(AbstractTypeUpdated $typeUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($typeUpdated);
+        $offerLd = $document->getBody();
 
         if (EventTypeResolver::isOnlyAvailableUntilStartDate($typeUpdated->getType())) {
-            $offerLd = $document->getBody();
             $offerLd->availableTo = $offerLd->startDate ?? $offerLd->availableTo;
-            $document = $document->withBody($offerLd);
+        } else {
+            $offerLd->availableTo = $offerLd->endDate ?? $offerLd->availableTo;
         }
-
-        return $this->updateTerm($document, $typeUpdated->getType());
+        return $this->updateTerm($document->withBody($offerLd), $typeUpdated->getType());
     }
 
     private function getEventType(\stdClass $eventJsonLD): ?EventType

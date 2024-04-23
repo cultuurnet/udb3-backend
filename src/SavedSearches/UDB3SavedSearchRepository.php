@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches;
 
-use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
-use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface as SavedSearchReadModelRepositoryInterface;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchesOwnedByCurrentUser as SavedSearchReadModelRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface as SavedSearchWriteModelRepositoryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -18,24 +17,21 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
 
     private string $tableName;
 
-    private UuidGeneratorInterface $uuidGenerator;
-
     private string $userId;
 
 
     public function __construct(
         Connection $connection,
         string $tableName,
-        UuidGeneratorInterface $uuidGenerator,
         string $userId
     ) {
         $this->connection = $connection;
         $this->tableName = $tableName;
-        $this->uuidGenerator = $uuidGenerator;
         $this->userId = $userId;
     }
 
-    public function write(
+    public function insert(
+        string $id,
         string $userId,
         string $name,
         QueryString $queryString
@@ -52,7 +48,7 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
             )
             ->setParameters(
                 [
-                    $this->uuidGenerator->generate(),
+                    $id,
                     $userId,
                     $name,
                     $queryString->toString(),
@@ -60,6 +56,29 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
             );
 
         $queryBuilder->execute();
+    }
+
+    public function update(
+        string $id,
+        string $userId,
+        string $name,
+        QueryString $queryString
+    ): void {
+        $this->connection->createQueryBuilder()
+            ->update($this->tableName)
+            ->set(SchemaConfigurator::NAME, '?')
+            ->set(SchemaConfigurator::QUERY, '?')
+            ->where(SchemaConfigurator::USER . ' = ?')
+            ->andWhere(SchemaConfigurator::ID . ' = ?')
+            ->setParameters(
+                [
+                    $name,
+                    $queryString->toString(),
+                    $userId,
+                    $id,
+                ]
+            )
+            ->execute();
     }
 
     public function delete(
@@ -103,7 +122,8 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
             $savedSearches[] = new SavedSearch(
                 $row[SchemaConfigurator::NAME],
                 new QueryString($row[SchemaConfigurator::QUERY]),
-                $row[SchemaConfigurator::ID]
+                $row[SchemaConfigurator::ID],
+                $row[SchemaConfigurator::USER]
             );
         }
 

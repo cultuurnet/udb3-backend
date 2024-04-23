@@ -67,6 +67,12 @@ use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateWorkflowStatusRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteEducationalDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateEducationalDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Ownership\ApproveOwnershipRequestHandler;
+use CultuurNet\UDB3\Http\Ownership\DeleteOwnershipRequestHandler;
+use CultuurNet\UDB3\Http\Ownership\GetOwnershipRequestHandler;
+use CultuurNet\UDB3\Http\Ownership\RejectOwnershipRequestHandler;
+use CultuurNet\UDB3\Http\Ownership\RequestOwnershipRequestHandler;
+use CultuurNet\UDB3\Http\Ownership\SearchOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
@@ -93,6 +99,7 @@ use CultuurNet\UDB3\Http\Role\UpdateRoleRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\UpdateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
@@ -135,6 +142,7 @@ use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
+use CultuurNet\UDB3\Mailinglist\SubscribeUserToMailinglistRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
@@ -183,6 +191,10 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
                 $this->bindOrganizers($router);
 
+                if ($container->get('config')['enable_ownership_endpoints'] ?? false) {
+                    $this->bindOwnerships($router);
+                }
+
                 $this->bindNewsArticles($router);
 
                 $this->bindProductions($router);
@@ -208,6 +220,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
                 $this->bindUiTPASLabels($router);
 
                 $this->bindUiTPASOrganizers($router);
+
+                $this->bindMailinglist($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
@@ -357,6 +371,21 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
             $routeGroup->get('{organizerId}/contributors/', GetContributorsOrganizerRequestHandler::class);
             $routeGroup->put('{organizerId}/contributors/', UpdateContributorsOrganizerRequestHandler::class);
+        });
+    }
+
+    private function bindOwnerships(Router $router): void
+    {
+        $router->group('ownerships', function (RouteGroup $routeGroup): void {
+            $routeGroup->get('', SearchOwnershipRequestHandler::class);
+            $routeGroup->get('{ownershipId}/', GetOwnershipRequestHandler::class);
+
+            $routeGroup->post('', RequestOwnershipRequestHandler::class);
+
+            $routeGroup->post('{ownershipId}/approve/', ApproveOwnershipRequestHandler::class);
+            $routeGroup->post('{ownershipId}/reject/', RejectOwnershipRequestHandler::class);
+
+            $routeGroup->delete('{ownershipId}/', DeleteOwnershipRequestHandler::class);
         });
     }
 
@@ -515,6 +544,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->get('v3/', ReadSavedSearchesRequestHandler::class);
 
             $routeGroup->post('v3/', CreateSavedSearchRequestHandler::class);
+            $routeGroup->put('v3/{id}/', UpdateSavedSearchRequestHandler::class);
+
             $routeGroup->delete('v3/{id}/', DeleteSavedSearchRequestHandler::class);
         });
     }
@@ -551,5 +582,10 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
         $router->group('uitpas/organizers', function (RouteGroup $routeGroup): void {
             $routeGroup->get('{organizerId}/card-systems/', GetCardSystemsFromOrganizerRequestHandler::class);
         });
+    }
+
+    private function bindMailinglist(Router $router): void
+    {
+        $router->put('mailinglist/{mailingListId}/', SubscribeUserToMailinglistRequestHandler::class);
     }
 }

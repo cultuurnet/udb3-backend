@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
-use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchesOwnedByCurrentUser;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +19,7 @@ class ReadSavedSearchesRequestHandlerTest extends TestCase
     use AssertJsonResponseTrait;
 
     /**
-     * @var SavedSearchRepositoryInterface|MockObject
+     * @var SavedSearchesOwnedByCurrentUser|MockObject
      */
     private $savedSearchRepository;
 
@@ -29,7 +29,7 @@ class ReadSavedSearchesRequestHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->savedSearchRepository = $this->createMock(SavedSearchRepositoryInterface::class);
+        $this->savedSearchRepository = $this->createMock(SavedSearchesOwnedByCurrentUser::class);
         $this->readSavedSearchesRequestHandler = new ReadSavedSearchesRequestHandler($this->savedSearchRepository);
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
     }
