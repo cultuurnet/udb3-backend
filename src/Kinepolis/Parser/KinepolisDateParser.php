@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Kinepolis;
+namespace CultuurNet\UDB3\Kinepolis\Parser;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
@@ -89,6 +89,6 @@ final class KinepolisDateParser implements DateParser
             1145,
             1147,
         ];
-        return sizeof(array_intersect($formats, $formats3D)) > 0;
+        return count(array_intersect($formats, $formats3D)) > 0;
     }
 }

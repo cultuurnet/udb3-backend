@@ -27,7 +27,7 @@ final class MovieMappingRepository implements MappingRepository
             ->execute()
             ->fetchFirstColumn();
 
-        return sizeof($result) === 0 ? null : $result[0];
+        return count($result) === 0 ? null : $result[0];
     }
 
     public function create(string $eventId, string $movieId): void

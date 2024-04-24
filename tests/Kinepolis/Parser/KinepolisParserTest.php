@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Kinepolis;
+namespace CultuurNet\UDB3\Kinepolis\Parser;
 
 use CultuurNet\UDB3\Event\EventThemeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Kinepolis\ParsedMovie;
+use CultuurNet\UDB3\Kinepolis\ParsedPriceForATheater;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -14,8 +16,16 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\TestCase;
 
 final class KinepolisParserTest extends TestCase
@@ -102,7 +112,32 @@ final class KinepolisParserTest extends TestCase
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Available())
-                    ))
+                    )),
+                    new PriceInfo(
+                        new Tariff(
+                            new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('Basistarief')
+                            ),
+                            new Money(1100, new Currency('EUR'))
+                        ),
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Kinepolis Student Card')
+                                ),
+                                new Money(900, new Currency('EUR'))
+                            ),
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Kortingstarief')
+                                ),
+                                new Money(1000, new Currency('EUR'))
+                            )
+                        )
+                    )
                 ),
                 new ParsedMovie(
                     'Kinepolis:tKOOSTm32696',
@@ -121,7 +156,32 @@ final class KinepolisParserTest extends TestCase
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Available())
-                    ))
+                    )),
+                    new PriceInfo(
+                        new Tariff(
+                            new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('Basistarief')
+                            ),
+                            new Money(1000, new Currency('EUR'))
+                        ),
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Kinepolis Student Card')
+                                ),
+                                new Money(800, new Currency('EUR'))
+                            ),
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Kortingstarief')
+                                ),
+                                new Money(900, new Currency('EUR'))
+                            )
+                        )
+                    )
                 ),
                 new ParsedMovie(
                     'Kinepolis:tKOOSTm32696v3D',
@@ -140,10 +200,53 @@ final class KinepolisParserTest extends TestCase
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Available())
-                    ))
+                    )),
+                    new PriceInfo(
+                        new Tariff(
+                            new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('Basistarief')
+                            ),
+                            new Money(1200, new Currency('EUR'))
+                        ),
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Kinepolis Student Card')
+                                ),
+                                new Money(1000, new Currency('EUR'))
+                            ),
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Kortingstarief')
+                                ),
+                                new Money(1100, new Currency('EUR'))
+                            )
+                        )
+                    )
                 ),
             ],
-            $this->parser->getParsedMovies(Json::decodeAssociatively(file_get_contents(__DIR__ . '/samples/KinepolisMovieDetailResponse.json')))
+            $this->parser->getParsedMovies(
+                Json::decodeAssociatively(file_get_contents(__DIR__ . '/../samples/KinepolisMovieDetailResponse.json')),
+                [
+                    'KOOST' => new ParsedPriceForATheater(
+                        1000,
+                        900,
+                        800,
+                        250,
+                        200
+                    ),
+                    'DECA' => new ParsedPriceForATheater(
+                        1100,
+                        1000,
+                        900,
+                        300,
+                        250
+                    ),
+                ]
+            )
         );
     }
 }

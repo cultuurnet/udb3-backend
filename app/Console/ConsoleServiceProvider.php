@@ -45,11 +45,12 @@ use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
-use CultuurNet\UDB3\Kinepolis\KinepolisDateParser;
-use CultuurNet\UDB3\Kinepolis\KinepolisParser;
+use CultuurNet\UDB3\Kinepolis\AuthenticatedKinepolisClient;
 use CultuurNet\UDB3\Kinepolis\KinepolisService;
 use CultuurNet\UDB3\Kinepolis\MovieMappingRepository;
-use CultuurNet\UDB3\Kinepolis\AuthenticatedKinepolisClient;
+use CultuurNet\UDB3\Kinepolis\Parser\KinepolisDateParser;
+use CultuurNet\UDB3\Kinepolis\Parser\KinepolisParser;
+use CultuurNet\UDB3\Kinepolis\Parser\KinepolisPriceParser;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
@@ -425,6 +426,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                         $container->get('config')['kinepolis']['theaters'],
                         new KinepolisDateParser()
                     ),
+                    new KinepolisPriceParser(),
                     new MovieMappingRepository($container->get(('dbal_connection'))),
                     new Version4Generator(),
                     LoggerFactory::create(
