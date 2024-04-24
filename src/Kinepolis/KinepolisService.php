@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
+use Exception;
 use Psr\Log\LoggerInterface;
 
 final class KinepolisService
@@ -61,14 +62,14 @@ final class KinepolisService
     {
         try {
             $token = $this->client->getToken();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->logger->error('Problem with Kinepolis Service Authentication: ' . $exception->getMessage());
             return;
         }
 
         try {
             $theaters = $this->client->getTheaters($token);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->logger->error('Problem with fetching theatres from Kinepolis Service: ' . $exception->getMessage());
             return;
         }
@@ -80,14 +81,14 @@ final class KinepolisService
         foreach ($theaters as $theater) {
             try {
                 $pricesToParse = $this->client->getPricesForATheater($token, $theater['tid']);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->logger->error('Problem with fetching the prices from Theater ' . $theater['tid'] . ': ' . $exception->getMessage());
                 return;
             }
 
             try {
                 $parsedPrices[$theater['tid']] = $this->priceParser->parseTheaterPrices($pricesToParse);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->logger->error('Problem with parsing the prices from Theater ' . $theater['tid'] . ': ' . $exception->getMessage());
                 return;
             }
@@ -95,7 +96,7 @@ final class KinepolisService
 
         try {
             $movies = $this->client->getMovies($token);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->logger->error('Problem with fetching movies from Kinepolis Service: ' . $exception->getMessage());
             return;
         }
@@ -106,13 +107,13 @@ final class KinepolisService
             $mid = $movie['mid'];
             try {
                 $movieDetail = $this->client->getMovieDetail($token, $mid);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->logger->error('Problem with fetching movieDetails from movie with id ' . $mid . ': ' . $exception->getMessage());
                 return;
             }
             try {
                 $parsedMovies = $this->parser->getParsedMovies($movieDetail, $parsedPrices);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->logger->error('Problem with parsing movie with id ' . $mid . ': ' . $exception->getMessage());
                 return;
             }
