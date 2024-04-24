@@ -209,7 +209,7 @@ final class Event extends Offer
     protected function applyEventCreated(EventCreated $eventCreated): void
     {
         $this->eventId = $eventCreated->getEventId();
-        $this->titles[$eventCreated->getMainLanguage()->getCode()] = new Title($eventCreated->getTitle());
+        $this->titles[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
         $this->calendar = $eventCreated->getCalendar();
         $this->audience = new Audience(AudienceType::everyone());
         $this->contactPoint = new ContactPoint();
