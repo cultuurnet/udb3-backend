@@ -7,13 +7,12 @@
 ## Configure
 
 ### Configuration setup
-To get or update the configuration files, run the following command in the root of the project
+To get or update the configuration files, run the following command in the root of the project.
+You will also need sudo privileges on the first run to add `127.0.0.1 host.docker.internal` to your `/etc/hosts` file.
+
 ```
 $ make config
 ```
-
-### Local host file
-To use `udb3-backend` & `udb3-search-service` together, you'll have to add `127.0.0.1 host.docker.internal` to your `/etc/hosts` file.
 
 ### RabbitMQ
 
