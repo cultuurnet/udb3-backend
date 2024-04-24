@@ -5885,12 +5885,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "85d3e0c5bd299caf004d46be1d9d32c27d7ec132"
+                "reference": "8b7ed76679b236e2854a76f8899c1d430c18edf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/85d3e0c5bd299caf004d46be1d9d32c27d7ec132",
-                "reference": "85d3e0c5bd299caf004d46be1d9d32c27d7ec132",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/8b7ed76679b236e2854a76f8899c1d430c18edf1",
+                "reference": "8b7ed76679b236e2854a76f8899c1d430c18edf1",
                 "shasum": ""
             },
             "default-branch": true,
@@ -5908,9 +5908,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6069-request-ownership"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
-            "time": "2024-03-05T11:11:48+00:00"
+            "time": "2024-04-23T08:59:55+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
