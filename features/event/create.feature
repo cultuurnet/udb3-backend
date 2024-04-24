@@ -831,8 +831,8 @@ Feature: Test the UDB3 events API
         "status": 400,
         "schemaErrors": [
             {
-                "jsonPointer": "/",
-                "error": "Given title should not be longer than 90 characters."
+                "jsonPointer": "/name/nl",
+                "error": "Maximum string length is 90, found 100"
             }
         ]
     }
