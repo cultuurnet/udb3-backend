@@ -13,5 +13,5 @@ Feature: Test the UDB3 labels API
       """
       { "email": "%{name}@test.be" }
       """
-    And I send a PUT request to "mailinglist/1746977"
+    And I send a PUT request to "mailing-list/1746977"
     Then the response status should be "204"
