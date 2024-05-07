@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Kinepolis;
 
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Google_Client;
 use Google_Service_YouTube;
 
@@ -22,7 +25,7 @@ final class KinepolisTrailerRepository implements TrailerRepository
         $this->youTubeClient = new Google_Service_YouTube($client);
     }
 
-    public function search(string $title): ?string
+    public function search(string $title): ?Video
     {
         $response = $this->youTubeClient->search->listSearch('id,snippet', [
             'channelId' => $this->channelId,
@@ -33,8 +36,11 @@ final class KinepolisTrailerRepository implements TrailerRepository
         foreach ($response['items'] as $result) {
             switch ($result['id']['kind']) {
                 case 'youtube#video':
-                    echo 'https://www.youtube.com/watch?v=', $result['id']['videoId'];
-                    break;
+                    return new Video(
+                        $result['id']['videoId'],
+                        new Url('https://www.youtube.com/watch?v=' . $result['id']['videoId']),
+                        new Language('nl')
+                    );
             }
         }
 
