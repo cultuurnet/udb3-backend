@@ -15,6 +15,9 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Kinepolis\Parser\Parser;
 use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
 use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Media\ImageUploaderInterface;
+use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use Exception;
@@ -34,6 +37,8 @@ final class KinepolisService
 
     private MappingRepository $movieMappingRepository;
 
+    private ImageUploaderInterface $imageUploader;
+
     private UuidGeneratorInterface $uuidGenerator;
 
     private LoggerInterface $logger;
@@ -45,6 +50,7 @@ final class KinepolisService
         Parser $parser,
         PriceParser $priceParser,
         MappingRepository $movieMappingRepository,
+        ImageUploaderInterface $imageUploader,
         UuidGeneratorInterface $uuidGenerator,
         LoggerInterface $logger
     ) {
@@ -54,6 +60,7 @@ final class KinepolisService
         $this->parser = $parser;
         $this->priceParser = $priceParser;
         $this->movieMappingRepository = $movieMappingRepository;
+        $this->imageUploader = $imageUploader;
         $this->uuidGenerator = $uuidGenerator;
         $this->logger = $logger;
     }
@@ -105,6 +112,7 @@ final class KinepolisService
 
         foreach ($movies as $movie) {
             $mid = $movie['mid'];
+
             try {
                 $movieDetail = $this->client->getMovieDetail($token, $mid);
             } catch (Exception $exception) {

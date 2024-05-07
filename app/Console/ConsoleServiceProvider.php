@@ -428,6 +428,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     ),
                     new KinepolisPriceParser(),
                     new MovieMappingRepository($container->get(('dbal_connection'))),
+                    $container->get('image_uploader'),
                     new Version4Generator(),
                     LoggerFactory::create(
                         $container,
