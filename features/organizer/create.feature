@@ -256,3 +256,27 @@ Feature: Test creating organizers
       "en": "English educational description"
     }
     """
+
+  Scenario: I should not be able to create an organizer with a very long title
+    Given I create a random name of 100 characters and keep it as "name"
+    Given I create a random name of 10 characters and keep it as "url"
+    # I had to create a new data file, because there is also a check on the length of the URL, which runs first
+    # The max length is 63 - https://www.nic.ad.jp/timeline/en/20th/appendix1.html#:~:text=Format%20of%20a%20domain%20name,or%20end%20with%20a%20hyphen.
+    Given I set the JSON request payload from "organizers/organizer-minimal-title-separate-from-url.json"
+    When I send a POST request to "/organizers/"
+    Then the response status should be "400"
+    And the response body should be valid JSON
+    Then the JSON response should be:
+    """
+    {
+        "type": "https://api.publiq.be/probs/body/invalid-data",
+        "title": "Invalid body data",
+        "status": 400,
+        "schemaErrors": [
+            {
+                "jsonPointer": "/name/nl",
+                "error": "Maximum string length is 90, found 100"
+            }
+        ]
+    }
+    """

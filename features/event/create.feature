@@ -811,3 +811,29 @@ Feature: Test the UDB3 events API
       "type": "https://api.publiq.be/probs/body/invalid-data"
     }
     """
+
+  Scenario: I should not be able to create an event with a very long title
+    Given I set the JSON request payload from "places/place.json"
+    When I send a POST request to "/places/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "url" as "placeUrl"
+
+    Given I create a random name of 100 characters and keep it as "name"
+    Given I set the JSON request payload from "events/event-minimal-permanent-with-variable-name.json"
+    When I send a POST request to "/events/"
+    Then the response status should be "400"
+    And the response body should be valid JSON
+    Then the JSON response should be:
+    """
+    {
+        "type": "https://api.publiq.be/probs/body/invalid-data",
+        "title": "Invalid body data",
+        "status": 400,
+        "schemaErrors": [
+            {
+                "jsonPointer": "/name/nl",
+                "error": "Maximum string length is 90, found 100"
+            }
+        ]
+    }
+    """
