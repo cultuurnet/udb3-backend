@@ -9,6 +9,7 @@ use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Description as LegacyDescription;
+use CultuurNet\UDB3\Event\Commands\AddImage;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\EventThemeResolver;
@@ -16,6 +17,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Kinepolis\Parser\Parser;
 use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
 use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -24,6 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
@@ -76,6 +79,11 @@ final class KinepolisServiceTest extends TestCase
      */
     private $uuidGenerator;
 
+    /**
+     * @var ImageUploaderInterface|MockObject
+     */
+    private $imageUploader;
+
     private string $eventId;
 
     private string $movieId;
@@ -88,6 +96,7 @@ final class KinepolisServiceTest extends TestCase
         $this->parser = $this->createMock(Parser::class);
         $this->priceParser = $this->createMock(PriceParser::class);
         $this->mappingRepository = $this->createMock(MappingRepository::class);
+        $this->imageUploader = $this->createMock(ImageUploaderInterface::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
 
         $this->service = new KinepolisService(
@@ -97,6 +106,7 @@ final class KinepolisServiceTest extends TestCase
             $this->parser,
             $this->priceParser,
             $this->mappingRepository,
+            $this->imageUploader,
             $this->uuidGenerator,
             $this->createMock(LoggerInterface::class)
         );
@@ -234,7 +244,8 @@ final class KinepolisServiceTest extends TestCase
                                     new Money(1000, new Currency('EUR'))
                                 ),
                             )
-                        )
+                        ),
+                        '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94E2/HO00010201/0000024162/Het_Smelt.jpg'
                     ),
                 ]
             );
@@ -257,9 +268,19 @@ final class KinepolisServiceTest extends TestCase
 
         $this->repository->expects($this->once())->method('save');
 
+        $imageId = new UUID('a05ca76d-0ccd-456c-97a2-b96859671d5e');
+        $this->imageUploader
+            ->expects($this->once())
+            ->method('upload')
+            ->willReturn($imageId);
+
         $this->service->import();
         $this->assertEquals(
             [
+                new AddImage(
+                    $this->eventId,
+                    $imageId
+                ),
                 new UpdateDescription(
                     $this->eventId,
                     new LegacyLanguage('nl'),
@@ -369,7 +390,8 @@ final class KinepolisServiceTest extends TestCase
                                     new Money(1100, new Currency('EUR'))
                                 ),
                             )
-                        )
+                        ),
+                        '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94E2/HO00010201/0000024162/Het_Smelt.jpg'
                     ),
                 ]
             );
@@ -391,6 +413,10 @@ final class KinepolisServiceTest extends TestCase
         $this->repository
             ->expects($this->never())
             ->method('save');
+
+        $this->imageUploader
+            ->expects($this->never())
+            ->method('upload');
 
         $this->service->import();
         $this->assertEquals(
