@@ -27,6 +27,8 @@ final class ParsedMovie
 
     private PriceInfo $priceInfo;
 
+    private string $poster;
+
     public function __construct(
         string $externalId,
         Title $title,
@@ -34,7 +36,8 @@ final class ParsedMovie
         Description $description,
         Theme $theme,
         Calendar $calendar,
-        PriceInfo $priceInfo
+        PriceInfo $priceInfo,
+        string $poster
     ) {
         $this->externalId = $externalId;
         $this->locationId = $locationId;
@@ -43,6 +46,7 @@ final class ParsedMovie
         $this->theme = $theme;
         $this->calendar = $calendar;
         $this->priceInfo = $priceInfo;
+        $this->poster = $poster;
     }
 
     public function getExternalId(): string
@@ -78,5 +82,10 @@ final class ParsedMovie
     public function getPriceInfo(): PriceInfo
     {
         return $this->priceInfo;
+    }
+
+    public function getPoster(): string
+    {
+        return $this->poster;
     }
 }

@@ -43,6 +43,7 @@ final class KinepolisParser implements Parser
         $parsedMovies = [];
         $mid = $moviesToParse['mid'];
         $title = $moviesToParse['title'];
+        $poster = $moviesToParse['poster'];
         $description = $moviesToParse['desc'];
         $themeId = $this->getThemeId($moviesToParse['genre']);
 
@@ -78,7 +79,8 @@ final class KinepolisParser implements Parser
                     new PriceInfo(
                         $parsedPrice->getBaseTariff($isLong, $is3D),
                         $parsedPrice->getOtherTariffs($isLong, $is3D)
-                    )
+                    ),
+                    $poster
                 );
             }
         }
