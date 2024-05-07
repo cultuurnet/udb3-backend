@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
+use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use Exception;
 use Psr\Log\LoggerInterface;
 
@@ -43,6 +44,8 @@ final class KinepolisService
     private UuidGeneratorInterface $uuidGenerator;
 
     private LoggerInterface $logger;
+
+    private TrailerRepository $trailerRepository;
 
     public function __construct(
         CommandBus $commandBus,
@@ -194,6 +197,17 @@ final class KinepolisService
         );
         $addImage = new AddImage($eventId, $imageId);
         $this->commandBus->dispatch($addImage);
+
+
+        $trailer = $this->trailerRepository->search($parsedMovie->getTitle()->toString());
+
+        if ($trailer !== null) {
+            $addVideo = new AddVideo(
+                $eventId,
+                $trailer
+            );
+            $this->commandBus->dispatch($addVideo);
+        }
 
         return $eventId;
     }
