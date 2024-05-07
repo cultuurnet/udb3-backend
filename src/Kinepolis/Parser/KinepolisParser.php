@@ -56,7 +56,7 @@ final class KinepolisParser implements Parser
         foreach ($parsedDates as $theatreId => $versions) {
             foreach ($versions as $dimension => $subEvents) {
                 // Add 3D to the title if it's a 3D version
-                // Needed to show the difference on the Ouput Channels
+                // Needed to show the difference on the Output Channels
                 // like UiTinVlaanderen
                 $is3D = $dimension === '3D';
                 $title = $is3D ? $title . ' 3D' : $title;
