@@ -75,7 +75,7 @@ final class AuthenticatedKinepolisClient implements KinepolisClient
 
     public function getImage(string $token, string $path): UploadedFile
     {
-        $fileName = substr($path, strrpos($path, '/') + 1);
+        $fileName = $this->getFileName($path);
 
         $headers = $this->createHeaders($token);
         $headers['Accept'] = 'image/jpeg';
@@ -86,15 +86,13 @@ final class AuthenticatedKinepolisClient implements KinepolisClient
         );
 
         $response = $this->client->sendRequest($request);
-        $imageStream = $response->getBody();
-        $mimeType = $response->getHeaderLine('Content-Type');
 
         return new UploadedFile(
-            $imageStream,
-            $imageStream->getSize(),
+            $response->getBody(),
+            $response->getBody()->getSize(),
             UPLOAD_ERR_OK,
             $fileName,
-            $mimeType
+            $response->getHeaderLine('Content-Type')
         );
     }
 
@@ -136,5 +134,10 @@ final class AuthenticatedKinepolisClient implements KinepolisClient
             $headers['Authorization'] = 'Bearer ' . $token;
         }
         return $headers;
+    }
+
+    private function getFileName(string $path): string
+    {
+        return substr($path, strrpos($path, '/') + 1);
     }
 }
