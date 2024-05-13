@@ -43,9 +43,9 @@ final class KinepolisService
 
     private UuidGeneratorInterface $uuidGenerator;
 
-    private LoggerInterface $logger;
-
     private TrailerRepository $trailerRepository;
+
+    private LoggerInterface $logger;
 
     public function __construct(
         CommandBus $commandBus,
@@ -56,6 +56,7 @@ final class KinepolisService
         MappingRepository $movieMappingRepository,
         ImageUploaderInterface $imageUploader,
         UuidGeneratorInterface $uuidGenerator,
+        TrailerRepository $trailerRepository,
         LoggerInterface $logger
     ) {
         $this->commandBus = $commandBus;
@@ -66,6 +67,7 @@ final class KinepolisService
         $this->movieMappingRepository = $movieMappingRepository;
         $this->imageUploader = $imageUploader;
         $this->uuidGenerator = $uuidGenerator;
+        $this->trailerRepository = $trailerRepository;
         $this->logger = $logger;
     }
 

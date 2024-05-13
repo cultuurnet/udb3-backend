@@ -15,7 +15,10 @@ final class KinepolisTrailerRepository implements TrailerRepository
     private string $channelId;
 
     private Google_Service_YouTube $youTubeClient;
-    public function __construct(string $developerKey, string $channelId)
+
+    private bool $enabled;
+
+    public function __construct(string $developerKey, string $channelId, bool $enabled = true)
     {
         $this->channelId = $channelId;
 
@@ -23,10 +26,12 @@ final class KinepolisTrailerRepository implements TrailerRepository
         $client->setApplicationName('TrailerFinger');
         $client->setDeveloperKey($developerKey);
         $this->youTubeClient = new Google_Service_YouTube($client);
+        $this->enabled = $enabled;
     }
 
     public function search(string $title): ?Video
     {
+
         $response = $this->youTubeClient->search->listSearch('id,snippet', [
             'channelId' => $this->channelId,
             'q' => $title,
