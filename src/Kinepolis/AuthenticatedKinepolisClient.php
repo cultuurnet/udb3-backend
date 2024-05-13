@@ -75,9 +75,7 @@ final class AuthenticatedKinepolisClient implements KinepolisClient
 
     public function getImage(string $token, string $path): UploadedFile
     {
-        $lastSlashPosition = strrpos($path, '/');
-
-        $fileName = substr($path, $lastSlashPosition + 1);
+        $fileName = substr($path, strrpos($path, '/') + 1);
 
         $headers = $this->createHeaders($token);
         $headers['Accept'] = 'image/jpeg';
