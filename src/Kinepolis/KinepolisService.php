@@ -146,7 +146,19 @@ final class KinepolisService
         $eventId = $this->movieMappingRepository->getByMovieId($parsedMovie->getExternalId());
 
         if ($eventId === null) {
-            $eventId = $this->createNewMovie($parsedMovie, $token);
+            $eventId = $this->createNewMovie($parsedMovie);
+            $addImage = $this->uploadImage($token, $parsedMovie, $eventId);
+            $commands[] = $addImage;
+
+            $trailer = $this->trailerRepository->search($parsedMovie->getTitle()->toString());
+
+            if ($trailer !== null) {
+                $addVideo = new AddVideo(
+                    $eventId,
+                    $trailer
+                );
+                $commands[] = $addVideo;
+            }
         } else {
             $updateCalendar = new UpdateCalendar($eventId, LegacyCalendar::fromUdb3ModelCalendar($parsedMovie->getCalendar()));
             $commands[] = $updateCalendar;
@@ -171,7 +183,7 @@ final class KinepolisService
         }
     }
 
-    private function createNewMovie(ParsedMovie $parsedMovie, string $token): string
+    private function createNewMovie(ParsedMovie $parsedMovie): string
     {
         $eventId = $this->uuidGenerator->generate();
         $eventAggregate = EventAggregate::create(
@@ -188,29 +200,20 @@ final class KinepolisService
         $this->movieMappingRepository->create($eventId, $parsedMovie->getExternalId());
         $this->logger->info('Event created with id ' . $eventId);
 
+        return $eventId;
+    }
+
+    private function uploadImage(string $token, ParsedMovie $parsedMovie, string $eventId): AddImage
+    {
         // Movie pictures are normally never updated in the external API
         // to avoid multiple needless updates, we only add an image during the creation
-        $uploadedImage = $this->client->getImage($token, $parsedMovie->getPoster());
+        $uploadedImage = $this->client->getImage($token, $parsedMovie->getImageUrl());
         $imageId = $this->imageUploader->upload(
             $uploadedImage,
             new MediaDescription($parsedMovie->getTitle()->toString()),
             new CopyrightHolder('Kinepolis'),
             new LegacyLanguage('nl')
         );
-        $addImage = new AddImage($eventId, $imageId);
-        $this->commandBus->dispatch($addImage);
-
-
-        $trailer = $this->trailerRepository->search($parsedMovie->getTitle()->toString());
-
-        if ($trailer !== null) {
-            $addVideo = new AddVideo(
-                $eventId,
-                $trailer
-            );
-            $this->commandBus->dispatch($addVideo);
-        }
-
-        return $eventId;
+        return new AddImage($eventId, $imageId);
     }
 }
