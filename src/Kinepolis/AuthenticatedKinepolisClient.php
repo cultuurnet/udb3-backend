@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Kinepolis;
 
 use CultuurNet\UDB3\Json;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\UploadedFile;
 use Psr\Http\Client\ClientInterface;
 
 final class AuthenticatedKinepolisClient implements KinepolisClient
@@ -72,6 +73,29 @@ final class AuthenticatedKinepolisClient implements KinepolisClient
         return $contents['movies'][0];
     }
 
+    public function getImage(string $token, string $path): UploadedFile
+    {
+        $fileName = $this->getFileName($path);
+
+        $headers = $this->createHeaders($token);
+        $headers['Accept'] = 'image/jpeg';
+        $request = new Request(
+            'GET',
+            $this->movieApiBaseUrl . $path,
+            $headers
+        );
+
+        $response = $this->client->sendRequest($request);
+
+        return new UploadedFile(
+            $response->getBody(),
+            $response->getBody()->getSize(),
+            UPLOAD_ERR_OK,
+            $fileName,
+            $response->getHeaderLine('Content-Type')
+        );
+    }
+
     public function getTheaters(string $token): array
     {
         $request = new Request(
@@ -110,5 +134,10 @@ final class AuthenticatedKinepolisClient implements KinepolisClient
             $headers['Authorization'] = 'Bearer ' . $token;
         }
         return $headers;
+    }
+
+    private function getFileName(string $path): string
+    {
+        return substr($path, strrpos($path, '/') + 1);
     }
 }

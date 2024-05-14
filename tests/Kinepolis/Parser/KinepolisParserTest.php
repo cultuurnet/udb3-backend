@@ -137,7 +137,8 @@ final class KinepolisParserTest extends TestCase
                                 new Money(1000, new Currency('EUR'))
                             )
                         )
-                    )
+                    ),
+                    '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94D2/HO00010201/0000024163/Godzilla_x_Kong:_The_New_Empire.jpg'
                 ),
                 new ParsedMovie(
                     'Kinepolis:tKOOSTm32696',
@@ -181,7 +182,8 @@ final class KinepolisParserTest extends TestCase
                                 new Money(900, new Currency('EUR'))
                             )
                         )
-                    )
+                    ),
+                    '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94D2/HO00010201/0000024163/Godzilla_x_Kong:_The_New_Empire.jpg'
                 ),
                 new ParsedMovie(
                     'Kinepolis:tKOOSTm32696v3D',
@@ -225,7 +227,8 @@ final class KinepolisParserTest extends TestCase
                                 new Money(1100, new Currency('EUR'))
                             )
                         )
-                    )
+                    ),
+                    '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94D2/HO00010201/0000024163/Godzilla_x_Kong:_The_New_Empire.jpg'
                 ),
             ],
             $this->parser->getParsedMovies(
