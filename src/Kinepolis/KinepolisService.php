@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
+use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use Exception;
 use Psr\Log\LoggerInterface;
 
@@ -42,6 +43,8 @@ final class KinepolisService
 
     private UuidGeneratorInterface $uuidGenerator;
 
+    private TrailerRepository $trailerRepository;
+
     private LoggerInterface $logger;
 
     public function __construct(
@@ -53,6 +56,7 @@ final class KinepolisService
         MappingRepository $movieMappingRepository,
         ImageUploaderInterface $imageUploader,
         UuidGeneratorInterface $uuidGenerator,
+        TrailerRepository $trailerRepository,
         LoggerInterface $logger
     ) {
         $this->commandBus = $commandBus;
@@ -63,6 +67,7 @@ final class KinepolisService
         $this->movieMappingRepository = $movieMappingRepository;
         $this->imageUploader = $imageUploader;
         $this->uuidGenerator = $uuidGenerator;
+        $this->trailerRepository = $trailerRepository;
         $this->logger = $logger;
     }
 
@@ -144,6 +149,21 @@ final class KinepolisService
             $eventId = $this->createNewMovie($parsedMovie);
             $addImage = $this->uploadImage($token, $parsedMovie, $eventId);
             $commands[] = $addImage;
+
+            try {
+                $trailer = $this->trailerRepository->search($parsedMovie->getTitle()->toString());
+
+                if ($trailer !== null) {
+                    $this->logger->info('Found trailer ' . $trailer->getUrl()->toString() . ' for movie ' . $parsedMovie->getTitle()->toString());
+                    $addVideo = new AddVideo(
+                        $eventId,
+                        $trailer
+                    );
+                    $commands[] = $addVideo;
+                }
+            } catch (Exception $exception) {
+                $this->logger->error('Problem with searching trailer for ' . $parsedMovie->getTitle()->toString() . ':' . $exception->getMessage());
+            }
         } else {
             $updateCalendar = new UpdateCalendar($eventId, LegacyCalendar::fromUdb3ModelCalendar($parsedMovie->getCalendar()));
             $commands[] = $updateCalendar;
