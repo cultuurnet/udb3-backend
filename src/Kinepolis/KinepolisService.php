@@ -152,7 +152,7 @@ final class KinepolisService
 
             try {
                 $trailer = $this->trailerRepository->search($parsedMovie->getTitle()->toString());
-
+                $this->logger->info('Found trailer ' . $trailer->getUrl()->toString() . ' for movie ' . $parsedMovie->getTitle()->toString());
                 if ($trailer !== null) {
                     $addVideo = new AddVideo(
                         $eventId,
