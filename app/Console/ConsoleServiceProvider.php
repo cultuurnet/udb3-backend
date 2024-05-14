@@ -47,7 +47,7 @@ use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Kinepolis\AuthenticatedKinepolisClient;
 use CultuurNet\UDB3\Kinepolis\KinepolisService;
-use CultuurNet\UDB3\Kinepolis\KinepolisTrailerRepository;
+use CultuurNet\UDB3\Kinepolis\YoutubeTrailerRepository;
 use CultuurNet\UDB3\Kinepolis\MovieMappingRepository;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisDateParser;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisParser;
@@ -431,7 +431,12 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     new MovieMappingRepository($container->get(('dbal_connection'))),
                     $container->get('image_uploader'),
                     new Version4Generator(),
-                    new KinepolisTrailerRepository(),
+                    new YoutubeTrailerRepository(
+                        $container->get('config')['kinepolis']['trailers']['developer_key'],
+                        $container->get('config')['kinepolis']['trailers']['channel_id'],
+                        new Version4Generator(),
+                        $container->get('config')['kinepolis']['trailers']['enabled'],
+                    ),
                     LoggerFactory::create(
                         $container,
                         LoggerName::forService('fetching-movies', 'kinepolis')
