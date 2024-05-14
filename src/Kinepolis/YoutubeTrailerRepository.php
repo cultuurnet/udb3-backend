@@ -27,7 +27,7 @@ final class YoutubeTrailerRepository implements TrailerRepository
         $this->uuidGenerator = $uuidGenerator;
 
         $client = new Google_Client();
-        $client->setApplicationName('TrailerFinder');
+        $client->setApplicationName('UiTDatabankTrailerFinder');
         $client->setDeveloperKey($developerKey);
         $this->youTubeClient = new Google_Service_YouTube($client);
         $this->enabled = $enabled;
