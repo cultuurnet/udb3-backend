@@ -150,14 +150,18 @@ final class KinepolisService
             $addImage = $this->uploadImage($token, $parsedMovie, $eventId);
             $commands[] = $addImage;
 
-            $trailer = $this->trailerRepository->search($parsedMovie->getTitle()->toString());
+            try {
+                $trailer = $this->trailerRepository->search($parsedMovie->getTitle()->toString());
 
-            if ($trailer !== null) {
-                $addVideo = new AddVideo(
-                    $eventId,
-                    $trailer
-                );
-                $commands[] = $addVideo;
+                if ($trailer !== null) {
+                    $addVideo = new AddVideo(
+                        $eventId,
+                        $trailer
+                    );
+                    $commands[] = $addVideo;
+                }
+            } catch (Exception $exception) {
+                $this->logger->error('Problem with searching trailer for ' . $parsedMovie->getTitle()->toString() . ':' . $exception->getMessage());
             }
         } else {
             $updateCalendar = new UpdateCalendar($eventId, LegacyCalendar::fromUdb3ModelCalendar($parsedMovie->getCalendar()));
