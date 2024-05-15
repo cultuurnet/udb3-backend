@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeEventCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
+use CultuurNet\UDB3\Console\Command\ImportMovieIdsFromCsv;
 use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Console\Command\IncludeLabel;
 use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
@@ -100,6 +101,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:convert-educational-description',
         'console.execute-command-from-csv',
         'console.movies:fetch',
+        'console.movies:migrate',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -408,6 +410,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.execute-command-from-csv',
             fn () => new ExecuteCommandFromCsv()
+        );
+
+        $container->addShared(
+            'console.movies:migrate',
+            fn () => new ImportMovieIdsFromCsv(
+                new MovieMappingRepository($container->get(('dbal_connection'))),
+                $container->get('event_jsonld_repository')
+            )
         );
 
         $container->addShared(
