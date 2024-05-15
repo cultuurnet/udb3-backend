@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use CultuurNet\UDB3\Kinepolis\MovieMappingRepository;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use League\Csv\Reader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,10 +18,16 @@ final class ImportMovieIdsFromCsv extends Command
     private const CSV_FILE = 'csv_file';
     private MovieMappingRepository $mappingRepository;
 
-    public function __construct(MovieMappingRepository $mappingRepository)
+    private DocumentRepository $eventDocumentRepository;
+
+    public function __construct(
+        MovieMappingRepository $mappingRepository,
+        DocumentRepository $eventDocumentRepository
+    )
     {
         parent::__construct();
         $this->mappingRepository = $mappingRepository;
+        $this->eventDocumentRepository = $eventDocumentRepository;
     }
 
     protected function configure(): void
@@ -42,6 +50,12 @@ final class ImportMovieIdsFromCsv extends Command
         $records = $csvReader->getRecords();
         $output->writeln('Starting import.');
         foreach ($records as $record) {
+            try {
+                $this->eventDocumentRepository->fetch($record[0]);
+            } catch (DocumentDoesNotExist $documentDoesNotExist){
+                $output->writeln('Did not found event with id: ' . $record[0]);
+                return 1;
+            }
             $this->mappingRepository->create($record[0], $record[1]);
         }
 

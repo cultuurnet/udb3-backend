@@ -414,7 +414,10 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'console.movies:migrate',
-            fn () => new ImportMovieIdsFromCsv(new MovieMappingRepository($container->get(('dbal_connection'))), )
+            fn () => new ImportMovieIdsFromCsv(
+                new MovieMappingRepository($container->get(('dbal_connection'))),
+                $container->get('event_jsonld_repository')
+            )
         );
 
         $container->addShared(
