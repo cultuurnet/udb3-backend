@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeEventCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
+use CultuurNet\UDB3\Console\Command\ImportMovieIdsFromCsv;
 use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Console\Command\IncludeLabel;
 use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
@@ -45,12 +46,13 @@ use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
-use CultuurNet\UDB3\Kinepolis\AuthenticatedKinepolisClient;
+use CultuurNet\UDB3\Kinepolis\Client\AuthenticatedKinepolisClient;
 use CultuurNet\UDB3\Kinepolis\KinepolisService;
-use CultuurNet\UDB3\Kinepolis\MovieMappingRepository;
+use CultuurNet\UDB3\Kinepolis\Mapping\MovieMappingRepository;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisDateParser;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisParser;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisPriceParser;
+use CultuurNet\UDB3\Kinepolis\Trailer\YoutubeTrailerRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
@@ -99,6 +101,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:convert-educational-description',
         'console.execute-command-from-csv',
         'console.movies:fetch',
+        'console.movies:migrate',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -410,6 +413,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
+            'console.movies:migrate',
+            fn () => new ImportMovieIdsFromCsv(
+                new MovieMappingRepository($container->get(('dbal_connection'))),
+                $container->get('event_jsonld_repository')
+            )
+        );
+
+        $container->addShared(
             'console.movies:fetch',
             fn () => new FetchMoviesFromKinepolisApi(
                 new KinepolisService(
@@ -430,6 +441,12 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     new MovieMappingRepository($container->get(('dbal_connection'))),
                     $container->get('image_uploader'),
                     new Version4Generator(),
+                    new YoutubeTrailerRepository(
+                        $container->get('config')['kinepolis']['trailers']['developer_key'],
+                        $container->get('config')['kinepolis']['trailers']['channel_id'],
+                        new Version4Generator(),
+                        $container->get('config')['kinepolis']['trailers']['enabled'],
+                    ),
                     LoggerFactory::create(
                         $container,
                         LoggerName::forService('fetching-movies', 'kinepolis')

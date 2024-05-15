@@ -38,6 +38,7 @@
     "easyrdf/easyrdf": "^1.1",
     "galbar/jsonpath": "^2.0",
     "geocoder-php/google-maps-provider": "^4.6",
+    "google/apiclient": "^2.14",
     "gridonic/princexml-php": "~1.1.1",
     "guzzlehttp/guzzle": "^7.4",
     "guzzlehttp/psr7": "^2.4",

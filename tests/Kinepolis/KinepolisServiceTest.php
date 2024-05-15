@@ -14,8 +14,13 @@ use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\EventThemeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Kinepolis\Client\KinepolisClient;
+use CultuurNet\UDB3\Kinepolis\Mapping\MappingRepository;
 use CultuurNet\UDB3\Kinepolis\Parser\Parser;
 use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
+use CultuurNet\UDB3\Kinepolis\Trailer\TrailerRepository;
+use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedMovie;
+use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedPriceForATheater;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
@@ -27,6 +32,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
@@ -35,8 +41,10 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
+use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -80,6 +88,11 @@ final class KinepolisServiceTest extends TestCase
     private $uuidGenerator;
 
     /**
+     * @var TrailerRepository|MockObject
+     */
+    private $trailerRepository;
+
+    /**
      * @var ImageUploaderInterface|MockObject
      */
     private $imageUploader;
@@ -98,6 +111,7 @@ final class KinepolisServiceTest extends TestCase
         $this->mappingRepository = $this->createMock(MappingRepository::class);
         $this->imageUploader = $this->createMock(ImageUploaderInterface::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
+        $this->trailerRepository = $this->createMock(TrailerRepository::class);
 
         $this->service = new KinepolisService(
             $this->commandBus,
@@ -108,6 +122,7 @@ final class KinepolisServiceTest extends TestCase
             $this->mappingRepository,
             $this->imageUploader,
             $this->uuidGenerator,
+            $this->trailerRepository,
             $this->createMock(LoggerInterface::class)
         );
 
@@ -274,12 +289,27 @@ final class KinepolisServiceTest extends TestCase
             ->method('upload')
             ->willReturn($imageId);
 
+        $video = new Video(
+            'da45a110-b404-4bd8-9827-27be0af471d2',
+            new Url('https://www.youtube.com/watch?v=26r2alNpYSg'),
+            new Language('nl')
+        );
+        $this->trailerRepository
+            ->expects($this->once())
+            ->method('search')
+            ->with('Het Smelt')
+            ->willReturn($video);
+
         $this->service->import();
         $this->assertEquals(
             [
                 new AddImage(
                     $this->eventId,
                     $imageId
+                ),
+                new AddVideo(
+                    $this->eventId,
+                    $video
                 ),
                 new UpdateDescription(
                     $this->eventId,
@@ -417,6 +447,10 @@ final class KinepolisServiceTest extends TestCase
         $this->imageUploader
             ->expects($this->never())
             ->method('upload');
+
+        $this->trailerRepository
+            ->expects($this->never())
+            ->method('search');
 
         $this->service->import();
         $this->assertEquals(

@@ -13,14 +13,20 @@ use CultuurNet\UDB3\Event\Commands\AddImage;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Kinepolis\Client\KinepolisClient;
+use CultuurNet\UDB3\Kinepolis\Mapping\MappingRepository;
 use CultuurNet\UDB3\Kinepolis\Parser\Parser;
 use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
+use CultuurNet\UDB3\Kinepolis\Trailer\TrailerRepository;
+use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedMovie;
+use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedPriceForATheater;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
+use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use Exception;
 use Psr\Log\LoggerInterface;
 
@@ -42,6 +48,8 @@ final class KinepolisService
 
     private UuidGeneratorInterface $uuidGenerator;
 
+    private TrailerRepository $trailerRepository;
+
     private LoggerInterface $logger;
 
     public function __construct(
@@ -53,6 +61,7 @@ final class KinepolisService
         MappingRepository $movieMappingRepository,
         ImageUploaderInterface $imageUploader,
         UuidGeneratorInterface $uuidGenerator,
+        TrailerRepository $trailerRepository,
         LoggerInterface $logger
     ) {
         $this->commandBus = $commandBus;
@@ -63,6 +72,7 @@ final class KinepolisService
         $this->movieMappingRepository = $movieMappingRepository;
         $this->imageUploader = $imageUploader;
         $this->uuidGenerator = $uuidGenerator;
+        $this->trailerRepository = $trailerRepository;
         $this->logger = $logger;
     }
 
@@ -141,7 +151,24 @@ final class KinepolisService
         $eventId = $this->movieMappingRepository->getByMovieId($parsedMovie->getExternalId());
 
         if ($eventId === null) {
-            $eventId = $this->createNewMovie($parsedMovie, $token);
+            $eventId = $this->createNewMovie($parsedMovie);
+            $addImage = $this->uploadImage($token, $parsedMovie, $eventId);
+            $commands[] = $addImage;
+
+            try {
+                $trailer = $this->trailerRepository->search($parsedMovie->getTitle()->toString());
+
+                if ($trailer !== null) {
+                    $this->logger->info('Found trailer ' . $trailer->getUrl()->toString() . ' for movie ' . $parsedMovie->getTitle()->toString());
+                    $addVideo = new AddVideo(
+                        $eventId,
+                        $trailer
+                    );
+                    $commands[] = $addVideo;
+                }
+            } catch (Exception $exception) {
+                $this->logger->error('Problem with searching trailer for ' . $parsedMovie->getTitle()->toString() . ':' . $exception->getMessage());
+            }
         } else {
             $updateCalendar = new UpdateCalendar($eventId, LegacyCalendar::fromUdb3ModelCalendar($parsedMovie->getCalendar()));
             $commands[] = $updateCalendar;
@@ -166,7 +193,7 @@ final class KinepolisService
         }
     }
 
-    private function createNewMovie(ParsedMovie $parsedMovie, string $token): string
+    private function createNewMovie(ParsedMovie $parsedMovie): string
     {
         $eventId = $this->uuidGenerator->generate();
         $eventAggregate = EventAggregate::create(
@@ -183,18 +210,20 @@ final class KinepolisService
         $this->movieMappingRepository->create($eventId, $parsedMovie->getExternalId());
         $this->logger->info('Event created with id ' . $eventId);
 
+        return $eventId;
+    }
+
+    private function uploadImage(string $token, ParsedMovie $parsedMovie, string $eventId): AddImage
+    {
         // Movie pictures are normally never updated in the external API
         // to avoid multiple needless updates, we only add an image during the creation
-        $uploadedImage = $this->client->getImage($token, $parsedMovie->getPoster());
+        $uploadedImage = $this->client->getImage($token, $parsedMovie->getImageUrl());
         $imageId = $this->imageUploader->upload(
             $uploadedImage,
             new MediaDescription($parsedMovie->getTitle()->toString()),
             new CopyrightHolder('Kinepolis'),
             new LegacyLanguage('nl')
         );
-        $addImage = new AddImage($eventId, $imageId);
-        $this->commandBus->dispatch($addImage);
-
-        return $eventId;
+        return new AddImage($eventId, $imageId);
     }
 }

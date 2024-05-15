@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Kinepolis\Parser;
 
-use CultuurNet\UDB3\Kinepolis\ParsedPriceForATheater;
+use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedPriceForATheater;
 use PHPUnit\Framework\TestCase;
 
 final class KinepolisPriceParserTest extends TestCase

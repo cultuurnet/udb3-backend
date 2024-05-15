@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Kinepolis;
+namespace CultuurNet\UDB3\Kinepolis\ValueObject;
 
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
@@ -27,7 +27,7 @@ final class ParsedMovie
 
     private PriceInfo $priceInfo;
 
-    private string $poster;
+    private string $imageUrl;
 
     public function __construct(
         string $externalId,
@@ -37,7 +37,7 @@ final class ParsedMovie
         Theme $theme,
         Calendar $calendar,
         PriceInfo $priceInfo,
-        string $poster
+        string $imageUrl
     ) {
         $this->externalId = $externalId;
         $this->locationId = $locationId;
@@ -46,7 +46,7 @@ final class ParsedMovie
         $this->theme = $theme;
         $this->calendar = $calendar;
         $this->priceInfo = $priceInfo;
-        $this->poster = $poster;
+        $this->imageUrl = $imageUrl;
     }
 
     public function getExternalId(): string
@@ -84,8 +84,8 @@ final class ParsedMovie
         return $this->priceInfo;
     }
 
-    public function getPoster(): string
+    public function getImageUrl(): string
     {
-        return $this->poster;
+        return $this->imageUrl;
     }
 }
