@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Console\Command;
 
-use CultuurNet\UDB3\Kinepolis\MovieMappingRepository;
+use CultuurNet\UDB3\Kinepolis\Mapping\MovieMappingRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use League\Csv\Reader;

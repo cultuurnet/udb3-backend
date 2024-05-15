@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Kinepolis;
+namespace CultuurNet\UDB3\Kinepolis\Client;
 
 use CultuurNet\UDB3\Json;
 use GuzzleHttp\Psr7\Request;
