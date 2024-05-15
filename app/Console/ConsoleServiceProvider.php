@@ -46,7 +46,7 @@ use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
-use CultuurNet\UDB3\Kinepolis\AuthenticatedKinepolisClient;
+use CultuurNet\UDB3\Kinepolis\Client\AuthenticatedKinepolisClient;
 use CultuurNet\UDB3\Kinepolis\KinepolisService;
 use CultuurNet\UDB3\Kinepolis\Mapping\MovieMappingRepository;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisDateParser;
