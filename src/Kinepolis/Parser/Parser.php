@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Kinepolis\Parser;
 
-use CultuurNet\UDB3\Kinepolis\ParsedMovie;
-use CultuurNet\UDB3\Kinepolis\ParsedPriceForATheater;
+use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedMovie;
+use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedPriceForATheater;
 
 interface Parser
 {

@@ -17,6 +17,8 @@ use CultuurNet\UDB3\Kinepolis\Mapping\MappingRepository;
 use CultuurNet\UDB3\Kinepolis\Parser\Parser;
 use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
 use CultuurNet\UDB3\Kinepolis\Trailer\TrailerRepository;
+use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedMovie;
+use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedPriceForATheater;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
