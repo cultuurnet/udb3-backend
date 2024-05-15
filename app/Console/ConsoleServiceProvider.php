@@ -52,7 +52,7 @@ use CultuurNet\UDB3\Kinepolis\Mapping\MovieMappingRepository;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisDateParser;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisParser;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisPriceParser;
-use CultuurNet\UDB3\Kinepolis\YoutubeTrailerRepository;
+use CultuurNet\UDB3\Kinepolis\Trailer\YoutubeTrailerRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
