@@ -139,7 +139,7 @@ Feature: Test the permissions in UDB3
     Given I am authorized as JWT provider v1 user "validator_pvb"
     When I set the JSON request payload to:
     """
-    { "description": "Rondleiding in de citadel te Diest onder deskundige leiding van Davidsfonds Molenstede - update validator_pvb" }
+    { "description": "Rondleiding in de citadel te Diest - update validator_pvb" }
     """
       And I send a PUT request to "/events/%{uuid_event_rondleiding}/description/nl"
     Then the response status should be "204"
@@ -147,7 +147,7 @@ Feature: Test the permissions in UDB3
     Then the response status should be "200"
       And the JSON response at "description/nl" should be:
         """
-        "Rondleiding in de citadel te Diest onder deskundige leiding van Davidsfonds Molenstede - update validator_pvb"
+        "Rondleiding in de citadel te Diest - update validator_pvb"
         """
 
   Scenario: update event WITHOUT permission - invoerder_lgm
@@ -156,7 +156,7 @@ Feature: Test the permissions in UDB3
       And I keep the value of the JSON response at "name/nl" as "jsonld_name_nl_event_rondleiding"
     When I set the JSON request payload to:
       """
-      { "name": "Rondleiding in de citadel te Diest onder deskundige leiding van Davidsfonds Molenstede - update invoerder_lgm" }
+      { "name": "Rondleiding in de citadel te Diest - update invoerder_lgm" }
       """
       And I send a PUT request to "/events/%{uuid_event_rondleiding}/name/nl"
     Then the response status should be "403"
@@ -170,7 +170,7 @@ Feature: Test the permissions in UDB3
       And I keep the value of the JSON response at "name/nl" as "jsonld_name_nl_event_rondleiding"
     When I set the JSON request payload to:
       """
-      { "name": "Rondleiding in de citadel te Diest onder deskundige leiding van Davidsfonds Molenstede - update invoerder_gbm" }
+      { "name": "Rondleiding in de citadel te Diest - update invoerder_gbm" }
       """
       And I send a PUT request to "/events/%{uuid_event_rondleiding}/name/nl"
     Then the response status should be "403"
@@ -184,7 +184,7 @@ Feature: Test the permissions in UDB3
       And I keep the value of the JSON response at "name/nl" as "jsonld_name_nl_event_rondleiding"
     When I set the JSON request payload to:
       """
-      { "name": "Rondleiding in de citadel te Diest onder deskundige leiding van Davidsfonds Molenstede - update validator_scherpenheuvel" }
+      { "name": "Rondleiding in de citadel te Diest - update validator_scherpenheuvel" }
       """
       And I send a PUT request to "/events/%{uuid_event_rondleiding}/name/nl"
     Then the response status should be "403"
