@@ -23,8 +23,7 @@ final class ImportMovieIdsFromCsv extends Command
     public function __construct(
         MovieMappingRepository $mappingRepository,
         DocumentRepository $eventDocumentRepository
-    )
-    {
+    ) {
         parent::__construct();
         $this->mappingRepository = $mappingRepository;
         $this->eventDocumentRepository = $eventDocumentRepository;
@@ -52,7 +51,7 @@ final class ImportMovieIdsFromCsv extends Command
         foreach ($records as $record) {
             try {
                 $this->eventDocumentRepository->fetch($record[0]);
-            } catch (DocumentDoesNotExist $documentDoesNotExist){
+            } catch (DocumentDoesNotExist $documentDoesNotExist) {
                 $output->writeln('Did not found event with id: ' . $record[0]);
                 return 1;
             }
