@@ -7,9 +7,11 @@ namespace CultuurNet\UDB3\Kinepolis;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\Commands\AddImage;
+use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\EventThemeResolver;
@@ -193,6 +195,9 @@ final class KinepolisServiceTest extends TestCase
      */
     public function it_dispatches_commands_for_newly_created_movie(): void
     {
+        $now = Chronos::now();
+        Chronos::setTestNow($now);
+
         $this->client
             ->expects($this->once())
             ->method('getMovies')
@@ -303,6 +308,7 @@ final class KinepolisServiceTest extends TestCase
         $this->service->import();
         $this->assertEquals(
             [
+                new Publish($this->eventId),
                 new AddImage(
                     $this->eventId,
                     $imageId
