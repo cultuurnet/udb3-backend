@@ -15,6 +15,10 @@ use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\EventThemeResolver;
+use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
+use CultuurNet\UDB3\Event\Productions\Production;
+use CultuurNet\UDB3\Event\Productions\ProductionId;
+use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Kinepolis\Client\KinepolisClient;
 use CultuurNet\UDB3\Kinepolis\Mapping\MappingRepository;
@@ -99,6 +103,11 @@ final class KinepolisServiceTest extends TestCase
      */
     private $imageUploader;
 
+    /**
+     * @var ProductionRepository|MockObject
+     */
+    private $productionRepository;
+
     private string $eventId;
 
     private string $movieId;
@@ -114,6 +123,7 @@ final class KinepolisServiceTest extends TestCase
         $this->imageUploader = $this->createMock(ImageUploaderInterface::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->trailerRepository = $this->createMock(TrailerRepository::class);
+        $this->productionRepository = $this->createMock(ProductionRepository::class);
 
         $this->service = new KinepolisService(
             $this->commandBus,
@@ -125,6 +135,7 @@ final class KinepolisServiceTest extends TestCase
             $this->imageUploader,
             $this->uuidGenerator,
             $this->trailerRepository,
+            $this->productionRepository,
             $this->createMock(LoggerInterface::class)
         );
 
@@ -294,6 +305,17 @@ final class KinepolisServiceTest extends TestCase
             ->method('upload')
             ->willReturn($imageId);
 
+        $productionId = ProductionId::generate();
+        $this->productionRepository
+            ->expects($this->once())
+            ->method('search')
+            ->with('Het Smelt', 0, 1)
+            ->willReturn(
+                [
+                    new Production($productionId, 'Het Smelt', [])
+                ]
+            );
+
         $video = new Video(
             'da45a110-b404-4bd8-9827-27be0af471d2',
             new Url('https://www.youtube.com/watch?v=26r2alNpYSg'),
@@ -312,6 +334,10 @@ final class KinepolisServiceTest extends TestCase
                 new AddImage(
                     $this->eventId,
                     $imageId
+                ),
+                new AddEventToProduction(
+                    $this->eventId,
+                    $productionId
                 ),
                 new AddVideo(
                     $this->eventId,
