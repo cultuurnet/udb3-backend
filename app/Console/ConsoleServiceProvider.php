@@ -45,6 +45,7 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Kinepolis\Client\AuthenticatedKinepolisClient;
 use CultuurNet\UDB3\Kinepolis\KinepolisService;
@@ -447,6 +448,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                         new Version4Generator(),
                         $container->get('config')['kinepolis']['trailers']['enabled'],
                     ),
+                    $container->get(ProductionRepository::class),
                     LoggerFactory::create(
                         $container,
                         LoggerName::forService('fetching-movies', 'kinepolis')

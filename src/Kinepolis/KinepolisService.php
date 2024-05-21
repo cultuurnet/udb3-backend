@@ -14,6 +14,10 @@ use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
+use CultuurNet\UDB3\Event\Productions\Production;
+use CultuurNet\UDB3\Event\Productions\ProductionId;
+use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Kinepolis\Client\KinepolisClient;
 use CultuurNet\UDB3\Kinepolis\Mapping\MappingRepository;
 use CultuurNet\UDB3\Kinepolis\Parser\Parser;
@@ -51,6 +55,8 @@ final class KinepolisService
 
     private TrailerRepository $trailerRepository;
 
+    private ProductionRepository $productionRepository;
+
     private LoggerInterface $logger;
 
     public function __construct(
@@ -63,6 +69,7 @@ final class KinepolisService
         ImageUploaderInterface $imageUploader,
         UuidGeneratorInterface $uuidGenerator,
         TrailerRepository $trailerRepository,
+        ProductionRepository $productionRepository,
         LoggerInterface $logger
     ) {
         $this->commandBus = $commandBus;
@@ -74,6 +81,7 @@ final class KinepolisService
         $this->imageUploader = $imageUploader;
         $this->uuidGenerator = $uuidGenerator;
         $this->trailerRepository = $trailerRepository;
+        $this->productionRepository = $productionRepository;
         $this->logger = $logger;
     }
 
@@ -157,6 +165,10 @@ final class KinepolisService
             $addImage = $this->uploadImage($token, $parsedMovie, $eventId);
             $commands[] = $addImage;
 
+            $productionId = $this->linkToProduction($parsedMovie->getTitle()->toString());
+            $addEventToProduction =  new AddEventToProduction($eventId, $productionId);
+            $commands[] = $addEventToProduction;
+
             try {
                 $trailer = $this->trailerRepository->search($parsedMovie->getTitle()->toString());
 
@@ -227,5 +239,15 @@ final class KinepolisService
             new LegacyLanguage('nl')
         );
         return new AddImage($eventId, $imageId);
+    }
+
+    private function linkToProduction(string $title): ProductionId
+    {
+        $productions = $this->productionRepository->search($title, 0, 1);
+        if (count($productions) > 0) {
+           return $productions[0]->getProductionId();
+        }
+
+        return (Production::createEmpty($title))->getProductionId();
     }
 }
