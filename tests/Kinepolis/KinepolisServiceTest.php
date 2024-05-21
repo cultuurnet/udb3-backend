@@ -312,7 +312,7 @@ final class KinepolisServiceTest extends TestCase
             ->with('Het Smelt', 0, 1)
             ->willReturn(
                 [
-                    new Production($productionId, 'Het Smelt', [])
+                    new Production($productionId, 'Het Smelt', []),
                 ]
             );
 

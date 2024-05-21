@@ -245,7 +245,7 @@ final class KinepolisService
     {
         $productions = $this->productionRepository->search($title, 0, 1);
         if (count($productions) > 0) {
-           return $productions[0]->getProductionId();
+            return $productions[0]->getProductionId();
         }
 
         return (Production::createEmpty($title))->getProductionId();
