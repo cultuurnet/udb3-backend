@@ -10,6 +10,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Commands\AddImage;
+use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\EventType;
@@ -152,6 +153,7 @@ final class KinepolisService
 
         if ($eventId === null) {
             $eventId = $this->createNewMovie($parsedMovie);
+            $commands[] = new Publish($eventId);
             $addImage = $this->uploadImage($token, $parsedMovie, $eventId);
             $commands[] = $addImage;
 
