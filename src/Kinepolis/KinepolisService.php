@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
@@ -148,13 +149,22 @@ final class KinepolisService
 
             $this->logger->info('Found ' . count($parsedMovies) . ' screenings for movie with kinepolisId ' . $mid);
 
+            // We do only 1 search by movieTitle for a trailer to avoid hitting the YouTube Rate limiting.
+            $movieTitle = $movie['title'];
+            $trailer = null;
+            try {
+                $trailer =  $this->trailerRepository->search($movieTitle);
+            } catch (Exception $exception) {
+                $this->logger->error('Problem with searching trailer for ' . $movieTitle . ':' . $exception->getMessage());
+            }
+
             foreach ($parsedMovies as $parsedMovie) {
-                $this->process($parsedMovie, $token);
+                $this->process($parsedMovie, $token, $trailer);
             }
         }
     }
 
-    private function process(ParsedMovie $parsedMovie, string $token): void
+    private function process(ParsedMovie $parsedMovie, string $token, ?Video $trailer): void
     {
         $commands = [];
         $eventId = $this->movieMappingRepository->getByMovieId($parsedMovie->getExternalId());
@@ -169,19 +179,13 @@ final class KinepolisService
             $addEventToProduction =  new AddEventToProduction($eventId, $productionId);
             $commands[] = $addEventToProduction;
 
-            try {
-                $trailer = $this->trailerRepository->search($parsedMovie->getTitle()->toString());
-
-                if ($trailer !== null) {
-                    $this->logger->info('Found trailer ' . $trailer->getUrl()->toString() . ' for movie ' . $parsedMovie->getTitle()->toString());
-                    $addVideo = new AddVideo(
-                        $eventId,
-                        $trailer
-                    );
-                    $commands[] = $addVideo;
-                }
-            } catch (Exception $exception) {
-                $this->logger->error('Problem with searching trailer for ' . $parsedMovie->getTitle()->toString() . ':' . $exception->getMessage());
+            if ($trailer !== null) {
+                $this->logger->info('Found trailer ' . $trailer->getUrl()->toString() . ' for movie ' . $parsedMovie->getTitle()->toString());
+                $addVideo = new AddVideo(
+                    $eventId,
+                    $trailer
+                );
+                $commands[] = $addVideo;
             }
         } else {
             $updateCalendar = new UpdateCalendar($eventId, LegacyCalendar::fromUdb3ModelCalendar($parsedMovie->getCalendar()));
