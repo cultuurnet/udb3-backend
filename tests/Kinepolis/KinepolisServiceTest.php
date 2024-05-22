@@ -192,9 +192,18 @@ final class KinepolisServiceTest extends TestCase
             ->expects($this->once())
             ->method('getMovies')
             ->willReturn([
-                ['mid' => 1],
-                ['mid' => 2],
-                ['mid' => 3],
+                [
+                    'mid' => 1,
+                    'title' => 'dummy',
+                ],
+                [
+                    'mid' => 2,
+                    'title' => '2 dumb',
+                ],
+                [
+                    'mid' => 3,
+                    'title' => 'DumDumDum',
+                ],
             ]);
         $this->client->expects($this->exactly(3))->method('getMovieDetail');
 
@@ -213,7 +222,10 @@ final class KinepolisServiceTest extends TestCase
             ->expects($this->once())
             ->method('getMovies')
             ->willReturn([
-                ['mid' => 1],
+                [
+                    'mid' => 1,
+                    'title' => 'Het Smelt',
+                ],
             ]);
 
         $this->client
@@ -390,7 +402,10 @@ final class KinepolisServiceTest extends TestCase
             ->expects($this->once())
             ->method('getMovies')
             ->willReturn([
-                ['mid' => 1],
+                [
+                    'mid' => 1,
+                    'title' => 'Het Smelt',
+                ],
             ]);
 
         $this->client
@@ -480,9 +495,16 @@ final class KinepolisServiceTest extends TestCase
             ->expects($this->never())
             ->method('upload');
 
+        $video = new Video(
+            'da45a110-b404-4bd8-9827-27be0af471d2',
+            new Url('https://www.youtube.com/watch?v=26r2alNpYSg'),
+            new Language('nl')
+        );
         $this->trailerRepository
-            ->expects($this->never())
-            ->method('search');
+            ->expects($this->once())
+            ->method('search')
+            ->with('Het Smelt')
+            ->willReturn($video);
 
         $this->service->import();
         $this->assertEquals(
