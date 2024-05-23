@@ -15,8 +15,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
-use CultuurNet\UDB3\Event\Productions\Production;
-use CultuurNet\UDB3\Event\Productions\ProductionId;
+use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Kinepolis\Client\KinepolisClient;
 use CultuurNet\UDB3\Kinepolis\Mapping\MappingRepository;
@@ -33,6 +32,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use Exception;
 use Psr\Log\LoggerInterface;
 
@@ -175,14 +175,7 @@ final class KinepolisService
             $addImage = $this->uploadImage($token, $parsedMovie, $eventId);
             $commands[] = $addImage;
 
-            $productionId = $this->searchForProduction($parsedMovie->getTitle()->toString());
-            if ($productionId !== null) {
-                $addEventToProduction = new AddEventToProduction($eventId, $productionId);
-                $commands[] = $addEventToProduction;
-            } else {
-                $newProduction = (Production::createEmpty($parsedMovie->getTitle()->toString()))->addEvent($eventId);
-                $this->productionRepository->add($newProduction);
-            }
+            $commands[] = $this->getLinkToProductionCommand($parsedMovie->getTitle()->toString(), $eventId);
 
             if ($trailer !== null) {
                 $this->logger->info('Found trailer ' . $trailer->getUrl()->toString() . ' for movie ' . $parsedMovie->getTitle()->toString());
@@ -250,12 +243,12 @@ final class KinepolisService
         return new AddImage($eventId, $imageId);
     }
 
-    private function searchForProduction(string $title): ?ProductionId
+    private function getLinkToProductionCommand(string $title, string $eventId): AuthorizableCommand
     {
         $productions = $this->productionRepository->search($title, 0, 1);
-        if (count($productions) > 0) {
-            return $productions[0]->getProductionId();
+        if (count($productions) < 1) {
+            return GroupEventsAsProduction::withProductionName([$eventId], $title);
         }
-        return null;
+        return new AddEventToProduction($eventId, $productions[0]->getProductionId());
     }
 }
