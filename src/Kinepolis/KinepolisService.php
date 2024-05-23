@@ -175,7 +175,7 @@ final class KinepolisService
             $addImage = $this->uploadImage($token, $parsedMovie, $eventId);
             $commands[] = $addImage;
 
-            $productionId = $this->searchForProduction($parsedMovie->getTitle()->toString(), $eventId);
+            $productionId = $this->searchForProduction($parsedMovie->getTitle()->toString());
             if ($productionId !== null) {
                 $addEventToProduction = new AddEventToProduction($eventId, $productionId);
                 $commands[] = $addEventToProduction;
@@ -250,7 +250,7 @@ final class KinepolisService
         return new AddImage($eventId, $imageId);
     }
 
-    private function searchForProduction(string $title, string $eventId): ?ProductionId
+    private function searchForProduction(string $title): ?ProductionId
     {
         $productions = $this->productionRepository->search($title, 0, 1);
         if (count($productions) > 0) {
