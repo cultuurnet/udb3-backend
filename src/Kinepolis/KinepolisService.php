@@ -176,8 +176,13 @@ final class KinepolisService
             $commands[] = $addImage;
 
             $productionId = $this->searchForProduction($parsedMovie->getTitle()->toString());
-            $addEventToProduction =  new AddEventToProduction($eventId, $productionId);
-            $commands[] = $addEventToProduction;
+            if ($productionId !== null) {
+                $addEventToProduction = new AddEventToProduction($eventId, $productionId);
+                $commands[] = $addEventToProduction;
+            } else {
+                $newProduction = (Production::createEmpty($parsedMovie->getTitle()->toString()))->addEvent($eventId);
+                $this->productionRepository->add($newProduction);
+            }
 
             if ($trailer !== null) {
                 $this->logger->info('Found trailer ' . $trailer->getUrl()->toString() . ' for movie ' . $parsedMovie->getTitle()->toString());
@@ -245,13 +250,12 @@ final class KinepolisService
         return new AddImage($eventId, $imageId);
     }
 
-    private function searchForProduction(string $title): ProductionId
+    private function searchForProduction(string $title): ?ProductionId
     {
         $productions = $this->productionRepository->search($title, 0, 1);
         if (count($productions) > 0) {
             return $productions[0]->getProductionId();
         }
-
-        return (Production::createEmpty($title))->getProductionId();
+        return null;
     }
 }
