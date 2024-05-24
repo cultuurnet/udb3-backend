@@ -73,7 +73,7 @@ final class KinepolisMovieParser implements MovieParser
                     $this->generateMovieId($mid, $theatreId, $is3D),
                     new Title($title),
                     new LocationId($this->getLocationId($theatreId)),
-                    new Description($description),
+                    empty($description) ? null : new Description($description),
                     (new EventThemeResolver())->byId($themeId),
                     $calendar,
                     new PriceInfo(

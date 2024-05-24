@@ -191,12 +191,14 @@ final class KinepolisService
             $this->logger->info('Event with id ' . $eventId . ' updated');
         }
 
-        $updateDescription = new UpdateDescription(
-            $eventId,
-            new LegacyLanguage('nl'),
-            Description::fromUdb3ModelDescription($parsedMovie->getDescription())
-        );
-        $commands[] = $updateDescription;
+        if ($parsedMovie->getDescription() !== null) {
+            $updateDescription = new UpdateDescription(
+                $eventId,
+                new LegacyLanguage('nl'),
+                Description::fromUdb3ModelDescription($parsedMovie->getDescription())
+            );
+            $commands[] = $updateDescription;
+        }
 
         $updatePriceInfo = new UpdatePriceInfo(
             $eventId,
