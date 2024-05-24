@@ -241,7 +241,6 @@ final class KinepolisServiceTest extends TestCase
                         $this->movieId,
                         new Title('Discovery Day'),
                         new LocationId('a77c8b8e-41e5-44cf-9407-f809ebb48744'),
-                        null,
                         (new EventThemeResolver())->byId('1.7.4.0.0'),
                         new MultipleSubEventsCalendar(
                             new SubEvents(
@@ -415,11 +414,10 @@ final class KinepolisServiceTest extends TestCase
             ->method('getParsedMovies')
             ->willReturn(
                 [
-                    new ParsedMovie(
+                    (new ParsedMovie(
                         $this->movieId,
                         new Title('Het Smelt'),
                         new LocationId('a77c8b8e-41e5-44cf-9407-f809ebb48744'),
-                        new Description('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.'),
                         (new EventThemeResolver())->byId('1.7.4.0.0'),
                         new MultipleSubEventsCalendar(
                             new SubEvents(
@@ -467,7 +465,7 @@ final class KinepolisServiceTest extends TestCase
                             )
                         ),
                         '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94E2/HO00010201/0000024162/Het_Smelt.jpg'
-                    ),
+                    ))->withDescription(new Description('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.'), ),
                 ]
             );
 
@@ -595,11 +593,10 @@ final class KinepolisServiceTest extends TestCase
             ->method('getParsedMovies')
             ->willReturn(
                 [
-                    new ParsedMovie(
+                    (new ParsedMovie(
                         $this->movieId,
                         new Title('Het Smelt'),
                         new LocationId('a77c8b8e-41e5-44cf-9407-f809ebb48744'),
-                        new Description('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.'),
                         (new EventThemeResolver())->byId('1.7.4.0.0'),
                         new MultipleSubEventsCalendar(
                             new SubEvents(
@@ -647,7 +644,7 @@ final class KinepolisServiceTest extends TestCase
                             )
                         ),
                         '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94E2/HO00010201/0000024162/Het_Smelt.jpg'
-                    ),
+                    ))->withDescription(new Description('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.'), ),
                 ]
             );
 

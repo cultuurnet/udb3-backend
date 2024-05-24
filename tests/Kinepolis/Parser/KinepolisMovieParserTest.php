@@ -93,17 +93,16 @@ final class KinepolisMovieParserTest extends TestCase
      */
     public function it_will_return_an_array_of_parse_movies(): void
     {
+        $description = 'Het epische gevecht gaat verder! In het Monsterverse van Legendary Pictures' .
+            ' volgt na de sensationele krachtmeting van “Godzilla vs. Kong” nu een geheel nieuw avontuur ' .
+            'waarin de machtige Kong en de angstaanjagende Godzilla het opnemen tegen elkaar.';
+
         $this->assertEquals(
             [
-                new ParsedMovie(
+                (new ParsedMovie(
                     'Kinepolis:tDECAm32696',
                     new Title('Godzilla x Kong: The New Empire'),
                     new LocationId('cbf8ddad-9aa7-4add-9133-228a752a87a5'),
-                    new Description(
-                        'Het epische gevecht gaat verder! In het Monsterverse van Legendary Pictures' .
-                        ' volgt na de sensationele krachtmeting van “Godzilla vs. Kong” nu een geheel nieuw avontuur ' .
-                        'waarin de machtige Kong en de angstaanjagende Godzilla het opnemen tegen elkaar.'
-                    ),
                     (new EventThemeResolver())->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
@@ -139,16 +138,11 @@ final class KinepolisMovieParserTest extends TestCase
                         )
                     ),
                     '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94D2/HO00010201/0000024163/Godzilla_x_Kong:_The_New_Empire.jpg'
-                ),
-                new ParsedMovie(
+                ))->withDescription(new Description($description)),
+                (new ParsedMovie(
                     'Kinepolis:tKOOSTm32696',
                     new Title('Godzilla x Kong: The New Empire'),
                     new LocationId('b4ed748a-dfc4-432f-b242-ed1db62b76e2'),
-                    new Description(
-                        'Het epische gevecht gaat verder! In het Monsterverse van Legendary Pictures' .
-                        ' volgt na de sensationele krachtmeting van “Godzilla vs. Kong” nu een geheel nieuw avontuur ' .
-                        'waarin de machtige Kong en de angstaanjagende Godzilla het opnemen tegen elkaar.'
-                    ),
                     (new EventThemeResolver())->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
@@ -184,16 +178,11 @@ final class KinepolisMovieParserTest extends TestCase
                         )
                     ),
                     '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94D2/HO00010201/0000024163/Godzilla_x_Kong:_The_New_Empire.jpg'
-                ),
-                new ParsedMovie(
+                ))->withDescription(new Description($description)),
+                (new ParsedMovie(
                     'Kinepolis:tKOOSTm32696v3D',
                     new Title('Godzilla x Kong: The New Empire 3D'),
                     new LocationId('b4ed748a-dfc4-432f-b242-ed1db62b76e2'),
-                    new Description(
-                        'Het epische gevecht gaat verder! In het Monsterverse van Legendary Pictures' .
-                        ' volgt na de sensationele krachtmeting van “Godzilla vs. Kong” nu een geheel nieuw avontuur ' .
-                        'waarin de machtige Kong en de angstaanjagende Godzilla het opnemen tegen elkaar.'
-                    ),
                     (new EventThemeResolver())->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
@@ -229,7 +218,7 @@ final class KinepolisMovieParserTest extends TestCase
                         )
                     ),
                     '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94D2/HO00010201/0000024163/Godzilla_x_Kong:_The_New_Empire.jpg'
-                ),
+                ))->withDescription(new Description($description)),
             ],
             $this->parser->getParsedMovies(
                 Json::decodeAssociatively(file_get_contents(__DIR__ . '/../samples/KinepolisMovieDetailResponse.json')),
@@ -264,7 +253,6 @@ final class KinepolisMovieParserTest extends TestCase
                     'Kinepolis:tDECAm35033750',
                     new Title('Discovery Day'),
                     new LocationId('cbf8ddad-9aa7-4add-9133-228a752a87a5'),
-                    null,
                     (new EventThemeResolver())->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
@@ -305,7 +293,6 @@ final class KinepolisMovieParserTest extends TestCase
                     'Kinepolis:tKOOSTm35033750',
                     new Title('Discovery Day'),
                     new LocationId('b4ed748a-dfc4-432f-b242-ed1db62b76e2'),
-                    null,
                     (new EventThemeResolver())->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
@@ -346,7 +333,6 @@ final class KinepolisMovieParserTest extends TestCase
                     'Kinepolis:tKOOSTm35033750v3D',
                     new Title('Discovery Day 3D'),
                     new LocationId('b4ed748a-dfc4-432f-b242-ed1db62b76e2'),
-                    null,
                     (new EventThemeResolver())->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(

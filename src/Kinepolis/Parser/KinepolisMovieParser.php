@@ -69,11 +69,10 @@ final class KinepolisMovieParser implements MovieParser
                 $calendar = count($subEvents) === 1 ?
                     new SingleSubEventCalendar(...$subEvents) :
                     new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
-                $parsedMovies[] = new ParsedMovie(
+                $parsedMovie = new ParsedMovie(
                     $this->generateMovieId($mid, $theatreId, $is3D),
                     new Title($title),
                     new LocationId($this->getLocationId($theatreId)),
-                    empty($description) ? null : new Description($description),
                     (new EventThemeResolver())->byId($themeId),
                     $calendar,
                     new PriceInfo(
@@ -82,6 +81,10 @@ final class KinepolisMovieParser implements MovieParser
                     ),
                     $poster
                 );
+                if (!empty($description)) {
+                    $parsedMovie = $parsedMovie->withDescription(new Description($description));
+                }
+                $parsedMovies[] = $parsedMovie;
             }
         }
         return $parsedMovies;
