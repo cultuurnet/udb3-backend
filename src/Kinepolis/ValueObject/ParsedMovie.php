@@ -19,7 +19,7 @@ final class ParsedMovie
 
     private LocationId $locationId;
 
-    private Description $description;
+    private ?Description $description;
 
     private Theme $theme;
 
@@ -33,7 +33,7 @@ final class ParsedMovie
         string $externalId,
         Title $title,
         LocationId $locationId,
-        Description $description,
+        ?Description $description,
         Theme $theme,
         Calendar $calendar,
         PriceInfo $priceInfo,
@@ -64,7 +64,7 @@ final class ParsedMovie
         return $this->locationId;
     }
 
-    public function getDescription(): Description
+    public function getDescription(): ?Description
     {
         return $this->description;
     }
