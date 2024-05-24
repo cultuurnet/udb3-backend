@@ -28,9 +28,9 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 
-final class KinepolisParserTest extends TestCase
+final class KinepolisMovieParserTest extends TestCase
 {
-    private KinepolisParser $parser;
+    private KinepolisMovieParser $parser;
 
     public function setUp(): void
     {
@@ -73,7 +73,7 @@ final class KinepolisParserTest extends TestCase
                     ],
                 ],
             ], );
-        $this->parser = new KinepolisParser(
+        $this->parser = new KinepolisMovieParser(
             [
                 616 => '1.7.2.0.0', // Actie | Actie en avontuur
                 986 => '1.7.3.0.0', // Actiekomedie

@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Kinepolis\Client\KinepolisClient;
 use CultuurNet\UDB3\Kinepolis\Mapping\MappingRepository;
-use CultuurNet\UDB3\Kinepolis\Parser\Parser;
+use CultuurNet\UDB3\Kinepolis\Parser\MovieParser;
 use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
 use CultuurNet\UDB3\Kinepolis\Trailer\TrailerRepository;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedMovie;
@@ -74,9 +74,9 @@ final class KinepolisServiceTest extends TestCase
     private $client;
 
     /**
-     * @var Parser|MockObject
+     * @var MovieParser|MockObject
      */
-    private $parser;
+    private $movieParser;
 
     /**
      * @var PriceParser|MockObject
@@ -117,7 +117,7 @@ final class KinepolisServiceTest extends TestCase
         $this->commandBus = new TraceableCommandBus();
         $this->repository = $this->createMock(EventRepository::class);
         $this->client = $this->createMock(KinepolisClient::class);
-        $this->parser = $this->createMock(Parser::class);
+        $this->movieParser = $this->createMock(MovieParser::class);
         $this->priceParser = $this->createMock(PriceParser::class);
         $this->mappingRepository = $this->createMock(MappingRepository::class);
         $this->imageUploader = $this->createMock(ImageUploaderInterface::class);
@@ -129,7 +129,7 @@ final class KinepolisServiceTest extends TestCase
             $this->commandBus,
             $this->repository,
             $this->client,
-            $this->parser,
+            $this->movieParser,
             $this->priceParser,
             $this->mappingRepository,
             $this->imageUploader,
@@ -232,7 +232,7 @@ final class KinepolisServiceTest extends TestCase
             ->expects($this->once())
             ->method('getMovieDetail');
 
-        $this->parser
+        $this->movieParser
             ->expects($this->once())
             ->method('getParsedMovies')
             ->willReturn(
@@ -412,7 +412,7 @@ final class KinepolisServiceTest extends TestCase
             ->expects($this->once())
             ->method('getMovieDetail');
 
-        $this->parser
+        $this->movieParser
             ->expects($this->once())
             ->method('getParsedMovies')
             ->willReturn(

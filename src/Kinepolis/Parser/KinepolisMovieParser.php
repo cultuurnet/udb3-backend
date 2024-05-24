@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
-final class KinepolisParser implements Parser
+final class KinepolisMovieParser implements MovieParser
 {
     public const LONG_MOVIE_MINIMUM_LENGTH = 135;
     private array $termsMapper;
