@@ -213,6 +213,184 @@ final class KinepolisServiceTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_a_parsed_movie_with_an_empty_description(): void
+    {
+        $now = Chronos::now();
+        Chronos::setTestNow($now);
+
+        $this->client
+            ->expects($this->once())
+            ->method('getMovies')
+            ->willReturn([
+                [
+                    'mid' => 1,
+                    'title' => 'Discovery Day',
+                ],
+            ]);
+
+        $this->client
+            ->expects($this->once())
+            ->method('getMovieDetail');
+
+        $this->movieParser
+            ->expects($this->once())
+            ->method('getParsedMovies')
+            ->willReturn(
+                [
+                    new ParsedMovie(
+                        $this->movieId,
+                        new Title('Discovery Day'),
+                        new LocationId('a77c8b8e-41e5-44cf-9407-f809ebb48744'),
+                        null,
+                        (new EventThemeResolver())->byId('1.7.4.0.0'),
+                        new MultipleSubEventsCalendar(
+                            new SubEvents(
+                                new SubEvent(
+                                    new DateRange(
+                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T18:00:00+00:00'),
+                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T19:39:00+00:00')
+                                    ),
+                                    new Status(StatusType::Available()),
+                                    new BookingAvailability(BookingAvailabilityType::Available())
+                                ),
+                                new SubEvent(
+                                    new DateRange(
+                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T20:15:00+00:00'),
+                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T21:54:00+00:00')
+                                    ),
+                                    new Status(StatusType::Available()),
+                                    new BookingAvailability(BookingAvailabilityType::Available())
+                                ),
+                            ),
+                        ),
+                        new PriceInfo(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Basistarief')
+                                ),
+                                new Money(1100, new Currency('EUR'))
+                            ),
+                            new Tariffs(
+                                new Tariff(
+                                    new TranslatedTariffName(
+                                        new Language('nl'),
+                                        new TariffName('Kinepolis Student Card')
+                                    ),
+                                    new Money(900, new Currency('EUR'))
+                                ),
+                                new Tariff(
+                                    new TranslatedTariffName(
+                                        new Language('nl'),
+                                        new TariffName('Kortingstarief')
+                                    ),
+                                    new Money(1000, new Currency('EUR'))
+                                ),
+                            )
+                        ),
+                        '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94E2/HO00010201/0000024162/Discovery_Day.jpg'
+                    ),
+                ]
+            );
+
+        $this->mappingRepository
+            ->expects($this->once())
+            ->method('getByMovieId')
+            ->with($this->movieId)
+            ->willReturn(null);
+
+        $this->uuidGenerator
+            ->expects($this->once())
+            ->method('generate')
+            ->willReturn($this->eventId);
+
+        $this->mappingRepository
+            ->expects($this->once())
+            ->method('create')
+            ->with($this->eventId, $this->movieId);
+
+        $this->repository->expects($this->once())->method('save');
+
+        $imageId = new UUID('a05ca76d-0ccd-456c-97a2-b96859671d5e');
+        $this->imageUploader
+            ->expects($this->once())
+            ->method('upload')
+            ->willReturn($imageId);
+
+        $productionId = ProductionId::generate();
+        $this->productionRepository
+            ->expects($this->once())
+            ->method('search')
+            ->with('Discovery Day', 0, 1)
+            ->willReturn(
+                [
+                    new Production($productionId, 'Discovery Day', []),
+                ]
+            );
+
+        $video = new Video(
+            'da45a110-b404-4bd8-9827-27be0af471d2',
+            new Url('https://www.youtube.com/watch?v=S11fnfCJPtw'),
+            new Language('nl')
+        );
+        $this->trailerRepository
+            ->expects($this->once())
+            ->method('search')
+            ->with('Discovery Day')
+            ->willReturn($video);
+
+        $this->service->import();
+        $this->assertEquals(
+            [
+                new Publish($this->eventId),
+                new AddImage(
+                    $this->eventId,
+                    $imageId
+                ),
+                new AddEventToProduction(
+                    $this->eventId,
+                    $productionId
+                ),
+                new AddVideo(
+                    $this->eventId,
+                    $video
+                ),
+                new UpdatePriceInfo(
+                    $this->eventId,
+                    new PriceInfo(
+                        new Tariff(
+                            new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('Basistarief')
+                            ),
+                            new Money(1100, new Currency('EUR'))
+                        ),
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Kinepolis Student Card')
+                                ),
+                                new Money(900, new Currency('EUR'))
+                            ),
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Kortingstarief')
+                                ),
+                                new Money(1000, new Currency('EUR'))
+                            ),
+                        )
+                    )
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_dispatches_commands_for_newly_created_movie(): void
     {
         $now = Chronos::now();
