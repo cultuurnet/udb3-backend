@@ -19,8 +19,6 @@ final class ParsedMovie
 
     private LocationId $locationId;
 
-    private Description $description;
-
     private Theme $theme;
 
     private Calendar $calendar;
@@ -29,11 +27,12 @@ final class ParsedMovie
 
     private string $imageUrl;
 
+    private ?Description $description = null;
+
     public function __construct(
         string $externalId,
         Title $title,
         LocationId $locationId,
-        Description $description,
         Theme $theme,
         Calendar $calendar,
         PriceInfo $priceInfo,
@@ -42,7 +41,6 @@ final class ParsedMovie
         $this->externalId = $externalId;
         $this->locationId = $locationId;
         $this->title = $title;
-        $this->description = $description;
         $this->theme = $theme;
         $this->calendar = $calendar;
         $this->priceInfo = $priceInfo;
@@ -64,11 +62,6 @@ final class ParsedMovie
         return $this->locationId;
     }
 
-    public function getDescription(): Description
-    {
-        return $this->description;
-    }
-
     public function getTheme(): Theme
     {
         return $this->theme;
@@ -87,5 +80,17 @@ final class ParsedMovie
     public function getImageUrl(): string
     {
         return $this->imageUrl;
+    }
+
+    public function getDescription(): ?Description
+    {
+        return $this->description;
+    }
+
+    public function withDescription(Description $description): self
+    {
+        $c = clone $this;
+        $c->description = $description;
+        return $c;
     }
 }

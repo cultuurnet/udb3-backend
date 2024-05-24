@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
-final class KinepolisParser implements Parser
+final class KinepolisMovieParser implements MovieParser
 {
     public const LONG_MOVIE_MINIMUM_LENGTH = 135;
     private array $termsMapper;
@@ -69,11 +69,10 @@ final class KinepolisParser implements Parser
                 $calendar = count($subEvents) === 1 ?
                     new SingleSubEventCalendar(...$subEvents) :
                     new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
-                $parsedMovies[] = new ParsedMovie(
+                $parsedMovie = new ParsedMovie(
                     $this->generateMovieId($mid, $theatreId, $is3D),
                     new Title($title),
                     new LocationId($this->getLocationId($theatreId)),
-                    new Description($description),
                     (new EventThemeResolver())->byId($themeId),
                     $calendar,
                     new PriceInfo(
@@ -82,6 +81,10 @@ final class KinepolisParser implements Parser
                     ),
                     $poster
                 );
+                if (!empty($description)) {
+                    $parsedMovie = $parsedMovie->withDescription(new Description($description));
+                }
+                $parsedMovies[] = $parsedMovie;
             }
         }
         return $parsedMovies;

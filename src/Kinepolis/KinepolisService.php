@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Kinepolis\Client\KinepolisClient;
 use CultuurNet\UDB3\Kinepolis\Mapping\MappingRepository;
-use CultuurNet\UDB3\Kinepolis\Parser\Parser;
+use CultuurNet\UDB3\Kinepolis\Parser\MovieParser;
 use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
 use CultuurNet\UDB3\Kinepolis\Trailer\TrailerRepository;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedMovie;
@@ -44,7 +44,7 @@ final class KinepolisService
 
     private KinepolisClient $client;
 
-    private Parser $parser;
+    private MovieParser $movieParser;
 
     private PriceParser $priceParser;
 
@@ -64,7 +64,7 @@ final class KinepolisService
         CommandBus $commandBus,
         Repository $aggregateRepository,
         KinepolisClient $client,
-        Parser $parser,
+        MovieParser $movieParser,
         PriceParser $priceParser,
         MappingRepository $movieMappingRepository,
         ImageUploaderInterface $imageUploader,
@@ -76,7 +76,7 @@ final class KinepolisService
         $this->commandBus = $commandBus;
         $this->aggregateRepository = $aggregateRepository;
         $this->client = $client;
-        $this->parser = $parser;
+        $this->movieParser = $movieParser;
         $this->priceParser = $priceParser;
         $this->movieMappingRepository = $movieMappingRepository;
         $this->imageUploader = $imageUploader;
@@ -141,7 +141,7 @@ final class KinepolisService
                 return;
             }
             try {
-                $parsedMovies = $this->parser->getParsedMovies($movieDetail, $parsedPrices);
+                $parsedMovies = $this->movieParser->getParsedMovies($movieDetail, $parsedPrices);
             } catch (Exception $exception) {
                 $this->logger->error('Problem with parsing movie with id ' . $mid . ': ' . $exception->getMessage());
                 return;
@@ -191,12 +191,14 @@ final class KinepolisService
             $this->logger->info('Event with id ' . $eventId . ' updated');
         }
 
-        $updateDescription = new UpdateDescription(
-            $eventId,
-            new LegacyLanguage('nl'),
-            Description::fromUdb3ModelDescription($parsedMovie->getDescription())
-        );
-        $commands[] = $updateDescription;
+        if ($parsedMovie->getDescription() !== null) {
+            $updateDescription = new UpdateDescription(
+                $eventId,
+                new LegacyLanguage('nl'),
+                Description::fromUdb3ModelDescription($parsedMovie->getDescription())
+            );
+            $commands[] = $updateDescription;
+        }
 
         $updatePriceInfo = new UpdatePriceInfo(
             $eventId,
