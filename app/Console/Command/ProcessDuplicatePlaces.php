@@ -131,20 +131,8 @@ final class ProcessDuplicatePlaces extends AbstractCommand
                 continue;
             }
 
-            // 2. Trigger a SAPI3 reindex on the places in duplicate_places and places removed from duplicate_places
-            $placesToReIndex = array_merge(
-                $this->duplicatePlaceRepository->getPlacesInCluster($clusterId),
-                $this->getDuplicatePlacesRemovedFromCluster()
-            );
-            foreach ($placesToReIndex as $placeToReIndex) {
-                $placeProjected = $this->placeEventFactory->createEvent($placeToReIndex);
-                $output->writeln('Dispatching PlaceProjectedToJSONLD for place with id ' . $placeToReIndex);
-                if (!$dryRun) {
-                    $this->eventBus->publish(
-                        new DomainEventStream([(new DomainMessageBuilder())->create($placeProjected)])
-                    );
-                }
-            }
+            // 2. Trigger a SAPI3 reindex on the places in duplicate_places
+            $this->reindexPlaces($this->duplicatePlaceRepository->getPlacesInCluster($clusterId), $output, $dryRun);
 
             // 3. Trigger an UpdateLocation for places inside duplicate_places
             $duplicatePlaces = $this->duplicatePlaceRepository->getDuplicatesOfPlace($canonicalId);
@@ -170,7 +158,12 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             }
         }
 
-        return 0;
+        if (! $onlySetCanonical) {
+            // 4. Trigger a SAPI3 reindex on the places removed from duplicate_places
+            $this->reindexPlaces($this->getDuplicatePlacesRemovedFromCluster(), $output, $dryRun);
+        }
+
+        return self::SUCCESS;
     }
 
     private function askConfirmation(InputInterface $input, OutputInterface $output, int $count): bool
@@ -199,5 +192,18 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             ->from('duplicate_places_removed_from_cluster')
             ->execute()
             ->fetchFirstColumn();
+    }
+
+    private function reindexPlaces(array $placesToReIndex, OutputInterface $output, bool $dryRun): void
+    {
+        foreach ($placesToReIndex as $placeToReIndex) {
+            $placeProjected = $this->placeEventFactory->createEvent($placeToReIndex);
+            $output->writeln('Dispatching PlaceProjectedToJSONLD for place with id ' . $placeToReIndex);
+            if (!$dryRun) {
+                $this->eventBus->publish(
+                    new DomainEventStream([(new DomainMessageBuilder())->create($placeProjected)])
+                );
+            }
+        }
     }
 }
