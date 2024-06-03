@@ -426,6 +426,8 @@ final class EventLDProjector extends OfferLDProjector implements
           '@type' => 'Place',
         ] + $this->placeJSONLD($majorInfoUpdated->getLocation()->toString());
 
+        $jsonLD = $this->setAttendanceMode($jsonLD, $majorInfoUpdated->getLocation());
+
         $availableTo = AvailableTo::createFromCalendar($majorInfoUpdated->getCalendar(), $majorInfoUpdated->getEventType());
         $jsonLD->availableTo = (string) $availableTo;
 
@@ -447,6 +449,22 @@ final class EventLDProjector extends OfferLDProjector implements
         }
 
         return $document->withBody($jsonLD);
+    }
+
+    private function setAttendanceMode(\stdClass $jsonLD, LocationId $locationId): \stdClass
+    {
+        if ($locationId->isNilLocation()) {
+            $jsonLD->attendanceMode = AttendanceMode::online()->toString();
+            return $jsonLD;
+        }
+
+        if (!empty($jsonLD->onlineUrl)) {
+            $jsonLD->attendanceMode = AttendanceMode::mixed()->toString();
+            return $jsonLD;
+        }
+
+        $jsonLD->attendanceMode = AttendanceMode::offline()->toString();
+        return $jsonLD;
     }
 
     public function applyLocationUpdated(LocationUpdated $locationUpdated): JsonDocument
