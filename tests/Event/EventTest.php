@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LabelsImported;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
+use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
@@ -258,6 +259,101 @@ class EventTest extends AggregateRootScenarioTestCase
                 fn (Event $event) => $event->deleteOnlineUrl()
             )
             ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_attendance_mode_on_major_info_updated_on_offline_event(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+            ])
+            ->when(
+                function (Event $event) {
+                    $event->updateMajorInfo(
+                        new Title('foo'),
+                        new EventType('0.50.4.0.0', 'concert'),
+                        new LocationId('00000000-0000-0000-0000-000000000000'),
+                        new Calendar(CalendarType::PERMANENT())
+                    );
+                    $event->updateAttendanceMode(AttendanceMode::online());
+                }
+            )
+            ->then([
+                new MajorInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    'foo',
+                    new EventType('0.50.4.0.0', 'concert'),
+                    new LocationId('00000000-0000-0000-0000-000000000000'),
+                    new Calendar(CalendarType::PERMANENT())
+                )
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_attendance_mode_on_major_info_updated_on_event_with_online_url(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new OnlineUrlUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', 'https://www.publiq.be/livestream'),
+            ])
+            ->when(
+                function (Event $event) {
+                    $event->updateMajorInfo(
+                        new Title('foo'),
+                        new EventType('0.50.4.0.0', 'concert'),
+                        new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                        new Calendar(CalendarType::PERMANENT())
+                    );
+                    $event->updateAttendanceMode(AttendanceMode::mixed());
+                }
+            )
+            ->then([
+                new MajorInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    'foo',
+                    new EventType('0.50.4.0.0', 'concert'),
+                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new Calendar(CalendarType::PERMANENT())
+                )
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_attendance_mode_on_major_info_updated_on_online_event(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AttendanceModeUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', AttendanceMode::online()->toString()),
+            ])
+            ->when(
+                function (Event $event) {
+                    $event->updateMajorInfo(
+                        new Title('foo'),
+                        new EventType('0.50.4.0.0', 'concert'),
+                        new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                        new Calendar(CalendarType::PERMANENT())
+                    );
+                    $event->updateAttendanceMode(AttendanceMode::offline());
+                }
+            )
+            ->then([
+                new MajorInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    'foo',
+                    new EventType('0.50.4.0.0', 'concert'),
+                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new Calendar(CalendarType::PERMANENT())
+                )
+            ]);
     }
 
     /**
