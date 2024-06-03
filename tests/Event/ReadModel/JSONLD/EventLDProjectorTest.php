@@ -1007,24 +1007,84 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
     }
 
+    public static function majorInfoUpdatedDataProvider(): array
+    {
+        return [
+            'Update with offline location' => [
+                null,
+                new MajorInfoUpdated(
+                    'foo',
+                    'new title',
+                    new EventType('0.50.4.0.1', 'concertnew'),
+                    new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
+                    new Calendar(
+                        CalendarType::PERIODIC(),
+                        \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
+                        \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-02-26T13:25:21+01:00')
+                    ),
+                    new Theme('123', 'theme label')
+                ),
+                AttendanceMode::offline(),
+                [
+                    '@type' => 'Place',
+                    '@id' => 'http://example.com/entity/395fe7eb-9bac-4647-acae-316b6446a85e',
+                ],
+            ],
+            'Update with online location' => [
+                null,
+                new MajorInfoUpdated(
+                    'foo',
+                    'new title',
+                    new EventType('0.50.4.0.1', 'concertnew'),
+                    new LocationId('00000000-0000-0000-0000-000000000000'),
+                    new Calendar(
+                        CalendarType::PERIODIC(),
+                        \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
+                        \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-02-26T13:25:21+01:00')
+                    ),
+                    new Theme('123', 'theme label')
+                ),
+                AttendanceMode::online(),
+                EventLDProjectorTest::getNilLocationJsonLD(),
+            ],
+            'Update with offline location on event with online url' => [
+                'https://www.online.be',
+                new MajorInfoUpdated(
+                    'foo',
+                    'new title',
+                    new EventType('0.50.4.0.1', 'concertnew'),
+                    new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
+                    new Calendar(
+                        CalendarType::PERIODIC(),
+                        \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
+                        \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-02-26T13:25:21+01:00')
+                    ),
+                    new Theme('123', 'theme label')
+                ),
+                AttendanceMode::mixed(),
+                [
+                    '@type' => 'Place',
+                    '@id' => 'http://example.com/entity/395fe7eb-9bac-4647-acae-316b6446a85e',
+                ],
+            ],
+        ];
+    }
+
     /**
      * @test
+     * @dataProvider majorInfoUpdatedDataProvider
      */
-    public function it_projects_the_updating_of_major_info(): void
-    {
-        $this->mockPlaceService();
+    public function it_projects_the_updating_of_major_info(
+        ?string $givenOnlineUrl,
+        MajorInfoUpdated $givenMajorInfoUpdated,
+        AttendanceMode $givenAttendanceMode,
+        array $expectedLocation
+    ): void {
+        if (!$givenMajorInfoUpdated->getLocation()->isNilLocation()) {
+            $this->mockPlaceService();
+        }
 
-        $id = 'foo';
-        $title = 'new title';
-        $eventType = new EventType('0.50.4.0.1', 'concertnew');
-        $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
-        $calendar = new Calendar(
-            CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-02-26T13:25:21+01:00')
-        );
-        $theme = new Theme('123', 'theme label');
-        $majorInfoUpdated = new MajorInfoUpdated($id, $title, $eventType, $location, $calendar, $theme);
+        $id = $givenMajorInfoUpdated->getItemId();
 
         $jsonLD = new stdClass();
         $jsonLD->id = $id;
@@ -1034,6 +1094,9 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             '@type' => 'Place',
             '@id' => 'http://example.com/entity/395fe7eb-9bac-4647-acae-316b6446a85e',
         ];
+        if ($givenOnlineUrl) {
+            $jsonLD->onlineUrl = $givenOnlineUrl;
+        }
         $jsonLD->calendarType = 'permanent';
         $jsonLD->terms = [
             [
@@ -1056,10 +1119,11 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->name = (object)[
             'en' => 'new title',
         ];
-        $expectedJsonLD->location = (object)[
-            '@type' => 'Place',
-            '@id' => 'http://example.com/entity/395fe7eb-9bac-4647-acae-316b6446a85e',
-        ];
+        $expectedJsonLD->location = (object) $expectedLocation;
+        if ($givenOnlineUrl) {
+            $expectedJsonLD->onlineUrl = $givenOnlineUrl;
+        }
+        $expectedJsonLD->attendanceMode = $givenAttendanceMode->toString();
         $expectedJsonLD->calendarType = 'periodic';
         $expectedJsonLD->terms = [
             (object)[
@@ -1088,7 +1152,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->playhead = 1;
         $expectedJsonLD->completeness = 53;
 
-        $body = $this->project($majorInfoUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
+        $body = $this->project($givenMajorInfoUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
 
         $this->assertEquals($expectedJsonLD, $body);
     }
@@ -1315,36 +1379,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $body = $this->project($eventCreated, $eventCreated->getEventId());
 
         $this->assertEquals(
-            (object) [
-                '@type' => 'Place',
-                '@id' => 'https://io.uitdatabank.dev/places/00000000-0000-0000-0000-000000000000',
-                'mainLanguage' => 'nl',
-                'name' => (object) [
-                    'nl' => 'Online',
-                ],
-                'terms' => [
-                    (object) [
-                        'id' => '0.8.0.0.0',
-                        'label' => 'Openbare ruimte',
-                        'domain' => 'eventtype',
-                    ],
-                ],
-                'calendarType' => 'permanent',
-                'status' => (object) [
-                    'type' => 'Available',
-                ],
-                'bookingAvailability' => (object) [
-                    'type' => 'Available',
-                ],
-                'address' => (object) [
-                    'nl' =>(object) [
-                        'addressCountry' => 'BE',
-                        'addressLocality' => '___',
-                        'postalCode' => '0000',
-                        'streetAddress' => '___',
-                    ],
-                ],
-            ],
+            (object) EventLDProjectorTest::getNilLocationJsonLD(),
             $body->location
         );
     }
@@ -1968,5 +2003,39 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     protected function aPublishedEvent(EventCreated $eventCreated): Published
     {
         return new Published($eventCreated->getEventId(), new \DateTime());
+    }
+
+    private static function getNilLocationJsonLD(): array
+    {
+        return [
+            '@type' => 'Place',
+            '@id' => 'https://io.uitdatabank.dev/places/00000000-0000-0000-0000-000000000000',
+            'mainLanguage' => 'nl',
+            'name' => (object) [
+                'nl' => 'Online',
+            ],
+            'terms' => [
+                (object) [
+                    'id' => '0.8.0.0.0',
+                    'label' => 'Openbare ruimte',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'status' => (object) [
+                'type' => 'Available',
+            ],
+            'bookingAvailability' => (object) [
+                'type' => 'Available',
+            ],
+            'address' => (object) [
+                'nl' =>(object) [
+                    'addressCountry' => 'BE',
+                    'addressLocality' => '___',
+                    'postalCode' => '0000',
+                    'streetAddress' => '___',
+                ],
+            ],
+        ];
     }
 }
