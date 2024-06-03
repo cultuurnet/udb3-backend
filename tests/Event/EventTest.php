@@ -288,7 +288,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     new EventType('0.50.4.0.0', 'concert'),
                     new LocationId('00000000-0000-0000-0000-000000000000'),
                     new Calendar(CalendarType::PERMANENT())
-                )
+                ),
             ]);
     }
 
@@ -320,7 +320,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     new EventType('0.50.4.0.0', 'concert'),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new Calendar(CalendarType::PERMANENT())
-                )
+                ),
             ]);
     }
 
@@ -352,7 +352,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     new EventType('0.50.4.0.0', 'concert'),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new Calendar(CalendarType::PERMANENT())
-                )
+                ),
             ]);
     }
 
