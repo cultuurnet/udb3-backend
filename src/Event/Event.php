@@ -318,6 +318,18 @@ final class Event extends Offer
     {
         $this->locationId = $majorInfoUpdated->getLocation();
         $this->calendar = $majorInfoUpdated->getCalendar();
+
+        if ($this->locationId->isNilLocation()) {
+            $this->attendanceMode = AttendanceMode::online()->toString();
+            return;
+        }
+
+        if (!empty($this->onlineUrl)) {
+            $this->attendanceMode = AttendanceMode::mixed()->toString();
+            return;
+        }
+
+        $this->attendanceMode = AttendanceMode::offline()->toString();
     }
 
     public function updateLocation(LocationId $locationId): void
