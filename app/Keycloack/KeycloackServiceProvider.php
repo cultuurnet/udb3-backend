@@ -41,6 +41,7 @@ final class KeycloackServiceProvider extends AbstractServiceProvider
                 return new KeycloackUserIdentityResolver(
                     new Client(),
                     $container->get('config')['keycloack']['domain'],
+                    $container->get('config')['keycloack']['realm'],
                     $container->get(KeycloakManagementTokenGenerator::class)
                 );
             }

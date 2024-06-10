@@ -19,15 +19,18 @@ final class KeycloackUserIdentityResolver implements UserIdentityResolver
 {
     private ClientInterface $client;
     private string $domain;
+    private string $realm;
     private ManagementTokenGenerator $managementTokenGenerator;
 
     public function __construct(
         ClientInterface $client,
         string $domain,
+        string $realm,
         ManagementTokenGenerator $managementTokenGenerator
     ) {
         $this->client = $client;
         $this->domain = $domain;
+        $this->realm = $realm;
         $this->managementTokenGenerator = $managementTokenGenerator;
     }
 
@@ -68,7 +71,7 @@ final class KeycloackUserIdentityResolver implements UserIdentityResolver
         return new Request(
             'GET',
             (new Uri($this->domain))
-                ->withPath('/admin/realms/master/users')
+                ->withPath('/admin/realms/'. $this->realm . '/users')
                 ->withQuery(http_build_query($query)),
             [
                 'Authorization' => 'Bearer ' . $this->managementTokenGenerator->newToken()->getToken(),
