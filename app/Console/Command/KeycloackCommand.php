@@ -48,7 +48,7 @@ final class KeycloackCommand extends Command
         }
 
         if ($userIdentityDetails === null) {
-            $output->writeln('No email or id provided');
+            $output->writeln('No user found.');
             return 1;
         }
 
