@@ -79,9 +79,13 @@ final class KeycloackUserIdentityResolver implements UserIdentityResolver
         );
     }
 
-    private function extractUser(ResponseInterface $response): UserIdentityDetails
+    private function extractUser(ResponseInterface $response): ?UserIdentityDetails
     {
         $users = Json::decodeAssociatively($response->getBody()->getContents());
+
+        if (empty($users)) {
+            return null;
+        }
 
         $user = array_shift($users);
 
