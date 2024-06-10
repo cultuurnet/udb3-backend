@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User\Auth0;
 
+use CultuurNet\UDB3\User\ManagementToken;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -19,7 +20,7 @@ class Auth0ManagementTokenProviderTest extends TestCase
             ->method('token')
             ->willReturn(null);
 
-        $token = new Auth0Token(
+        $token = new ManagementToken(
             'my_token',
             new DateTimeImmutable(),
             3600
@@ -49,7 +50,7 @@ class Auth0ManagementTokenProviderTest extends TestCase
      */
     public function it_returns_token_if_valid_token_is_in_repository(): void
     {
-        $token = new Auth0Token(
+        $token = new ManagementToken(
             'my_token',
             new DateTimeImmutable(),
             3600
@@ -80,13 +81,13 @@ class Auth0ManagementTokenProviderTest extends TestCase
     public function it_generates_new_token_if_current_is_about_to_expire(): void
     {
         // A token is also considered as expired when it will expire within 5 minutes.
-        $expiredToken = new Auth0Token(
+        $expiredToken = new ManagementToken(
             'expired_token',
             new DateTimeImmutable(),
             300
         );
 
-        $newToken = new Auth0Token(
+        $newToken = new ManagementToken(
             'new_token',
             new DateTimeImmutable(),
             3600

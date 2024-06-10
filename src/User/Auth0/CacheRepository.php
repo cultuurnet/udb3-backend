@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User\Auth0;
 
+use CultuurNet\UDB3\User\ManagementToken;
 use DateTimeImmutable;
 use Doctrine\Common\Cache\Cache;
 
@@ -18,7 +19,7 @@ class CacheRepository implements Auth0ManagementTokenRepository
         $this->cache = $cache;
     }
 
-    public function token(): ?Auth0Token
+    public function token(): ?ManagementToken
     {
         if (!$this->cache->contains(self::TOKEN_KEY)) {
             return null;
@@ -26,14 +27,14 @@ class CacheRepository implements Auth0ManagementTokenRepository
 
         $tokenAsArray = json_decode($this->cache->fetch(self::TOKEN_KEY), true);
 
-        return new Auth0Token(
+        return new ManagementToken(
             $tokenAsArray['token'],
             new DateTimeImmutable($tokenAsArray['issuedAt']),
             $tokenAsArray['expiresIn']
         );
     }
 
-    public function store(Auth0Token $token): void
+    public function store(ManagementToken $token): void
     {
         $tokenAsJson = json_encode(
             [

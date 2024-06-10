@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User\Auth0;
 
+use CultuurNet\UDB3\User\ManagementToken;
 use DateTimeImmutable;
 use GuzzleHttp\Client;
 
@@ -25,7 +26,7 @@ class Auth0ManagementTokenGenerator
         $this->clientSecret = $clientSecret;
     }
 
-    public function newToken(): Auth0Token
+    public function newToken(): ManagementToken
     {
         $response = $this->client->post(
             $this->uri(),
@@ -37,7 +38,7 @@ class Auth0ManagementTokenGenerator
 
         $res = json_decode($response->getBody()->getContents(), true);
 
-        return new Auth0Token(
+        return new ManagementToken(
             $res['access_token'],
             new DateTimeImmutable(),
             $res['expires_in']

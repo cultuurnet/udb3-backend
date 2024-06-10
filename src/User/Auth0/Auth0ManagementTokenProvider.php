@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User\Auth0;
 
+use CultuurNet\UDB3\User\ManagementToken;
 use DateTime;
 
 class Auth0ManagementTokenProvider
@@ -32,7 +33,7 @@ class Auth0ManagementTokenProvider
         return $token->getToken();
     }
 
-    private function expiresWithin(Auth0Token $token, string $offset): bool
+    private function expiresWithin(ManagementToken $token, string $offset): bool
     {
         return (new DateTime())->modify($offset) > $token->getExpiresAt();
     }
