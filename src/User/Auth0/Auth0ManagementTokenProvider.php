@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User;
+namespace CultuurNet\UDB3\User\Auth0;
 
 use DateTime;
 

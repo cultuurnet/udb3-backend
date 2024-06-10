@@ -7,10 +7,10 @@ namespace CultuurNet\UDB3\Auth0;
 use Auth0\SDK\API\Management;
 use Auth0\SDK\Configuration\SdkConfiguration;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\User\Auth0ManagementTokenGenerator;
-use CultuurNet\UDB3\User\Auth0ManagementTokenProvider;
-use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
-use CultuurNet\UDB3\User\CacheRepository;
+use CultuurNet\UDB3\User\Auth0\Auth0ManagementTokenGenerator;
+use CultuurNet\UDB3\User\Auth0\Auth0ManagementTokenProvider;
+use CultuurNet\UDB3\User\Auth0\Auth0UserIdentityResolver;
+use CultuurNet\UDB3\User\Auth0\CacheRepository;
 use GuzzleHttp\Client;
 
 final class Auth0ServiceProvider extends AbstractServiceProvider

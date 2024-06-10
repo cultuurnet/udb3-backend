@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User;
+namespace CultuurNet\UDB3\User\Auth0;
 
 use DateTimeImmutable;
-use Lcobucci\JWT\Token;
 use PHPUnit\Framework\TestCase;
 
 class Auth0ManagementTokenProviderTest extends TestCase

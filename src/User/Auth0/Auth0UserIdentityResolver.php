@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User;
+namespace CultuurNet\UDB3\User\Auth0;
 
 use Auth0\SDK\Contract\API\ManagementInterface;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\User\UserIdentityDetails;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 
 final class Auth0UserIdentityResolver implements UserIdentityResolver
 {

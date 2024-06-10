@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Role\ReadModel\Labels\RoleLabelsProjector;
 use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository;
 use CultuurNet\UDB3\Role\ReadModel\Users\RoleUsersProjector;
 use CultuurNet\UDB3\Role\ReadModel\Users\UserRolesProjector;
-use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
+use CultuurNet\UDB3\User\Auth0\Auth0UserIdentityResolver;
 
 final class RoleServiceProvider extends AbstractServiceProvider
 {
