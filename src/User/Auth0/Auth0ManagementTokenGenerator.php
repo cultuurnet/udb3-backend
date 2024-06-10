@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\User\Auth0;
 
 use CultuurNet\UDB3\User\ManagementToken;
+use CultuurNet\UDB3\User\ManagementTokenGenerator;
 use DateTimeImmutable;
 use GuzzleHttp\Client;
 
-class Auth0ManagementTokenGenerator
+class Auth0ManagementTokenGenerator implements ManagementTokenGenerator
 {
     private Client $client;
 
