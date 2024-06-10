@@ -18,7 +18,7 @@ final class KeycloakManagementTokenGenerator implements ManagementTokenGenerator
     private string $clientId;
     private string $clientSecret;
 
-    public function __construct(ClientInterface $client,  string $domain, string $clientId, string $clientSecret)
+    public function __construct(ClientInterface $client, string $domain, string $clientId, string $clientSecret)
     {
         $this->client = $client;
         $this->domain = $domain;
