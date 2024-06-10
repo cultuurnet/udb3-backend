@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
 use CultuurNet\UDB3\Console\Command\ImportMovieIdsFromCsv;
 use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Console\Command\IncludeLabel;
+use CultuurNet\UDB3\Console\Command\KeycloackCommand;
 use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
@@ -59,6 +60,7 @@ use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
+use CultuurNet\UDB3\User\Keycloack\KeycloackUserIdentityResolver;
 use Http\Adapter\Guzzle7\Client;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
@@ -92,6 +94,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.label:exclude',
         'console.label:exclude-invalid',
         'console.label:include',
+        'console.keycloack:find-user',
         'console.label:update-unique',
         'console.organizer:update-unique',
         'console.place:facilities:remove',
@@ -345,6 +348,13 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.label:include',
             fn () => new IncludeLabel($container->get('event_command_bus'))
+        );
+
+        $container->addShared(
+            'console.keycloack:find-user',
+            fn () => new KeycloackCommand(
+                $container->get(KeycloackUserIdentityResolver::class)
+            )
         );
 
         $container->addShared(
