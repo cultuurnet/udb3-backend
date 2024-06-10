@@ -36,15 +36,18 @@ final class KeycloackUserIdentityResolver implements UserIdentityResolver
 
     public function getUserById(string $userId): ?UserIdentityDetails
     {
-        $request = $this->createRequestWithQuery(
+        $request = new Request(
+            'GET',
+            (new Uri($this->domain))
+                ->withPath('/admin/realms/' . $this->realm . '/users/' . $userId),
             [
-                'id' => $userId,
+                'Authorization' => 'Bearer ' . $this->managementTokenGenerator->newToken()->getToken(),
             ]
         );
 
         $response = $this->client->sendRequest($request);
 
-        return $this->extractUser($response);
+        return $this->extractUser($response, true);
     }
 
     public function getUserByEmail(EmailAddress $email): ?UserIdentityDetails
@@ -58,7 +61,7 @@ final class KeycloackUserIdentityResolver implements UserIdentityResolver
 
         $response = $this->client->sendRequest($request);
 
-        return $this->extractUser($response);
+        return $this->extractUser($response, false);
     }
 
     public function getUserByNick(string $nick): ?UserIdentityDetails
@@ -79,7 +82,7 @@ final class KeycloackUserIdentityResolver implements UserIdentityResolver
         );
     }
 
-    private function extractUser(ResponseInterface $response): ?UserIdentityDetails
+    private function extractUser(ResponseInterface $response, bool $fromProfile): ?UserIdentityDetails
     {
         $users = Json::decodeAssociatively($response->getBody()->getContents());
 
@@ -87,7 +90,7 @@ final class KeycloackUserIdentityResolver implements UserIdentityResolver
             return null;
         }
 
-        $user = array_shift($users);
+        $user = $fromProfile ? $users : array_shift($users);
 
         return new UserIdentityDetails(
             $user['id'],
