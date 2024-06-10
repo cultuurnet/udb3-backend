@@ -71,7 +71,7 @@ final class KeycloackUserIdentityResolver implements UserIdentityResolver
         return new Request(
             'GET',
             (new Uri($this->domain))
-                ->withPath('/admin/realms/'. $this->realm . '/users')
+                ->withPath('/admin/realms/' . $this->realm . '/users')
                 ->withQuery(http_build_query($query)),
             [
                 'Authorization' => 'Bearer ' . $this->managementTokenGenerator->newToken()->getToken(),
