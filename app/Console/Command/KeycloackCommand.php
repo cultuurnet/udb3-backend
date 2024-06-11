@@ -13,6 +13,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class KeycloackCommand extends Command
 {
+    private const OPTION_EMAIL = 'email';
+    private const OPTION_ID = 'id';
+
     private KeycloackUserIdentityResolver $keycloackUserIdentityResolver;
 
     public function __construct(KeycloackUserIdentityResolver $keycloackUserIdentityResolver)
@@ -25,8 +28,8 @@ final class KeycloackCommand extends Command
     {
         $this->setName('keycloack:find-user')
             ->setDescription('Find a user inside Keycloak either on email or on id')
-            ->addOption('email', null, InputOption::VALUE_OPTIONAL, 'Email address of the user to find')
-            ->addOption('id', null, InputOption::VALUE_OPTIONAL, 'ID of the user to find');
+            ->addOption(self::OPTION_EMAIL, null, InputOption::VALUE_OPTIONAL, 'Email address of the user to find')
+            ->addOption(self::OPTION_ID, null, InputOption::VALUE_OPTIONAL, 'ID of the user to find');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -35,15 +38,15 @@ final class KeycloackCommand extends Command
 
         $userIdentityDetails = null;
 
-        if ($input->getOption('id')) {
+        if ($input->getOption(self::OPTION_ID)) {
             $userIdentityDetails = $this->keycloackUserIdentityResolver->getUserById(
-                $input->getOption('id')
+                $input->getOption(self::OPTION_ID)
             );
         }
 
-        if ($input->getOption('email')) {
+        if ($input->getOption(self::OPTION_EMAIL)) {
             $userIdentityDetails = $this->keycloackUserIdentityResolver->getUserByEmail(
-                new EmailAddress($input->getOption('email'))
+                new EmailAddress($input->getOption(self::OPTION_EMAIL))
             );
         }
 
