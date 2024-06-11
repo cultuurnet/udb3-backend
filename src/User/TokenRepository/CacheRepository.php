@@ -10,7 +10,7 @@ use Doctrine\Common\Cache\Cache;
 
 class CacheRepository implements TokenRepository
 {
-    private const TOKEN_KEY = 'auth0_token';
+    private const TOKEN_KEY = 'management_token';
 
     private Cache $cache;
 
