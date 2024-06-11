@@ -22,6 +22,8 @@ class KeycloakUserIdentityResolverTest extends TestCase
 
     private UserIdentityDetails $userIdentityDetails;
 
+    private KeycloakUserIdentityResolver $keycloackUserIdentityResolver;
+
     protected function setUp(): void
     {
         parent::setUp();
