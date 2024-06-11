@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\User;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
-use CultuurNet\UDB3\Error\LoggerFactory;
-use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Security\InMemoryUserEmailAddressRepository;
 use CultuurNet\UDB3\Security\UserEmailAddressRepository;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
+use CultuurNet\UDB3\User\Auth0\Auth0UserIdentityResolver;
 
 final class UserServiceProvider extends AbstractServiceProvider
 {

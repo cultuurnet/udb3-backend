@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Http\SavedSearches\UpdateSavedSearchRequestHandler;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchesOwnedByCurrentUser;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchReadRepository;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
-use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
+use CultuurNet\UDB3\User\Auth0\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\User\CurrentUser;
 use League\Container\DefinitionContainerInterface;
 

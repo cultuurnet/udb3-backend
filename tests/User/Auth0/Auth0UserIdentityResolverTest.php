@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User;
+namespace CultuurNet\UDB3\User\Auth0;
 
 use Auth0\SDK\Contract\API\Management\UsersInterface;
 use Auth0\SDK\Contract\API\ManagementInterface;
