@@ -18,7 +18,7 @@ final class Auth0ServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
-            'auth0.management-token',
+            Auth0ManagementTokenProvider::class,
             Auth0UserIdentityResolver::class,
         ];
     }
@@ -28,7 +28,7 @@ final class Auth0ServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->addShared(
-            'auth0.management-token',
+            Auth0ManagementTokenProvider::class,
             function () use ($container): string {
                 $provider = new Auth0ManagementTokenProvider(
                     new Auth0ManagementTokenGenerator(
@@ -50,7 +50,7 @@ final class Auth0ServiceProvider extends AbstractServiceProvider
             function () use ($container): Auth0UserIdentityResolver {
                 $config = new SdkConfiguration(null, SdkConfiguration::STRATEGY_NONE);
                 $config->setDomain($container->get('config')['auth0']['domain']);
-                $config->setManagementToken($container->get('auth0.management-token'));
+                $config->setManagementToken($container->get(Auth0ManagementTokenProvider::class));
                 return new Auth0UserIdentityResolver(new Management($config));
             }
         );
