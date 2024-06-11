@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Role\ReadModel\Labels\RoleLabelsProjector;
 use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository;
 use CultuurNet\UDB3\Role\ReadModel\Users\RoleUsersProjector;
 use CultuurNet\UDB3\Role\ReadModel\Users\UserRolesProjector;
-use CultuurNet\UDB3\User\Auth0\Auth0UserIdentityResolver;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 
 final class RoleServiceProvider extends AbstractServiceProvider
 {
@@ -147,7 +147,7 @@ final class RoleServiceProvider extends AbstractServiceProvider
             'role_users_projector',
             fn () => new RoleUsersProjector(
                 $container->get('role_users_read_repository'),
-                $container->get(Auth0UserIdentityResolver::class),
+                $container->get(UserIdentityResolver::class),
             )
         );
     }
