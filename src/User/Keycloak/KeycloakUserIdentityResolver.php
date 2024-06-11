@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User\Keycloack;
+namespace CultuurNet\UDB3\User\Keycloak;
 
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -14,7 +14,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
-final class KeycloackUserIdentityResolver implements UserIdentityResolver
+final class KeycloakUserIdentityResolver implements UserIdentityResolver
 {
     private ClientInterface $client;
     private string $domain;

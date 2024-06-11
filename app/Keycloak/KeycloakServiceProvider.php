@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Keycloack;
+namespace CultuurNet\UDB3\Keycloak;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\User\Keycloack\KeycloackUserIdentityResolver;
+use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
 use CultuurNet\UDB3\User\ManagementToken\ManagementTokenProvider;
 use GuzzleHttp\Client;
 
-final class KeycloackServiceProvider extends AbstractServiceProvider
+final class KeycloakServiceProvider extends AbstractServiceProvider
 {
     protected function getProvidedServiceNames(): array
     {
         return [
-            KeycloackUserIdentityResolver::class,
+            KeycloakUserIdentityResolver::class,
         ];
     }
 
@@ -23,12 +23,12 @@ final class KeycloackServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->add(
-            KeycloackUserIdentityResolver::class,
-            function () use ($container): KeycloackUserIdentityResolver {
-                return new KeycloackUserIdentityResolver(
+            KeycloakUserIdentityResolver::class,
+            function () use ($container): KeycloakUserIdentityResolver {
+                return new KeycloakUserIdentityResolver(
                     new Client(),
-                    $container->get('config')['keycloack']['domain'],
-                    $container->get('config')['keycloack']['realm'],
+                    $container->get('config')['keycloak']['domain'],
+                    $container->get('config')['keycloak']['realm'],
                     $container->get(ManagementTokenProvider::class)->token()
                 );
             }

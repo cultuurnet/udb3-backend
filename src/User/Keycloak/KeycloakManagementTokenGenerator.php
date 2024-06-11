@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User\Keycloack;
+namespace CultuurNet\UDB3\User\Keycloak;
 
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\User\ManagementToken\ManagementToken;
