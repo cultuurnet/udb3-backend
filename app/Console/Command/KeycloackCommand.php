@@ -52,7 +52,7 @@ final class KeycloackCommand extends Command
 
         if ($userIdentityDetails === null) {
             $output->writeln('No user found.');
-            return 1;
+            return self::FAILURE;
         }
 
         $output->writeln(
@@ -60,6 +60,6 @@ final class KeycloackCommand extends Command
             ' and email: ' . $userIdentityDetails->getEmailAddress() .
             ' and username: ' . $userIdentityDetails->getUsername()
         );
-        return 0;
+        return self::SUCCESS;
     }
 }
