@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\User\Auth0;
 
 use CultuurNet\UDB3\User\ManagementToken;
+use CultuurNet\UDB3\User\TokenRepository\TokenRepository;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +16,7 @@ class Auth0ManagementTokenProviderTest extends TestCase
      */
     public function it_generates_new_token_if_no_token_in_repository(): void
     {
-        $tokenRepository = $this->createMock(Auth0ManagementTokenRepository::class);
+        $tokenRepository = $this->createMock(TokenRepository::class);
         $tokenRepository->expects($this->atLeast(1))
             ->method('token')
             ->willReturn(null);
@@ -56,7 +57,7 @@ class Auth0ManagementTokenProviderTest extends TestCase
             3600
         );
 
-        $tokenRepository = $this->createMock(Auth0ManagementTokenRepository::class);
+        $tokenRepository = $this->createMock(TokenRepository::class);
         $tokenRepository->expects($this->atLeast(1))
             ->method('token')
             ->willReturn($token);
@@ -93,7 +94,7 @@ class Auth0ManagementTokenProviderTest extends TestCase
             3600
         );
 
-        $tokenRepository = $this->createMock(Auth0ManagementTokenRepository::class);
+        $tokenRepository = $this->createMock(TokenRepository::class);
         $tokenRepository->expects($this->atLeast(1))
             ->method('token')
             ->willReturn($expiredToken);

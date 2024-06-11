@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\User\Auth0\Auth0ManagementTokenGenerator;
 use CultuurNet\UDB3\User\Auth0\Auth0ManagementTokenProvider;
 use CultuurNet\UDB3\User\Auth0\Auth0UserIdentityResolver;
-use CultuurNet\UDB3\User\Auth0\CacheRepository;
+use CultuurNet\UDB3\User\TokenRepository\CacheRepository;
 use GuzzleHttp\Client;
 
 final class Auth0ServiceProvider extends AbstractServiceProvider
