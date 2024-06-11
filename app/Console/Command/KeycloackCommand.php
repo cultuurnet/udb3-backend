@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Console\Command;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\Keycloack\KeycloackUserIdentityResolver;
+use CultuurNet\UDB3\User\UserIdentityDetails;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -36,19 +37,17 @@ final class KeycloackCommand extends Command
     {
         $output->writeln('Searching Keycloack user...');
 
-        $userIdentityDetails = null;
-
-        if ($input->getOption(self::OPTION_ID)) {
-            $userIdentityDetails = $this->keycloackUserIdentityResolver->getUserById(
-                $input->getOption(self::OPTION_ID)
-            );
+        if ($input->getOption(self::OPTION_ID) && $input->getOption(self::OPTION_EMAIL)) {
+            $output->writeln('You can only search for a user by id or by email, not both.');
+            return self::FAILURE;
         }
 
-        if ($input->getOption(self::OPTION_EMAIL)) {
-            $userIdentityDetails = $this->keycloackUserIdentityResolver->getUserByEmail(
-                new EmailAddress($input->getOption(self::OPTION_EMAIL))
-            );
+        if ($input->getOption(self::OPTION_ID) === null && $input->getOption(self::OPTION_EMAIL) === null) {
+            $output->writeln('You need to provide either an id or an email to search for a user.');
+            return self::FAILURE;
         }
+
+        $userIdentityDetails = $this->getUserIdentityDetails($input);
 
         if ($userIdentityDetails === null) {
             $output->writeln('No user found.');
@@ -61,5 +60,22 @@ final class KeycloackCommand extends Command
             ' and username: ' . $userIdentityDetails->getUsername()
         );
         return self::SUCCESS;
+    }
+
+    private function getUserIdentityDetails(InputInterface $input): ?UserIdentityDetails
+    {
+        if ($input->getOption(self::OPTION_ID)) {
+            return $this->keycloackUserIdentityResolver->getUserById(
+                $input->getOption(self::OPTION_ID)
+            );
+        }
+
+        if ($input->getOption(self::OPTION_EMAIL)) {
+            return $this->keycloackUserIdentityResolver->getUserByEmail(
+                new EmailAddress($input->getOption(self::OPTION_EMAIL))
+            );
+        }
+
+        return null;
     }
 }
