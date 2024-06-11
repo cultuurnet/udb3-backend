@@ -2,20 +2,18 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User\Auth0;
+namespace CultuurNet\UDB3\User\ManagementToken;
 
-use CultuurNet\UDB3\User\ManagementToken;
-use CultuurNet\UDB3\User\TokenRepository\TokenRepository;
 use DateTime;
 
-class Auth0ManagementTokenProvider
+class ManagementTokenProvider
 {
-    private Auth0ManagementTokenGenerator $tokenGenerator;
+    private ManagementTokenGenerator $tokenGenerator;
 
     private TokenRepository $tokenRepository;
 
     public function __construct(
-        Auth0ManagementTokenGenerator $tokenGenerator,
+        ManagementTokenGenerator $tokenGenerator,
         TokenRepository $tokenRepository
     ) {
         $this->tokenGenerator = $tokenGenerator;

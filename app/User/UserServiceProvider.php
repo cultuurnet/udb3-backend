@@ -13,15 +13,21 @@ use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Security\InMemoryUserEmailAddressRepository;
 use CultuurNet\UDB3\Security\UserEmailAddressRepository;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
+use CultuurNet\UDB3\User\Auth0\Auth0ManagementTokenGenerator;
 use CultuurNet\UDB3\User\Auth0\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\User\Keycloack\KeycloackUserIdentityResolver;
-use League\Container\Container;
+use CultuurNet\UDB3\User\Keycloack\KeycloakManagementTokenGenerator;
+use CultuurNet\UDB3\User\ManagementToken\CacheRepository;
+use CultuurNet\UDB3\User\ManagementToken\ManagementTokenProvider;
+use GuzzleHttp\Client;
+use League\Container\DefinitionContainerInterface;
 
 final class UserServiceProvider extends AbstractServiceProvider
 {
     protected function getProvidedServiceNames(): array
     {
         return [
+            ManagementTokenProvider::class,
             UserIdentityResolver::class,
             'cdbxml_created_by_resolver',
             GetUserByEmailRequestHandler::class,
@@ -33,6 +39,11 @@ final class UserServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         $container = $this->getContainer();
+
+        $container->addShared(
+            ManagementTokenProvider::class,
+            fn () => $this->getManagementTokenProvider($container)
+        );
 
         $container->addShared(
             UserIdentityResolver::class,
@@ -71,7 +82,36 @@ final class UserServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function getUserIdentityResolver(Container $container): UserIdentityResolver
+    private function getManagementTokenProvider(DefinitionContainerInterface $container): ManagementTokenProvider
+    {
+        if ($container->get('config')['keycloack']['enabled']) {
+            return new ManagementTokenProvider(
+                new KeycloakManagementTokenGenerator(
+                    new Client(),
+                    $container->get('config')['keycloack']['domain'],
+                    $container->get('config')['keycloack']['client_id'],
+                    $container->get('config')['keycloack']['client_secret']
+                ),
+                new CacheRepository(
+                    $container->get('cache')('keycloack-management-token')
+                )
+            );
+        }
+
+        return new ManagementTokenProvider(
+            new Auth0ManagementTokenGenerator(
+                new Client(),
+                $container->get('config')['auth0']['client_id'],
+                $container->get('config')['auth0']['domain'],
+                $container->get('config')['auth0']['client_secret']
+            ),
+            new CacheRepository(
+                $container->get('cache')('auth0-management-token')
+            )
+        );
+    }
+
+    private function getUserIdentityResolver(DefinitionContainerInterface $container): UserIdentityResolver
     {
         if ($container->get('config')['keycloack']['enabled']) {
             return $container->get(KeycloackUserIdentityResolver::class);

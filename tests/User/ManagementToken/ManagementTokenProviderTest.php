@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User\Auth0;
+namespace CultuurNet\UDB3\User\ManagementToken;
 
-use CultuurNet\UDB3\User\ManagementToken;
-use CultuurNet\UDB3\User\TokenRepository\TokenRepository;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-class Auth0ManagementTokenProviderTest extends TestCase
+class ManagementTokenProviderTest extends TestCase
 {
     /**
      * @test
@@ -31,12 +29,12 @@ class Auth0ManagementTokenProviderTest extends TestCase
             ->method('store')
             ->with($token);
 
-        $tokenGenerator = $this->createMock(Auth0ManagementTokenGenerator::class);
+        $tokenGenerator = $this->createMock(ManagementTokenGenerator::class);
         $tokenGenerator->expects($this->atLeast(1))
             ->method('newToken')
             ->willReturn($token);
 
-        $service = new Auth0ManagementTokenProvider(
+        $service = new ManagementTokenProvider(
             $tokenGenerator,
             $tokenRepository
         );
@@ -62,11 +60,11 @@ class Auth0ManagementTokenProviderTest extends TestCase
             ->method('token')
             ->willReturn($token);
 
-        $tokenGenerator = $this->createMock(Auth0ManagementTokenGenerator::class);
+        $tokenGenerator = $this->createMock(ManagementTokenGenerator::class);
         $tokenGenerator->expects($this->never())
             ->method('newToken');
 
-        $service = new Auth0ManagementTokenProvider(
+        $service = new ManagementTokenProvider(
             $tokenGenerator,
             $tokenRepository
         );
@@ -99,12 +97,12 @@ class Auth0ManagementTokenProviderTest extends TestCase
             ->method('token')
             ->willReturn($expiredToken);
 
-        $tokenGenerator = $this->createMock(Auth0ManagementTokenGenerator::class);
+        $tokenGenerator = $this->createMock(ManagementTokenGenerator::class);
         $tokenGenerator->expects($this->atLeast(1))
             ->method('newToken')
             ->willReturn($newToken);
 
-        $service = new Auth0ManagementTokenProvider(
+        $service = new ManagementTokenProvider(
             $tokenGenerator,
             $tokenRepository
         );

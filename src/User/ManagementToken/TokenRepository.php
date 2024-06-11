@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User\TokenRepository;
-
-use CultuurNet\UDB3\User\ManagementToken;
+namespace CultuurNet\UDB3\User\ManagementToken;
 
 interface TokenRepository
 {

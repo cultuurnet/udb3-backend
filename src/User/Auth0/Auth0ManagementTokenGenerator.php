@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User\Auth0;
 
-use CultuurNet\UDB3\User\ManagementToken;
-use CultuurNet\UDB3\User\ManagementTokenGenerator;
+use CultuurNet\UDB3\User\ManagementToken\ManagementToken;
+use CultuurNet\UDB3\User\ManagementToken\ManagementTokenGenerator;
 use DateTimeImmutable;
 use GuzzleHttp\Client;
 

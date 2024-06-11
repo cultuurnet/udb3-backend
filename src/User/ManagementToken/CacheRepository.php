@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User\TokenRepository;
+namespace CultuurNet\UDB3\User\ManagementToken;
 
-use CultuurNet\UDB3\User\ManagementToken;
 use DateTimeImmutable;
 use Doctrine\Common\Cache\Cache;
 
