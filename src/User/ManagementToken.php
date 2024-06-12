@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User\Auth0;
+namespace CultuurNet\UDB3\User;
 
 use DateTimeImmutable;
 
-final class Auth0Token
+final class ManagementToken
 {
     private string $token;
 

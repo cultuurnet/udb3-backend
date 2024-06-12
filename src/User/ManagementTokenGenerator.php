@@ -1,0 +1,10 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\User;
+
+interface ManagementTokenGenerator
+{
+    public function newToken(): ManagementToken;
+}

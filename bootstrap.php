@@ -30,6 +30,7 @@ use CultuurNet\UDB3\EventStore\EventStoreServiceProvider;
 use CultuurNet\UDB3\Export\ExportServiceProvider;
 use CultuurNet\UDB3\Geocoding\GeocodingServiceProvider;
 use CultuurNet\UDB3\Jobs\JobsServiceProvider;
+use CultuurNet\UDB3\Keycloack\KeycloackServiceProvider;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Mailinglist\MailinglistServiceProvider;
 use CultuurNet\UDB3\Media\ImageStorageProvider;
@@ -189,6 +190,7 @@ $container->addServiceProvider(new Sapi3SearchServiceProvider());
 // user who triggered the job is being impersonated.
 $container->addServiceProvider(new AuthServiceProvider());
 $container->addServiceProvider(new Auth0ServiceProvider());
+$container->addServiceProvider(new KeycloackServiceProvider());
 
 /** UDB2 */
 $container->addServiceProvider(new UDB2EventServicesProvider());
