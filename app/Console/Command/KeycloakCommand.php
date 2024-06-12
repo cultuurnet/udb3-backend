@@ -5,29 +5,29 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use CultuurNet\UDB3\User\Keycloack\KeycloackUserIdentityResolver;
+use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class KeycloackCommand extends Command
+final class KeycloakCommand extends Command
 {
     private const OPTION_EMAIL = 'email';
     private const OPTION_ID = 'id';
 
-    private KeycloackUserIdentityResolver $keycloackUserIdentityResolver;
+    private KeycloakUserIdentityResolver $keycloakUserIdentityResolver;
 
-    public function __construct(KeycloackUserIdentityResolver $keycloackUserIdentityResolver)
+    public function __construct(KeycloakUserIdentityResolver $keycloakUserIdentityResolver)
     {
         parent::__construct();
-        $this->keycloackUserIdentityResolver = $keycloackUserIdentityResolver;
+        $this->keycloakUserIdentityResolver = $keycloakUserIdentityResolver;
     }
 
     public function configure(): void
     {
-        $this->setName('keycloack:find-user')
+        $this->setName('keycloak:find-user')
             ->setDescription('Find a user inside Keycloak either on email or on id')
             ->addOption(self::OPTION_EMAIL, null, InputOption::VALUE_OPTIONAL, 'Email address of the user to find')
             ->addOption(self::OPTION_ID, null, InputOption::VALUE_OPTIONAL, 'ID of the user to find');
@@ -35,7 +35,7 @@ final class KeycloackCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('Searching Keycloack user...');
+        $output->writeln('Searching Keycloak user...');
 
         if ($input->getOption(self::OPTION_ID) && $input->getOption(self::OPTION_EMAIL)) {
             $output->writeln('You can only search for a user by id or by email, not both.');
@@ -65,13 +65,13 @@ final class KeycloackCommand extends Command
     private function getUserIdentityDetails(InputInterface $input): ?UserIdentityDetails
     {
         if ($input->getOption(self::OPTION_ID)) {
-            return $this->keycloackUserIdentityResolver->getUserById(
+            return $this->keycloakUserIdentityResolver->getUserById(
                 $input->getOption(self::OPTION_ID)
             );
         }
 
         if ($input->getOption(self::OPTION_EMAIL)) {
-            return $this->keycloackUserIdentityResolver->getUserByEmail(
+            return $this->keycloakUserIdentityResolver->getUserByEmail(
                 new EmailAddress($input->getOption(self::OPTION_EMAIL))
             );
         }

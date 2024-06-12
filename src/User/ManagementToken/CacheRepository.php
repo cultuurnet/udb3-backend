@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User\Auth0;
+namespace CultuurNet\UDB3\User\ManagementToken;
 
-use CultuurNet\UDB3\User\ManagementToken;
 use DateTimeImmutable;
 use Doctrine\Common\Cache\Cache;
 
-class CacheRepository implements Auth0ManagementTokenRepository
+class CacheRepository implements TokenRepository
 {
-    private const TOKEN_KEY = 'auth0_token';
+    private const TOKEN_KEY = 'management_token';
 
     private Cache $cache;
 

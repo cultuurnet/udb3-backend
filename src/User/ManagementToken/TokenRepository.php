@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User\Auth0;
+namespace CultuurNet\UDB3\User\ManagementToken;
 
-use CultuurNet\UDB3\User\ManagementToken;
-
-interface Auth0ManagementTokenRepository
+interface TokenRepository
 {
     public function token(): ?ManagementToken;
 

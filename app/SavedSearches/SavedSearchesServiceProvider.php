@@ -14,8 +14,8 @@ use CultuurNet\UDB3\Http\SavedSearches\UpdateSavedSearchRequestHandler;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchesOwnedByCurrentUser;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchReadRepository;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
-use CultuurNet\UDB3\User\Auth0\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\User\CurrentUser;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use League\Container\DefinitionContainerInterface;
 
 final class SavedSearchesServiceProvider extends AbstractServiceProvider
@@ -55,7 +55,7 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
                 return new CombinedSavedSearchRepository(
                     new Sapi3FixedSavedSearchRepository(
                         $container->get(JsonWebToken::class),
-                        $container->get(Auth0UserIdentityResolver::class),
+                        $container->get(UserIdentityResolver::class),
                         $this->getCreatedByQueryMode($container)
                     ),
                     $container->get('udb3_saved_searches_repo_sapi3')

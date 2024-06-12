@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\User\Keycloack;
+namespace CultuurNet\UDB3\User\Keycloak;
 
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use CultuurNet\UDB3\User\ManagementTokenGenerator;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use GuzzleHttp\Psr7\Request;
@@ -15,23 +14,23 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
-final class KeycloackUserIdentityResolver implements UserIdentityResolver
+final class KeycloakUserIdentityResolver implements UserIdentityResolver
 {
     private ClientInterface $client;
     private string $domain;
     private string $realm;
-    private ManagementTokenGenerator $managementTokenGenerator;
+    private string $token;
 
     public function __construct(
         ClientInterface $client,
         string $domain,
         string $realm,
-        ManagementTokenGenerator $managementTokenGenerator
+        string $token
     ) {
         $this->client = $client;
         $this->domain = $domain;
         $this->realm = $realm;
-        $this->managementTokenGenerator = $managementTokenGenerator;
+        $this->token = $token;
     }
 
     public function getUserById(string $userId): ?UserIdentityDetails
@@ -41,7 +40,7 @@ final class KeycloackUserIdentityResolver implements UserIdentityResolver
             (new Uri($this->domain))
                 ->withPath('/admin/realms/' . $this->realm . '/users/' . $userId),
             [
-                'Authorization' => 'Bearer ' . $this->managementTokenGenerator->newToken()->getToken(),
+                'Authorization' => 'Bearer ' . $this->token,
             ]
         );
 
@@ -77,7 +76,7 @@ final class KeycloackUserIdentityResolver implements UserIdentityResolver
                 ->withPath('/admin/realms/' . $this->realm . '/users')
                 ->withQuery(http_build_query($query)),
             [
-                'Authorization' => 'Bearer ' . $this->managementTokenGenerator->newToken()->getToken(),
+                'Authorization' => 'Bearer ' . $this->token,
             ]
         );
     }
