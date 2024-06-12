@@ -27,7 +27,7 @@
     "cakephp/chronos": "^1.3",
     "chrisboulton/php-resque": "dev-compat-1-2 as 1.2",
     "commerceguys/intl": "^0.7",
-    "cultuurnet/calendar-summary-v3": "^4.0.4",
+    "cultuurnet/calendar-summary-v3": "^4.0.7",
     "cultuurnet/cdb": "~2.2.0",
     "cultuurnet/culturefeed-php": "dev-master",
     "cultuurnet/udb3-api-guard": "^5.0",
