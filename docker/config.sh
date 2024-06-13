@@ -16,3 +16,11 @@ else
   echo "Error: missing appconfig see docker.md prerequisites to fix this."
   exit 1
 fi
+
+DIR="../appconfig/files/udb3/docker/keys/"
+if [ -d "$DIR" ]; then
+  cp -R "$DIR"/* .
+else
+  echo "Error: missing appconfig see docker.md prerequisites to fix this."
+  exit 1
+fi
