@@ -1,4 +1,4 @@
-.PHONY: up down install ci stan cs cs-fix test migrate config init feature
+.PHONY: up down bash config install migrate init ci stan cs cs-fix test feature
 
 up:
 	docker-compose up -d
@@ -6,8 +6,19 @@ up:
 down:
 	docker-compose down
 
+bash:
+	docker exec -it php.uitdatabank bash
+
+config:
+	sh ./docker/config.sh
+
 install:
 	docker exec -it php.uitdatabank composer install
+
+migrate:
+	docker exec -it php.uitdatabank ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
+
+init: install migrate
 
 ci:
 	docker exec -it php.uitdatabank composer ci
@@ -41,14 +52,3 @@ feature:
 
 feature-filter:
 	docker exec -it php.uitdatabank composer feature -- $(path)
-
-migrate:
-	docker exec -it php.uitdatabank ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
-
-bash:
-	docker exec -it php.uitdatabank bash
-
-config:
-	sh ./docker/config.sh
-
-init: install migrate
