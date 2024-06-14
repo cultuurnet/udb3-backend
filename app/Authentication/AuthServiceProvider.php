@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Impersonator;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\User\CurrentUser;
+use League\Container\DefinitionContainerInterface;
 
 final class AuthServiceProvider extends AbstractServiceProvider
 {
@@ -50,11 +51,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                         'file://' . __DIR__ . '/../../' . $container->get('config')['jwt']['v1']['keys']['public']['file'],
                         $container->get('config')['jwt']['v1']['valid_issuers']
                     ),
-                    new UitIdV2JwtValidator(
-                        'file://' . __DIR__ . '/../../' . $container->get('config')['jwt']['v2']['keys']['public']['file'],
-                        $container->get('config')['jwt']['v2']['valid_issuers'],
-                        $container->get('config')['jwt']['v2']['jwt_provider_client_id']
-                    ),
+                    $this->createUitIdV2JwtValidator($container),
                     new CultureFeedApiKeyAuthenticator($container->get(ConsumerReadRepository::class)),
                     $container->get(ConsumerReadRepository::class),
                     new ConsumerIsInPermissionGroup((string) $container->get('config')['api_key']['group_id']),
@@ -178,6 +175,17 @@ final class AuthServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'impersonator',
             fn () => new Impersonator()
+        );
+    }
+
+    private function createUitIdV2JwtValidator(DefinitionContainerInterface $container): UitIdV2JwtValidator
+    {
+        $version = $container->get('config')['keycloak']['enabled'] ? 'keycloak' : 'v2';
+
+        return new UitIdV2JwtValidator(
+            'file://' . __DIR__ . '/../../' . $container->get('config')['jwt'][$version]['keys']['public']['file'],
+            $container->get('config')['jwt'][$version]['valid_issuers'],
+            $container->get('config')['jwt'][$version]['jwt_provider_client_id']
         );
     }
 }
