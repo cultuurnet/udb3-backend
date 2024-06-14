@@ -83,7 +83,7 @@ trait AuthorizationSteps
         );
         $this->responseState->setResponse($response);
 
-        $idToken = $this->responseState->getJsonContent()['id_token'];
+        $idToken = $this->responseState->getJsonContent()['access_token'];
         $this->requestState->setJwt($idToken);
 
         $this->iAmUsingTheUDB3BaseURL();
