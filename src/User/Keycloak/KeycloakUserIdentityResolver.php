@@ -93,8 +93,16 @@ final class KeycloakUserIdentityResolver implements UserIdentityResolver
 
         return new UserIdentityDetails(
             $user['id'],
-            $user['username'],
+            $this->removeDomain($user['username']), // TODO: Replace with 'nickname' when available on Keycloak
             $user['email'],
         );
+    }
+
+    function removeDomain(string $username): string
+    {
+        if (!filter_var($username, FILTER_VALIDATE_EMAIL)) {
+            return $username;
+        }
+        return substr($username, 0, strpos($username, '@'));
     }
 }
