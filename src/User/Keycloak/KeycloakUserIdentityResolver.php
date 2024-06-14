@@ -98,7 +98,7 @@ final class KeycloakUserIdentityResolver implements UserIdentityResolver
         );
     }
 
-    function removeDomain(string $username): string
+    private function removeDomain(string $username): string
     {
         if (!filter_var($username, FILTER_VALIDATE_EMAIL)) {
             return $username;
