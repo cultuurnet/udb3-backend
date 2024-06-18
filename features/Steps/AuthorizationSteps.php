@@ -83,8 +83,8 @@ trait AuthorizationSteps
         );
         $this->responseState->setResponse($response);
 
-        $idToken = $this->responseState->getJsonContent()['id_token'];
-        $this->requestState->setJwt($idToken);
+        $accessToken = $this->responseState->getJsonContent()['access_token'];
+        $this->requestState->setJwt($accessToken);
 
         $this->iAmUsingTheUDB3BaseURL();
     }
@@ -107,8 +107,8 @@ trait AuthorizationSteps
         );
         $this->responseState->setResponse($response);
 
-        $idToken = $this->responseState->getJsonContent()['access_token'];
-        $this->requestState->setJwt($idToken);
+        $accessToken = $this->responseState->getJsonContent()['access_token'];
+        $this->requestState->setJwt($accessToken);
 
         $this->iAmUsingTheUDB3BaseURL();
     }
@@ -134,8 +134,8 @@ trait AuthorizationSteps
         );
         $this->responseState->setResponse($response);
 
-        $idToken = $this->responseState->getJsonContent()['access_token'];
-        $this->requestState->setJwt($idToken);
+        $accessToken = $this->responseState->getJsonContent()['access_token'];
+        $this->requestState->setJwt($accessToken);
 
         $this->iAmUsingTheUDB3BaseURL();
     }
