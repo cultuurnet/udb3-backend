@@ -83,6 +83,10 @@ final class JsonWebToken
             return $this->token->claims()->get('https://publiq.be/uitidv1id');
         }
 
+        if ($this->getType() === self::UIT_ID_V2_CLIENT_ACCESS_TOKEN && $this->token->claims()->has('azp')) {
+            return $this->token->claims()->get('azp') . '@clients';
+        }
+
         return $this->token->claims()->get('sub');
     }
 
