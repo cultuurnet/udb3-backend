@@ -46,6 +46,10 @@ final class KeycloakUserIdentityResolver implements UserIdentityResolver
 
         $response = $this->client->sendRequest($request);
 
+        if ($response->getStatusCode() === 404) {
+            return null;
+        }
+
         return $this->extractUser($response, true);
     }
 
@@ -59,6 +63,10 @@ final class KeycloakUserIdentityResolver implements UserIdentityResolver
         );
 
         $response = $this->client->sendRequest($request);
+
+        if ($response->getStatusCode() === 404) {
+            return null;
+        }
 
         return $this->extractUser($response, false);
     }
