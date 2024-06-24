@@ -100,17 +100,9 @@ final class KeycloakUserIdentityResolver implements UserIdentityResolver
         $user = $fromProfile ? $users : array_shift($users);
 
         return new UserIdentityDetails(
-            $user['id'],
-            $this->removeDomain($user['username']), // TODO: Replace with 'nickname' when available on Keycloak
+            $user['attributes']['uitidv1id'][0] ?? $user['id'],
+            $user['attributes']['nickname'][0] ?? $user['username'],
             $user['email'],
         );
-    }
-
-    private function removeDomain(string $username): string
-    {
-        if (!filter_var($username, FILTER_VALIDATE_EMAIL)) {
-            return $username;
-        }
-        return substr($username, 0, strpos($username, '@'));
     }
 }
