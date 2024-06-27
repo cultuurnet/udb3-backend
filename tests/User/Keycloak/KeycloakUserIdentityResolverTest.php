@@ -104,10 +104,25 @@ class KeycloakUserIdentityResolverTest extends TestCase
      */
     public function test_it_can_get_a_user_by_nick(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Nickname is not yet supported in Keycloak.');
+        $this->client->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (RequestInterface $request) {
+                return $request->getUri()->getPath() === '/admin/realms/realm/users' &&
+                    $request->getMethod() === 'GET' &&
+                    $request->getHeaderLine('Authorization') === 'Bearer token' &&
+                    $request->getUri()->getQuery() === 'q=nickname%3Ajohndoe';
+            }))
+            ->willReturn(
+                new Response(
+                    200,
+                    [],
+                    Json::encode([$this->userIdentityDetailsToArray($this->userIdentityDetails)])
+                )
+            );
 
-        $this->keycloackUserIdentityResolver->getUserByNick('nick');
+        $userIdentityDetails = $this->keycloackUserIdentityResolver->getUserByNick('johndoe');
+
+        $this->assertEquals($this->userIdentityDetails, $userIdentityDetails);
     }
 
     private function userIdentityDetailsToArray(UserIdentityDetails $userIdentityDetails): array
