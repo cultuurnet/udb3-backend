@@ -74,6 +74,57 @@ class KeycloakUserIdentityResolverTest extends TestCase
     /**
      * @test
      */
+    public function it_can_get_a_user_by_id_with_v1_fallback(): void
+    {
+        $userId = $this->userIdentityDetails->getUserId();
+
+        $matcher = $this->exactly(2);
+        $this->client->expects($matcher)
+            ->method('sendRequest')
+            ->willReturnCallback(function (RequestInterface $request) use ($userId, $matcher) {
+                $this->assertEquals(
+                    'GET',
+                    $request->getMethod()
+                );
+                $this->assertEquals(
+                    'Bearer token',
+                    $request->getHeaderLine('Authorization')
+                );
+
+                if ($matcher->getInvocationCount() === 1) {
+                    $this->assertEquals(
+                        '/admin/realms/realm/users/' . $userId,
+                        $request->getUri()->getPath()
+                    );
+
+                    return new Response(404);
+                }
+
+                $this->assertEquals(
+                    '/admin/realms/realm/users',
+                    $request->getUri()->getPath()
+                );
+
+                $this->assertEquals(
+                    'q=uitidv1id%3A' . $userId,
+                    $request->getUri()->getQuery()
+                );
+
+                return new Response(
+                    200,
+                    [],
+                    Json::encode([$this->userIdentityDetailsToArray($this->userIdentityDetails)]),
+                );
+            });
+
+        $userIdentityDetails = $this->keycloackUserIdentityResolver->getUserById($userId);
+
+        $this->assertEquals($this->userIdentityDetails, $userIdentityDetails);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_get_a_user_by_email(): void
     {
         $this->client->expects($this->once())

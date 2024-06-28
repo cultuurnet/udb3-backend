@@ -46,10 +46,27 @@ final class KeycloakUserIdentityResolver implements UserIdentityResolver
         $response = $this->client->sendRequest($request);
 
         if ($response->getStatusCode() === 404) {
-            return null;
+            return $this->getUserByUiTiDv1($userId);
         }
 
         return $this->extractUser($response, true);
+    }
+
+    private function getUserByUiTiDv1(string $userId): ?UserIdentityDetails
+    {
+        $request = $this->createRequestWithQuery(
+            [
+                'q' => 'uitidv1id:' . $userId,
+            ]
+        );
+
+        $response = $this->client->sendRequest($request);
+
+        if ($response->getStatusCode() === 404) {
+            return null;
+        }
+
+        return $this->extractUser($response, false);
     }
 
     public function getUserByEmail(EmailAddress $email): ?UserIdentityDetails
