@@ -83,7 +83,7 @@ class DeletePlace extends AbstractCommand
             $this->placeDocumentRepository->fetch($placeUuid);
             $this->placeDocumentRepository->fetch($canonicalUuid);
         } catch (DocumentDoesNotExist $e) {
-            $output->writeln($placeUuid . ' & ' . $canonicalUuid . ' should both be valid Place Uuids.');
+            $output->writeln($e->getMessage());
             return 0;
         }
 
