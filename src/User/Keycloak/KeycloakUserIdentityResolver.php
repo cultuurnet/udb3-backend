@@ -12,7 +12,6 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
-use RuntimeException;
 
 final class KeycloakUserIdentityResolver implements UserIdentityResolver
 {
@@ -73,7 +72,19 @@ final class KeycloakUserIdentityResolver implements UserIdentityResolver
 
     public function getUserByNick(string $nick): ?UserIdentityDetails
     {
-        throw new RuntimeException('Nickname is not yet supported in Keycloak.');
+        $request = $this->createRequestWithQuery(
+            [
+                'q' => 'nickname:' . $nick,
+            ]
+        );
+
+        $response = $this->client->sendRequest($request);
+
+        if ($response->getStatusCode() === 404) {
+            return null;
+        }
+
+        return $this->extractUser($response, false);
     }
 
     private function createRequestWithQuery(array $query): Request
