@@ -9,6 +9,8 @@ use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,12 +28,16 @@ class DeletePlace extends AbstractCommand
 
     private EventRelationsRepository $eventRelationsRepository;
 
+    private DocumentRepository $placeDocumentRepository;
+
     public function __construct(
         CommandBus $commandBus,
-        EventRelationsRepository $eventRelationsRepository
+        EventRelationsRepository $eventRelationsRepository,
+        DocumentRepository $placeDocumentRepository
     ) {
         parent::__construct($commandBus);
         $this->eventRelationsRepository = $eventRelationsRepository;
+        $this->placeDocumentRepository = $placeDocumentRepository;
     }
 
     public function configure(): void
@@ -70,6 +76,14 @@ class DeletePlace extends AbstractCommand
 
         if ($placeUuid === null || $canonicalUuid === null) {
             $output->writeln('<error>Missing argument, the correct syntax is: place:delete place_uuid_to_delete canonical_place_uuid</error>');
+            return 0;
+        }
+
+        try {
+            $this->placeDocumentRepository->fetch($placeUuid);
+            $this->placeDocumentRepository->fetch($canonicalUuid);
+        } catch (DocumentDoesNotExist $e) {
+            $output->writeln($e->getMessage());
             return 0;
         }
 
