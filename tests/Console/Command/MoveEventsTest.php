@@ -20,7 +20,6 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-
 class MoveEventsTest extends TestCase
 {
     private TraceableCommandBus $commandBus;

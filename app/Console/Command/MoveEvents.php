@@ -94,7 +94,7 @@ class MoveEvents extends AbstractCommand
                 $this->commandBus->dispatch($command);
                 $output->writeln('Dispatching UpdateLocation for event with id ' . $command->getItemId());
             } catch (Exception $exception) {
-                $exceptions[] = sprintf("Event with id: %s caused an exception: %s", $event->getId(), $exception->getMessage());
+                $exceptions[] = sprintf('Event with id: %s caused an exception: %s', $event->getId(), $exception->getMessage());
             }
 
             $progressBar->advance();
@@ -104,7 +104,7 @@ class MoveEvents extends AbstractCommand
 
         $output->writeln('');
         foreach ($exceptions as $exception) {
-            $output->writeln(sprintf("<error>%s</error>", $exception));
+            $output->writeln(sprintf('<error>%s</error>', $exception));
         }
 
         return self::SUCCESS;

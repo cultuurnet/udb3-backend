@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
-use Google\Service\SecurityCommandCenter\LoadBalancer;
 
 class UpdateLocation extends AbstractCommand
 {
@@ -21,7 +20,7 @@ class UpdateLocation extends AbstractCommand
         $this->locationId = $locationId;
     }
 
-    public function getLocationId() : LocationId
+    public function getLocationId(): LocationId
     {
         return $this->locationId;
     }
