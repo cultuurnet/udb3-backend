@@ -200,6 +200,18 @@ class CanonicalServiceTest extends TestCase
         );
         $documentRepository->save($oldestJsonDocument);
 
+        $oldestJsonDocument = new JsonDocument(
+            $anotherMuseumPassPlaceId,
+            Json::encode(['@id' => $anotherMuseumPassPlaceId, 'completeness' => 40])
+        );
+        $documentRepository->save($oldestJsonDocument);
+
+        $oldestJsonDocument = new JsonDocument(
+            $this->museumPassPlaceId,
+            Json::encode(['@id' => $this->museumPassPlaceId, 'completeness' => 80])
+        );
+        $documentRepository->save($oldestJsonDocument);
+
         $this->canonicalService = new CanonicalService(
             'museumPASSmusees',
             new DBALDuplicatePlaceRepository($this->getConnection()),
@@ -243,12 +255,14 @@ class CanonicalServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_will_throw_an_exception_when_cluster_contains_2_MPM_places(): void
+    public function it_will_return_the_place_with_the_highest_completeness_when_cluster_contains_2_MPM_places(): void
     {
-        $this->expectException(MuseumPassNotUniqueInCluster::class);
-        $this->expectExceptionMessage('Cluster 2 contains 2 MuseumPass places');
+        $canonicalId = $this->canonicalService->getCanonical(2);
 
-        $this->canonicalService->getCanonical(2);
+        $this->assertEquals(
+            $this->museumPassPlaceId,
+            $canonicalId
+        );
     }
 
     /**

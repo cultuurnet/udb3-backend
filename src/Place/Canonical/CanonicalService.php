@@ -45,7 +45,7 @@ class CanonicalService
             return $placesWithMuseumpas[array_key_first($placesWithMuseumpas)];
         }
         if (count($placesWithMuseumpas) > 1) {
-            throw new MuseumPassNotUniqueInCluster($clusterId, count($placesWithMuseumpas));
+            return $this->getPlaceWithHighestCompleteness($placesWithMuseumpas);
         }
 
         $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
@@ -93,5 +93,24 @@ class CanonicalService
 
         asort($placesByCreationDate);
         return array_key_first($placesByCreationDate);
+    }
+
+    private function getPlaceWithHighestCompleteness(array $placeIds): string
+    {
+        $maxCompleteness = -1;
+        $placeWithMaxCompleteness = '';
+
+        foreach ($placeIds as $placeId) {
+            $jsonDocument = $this->placeRepository->fetch($placeId);
+            $body = $jsonDocument->getBody();
+            $completeness = $body->completeness;
+
+            if ($completeness > $maxCompleteness) {
+                $maxCompleteness = $completeness;
+                $placeWithMaxCompleteness = $placeId;
+            }
+        }
+
+        return $placeWithMaxCompleteness;
     }
 }
