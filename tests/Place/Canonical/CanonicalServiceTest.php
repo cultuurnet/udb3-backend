@@ -8,7 +8,6 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventRelationsRepository;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
-use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Doctrine\DBAL\Schema\Table;
@@ -130,7 +129,7 @@ class CanonicalServiceTest extends TestCase
             [
                 'labelName' => 'museumPASSmusees',
                 'relationType' => 'Place',
-                'relationId'=> $this->museumPassPlaceId,
+                'relationId' => $this->museumPassPlaceId,
                 'imported' => '0',
             ]
         );
@@ -140,7 +139,7 @@ class CanonicalServiceTest extends TestCase
             [
                 'labelName' => 'museumPASSmusees',
                 'relationType' => 'Place',
-                'relationId'=> $anotherMuseumPassPlaceId,
+                'relationId' => $anotherMuseumPassPlaceId,
                 'imported' => '0',
             ]
         );
@@ -156,7 +155,7 @@ class CanonicalServiceTest extends TestCase
             [
                 'event' => 'cb11d320-17dc-41f8-831a-8b9d8208ea80',
                 'organizer' => 'eb89d990-8f5b-46be-a548-c87a300a54c8',
-                'place'=> $this->museumPassPlaceId,
+                'place' => $this->museumPassPlaceId,
             ]
         );
         $this->getConnection()->insert(
@@ -164,7 +163,7 @@ class CanonicalServiceTest extends TestCase
             [
                 'event' => '86e4540d-eed2-4cc5-8e08-a9f684deb03f',
                 'organizer' => 'eb89d990-8f5b-46be-a548-c87a300a54c8',
-                'place'=> $this->museumPassPlaceId,
+                'place' => $this->museumPassPlaceId,
             ]
         );
         $this->getConnection()->insert(
@@ -172,7 +171,7 @@ class CanonicalServiceTest extends TestCase
             [
                 'event' => 'bf1ba6c5-6d02-4c08-ab62-84ce8aa214a0',
                 'organizer' => 'eb89d990-8f5b-46be-a548-c87a300a54c8',
-                'place'=> $this->mostEventsPlaceId,
+                'place' => $this->mostEventsPlaceId,
             ]
         );
 

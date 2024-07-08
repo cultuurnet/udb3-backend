@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Place\Canonical;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
-use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class CanonicalService
