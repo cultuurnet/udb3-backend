@@ -26,6 +26,7 @@ class MoveEvents extends AbstractCommand
     private const PLACE_UUID = 'place-uuid';
     private const QUERY = 'query';
     private const FORCE = 'force';
+    private const DRY_RUN = 'dry-run';
 
     private ResultsGeneratorInterface $searchResultsGenerator;
 
@@ -61,6 +62,12 @@ class MoveEvents extends AbstractCommand
                 null,
                 InputOption::VALUE_NONE,
                 'Skip confirmation.'
+            )
+            ->addOption(
+                self::DRY_RUN,
+                null,
+                InputOption::VALUE_NONE,
+                'Execute the script as a dry run.'
             );
     }
 
@@ -91,7 +98,9 @@ class MoveEvents extends AbstractCommand
         foreach ($this->searchResultsGenerator->search($query) as $event) {
             try {
                 $command = new UpdateLocation($event->getId(), new LocationId($placeUuid));
-                $this->commandBus->dispatch($command);
+                if (!$input->getOption(self::DRY_RUN)) {
+                    $this->commandBus->dispatch($command);
+                }
                 $output->writeln('Dispatching UpdateLocation for event with id ' . $command->getItemId());
             } catch (Exception $exception) {
                 $exceptions[] = sprintf('Event with id: %s caused an exception: %s', $event->getId(), $exception->getMessage());
