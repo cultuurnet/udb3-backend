@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Console\Command\ImportMovieIdsFromCsv;
 use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Console\Command\IncludeLabel;
 use CultuurNet\UDB3\Console\Command\KeycloakCommand;
+use CultuurNet\UDB3\Console\Command\MoveEvents;
 use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
@@ -76,6 +77,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.place:geocode',
         'console.place:delete',
         'console.event:geocode',
+        'console.event:move',
         'console.organizer:geocode',
         'console.fire-projected-to-jsonld-for-relations',
         'console.fire-projected-to-jsonld',
@@ -211,6 +213,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('event_command_bus'),
                 $container->get(OrganizersSapi3SearchService::class),
                 $container->get('organizer_jsonld_repository')
+            )
+        );
+
+        $container->addShared(
+            'console.event:move',
+            fn () => new MoveEvents(
+                $container->get('event_command_bus'),
+                $container->get(EventsSapi3SearchService::class),
             )
         );
 
