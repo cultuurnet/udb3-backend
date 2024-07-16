@@ -33,6 +33,7 @@ final class BulkRemoveFromProduction extends AbstractCommand
     {
         $eventIds = $input->getOption('eventId');
         $productionId = $input->getArgument('productionId');
+
         $this->commandBus->dispatch(
             new RemoveEventsFromProduction(
                 $eventIds,
