@@ -48,8 +48,6 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
-use CultuurNet\UDB3\Event\Productions\DBALProductionRepository;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Kinepolis\Client\AuthenticatedKinepolisClient;
@@ -262,11 +260,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'console.event:bulk-remove-from-production',
-            fn () => new BulkRemoveFromProduction(
-                new DBALProductionRepository($container->get('dbal_connection')),
-                $container->get(EventBus::class),
-                $container->get(EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)
-            )
+            fn () => new BulkRemoveFromProduction($container->get('event_command_bus'))
         );
 
         $container->addShared(
