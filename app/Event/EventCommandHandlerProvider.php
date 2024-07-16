@@ -98,7 +98,8 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
             function () use ($container): CopyEventHandler {
                 return new CopyEventHandler(
                     $container->get('event_repository'),
-                    $container->get(ProductionRepository::class)
+                    $container->get(ProductionRepository::class),
+                    $container->get('config')['copy_production'] ?? true
                 );
             }
         );

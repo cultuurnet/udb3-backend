@@ -17,12 +17,16 @@ final class CopyEventHandler implements CommandHandler
     private EventRepository $eventRepository;
     private ProductionRepository $productionRepository;
 
+    private bool $copyProduction;
+
     public function __construct(
         EventRepository $eventRepository,
-        ProductionRepository $productionRepository
+        ProductionRepository $productionRepository,
+        bool $copyProduction
     ) {
         $this->eventRepository = $eventRepository;
         $this->productionRepository = $productionRepository;
+        $this->copyProduction = $copyProduction;
     }
 
     public function handle($command): void
@@ -42,11 +46,13 @@ final class CopyEventHandler implements CommandHandler
 
         // Add the new event to the same production as the original one.
         // This is not done as part of Event::copy() because productions are not event-sourced.
-        try {
-            $production = $this->productionRepository->findProductionForEventId($originalEventId);
-            $this->productionRepository->addEvent($newEventId, $production);
-        } catch (EntityNotFoundException $e) {
-            return;
+        if ($this->copyProduction) {
+            try {
+                $production = $this->productionRepository->findProductionForEventId($originalEventId);
+                $this->productionRepository->addEvent($newEventId, $production);
+            } catch (EntityNotFoundException $e) {
+                return;
+            }
         }
     }
 }
