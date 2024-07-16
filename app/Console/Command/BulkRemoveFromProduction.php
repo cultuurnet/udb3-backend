@@ -31,8 +31,8 @@ final class BulkRemoveFromProduction extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $command = new RemoveEventsFromProduction($input->getOption(
-            'eventId'),
+        $command = new RemoveEventsFromProduction(
+            $input->getOption('eventId'),
             ProductionId::fromNative($input->getArgument('productionId'))
         );
         $this->commandBus->dispatch($command);
