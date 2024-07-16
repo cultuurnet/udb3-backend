@@ -103,7 +103,6 @@ class MoveEvents extends AbstractCommand
                 }
             } catch (Exception $exception) {
                 $output->writeln(sprintf('<error>Event with id: %s caused an exception: %s</error>', $event->getId(), $exception->getMessage()));
-
             }
         }
 
