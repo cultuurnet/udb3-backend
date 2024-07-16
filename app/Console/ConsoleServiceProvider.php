@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Console;
 
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\Console\Command\BulkRemoveFromProduction;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
@@ -47,6 +48,8 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
+use CultuurNet\UDB3\Event\Productions\DBALProductionRepository;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Kinepolis\Client\AuthenticatedKinepolisClient;
@@ -82,6 +85,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.fire-projected-to-jsonld-for-relations',
         'console.fire-projected-to-jsonld',
         'console.place:process-duplicates',
+        'console.event:bulk-remove-from-production',
         'console.event:reindex-offers-with-popularity',
         'console.place:reindex-offers-with-popularity',
         'console.event:reindex-events-with-recommendations',
@@ -253,6 +257,15 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('place_jsonld_projected_event_factory'),
                 $container->get(EventRelationsRepository::class),
                 $container->get('dbal_connection')
+            )
+        );
+
+        $container->addShared(
+            'console.event:bulk-remove-from-production',
+            fn () => new BulkRemoveFromProduction(
+                new DBALProductionRepository($container->get('dbal_connection')),
+                $container->get(EventBus::class),
+                $container->get(EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)
             )
         );
 
