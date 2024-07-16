@@ -77,6 +77,14 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
         );
     }
 
+    /** @param string[] $eventIds */
+    public function removeEvents(array $eventIds, ProductionId $productionId): void
+    {
+        foreach ($eventIds as $eventId) {
+            $this->removeEvent($eventId, $productionId);
+        }
+    }
+
     public function moveEvents(ProductionId $from, Production $to): void
     {
         $addedAt = Chronos::now();
