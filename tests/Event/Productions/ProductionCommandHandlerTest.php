@@ -247,6 +247,39 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_can_remove_multiple_events_from_a_production(): void
+    {
+        $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
+
+        $name = "A Midsummer Night's Scream 3";
+        $eventsToRemove = [
+            Uuid::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
+        ];
+        $events = array_merge([
+            Uuid::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
+            ], $eventsToRemove);
+
+        $command = GroupEventsAsProduction::withProductionName($events, $name);
+        $this->commandHandler->handle($command);
+
+        $this->commandHandler->handle(
+            new RemoveEventsFromProduction($eventsToRemove, $command->getProductionId())
+        );
+
+        $production = $this->productionRepository->find($command->getProductionId());
+        foreach ($eventsToRemove as $removedEvent) {
+            $this->assertFalse($production->containsEvent($removedEvent));
+        }
+        $this->assertCount(3, $production->getEventIds());
+    }
+
+    /**
+     * @test
+     */
     public function it_will_not_remove_events_from_another_production(): void
     {
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
