@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use CultuurNet\UDB3\Search\Sorting;
 use Exception;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -46,7 +45,7 @@ class MoveEvents extends AbstractCommand
     {
         $this
             ->setName('event:move')
-            ->setDescription('Move an event from one place to another based on a SAPI3 query')
+            ->setDescription('Update the location of all events from the given SAPI3 query to the given new location')
             ->addArgument(
                 self::PLACE_UUID,
                 null,
@@ -81,39 +80,30 @@ class MoveEvents extends AbstractCommand
             return self::FAILURE;
         }
 
+        $query = str_replace('q=', '', $query);
+
         $count = $this->searchResultsGenerator->count($query);
 
         if ($count <= 0) {
             $output->writeln('<error>No events found</error>');
-            return self::FAILURE;
+            return self::SUCCESS;
         }
 
         if (!$this->askConfirmation($input, $output, $count)) {
-            return self::FAILURE;
+            return self::SUCCESS;
         }
 
-        $progressBar = new ProgressBar($output, $count);
-
-        $exceptions = [];
         foreach ($this->searchResultsGenerator->search($query) as $event) {
             try {
                 $command = new UpdateLocation($event->getId(), new LocationId($placeUuid));
+                $output->writeln('Dispatching UpdateLocation for event with id ' . $command->getItemId());
+
                 if (!$input->getOption(self::DRY_RUN)) {
                     $this->commandBus->dispatch($command);
                 }
-                $output->writeln('Dispatching UpdateLocation for event with id ' . $command->getItemId());
             } catch (Exception $exception) {
-                $exceptions[] = sprintf('Event with id: %s caused an exception: %s', $event->getId(), $exception->getMessage());
+                $output->writeln(sprintf('<error>Event with id: %s caused an exception: %s</error>', $event->getId(), $exception->getMessage()));
             }
-
-            $progressBar->advance();
-        }
-
-        $progressBar->finish();
-
-        $output->writeln('');
-        foreach ($exceptions as $exception) {
-            $output->writeln(sprintf('<error>%s</error>', $exception));
         }
 
         return self::SUCCESS;
