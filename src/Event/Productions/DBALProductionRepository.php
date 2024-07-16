@@ -80,9 +80,15 @@ final class DBALProductionRepository extends AbstractDBALRepository implements P
     /** @param string[] $eventIds */
     public function removeEvents(array $eventIds, ProductionId $productionId): void
     {
-        foreach ($eventIds as $eventId) {
-            $this->removeEvent($eventId, $productionId);
-        }
+        (
+            $this->getConnection()->createQueryBuilder()
+            ->delete(
+                $this->getTableName()
+            )->where('event_id IN (:event_ids)')
+            ->andWhere('production_id = :production_id')
+            ->setParameter('event_ids', $eventIds, Connection::PARAM_STR_ARRAY)
+            ->setParameter('production_id', $productionId->toNative())
+        )->execute();
     }
 
     public function moveEvents(ProductionId $from, Production $to): void
