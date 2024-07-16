@@ -14,19 +14,13 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class ProductionCommandHandlerTest extends TestCase
+final class ProductionCommandHandlerTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var DBALProductionRepository
-     */
-    private $productionRepository;
+    private DBALProductionRepository $productionRepository;
 
-    /**
-     * @var ProductionCommandHandler
-     */
-    private $commandHandler;
+    private ProductionCommandHandler $commandHandler;
 
     /**
      * @var SkippedSimilarEventsRepository|MockObject

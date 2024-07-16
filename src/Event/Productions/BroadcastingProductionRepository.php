@@ -12,20 +12,11 @@ use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 
 final class BroadcastingProductionRepository implements ProductionRepository
 {
-    /**
-     * @var ProductionRepository
-     */
-    private $repository;
+    private ProductionRepository $repository;
 
-    /**
-     * @var EventBus
-     */
-    private $eventBus;
+    private EventBus $eventBus;
 
-    /**
-     * @var DocumentEventFactory
-     */
-    private $eventFactory;
+    private DocumentEventFactory $eventFactory;
 
     public function __construct(
         ProductionRepository $repository,

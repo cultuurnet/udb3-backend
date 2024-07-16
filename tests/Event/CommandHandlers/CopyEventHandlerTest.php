@@ -26,7 +26,7 @@ use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class CopyEventHandlerTest extends TestCase
+final class CopyEventHandlerTest extends TestCase
 {
     private MockObject $eventRepository;
     private MockObject $productionRepository;

@@ -12,22 +12,16 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class BroadcastingProductionRepositoryTest extends TestCase
+final class BroadcastingProductionRepositoryTest extends TestCase
 {
     /**
      * @var ProductionRepository|MockObject
      */
     private $decoratee;
 
-    /**
-     * @var TraceableEventBus
-     */
-    private $eventBus;
+    private TraceableEventBus $eventBus;
 
-    /**
-     * @var BroadcastingProductionRepository
-     */
-    private $repository;
+    private BroadcastingProductionRepository $repository;
 
     protected function setUp(): void
     {

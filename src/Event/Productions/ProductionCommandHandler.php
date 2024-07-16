@@ -10,7 +10,7 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Doctrine\DBAL\DBALException;
 
-class ProductionCommandHandler extends Udb3CommandHandler
+final class ProductionCommandHandler extends Udb3CommandHandler
 {
     private ProductionRepository $productionRepository;
 

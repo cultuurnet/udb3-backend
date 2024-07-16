@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 
-class DBALProductionRepository extends AbstractDBALRepository implements ProductionRepository
+final class DBALProductionRepository extends AbstractDBALRepository implements ProductionRepository
 {
     public const TABLE_NAME = 'productions';
 
