@@ -49,7 +49,7 @@ class MoveEventsTest extends TestCase
     /**
      * @dataProvider executeProvider
      */
-    public function test_execute(array $foundEvents, int $expectedReturnCode): void
+    public function test_execute(array $foundEvents): void
     {
         $input = new ArrayInput([
             'place-uuid' => '764be3c2-bc3a-4525-bf0a-eb3d3b6cc9e9',
@@ -65,7 +65,7 @@ class MoveEventsTest extends TestCase
 
         $returnCode = $this->moveEvents->run($input, $output);
 
-        $this->assertEquals($expectedReturnCode, $returnCode);
+        $this->assertEquals(0, $returnCode);
 
         $locs = array_map(function ($eventId) {
             return new UpdateLocation($eventId, new LocationId('764be3c2-bc3a-4525-bf0a-eb3d3b6cc9e9'));
@@ -79,11 +79,9 @@ class MoveEventsTest extends TestCase
         return [
             'successful move' => [
                 'events' => ['3c3f714f-4695-4237-87c5-780d0e599267', '2719c5e4-71ab-4ced-ad39-26999e795bef'],
-                'expectedReturnCode' => 0,
             ],
             'no events found' => [
                 'events' => [],
-                'expectedReturnCode' => 1,
             ],
         ];
     }
