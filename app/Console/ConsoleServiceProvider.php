@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Console;
 
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\Console\Command\BulkRemoveFromProduction;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
@@ -82,6 +83,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.fire-projected-to-jsonld-for-relations',
         'console.fire-projected-to-jsonld',
         'console.place:process-duplicates',
+        'console.event:bulk-remove-from-production',
         'console.event:reindex-offers-with-popularity',
         'console.place:reindex-offers-with-popularity',
         'console.event:reindex-events-with-recommendations',
@@ -254,6 +256,11 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get(EventRelationsRepository::class),
                 $container->get('dbal_connection')
             )
+        );
+
+        $container->addShared(
+            'console.event:bulk-remove-from-production',
+            fn () => new BulkRemoveFromProduction($container->get('event_command_bus'))
         );
 
         $container->addShared(

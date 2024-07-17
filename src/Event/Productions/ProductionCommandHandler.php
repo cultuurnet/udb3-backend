@@ -10,7 +10,7 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Doctrine\DBAL\DBALException;
 
-class ProductionCommandHandler extends Udb3CommandHandler
+final class ProductionCommandHandler extends Udb3CommandHandler
 {
     private ProductionRepository $productionRepository;
 
@@ -78,6 +78,12 @@ class ProductionCommandHandler extends Udb3CommandHandler
         $this->productionRepository->removeEvent($command->getEventId(), $command->getProductionId());
     }
 
+    public function handleRemoveEventsFromProduction(RemoveEventsFromProduction $command): void
+    {
+        $this->assertEventsCanBeRemovedFromProduction($command->getEventIds(), $command->getProductionId());
+        $this->productionRepository->removeEvents($command->getEventIds(), $command->getProductionId());
+    }
+
     public function handleMergeProductions(MergeProductions $command): void
     {
         $toProduction = $this->productionRepository->find($command->getTo());
@@ -116,6 +122,14 @@ class ProductionCommandHandler extends Udb3CommandHandler
             throw EventCannotBeRemovedFromProduction::becauseItDoesNotExist($eventId);
         } catch (EntityNotFoundException $e) {
             throw EventCannotBeRemovedFromProduction::becauseProductionDoesNotExist($eventId, $productionId);
+        }
+    }
+
+    /** @param string[] $eventIds */
+    private function assertEventsCanBeRemovedFromProduction(array $eventIds, ProductionId $productionId): void
+    {
+        foreach ($eventIds as $eventId) {
+            $this->assertEventCanBeRemovedFromProduction($eventId, $productionId);
         }
     }
 }

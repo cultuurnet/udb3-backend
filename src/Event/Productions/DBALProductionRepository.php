@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 
-class DBALProductionRepository extends AbstractDBALRepository implements ProductionRepository
+final class DBALProductionRepository extends AbstractDBALRepository implements ProductionRepository
 {
     public const TABLE_NAME = 'productions';
 
@@ -75,6 +75,20 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
                 'production_id' => $productionId->toNative(),
             ]
         );
+    }
+
+    /** @param string[] $eventIds */
+    public function removeEvents(array $eventIds, ProductionId $productionId): void
+    {
+        $this->getConnection()->createQueryBuilder()
+            ->delete($this->getTableName())
+            ->where('event_id IN (:event_ids)')
+            ->andWhere('production_id = :production_id')
+            ->setParameter('event_ids', $eventIds, Connection::PARAM_STR_ARRAY)
+            ->setParameter(
+                'production_id',
+                $productionId->toNative()
+            )->execute();
     }
 
     public function moveEvents(ProductionId $from, Production $to): void

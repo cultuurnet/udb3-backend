@@ -11,14 +11,11 @@ use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class DBALProductionRepositoryTest extends TestCase
+final class DBALProductionRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var DBALProductionRepository
-     */
-    private $repository;
+    private DBALProductionRepository $repository;
 
     protected function setUp(): void
     {
@@ -80,6 +77,33 @@ class DBALProductionRepositoryTest extends TestCase
         $persistedProduction = $this->repository->find($production->getProductionId());
         $this->assertTrue($persistedProduction->containsEvent($eventToKeep));
         $this->assertFalse($persistedProduction->containsEvent($eventToRemove));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_remove_multiple_events_from_a_production(): void
+    {
+        $production = Production::createEmpty('foo');
+        $eventsToRemove = [
+            Uuid::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
+        ];
+        $eventToKeep = Uuid::uuid4()->toString();
+
+        $production = $production->addEvent($eventsToRemove[0]);
+        $production = $production->addEvent($eventToKeep);
+        $production = $production->addEvent($eventsToRemove[1]);
+
+        $this->repository->add($production);
+
+        $this->repository->removeEvents($eventsToRemove, $production->getProductionId());
+
+        $persistedProduction = $this->repository->find($production->getProductionId());
+        $this->assertTrue($persistedProduction->containsEvent($eventToKeep));
+        foreach ($eventsToRemove as $removedEvent) {
+            $this->assertFalse($persistedProduction->containsEvent($removedEvent));
+        }
     }
 
     /**
