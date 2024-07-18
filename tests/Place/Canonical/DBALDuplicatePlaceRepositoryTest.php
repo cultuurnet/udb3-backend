@@ -15,7 +15,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
 
     private const CLUSTER_ID_1 = '356a192b7913b04c54574d18c28d46e6395428ab';
     private const CLUSTER_ID_2 = 'da4b9237bacccdf19c0760cab7aec4a8359010b0';
-    const CLUSTER_ID_PROCESSED = 'ec2f96367578f9efb384a1113e625f3570aeeaa1';
+    public const CLUSTER_ID_PROCESSED = 'ec2f96367578f9efb384a1113e625f3570aeeaa1';
     private DBALDuplicatePlaceRepository $duplicatePlaceRepository;
 
     public function setUp(): void
