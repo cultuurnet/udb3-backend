@@ -7,16 +7,16 @@ namespace CultuurNet\UDB3\Place\Canonical;
 interface DuplicatePlaceRepository
 {
     /**
-     * @return int[]
+     * @return string[]
      */
     public function getClusterIds(): array;
 
     /**
      * @return string[]
      */
-    public function getPlacesInCluster(int $clusterId): array;
+    public function getPlacesInCluster(string $clusterId): array;
 
-    public function setCanonicalOnCluster(int $clusterId, string $canonical): void;
+    public function setCanonicalOnCluster(string $clusterId, string $canonical): void;
 
     public function getCanonicalOfPlace(string $placeId): ?string;
 
