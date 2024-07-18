@@ -254,7 +254,11 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get(EventBus::class),
                 $container->get('place_jsonld_projected_event_factory'),
                 $container->get(EventRelationsRepository::class),
-                $container->get('dbal_connection')
+                $container->get('dbal_connection'),
+                LoggerFactory::create(
+                    $container,
+                    LoggerName::forService('duplicate-place', 'duplicate.places')
+                )
             )
         );
 
