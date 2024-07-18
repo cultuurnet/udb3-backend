@@ -159,9 +159,8 @@ final class ProcessDuplicatePlaces extends AbstractCommand
                     if (!$dryRun) {
                         try {
                             $this->commandBus->dispatch($command);
-                        }
-                        catch (\Exception $e) {
-                            $output->writeln('<error>'. $e->getMessage(). '</error>');
+                        } catch (\Exception $e) {
+                            $output->writeln('<error>' . $e->getMessage() . '</error>');
                             $this->logger->error($e->getMessage());
                         }
                     }

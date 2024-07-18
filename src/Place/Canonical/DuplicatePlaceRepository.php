@@ -22,5 +22,5 @@ interface DuplicatePlaceRepository
 
     public function getDuplicatesOfPlace(string $placeId): ?array;
 
-    public function markAsProcessed(string $placeId) : void;
+    public function markAsProcessed(string $placeId): void;
 }
