@@ -77,7 +77,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
      */
     public function it_can_return_placeIds(): void
     {
-        $clusterIds = $this->duplicatePlaceRepository->getPlacesInCluster(1);
+        $clusterIds = $this->duplicatePlaceRepository->getPlacesInCluster('1');
 
         $this->assertEquals(
             [
@@ -94,8 +94,8 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
      */
     public function it_can_set_the_canonical_of_a_cluster(): void
     {
-        $this->duplicatePlaceRepository->setCanonicalOnCluster(1, '1accbcfb-3b22-4762-bc13-be0f67fd3116');
-        $this->duplicatePlaceRepository->setCanonicalOnCluster(2, '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad');
+        $this->duplicatePlaceRepository->setCanonicalOnCluster('1', '1accbcfb-3b22-4762-bc13-be0f67fd3116');
+        $this->duplicatePlaceRepository->setCanonicalOnCluster('2', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad');
 
         $actualRows = $this->connection->createQueryBuilder()
             ->select('*')
@@ -120,8 +120,8 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
      */
     public function it_can_get_the_canonical_of_a_place(): void
     {
-        $this->duplicatePlaceRepository->setCanonicalOnCluster(1, '1accbcfb-3b22-4762-bc13-be0f67fd3116');
-        $this->duplicatePlaceRepository->setCanonicalOnCluster(2, '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad');
+        $this->duplicatePlaceRepository->setCanonicalOnCluster('1', '1accbcfb-3b22-4762-bc13-be0f67fd3116');
+        $this->duplicatePlaceRepository->setCanonicalOnCluster('2', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad');
 
         $this->assertEquals(
             '1accbcfb-3b22-4762-bc13-be0f67fd3116',
@@ -151,8 +151,8 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
      */
     public function it_can_get_the_duplicates_of_a_place(): void
     {
-        $this->duplicatePlaceRepository->setCanonicalOnCluster(1, '1accbcfb-3b22-4762-bc13-be0f67fd3116');
-        $this->duplicatePlaceRepository->setCanonicalOnCluster(2, '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad');
+        $this->duplicatePlaceRepository->setCanonicalOnCluster('1', '1accbcfb-3b22-4762-bc13-be0f67fd3116');
+        $this->duplicatePlaceRepository->setCanonicalOnCluster('2', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad');
 
         $this->assertNull(
             $this->duplicatePlaceRepository->getDuplicatesOfPlace('19ce6565-76be-425d-94d6-894f84dd2947')
