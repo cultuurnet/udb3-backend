@@ -214,6 +214,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
                 $this->eventBus->publish(
                     new DomainEventStream([(new DomainMessageBuilder())->create($placeProjected)])
                 );
+                $this->duplicatePlaceRepository->markAsProcessed($placeToReIndex);
             }
         }
     }

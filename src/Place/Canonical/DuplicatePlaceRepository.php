@@ -21,4 +21,6 @@ interface DuplicatePlaceRepository
     public function getCanonicalOfPlace(string $placeId): ?string;
 
     public function getDuplicatesOfPlace(string $placeId): ?array;
+
+    public function markAsProcessed(string $placeId) : void;
 }

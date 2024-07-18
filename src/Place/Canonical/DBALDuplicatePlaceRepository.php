@@ -77,4 +77,14 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 
         return count($duplicates) > 0 ? $duplicates : null;
     }
+
+    public function markAsProcessed(string $placeId): void
+    {
+        $this->connection->createQueryBuilder()
+            ->update('duplicate_places', 'dp')
+            ->set('dp.processed', '1')
+            ->where('dp.place_uuid = :place_uuid')
+            ->setParameter(':place_uuid', $placeId)
+            ->execute();
+    }
 }
