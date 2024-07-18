@@ -83,7 +83,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
     {
         $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
 
-        $this->assertEquals([self::CLUSTER_ID_1,self::CLUSTER_ID_2], $clusterIds);
+        $this->assertEquals([self::CLUSTER_ID_1, self::CLUSTER_ID_2], $clusterIds);
     }
 
     /**
@@ -191,6 +191,29 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
                 '4a355db3-c3f9-4acc-8093-61b333a3aefb',
             ],
             $this->duplicatePlaceRepository->getDuplicatesOfPlace('64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_mark_a_place_as_processed(): void
+    {
+        $placeId = '19ce6565-76be-425d-94d6-894f84dd2947';
+
+        $this->duplicatePlaceRepository->markAsProcessed($placeId);
+
+        $actualRows = $this->connection->createQueryBuilder()
+            ->select('*')
+            ->from('duplicate_places')
+            ->where('place_uuid = :place_uuid')
+            ->setParameter('place_uuid', $placeId)
+            ->execute()
+            ->fetchNumeric();
+
+        $this->assertEquals(
+            [self::CLUSTER_ID_1, $placeId, null, 1],
+            $actualRows
         );
     }
 }
