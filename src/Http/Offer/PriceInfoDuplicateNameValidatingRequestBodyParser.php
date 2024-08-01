@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
+use _HumbugBox113887eee2b6\___PHPSTORM_HELPERS\this;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
@@ -42,6 +43,8 @@ class PriceInfoDuplicateNameValidatingRequestBodyParser implements RequestBodyPa
         $errors = [];
         $nameMatrix = [];
 
+       $priceInfos = $this->trimArrayValues($priceInfos);
+
         foreach ($priceInfos as $index => $priceInfo) {
             foreach ($priceInfo['name'] as $language => $name) {
                 if (isset($nameMatrix[$language]) && in_array($name, $nameMatrix[$language], true)) {
@@ -55,5 +58,17 @@ class PriceInfoDuplicateNameValidatingRequestBodyParser implements RequestBodyPa
         }
 
         return $errors;
+    }
+
+    private function trimArrayValues(array $array): array
+    {
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $array[$key] = $this->trimArrayValues($value);
+            } else {
+                $array[$key] = is_string($value) ? trim($value) : $value;
+            }
+        }
+        return $array;
     }
 }
