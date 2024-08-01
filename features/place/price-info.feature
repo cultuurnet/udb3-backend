@@ -206,6 +206,53 @@ Feature: Test place priceInfo property
     }
     """
 
+  Scenario: Try Updating a place price with duplicate with different spacing
+    When I set the JSON request payload to:
+    """
+    [
+      {
+       "category": "base",
+       "name": {
+         "nl": "Basistarief"
+       },
+       "price": 10,
+       "priceCurrency": "EUR"
+      },
+      {
+       "category": "tariff",
+       "name": {
+         "nl": "Early Birds"
+       },
+       "price": 10,
+       "priceCurrency": "EUR"
+      },
+      {
+       "category": "tariff",
+       "name": {
+         "nl": "Early Birds "
+       },
+       "price": 5,
+       "priceCurrency": "EUR"
+      }
+    ]
+    """
+    And I send a PUT request to "%{placeUrl}/priceInfo"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "schemaErrors": [
+        {
+          "error": "Tariff name \"Early Birds\" must be unique.",
+          "jsonPointer": "/priceInfo/2/name/nl"
+        }
+      ],
+      "status": 400,
+      "title": "Invalid body data",
+      "type": "https://api.publiq.be/probs/body/invalid-data"
+    }
+    """
+
   Scenario: Try updating a place price as a string
     When I set the JSON request payload to:
     """
