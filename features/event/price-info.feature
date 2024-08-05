@@ -231,7 +231,7 @@ Feature: Test event priceInfo property
     }
     """
 
-  Scenario: Try updating an event without a duplicate tariff in different spacing
+  Scenario: Try updating an event with a tariff that only differs in spacing
     When I set the JSON request payload to:
     """
     [
