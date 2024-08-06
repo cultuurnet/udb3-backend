@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Json;
 use PHPUnit\Framework\TestCase;
 
 final class PriceInfoDuplicateNameValidatingRequestBodyParserTest extends TestCase
@@ -62,42 +63,42 @@ final class PriceInfoDuplicateNameValidatingRequestBodyParserTest extends TestCa
      */
     public function it_throws_on_same_names(): void
     {
-        $priceInfo = (object) [
-            'priceInfo' => (object) [
-                (object)[
+        $priceInfo =  [
+            'priceInfo' =>  [
+                [
                     'category' => 'tariff',
-                    'name' => (object) [
+                    'name' =>  [
                         'nl' => 'Studenten',
                     ],
                     'price' => 10,
                     'priceCurrency' => 'EUR',
                 ],
-                (object)[
+                [
                     'category' => 'base',
-                    'name' => (object) [
+                    'name' =>  [
                         'nl' => 'Basistarief',
                         ],
                     'price' => 50,
                     'priceCurrency' => 'EUR',
                     ],
-                (object)[
+                [
                     'category' => 'tariff',
-                    'name' => (object) [
+                    'name' =>  [
                         'nl' => 'Studenten',
                         ],
                     'price' => 10,
                     'priceCurrency' => 'EUR',
                     ],
-                (object)[
+                [
                     'category' => 'tariff',
-                    'name' => (object) [
+                    'name' =>  [
                         'nl' => 'Leraren',
                     ],
                     'price' => 20,
                 ],
-                (object)[
+                [
                     'category' => 'tariff',
-                    'name' => (object) [
+                    'name' =>  [
                         'nl' => 'Studenten',
                         ],
                     'price' => 10,
@@ -107,7 +108,7 @@ final class PriceInfoDuplicateNameValidatingRequestBodyParserTest extends TestCa
 
         $request = $this->requestBuilder
             ->build('POST')
-            ->withParsedBody($priceInfo);
+            ->withParsedBody($this->arrayAsObject($priceInfo));
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
@@ -123,42 +124,42 @@ final class PriceInfoDuplicateNameValidatingRequestBodyParserTest extends TestCa
      */
     public function it_throws_on_same_names_with_different_spacing(): void
     {
-        $priceInfo = (object) [
-            'priceInfo' => (object) [
-                (object)[
+        $priceInfo = [
+            'priceInfo' =>  [
+                [
                     'category' => 'tariff',
-                    'name' => (object) [
+                    'name' =>  [
                         'nl' => 'Studenten',
                     ],
                     'price' => 10,
                     'priceCurrency' => 'EUR',
                 ],
-                (object)[
+                [
                     'category' => 'base',
-                    'name' => (object) [
+                    'name' =>  [
                         'nl' => 'Basistarief',
                     ],
                     'price' => 50,
                     'priceCurrency' => 'EUR',
                 ],
-                (object)[
+                [
                     'category' => 'tariff',
-                    'name' => (object) [
+                    'name' =>  [
                         'nl' => 'Studenten ',
                     ],
                     'price' => 15,
                     'priceCurrency' => 'EUR',
                 ],
-                (object)[
+                [
                     'category' => 'tariff',
-                    'name' => (object) [
+                    'name' =>  [
                         'nl' => 'Leraren',
                     ],
                     'price' => 20,
                 ],
-                (object)[
+                [
                     'category' => 'tariff',
-                    'name' => (object) [
+                    'name' =>  [
                         'nl' => 'Studenten   ',
                     ],
                     'price' => 30,
@@ -168,7 +169,7 @@ final class PriceInfoDuplicateNameValidatingRequestBodyParserTest extends TestCa
 
         $request = $this->requestBuilder
             ->build('POST')
-            ->withParsedBody($priceInfo);
+            ->withParsedBody($this->arrayAsObject($priceInfo));
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
@@ -177,5 +178,10 @@ final class PriceInfoDuplicateNameValidatingRequestBodyParserTest extends TestCa
             ),
             fn () => $this->priceInfoDuplicateNameValidatingRequestBodyParser->parse($request)
         );
+    }
+
+    private function arrayAsObject(array $priceInfoArry): object
+    {
+        return Json::decode(Json::encode($priceInfoArry));
     }
 }
