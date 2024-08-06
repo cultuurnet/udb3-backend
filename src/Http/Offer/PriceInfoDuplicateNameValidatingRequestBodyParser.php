@@ -42,6 +42,8 @@ class PriceInfoDuplicateNameValidatingRequestBodyParser implements RequestBodyPa
         $errors = [];
         $nameMatrix = [];
 
+        $priceInfos = $this->trimTariffName($priceInfos);
+
         foreach ($priceInfos as $index => $priceInfo) {
             foreach ($priceInfo['name'] as $language => $name) {
                 if (isset($nameMatrix[$language]) && in_array($name, $nameMatrix[$language], true)) {
@@ -55,5 +57,17 @@ class PriceInfoDuplicateNameValidatingRequestBodyParser implements RequestBodyPa
         }
 
         return $errors;
+    }
+
+    private function trimTariffName(array $priceInfos): array
+    {
+        foreach ($priceInfos as $key => $tariff) {
+            if (array_key_exists('name', $tariff)) {
+                foreach ($tariff['name'] as $language => $name) {
+                    $priceInfos[$key]['name'][$language] = trim($priceInfos[$key]['name'][$language]);
+                }
+            }
+        }
+        return $priceInfos;
     }
 }

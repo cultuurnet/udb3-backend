@@ -231,6 +231,74 @@ Feature: Test event priceInfo property
     }
     """
 
+  Scenario: Try updating an event with a tariff that only differs in spacing
+    When I set the JSON request payload to:
+    """
+    [
+      {
+       "category": "base",
+       "name": {
+         "nl": "Basistarief",
+         "fr": "Tarif de base",
+         "en": "Base tariff",
+         "de": "Basisrate"
+       },
+       "price": 10,
+       "priceCurrency": "EUR"
+      },
+      {
+       "category": "tariff",
+       "name": {
+         "nl": "Korting",
+         "fr": "Reduction",
+         "en": "Reduction",
+         "de": "Rabatt"
+       },
+       "price": 5,
+       "priceCurrency": "EUR"
+       },
+       {
+       "category": "tariff",
+       "name": {
+         "nl": "Korting ",
+         "fr": "Reduction ",
+         "en": "Reduction ",
+         "de": "Rabatt "
+       },
+       "price": 3,
+       "priceCurrency": "EUR"
+      }
+    ]
+    """
+    And I send a PUT request to "%{eventUrl}/priceInfo"
+    Then the response status should be "400"
+    Then the JSON response should be:
+    """
+    {
+      "schemaErrors": [
+        {
+          "error": "Tariff name \"Korting\" must be unique.",
+          "jsonPointer": "/priceInfo/2/name/nl"
+        },
+        {
+          "error": "Tariff name \"Reduction\" must be unique.",
+          "jsonPointer": "/priceInfo/2/name/fr"
+        },
+        {
+          "error": "Tariff name \"Reduction\" must be unique.",
+          "jsonPointer": "/priceInfo/2/name/en"
+        },
+        {
+          "error": "Tariff name \"Rabatt\" must be unique.",
+          "jsonPointer": "/priceInfo/2/name/de"
+        }
+      ],
+      "status": 400,
+      "title": "Invalid body data",
+      "type": "https://api.publiq.be/probs/body/invalid-data"
+    }
+    """
+
   Scenario: Try creating an event duplicate tariff names
     Given I set the JSON request payload from "events/price-info/event-with-duplicate-tariff-names.json"
     When I send a POST request to "/events/"
