@@ -102,9 +102,9 @@ final class PriceInfoDuplicateNameValidatingRequestBodyParserTest extends TestCa
                         'nl' => 'Studenten',
                         ],
                     'price' => 10,
-                    ],
                 ],
-            ];
+            ],
+        ];
 
         $request = $this->requestBuilder
             ->build('POST')
