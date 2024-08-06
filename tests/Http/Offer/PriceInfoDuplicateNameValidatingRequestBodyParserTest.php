@@ -180,8 +180,8 @@ final class PriceInfoDuplicateNameValidatingRequestBodyParserTest extends TestCa
         );
     }
 
-    private function arrayAsObject(array $priceInfoArry): object
+    private function arrayAsObject(array $priceInfoArray): object
     {
-        return Json::decode(Json::encode($priceInfoArry));
+        return Json::decode(Json::encode($priceInfoArray));
     }
 }
