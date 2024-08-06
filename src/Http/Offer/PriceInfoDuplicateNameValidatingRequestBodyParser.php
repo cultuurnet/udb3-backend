@@ -42,7 +42,7 @@ class PriceInfoDuplicateNameValidatingRequestBodyParser implements RequestBodyPa
         $errors = [];
         $nameMatrix = [];
 
-        $priceInfos = $this->trimTariffName($priceInfos); //$this->trimArrayValues($priceInfos);
+        $priceInfos = $this->trimTariffName($priceInfos);
 
         foreach ($priceInfos as $index => $priceInfo) {
             foreach ($priceInfo['name'] as $language => $name) {
