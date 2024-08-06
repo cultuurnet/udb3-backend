@@ -68,30 +68,42 @@ class CanonicalService
 
     private function getPlacesWithMostEvents(array $placeIds): array
     {
-        $eventCountsWithPlaceId = [];
+        $maxEventCount = -1;
+        $placesWithMaxEvents = [];
+
         foreach ($placeIds as $placeId) {
             $eventCount = count($this->eventRelationsRepository->getEventsLocatedAtPlace($placeId));
-            if (empty($eventCountsWithPlaceId[$eventCount])) {
-                $eventCountsWithPlaceId[$eventCount] = [];
+
+            if ($eventCount > $maxEventCount) {
+                $maxEventCount = $eventCount;
+                $placesWithMaxEvents = [$placeId];
+                continue;
             }
 
-            $eventCountsWithPlaceId[$eventCount][] = $placeId;
+            if ($eventCount === $maxEventCount) {
+                $placesWithMaxEvents[] = $placeId;
+            }
         }
 
-        krsort($eventCountsWithPlaceId);
-        return $eventCountsWithPlaceId[array_key_first($eventCountsWithPlaceId)];
+        return $placesWithMaxEvents;
     }
 
     private function getOldestPlace(array $placeIds): string
     {
-        $placesByCreationDate = [];
+        $oldestPlaceId = '';
+        $oldestDate = null;
+
         foreach ($placeIds as $placeId) {
             $jsonDocument = $this->placeRepository->fetch($placeId);
             $body = $jsonDocument->getBody();
-            $placesByCreationDate[$placeId] = $body->created;
+            $creationDate = strtotime($body->created);
+
+            if ($creationDate < $oldestDate || $oldestDate === null) {
+                $oldestDate = $creationDate;
+                $oldestPlaceId = $placeId;
+            }
         }
 
-        asort($placesByCreationDate);
-        return array_key_first($placesByCreationDate);
+        return $oldestPlaceId;
     }
 }
