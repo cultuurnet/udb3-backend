@@ -42,7 +42,7 @@ class PriceInfoDuplicateNameValidatingRequestBodyParser implements RequestBodyPa
         $errors = [];
         $nameMatrix = [];
 
-        $priceInfos = $this->trimArrayValues($priceInfos);
+        $priceInfos = $this->trimTariffName($priceInfos); //$this->trimArrayValues($priceInfos);
 
         foreach ($priceInfos as $index => $priceInfo) {
             foreach ($priceInfo['name'] as $language => $name) {
@@ -59,15 +59,15 @@ class PriceInfoDuplicateNameValidatingRequestBodyParser implements RequestBodyPa
         return $errors;
     }
 
-    private function trimArrayValues(array $array): array
+    private function trimTariffName(array $priceInfos): array
     {
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $array[$key] = $this->trimArrayValues($value);
-            } else {
-                $array[$key] = is_string($value) ? trim($value) : $value;
+        foreach ($priceInfos as $key => $tariff) {
+            if (array_key_exists('name', $tariff)) {
+                foreach ($tariff['name'] as $language => $name) {
+                    $priceInfos[$key]['name'][$language] = trim($priceInfos[$key]['name'][$language]);
+                }
             }
         }
-        return $array;
+        return $priceInfos;
     }
 }
