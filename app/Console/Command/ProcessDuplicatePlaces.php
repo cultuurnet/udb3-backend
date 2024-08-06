@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -38,6 +39,8 @@ final class ProcessDuplicatePlaces extends AbstractCommand
 
     private Connection $connection;
 
+    private LoggerInterface $logger;
+
     public function __construct(
         CommandBus $commandBus,
         DuplicatePlaceRepository $duplicatePlaceRepository,
@@ -45,7 +48,8 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         EventBus $eventBus,
         DocumentEventFactory $placeEventFactory,
         EventRelationsRepository $eventRelationsRepository,
-        Connection $connection
+        Connection $connection,
+        LoggerInterface $logger
     ) {
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
         $this->canonicalService = $canonicalService;
@@ -53,6 +57,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         $this->placeEventFactory = $placeEventFactory;
         $this->eventRelationsRepository = $eventRelationsRepository;
         $this->connection = $connection;
+        $this->logger = $logger;
 
         parent::__construct($commandBus);
     }
@@ -95,7 +100,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         $onlyRunClusterId = $input->getOption(self::ONLY_RUN_CLUSTER_ID);
 
         if ($onlyRunClusterId) {
-            $clusterIds = [(int)$onlyRunClusterId];
+            $clusterIds = [$onlyRunClusterId];
         } else {
             $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
         }
@@ -152,7 +157,12 @@ final class ProcessDuplicatePlaces extends AbstractCommand
                 foreach ($commands as $command) {
                     $output->writeln('Dispatching UpdateLocation for event with id ' . $command->getItemId());
                     if (!$dryRun) {
-                        $this->commandBus->dispatch($command);
+                        try {
+                            $this->commandBus->dispatch($command);
+                        } catch (\Exception $e) {
+                            $output->writeln('<error>' . $e->getMessage() . '</error>');
+                            $this->logger->error($e->getMessage());
+                        }
                     }
                 }
             }
@@ -203,6 +213,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
                 $this->eventBus->publish(
                     new DomainEventStream([(new DomainMessageBuilder())->create($placeProjected)])
                 );
+                $this->duplicatePlaceRepository->markAsProcessed($placeToReIndex);
             }
         }
     }

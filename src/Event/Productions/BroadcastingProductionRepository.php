@@ -12,20 +12,11 @@ use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 
 final class BroadcastingProductionRepository implements ProductionRepository
 {
-    /**
-     * @var ProductionRepository
-     */
-    private $repository;
+    private ProductionRepository $repository;
 
-    /**
-     * @var EventBus
-     */
-    private $eventBus;
+    private EventBus $eventBus;
 
-    /**
-     * @var DocumentEventFactory
-     */
-    private $eventFactory;
+    private DocumentEventFactory $eventFactory;
 
     public function __construct(
         ProductionRepository $repository,
@@ -54,6 +45,14 @@ final class BroadcastingProductionRepository implements ProductionRepository
         $this->repository->removeEvent($eventId, $productionId);
         $otherEventIds = $this->getEventIdsForProductionId($productionId);
         $this->dispatchEventsProjectedToJsonLd($eventId, ...$otherEventIds);
+    }
+
+    /** @param string[] $eventIds */
+    public function removeEvents(array $eventIds, ProductionId $productionId): void
+    {
+        $this->repository->removeEvents($eventIds, $productionId);
+        $otherEventIds = $this->getEventIdsForProductionId($productionId);
+        $this->dispatchEventsProjectedToJsonLd(...$eventIds, ...$otherEventIds);
     }
 
     public function moveEvents(ProductionId $from, Production $to): void

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Console;
 
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\Console\Command\BulkRemoveFromProduction;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
@@ -28,6 +29,7 @@ use CultuurNet\UDB3\Console\Command\ImportMovieIdsFromCsv;
 use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Console\Command\IncludeLabel;
 use CultuurNet\UDB3\Console\Command\KeycloakCommand;
+use CultuurNet\UDB3\Console\Command\MoveEvents;
 use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
@@ -76,10 +78,12 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.place:geocode',
         'console.place:delete',
         'console.event:geocode',
+        'console.event:move',
         'console.organizer:geocode',
         'console.fire-projected-to-jsonld-for-relations',
         'console.fire-projected-to-jsonld',
         'console.place:process-duplicates',
+        'console.event:bulk-remove-from-production',
         'console.event:reindex-offers-with-popularity',
         'console.place:reindex-offers-with-popularity',
         'console.event:reindex-events-with-recommendations',
@@ -215,6 +219,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
+            'console.event:move',
+            fn () => new MoveEvents(
+                $container->get('event_command_bus'),
+                $container->get(EventsSapi3SearchService::class),
+            )
+        );
+
+        $container->addShared(
             'console.fire-projected-to-jsonld-for-relations',
             fn () => new FireProjectedToJSONLDForRelationsCommand(
                 $container->get(EventBus::class),
@@ -242,8 +254,17 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get(EventBus::class),
                 $container->get('place_jsonld_projected_event_factory'),
                 $container->get(EventRelationsRepository::class),
-                $container->get('dbal_connection')
+                $container->get('dbal_connection'),
+                LoggerFactory::create(
+                    $container,
+                    LoggerName::forService('duplicate-place', 'duplicate.places')
+                )
             )
+        );
+
+        $container->addShared(
+            'console.event:bulk-remove-from-production',
+            fn () => new BulkRemoveFromProduction($container->get('event_command_bus'))
         );
 
         $container->addShared(

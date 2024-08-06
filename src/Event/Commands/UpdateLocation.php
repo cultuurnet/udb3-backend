@@ -9,17 +9,10 @@ use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
 class UpdateLocation extends AbstractCommand
 {
-    /**
-     * @var LocationId
-     */
-    private $locationId;
+    private LocationId $locationId;
 
-    /**
-     * UpdateLocation constructor.
-     * @param string $itemId
-     */
     public function __construct(
-        $itemId,
+        string $itemId,
         LocationId $locationId
     ) {
         parent::__construct($itemId);
@@ -27,10 +20,7 @@ class UpdateLocation extends AbstractCommand
         $this->locationId = $locationId;
     }
 
-    /**
-     * @return LocationId
-     */
-    public function getLocationId()
+    public function getLocationId(): LocationId
     {
         return $this->locationId;
     }

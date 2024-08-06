@@ -19,6 +19,9 @@ interface ProductionRepository
 
     public function removeEvent(string $eventId, ProductionId $productionId): void;
 
+    /** @param string[] $eventIds */
+    public function removeEvents(array $eventIds, ProductionId $productionId): void;
+
     public function moveEvents(ProductionId $from, Production $to): void;
 
     public function renameProduction(ProductionId $productionId, string $name): void;
