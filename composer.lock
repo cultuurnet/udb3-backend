@@ -10098,16 +10098,16 @@
         },
         {
             "name": "publiq/php-cs-fixer-config",
-            "version": "v2.0",
+            "version": "v2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/php-cs-fixer-config.git",
-                "reference": "6008c36b42244e058d016aea8d87fafa784ab0c0"
+                "reference": "13a065c444c8916205bbeed1aeb2936e24ab6eaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/php-cs-fixer-config/zipball/6008c36b42244e058d016aea8d87fafa784ab0c0",
-                "reference": "6008c36b42244e058d016aea8d87fafa784ab0c0",
+                "url": "https://api.github.com/repos/cultuurnet/php-cs-fixer-config/zipball/13a065c444c8916205bbeed1aeb2936e24ab6eaf",
+                "reference": "13a065c444c8916205bbeed1aeb2936e24ab6eaf",
                 "shasum": ""
             },
             "require": {
@@ -10133,9 +10133,9 @@
             "description": "Configuration for PHP Coding Standards Fixer to be used on all PHP projects at Publiq",
             "support": {
                 "issues": "https://github.com/cultuurnet/php-cs-fixer-config/issues",
-                "source": "https://github.com/cultuurnet/php-cs-fixer-config/tree/v2.0"
+                "source": "https://github.com/cultuurnet/php-cs-fixer-config/tree/v2.1"
             },
-            "time": "2021-05-06T07:21:24+00:00"
+            "time": "2024-08-07T12:40:52+00:00"
         },
         {
             "name": "rector/rector",
