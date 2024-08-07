@@ -46,7 +46,7 @@ final class ProjectedToJSONLDInterceptingMiddlewareTest extends TestCase
     public function it_intercepts_projected_to_jsonld_messages_while_the_request_is_being_handled_and_republishes_the_unique_ones_afterwards(): void
     {
         // Example request handler that publishes a lot of (duplicate) ProjectedToJSONLD messages on the event bus
-        $requestHandler = new class($this->middlewareEventBus) implements RequestHandlerInterface {
+        $requestHandler = new class ($this->middlewareEventBus) implements RequestHandlerInterface {
             private EventBus $eventBus;
             public function __construct(EventBus $eventBus)
             {
