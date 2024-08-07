@@ -26,7 +26,7 @@ class InvokableRequestHandlerContainerTest extends TestCase
     {
         $this->requestHandler = $this->createMock(RequestHandlerInterface::class);
 
-        $this->alreadyCallableRequestHandler = new class() implements RequestHandlerInterface {
+        $this->alreadyCallableRequestHandler = new class () implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new NoContentResponse();
