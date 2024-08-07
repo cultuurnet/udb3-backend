@@ -10,7 +10,7 @@ abstract class Coordinate
 
     public function __construct(float $value)
     {
-        if (!is_double($value)) {
+        if (!is_float($value)) {
             throw new \InvalidArgumentException('Coordinate value should be of type double.');
         }
 
