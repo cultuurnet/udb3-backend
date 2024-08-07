@@ -54,7 +54,7 @@ trait RoleSteps
     {
         // Create role "Diest Validatoren"
         $this->iSearchForARoleWithName('Diest validatoren');
-        if (sizeof($this->responseState->getJsonContent()['member']) === 0) {
+        if (count($this->responseState->getJsonContent()['member']) === 0) {
             $this->createRole('Diest validatoren');
             $uuidRoleDiest = $this->responseState->getJsonContent()['roleId'];
             $this->iSetTheJsonRequestPayloadTo(new PyStringNode(['{ "query": "(regions:nis-24020 OR labels:UiTinMijnRegio)" }'], 0));
@@ -76,7 +76,7 @@ trait RoleSteps
 
         // Create role "Scherpenheuvel Validatoren"
         $this->iSearchForARoleWithName('Scherpenheuvel validatoren');
-        if (sizeof($this->responseState->getJsonContent()['member']) === 0) {
+        if (count($this->responseState->getJsonContent()['member']) === 0) {
             $this->createRole('Scherpenheuvel validatoren');
             $uuidRoleScherpenheuvel = $this->responseState->getJsonContent()['roleId'];
             $this->iSetTheJsonRequestPayloadTo(new PyStringNode(['{"query": "regions:nis-24134"}'], 0));
@@ -91,7 +91,7 @@ trait RoleSteps
 
         // Create role "Vlaams-Brabant validatoren"
         $this->iSearchForARoleWithName('Provincie Vlaams-Brabant validatoren');
-        if (sizeof($this->responseState->getJsonContent()['member']) === 0) {
+        if (count($this->responseState->getJsonContent()['member']) === 0) {
             $this->createRole('Provincie Vlaams-Brabant validatoren');
             $uuidRolePvb = $this->responseState->getJsonContent()['roleId'];
             $this->iSetTheJsonRequestPayloadTo(new PyStringNode(['{ "query": "regions:nis-20001" }'], 0));
