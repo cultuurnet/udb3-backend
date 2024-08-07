@@ -21,3 +21,4 @@ term_mapping_*.yml
 # Build directories
 /pkg
 /.bundle
+.php-cs-fixer.cache
