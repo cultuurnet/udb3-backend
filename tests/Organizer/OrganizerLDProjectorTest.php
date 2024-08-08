@@ -871,7 +871,7 @@ final class OrganizerLDProjectorTest extends TestCase
         $organizerId = 'someId';
 
         $organizerJson = file_get_contents(__DIR__ . '/Samples/organizer_with_main_language.json');
-        $organizerJson = json_decode($organizerJson);
+        $organizerJson = Json::decode($organizerJson);
         $organizerJson->name->en = 'English name';
         $organizerJson = Json::encode($organizerJson);
 

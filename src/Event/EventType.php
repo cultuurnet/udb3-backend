@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Category;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category as Udb3ModelCategory;
 use InvalidArgumentException;
 
@@ -23,7 +24,7 @@ final class EventType extends Category
 
     public static function fromJSONLDEvent(string $eventString): ?EventType
     {
-        $event = json_decode($eventString, false);
+        $event = Json::decode($eventString);
         foreach ($event->terms as $term) {
             if ($term->domain === self::DOMAIN) {
                 return new self($term->id, $term->label);
