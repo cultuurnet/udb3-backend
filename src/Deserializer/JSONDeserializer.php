@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Deserializer;
 
+use JsonException;
+
 class JSONDeserializer implements DeserializerInterface
 {
     private bool $assoc;
@@ -23,7 +25,7 @@ class JSONDeserializer implements DeserializerInterface
         $data = json_decode($data, $this->assoc);
 
         if (null === $data) {
-            throw new NotWellFormedException('Invalid JSON');
+            throw new JsonException('Invalid JSON');
         }
 
         return $data;

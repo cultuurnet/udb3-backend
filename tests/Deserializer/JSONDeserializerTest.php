@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Deserializer;
 
+use JsonException;
 use PHPUnit\Framework\TestCase;
 
 class JSONDeserializerTest extends TestCase
@@ -22,9 +23,9 @@ class JSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function itThrowsANotWellFormedExceptionForInvalidJson(): void
+    public function itThrowsJsonExceptionForInvalidJson(): void
     {
-        $this->expectException(NotWellFormedException::class);
+        $this->expectException(JsonException::class);
         $this->expectExceptionMessage('Invalid JSON');
 
         $this->deserializer->deserialize(
