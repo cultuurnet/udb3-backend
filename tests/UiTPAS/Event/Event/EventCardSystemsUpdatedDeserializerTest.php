@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use PHPUnit\Framework\TestCase;
 
@@ -21,7 +22,7 @@ final class EventCardSystemsUpdatedDeserializerTest extends TestCase
      */
     public function it_should_deserialize_a_valid_message(): void
     {
-        $json = json_encode(
+        $json = Json::encode(
             [
                 'cdbid' => '48ef34b0-e34a-4a15-9ae2-a5a01f189f90',
                 'cardSystems' => [
@@ -53,7 +54,7 @@ final class EventCardSystemsUpdatedDeserializerTest extends TestCase
      */
     public function it_should_deserialize_a_valid_message_with_only_one_card_system(): void
     {
-        $json = json_encode(
+        $json = Json::encode(
             [
                 'cdbid' => '48ef34b0-e34a-4a15-9ae2-a5a01f189f90',
                 'cardSystems' => [
@@ -79,7 +80,7 @@ final class EventCardSystemsUpdatedDeserializerTest extends TestCase
      */
     public function it_should_deserialize_a_valid_message_without_card_systems(): void
     {
-        $json = json_encode(
+        $json = Json::encode(
             [
                 'cdbid' => '48ef34b0-e34a-4a15-9ae2-a5a01f189f90',
                 'cardSystems' => [],
@@ -100,7 +101,7 @@ final class EventCardSystemsUpdatedDeserializerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $json = json_encode(
+        $json = Json::encode(
             [
                 'cardSystems' => [],
             ]
@@ -116,7 +117,7 @@ final class EventCardSystemsUpdatedDeserializerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $json = json_encode(
+        $json = Json::encode(
             [
                 'cdbid' => '48ef34b0-e34a-4a15-9ae2-a5a01f189f90',
             ]
@@ -132,7 +133,7 @@ final class EventCardSystemsUpdatedDeserializerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $json = json_encode(
+        $json = Json::encode(
             [
                 'cdbid' => '48ef34b0-e34a-4a15-9ae2-a5a01f189f90',
                 'cardSystems' => false,
@@ -149,7 +150,7 @@ final class EventCardSystemsUpdatedDeserializerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $json = json_encode(
+        $json = Json::encode(
             [
                 'cdbid' => '48ef34b0-e34a-4a15-9ae2-a5a01f189f90',
                 'cardSystems' => [
@@ -170,7 +171,7 @@ final class EventCardSystemsUpdatedDeserializerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $json = json_encode(
+        $json = Json::encode(
             [
                 'cdbid' => '48ef34b0-e34a-4a15-9ae2-a5a01f189f90',
                 'cardSystems' => [

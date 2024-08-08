@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\ReadModel\JSONLD;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
@@ -43,7 +44,7 @@ class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
             ],
         ];
 
-        $document = new JsonDocument('919c7904-ecfa-440c-92d0-ae912213c615', json_encode($data));
+        $document = new JsonDocument('919c7904-ecfa-440c-92d0-ae912213c615', Json::encode($data));
 
         $expected = [
             new Language('nl'),
@@ -88,7 +89,7 @@ class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
             ],
         ];
 
-        $document = new JsonDocument('919c7904-ecfa-440c-92d0-ae912213c615', json_encode($data));
+        $document = new JsonDocument('919c7904-ecfa-440c-92d0-ae912213c615', Json::encode($data));
 
         $expected = [
             new Language('fr'),
@@ -109,7 +110,7 @@ class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
             'name' => 'Naam NL',
         ];
 
-        $document = new JsonDocument('919c7904-ecfa-440c-92d0-ae912213c615', json_encode($data));
+        $document = new JsonDocument('919c7904-ecfa-440c-92d0-ae912213c615', Json::encode($data));
 
         $expected = [
             new Language('nl'),
@@ -141,7 +142,7 @@ class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
             ],
         ];
 
-        $document = new JsonDocument('919c7904-ecfa-440c-92d0-ae912213c615', json_encode($data));
+        $document = new JsonDocument('919c7904-ecfa-440c-92d0-ae912213c615', Json::encode($data));
 
         $expectedAll = [
             new Language('nl'),

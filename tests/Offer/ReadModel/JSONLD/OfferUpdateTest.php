@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 
@@ -20,7 +21,7 @@ class OfferUpdateTest extends TestCase
 
         $initialDocument = new JsonDocument(
             'some_id',
-            json_encode([
+            Json::encode([
                 'name' => [
                     'nl' => 'heyo!',
                 ],
@@ -42,7 +43,7 @@ class OfferUpdateTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             'some_id',
-            json_encode([
+            Json::encode([
                 'name' => [
                     'nl' => 'heyo!',
                 ],

@@ -186,7 +186,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
 
         $initialDocument = new JsonDocument(
             $id,
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Foo',
@@ -323,7 +323,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
 
         $initialDocument = new JsonDocument(
             $id,
-            json_encode([
+            Json::encode([
                 'typicalAgeRange' => '12-14',
             ])
         );
@@ -352,7 +352,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
 
         $initialDocument = new JsonDocument(
             $id,
-            json_encode([
+            Json::encode([
                 'typicalAgeRange' => '-18',
             ])
         );

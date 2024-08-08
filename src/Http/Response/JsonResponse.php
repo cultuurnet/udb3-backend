@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Response;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Json;
 use Fig\Http\Message\StatusCodeInterface;
 use JsonException;
 use Slim\Psr7\Factory\StreamFactory;
@@ -22,7 +23,7 @@ class JsonResponse extends Response
     {
         try {
             if (!is_string($data)) {
-                $data = json_encode($data, JSON_THROW_ON_ERROR);
+                $data = Json::encode($data);
             }
 
             $body = (new StreamFactory())->createStream($data);

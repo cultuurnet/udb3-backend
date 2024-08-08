@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -67,7 +68,7 @@ class DummyPlaceProjectionEnricherTest extends TestCase
 
     private function getEventJsonForPlace(string $placeId): string
     {
-        return json_encode(
+        return Json::encode(
             [
                 '@id' => 'https://example.com/entity/' . $placeId,
             ]

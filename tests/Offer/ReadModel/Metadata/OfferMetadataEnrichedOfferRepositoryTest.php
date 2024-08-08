@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\ReadModel\Metadata;
 
 use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -45,7 +46,7 @@ class OfferMetadataEnrichedOfferRepositoryTest extends TestCase
     {
         $offerId = '4ff559bd-9543-4ae2-900f-fe6d32fd019b';
 
-        $jsonLd = new JsonDocument($offerId, json_encode(['@type' => 'Event']));
+        $jsonLd = new JsonDocument($offerId, Json::encode(['@type' => 'Event']));
         $this->decoratedRepository->save($jsonLd);
 
         $fetchJsonLd = $this->offerMetadataEnrichedOfferRepository->fetch($offerId, false);
@@ -64,14 +65,14 @@ class OfferMetadataEnrichedOfferRepositoryTest extends TestCase
             new OfferMetadata($offerId, 'uitdatabank-ui')
         );
 
-        $jsonLd = new JsonDocument($offerId, json_encode(['@type' => 'Event']));
+        $jsonLd = new JsonDocument($offerId, Json::encode(['@type' => 'Event']));
         $this->decoratedRepository->save($jsonLd);
 
         $fetchJsonLd = $this->offerMetadataEnrichedOfferRepository->fetch($offerId, true);
 
         $expectedJsonLd = new JsonDocument(
             $offerId,
-            json_encode(
+            Json::encode(
                 [
                     '@type' => 'Event',
                     'metadata' => [
@@ -95,14 +96,14 @@ class OfferMetadataEnrichedOfferRepositoryTest extends TestCase
             new EntityNotFoundException()
         );
 
-        $jsonLd = new JsonDocument($offerId, json_encode(['@type' => 'Event']));
+        $jsonLd = new JsonDocument($offerId, Json::encode(['@type' => 'Event']));
         $this->decoratedRepository->save($jsonLd);
 
         $fetchJsonLd = $this->offerMetadataEnrichedOfferRepository->fetch($offerId, true);
 
         $expectedJsonLd = new JsonDocument(
             $offerId,
-            json_encode(
+            Json::encode(
                 [
                     '@type' => 'Event',
                     'metadata' => [

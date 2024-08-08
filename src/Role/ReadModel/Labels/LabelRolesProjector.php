@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Labels;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\Events\Created as LabelCreated;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -71,7 +72,7 @@ class LabelRolesProjector extends RoleProjector
     {
         $document = new JsonDocument(
             $uuid->toString(),
-            json_encode([])
+            Json::encode([])
         );
         return $document;
     }

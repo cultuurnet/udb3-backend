@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use CultuurNet\UDB3\Json;
+
 trait OwnershipSteps
 {
     /**
@@ -17,7 +19,7 @@ trait OwnershipSteps
     ): void {
         $this->requestOwnership(
             '/ownerships',
-            $this->variableState->replaceVariables(json_encode([
+            $this->variableState->replaceVariables(Json::encode([
                 'itemId' => $organizerId,
                 'itemType' => 'organizer',
                 'ownerId' => $ownerId,

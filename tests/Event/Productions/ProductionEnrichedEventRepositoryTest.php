@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -53,7 +54,7 @@ final class ProductionEnrichedEventRepositoryTest extends TestCase
         $eventId = Uuid::uuid4()->toString();
         $originalJsonDocument = new JsonDocument(
             $eventId,
-            json_encode((object) ['@id' => $eventId])
+            Json::encode((object) ['@id' => $eventId])
         );
 
 
@@ -78,7 +79,7 @@ final class ProductionEnrichedEventRepositoryTest extends TestCase
         $eventId = Uuid::uuid4()->toString();
         $originalJsonDocument = new JsonDocument(
             $eventId,
-            json_encode((object) ['@id' => $eventId])
+            Json::encode((object) ['@id' => $eventId])
         );
 
         $otherEventId = Uuid::uuid4()->toString();
@@ -122,7 +123,7 @@ final class ProductionEnrichedEventRepositoryTest extends TestCase
         $newProductionEnrichedEventRepository->save(
             new JsonDocument(
                 $eventId,
-                json_encode([
+                Json::encode([
                     '@type' => 'Event',
                     'production' => [
                         'id' => Uuid::uuid4()->toString(),
@@ -140,7 +141,7 @@ final class ProductionEnrichedEventRepositoryTest extends TestCase
         $this->assertEquals(
             new JsonDocument(
                 $eventId,
-                json_encode(['@type' => 'Event'])
+                Json::encode(['@type' => 'Event'])
             ),
             $inMemoryDocumentRepository->fetch($eventId)
         );

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\RDF;
 use CultuurNet\UDB3\Address\Parser\AddressParser;
 use CultuurNet\UDB3\Address\Parser\ParsedAddress;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
@@ -98,7 +99,7 @@ class EventJsonToTurtleConverterTest extends TestCase
             '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
         ];
 
-        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+        $this->documentRepository->save(new JsonDocument($eventId, Json::encode($event)));
 
         $this->logger->expects($this->once())
             ->method('warning')
@@ -146,7 +147,7 @@ class EventJsonToTurtleConverterTest extends TestCase
             'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
-        $this->documentRepository->save(new JsonDocument($eventId, json_encode($event)));
+        $this->documentRepository->save(new JsonDocument($eventId, Json::encode($event)));
 
         $this->logger->expects($this->once())
             ->method('warning')
@@ -1090,6 +1091,6 @@ class EventJsonToTurtleConverterTest extends TestCase
     private function givenThereIsAnEvent(array $extraProperties = []): void
     {
         $event = array_merge($this->event, $extraProperties);
-        $this->documentRepository->save(new JsonDocument($this->eventId, json_encode($event)));
+        $this->documentRepository->save(new JsonDocument($this->eventId, Json::encode($event)));
     }
 }

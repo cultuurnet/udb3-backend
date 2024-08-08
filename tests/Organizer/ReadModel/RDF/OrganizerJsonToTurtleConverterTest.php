@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Organizer\ReadModel\RDF;
 use CultuurNet\UDB3\Address\Parser\AddressParser;
 use CultuurNet\UDB3\Address\Parser\ParsedAddress;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -111,7 +112,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
             'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
-        $this->documentRepository->save(new JsonDocument($organizerId, json_encode($organizer)));
+        $this->documentRepository->save(new JsonDocument($organizerId, Json::encode($organizer)));
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($organizerId);
 
@@ -136,7 +137,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
             'modified' => '2023-01-01T12:30:15+01:00',
         ];
 
-        $this->documentRepository->save(new JsonDocument($organizerId, json_encode($organizer)));
+        $this->documentRepository->save(new JsonDocument($organizerId, Json::encode($organizer)));
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($organizerId);
 
@@ -226,6 +227,6 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
     private function givenThereIsAnOrganizer(array $extraProperties = []): void
     {
         $organizer = array_merge($this->organizer, $extraProperties);
-        $this->documentRepository->save(new JsonDocument($this->organizerId, json_encode($organizer)));
+        $this->documentRepository->save(new JsonDocument($this->organizerId, Json::encode($organizer)));
     }
 }

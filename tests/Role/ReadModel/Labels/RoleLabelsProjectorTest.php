@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\Events\LabelDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
@@ -206,7 +207,7 @@ class RoleLabelsProjectorTest extends TestCase
 
         $jsonDocument = new JsonDocument(
             $labelProjected->getUuid()->toString(),
-            json_encode([$roleId->toString() => $roleId->toString()])
+            Json::encode([$roleId->toString() => $roleId->toString()])
         );
 
         $this->labelRolesRepository
@@ -252,7 +253,7 @@ class RoleLabelsProjectorTest extends TestCase
     {
         return new JsonDocument(
             $uuid->toString(),
-            json_encode([])
+            Json::encode([])
         );
     }
 
@@ -263,7 +264,7 @@ class RoleLabelsProjectorTest extends TestCase
     {
         return new JsonDocument(
             $uuid->toString(),
-            json_encode([$labelId->toString() => $this->createLabelEntity($labelId)])
+            Json::encode([$labelId->toString() => $this->createLabelEntity($labelId)])
         );
     }
 
