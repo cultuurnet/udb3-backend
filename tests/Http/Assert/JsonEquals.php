@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Assert;
 
+use CultuurNet\UDB3\Json;
 use PHPUnit\Framework\TestCase;
 
 class JsonEquals
@@ -21,8 +22,8 @@ class JsonEquals
 
     public function assert(string $expectedJson, string $actualJson): void
     {
-        $expected = json_decode($expectedJson, true);
-        $actual = json_decode($actualJson, true);
+        $expected = Json::decodeAssociatively($expectedJson);
+        $actual = Json::decodeAssociatively($actualJson);
 
         if (is_null($expected)) {
             $this->testCase->fail('Expected json is not valid json.');

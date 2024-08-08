@@ -58,7 +58,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
         $json = '{"foo"';
 
         $this->expectException(JsonException::class);
-        $this->expectExceptionMessage('Invalid JSON');
+        $this->expectExceptionMessage('Syntax error');
 
         $this->deserializer->deserialize($json);
     }

@@ -173,8 +173,8 @@ class AggregateAwareDBALEventStore implements EventStore
         return new DomainMessage(
             $row['uuid'],
             (int) $row['playhead'],
-            $this->metadataSerializer->deserialize(json_decode($row['metadata'], true)),
-            $this->payloadSerializer->deserialize(json_decode($row['payload'], true)),
+            $this->metadataSerializer->deserialize(Json::decodeAssociatively($row['metadata'])),
+            $this->payloadSerializer->deserialize(Json::decodeAssociatively($row['payload'])),
             DateTime::fromString($row['recorded_on'])
         );
     }

@@ -26,7 +26,7 @@ class JSONDeserializerTest extends TestCase
     public function itThrowsJsonExceptionForInvalidJson(): void
     {
         $this->expectException(JsonException::class);
-        $this->expectExceptionMessage('Invalid JSON');
+        $this->expectExceptionMessage('Syntax error');
 
         $this->deserializer->deserialize(
             '{

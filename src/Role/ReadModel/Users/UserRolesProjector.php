@@ -54,7 +54,7 @@ class UserRolesProjector extends RoleProjector
             );
         }
 
-        $roles = json_decode($document->getRawBody(), true);
+        $roles = Json::decodeAssociatively($document->getRawBody());
         $roles[$roleId] = $roleDetails;
 
         $document = $document->withAssocBody($roles);
@@ -73,7 +73,7 @@ class UserRolesProjector extends RoleProjector
             return;
         }
 
-        $roles = json_decode($document->getRawBody(), true);
+        $roles = Json::decodeAssociatively($document->getRawBody());
         unset($roles[$roleId]);
 
         $document = $document->withAssocBody($roles);
@@ -99,13 +99,13 @@ class UserRolesProjector extends RoleProjector
 
         $roleDetails = $roleDetailsDocument->getBody();
 
-        $roleUsers = json_decode($roleUsersDocument->getRawBody(), true);
+        $roleUsers = Json::decodeAssociatively($roleUsersDocument->getRawBody());
         $roleUserIds = array_keys($roleUsers);
 
         foreach ($roleUserIds as $roleUserId) {
             $userRolesDocument = $this->repository->fetch($roleUserId);
 
-            $userRoles = json_decode($userRolesDocument->getRawBody(), true);
+            $userRoles = Json::decodeAssociatively($userRolesDocument->getRawBody());
             $userRoles[$roleId] = $roleDetails;
 
             $userRolesDocument = $userRolesDocument->withAssocBody($userRoles);

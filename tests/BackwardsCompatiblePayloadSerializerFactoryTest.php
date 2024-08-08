@@ -77,7 +77,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         Language $expectedMainLanguage
     ): void {
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         /** @var EventCreated|PlaceCreated|OrganizerCreatedWithUniqueWebsite $created */
         $created = $this->serializer->deserialize($decoded);
@@ -482,7 +482,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $sampleFile = $this->sampleDir . 'serialized_event_booking_info_updated_without_availability.json';
 
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         /* @var BookingInfoUpdated $bookingInfoUpdated */
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
@@ -684,7 +684,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     private function assertKeywordReplacedWithLabel(string $sampleFile): void
     {
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
         $keyword = $decoded['payload']['keyword'];
 
         /** @var AbstractLabelEvent $abstractLabelEvent */

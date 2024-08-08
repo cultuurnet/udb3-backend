@@ -9,6 +9,7 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventSourcing\EventStreamDecorator;
 use Broadway\Serializer\Serializer;
+use CultuurNet\UDB3\Json;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\DBALException;
@@ -180,8 +181,8 @@ class EventStream
         return new DomainMessage(
             $row['uuid'],
             (int) $row['playhead'],
-            $this->metadataSerializer->deserialize(json_decode($row['metadata'], true)),
-            $this->payloadSerializer->deserialize(json_decode($row['payload'], true)),
+            $this->metadataSerializer->deserialize(Json::decodeAssociatively($row['metadata'])),
+            $this->payloadSerializer->deserialize(Json::decodeAssociatively($row['payload'])),
             DateTime::fromString($row['recorded_on'])
         );
     }

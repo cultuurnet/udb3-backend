@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User\Auth0;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\User\ManagementToken\ManagementToken;
 use CultuurNet\UDB3\User\ManagementToken\ManagementTokenGenerator;
 use DateTimeImmutable;
@@ -37,7 +38,7 @@ class Auth0ManagementTokenGenerator implements ManagementTokenGenerator
             ]
         );
 
-        $res = json_decode($response->getBody()->getContents(), true);
+        $res = Json::decodeAssociatively($response->getBody()->getContents());
 
         return new ManagementToken(
             $res['access_token'],
