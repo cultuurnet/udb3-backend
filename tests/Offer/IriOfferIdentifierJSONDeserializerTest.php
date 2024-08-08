@@ -53,7 +53,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_json_exception_when_the_json_is_malformed(): void
+    public function it_throws_a_json_exception_when_the_json_is_malformed(): void
     {
         $json = '{"foo"';
 
