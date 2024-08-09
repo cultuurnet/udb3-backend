@@ -9,7 +9,6 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\FlagAsDuplicate;
@@ -45,7 +44,7 @@ final class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     protected $organizerRepository;
 
     /**
-     * @var MediaManager|MockObject
+     * @var MediaManagerInterface&MockObject
      */
     protected $mediaManager;
 
