@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role\ReadModel\Users;
 
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -49,7 +50,7 @@ class UserRolesProjector extends RoleProjector
         } catch (DocumentDoesNotExist $e) {
             $document = new JsonDocument(
                 $userId,
-                json_encode([])
+                Json::encode([])
             );
         }
 

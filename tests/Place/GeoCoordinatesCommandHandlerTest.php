@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
@@ -58,13 +59,12 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         $documentRepository->expects($this->once())
             ->method('fetch')
             ->with(self::PLACE_ID)
-            ->willReturn(new JsonDocument(self::PLACE_ID, json_encode([
+            ->willReturn(new JsonDocument(self::PLACE_ID, Json::encode([
                 'name' => [
                     'nl' => 'Faith no More',
                     'fr' => 'Faith no More - a la francais',
-
                 ],
-            ], JSON_THROW_ON_ERROR)));
+            ])));
 
         return new GeoCoordinatesCommandHandler(
             $repository,

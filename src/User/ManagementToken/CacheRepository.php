@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User\ManagementToken;
 
+use CultuurNet\UDB3\Json;
 use DateTimeImmutable;
 use Doctrine\Common\Cache\Cache;
 
@@ -35,13 +36,12 @@ class CacheRepository implements TokenRepository
 
     public function store(ManagementToken $token): void
     {
-        $tokenAsJson = json_encode(
+        $tokenAsJson = Json::encode(
             [
                 'token' => $token->getToken(),
                 'issuedAt' => $token->getIssuedAt()->format(DATE_ATOM),
                 'expiresIn' => $token->getExpiresIn(),
-            ],
-            JSON_THROW_ON_ERROR
+            ]
         );
 
         $this->cache->save(self::TOKEN_KEY, $tokenAsJson);

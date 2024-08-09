@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Broadway\AMQP\Message\Body;
 use Broadway\Domain\DomainMessage;
 use Broadway\Serializer\Serializable;
 use Broadway\Serializer\SerializationException;
+use CultuurNet\UDB3\Json;
 
 class PayloadOnlyBodyFactory implements BodyFactoryInterface
 {
@@ -14,7 +15,7 @@ class PayloadOnlyBodyFactory implements BodyFactoryInterface
     {
         $this->guardSerializable($domainMessage->getPayload());
 
-        return json_encode(
+        return Json::encode(
             $domainMessage->getPayload()->serialize()
         );
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Users;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -69,7 +70,7 @@ class RoleUsersProjector extends RoleProjector
         $this->repository->save(
             new JsonDocument(
                 $roleCreated->getUuid()->toString(),
-                json_encode([])
+                Json::encode([])
             )
         );
     }

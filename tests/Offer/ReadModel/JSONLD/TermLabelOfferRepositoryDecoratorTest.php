@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Term\TermRepository;
@@ -82,7 +83,7 @@ class TermLabelOfferRepositoryDecoratorTest extends TestCase
             ],
         ];
 
-        $givenDocument = new JsonDocument($id, json_encode($givenJson));
+        $givenDocument = new JsonDocument($id, Json::encode($givenJson));
 
         $expectedJson = [
             'terms' => [
@@ -129,7 +130,7 @@ class TermLabelOfferRepositoryDecoratorTest extends TestCase
         $id = 'b8fa0fcb-4062-42a7-9e39-d3a515421ec9';
 
         $givenJson = ['foo' => 'bar'];
-        $givenDocument = new JsonDocument($id, json_encode($givenJson));
+        $givenDocument = new JsonDocument($id, Json::encode($givenJson));
 
         $expectedJson = ['foo' => 'bar'];
 
@@ -148,7 +149,7 @@ class TermLabelOfferRepositoryDecoratorTest extends TestCase
         $id = 'b220e450-0cec-4607-84a2-0026dfda77ff';
 
         $givenJson = ['terms' => 'foo'];
-        $givenDocument = new JsonDocument($id, json_encode($givenJson));
+        $givenDocument = new JsonDocument($id, Json::encode($givenJson));
 
         $expectedJson = ['terms' => 'foo'];
 

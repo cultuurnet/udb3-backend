@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use PHPUnit\Framework\TestCase;
 
@@ -51,7 +52,7 @@ class AddressJSONDeserializerTest extends TestCase
      */
     public function it_returns_an_address_object(): void
     {
-        $data = json_encode(
+        $data = Json::encode(
             [
                 'streetAddress' => 'Wetstraat 1',
                 'postalCode' => '1000',

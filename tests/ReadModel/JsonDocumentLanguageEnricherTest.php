@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\ReadModel;
 
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Json;
 use PHPUnit\Framework\TestCase;
 
 class JsonDocumentLanguageEnricherTest extends TestCase
@@ -38,7 +39,7 @@ class JsonDocumentLanguageEnricherTest extends TestCase
     {
         $givenJsonDocument = new JsonDocument(
             '41278834-8a90-4b4a-bca2-c3189787146d',
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Naam NL',
@@ -55,7 +56,7 @@ class JsonDocumentLanguageEnricherTest extends TestCase
 
         $expectedJsonDocument = new JsonDocument(
             '41278834-8a90-4b4a-bca2-c3189787146d',
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Naam NL',
@@ -91,7 +92,7 @@ class JsonDocumentLanguageEnricherTest extends TestCase
     {
         $givenJsonDocument = new JsonDocument(
             '41278834-8a90-4b4a-bca2-c3189787146d',
-            json_encode(
+            Json::encode(
                 [
                     'foo' => 'bar',
                 ]

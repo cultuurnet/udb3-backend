@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
@@ -407,7 +408,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
         $this->documentRepository->expects($this->once())
             ->method('fetch')
             ->with('4b735422-2bf3-4241-aabb-d70609d2d1d3')
-            ->willReturn(new JsonDocument('4b735422-2bf3-4241-aabb-d70609d2d1d3', json_encode([
+            ->willReturn(new JsonDocument('4b735422-2bf3-4241-aabb-d70609d2d1d3', Json::encode([
                 'mainLanguage' => 'nl',
                 'address' => [
                     'nl' => [
@@ -417,7 +418,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         'streetAddress' => 'Bondgenotenlaan 1',
                     ],
                 ],
-            ], JSON_THROW_ON_ERROR)));
+            ])));
 
         $expectedCommand = new UpdateGeoCoordinatesFromAddress(
             '4b735422-2bf3-4241-aabb-d70609d2d1d3',
