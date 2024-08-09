@@ -25,7 +25,7 @@ class AddVideoRequestHandlerTest extends TestCase
     private TraceableCommandBus $commandBus;
 
     /**
-     * @var MockObject|UuidFactoryInterface
+     * @var UuidFactoryInterface&MockObject
      */
     private $uuidFactory;
 

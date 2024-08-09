@@ -26,19 +26,19 @@ final class ImageUploaderServiceTest extends TestCase
     private ImageUploaderInterface $uploader;
 
     /**
-     * @var MockObject|UuidGeneratorInterface
+     * @var UuidGeneratorInterface&MockObject
      */
     protected $uuidGenerator;
 
     /**
-     * @var MockObject|FilesystemOperator
+     * @var FilesystemOperator&MockObject
      */
     protected $filesystem;
 
     protected string $directory = '/uploads';
 
     /**
-     * @var MockObject|CommandBus
+     * @var CommandBus&MockObject
      */
     protected $commandBus;
 

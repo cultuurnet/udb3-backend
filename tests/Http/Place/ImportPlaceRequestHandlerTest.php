@@ -98,15 +98,15 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
     private MockObject $aggregateRepository;
 
-    /** @var MockObject|UuidGeneratorInterface */
+    /** @var UuidGeneratorInterface&MockObject */
     private object $uuidGenerator;
 
-    /** @var MockObject|UuidFactoryInterface */
+    /** @var UuidFactoryInterface&MockObject */
     private object $uuidFactory;
 
     private object $commandBus;
 
-    /** @var MockObject|ImageCollectionFactory */
+    /** @var ImageCollectionFactory&MockObject */
     private object $imageCollectionFactory;
 
     private ImportPlaceRequestHandler $importPlaceRequestHandler;

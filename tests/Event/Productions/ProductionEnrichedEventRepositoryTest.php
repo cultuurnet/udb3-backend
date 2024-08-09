@@ -19,17 +19,17 @@ final class ProductionEnrichedEventRepositoryTest extends TestCase
     private ProductionEnrichedEventRepository $productionEnrichedEventRepository;
 
     /**
-     * @var ProductionRepository | MockObject
+     * @var ProductionRepository&MockObject
      */
     private $productionRepository;
 
     /**
-     * @var IriGeneratorInterface | MockObject
+     * @var IriGeneratorInterface&MockObject
      */
     private $iriGenerator;
 
     /**
-     * @var DocumentRepository | MockObject
+     * @var DocumentRepository&MockObject
      */
     private $eventRepository;
 

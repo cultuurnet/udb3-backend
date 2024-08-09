@@ -22,7 +22,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     public const DOCUMENT_ID = '5d7ed700-17de-4c1f-923a-0affe7cf2d4c';
 
     /**
-     * @var MockObject|ReadRepositoryInterface
+     * @var ReadRepositoryInterface&MockObject
      */
     private $labelReadRepository;
 

@@ -19,7 +19,7 @@ class DeleteOrganizerHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
-        /** @var MockObject|OrganizerRelationServiceInterface $organizerRelationService */
+        /** @var OrganizerRelationServiceInterface&MockObject $organizerRelationService */
         $organizerRelationService = $this->createMock(OrganizerRelationServiceInterface::class);
 
         $organizerRelationService->expects($this->exactly(2))

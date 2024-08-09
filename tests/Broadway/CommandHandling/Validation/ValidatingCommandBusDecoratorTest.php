@@ -6,17 +6,18 @@ namespace CultuurNet\UDB3\Broadway\CommandHandling\Validation;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\CommandHandling\CommandHandler;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ValidatingCommandBusDecoratorTest extends TestCase
 {
     /**
-     * @var CommandBus|\PHPUnit\Framework\MockObject\MockObject
+     * @var CommandBus&MockObject
      */
     private $decoratee;
 
     /**
-     * @var CommandValidatorInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var CommandValidatorInterface&MockObject
      */
     private $validator;
 
