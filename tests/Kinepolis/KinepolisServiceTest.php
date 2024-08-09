@@ -9,6 +9,7 @@ use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\Commands\AddImage;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
@@ -246,16 +247,16 @@ final class KinepolisServiceTest extends TestCase
                             new SubEvents(
                                 new SubEvent(
                                     new DateRange(
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T18:00:00+00:00'),
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T19:39:00+00:00')
+                                        DateTimeFactory::fromAtom('2024-04-08T18:00:00+00:00'),
+                                        DateTimeFactory::fromAtom('2024-04-08T19:39:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available())
                                 ),
                                 new SubEvent(
                                     new DateRange(
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T20:15:00+00:00'),
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T21:54:00+00:00')
+                                        DateTimeFactory::fromAtom('2024-04-08T20:15:00+00:00'),
+                                        DateTimeFactory::fromAtom('2024-04-08T21:54:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available())
@@ -423,16 +424,16 @@ final class KinepolisServiceTest extends TestCase
                             new SubEvents(
                                 new SubEvent(
                                     new DateRange(
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T18:00:00+00:00'),
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T19:39:00+00:00')
+                                        DateTimeFactory::fromAtom('2024-04-08T18:00:00+00:00'),
+                                        DateTimeFactory::fromAtom('2024-04-08T19:39:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available())
                                 ),
                                 new SubEvent(
                                     new DateRange(
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T20:15:00+00:00'),
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T21:54:00+00:00')
+                                        DateTimeFactory::fromAtom('2024-04-08T20:15:00+00:00'),
+                                        DateTimeFactory::fromAtom('2024-04-08T21:54:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available())
@@ -602,16 +603,16 @@ final class KinepolisServiceTest extends TestCase
                             new SubEvents(
                                 new SubEvent(
                                     new DateRange(
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T18:00:00+00:00'),
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T19:39:00+00:00')
+                                        DateTimeFactory::fromAtom('2024-04-08T18:00:00+00:00'),
+                                        DateTimeFactory::fromAtom('2024-04-08T19:39:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available())
                                 ),
                                 new SubEvent(
                                     new DateRange(
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T20:15:00+00:00'),
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T21:54:00+00:00')
+                                        DateTimeFactory::fromAtom('2024-04-08T20:15:00+00:00'),
+                                        DateTimeFactory::fromAtom('2024-04-08T21:54:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available())
@@ -691,16 +692,16 @@ final class KinepolisServiceTest extends TestCase
                             new SubEvents(
                                 new SubEvent(
                                     new DateRange(
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T18:00:00+00:00'),
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T19:39:00+00:00')
+                                        DateTimeFactory::fromAtom('2024-04-08T18:00:00+00:00'),
+                                        DateTimeFactory::fromAtom('2024-04-08T19:39:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available())
                                 ),
                                 new SubEvent(
                                     new DateRange(
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T20:15:00+00:00'),
-                                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T21:54:00+00:00')
+                                        DateTimeFactory::fromAtom('2024-04-08T20:15:00+00:00'),
+                                        DateTimeFactory::fromAtom('2024-04-08T21:54:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available())

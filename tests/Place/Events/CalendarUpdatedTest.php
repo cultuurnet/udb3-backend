@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Place\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use DateTimeInterface;
+use CultuurNet\UDB3\DateTimeFactory;
 use PHPUnit\Framework\TestCase;
 
 class CalendarUpdatedTest extends TestCase
@@ -37,8 +37,8 @@ class CalendarUpdatedTest extends TestCase
 
         $this->calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T12:12:12+01:00')
+            DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
+            DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
 
         $this->calendarUpdatedAsArray = [

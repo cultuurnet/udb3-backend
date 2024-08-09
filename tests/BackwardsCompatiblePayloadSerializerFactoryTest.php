@@ -404,12 +404,12 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
 
         $this->assertEquals(
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-02-20T15:11:26+00:00'),
+            DateTimeFactory::fromAtom('2018-02-20T15:11:26+00:00'),
             $bookingInfoUpdated->getBookingInfo()->getAvailabilityStarts()
         );
 
         $this->assertEquals(
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-04-30T14:11:26+00:00'),
+            DateTimeFactory::fromAtom('2018-04-30T14:11:26+00:00'),
             $bookingInfoUpdated->getBookingInfo()->getAvailabilityEnds()
         );
     }
@@ -464,12 +464,12 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
 
         $this->assertEquals(
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-02-20T15:11:26+01:00'),
+            DateTimeFactory::fromAtom('2018-02-20T15:11:26+01:00'),
             $bookingInfoUpdated->getBookingInfo()->getAvailabilityStarts()
         );
 
         $this->assertEquals(
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-04-30T14:11:26+01:00'),
+            DateTimeFactory::fromAtom('2018-04-30T14:11:26+01:00'),
             $bookingInfoUpdated->getBookingInfo()->getAvailabilityEnds()
         );
     }

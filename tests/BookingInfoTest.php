@@ -71,8 +71,8 @@ class BookingInfoTest extends TestCase
             new TelephoneNumber('044/444444'),
             new EmailAddress('info@publiq.be'),
             new BookingAvailability(
-                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00'),
-                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T00:00:00+01:00')
+                DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2018-01-10T00:00:00+01:00')
             )
         );
 
@@ -84,8 +84,8 @@ class BookingInfoTest extends TestCase
             ),
             '044/444444',
             'info@publiq.be',
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T00:00:00+01:00')
+            DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
+            DateTimeFactory::fromAtom('2018-01-10T00:00:00+01:00')
         );
 
         $actual = BookingInfo::fromUdb3ModelBookingInfo($udb3ModelBookingInfo);
@@ -210,8 +210,8 @@ class BookingInfoTest extends TestCase
             ),
             '044/444444',
             'info@publiq.be',
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-14T23:59:59+01:00')
+            DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
+            DateTimeFactory::fromAtom('2018-01-14T23:59:59+01:00')
         );
 
         $actual = BookingInfo::deserialize($data);

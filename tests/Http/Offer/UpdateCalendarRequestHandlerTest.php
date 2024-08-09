@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
@@ -24,7 +25,6 @@ use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class UpdateCalendarRequestHandlerTest extends TestCase
@@ -80,8 +80,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     self::EVENT_ID,
                     Calendar::single(
                         new Timestamp(
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         )
                     )
                 ),
@@ -100,8 +100,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     self::EVENT_ID,
                     Calendar::single(
                         new Timestamp(
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         )
                     )
                 ),
@@ -116,8 +116,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     self::EVENT_ID,
                     Calendar::single(
                         new Timestamp(
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         )
                     )
                 ),
@@ -139,8 +139,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     Calendar::single(
                         (
                             new Timestamp(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                             )
                         )
                             ->withStatus(new Status(StatusType::unavailable(), []))
@@ -167,8 +167,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     Calendar::single(
                         (
                             new Timestamp(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                             )
                         )
                             ->withStatus(
@@ -201,8 +201,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                         Calendar::single(
                             (
                                 new Timestamp(
-                                    DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                    DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                                    DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                    DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                                 )
                             )
                                 ->withStatus(
@@ -235,8 +235,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     self::EVENT_ID,
                     Calendar::single(
                         new Timestamp(
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         )
                     )
                 ),
@@ -251,8 +251,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     self::EVENT_ID,
                     Calendar::single(
                         new Timestamp(
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         )
                     )
                 ),
@@ -276,12 +276,12 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     Calendar::multiple(
                         [
                             new Timestamp(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                             ),
                             new Timestamp(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-03T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-03T17:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-03T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-03T17:00:30+01:00'),
                             ),
                         ]
                     )
@@ -306,12 +306,12 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     Calendar::multiple(
                         [
                             new Timestamp(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                             ),
                             new Timestamp(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-03T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-03T17:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-03T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-03T17:00:30+01:00'),
                             ),
                         ]
                     )
@@ -326,8 +326,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
                     Calendar::periodic(
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                     )
                 ),
             ],
@@ -345,8 +345,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
                     Calendar::periodic(
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         [],
                         new Status(
                             StatusType::temporarilyUnavailable(),
@@ -382,8 +382,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
                     Calendar::periodic(
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         [
                             new OpeningHour(
                                 new OpeningTime(new Hour(10), new Minute(0)),
@@ -787,8 +787,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateCalendar(
                     self::PLACE_ID,
                     Calendar::periodic(
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                     )
                 ),
             ],
@@ -806,8 +806,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateCalendar(
                     self::PLACE_ID,
                     Calendar::periodic(
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         [],
                         new Status(
                             StatusType::temporarilyUnavailable(),
@@ -843,8 +843,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateCalendar(
                     self::PLACE_ID,
                     Calendar::periodic(
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         [
                             new OpeningHour(
                                 new OpeningTime(new Hour(10), new Minute(0)),

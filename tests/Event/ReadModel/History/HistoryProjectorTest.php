@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\History;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
@@ -1455,10 +1456,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new Published(
             self::EVENT_ID_1,
-            DateTimeImmutable::createFromFormat(
-                DateTimeInterface::ATOM,
-                '2015-04-30T02:00:00+02:00'
-            )
+            DateTimeFactory::fromAtom('2015-04-30T02:00:00+02:00')
         );
 
         $domainMessage = new DomainMessage(

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Place\Events;
 
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
@@ -102,10 +103,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
     {
         $publicationDate = null;
         if (!empty($data['publication_date'])) {
-            $publicationDate = DateTimeImmutable::createFromFormat(
-                DateTimeInterface::ATOM,
-                $data['publication_date']
-            );
+            $publicationDate = DateTimeFactory::fromAtom($data['publication_date']);
         }
         return new static(
             $data['place_id'],

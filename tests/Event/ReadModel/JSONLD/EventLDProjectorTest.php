@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\Completeness\Weights;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
@@ -69,8 +70,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use DateTimeImmutable;
-use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
@@ -197,8 +196,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00')
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
         );
 
         $eventCreated = $this->createEventCreated($eventId, $calendar, null);
@@ -241,8 +240,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(
                 CalendarType::PERIODIC(),
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00')
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
             ),
             null
         );
@@ -260,8 +259,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $eventId,
             new Calendar(
                 CalendarType::PERIODIC(),
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2022-01-26T13:25:21+01:00'),
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2022-01-26T13:25:21+01:00')
+                DateTimeFactory::fromAtom('2022-01-26T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2022-01-26T13:25:21+01:00')
             )
         );
 
@@ -291,8 +290,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventId = '1';
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00')
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
         );
         $theme = new Theme('123', 'theme label');
 
@@ -339,8 +338,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventId = '1';
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00')
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
         );
         $theme = new Theme('123', 'theme label');
 
@@ -439,8 +438,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $originalEventId = 'f8e4f084-1b75-4893-b2b9-fc67fd6e73fb';
         $originalCalendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-01-26T13:25:21+01:00')
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+            DateTimeFactory::fromAtom('2017-01-26T13:25:21+01:00')
         );
         $eventCreated = $this->createEventCreated($originalEventId, $originalCalendar, null);
 
@@ -464,18 +463,18 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventId = 'f0b24f97-4b03-4eb2-96d1-5074819a7648';
         $timestamps = [
             new Timestamp(
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-27T13:25:21+01:00')
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2015-01-27T13:25:21+01:00')
             ),
             new Timestamp(
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-28T13:25:21+01:00'),
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-29T13:25:21+01:00')
+                DateTimeFactory::fromAtom('2015-01-28T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
             ),
         ];
         $calendar = new Calendar(
             CalendarType::MULTIPLE(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-29T13:25:21+01:00'),
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+            DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00'),
             $timestamps
         );
         $eventCopied = new EventCopied($eventId, $originalEventId, $calendar);
@@ -509,8 +508,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-29T13:25:21+01:00')
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+            DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
         );
 
         $eventCopied = new EventCopied('f0b24f97-4b03-4eb2-96d1-5074819a7648', $eventCreated->getEventId(), $calendar);
@@ -539,8 +538,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_projects_start_date_as_available_to_for_workshops(): void
     {
-        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
-        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $startDate = DateTimeFactory::fromAtom('2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
         $eventType = new EventType('0.3.1.0.0', 'Cursus of workshop');
 
         $calendar = new Calendar(
@@ -576,8 +575,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_projects_end_date_as_available_to_for_other_event_types(): void
     {
-        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
-        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $startDate = DateTimeFactory::fromAtom('2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
         $eventType = new EventType('1.50.0.0.0', 'Eten en drinken');
 
         $calendar = new Calendar(
@@ -617,19 +616,19 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $timestamps = [
             new Timestamp(
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-27T13:25:21+01:00')
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2015-01-27T13:25:21+01:00')
             ),
             new Timestamp(
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-28T13:25:21+01:00'),
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-29T13:25:21+01:00')
+                DateTimeFactory::fromAtom('2015-01-28T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
             ),
         ];
 
         $calendar = new Calendar(
             CalendarType::MULTIPLE(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-29T13:25:21+01:00'),
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+            DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00'),
             $timestamps
         );
 
@@ -714,8 +713,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventId = 'a2d50a8d-5b83-4c8b-84e6-e9c0bacbb1a3';
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-01-26T13:25:21+01:00')
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+            DateTimeFactory::fromAtom('2017-01-26T13:25:21+01:00')
         );
         $eventCreated = $this->createEventCreated($eventId, $calendar, null);
         $this->mockPlaceService();
@@ -1019,8 +1018,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
                     new Calendar(
                         CalendarType::PERIODIC(),
-                        \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-                        \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-02-26T13:25:21+01:00')
+                        DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                        DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
                     ),
                     new Theme('123', 'theme label')
                 ),
@@ -1039,8 +1038,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     new LocationId('00000000-0000-0000-0000-000000000000'),
                     new Calendar(
                         CalendarType::PERIODIC(),
-                        \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-                        \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-02-26T13:25:21+01:00')
+                        DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                        DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
                     ),
                     new Theme('123', 'theme label')
                 ),
@@ -1056,8 +1055,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
                     new Calendar(
                         CalendarType::PERIODIC(),
-                        \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-                        \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-02-26T13:25:21+01:00')
+                        DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                        DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
                     ),
                     new Theme('123', 'theme label')
                 ),
@@ -1166,8 +1165,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T12:12:12+01:00')
+            DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
+            DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
 
         $calendarUpdated = new CalendarUpdated($eventId, $calendar);
@@ -1317,8 +1316,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-02-26T13:25:21+01:00')
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+            DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
         );
         $theme = new Theme('123', 'theme label');
         $majorInfoUpdated = new MajorInfoUpdated(
@@ -1608,8 +1607,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
         $this->documentRepository->save($eventThatsAvailableTillStart);
 
-        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
-        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $startDate = DateTimeFactory::fromAtom('2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
         $calendarUpdated = new CalendarUpdated(
             $eventId,
             new Calendar(
@@ -1668,7 +1667,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
         $this->documentRepository->save($eventThatShouldAvailableTillStart);
 
-        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+        $startDate = DateTimeFactory::fromAtom('2018-01-01T12:00:00+01:00');
 
         $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId($termId));
 
@@ -1718,7 +1717,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
         $this->documentRepository->save($eventThatShouldAvailableTillStart);
 
-        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
 
         $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0'));
 
@@ -1767,7 +1766,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
         $this->documentRepository->save($eventThatShouldAvailableTillStart);
 
-        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
 
         $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0'));
 
@@ -1977,8 +1976,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         return new Calendar(
             CalendarType::PERIODIC(),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
             [],
             [
                 new OpeningHour(

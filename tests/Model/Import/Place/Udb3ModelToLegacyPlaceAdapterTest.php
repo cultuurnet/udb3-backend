@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Place;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -58,7 +59,7 @@ class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
 
         /** @var ImmutablePlace $place */
         $place = $place->withAvailableFrom(
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T10:00:00+01:00')
+            DateTimeFactory::fromAtom('2018-01-01T10:00:00+01:00')
         );
 
         $translatedAddress = $place->getAddress()

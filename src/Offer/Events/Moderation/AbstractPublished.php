@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events\Moderation;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
-use DateTime;
 use DateTimeInterface;
 
 abstract class AbstractPublished extends AbstractEvent
@@ -38,7 +38,7 @@ abstract class AbstractPublished extends AbstractEvent
     {
         return new static(
             $data['item_id'],
-            DateTime::createFromFormat(DateTimeInterface::ATOM, $data['publication_date'])
+            DateTimeFactory::fromAtom($data['publication_date'])
         );
     }
 }

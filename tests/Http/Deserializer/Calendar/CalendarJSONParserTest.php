@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
@@ -17,7 +18,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
 class CalendarJSONParserTest extends TestCase
@@ -45,7 +45,7 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_can_get_the_start_date(): void
     {
-        $startDate = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00');
+        $startDate = DateTimeFactory::fromAtom('2020-01-26T09:00:00+01:00');
 
         $this->assertEquals(
             $startDate,
@@ -75,7 +75,7 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_can_get_the_end_date(): void
     {
-        $endDate = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00');
+        $endDate = DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00');
 
         $this->assertEquals(
             $endDate,
@@ -135,11 +135,11 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_can_get_the_timestamps(): void
     {
-        $startDatePeriod1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00');
-        $endDatePeriod1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-01T16:00:00+01:00');
+        $startDatePeriod1 = DateTimeFactory::fromAtom('2020-01-26T09:00:00+01:00');
+        $endDatePeriod1 = DateTimeFactory::fromAtom('2020-02-01T16:00:00+01:00');
 
-        $startDatePeriod2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-03T09:00:00+01:00');
-        $endDatePeriod2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00');
+        $startDatePeriod2 = DateTimeFactory::fromAtom('2020-02-03T09:00:00+01:00');
+        $endDatePeriod2 = DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00');
 
         $timestamps = [
             (new Timestamp(

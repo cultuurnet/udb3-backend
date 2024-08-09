@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use DateTimeImmutable;
+use CultuurNet\UDB3\DateTimeFactory;
 use DateTimeInterface;
 
 abstract class AbstractAvailableFromUpdated extends AbstractEvent
@@ -34,7 +34,7 @@ abstract class AbstractAvailableFromUpdated extends AbstractEvent
     {
         return new static(
             $data['item_id'],
-            DateTimeImmutable::createFromFormat(DateTimeInterface::ATOM, $data['available_from'])
+            DateTimeFactory::fromAtom($data['available_from'])
         );
     }
 }

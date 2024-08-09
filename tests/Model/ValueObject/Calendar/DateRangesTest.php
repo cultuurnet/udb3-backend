@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-use DateTimeImmutable;
+use CultuurNet\UDB3\DateTimeFactory;
 use PHPUnit\Framework\TestCase;
-use const DATE_ATOM;
 
 class DateRangesTest extends TestCase
 {
@@ -52,8 +51,8 @@ class DateRangesTest extends TestCase
 
             return new SubEvent(
                 new DateRange(
-                    DateTimeImmutable::createFromFormat(DATE_ATOM, $from),
-                    DateTimeImmutable::createFromFormat(DATE_ATOM, $to)
+                    DateTimeFactory::fromAtom($from),
+                    DateTimeFactory::fromAtom($to)
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available())
@@ -68,11 +67,11 @@ class DateRangesTest extends TestCase
         $this->assertEquals($expected, $ranges->toArray());
         $this->assertEquals(7, $ranges->getLength());
         $this->assertEquals(
-            DateTimeImmutable::createFromFormat(DATE_ATOM, '2018-01-01T00:00:00+01:00'),
+            DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
             $ranges->getStartDate()
         );
         $this->assertEquals(
-            DateTimeImmutable::createFromFormat(DATE_ATOM, '2018-08-31T00:00:00+01:00'),
+            DateTimeFactory::fromAtom('2018-08-31T00:00:00+01:00'),
             $ranges->getEndDate()
         );
     }

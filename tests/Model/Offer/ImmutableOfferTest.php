@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Offer;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
@@ -49,7 +50,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
-use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
@@ -527,10 +527,7 @@ class ImmutableOfferTest extends TestCase
      */
     public function it_should_return_a_copy_with_an_updated_available_from(): void
     {
-        $availableFrom = \DateTimeImmutable::createFromFormat(
-            DateTimeInterface::ATOM,
-            '2018-01-01T00:00:00+00:00'
-        );
+        $availableFrom = DateTimeFactory::fromAtom('2018-01-01T00:00:00+00:00');
 
         $offer = $this->getOffer();
         $updatedOffer = $offer->withAvailableFrom($availableFrom);
@@ -545,10 +542,7 @@ class ImmutableOfferTest extends TestCase
      */
     public function it_should_return_a_copy_without_available_from(): void
     {
-        $availableFrom = \DateTimeImmutable::createFromFormat(
-            DateTimeInterface::ATOM,
-            '2018-01-01T00:00:00+00:00'
-        );
+        $availableFrom = DateTimeFactory::fromAtom('2018-01-01T00:00:00+00:00');
 
         $offer = $this->getOffer()->withAvailableFrom($availableFrom);
         $updatedOffer = $offer->withoutAvailableFrom();

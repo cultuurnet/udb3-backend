@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Calendar;
 
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
-use DateTime;
 use DateTimeInterface;
 
 /**
@@ -88,8 +88,8 @@ final class Timestamp implements Serializable
             $bookingAvailability = BookingAvailability::deserialize($data['bookingAvailability']);
         }
 
-        $startDate = DateTime::createFromFormat(DateTimeInterface::ATOM, $data['startDate']);
-        $endDate = DateTime::createFromFormat(DateTimeInterface::ATOM, $data['endDate']);
+        $startDate = DateTimeFactory::fromAtom($data['startDate']);
+        $endDate = DateTimeFactory::fromAtom($data['endDate']);
 
         if ($startDate > $endDate) {
             $endDate = $startDate;

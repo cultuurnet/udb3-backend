@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -397,8 +398,8 @@ class PlaceDenormalizerTest extends TestCase
             ),
             new PeriodicCalendar(
                 new DateRange(
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00')
+                    DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2018-01-10T17:00:00+01:00')
                 ),
                 new OpeningHours()
             ),
@@ -480,8 +481,8 @@ class PlaceDenormalizerTest extends TestCase
             ),
             new PeriodicCalendar(
                 new DateRange(
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00')
+                    DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2018-01-10T17:00:00+01:00')
                 ),
                 new OpeningHours(
                     new OpeningHour(
@@ -843,7 +844,7 @@ class PlaceDenormalizerTest extends TestCase
                     ->withTranslation(new Language('en'), new Description('Example description'))
             )
             ->withAvailableFrom(
-                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00')
+                DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00')
             )
             ->withLabels(
                 new Labels(
@@ -903,8 +904,8 @@ class PlaceDenormalizerTest extends TestCase
                     new TelephoneNumber('02 551 18 70'),
                     new EmailAddress('info@publiq.be'),
                     new BookingAvailability(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-10-01T00:00:00+01:00')
+                        DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2018-10-01T00:00:00+01:00')
                     )
                 )
             )

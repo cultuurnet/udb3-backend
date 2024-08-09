@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\Import\Offer;
 
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
@@ -144,8 +145,8 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
                     new TelephoneNumber('044/444444'),
                     new EmailAddress('info@publiq.be'),
                     new BookingAvailability(
-                        DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T10:00:00+01:00'),
-                        DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T10:00:00+01:00')
+                        DateTimeFactory::fromAtom('2018-01-01T10:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2018-01-10T10:00:00+01:00')
                     )
                 )
             )
@@ -166,7 +167,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
                 )
             )
             ->withAvailableFrom(
-                DateTimeImmutable::createFromFormat(\DATE_ATOM, '2040-01-01T10:00:00+01:00')
+                DateTimeFactory::fromAtom('2040-01-01T10:00:00+01:00')
             );
 
         $this->adapter = new Udb3ModelToLegacyOfferAdapter($this->offer);
@@ -401,7 +402,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
      */
     public function it_should_return_available_from_if_there_is_one(): void
     {
-        $expected = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2040-01-01T10:00:00+01:00');
+        $expected = DateTimeFactory::fromAtom('2040-01-01T10:00:00+01:00');
         $actual = $this->completeAdapter->getAvailableFrom(new DateTimeImmutable());
         $this->assertEquals($expected, $actual);
     }
