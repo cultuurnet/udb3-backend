@@ -8,7 +8,7 @@ use CultureFeed_Uitpas_Calendar;
 use CultureFeed_Uitpas_Calendar_Timestamp;
 use CultureFeed_Uitpas_Event_CultureEvent;
 use CultureFeed_Uitpas_Passholder_Query_SearchPromotionPointsOptions;
-use DateTimeImmutable;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Clock\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
@@ -28,7 +28,7 @@ class EventOrganizerPromotionQueryFactoryTest extends TestCase
     {
         $this->queryFactory = new EventOrganizerPromotionQueryFactory(
             new FrozenClock(
-                DateTimeImmutable::createFromFormat(
+                DateTimeFactory::fromFormat(
                     'U',
                     (string) $this->unixTime,
                     new \DateTimeZone('Europe/Brussels')

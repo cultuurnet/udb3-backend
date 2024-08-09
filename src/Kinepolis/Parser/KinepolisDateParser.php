@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Kinepolis\Parser;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -67,7 +68,7 @@ final class KinepolisDateParser implements DateParser
     {
         $timeZoneBrussels = new \DateTimeZone('Europe/Brussels');
         $timeZoneUtc = new \DateTimeZone('UTC');
-        $dt = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $day . ' ' . $time, $timeZoneBrussels);
+        $dt = DateTimeFactory::fromFormat('Y-m-d H:i:s', $day . ' ' . $time, $timeZoneBrussels);
         return $dt->setTimezone($timeZoneUtc);
     }
 
