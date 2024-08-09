@@ -27,7 +27,7 @@ class ProjectorTest extends TestCase
 
     private UUID $uuid;
 
-    /** @var RepositoryInterface|MockObject */
+    /** @var RepositoryInterface&MockObject */
     private $repository;
 
     public function setUp(): void

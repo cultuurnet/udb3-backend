@@ -422,7 +422,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
         $documentId = 'B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A';
         $madeVisibleEvent = new MadeInvisible($labelId, $labelName);
 
-        /** @var LoggerInterface|MockObject $logger */
+        /** @var LoggerInterface&MockObject $logger */
         $logger = $this->createMock(AbstractLogger::class);
         $logger
             ->expects($this->once())

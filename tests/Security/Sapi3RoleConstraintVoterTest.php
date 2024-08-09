@@ -18,12 +18,12 @@ use PHPUnit\Framework\TestCase;
 class Sapi3RoleConstraintVoterTest extends TestCase
 {
     /**
-     * @var UserConstraintsReadRepositoryInterface|MockObject
+     * @var UserConstraintsReadRepositoryInterface&MockObject
      */
     private $userConstraintsReadRepository;
 
     /**
-     * @var HttpClient|MockObject
+     * @var HttpClient&MockObject
      */
     private $httpClient;
 

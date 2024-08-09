@@ -22,14 +22,14 @@ use PHPUnit\Framework\TestCase;
 class CultureFeedEventInfoServiceTest extends TestCase
 {
     /**
-     * @var \CultureFeed_Uitpas|MockObject
+     * @var \CultureFeed_Uitpas&MockObject
      */
     private $uitpas;
 
     private CultureFeedEventInfoService $infoService;
 
     /**
-     * @var PromotionQueryFactoryInterface|MockObject
+     * @var PromotionQueryFactoryInterface&MockObject
      */
     private $promotionQueryFactory;
 

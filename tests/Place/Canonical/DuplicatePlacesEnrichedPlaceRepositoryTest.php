@@ -16,7 +16,7 @@ final class DuplicatePlacesEnrichedPlaceRepositoryTest extends TestCase
 {
     private DuplicatePlacesEnrichedPlaceRepository $duplicatePlacesEnrichedPlaceRepository;
 
-    /** @var DuplicatePlaceRepository|MockObject */
+    /** @var DuplicatePlaceRepository&MockObject */
     private $duplicatePlaceRepository;
 
     private InMemoryDocumentRepository $decoratedRepository;

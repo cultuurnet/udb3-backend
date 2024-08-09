@@ -79,7 +79,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     public const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
     /**
-     * @var LocalPlaceService|MockObject
+     * @var LocalPlaceService&MockObject
      */
     private $placeService;
 
@@ -88,7 +88,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     protected MediaObjectSerializer $serializer;
 
     /**
-     * @var IriOfferIdentifierFactoryInterface|MockObject
+     * @var IriOfferIdentifierFactoryInterface&MockObject
      */
     protected $iriOfferIdentifierFactory;
 

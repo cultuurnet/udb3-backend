@@ -26,12 +26,12 @@ use Psr\Log\LoggerInterface;
 class AMQPPublisherTest extends TestCase
 {
     /**
-     * @var AMQPChannel|MockObject
+     * @var AMQPChannel&MockObject
      */
     private $amqpChannel;
 
     /**
-     * @var SpecificationInterface|MockObject
+     * @var SpecificationInterface&MockObject
      */
     private $specification;
 
@@ -145,7 +145,7 @@ class AMQPPublisherTest extends TestCase
     {
         $this->expectSpecificationIsSatisfied();
 
-        /** @var LoggerInterface|MockObject $logger */
+        /** @var LoggerInterface&MockObject $logger */
         $logger = $this->createMock(LoggerInterface::class);
         $this->amqpPublisher->setLogger($logger);
 
@@ -166,7 +166,7 @@ class AMQPPublisherTest extends TestCase
     {
         $this->expectSpecificationIsNotSatisfied();
 
-        /** @var LoggerInterface|MockObject $logger */
+        /** @var LoggerInterface&MockObject $logger */
         $logger = $this->createMock(LoggerInterface::class);
         $this->amqpPublisher->setLogger($logger);
 

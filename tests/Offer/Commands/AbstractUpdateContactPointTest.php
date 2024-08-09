@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class AbstractUpdateContactPointTest extends TestCase
 {
     /**
-     * @var AbstractUpdateContactPoint|MockObject
+     * @var AbstractUpdateContactPoint&MockObject
      */
     protected $updateContactPoint;
 

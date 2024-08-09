@@ -25,12 +25,12 @@ use PHPUnit\Framework\TestCase;
 class RoleUsersProjectorTest extends TestCase
 {
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $repository;
 
     /**
-     * @var UserIdentityResolver|MockObject
+     * @var UserIdentityResolver&MockObject
      */
     private $userIdentityResolver;
 

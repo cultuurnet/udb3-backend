@@ -23,22 +23,22 @@ final class MediaManagerTest extends TestCase
     private MediaManager $mediaManager;
 
     /**
-     * @var Repository|MockObject
+     * @var Repository&MockObject
      */
     private $repository;
 
     /**
-     * @var IriGeneratorInterface|MockObject
+     * @var IriGeneratorInterface&MockObject
      */
     private $iriGenerator;
 
     /**
-     * @var PathGeneratorInterface|MockObject
+     * @var PathGeneratorInterface&MockObject
      */
     private $pathGenerator;
 
     /**
-     * @var ImageStorage|MockObject
+     * @var ImageStorage&MockObject
      */
     private $imageStorage;
 

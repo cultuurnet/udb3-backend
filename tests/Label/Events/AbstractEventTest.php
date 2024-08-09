@@ -15,7 +15,7 @@ class AbstractEventTest extends TestCase
     protected string $name;
 
     /**
-     * @var AbstractEvent|MockObject
+     * @var AbstractEvent&MockObject
      */
     protected $event;
 

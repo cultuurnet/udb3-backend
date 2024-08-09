@@ -28,12 +28,12 @@ use Ramsey\Uuid\Uuid;
 class EnrichingEventListenerDecoratorTest extends TestCase
 {
     /**
-     * @var DomainMessageEnricherInterface|MockObject
+     * @var DomainMessageEnricherInterface&MockObject
      */
     private $enricher;
 
     /**
-     * @var EventListener|MockObject
+     * @var EventListener&MockObject
      */
     private $decoratee;
 

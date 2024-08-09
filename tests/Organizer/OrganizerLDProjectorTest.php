@@ -70,12 +70,12 @@ final class OrganizerLDProjectorTest extends TestCase
     private OrganizerLDProjector $projector;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $documentRepository;
 
     /**
-     * @var Repository|MockObject
+     * @var Repository&MockObject
      */
     private $imageRepository;
 

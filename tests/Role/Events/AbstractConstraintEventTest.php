@@ -16,7 +16,7 @@ class AbstractConstraintEventTest extends TestCase
     private Query $query;
 
     /**
-     * @var AbstractConstraintEvent|MockObject
+     * @var AbstractConstraintEvent&MockObject
      */
     protected $event;
 

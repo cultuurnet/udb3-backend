@@ -82,7 +82,7 @@ class OfferLDProjectorTest extends TestCase
     protected ItemLDProjector $projector;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     protected $organizerRepository;
 

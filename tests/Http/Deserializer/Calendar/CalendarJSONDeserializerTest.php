@@ -26,7 +26,7 @@ use PHPUnit\Framework\TestCase;
 class CalendarJSONDeserializerTest extends TestCase
 {
     /**
-     * @var DataValidatorInterface|MockObject
+     * @var DataValidatorInterface&MockObject
      */
     private $calendarDataValidator;
 

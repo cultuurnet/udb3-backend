@@ -14,7 +14,7 @@ class AbstractRejectedTest extends TestCase
     private string $reason;
 
     /**
-     * @var AbstractRejected|MockObject
+     * @var AbstractRejected&MockObject
      */
     private $abstractRejected;
 

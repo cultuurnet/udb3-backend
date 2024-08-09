@@ -22,7 +22,7 @@ class EventCalendarProjectorTest extends TestCase
     public const CDBXML_NAMESPACE_32 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
 
     /**
-     * @var CalendarRepositoryInterface|MockObject
+     * @var CalendarRepositoryInterface&MockObject
      */
     protected $repository;
 

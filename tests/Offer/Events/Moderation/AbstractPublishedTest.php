@@ -22,7 +22,7 @@ class AbstractPublishedTest extends TestCase
     private $publicationDate;
 
     /**
-     * @var AbstractPublished|MockObject
+     * @var AbstractPublished&MockObject
      */
     private $abstractPublished;
 

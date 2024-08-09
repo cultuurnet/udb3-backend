@@ -39,7 +39,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     protected Serializer $serializer;
 
     /**
-     * @var ReadRepositoryInterface|MockObject
+     * @var ReadRepositoryInterface&MockObject
      */
     private $labelRepository;
 

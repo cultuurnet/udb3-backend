@@ -11,12 +11,12 @@ use PHPUnit\Framework\TestCase;
 class BroadcastingDocumentRepositoryDecoratorTest extends TestCase
 {
     /**
-     * @var EventBus|MockObject
+     * @var EventBus&MockObject
      */
     protected $eventBus;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     protected $decoratedRepository;
 
@@ -26,7 +26,7 @@ class BroadcastingDocumentRepositoryDecoratorTest extends TestCase
     protected $repository;
 
     /**
-     * @var DocumentEventFactory|MockObject
+     * @var DocumentEventFactory&MockObject
      */
     protected $eventFactory;
 

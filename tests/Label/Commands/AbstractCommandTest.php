@@ -14,7 +14,7 @@ class AbstractCommandTest extends TestCase
     private UUID $uuid;
 
     /**
-     * @var AbstractCommand|MockObject
+     * @var AbstractCommand&MockObject
      */
     private $abstractCommand;
 

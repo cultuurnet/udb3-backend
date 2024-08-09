@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 class OfferLocatorTest extends TestCase
 {
     /**
-     * @var IriGeneratorInterface|MockObject
+     * @var IriGeneratorInterface&MockObject
      */
     protected $iriGenerator;
 

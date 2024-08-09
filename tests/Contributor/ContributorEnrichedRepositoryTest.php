@@ -18,14 +18,14 @@ use PHPUnit\Framework\TestCase;
 final class ContributorEnrichedRepositoryTest extends TestCase
 {
     /**
-     * @var ContributorRepository|MockObject
+     * @var ContributorRepository&MockObject
      */
     private $contributorRepository;
 
     private InMemoryDocumentRepository $documentRepository;
 
     /**
-     * @var PermissionVoter|MockObject;
+     * @var PermissionVoter&MockObject;
      */
     private $permissionVoter;
 

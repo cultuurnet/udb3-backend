@@ -32,7 +32,7 @@ final class RemoveImageRequestHandlerTest extends TestCase
     private TraceableCommandBus $commandBus;
 
     /**
-     * @var MediaManagerInterface|MockObject
+     * @var MediaManagerInterface&MockObject
      */
     private $mediaManager;
 

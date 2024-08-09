@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class DeleteNewsArticleRequestHandlerTest extends TestCase
 {
-    /** @var NewsArticleRepository|MockObject  */
+    /** @var NewsArticleRepository&MockObject  */
     private $newsArticleRepository;
 
     private DeleteNewsArticleRequestHandler $deleteNewsArticleRequestHandler;

@@ -17,7 +17,7 @@ class SimpleContextAwareCommandBusTest extends TestCase
     protected $commandBus;
 
     /**
-     * @var ContextAwareInterface|CommandHandler|MockObject
+     * @var ContextAwareInterface&CommandHandler&MockObject
      */
     protected $commandHandler;
 

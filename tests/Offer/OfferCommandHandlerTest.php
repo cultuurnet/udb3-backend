@@ -40,7 +40,7 @@ final class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     protected ItemCreated $itemCreated;
 
     /**
-     * @var Repository|MockObject
+     * @var Repository&MockObject
      */
     protected $organizerRepository;
 

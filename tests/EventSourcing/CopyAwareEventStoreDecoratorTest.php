@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class CopyAwareEventStoreDecoratorTest extends TestCase
 {
     /**
-     * @var EventStore|MockObject
+     * @var EventStore&MockObject
      */
     protected $eventStore;
 

@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 final class AddCardSystemToEventRequestHandlerTest extends TestCase
 {
     /**
-     * @var CultureFeed_Uitpas|MockObject
+     * @var CultureFeed_Uitpas&MockObject
      */
     private $uitpas;
 

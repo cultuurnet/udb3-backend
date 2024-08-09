@@ -27,7 +27,7 @@ use ReflectionObject;
 trait OfferCommandHandlerTestTrait
 {
     /**
-     * @var Repository|MockObject
+     * @var Repository&MockObject
      */
     protected $organizerRepository;
 

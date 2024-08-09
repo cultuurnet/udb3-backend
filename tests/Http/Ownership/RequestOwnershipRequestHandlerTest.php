@@ -32,10 +32,10 @@ class RequestOwnershipRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    /** @var UuidFactoryInterface|MockObject */
+    /** @var UuidFactoryInterface&MockObject */
     private $uuidFactory;
 
-    /** @var OwnershipSearchRepository|MockObject */
+    /** @var OwnershipSearchRepository&MockObject */
     private $ownerShipSearchRepository;
 
     private RequestOwnershipRequestHandler $requestOwnershipRequestHandler;

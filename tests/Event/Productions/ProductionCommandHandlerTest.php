@@ -23,12 +23,12 @@ final class ProductionCommandHandlerTest extends TestCase
     private ProductionCommandHandler $commandHandler;
 
     /**
-     * @var SkippedSimilarEventsRepository|MockObject
+     * @var SkippedSimilarEventsRepository&MockObject
      */
     private $skippedSimilarEventsRepository;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $eventRepository;
 

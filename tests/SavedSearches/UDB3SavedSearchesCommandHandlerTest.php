@@ -18,7 +18,7 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
     use AssertApiProblemTrait;
 
     /**
-     * @var SavedSearchRepositoryInterface|MockObject
+     * @var SavedSearchRepositoryInterface&MockObject
      */
     private $savedSearchesRepository;
 

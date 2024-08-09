@@ -25,7 +25,7 @@ final class PlaceRelationsProjectorTest extends TestCase
     public const ORGANIZER_ID = 'organizerId';
 
     /**
-     * @var PlaceRelationsRepository|MockObject
+     * @var PlaceRelationsRepository&MockObject
      */
     private $repository;
 

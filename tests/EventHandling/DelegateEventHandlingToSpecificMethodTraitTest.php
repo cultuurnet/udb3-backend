@@ -23,7 +23,7 @@ class DelegateEventHandlingToSpecificMethodTraitTest extends TestCase
     private $mockedMockLDProjector;
 
     /**
-     * @var MockLDProjector|MockObject
+     * @var MockLDProjector&MockObject
      */
     private $mockLDProjector;
 

@@ -23,14 +23,14 @@ use PHPUnit\Framework\TestCase;
 final class ProjectorTest extends TestCase
 {
     /**
-     * @var ResourceOwnerRepository|MockObject
+     * @var ResourceOwnerRepository&MockObject
      */
     private $repository;
 
     private Projector $projector;
 
     /**
-     * @var CreatedByToUserIdResolverInterface|MockObject
+     * @var CreatedByToUserIdResolverInterface&MockObject
      */
     private $userIdResolver;
 

@@ -15,19 +15,19 @@ use PHPUnit\Framework\TestCase;
 class AuthorizedCommandBusTest extends TestCase
 {
     /**
-     * @var AbstractContextAwareCommandBus|MockObject
+     * @var AbstractContextAwareCommandBus&MockObject
      */
     private $decoratee;
 
     private string $userId;
 
     /**
-     * @var CommandBusSecurity|MockObject
+     * @var CommandBusSecurity&MockObject
      */
     private $security;
 
     /**
-     * @var AuthorizableCommand|MockObject
+     * @var AuthorizableCommand&MockObject
      */
     private $command;
 

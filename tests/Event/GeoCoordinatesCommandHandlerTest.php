@@ -41,7 +41,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
     private AddressFormatter $localityAddressFormatter;
 
     /**
-     * @var GeocodingService|MockObject
+     * @var GeocodingService&MockObject
      */
     private $geocodingService;
 

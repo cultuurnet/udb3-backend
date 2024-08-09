@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class AbstractTranslatePropertyCommandTest extends TestCase
 {
     /**
-     * @var AbstractTranslatePropertyCommand|MockObject
+     * @var AbstractTranslatePropertyCommand&MockObject
      */
     protected $translatePropertyCommand;
 
