@@ -81,6 +81,7 @@ use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -128,7 +129,7 @@ class HistoryProjectorTest extends TestCase
 
     protected function getEventCdbXml(string $eventId): string
     {
-        return file_get_contents(__DIR__ . '/event-' . $eventId . '.xml');
+        return SampleFiles::read(__DIR__ . '/event-' . $eventId . '.xml');
     }
 
     /**

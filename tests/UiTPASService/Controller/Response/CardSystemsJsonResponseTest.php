@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\UiTPASService\Controller\Response;
 use CultureFeed_Uitpas_CardSystem;
 use CultureFeed_Uitpas_DistributionKey;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 class CardSystemsJsonResponseTest extends TestCase
@@ -52,7 +53,7 @@ class CardSystemsJsonResponseTest extends TestCase
 
         $response = new CardSystemsJsonResponse($cardSystems);
 
-        $expected = Json::decode(file_get_contents(__DIR__ . '/data/cardSystems.json'));
+        $expected = Json::decode(SampleFiles::read(__DIR__ . '/data/cardSystems.json'));
         $actual = Json::decode($response->getBody()->getContents());
 
         $this->assertEquals($expected, $actual);

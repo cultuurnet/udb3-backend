@@ -38,6 +38,7 @@ use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 use Money\Money;
@@ -51,7 +52,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
 
     private function getCdbXML(string $filename): string
     {
-        return file_get_contents(__DIR__ . $filename);
+        return SampleFiles::read(__DIR__ . $filename);
     }
 
     /**

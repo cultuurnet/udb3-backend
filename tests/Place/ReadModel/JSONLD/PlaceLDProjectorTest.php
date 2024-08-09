@@ -48,6 +48,7 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
+use CultuurNet\UDB3\SampleFiles;
 use stdClass;
 
 class PlaceLDProjectorTest extends OfferLDProjectorTestBase
@@ -542,7 +543,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $placeImportedFromUdb2 = $this->placeImportedFromUDB2('place_with_short_description.cdbxml.xml');
         $actorId = $placeImportedFromUdb2->getActorId();
 
-        $cdbXml = file_get_contents(__DIR__ . '/place_with_short_and_long_description.cdbxml.xml');
+        $cdbXml = SampleFiles::read(__DIR__ . '/place_with_short_and_long_description.cdbxml.xml');
         $placeUpdatedFromUdb2 = new PlaceUpdatedFromUDB2(
             $actorId,
             $cdbXml,
@@ -565,7 +566,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $placeDeleted = new PlaceDeleted($actorId);
         $this->project($placeDeleted, $actorId);
 
-        $cdbXml = file_get_contents(__DIR__ . '/place_with_short_and_long_description.cdbxml.xml');
+        $cdbXml = SampleFiles::read(__DIR__ . '/place_with_short_and_long_description.cdbxml.xml');
         $placeUpdatedFromUdb2 = new PlaceUpdatedFromUDB2(
             $actorId,
             $cdbXml,
@@ -649,7 +650,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             ],
         ];
 
-        $cdbXml = file_get_contents(__DIR__ . '/place_with_long_description.cdbxml.xml');
+        $cdbXml = SampleFiles::read(__DIR__ . '/place_with_long_description.cdbxml.xml');
         $placeUpdatedFromUdb2 = new PlaceUpdatedFromUDB2(
             '66f30742-dee9-4794-ac92-fa44634692b8',
             $cdbXml,
@@ -979,7 +980,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $this->documentRepository->save($initialDocument);
 
-        $cdbXml = file_get_contents(__DIR__ . '/place_with_long_description.cdbxml.xml');
+        $cdbXml = SampleFiles::read(__DIR__ . '/place_with_long_description.cdbxml.xml');
         $placeUpdatedFromUdb2 = new PlaceUpdatedFromUDB2(
             '318F2ACB-F612-6F75-0037C9C29F44087A',
             $cdbXml,
@@ -993,7 +994,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
     private function placeImportedFromUDB2(string $fileName): PlaceImportedFromUDB2
     {
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/' . $fileName
         );
         $event = new PlaceImportedFromUDB2(
@@ -1007,7 +1008,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
     private function placeUpdatedFromUDB2(string $fileName): PlaceUpdatedFromUDB2
     {
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/' . $fileName
         );
         $event = new PlaceUpdatedFromUDB2(

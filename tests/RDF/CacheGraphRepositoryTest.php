@@ -6,6 +6,7 @@ namespace RDF;
 
 use CultuurNet\UDB3\RDF\CacheGraphRepository;
 use CultuurNet\UDB3\RDF\GraphNotFound;
+use CultuurNet\UDB3\SampleFiles;
 use Doctrine\Common\Cache\Cache;
 use EasyRdf\Graph;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -41,7 +42,7 @@ class CacheGraphRepositoryTest extends TestCase
     {
         $this->cache->expects($this->once())
             ->method('save')
-            ->with($this->uri, file_get_contents(__DIR__ . '/event.ttl'));
+            ->with($this->uri, SampleFiles::read(__DIR__ . '/event.ttl'));
 
         $this->cacheGraphRepository->save($this->uri, $this->graph);
     }
@@ -54,7 +55,7 @@ class CacheGraphRepositoryTest extends TestCase
         $this->cache->expects($this->once())
             ->method('fetch')
             ->with($this->uri)
-            ->willReturn(file_get_contents(__DIR__ . '/event.ttl'));
+            ->willReturn(SampleFiles::read(__DIR__ . '/event.ttl'));
 
         $graph = $this->cacheGraphRepository->get($this->uri);
 

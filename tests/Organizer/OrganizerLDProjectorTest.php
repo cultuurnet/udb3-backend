@@ -62,6 +62,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\RecordedOn;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -125,7 +126,7 @@ final class OrganizerLDProjectorTest extends TestCase
 
     private function organizerImportedFromUDB2(string $fileName): OrganizerImportedFromUDB2
     {
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/Samples/' . $fileName
         );
 
@@ -140,7 +141,7 @@ final class OrganizerLDProjectorTest extends TestCase
 
     private function organizerUpdatedFromUDB2(string $fileName): OrganizerUpdatedFromUDB2
     {
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/Samples/' . $fileName
         );
 
@@ -870,7 +871,7 @@ final class OrganizerLDProjectorTest extends TestCase
         // First make sure there is an already created organizer.
         $organizerId = 'someId';
 
-        $organizerJson = file_get_contents(__DIR__ . '/Samples/organizer_with_main_language.json');
+        $organizerJson = SampleFiles::read(__DIR__ . '/Samples/organizer_with_main_language.json');
         $organizerJson = Json::decode($organizerJson);
         $organizerJson->name->en = 'English name';
         $organizerJson = Json::encode($organizerJson);
@@ -1311,7 +1312,7 @@ final class OrganizerLDProjectorTest extends TestCase
 
     private function mockGet(string $organizerId, string $fileName): void
     {
-        $organizerJson = file_get_contents(__DIR__ . '/Samples/' . $fileName);
+        $organizerJson = SampleFiles::read(__DIR__ . '/Samples/' . $fileName);
         $this->documentRepository->method('fetch')
             ->with($organizerId)
             ->willReturn(new JsonDocument($organizerId, $organizerJson));
@@ -1319,7 +1320,7 @@ final class OrganizerLDProjectorTest extends TestCase
 
     private function expectSave(string $organizerId, string $fileName): void
     {
-        $expectedOrganizerJson = file_get_contents(__DIR__ . '/Samples/' . $fileName);
+        $expectedOrganizerJson = SampleFiles::read(__DIR__ . '/Samples/' . $fileName);
         // The expected organizer json still has newline formatting.
         // The actual organizer json on the other hand has no newlines
         // because it was created by using the withBody method on JsonDocument.

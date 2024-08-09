@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 final class HTMLFileWriterTest extends TestCase
@@ -60,7 +61,7 @@ final class HTMLFileWriterTest extends TestCase
 
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents($fileWithExpectedContent);
+        $expected = SampleFiles::read($fileWithExpectedContent);
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -115,7 +116,7 @@ final class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator([]));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_without_events.html');
+        $expected = SampleFiles::read(__DIR__ . '/results/export_without_events.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -180,7 +181,7 @@ final class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export.html');
+        $expected = SampleFiles::read(__DIR__ . '/results/export.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -214,7 +215,7 @@ final class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_without_image.html');
+        $expected = SampleFiles::read(__DIR__ . '/results/export_event_without_image.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -250,7 +251,7 @@ final class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_taaliconen.html');
+        $expected = SampleFiles::read(__DIR__ . '/results/export_event_with_taaliconen.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -286,7 +287,7 @@ final class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_four_taaliconen.html');
+        $expected = SampleFiles::read(__DIR__ . '/results/export_event_with_four_taaliconen.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -326,7 +327,7 @@ final class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_uitpas_brand.html');
+        $expected = SampleFiles::read(__DIR__ . '/results/export_event_with_uitpas_brand.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -366,7 +367,7 @@ final class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_age_range.html');
+        $expected = SampleFiles::read(__DIR__ . '/results/export_event_with_age_range.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -428,7 +429,7 @@ final class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_uitpas_info.html');
+        $expected = SampleFiles::read(__DIR__ . '/results/export_event_with_uitpas_info.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -450,7 +451,7 @@ final class HTMLFileWriterTest extends TestCase
 
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_uitpas_info_paspartoe_branded.html');
+        $expected = SampleFiles::read(__DIR__ . '/results/export_event_with_uitpas_info_paspartoe_branded.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -488,7 +489,7 @@ final class HTMLFileWriterTest extends TestCase
 
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_custom_logo.html');
+        $expected = SampleFiles::read(__DIR__ . '/results/export_event_with_custom_logo.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -507,7 +508,7 @@ final class HTMLFileWriterTest extends TestCase
      */
     protected function assertHTMLFileContents(string $html, string $filePath): void
     {
-        $this->assertEquals($html, file_get_contents($filePath));
+        $this->assertEquals($html, SampleFiles::read($filePath));
     }
 
     /**

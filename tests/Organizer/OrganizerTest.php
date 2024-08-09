@@ -49,6 +49,7 @@ use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
+use CultuurNet\UDB3\SampleFiles;
 
 class OrganizerTest extends AggregateRootScenarioTestCase
 {
@@ -1562,6 +1563,6 @@ class OrganizerTest extends AggregateRootScenarioTestCase
 
     private function getCdbXML(string $filename): string
     {
-        return file_get_contents(__DIR__ . '/' . $filename);
+        return SampleFiles::read(__DIR__ . '/' . $filename);
     }
 }

@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -137,7 +138,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             new Metadata([]),
             new PlaceImportedFromUDB2(
                 '318F2ACB-F612-6F75-0037C9C29F44087A',
-                file_get_contents(__DIR__ . '/actor.xml'),
+                SampleFiles::read(__DIR__ . '/actor.xml'),
                 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
             )
         );
@@ -269,7 +270,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new PlaceImportedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/actor.xml'),
+                        SampleFiles::read(__DIR__ . '/actor.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -290,7 +291,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new PlaceUpdatedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/actor.xml'),
+                        SampleFiles::read(__DIR__ . '/actor.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -320,7 +321,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new PlaceImportedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/actor_without_contactinfo.xml'),
+                        SampleFiles::read(__DIR__ . '/actor_without_contactinfo.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -341,7 +342,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new PlaceUpdatedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/actor_without_contactinfo.xml'),
+                        SampleFiles::read(__DIR__ . '/actor_without_contactinfo.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -362,7 +363,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new PlaceImportedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/actor_without_physical_address.xml'),
+                        SampleFiles::read(__DIR__ . '/actor_without_physical_address.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -383,7 +384,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new PlaceUpdatedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/actor_without_physical_address.xml'),
+                        SampleFiles::read(__DIR__ . '/actor_without_physical_address.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),

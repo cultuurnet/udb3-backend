@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Auth\Jwt;
 
+use CultuurNet\UDB3\SampleFiles;
 use DateTimeImmutable;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -73,6 +74,6 @@ final class JsonWebTokenFactory
 
     public static function getPublicKey(): string
     {
-        return file_get_contents(__DIR__ . '/samples/public.pem');
+        return SampleFiles::read(__DIR__ . '/samples/public.pem');
     }
 }

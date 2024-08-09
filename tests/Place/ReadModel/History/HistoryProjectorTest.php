@@ -76,6 +76,7 @@ use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\SampleFiles;
 use DateTimeImmutable;
 use Money\Currency;
 use Money\Money;
@@ -1131,6 +1132,6 @@ class HistoryProjectorTest extends TestCase
 
     private function getActorCdbXml(): string
     {
-        return file_get_contents(__DIR__ . '/actor.xml');
+        return SampleFiles::read(__DIR__ . '/actor.xml');
     }
 }

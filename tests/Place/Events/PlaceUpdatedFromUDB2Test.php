@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 final class PlaceUpdatedFromUDB2Test extends TestCase
@@ -21,7 +22,7 @@ final class PlaceUpdatedFromUDB2Test extends TestCase
     {
         $placeUpdatedFromUDB2 = new PlaceUpdatedFromUDB2(
             '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
-            file_get_contents(__DIR__ . '/../actor.xml'),
+            SampleFiles::read(__DIR__ . '/../actor.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -50,7 +51,7 @@ final class PlaceUpdatedFromUDB2Test extends TestCase
         $placeId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $placeUpdatedFromUDB2 = new PlaceUpdatedFromUDB2(
             $placeId,
-            file_get_contents(__DIR__ . '/../actor_with_translations.xml'),
+            SampleFiles::read(__DIR__ . '/../actor_with_translations.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -81,7 +82,7 @@ final class PlaceUpdatedFromUDB2Test extends TestCase
         $placeId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $placeUpdatedFromUDB2 = new PlaceUpdatedFromUDB2(
             $placeId,
-            file_get_contents(__DIR__ . '/../actor_without_street.xml'),
+            SampleFiles::read(__DIR__ . '/../actor_without_street.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -110,7 +111,7 @@ final class PlaceUpdatedFromUDB2Test extends TestCase
         $placeId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $placeUpdatedFromUDB2 = new PlaceUpdatedFromUDB2(
             $placeId,
-            file_get_contents(__DIR__ . '/../actor_without_housnr.xml'),
+            SampleFiles::read(__DIR__ . '/../actor_without_housnr.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 

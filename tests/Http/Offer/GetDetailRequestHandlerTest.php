@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepositoryMockFactory;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\SampleFiles;
 use EasyRdf\Graph;
 use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -94,7 +95,7 @@ class GetDetailRequestHandlerTest extends TestCase
         $response = $this->getDetailRequestHandler->handle($request);
 
         $this->assertEquals(
-            file_get_contents(__DIR__ . '/samples/event.ttl'),
+            SampleFiles::read(__DIR__ . '/samples/event.ttl'),
             $response->getBody()->getContents()
         );
     }
@@ -150,7 +151,7 @@ class GetDetailRequestHandlerTest extends TestCase
         $response = $this->getDetailRequestHandler->handle($request);
 
         $this->assertEquals(
-            file_get_contents(__DIR__ . '/samples/place.ttl'),
+            SampleFiles::read(__DIR__ . '/samples/place.ttl'),
             $response->getBody()->getContents()
         );
     }

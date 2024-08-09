@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 final class MajorInfoJSONDeserializerTest extends TestCase
@@ -18,7 +19,7 @@ final class MajorInfoJSONDeserializerTest extends TestCase
      */
     public function it_can_serialize_major_info(): void
     {
-        $majorInfoAsJson = file_get_contents(__DIR__ . '/../samples/event-major-info.json');
+        $majorInfoAsJson = SampleFiles::read(__DIR__ . '/../samples/event-major-info.json');
 
         $majorInfoJSONDeserializer = new MajorInfoJSONDeserializer();
 
@@ -37,7 +38,7 @@ final class MajorInfoJSONDeserializerTest extends TestCase
      */
     public function it_can_serialize_major_info_with_a_nested_location_id(): void
     {
-        $majorInfoAsJson = file_get_contents(__DIR__ . '/../samples/event-major-info-with-nested-location-id.json');
+        $majorInfoAsJson = SampleFiles::read(__DIR__ . '/../samples/event-major-info-with-nested-location-id.json');
 
         $majorInfoJSONDeserializer = new MajorInfoJSONDeserializer();
 

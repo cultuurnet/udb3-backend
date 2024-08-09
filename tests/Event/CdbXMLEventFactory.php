@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
+use CultuurNet\UDB3\SampleFiles;
 
 class CdbXMLEventFactory
 {
@@ -36,7 +37,7 @@ class CdbXMLEventFactory
      */
     private function eventFromFile(string $fileName, string $eventClass)
     {
-        $cdbXml = file_get_contents($this->samplesPath . '/' . $fileName);
+        $cdbXml = SampleFiles::read($this->samplesPath . '/' . $fileName);
 
         $event = new $eventClass(
             self::AN_EVENT_ID,

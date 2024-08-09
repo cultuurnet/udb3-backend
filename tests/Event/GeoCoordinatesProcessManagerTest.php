@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -61,7 +62,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             new Metadata(),
             new EventImportedFromUDB2(
                 'e3604613-af01-4d2b-8cee-13ab61b89651',
-                file_get_contents(__DIR__ . '/samples/geocoding/event_with_dummy_location.cdbxml.xml'),
+                SampleFiles::read(__DIR__ . '/samples/geocoding/event_with_dummy_location.cdbxml.xml'),
                 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
             )
         );
@@ -94,7 +95,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             new Metadata(),
             new EventUpdatedFromUDB2(
                 'e3604613-af01-4d2b-8cee-13ab61b89651',
-                file_get_contents(__DIR__ . '/samples/geocoding/event_with_dummy_location.cdbxml.xml'),
+                SampleFiles::read(__DIR__ . '/samples/geocoding/event_with_dummy_location.cdbxml.xml'),
                 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
             )
         );
@@ -127,7 +128,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             new Metadata(),
             new EventImportedFromUDB2(
                 'e3604613-af01-4d2b-8cee-13ab61b89651',
-                file_get_contents(__DIR__ . '/samples/geocoding/event_with_dummy_location_without_physical_address.cdbxml.xml'),
+                SampleFiles::read(__DIR__ . '/samples/geocoding/event_with_dummy_location_without_physical_address.cdbxml.xml'),
                 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
             )
         );
@@ -149,7 +150,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             new Metadata(),
             new EventImportedFromUDB2(
                 'e3604613-af01-4d2b-8cee-13ab61b89651',
-                file_get_contents(__DIR__ . '/samples/geocoding/event_with_location.cdbxml.xml'),
+                SampleFiles::read(__DIR__ . '/samples/geocoding/event_with_location.cdbxml.xml'),
                 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
             )
         );
@@ -171,7 +172,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             new Metadata(),
             new EventImportedFromUDB2(
                 'e3604613-af01-4d2b-8cee-13ab61b89651',
-                file_get_contents(__DIR__ . '/samples/geocoding/event_with_external_location.cdbxml.xml'),
+                SampleFiles::read(__DIR__ . '/samples/geocoding/event_with_external_location.cdbxml.xml'),
                 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
             )
         );
@@ -193,7 +194,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             new Metadata(),
             new EventImportedFromUDB2(
                 'e3604613-af01-4d2b-8cee-13ab61b89651',
-                file_get_contents(__DIR__ . '/samples/geocoding/event_without_location.cdbxml.xml'),
+                SampleFiles::read(__DIR__ . '/samples/geocoding/event_without_location.cdbxml.xml'),
                 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
             )
         );
@@ -214,7 +215,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             new Metadata(),
             new EventImportedFromUDB2(
                 'e3604613-af01-4d2b-8cee-13ab61b89651',
-                file_get_contents(__DIR__ . '/samples/geocoding/event_with_dummy_location_without_address.cdbxml.xml'),
+                SampleFiles::read(__DIR__ . '/samples/geocoding/event_with_dummy_location_without_address.cdbxml.xml'),
                 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
             )
         );

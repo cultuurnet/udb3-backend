@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
+use CultuurNet\UDB3\SampleFiles;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -114,7 +115,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             new Metadata([]),
             new OrganizerImportedFromUDB2(
                 '318F2ACB-F612-6F75-0037C9C29F44087A',
-                file_get_contents(__DIR__ . '/../Samples/actor.xml'),
+                SampleFiles::read(__DIR__ . '/../Samples/actor.xml'),
                 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
             )
         );
@@ -181,7 +182,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new OrganizerImportedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/../Samples/actor.xml'),
+                        SampleFiles::read(__DIR__ . '/../Samples/actor.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -202,7 +203,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new OrganizerUpdatedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/../Samples/actor.xml'),
+                        SampleFiles::read(__DIR__ . '/../Samples/actor.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -229,7 +230,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new OrganizerImportedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/../Samples/actor_without_contactinfo.xml'),
+                        SampleFiles::read(__DIR__ . '/../Samples/actor_without_contactinfo.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -250,7 +251,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new OrganizerUpdatedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/../Samples/actor_without_contactinfo.xml'),
+                        SampleFiles::read(__DIR__ . '/../Samples/actor_without_contactinfo.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -271,7 +272,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new OrganizerImportedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/../Samples/actor_without_physical_address.xml'),
+                        SampleFiles::read(__DIR__ . '/../Samples/actor_without_physical_address.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -292,7 +293,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new OrganizerUpdatedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/../Samples/actor_without_physical_address.xml'),
+                        SampleFiles::read(__DIR__ . '/../Samples/actor_without_physical_address.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),

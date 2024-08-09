@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -127,6 +128,6 @@ class ExportEventsJSONDeserializerTest extends TestCase
 
     private function getJsonData(string $fileName): string
     {
-        return file_get_contents(__DIR__ . '/' . $fileName);
+        return SampleFiles::read(__DIR__ . '/' . $fileName);
     }
 }
