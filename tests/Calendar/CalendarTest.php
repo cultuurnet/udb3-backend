@@ -31,7 +31,6 @@ use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use DateTime;
-use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
 class CalendarTest extends TestCase
@@ -50,13 +49,13 @@ class CalendarTest extends TestCase
     public function setUp(): void
     {
         $timestamp1 = new Timestamp(
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::TIMESTAMP_1_START_DATE),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::TIMESTAMP_1_END_DATE)
+            DateTimeFactory::fromAtom(self::TIMESTAMP_1_START_DATE),
+            DateTimeFactory::fromAtom(self::TIMESTAMP_1_END_DATE)
         );
 
         $timestamp2 = new Timestamp(
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::TIMESTAMP_2_START_DATE),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::TIMESTAMP_2_END_DATE)
+            DateTimeFactory::fromAtom(self::TIMESTAMP_2_START_DATE),
+            DateTimeFactory::fromAtom(self::TIMESTAMP_2_END_DATE)
         );
 
         $weekDays = (new DayOfWeekCollection())
@@ -90,8 +89,8 @@ class CalendarTest extends TestCase
 
         $this->calendar = new Calendar(
             CalendarType::MULTIPLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
+            DateTimeFactory::fromAtom(self::START_DATE),
+            DateTimeFactory::fromAtom(self::END_DATE),
             [
                 self::TIMESTAMP_1 => $timestamp1,
                 self::TIMESTAMP_2 => $timestamp2,
@@ -125,8 +124,8 @@ class CalendarTest extends TestCase
                     null,
                     [
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             null,
                             BookingAvailability::available()
                         ),
@@ -141,8 +140,8 @@ class CalendarTest extends TestCase
                     null,
                     [
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             null,
                             BookingAvailability::unavailable()
                         ),
@@ -157,14 +156,14 @@ class CalendarTest extends TestCase
                     null,
                     [
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             null,
                             BookingAvailability::unavailable()
                         ),
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             null,
                             BookingAvailability::available()
                         ),
@@ -179,14 +178,14 @@ class CalendarTest extends TestCase
                     null,
                     [
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             null,
                             BookingAvailability::unavailable()
                         ),
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             null,
                             BookingAvailability::unavailable()
                         ),
@@ -208,8 +207,8 @@ class CalendarTest extends TestCase
             null,
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2021-03-18T14:00:00+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2021-03-18T14:00:00+01:00')
+                    DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00')
                 ),
             ]
         );
@@ -230,12 +229,12 @@ class CalendarTest extends TestCase
             null,
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00')
+                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
                 ),
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-13T12:00:00+01:00')
+                    DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
                 ),
             ]
         );
@@ -284,8 +283,8 @@ class CalendarTest extends TestCase
             null,
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2021-03-18T14:00:00+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2021-03-18T14:00:00+01:00')
+                    DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00')
                 ),
             ]
         );
@@ -309,12 +308,12 @@ class CalendarTest extends TestCase
             null,
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00')
+                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
                 ),
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-13T12:00:00+01:00')
+                    DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
                 ),
             ]
         );
@@ -511,8 +510,8 @@ class CalendarTest extends TestCase
 
         $calendar = new Calendar(
             CalendarType::PERMANENT(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00')
+            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
         );
 
         $this->assertEquals(
@@ -545,8 +544,8 @@ class CalendarTest extends TestCase
             new DateTime('2021-03-18T16:00:00+01:00'),
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2021-03-18T14:00:00+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2021-03-18T16:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2021-03-18T16:00:00+01:00'),
                     null,
                     BookingAvailability::unavailable()
                 ),
@@ -583,8 +582,8 @@ class CalendarTest extends TestCase
     public function it_can_deserialize_without_overwriting_the_status_of_subEvents(): void
     {
         $timestamp1 = new Timestamp(
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::TIMESTAMP_1_START_DATE),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::TIMESTAMP_1_END_DATE),
+            DateTimeFactory::fromAtom(self::TIMESTAMP_1_START_DATE),
+            DateTimeFactory::fromAtom(self::TIMESTAMP_1_END_DATE),
             new Status(
                 StatusType::unavailable(),
                 [
@@ -594,8 +593,8 @@ class CalendarTest extends TestCase
         );
 
         $timestamp2 = new Timestamp(
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::TIMESTAMP_2_START_DATE),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::TIMESTAMP_2_END_DATE),
+            DateTimeFactory::fromAtom(self::TIMESTAMP_2_START_DATE),
+            DateTimeFactory::fromAtom(self::TIMESTAMP_2_END_DATE),
             new Status(
                 StatusType::temporarilyUnavailable(),
                 [
@@ -606,8 +605,8 @@ class CalendarTest extends TestCase
 
         $expected = new Calendar(
             CalendarType::MULTIPLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
+            DateTimeFactory::fromAtom(self::START_DATE),
+            DateTimeFactory::fromAtom(self::END_DATE),
             [
                 self::TIMESTAMP_1 => $timestamp1,
                 self::TIMESTAMP_2 => $timestamp2,
@@ -646,8 +645,8 @@ class CalendarTest extends TestCase
                 new DateTime('2021-03-18T14:00:00+01:00'),
                 [
                     new Timestamp(
-                        DateTime::createFromFormat(DateTimeInterface::ATOM, '2021-03-18T14:00:00+01:00'),
-                        DateTime::createFromFormat(DateTimeInterface::ATOM, '2021-03-18T14:00:00+01:00')
+                        DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00')
                     ),
                 ]
             ),
@@ -676,8 +675,8 @@ class CalendarTest extends TestCase
                     null,
                     [
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00')
+                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
                         ),
                     ]
                 ),
@@ -714,8 +713,8 @@ class CalendarTest extends TestCase
                     null,
                     [
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             new Status(
                                 StatusType::temporarilyUnavailable(),
                                 [
@@ -767,12 +766,12 @@ class CalendarTest extends TestCase
                     null,
                     [
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00')
+                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
                         ),
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-13T12:00:00+01:00')
+                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
                         ),
                     ]
                 ),
@@ -821,8 +820,8 @@ class CalendarTest extends TestCase
                     null,
                     [
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             new Status(
                                 StatusType::temporarilyUnavailable(),
                                 [
@@ -832,8 +831,8 @@ class CalendarTest extends TestCase
                             )
                         ),
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             new Status(
                                 StatusType::available(),
                                 [
@@ -897,8 +896,8 @@ class CalendarTest extends TestCase
                     null,
                     [
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             new Status(
                                 StatusType::temporarilyUnavailable(),
                                 [
@@ -908,8 +907,8 @@ class CalendarTest extends TestCase
                             )
                         ),
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             new Status(
                                 StatusType::unavailable(),
                                 [
@@ -973,8 +972,8 @@ class CalendarTest extends TestCase
                     null,
                     [
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             new Status(
                                 StatusType::unavailable(),
                                 [
@@ -984,8 +983,8 @@ class CalendarTest extends TestCase
                             )
                         ),
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             new Status(
                                 StatusType::unavailable(),
                                 [
@@ -1049,8 +1048,8 @@ class CalendarTest extends TestCase
                     null,
                     [
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             new Status(
                                 StatusType::unavailable(),
                                 [
@@ -1060,8 +1059,8 @@ class CalendarTest extends TestCase
                             )
                         ),
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             new Status(
                                 StatusType::unavailable(),
                                 [
@@ -1133,14 +1132,14 @@ class CalendarTest extends TestCase
                     null,
                     [
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             null,
                             BookingAvailability::unavailable()
                         ),
                         new Timestamp(
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-06T10:00:00+01:00'),
-                            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-03-13T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             null,
                             BookingAvailability::unavailable()
                         ),
@@ -1187,8 +1186,8 @@ class CalendarTest extends TestCase
             'periodic' => [
                 'calendar' => new Calendar(
                     CalendarType::PERIODIC(),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE)
+                    DateTimeFactory::fromAtom(self::START_DATE),
+                    DateTimeFactory::fromAtom(self::END_DATE)
                 ),
                 'jsonld' => [
                     'calendarType' => 'periodic',
@@ -1257,8 +1256,8 @@ class CalendarTest extends TestCase
 
         $expectedCalendar = new Calendar(
             CalendarType::PERIODIC(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE)
+            DateTimeFactory::fromAtom(self::START_DATE),
+            DateTimeFactory::fromAtom(self::END_DATE)
         );
 
         $calendar = Calendar::deserialize($oldCalendarData);
@@ -1314,12 +1313,12 @@ class CalendarTest extends TestCase
 
         $expected = new Calendar(
             CalendarType::SINGLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00')
+                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
                 ),
             ]
         );
@@ -1343,12 +1342,12 @@ class CalendarTest extends TestCase
 
         $expected = new Calendar(
             CalendarType::SINGLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             null,
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00')
+                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00')
                 ),
             ]
         );
@@ -1372,12 +1371,12 @@ class CalendarTest extends TestCase
 
         $expected = new Calendar(
             CalendarType::MULTIPLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-13T12:00:00+01:00')
+                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
                 ),
             ]
         );
@@ -1401,12 +1400,12 @@ class CalendarTest extends TestCase
 
         $expected = new Calendar(
             CalendarType::MULTIPLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             null,
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-03-06T10:00:00+01:00')
+                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00')
                 ),
             ]
         );
@@ -1737,20 +1736,20 @@ class CalendarTest extends TestCase
     {
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T12:12:12+01:00')
+            DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
+            DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
 
         $sameCalendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T12:12:12+01:00')
+            DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
+            DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
 
         $otherCalendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T11:11:11+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-28T12:12:12+01:00')
+            DateTimeFactory::fromAtom('2020-01-27T11:11:11+01:00'),
+            DateTimeFactory::fromAtom('2020-01-28T12:12:12+01:00')
         );
 
         $this->assertTrue($calendar->sameAs($sameCalendar));
@@ -1764,44 +1763,44 @@ class CalendarTest extends TestCase
     {
         $calendar = new Calendar(
             CalendarType::MULTIPLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-01T11:11:11+01:00'),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-30T12:12:12+01:00'),
+            DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
+            DateTimeFactory::fromAtom('2020-04-30T12:12:12+01:00'),
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-05T11:11:11+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-10T12:12:12+01:00')
+                    DateTimeFactory::fromAtom('2020-04-05T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-10T12:12:12+01:00')
                 ),
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-07T11:11:11+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-09T12:12:12+01:00')
+                    DateTimeFactory::fromAtom('2020-04-07T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-09T12:12:12+01:00')
                 ),
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-15T11:11:11+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-25T12:12:12+01:00')
+                    DateTimeFactory::fromAtom('2020-04-15T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-25T12:12:12+01:00')
                 ),
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-01T11:11:11+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-20T12:12:12+01:00')
+                    DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-20T12:12:12+01:00')
                 ),
             ]
         );
 
         $expected = [
             new Timestamp(
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-01T11:11:11+01:00'),
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-20T12:12:12+01:00')
+                DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
+                DateTimeFactory::fromAtom('2020-04-20T12:12:12+01:00')
             ),
             new Timestamp(
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-05T11:11:11+01:00'),
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-10T12:12:12+01:00')
+                DateTimeFactory::fromAtom('2020-04-05T11:11:11+01:00'),
+                DateTimeFactory::fromAtom('2020-04-10T12:12:12+01:00')
             ),
             new Timestamp(
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-07T11:11:11+01:00'),
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-09T12:12:12+01:00')
+                DateTimeFactory::fromAtom('2020-04-07T11:11:11+01:00'),
+                DateTimeFactory::fromAtom('2020-04-09T12:12:12+01:00')
             ),
             new Timestamp(
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-15T11:11:11+01:00'),
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-25T12:12:12+01:00')
+                DateTimeFactory::fromAtom('2020-04-15T11:11:11+01:00'),
+                DateTimeFactory::fromAtom('2020-04-25T12:12:12+01:00')
             ),
         ];
 
@@ -1818,27 +1817,27 @@ class CalendarTest extends TestCase
     {
         $timestamps = [
             new Timestamp(
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-01T11:11:11+01:00'),
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-20T12:12:12+01:00')
+                DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
+                DateTimeFactory::fromAtom('2020-04-20T12:12:12+01:00')
             ),
             new Timestamp(
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-05T11:11:11+01:00'),
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-10T12:12:12+01:00')
+                DateTimeFactory::fromAtom('2020-04-05T11:11:11+01:00'),
+                DateTimeFactory::fromAtom('2020-04-10T12:12:12+01:00')
             ),
             new Timestamp(
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-07T11:11:11+01:00'),
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-09T12:12:12+01:00')
+                DateTimeFactory::fromAtom('2020-04-07T11:11:11+01:00'),
+                DateTimeFactory::fromAtom('2020-04-09T12:12:12+01:00')
             ),
             new Timestamp(
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-15T11:11:11+01:00'),
-                DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-25T12:12:12+01:00')
+                DateTimeFactory::fromAtom('2020-04-15T11:11:11+01:00'),
+                DateTimeFactory::fromAtom('2020-04-25T12:12:12+01:00')
             ),
         ];
 
         $calendar = new Calendar(
             CalendarType::MULTIPLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-01T11:11:11+01:00'),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-30T12:12:12+01:00'),
+            DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
+            DateTimeFactory::fromAtom('2020-04-30T12:12:12+01:00'),
             $timestamps
         );
 
@@ -1867,24 +1866,24 @@ class CalendarTest extends TestCase
     {
         $calendar = new Calendar(
             CalendarType::MULTIPLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-01T11:11:11+01:00'),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-30T12:12:12+01:00'),
+            DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
+            DateTimeFactory::fromAtom('2020-04-30T12:12:12+01:00'),
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-05T11:11:11+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-10T12:12:12+01:00')
+                    DateTimeFactory::fromAtom('2020-04-05T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-10T12:12:12+01:00')
                 ),
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-07T11:11:11+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-09T12:12:12+01:00')
+                    DateTimeFactory::fromAtom('2020-04-07T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-09T12:12:12+01:00')
                 ),
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-15T11:11:11+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-25T12:12:12+01:00')
+                    DateTimeFactory::fromAtom('2020-04-15T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-25T12:12:12+01:00')
                 ),
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-01T11:11:11+01:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-04-20T12:12:12+01:00')
+                    DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-20T12:12:12+01:00')
                 ),
             ]
         );
@@ -1922,8 +1921,8 @@ class CalendarTest extends TestCase
 
         new Calendar(
             CalendarType::SINGLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
+            DateTimeFactory::fromAtom(self::START_DATE),
+            DateTimeFactory::fromAtom(self::END_DATE),
             ['wrong timestamp'] // @phpstan-ignore-line
         );
     }
@@ -1938,8 +1937,8 @@ class CalendarTest extends TestCase
 
         new Calendar(
             CalendarType::PERIODIC(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
+            DateTimeFactory::fromAtom(self::START_DATE),
+            DateTimeFactory::fromAtom(self::END_DATE),
             [],
             ['wrong opening hours'] // @phpstan-ignore-line
         );

@@ -7,10 +7,10 @@ namespace CultuurNet\UDB3\Calendar;
 use CultureFeed_Cdb_Data_Calendar_Period;
 use CultureFeed_Cdb_Data_Calendar_PeriodList;
 use CultureFeed_Cdb_Data_Calendar_Permanent;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use DateTime;
-use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
 class CalendarConverterTest extends TestCase
@@ -350,8 +350,8 @@ class CalendarConverterTest extends TestCase
             null,
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-26T21:00:00+02:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-27T02:00:00+02:00')
+                    DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2017-05-27T02:00:00+02:00')
                 ),
             ],
             []
@@ -390,8 +390,8 @@ class CalendarConverterTest extends TestCase
             null,
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-26T21:00:00+02:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-28T02:00:00+02:00')
+                    DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00')
                 ),
             ],
             []
@@ -447,8 +447,8 @@ class CalendarConverterTest extends TestCase
             null,
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-01T09:00:00+02:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-07T18:00:00+02:00')
+                    DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2017-05-07T18:00:00+02:00')
                 ),
             ],
             []
@@ -513,16 +513,16 @@ class CalendarConverterTest extends TestCase
 
         $calendar = new Calendar(
             CalendarType::MULTIPLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-01T09:00:00+02:00'),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-28T02:00:00+02:00'),
+            DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
+            DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00'),
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-01T09:00:00+02:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-07T18:00:00+02:00')
+                    DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2017-05-07T18:00:00+02:00')
                 ),
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-26T21:00:00+02:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-28T02:00:00+02:00')
+                    DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00')
                 ),
             ],
             []
@@ -568,20 +568,20 @@ class CalendarConverterTest extends TestCase
 
         $calendar = new Calendar(
             CalendarType::MULTIPLE(),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-25T10:00:00+02:00'),
-            DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-06-30T16:00:00+02:00'),
+            DateTimeFactory::fromAtom('2017-05-25T10:00:00+02:00'),
+            DateTimeFactory::fromAtom('2017-06-30T16:00:00+02:00'),
             [
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-25T10:00:00+02:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-25T16:00:00+02:00')
+                    DateTimeFactory::fromAtom('2017-05-25T10:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2017-05-25T16:00:00+02:00')
                 ),
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-25T20:00:00+02:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-05-26T01:00:00+02:00')
+                    DateTimeFactory::fromAtom('2017-05-25T20:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2017-05-26T01:00:00+02:00')
                 ),
                 new Timestamp(
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-06-28T10:00:00+02:00'),
-                    DateTime::createFromFormat(DateTimeInterface::ATOM, '2017-06-30T16:00:00+02:00')
+                    DateTimeFactory::fromAtom('2017-06-28T10:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2017-06-30T16:00:00+02:00')
                 ),
             ],
             []

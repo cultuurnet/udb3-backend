@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\Completeness\Weights;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -47,7 +48,6 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
-use DateTimeInterface;
 use stdClass;
 
 class PlaceLDProjectorTest extends OfferLDProjectorTestBase
@@ -670,8 +670,8 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-02-26T13:25:21+01:00')
+            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+            DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
         );
         $majorInfoUpdated = new MajorInfoUpdated($id, $title, $eventType, $this->address, $calendar);
 

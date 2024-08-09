@@ -10,6 +10,7 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
@@ -60,7 +61,6 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
 use RuntimeException;
@@ -502,8 +502,8 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T12:12:12+01:00')
+            DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
+            DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
 
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
