@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3;
 
 use DateTimeImmutable;
+use DateTimeZone;
 
 final class DateTimeFactory
 {
@@ -46,12 +47,17 @@ final class DateTimeFactory
 
     public static function fromAtom(string $datetime): DateTimeImmutable
     {
-        $object = DateTimeImmutable::createFromFormat(DateTimeImmutable::ATOM, $datetime);
+        return self::fromFormat(DateTimeImmutable::ATOM, $datetime);
+    }
+
+    public static function fromFormat(string $format, string $datetime, DateTimeZone $timezone = null): DateTimeImmutable
+    {
+        $object = DateTimeImmutable::createFromFormat($format, $datetime, $timezone);
 
         if ($object instanceof DateTimeImmutable) {
             return $object;
         }
 
-        throw new DateTimeInvalid($datetime . ' does not appear to be a valid ATOM datetime string.');
+        throw new DateTimeInvalid($datetime . ' does not appear to be a valid ' . $format . ' datetime string.');
     }
 }

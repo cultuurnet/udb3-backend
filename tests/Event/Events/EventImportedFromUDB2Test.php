@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
@@ -28,7 +29,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\SampleFiles;
-use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 
@@ -307,8 +307,8 @@ final class EventImportedFromUDB2Test extends TestCase
                     $eventId,
                     new Calendar(
                         CalendarType::PERIODIC(),
-                        \DateTimeImmutable::createFromFormat('Y-m-d', '2017-06-13'),
-                        \DateTimeImmutable::createFromFormat('Y-m-d', '2018-01-08'),
+                        DateTimeFactory::fromFormat('Y-m-d', '2017-06-13'),
+                        DateTimeFactory::fromFormat('Y-m-d', '2018-01-08'),
                         [],
                         [
                             0 => new OpeningHour(
@@ -351,7 +351,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 ),
                 new Published(
                     $eventId,
-                    DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s', '2016-11-18T07:44:11', new DateTimeZone('Europe/Brussels'))
+                    DateTimeFactory::fromFormat('Y-m-d\TH:i:s', '2016-11-18T07:44:11', new DateTimeZone('Europe/Brussels'))
                 ),
             ],
             $eventImportedFromUDB2->toGranularEvents()
@@ -474,7 +474,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 ),
                 new Published(
                     $eventId,
-                    DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s', '2016-11-18T07:44:11', new DateTimeZone('Europe/Brussels'))
+                    DateTimeFactory::fromFormat('Y-m-d\TH:i:s', '2016-11-18T07:44:11', new DateTimeZone('Europe/Brussels'))
                 ),
             ],
             $eventImportedFromUDB2->toGranularEvents()
@@ -513,7 +513,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 ),
                 new Published(
                     $eventId,
-                    DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s', '2016-11-18T07:44:11', new DateTimeZone('Europe/Brussels'))
+                    DateTimeFactory::fromFormat('Y-m-d\TH:i:s', '2016-11-18T07:44:11', new DateTimeZone('Europe/Brussels'))
                 ),
             ],
             $eventImportedFromUDB2->toGranularEvents()

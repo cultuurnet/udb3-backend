@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Contact;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
@@ -97,8 +98,8 @@ class BookingInfoTest extends TestCase
         $availability = $this->getAvailability();
         $bookingInfo = $this->getBookingInfo();
 
-        $from = \DateTimeImmutable::createFromFormat('d-m-Y', '02-01-2018');
-        $to = \DateTimeImmutable::createFromFormat('d-m-Y', '19-01-2018');
+        $from = DateTimeFactory::fromFormat('d-m-Y', '02-01-2018');
+        $to = DateTimeFactory::fromFormat('d-m-Y', '19-01-2018');
         $updatedAvailability = BookingAvailability::fromTo($from, $to);
         $updatedBookingInfo = $bookingInfo->withAvailability($updatedAvailability);
 
@@ -160,8 +161,8 @@ class BookingInfoTest extends TestCase
      */
     private function getAvailability()
     {
-        $from = \DateTimeImmutable::createFromFormat('d-m-Y', '01-01-2018');
-        $to = \DateTimeImmutable::createFromFormat('d-m-Y', '18-01-2018');
+        $from = DateTimeFactory::fromFormat('d-m-Y', '01-01-2018');
+        $to = DateTimeFactory::fromFormat('d-m-Y', '18-01-2018');
         return BookingAvailability::fromTo($from, $to);
     }
 

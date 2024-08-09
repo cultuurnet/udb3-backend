@@ -10,6 +10,7 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
@@ -22,7 +23,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use DateTimeImmutable;
 
 class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -69,8 +69,8 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
     public function it_will_update_status_of_sub_events(): void
     {
         $id = '1';
-        $startDate = DateTimeImmutable::createFromFormat('Y-m-d', '2020-12-24');
-        $endDate = DateTimeImmutable::createFromFormat('Y-m-d', '2020-12-24');
+        $startDate = DateTimeFactory::fromFormat('Y-m-d', '2020-12-24');
+        $endDate = DateTimeFactory::fromFormat('Y-m-d', '2020-12-24');
 
         $initialTimestamps = [new Timestamp($startDate, $endDate)];
         $initialCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $initialTimestamps);

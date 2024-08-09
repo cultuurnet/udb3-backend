@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-use DateTimeImmutable;
+use CultuurNet\UDB3\DateTimeFactory;
 use PHPUnit\Framework\TestCase;
 
 class MultipleSubEventsCalendarTest extends TestCase
@@ -18,16 +18,16 @@ class MultipleSubEventsCalendarTest extends TestCase
         $this->subEvents = new SubEvents(
             new SubEvent(
                 new DateRange(
-                    DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
-                    DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
+                    DateTimeFactory::fromFormat('d/m/Y', '10/12/2018'),
+                    DateTimeFactory::fromFormat('d/m/Y', '11/12/2018')
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available())
             ),
             new SubEvent(
                 new DateRange(
-                    DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
-                    DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018')
+                    DateTimeFactory::fromFormat('d/m/Y', '17/12/2018'),
+                    DateTimeFactory::fromFormat('d/m/Y', '18/12/2018')
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available())
@@ -42,8 +42,8 @@ class MultipleSubEventsCalendarTest extends TestCase
      */
     public function it_should_require_at_least_two_sub_events(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018');
+        $startDate = DateTimeFactory::fromFormat('d/m/Y', '10/12/2018');
+        $endDate = DateTimeFactory::fromFormat('d/m/Y', '11/12/2018');
         $dateRanges = new SubEvents(
             new SubEvent(
                 new DateRange($startDate, $endDate),
@@ -64,11 +64,11 @@ class MultipleSubEventsCalendarTest extends TestCase
     public function it_should_return_a_start_and_end_date(): void
     {
         $this->assertEquals(
-            DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
+            DateTimeFactory::fromFormat('d/m/Y', '10/12/2018'),
             $this->multipleSubEventsCalendar->getStartDate()
         );
         $this->assertEquals(
-            DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018'),
+            DateTimeFactory::fromFormat('d/m/Y', '18/12/2018'),
             $this->multipleSubEventsCalendar->getEndDate()
         );
     }

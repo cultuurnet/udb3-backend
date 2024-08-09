@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -33,8 +34,8 @@ class AvailableToTest extends TestCase
      */
     public function it_should_be_creatable_from_a_calendar(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018');
+        $startDate = DateTimeFactory::fromFormat('d/m/Y', '10/01/2018');
+        $endDate = DateTimeFactory::fromFormat('d/m/Y', '11/01/2018');
 
         $singleDateRangeCalendar = new SingleSubEventCalendar(
             new SubEvent(

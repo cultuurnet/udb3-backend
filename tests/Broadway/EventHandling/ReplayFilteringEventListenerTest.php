@@ -8,12 +8,13 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ReplayFilteringEventListenerTest extends TestCase
 {
     /**
-     * @var EventListener|\PHPUnit\Framework\MockObject\MockObject
+     * @var EventListener&MockObject
      */
     private $eventListener;
 

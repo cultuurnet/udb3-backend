@@ -34,10 +34,7 @@ class PlaceCreatedTest extends TestCase
             new CountryCode('BE')
         );
 
-        $this->publicationDate = DateTimeImmutable::createFromFormat(
-            \DateTime::ISO8601,
-            '2016-08-01T00:00:00+0200'
-        );
+        $this->publicationDate = DateTimeFactory::fromISO8601('2016-08-01T00:00:00+0200');
 
         $this->placeCreated = new PlaceCreated(
             'id',

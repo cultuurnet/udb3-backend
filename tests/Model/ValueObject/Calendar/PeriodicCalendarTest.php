@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -11,7 +12,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
-use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class PeriodicCalendarTest extends TestCase
@@ -22,8 +22,8 @@ class PeriodicCalendarTest extends TestCase
     {
         $this->periodicCalendar = new PeriodicCalendar(
             new DateRange(
-                DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
-                DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018')
+                DateTimeFactory::fromFormat('d/m/Y', '10/12/2018'),
+                DateTimeFactory::fromFormat('d/m/Y', '18/12/2018')
             ),
             new OpeningHours()
         );
@@ -87,11 +87,11 @@ class PeriodicCalendarTest extends TestCase
     public function it_should_return_the_injected_start_and_end_date(): void
     {
         $this->assertEquals(
-            DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
+            DateTimeFactory::fromFormat('d/m/Y', '10/12/2018'),
             $this->periodicCalendar->getStartDate()
         );
         $this->assertEquals(
-            DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018'),
+            DateTimeFactory::fromFormat('d/m/Y', '18/12/2018'),
             $this->periodicCalendar->getEndDate()
         );
     }
@@ -101,8 +101,8 @@ class PeriodicCalendarTest extends TestCase
      */
     public function it_should_return_the_injected_opening_hours(): void
     {
-        $startDate = DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
+        $startDate = DateTimeFactory::fromFormat('d/m/Y', '10/12/2018');
+        $endDate = DateTimeFactory::fromFormat('d/m/Y', '18/12/2018');
 
         $days = new Days(
             Day::monday(),
