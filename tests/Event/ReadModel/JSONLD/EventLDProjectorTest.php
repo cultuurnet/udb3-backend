@@ -93,7 +93,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     protected $iriOfferIdentifierFactory;
 
     /**
-     * @var CdbXMLImporter|MockObject
+     * @var CdbXMLImporter
      */
     protected $cdbXMLImporter;
 
