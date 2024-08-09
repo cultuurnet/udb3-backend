@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class AbstractEventTest extends TestCase
 {
     /**
-     * @var AbstractEvent|MockObject
+     * @var MockAbstractEvent
      */
     protected $event;
 

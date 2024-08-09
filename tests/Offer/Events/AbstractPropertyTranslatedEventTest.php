@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\Language;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class AbstractPropertyTranslatedEventTest extends TestCase
 {
     /**
-     * @var AbstractPropertyTranslatedEvent|MockObject
+     * @var MockAbstractPropertyTranslatedEvent
      */
     protected $propertyTranslatedEvent;
 
