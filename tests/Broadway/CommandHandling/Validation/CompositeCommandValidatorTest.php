@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Broadway\CommandHandling\Validation;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CompositeCommandValidatorTest extends TestCase
@@ -15,13 +16,13 @@ class CompositeCommandValidatorTest extends TestCase
     {
         $command = (object) ['do' => 'something'];
 
-        /** @var CommandValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validator1 */
+        /** @var CommandValidatorInterface&MockObject $validator1 */
         $validator1 = $this->createMock(CommandValidatorInterface::class);
         $validator1->expects($this->once())
             ->method('validate')
             ->with($command);
 
-        /** @var CommandValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validator2 */
+        /** @var CommandValidatorInterface&MockObject $validator2 */
         $validator2 = $this->createMock(CommandValidatorInterface::class);
         $validator2->expects($this->once())
             ->method('validate')
@@ -39,19 +40,19 @@ class CompositeCommandValidatorTest extends TestCase
     {
         $command = (object) ['do' => 'something'];
 
-        /** @var CommandValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validator1 */
+        /** @var CommandValidatorInterface&MockObject $validator1 */
         $validator1 = $this->createMock(CommandValidatorInterface::class);
         $validator1->expects($this->once())
             ->method('validate')
             ->with($command);
 
-        /** @var CommandValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validator2 */
+        /** @var CommandValidatorInterface&MockObject $validator2 */
         $validator2 = $this->createMock(CommandValidatorInterface::class);
         $validator2->expects($this->once())
             ->method('validate')
             ->with($command);
 
-        /** @var CommandValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validator3 */
+        /** @var CommandValidatorInterface&MockObject $validator3 */
         $validator3 = $this->createMock(CommandValidatorInterface::class);
         $validator3->expects($this->once())
             ->method('validate')
