@@ -6,9 +6,9 @@ namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
-use DateTimeImmutable;
 use DateTimeInterface;
 
 /**
@@ -44,10 +44,8 @@ class AvailableTo
          * When available to has no time information, it needs to be set to almost midnight 23:59:59.
          */
         if ($availableTo->format('H:i:s') === '00:00:00') {
-            $availableTo = DateTimeImmutable::createFromFormat(
-                DATE_ATOM,
-                $availableTo->format(DATE_ATOM)
-            )->setTime(23, 59, 59);
+            $availableTo = DateTimeFactory::fromAtom($availableTo->format(DATE_ATOM))
+                ->setTime(23, 59, 59);
         }
 
         return new self($availableTo);

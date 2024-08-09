@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Kinepolis\Parser;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventThemeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Json;
@@ -42,8 +43,8 @@ final class KinepolisMovieParserTest extends TestCase
                     '2D' => [
                         new SubEvent(
                             new DateRange(
-                                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T18:00:00+00:00'),
-                                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T20:00:00+00:00')
+                                DateTimeFactory::fromAtom('2024-04-08T18:00:00+00:00'),
+                                DateTimeFactory::fromAtom('2024-04-08T20:00:00+00:00')
                             ),
                             new Status(StatusType::Available()),
                             new BookingAvailability(BookingAvailabilityType::Available())
@@ -54,8 +55,8 @@ final class KinepolisMovieParserTest extends TestCase
                     '2D' => [
                         new SubEvent(
                             new DateRange(
-                                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T20:30:00+00:00'),
-                                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T22:30:00+00:00')
+                                DateTimeFactory::fromAtom('2024-04-08T20:30:00+00:00'),
+                                DateTimeFactory::fromAtom('2024-04-08T22:30:00+00:00')
                             ),
                             new Status(StatusType::Available()),
                             new BookingAvailability(BookingAvailabilityType::Available())
@@ -64,8 +65,8 @@ final class KinepolisMovieParserTest extends TestCase
                     '3D' => [
                         new SubEvent(
                             new DateRange(
-                                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T17:45:00+00:00'),
-                                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T19:45:00+00:00')
+                                DateTimeFactory::fromAtom('2024-04-08T17:45:00+00:00'),
+                                DateTimeFactory::fromAtom('2024-04-08T19:45:00+00:00')
                             ),
                             new Status(StatusType::Available()),
                             new BookingAvailability(BookingAvailabilityType::Available())
@@ -106,8 +107,8 @@ final class KinepolisMovieParserTest extends TestCase
                     (new EventThemeResolver())->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T18:00:00+00:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T20:00:00+00:00')
+                            DateTimeFactory::fromAtom('2024-04-08T18:00:00+00:00'),
+                            DateTimeFactory::fromAtom('2024-04-08T20:00:00+00:00')
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Available())
@@ -146,8 +147,8 @@ final class KinepolisMovieParserTest extends TestCase
                     (new EventThemeResolver())->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T20:30:00+00:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T22:30:00+00:00')
+                            DateTimeFactory::fromAtom('2024-04-08T20:30:00+00:00'),
+                            DateTimeFactory::fromAtom('2024-04-08T22:30:00+00:00')
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Available())
@@ -186,8 +187,8 @@ final class KinepolisMovieParserTest extends TestCase
                     (new EventThemeResolver())->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T17:45:00+00:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T19:45:00+00:00')
+                            DateTimeFactory::fromAtom('2024-04-08T17:45:00+00:00'),
+                            DateTimeFactory::fromAtom('2024-04-08T19:45:00+00:00')
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Available())
@@ -256,8 +257,8 @@ final class KinepolisMovieParserTest extends TestCase
                     (new EventThemeResolver())->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T18:00:00+00:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T20:00:00+00:00')
+                            DateTimeFactory::fromAtom('2024-04-08T18:00:00+00:00'),
+                            DateTimeFactory::fromAtom('2024-04-08T20:00:00+00:00')
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Available())
@@ -296,8 +297,8 @@ final class KinepolisMovieParserTest extends TestCase
                     (new EventThemeResolver())->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T20:30:00+00:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T22:30:00+00:00')
+                            DateTimeFactory::fromAtom('2024-04-08T20:30:00+00:00'),
+                            DateTimeFactory::fromAtom('2024-04-08T22:30:00+00:00')
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Available())
@@ -336,8 +337,8 @@ final class KinepolisMovieParserTest extends TestCase
                     (new EventThemeResolver())->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T17:45:00+00:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2024-04-08T19:45:00+00:00')
+                            DateTimeFactory::fromAtom('2024-04-08T17:45:00+00:00'),
+                            DateTimeFactory::fromAtom('2024-04-08T19:45:00+00:00')
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Available())

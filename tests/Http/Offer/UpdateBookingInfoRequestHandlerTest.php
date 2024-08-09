@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\BookingInfo;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo as EventUpdateBookingInfo;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
@@ -98,8 +99,8 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             new MultilingualString(new Language('nl'), 'Publiq vzw'),
             '02/1232323',
             'info@publiq.be',
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2023-01-01T00:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2028-01-31T23:59:59+01:00')
+            DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
+            DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
         );
 
         $bookingInfoSpecialCharactersUrl = new BookingInfo(
@@ -107,8 +108,8 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             new MultilingualString(new Language('nl'), 'Publiq vzw'),
             '02/1232323',
             'info@publiq.be',
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2023-01-01T00:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2028-01-31T23:59:59+01:00')
+            DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
+            DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
         );
 
         return [

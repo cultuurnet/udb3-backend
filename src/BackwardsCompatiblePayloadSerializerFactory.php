@@ -264,7 +264,7 @@ class BackwardsCompatiblePayloadSerializerFactory
 
             // The new serialized date time format is a string according the ISO 8601 format.
             // If this is so return without modifications.
-            $dateTimeFromAtom = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $dateTimeString);
+            $dateTimeFromAtom = \DateTimeImmutable::createFromFormat(DATE_ATOM, $dateTimeString);
             if ($dateTimeFromAtom) {
                 return $serializedBookingInfo;
             }

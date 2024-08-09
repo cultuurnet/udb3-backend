@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\Completeness\Weights;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
@@ -69,7 +70,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
@@ -539,8 +539,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_projects_start_date_as_available_to_for_workshops(): void
     {
-        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
-        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $startDate = DateTimeFactory::fromAtom('2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
         $eventType = new EventType('0.3.1.0.0', 'Cursus of workshop');
 
         $calendar = new Calendar(
@@ -576,8 +576,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_projects_end_date_as_available_to_for_other_event_types(): void
     {
-        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
-        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $startDate = DateTimeFactory::fromAtom('2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
         $eventType = new EventType('1.50.0.0.0', 'Eten en drinken');
 
         $calendar = new Calendar(
@@ -1608,8 +1608,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
         $this->documentRepository->save($eventThatsAvailableTillStart);
 
-        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
-        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $startDate = DateTimeFactory::fromAtom('2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
         $calendarUpdated = new CalendarUpdated(
             $eventId,
             new Calendar(
@@ -1668,7 +1668,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
         $this->documentRepository->save($eventThatShouldAvailableTillStart);
 
-        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+        $startDate = DateTimeFactory::fromAtom('2018-01-01T12:00:00+01:00');
 
         $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId($termId));
 
@@ -1718,7 +1718,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
         $this->documentRepository->save($eventThatShouldAvailableTillStart);
 
-        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
 
         $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0'));
 
@@ -1767,7 +1767,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
         $this->documentRepository->save($eventThatShouldAvailableTillStart);
 
-        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
 
         $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0'));
 
@@ -1977,8 +1977,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         return new Calendar(
             CalendarType::PERIODIC(),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
             [],
             [
                 new OpeningHour(

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Calendar;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
@@ -1457,8 +1458,8 @@ class CalendarTest extends TestCase
     {
         $subEvent = new SubEvent(
             new DateRange(
-                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00')
+                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00')
             ),
             new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()),
             new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
@@ -1474,8 +1475,8 @@ class CalendarTest extends TestCase
             null,
             [
                 new Timestamp(
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
                     new Status(StatusType::unavailable(), []),
                     BookingAvailability::unavailable()
                 ),
@@ -1497,16 +1498,16 @@ class CalendarTest extends TestCase
         $subEvents = new SubEvents(
             new SubEvent(
                 new DateRange(
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00')
+                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00')
                 ),
                 new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()),
                 new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
             ),
             new SubEvent(
                 new DateRange(
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-09T10:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-10T10:00:00+01:00')
+                    DateTimeFactory::fromAtom('2016-03-09T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-10T10:00:00+01:00')
                 ),
                 new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()),
                 new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
@@ -1523,14 +1524,14 @@ class CalendarTest extends TestCase
             null,
             [
                 new Timestamp(
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
                     new Status(StatusType::unavailable(), []),
                     BookingAvailability::unavailable()
                 ),
                 new Timestamp(
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-09T10:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-10T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-09T10:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2016-03-10T10:00:00+01:00'),
                     new Status(StatusType::unavailable(), []),
                     BookingAvailability::unavailable()
                 ),
@@ -1550,8 +1551,8 @@ class CalendarTest extends TestCase
     public function it_should_be_creatable_from_an_udb3_model_periodic_calendar(): void
     {
         $dateRange = new DateRange(
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00')
+            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00')
         );
 
         $openingHours = new OpeningHours();
@@ -1560,8 +1561,8 @@ class CalendarTest extends TestCase
 
         $expected = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
             [],
             []
         );
@@ -1577,8 +1578,8 @@ class CalendarTest extends TestCase
     public function it_should_be_creatable_from_an_udb3_model_periodic_calendar_with_opening_hours(): void
     {
         $dateRange = new DateRange(
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00')
+            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00')
         );
 
         $openingHours = new OpeningHours(
@@ -1615,8 +1616,8 @@ class CalendarTest extends TestCase
 
         $expected = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
             [],
             [
                 new OpeningHour(
