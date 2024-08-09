@@ -11,6 +11,7 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Footer;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Publisher;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Subtitle;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Search\Sorting;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use PHPUnit\Framework\TestCase;
@@ -137,6 +138,6 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
 
     private function getJSONStringFromFile(string $fileName): string
     {
-        return file_get_contents(__DIR__ . '/' . $fileName);
+        return SampleFiles::read(__DIR__ . '/' . $fileName);
     }
 }

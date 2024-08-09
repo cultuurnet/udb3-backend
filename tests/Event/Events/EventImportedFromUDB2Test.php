@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Calendar\Timestamp;
+use CultuurNet\UDB3\SampleFiles;
 use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
@@ -43,7 +44,7 @@ final class EventImportedFromUDB2Test extends TestCase
     {
         $event = new EventImportedFromUDB2(
             'test 456',
-            file_get_contents(__DIR__ . '/../samples/event_entryapi_valid_with_keywords.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_entryapi_valid_with_keywords.xml'),
             self::NS_CDBXML_3_3
         );
 
@@ -86,7 +87,7 @@ final class EventImportedFromUDB2Test extends TestCase
     {
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
             '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
-            file_get_contents(__DIR__ . '/../samples/event_with_udb3_place.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_udb3_place.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -136,7 +137,7 @@ final class EventImportedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_translations.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_translations.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -186,7 +187,7 @@ final class EventImportedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -224,7 +225,7 @@ final class EventImportedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_externalid_location.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_externalid_location.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -262,7 +263,7 @@ final class EventImportedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventWithExternalIdLocation = new EventImportedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_externalid_location.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_externalid_location.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -280,7 +281,7 @@ final class EventImportedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/calendar/event_with_periodic_calendar_and_week_schema.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/calendar/event_with_periodic_calendar_and_week_schema.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 
@@ -365,7 +366,7 @@ final class EventImportedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/calendar/event_with_permanent_calendar_and_opening_hours.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/calendar/event_with_permanent_calendar_and_opening_hours.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 
@@ -425,7 +426,7 @@ final class EventImportedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/calendar/event_with_multiple_timestamps_and_start_times.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/calendar/event_with_multiple_timestamps_and_start_times.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 
@@ -488,7 +489,7 @@ final class EventImportedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/calendar/event_with_timestamp_and_start_time.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/calendar/event_with_timestamp_and_start_time.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 
@@ -527,7 +528,7 @@ final class EventImportedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_workflow_deleted.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_workflow_deleted.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 
@@ -559,7 +560,7 @@ final class EventImportedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_workflow_rejected.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_workflow_rejected.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 
@@ -588,7 +589,7 @@ final class EventImportedFromUDB2Test extends TestCase
 
     public function serializationDataProvider(): array
     {
-        $xml = file_get_contents(__DIR__ . '/../samples/event_entryapi_valid_with_keywords.xml');
+        $xml = SampleFiles::read(__DIR__ . '/../samples/event_entryapi_valid_with_keywords.xml');
 
         return [
             'event' => [

@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -75,7 +76,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($this->organizerId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/organizer.ttl'), $turtle);
     }
 
     /**
@@ -91,7 +92,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($this->organizerId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer-deleted.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/organizer-deleted.ttl'), $turtle);
     }
 
     /**
@@ -116,7 +117,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($organizerId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer-without-homepage.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/organizer-without-homepage.ttl'), $turtle);
     }
 
     /**
@@ -141,7 +142,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($organizerId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/organizer.ttl'), $turtle);
     }
 
     /**
@@ -168,7 +169,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($this->organizerId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer-with-address.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/organizer-with-address.ttl'), $turtle);
     }
 
     /**
@@ -198,7 +199,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($this->organizerId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer-with-contact-point.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/organizer-with-contact-point.ttl'), $turtle);
     }
 
     /**
@@ -221,7 +222,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($this->organizerId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/organizer-with-labels.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/organizer-with-labels.ttl'), $turtle);
     }
 
     private function givenThereIsAnOrganizer(array $extraProperties = []): void

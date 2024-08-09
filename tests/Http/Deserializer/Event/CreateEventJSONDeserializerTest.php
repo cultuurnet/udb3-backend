@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 final class CreateEventJSONDeserializerTest extends TestCase
@@ -19,7 +20,7 @@ final class CreateEventJSONDeserializerTest extends TestCase
      */
     public function it_can_serialize_create_event_with_main_language(): void
     {
-        $createEventAsJson = file_get_contents(__DIR__ . '/../samples/event-create-with-main-language.json');
+        $createEventAsJson = SampleFiles::read(__DIR__ . '/../samples/event-create-with-main-language.json');
 
         $createEventJSONDeserializer = new CreateEventJSONDeserializer();
 

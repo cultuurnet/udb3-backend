@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +24,7 @@ class JSONLDEventFormatterTest extends TestCase
 
     private function getJSONEventFromFile(string $fileName): string
     {
-        return file_get_contents(__DIR__ . '/../../samples/' . $fileName);
+        return SampleFiles::read(__DIR__ . '/../../samples/' . $fileName);
     }
 
     /**

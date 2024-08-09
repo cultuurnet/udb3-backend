@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Calendar\Timestamp;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 final class EventUpdatedFromUDB2Test extends TestCase
@@ -57,7 +58,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventUpdatedFromUdb2 = new EventUpdatedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_translations.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_translations.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -80,7 +81,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventUpdatedFromUdb2 = new EventUpdatedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_existing_location.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -118,7 +119,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventUpdatedFromUdb2 = new EventUpdatedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_externalid_location.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_externalid_location.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -156,7 +157,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventWithDummyLocation = new EventUpdatedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_dummy_location.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_dummy_location.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -182,7 +183,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventWithDummyLocation = new EventUpdatedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_dummy_location_without_street.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_dummy_location_without_street.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -208,7 +209,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventWithDummyLocation = new EventUpdatedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_dummy_location_without_number.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_dummy_location_without_number.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -234,7 +235,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventWithDummyLocation = new EventUpdatedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_dummy_location_without_street_and_number.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_dummy_location_without_street_and_number.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -260,7 +261,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventWithExternalIdLocation = new EventUpdatedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/../samples/event_with_externalid_location.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../samples/event_with_externalid_location.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 
@@ -272,7 +273,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
 
     public function serializationDataProvider(): array
     {
-        $xml = file_get_contents(__DIR__ . '/../samples/event_entryapi_valid_with_keywords.xml');
+        $xml = SampleFiles::read(__DIR__ . '/../samples/event_entryapi_valid_with_keywords.xml');
 
         return [
             'event' => [

@@ -20,6 +20,7 @@ use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\SampleFiles;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -178,7 +179,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/place.ttl'), $turtle);
     }
 
     /**
@@ -224,7 +225,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-translations.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/place-with-translations.ttl'), $turtle);
     }
 
     /**
@@ -241,7 +242,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-coordinates.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/place-with-coordinates.ttl'), $turtle);
     }
 
     /**
@@ -256,7 +257,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/' . $file), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/' . $file), $turtle);
     }
 
     public function workflowStatusDataProvider(): array
@@ -297,7 +298,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-publication-date.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/place-with-publication-date.ttl'), $turtle);
     }
 
     /**
@@ -318,7 +319,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-labels.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/place-with-labels.ttl'), $turtle);
     }
 
     private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void

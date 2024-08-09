@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 class CalendarJSONParserTest extends TestCase
@@ -34,7 +35,7 @@ class CalendarJSONParserTest extends TestCase
 
     protected function setUp(): void
     {
-        $updateCalendar = file_get_contents(__DIR__ . '/samples/calendar_all_fields.json');
+        $updateCalendar = SampleFiles::read(__DIR__ . '/samples/calendar_all_fields.json');
         $this->updateCalendarAsArray = Json::decodeAssociatively($updateCalendar);
 
         $this->calendarJSONParser = new CalendarJSONParser();
@@ -60,7 +61,7 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_returns_null_when_start_date_is_missing(): void
     {
-        $updateCalendar = file_get_contents(__DIR__ . '/samples/calendar_missing_start_and_end.json');
+        $updateCalendar = SampleFiles::read(__DIR__ . '/samples/calendar_missing_start_and_end.json');
         $updateCalendarAsArray = Json::decodeAssociatively($updateCalendar);
 
         $this->assertNull(
@@ -90,7 +91,7 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_returns_null_when_end_date_is_missing(): void
     {
-        $updateCalendar = file_get_contents(__DIR__ . '/samples/calendar_missing_start_and_end.json');
+        $updateCalendar = SampleFiles::read(__DIR__ . '/samples/calendar_missing_start_and_end.json');
         $updateCalendarAsArray = Json::decodeAssociatively($updateCalendar);
 
         $this->assertNull(
@@ -182,7 +183,7 @@ class CalendarJSONParserTest extends TestCase
     public function it_should_not_create_timestamps_when_json_is_missing_an_end_property(): void
     {
         $calendarData = Json::decodeAssociatively(
-            file_get_contents(__DIR__ . '/samples/calendar_missing_time_span_end.json')
+            SampleFiles::read(__DIR__ . '/samples/calendar_missing_time_span_end.json')
         );
 
         $this->assertEmpty(
@@ -196,7 +197,7 @@ class CalendarJSONParserTest extends TestCase
     public function it_should_not_create_timestamps_when_json_is_missing_a_start_property(): void
     {
         $calendarData = Json::decodeAssociatively(
-            file_get_contents(__DIR__ . '/samples/calendar_missing_time_span_start.json')
+            SampleFiles::read(__DIR__ . '/samples/calendar_missing_time_span_start.json')
         );
 
         $this->assertEmpty(
@@ -255,7 +256,7 @@ class CalendarJSONParserTest extends TestCase
     public function it_should_not_create_opening_hours_when_fields_are_missing(): void
     {
         $calendarData = Json::decodeAssociatively(
-            file_get_contents(__DIR__ . '/samples/calendar_with_opening_hours_but_missing_fields.json')
+            SampleFiles::read(__DIR__ . '/samples/calendar_with_opening_hours_but_missing_fields.json')
         );
 
         $this->assertEmpty(
