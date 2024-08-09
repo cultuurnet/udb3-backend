@@ -15,7 +15,7 @@ class CanonicalPlaceRepositoryTest extends TestCase
     private $canonicalPlaceRepository;
 
     /**
-     * @var PlaceRepository | MockObject
+     * @var PlaceRepository&MockObject
      */
     private $placeRepository;
 
