@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Console\Command;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -139,7 +140,7 @@ final class UpdateUniqueLabels extends Command
 
     private function getLabelName(array $labelAddedEvent): LabelName
     {
-        $payloadArray = json_decode($labelAddedEvent['payload'], true);
+        $payloadArray = Json::decodeAssociatively($labelAddedEvent['payload']);
         return new LabelName($payloadArray['payload']['name']);
     }
 }

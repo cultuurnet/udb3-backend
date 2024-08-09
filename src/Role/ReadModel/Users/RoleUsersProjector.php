@@ -94,6 +94,6 @@ class RoleUsersProjector extends RoleProjector
      */
     private function getUserIdentityDetails(JsonDocument $document): array
     {
-        return json_decode($document->getRawBody(), true);
+        return Json::decodeAssociatively($document->getRawBody());
     }
 }

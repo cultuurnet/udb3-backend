@@ -12,7 +12,6 @@ use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use CultuurNet\UDB3\Calendar\EndDateCanNotBeEarlierThanStartDate;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
-use CultuurNet\UDB3\Deserializer\NotWellFormedException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeAddedToProduction;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeRemovedFromProduction;
@@ -24,6 +23,7 @@ use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\UiTPAS\Validation\ChangeNotAllowedByTicketSales;
 use Error;
 use Exception;
+use JsonException;
 use League\Route\Http\Exception\MethodNotAllowedException;
 use League\Route\Http\Exception\NotFoundException;
 use Psr\Http\Message\ServerRequestInterface;
@@ -116,7 +116,7 @@ final class ApiProblemFactory
 
             case $e instanceof MissingValueException:
             case $e instanceof ChangeNotAllowedByTicketSales:
-            case $e instanceof NotWellFormedException:
+            case $e instanceof JsonException:
             case $e instanceof FormatterException:
             case $e instanceof EventCannotBeAddedToProduction:
             case $e instanceof EventCannotBeRemovedFromProduction:

@@ -86,7 +86,7 @@ class RoleLabelsProjector extends RoleProjector
             return;
         }
 
-        $roles = json_decode($document->getRawBody());
+        $roles = Json::decode($document->getRawBody());
 
         foreach ($roles as $roleId) {
             $role = $this->getDocument(new UUID($roleId));
@@ -127,7 +127,7 @@ class RoleLabelsProjector extends RoleProjector
      */
     private function getLabelDetails(JsonDocument $document)
     {
-        return json_decode($document->getRawBody(), true);
+        return Json::decodeAssociatively($document->getRawBody());
     }
 
     /**

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications;
 
+use CultuurNet\UDB3\Json;
+
 trait EventSpecificationTestTrait
 {
     protected function getEventLdFromFile(string $fileName): \stdClass
@@ -12,6 +14,6 @@ trait EventSpecificationTestTrait
             __DIR__ . '/../../../samples/' . $fileName
         );
 
-        return json_decode($jsonEvent);
+        return Json::decode($jsonEvent);
     }
 }

@@ -25,7 +25,7 @@ class CacheRepository implements TokenRepository
             return null;
         }
 
-        $tokenAsArray = json_decode($this->cache->fetch(self::TOKEN_KEY), true);
+        $tokenAsArray = Json::decodeAssociatively($this->cache->fetch(self::TOKEN_KEY));
 
         return new ManagementToken(
             $tokenAsArray['token'],

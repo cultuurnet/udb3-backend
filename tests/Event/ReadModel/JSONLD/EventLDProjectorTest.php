@@ -267,7 +267,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $recordedOn = '2022-01-20T13:25:21+01:00';
 
-        $jsonLD = json_decode(file_get_contents(__DIR__ . '/copied_event_with_place_type.json'));
+        $jsonLD = Json::decode(file_get_contents(__DIR__ . '/copied_event_with_place_type.json'));
         $jsonLD->created = $recordedOn;
         $jsonLD->modified = $recordedOn;
         $jsonLD->playhead = 1;
@@ -488,7 +488,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             DateTime::fromString($recordedOn)
         );
 
-        $expectedJsonLD = json_decode(file_get_contents(__DIR__ . '/copied_event.json'));
+        $expectedJsonLD = Json::decode(file_get_contents(__DIR__ . '/copied_event.json'));
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = '20a72430-7e3e-4b75-ab59-043156b3169c';
@@ -525,7 +525,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             DateTime::fromString($recordedOn)
         );
 
-        $expectedJsonLD = json_decode(file_get_contents(__DIR__ . '/copied_event_without_working_hours.json'));
+        $expectedJsonLD = Json::decode(file_get_contents(__DIR__ . '/copied_event_without_working_hours.json'));
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = $userId;

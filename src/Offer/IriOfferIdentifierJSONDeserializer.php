@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
-use CultuurNet\UDB3\Deserializer\NotWellFormedException;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 /**
@@ -27,11 +27,7 @@ class IriOfferIdentifierJSONDeserializer implements DeserializerInterface
 
     public function deserialize(string $data): IriOfferIdentifier
     {
-        $data = json_decode($data, true);
-
-        if (null === $data) {
-            throw new NotWellFormedException('Invalid JSON');
-        }
+        $data = Json::decodeAssociatively($data);
 
         if (!isset($data['@id'])) {
             throw new MissingValueException('Missing property "@id".');

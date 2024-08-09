@@ -65,6 +65,7 @@ use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
@@ -87,6 +88,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 use CultuurNet\UDB3\Theme;
+use JsonException;
 
 final class EventLDProjector extends OfferLDProjector implements
     EventListener,
@@ -581,11 +583,10 @@ final class EventLDProjector extends OfferLDProjector implements
         }
 
         try {
-            $placeJSONLD = $this->placeService->getEntity(
-                $placeId
-            );
-
-            return (array) json_decode($placeJSONLD);
+            $placeJSONLD = $this->placeService->getEntity($placeId);
+            return (array)Json::decode($placeJSONLD);
+        } catch (JsonException $e) {
+            return [];
         } catch (EntityNotFoundException $e) {
             // In case the place can not be found at the moment, just add its ID
             return [

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use InvalidArgumentException;
+use JsonException;
 
 class DecodedDocument
 {
@@ -53,10 +56,10 @@ class DecodedDocument
 
     public static function fromJson(string $id, string $json): self
     {
-        $body = json_decode($json, true);
-
-        if (is_null($body)) {
-            throw new \InvalidArgumentException('The given JSON is not valid and can not be decoded.');
+        try {
+            $body = Json::decodeAssociatively($json);
+        } catch (JsonException $e) {
+            throw new InvalidArgumentException('The given JSON is not valid and can not be decoded.');
         }
 
         return new self($id, $body);
