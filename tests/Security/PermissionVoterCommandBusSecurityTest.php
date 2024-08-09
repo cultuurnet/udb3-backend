@@ -17,7 +17,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
     private string $godUserId;
 
     /**
-     * @var ResourceOwnerQuery|MockObject
+     * @var ResourceOwnerQuery&MockObject
      */
     private $permissionRepository;
 
@@ -49,7 +49,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
     {
         $security = $this->createSecurityForUserId($this->godUserId);
 
-        /** @var AuthorizableCommand|MockObject $authorizableCommand */
+        /** @var AuthorizableCommand&MockObject $authorizableCommand */
         $authorizableCommand = $this->createMock(AuthorizableCommand::class);
 
         $authorizableCommand->method('getItemId')

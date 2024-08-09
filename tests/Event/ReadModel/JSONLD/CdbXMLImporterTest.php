@@ -25,17 +25,17 @@ class CdbXMLImporterTest extends TestCase
     protected CdbXMLImporter $importer;
 
     /**
-     * @var OrganizerServiceInterface|MockObject
+     * @var OrganizerServiceInterface&MockObject
      */
     protected $organizerManager;
 
     /**
-     * @var PlaceServiceInterface|MockObject
+     * @var PlaceServiceInterface&MockObject
      */
     protected $placeManager;
 
     /**
-     * @var SluggerInterface|MockObject
+     * @var SluggerInterface&MockObject
      */
     protected $slugger;
 

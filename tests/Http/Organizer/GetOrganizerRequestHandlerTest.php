@@ -21,7 +21,7 @@ class GetOrganizerRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var DocumentRepository|MockObject */
+    /** @var DocumentRepository&MockObject */
     private $organizerRepository;
 
     private GetOrganizerRequestHandler $getOrganizerRequestHandler;

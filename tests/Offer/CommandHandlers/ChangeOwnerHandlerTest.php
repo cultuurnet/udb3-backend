@@ -26,7 +26,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
 {
     /**
-     * @var ResourceOwnerQuery|MockObject
+     * @var ResourceOwnerQuery&MockObject
      */
     private $permissionQuery;
 

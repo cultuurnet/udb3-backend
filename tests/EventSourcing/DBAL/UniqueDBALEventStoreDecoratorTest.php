@@ -26,7 +26,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     private UniqueDBALEventStoreDecorator $uniqueDBALEventStoreDecorator;
 
     /**
-     * @var UniqueConstraintService|MockObject
+     * @var UniqueConstraintService&MockObject
      */
     private $uniqueConstraintService;
 
@@ -36,7 +36,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     {
         $serializer = $this->createMock(Serializer::class);
 
-        /** @var AggregateAwareDBALEventStore|MockObject $dbalEventStore */
+        /** @var AggregateAwareDBALEventStore&MockObject $dbalEventStore */
         $dbalEventStore = $this
             ->getMockBuilder(AggregateAwareDBALEventStore::class)
             ->setConstructorArgs([$this->getConnection(), $serializer, $serializer, 'labelsEventStore', AggregateType::event()])

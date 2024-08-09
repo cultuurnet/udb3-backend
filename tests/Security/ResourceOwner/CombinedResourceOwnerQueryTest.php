@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 final class CombinedResourceOwnerQueryTest extends TestCase
 {
     /**
-     * @var ResourceOwnerQuery[]|MockObject[]
+     * @var ResourceOwnerQuery[]&MockObject[]
      */
     private $permissionQueries;
 
@@ -80,7 +80,7 @@ final class CombinedResourceOwnerQueryTest extends TestCase
 
     /**
      * @param string[] $editableOffers
-     * @return ResourceOwnerQuery|MockObject
+     * @return ResourceOwnerQuery&MockObject
      */
     private function createPermissionQuery(array $editableOffers)
     {

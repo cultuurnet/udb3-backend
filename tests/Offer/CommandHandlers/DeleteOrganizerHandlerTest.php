@@ -27,7 +27,7 @@ use Psr\Log\LoggerInterface;
 
 final class DeleteOrganizerHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /** @var CultureFeed_Uitpas|MockObject */
+    /** @var CultureFeed_Uitpas&MockObject */
     private $cultureFeedUitpas;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): DeleteOrganizerHandler

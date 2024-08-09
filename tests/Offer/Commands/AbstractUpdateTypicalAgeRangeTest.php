@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class AbstractUpdateTypicalAgeRangeTest extends TestCase
 {
     /**
-     * @var AbstractUpdateTypicalAgeRange|MockObject
+     * @var AbstractUpdateTypicalAgeRange&MockObject
      */
     protected $updateTypicalAgeRange;
 

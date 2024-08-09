@@ -17,7 +17,7 @@ class UpdateTypeRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var CommandBus|MockObject */
+    /** @var CommandBus&MockObject */
     private $commandBus;
     private UpdateTypeRequestHandler $updateTypeRequestHandler;
 

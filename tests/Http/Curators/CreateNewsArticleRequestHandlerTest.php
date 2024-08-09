@@ -26,7 +26,7 @@ final class CreateNewsArticleRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var NewsArticleRepository|MockObject */
+    /** @var NewsArticleRepository&MockObject */
     private $newsArticleRepository;
 
     private CreateNewsArticleRequestHandler $createNewsArticleRequestHandler;
@@ -37,7 +37,7 @@ final class CreateNewsArticleRequestHandlerTest extends TestCase
     {
         $this->newsArticleRepository = $this->createMock(NewsArticleRepository::class);
 
-        /** @var UuidGeneratorInterface|MockObject $uuidGenerator */
+        /** @var UuidGeneratorInterface&MockObject $uuidGenerator */
         $uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $uuidGenerator->method('generate')
             ->willReturn('6c583739-a848-41ab-b8a3-8f7dab6f8ee1');

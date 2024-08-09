@@ -20,7 +20,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
 {
     /**
-     * @var LabelServiceInterface|MockObject
+     * @var LabelServiceInterface&MockObject
      */
     private $labelService;
 

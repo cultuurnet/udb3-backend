@@ -16,7 +16,7 @@ use Ramsey\Uuid\Uuid;
 final class SearchProductionsRequestHandlerTest extends TestCase
 {
     /**
-     * @var ProductionRepository|MockObject
+     * @var ProductionRepository&MockObject
      */
     private $repository;
 

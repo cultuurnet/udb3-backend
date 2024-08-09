@@ -17,14 +17,14 @@ use Psr\Log\LoggerInterface;
 class GoogleMapsAddressParserTest extends TestCase
 {
     /**
-     * @var Geocoder|MockObject
+     * @var Geocoder&MockObject
      */
     private $geocoder;
 
     private GoogleMapsAddressParser $parser;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 

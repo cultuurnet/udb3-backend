@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 class LabelRolesProjectorTest extends TestCase
 {
     /**
-     * @var LabelRolesWriteRepositoryInterface|MockObject
+     * @var LabelRolesWriteRepositoryInterface&MockObject
      */
     private $labelRolesWriteRepository;
 

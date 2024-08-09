@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class AbstractUpdateDescriptionTest extends TestCase
 {
     /**
-     * @var AbstractUpdateDescription|MockObject
+     * @var AbstractUpdateDescription&MockObject
      */
     protected $updateDescriptionCommand;
 

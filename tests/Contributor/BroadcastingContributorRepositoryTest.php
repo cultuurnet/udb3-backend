@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 final class BroadcastingContributorRepositoryTest extends TestCase
 {
     /**
-     * @var ContributorRepository|MockObject
+     * @var ContributorRepository&MockObject
      */
     private $decoratee;
 

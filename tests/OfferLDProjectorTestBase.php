@@ -39,7 +39,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     protected RecordedOn $recordedOn;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     protected $organizerRepository;
 

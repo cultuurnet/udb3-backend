@@ -20,7 +20,7 @@ class AbstractPublishTest extends TestCase
             Chronos::now()->addWeek()->format(DATE_ATOM)
         );
 
-        /** @var AbstractPublish|MockObject $publishCommand */
+        /** @var AbstractPublish&MockObject $publishCommand */
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
             ['513b3060-c94c-4aef-bfaa-9ad4fc54d979', $futurePublicationDate]
@@ -40,7 +40,7 @@ class AbstractPublishTest extends TestCase
         $now = Chronos::now();
         Chronos::setTestNow($now);
 
-        /** @var AbstractPublish|MockObject $publishCommand */
+        /** @var AbstractPublish&MockObject $publishCommand */
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
             ['0399351f-89b6-4b16-981e-d4e71b8817e5']
@@ -63,7 +63,7 @@ class AbstractPublishTest extends TestCase
         $lastMonth = $now->subMonth();
         Chronos::setTestNow($now);
 
-        /** @var AbstractPublish|MockObject $publishCommand */
+        /** @var AbstractPublish&MockObject $publishCommand */
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
             ['b9cf614a-96b1-467e-831f-9f91224994bf', $lastMonth]

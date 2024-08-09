@@ -27,12 +27,12 @@ use PHPUnit\Framework\TestCase;
 class RoleLabelsProjectorTest extends TestCase
 {
     /**
-     * @var ReadRepositoryInterface|MockObject
+     * @var ReadRepositoryInterface&MockObject
      */
     private $labelJsonRepository;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $labelRolesRepository;
 
@@ -42,7 +42,7 @@ class RoleLabelsProjectorTest extends TestCase
     private $roleLabelsProjector;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $roleLabelsRepository;
 

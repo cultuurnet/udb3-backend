@@ -21,7 +21,7 @@ use Psr\Log\LoggerInterface;
 class EventExportCommandHandlerTest extends TestCase
 {
     /**
-     * @var EventExportServiceInterface|MockObject
+     * @var EventExportServiceInterface&MockObject
      */
     private $eventExportService;
 
@@ -31,12 +31,12 @@ class EventExportCommandHandlerTest extends TestCase
 
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 
     /**
-     * @var CalendarSummaryRepositoryInterface|MockObject
+     * @var CalendarSummaryRepositoryInterface&MockObject
      */
     private $calendarSummary;
 

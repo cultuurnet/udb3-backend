@@ -28,12 +28,12 @@ use Ramsey\Uuid\Uuid;
 class CompositeDomainMessageEnricherTest extends TestCase
 {
     /**
-     * @var DomainMessageEnricherInterface|MockObject
+     * @var DomainMessageEnricherInterface&MockObject
      */
     private $eventCreatedEnricher;
 
     /**
-     * @var DomainMessageEnricherInterface|MockObject
+     * @var DomainMessageEnricherInterface&MockObject
      */
     private $placeCreatedEnricher;
 

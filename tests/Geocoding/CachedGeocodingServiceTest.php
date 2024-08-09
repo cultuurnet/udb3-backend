@@ -18,7 +18,7 @@ class CachedGeocodingServiceTest extends TestCase
     private ArrayCache $cache;
 
     /**
-     * @var GeocodingService|MockObject
+     * @var GeocodingService&MockObject
      */
     private $decoratee;
 

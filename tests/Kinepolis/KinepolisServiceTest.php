@@ -64,47 +64,47 @@ final class KinepolisServiceTest extends TestCase
     private TraceableCommandBus $commandBus;
 
     /**
-     * @var Repository|MockObject
+     * @var Repository&MockObject
      */
     private $repository;
 
     /**
-     * @var KinepolisClient|MockObject
+     * @var KinepolisClient&MockObject
      */
     private $client;
 
     /**
-     * @var MovieParser|MockObject
+     * @var MovieParser&MockObject
      */
     private $movieParser;
 
     /**
-     * @var PriceParser|MockObject
+     * @var PriceParser&MockObject
      */
     private $priceParser;
 
     /**
-     * @var MappingRepository|MockObject
+     * @var MappingRepository&MockObject
      */
     private $mappingRepository;
 
     /**
-     * @var UuidGeneratorInterface|MockObject
+     * @var UuidGeneratorInterface&MockObject
      */
     private $uuidGenerator;
 
     /**
-     * @var TrailerRepository|MockObject
+     * @var TrailerRepository&MockObject
      */
     private $trailerRepository;
 
     /**
-     * @var ImageUploaderInterface|MockObject
+     * @var ImageUploaderInterface&MockObject
      */
     private $imageUploader;
 
     /**
-     * @var ProductionRepository|MockObject
+     * @var ProductionRepository&MockObject
      */
     private $productionRepository;
 

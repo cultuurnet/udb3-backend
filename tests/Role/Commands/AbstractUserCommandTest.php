@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class AbstractUserCommandTest extends TestCase
 {
     /**
-     * @var AbstractUserCommand|MockObject
+     * @var AbstractUserCommand&MockObject
      * III-5812 Add native TypeHint once upgrading to PHP 8
      */
     private $abstractUserCommand;

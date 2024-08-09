@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 class AbstractLabelCommandTest extends TestCase
 {
     /**
-     * @var AbstractLabelCommand|MockObject
+     * @var AbstractLabelCommand&MockObject
      */
     protected $labelCommand;
 

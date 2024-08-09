@@ -40,7 +40,7 @@ final class AddImageRequestHandlerTest extends TestCase
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
-    /** @var Repository|MockObject */
+    /** @var Repository&MockObject */
     private $imageRepository;
 
     protected function setUp(): void

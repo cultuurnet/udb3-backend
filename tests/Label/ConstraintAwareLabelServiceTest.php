@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 class ConstraintAwareLabelServiceTest extends TestCase
 {
     /**
-     * @var UuidGeneratorInterface|MockObject
+     * @var UuidGeneratorInterface&MockObject
      */
     private $uuidGenerator;
 

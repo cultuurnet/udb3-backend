@@ -16,14 +16,14 @@ use PHPUnit\Framework\TestCase;
 class ResqueCommandBusTest extends TestCase
 {
     /**
-     * @var CommandBus|ContextAwareInterface|MockObject
+     * @var CommandBus&ContextAwareInterface&MockObject
      */
     protected $decoratedCommandBus;
 
     protected ResqueCommandBus $commandBus;
 
     /**
-     * @var EventDispatcher|MockObject
+     * @var EventDispatcher&MockObject
      */
     protected $dispatcher;
 

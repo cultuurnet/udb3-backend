@@ -17,12 +17,12 @@ final class ContributorVoterTest extends TestCase
     private ContributorVoter $contributorVoter;
 
     /**
-     * @var UserEmailAddressRepository|MockObject
+     * @var UserEmailAddressRepository&MockObject
      */
     private $userEmailAddressRepository;
 
     /**
-     * @var ContributorRepository|MockObject
+     * @var ContributorRepository&MockObject
      */
     private $contributorRepository;
 

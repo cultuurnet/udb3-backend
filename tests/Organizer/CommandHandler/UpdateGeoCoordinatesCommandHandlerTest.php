@@ -27,7 +27,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     /**
-     * @var GeocodingService|MockObject
+     * @var GeocodingService&MockObject
      */
     private $geocodingService;
 

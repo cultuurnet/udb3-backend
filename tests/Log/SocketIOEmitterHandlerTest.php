@@ -14,7 +14,7 @@ class SocketIOEmitterHandlerTest extends TestCase
     protected SocketIOEmitterHandler $handler;
 
     /**
-     * @var Emitter|MockObject
+     * @var Emitter&MockObject
      */
     protected $emitter;
 

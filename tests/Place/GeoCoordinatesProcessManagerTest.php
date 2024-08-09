@@ -36,21 +36,21 @@ use Psr\Log\LoggerInterface;
 class GeoCoordinatesProcessManagerTest extends TestCase
 {
     /**
-     * @var CommandBus|MockObject
+     * @var CommandBus&MockObject
      */
     private $commandBus;
 
     private CultureFeedAddressFactoryInterface $addressFactory;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 
     private GeoCoordinatesProcessManager $processManager;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $documentRepository;
 
@@ -142,7 +142,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             )
         );
 
-        /** @var CultureFeedAddressFactory|MockObject $addressFactory */
+        /** @var CultureFeedAddressFactory&MockObject $addressFactory */
         $addressFactory = $this->createMock(CultureFeedAddressFactoryInterface::class);
 
         $documentRepository = $this->createMock(DocumentRepository::class);

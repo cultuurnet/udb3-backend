@@ -24,7 +24,7 @@ use Psr\Log\NullLogger;
 class GeoCoordinatesProcessManagerTest extends TestCase
 {
     /**
-     * @var CommandBus|MockObject
+     * @var CommandBus&MockObject
      */
     private $commandBus;
 

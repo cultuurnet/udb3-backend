@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 class UserPermissionsProjectorTest extends TestCase
 {
     /**
-     * @var UserPermissionsWriteRepositoryInterface|MockObject
+     * @var UserPermissionsWriteRepositoryInterface&MockObject
      */
     private $userPermissionsWriteRepository;
 

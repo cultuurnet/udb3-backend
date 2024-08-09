@@ -16,7 +16,7 @@ class AbstractPermissionCommandTest extends TestCase
     private Permission $rolePermission;
 
     /**
-     * @var AbstractPermissionCommand|MockObject
+     * @var AbstractPermissionCommand&MockObject
      */
     private $abstractPermissionCommand;
 

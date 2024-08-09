@@ -19,7 +19,7 @@ class DummyPlaceProjectionEnricherTest extends TestCase
     private $enricher;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $repository;
 

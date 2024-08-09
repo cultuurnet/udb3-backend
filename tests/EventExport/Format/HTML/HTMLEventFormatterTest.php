@@ -420,11 +420,11 @@ class HTMLEventFormatterTest extends TestCase
     }
 
     /**
-     * @return CalendarSummaryRepositoryInterface|MockObject
+     * @return CalendarSummaryRepositoryInterface&MockObject
      */
     private function getCalendarSummaryRepositoryWhichReturns(string $id, string $calendarSummary)
     {
-        /* @var CalendarSummaryRepositoryInterface|MockObject $repository */
+        /* @var CalendarSummaryRepositoryInterface&MockObject $repository */
         $repository = $this->createMock(CalendarSummaryRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('get')
@@ -456,7 +456,7 @@ class HTMLEventFormatterTest extends TestCase
     ): void {
         $eventWithoutImage = $this->getJSONEventFromFile('event_without_image.json');
 
-        /* @var EventInfoServiceInterface|MockObject $uitpas */
+        /* @var EventInfoServiceInterface&MockObject $uitpas */
         $uitpas = $this->createMock(EventInfoServiceInterface::class);
 
         $prices = $priceData['original'];

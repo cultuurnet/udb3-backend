@@ -16,7 +16,7 @@ class ContextEnrichingLoggerTest extends TestCase
      */
     public function it_passes_additional_context_to_the_decorated_logger(): void
     {
-        /** @var LoggerInterface|MockObject $decoratedLogger */
+        /** @var LoggerInterface&MockObject $decoratedLogger */
         $decoratedLogger = $this->createMock(LoggerInterface::class);
         $additionalContext = [
             'job_id' => 1,

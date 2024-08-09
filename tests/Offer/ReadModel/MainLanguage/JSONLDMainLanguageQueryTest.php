@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 class JSONLDMainLanguageQueryTest extends TestCase
 {
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $documentRepository;
 

@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 final class BroadcastingProductionRepositoryTest extends TestCase
 {
     /**
-     * @var ProductionRepository|MockObject
+     * @var ProductionRepository&MockObject
      */
     private $decoratee;
 

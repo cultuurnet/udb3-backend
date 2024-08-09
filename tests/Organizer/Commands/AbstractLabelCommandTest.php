@@ -17,7 +17,7 @@ class AbstractLabelCommandTest extends TestCase
     private Label $label;
 
     /**
-     * @var AbstractLabelCommand|MockObject
+     * @var AbstractLabelCommand&MockObject
      */
     private $abstractLabelCommand;
 

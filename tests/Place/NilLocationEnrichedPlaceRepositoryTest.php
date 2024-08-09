@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +17,7 @@ final class NilLocationEnrichedPlaceRepositoryTest extends TestCase
 {
     private NilLocationEnrichedPlaceRepository $nilLocationEnrichedPlaceRepository;
 
-    /** @var InMemoryDocumentRepository|MockObject  */
+    /** @var DocumentRepository&MockObject  */
     private $placeRepository;
 
     protected function setUp(): void

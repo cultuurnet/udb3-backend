@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 class AbstractUpdateBookingInfoTest extends TestCase
 {
     /**
-     * @var AbstractUpdateBookingInfo|MockObject
+     * @var AbstractUpdateBookingInfo&MockObject
      */
     protected $updateBookingInfo;
 

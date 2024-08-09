@@ -44,12 +44,12 @@ final class ProjectorTest extends TestCase
     private string $relationId;
 
     /**
-     * @var WriteRepositoryInterface|MockObject
+     * @var WriteRepositoryInterface&MockObject
      */
     private $writeRepository;
 
     /**
-     * @var RelationsReadRepositoryInterface|MockObject
+     * @var RelationsReadRepositoryInterface&MockObject
      */
     private $relationsReadRepository;
 

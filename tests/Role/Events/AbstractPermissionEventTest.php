@@ -16,7 +16,7 @@ class AbstractPermissionEventTest extends TestCase
     protected Permission $permission;
 
     /**
-     * @var AbstractPermissionEvent|MockObject
+     * @var AbstractPermissionEvent&MockObject
      */
     protected $event;
 
