@@ -25,7 +25,7 @@ class SearchOwnershipRequestHandlerTest extends TestCase
 
     private InMemoryDocumentRepository $ownershipRepository;
 
-    /** @var InMemoryDocumentRepository|MockObject */
+    /** @var OwnershipSearchRepository&MockObject */
     private $ownershipSearchRepository;
 
     private SearchOwnershipRequestHandler $getOwnershipRequestHandler;
