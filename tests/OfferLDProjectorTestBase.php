@@ -109,8 +109,8 @@ abstract class OfferLDProjectorTestBase extends TestCase
         $urlLabel = new MultilingualString(new Language('nl'), 'Google');
         $phone = '045';
         $email = 'test@test.com';
-        $availabilityStarts = \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00');
-        $availabilityEnds = \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-31T00:00:00+01:00');
+        $availabilityStarts = DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00');
+        $availabilityEnds = DateTimeFactory::fromAtom('2018-01-31T00:00:00+01:00');
         $bookingInfo = new BookingInfo($url, $urlLabel, $phone, $email, $availabilityStarts, $availabilityEnds);
         $eventClass = $this->getEventClass('BookingInfoUpdated');
         $bookingInfoUpdated = new $eventClass($id, $bookingInfo);

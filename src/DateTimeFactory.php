@@ -43,4 +43,15 @@ final class DateTimeFactory
         // Throw a specific exception, so that it can be converted to a suitable ApiProblem higher up.
         throw new DateTimeInvalid($datetime . ' does not appear to be a valid ISO-8601 datetime string.');
     }
+
+    public static function fromAtom(string $datetime): DateTimeImmutable
+    {
+        $object = DateTimeImmutable::createFromFormat(DateTimeImmutable::ATOM, $datetime);
+
+        if ($object instanceof DateTimeImmutable) {
+            return $object;
+        }
+
+        throw new DateTimeInvalid($datetime . ' does not appear to be a valid ATOM datetime string.');
+    }
 }

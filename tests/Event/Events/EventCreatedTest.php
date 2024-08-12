@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
@@ -13,7 +14,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
-use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
 class EventCreatedTest extends TestCase
@@ -302,10 +302,7 @@ class EventCreatedTest extends TestCase
                         CalendarType::PERMANENT()
                     ),
                     null,
-                    DateTimeImmutable::createFromFormat(
-                        DateTimeInterface::ATOM,
-                        '2016-08-01T00:00:00+02:00'
-                    )
+                    DateTimeFactory::fromAtom('2016-08-01T00:00:00+02:00')
                 ),
             ],
         ];

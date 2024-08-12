@@ -69,4 +69,54 @@ class DateTimeFactoryTest extends TestCase
             'just_a_date' => ['dateTime' => '2022-02-28'],
         ];
     }
+
+    /**
+     * @test
+     * @dataProvider validAtomDataProvider
+     */
+    public function it_creates_a_date_time_object_from_a_valid_atom_string(string $given, string $expected): void
+    {
+        $object = DateTimeFactory::fromAtom($given)->setTimezone(new DateTimeZone('Europe/Brussels'));
+        $datetime = $object->format(DATE_ATOM);
+        $this->assertEquals($expected, $datetime);
+    }
+
+    public function validAtomDataProvider(): array
+    {
+        return [
+            'utc' => [
+                'given' => '2024-04-08T18:00:00Z',
+                'expected' => '2024-04-08T20:00:00+02:00',
+            ],
+            'offset_positive' => [
+                'given' => '2024-04-08T18:00:00+02:00',
+                'expected' => '2024-04-08T18:00:00+02:00',
+            ],
+            'offset_negative' => [
+                'given' => '2024-04-08T18:00:00-04:00',
+                'expected' => '2024-04-09T00:00:00+02:00',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidAtomDateTimeProvider
+     */
+    public function it_throws_when_given_an_invalid_atom_string(string $invalidDateTime): void
+    {
+        $this->expectException(DateTimeInvalid::class);
+        DateTimeFactory::fromAtom($invalidDateTime);
+    }
+
+    public function invalidAtomDateTimeProvider(): array
+    {
+        return [
+            'no_timezone' => ['dateTime' => '2022-02-28T13:23:47'],
+            'no_T' => ['dateTime' => '2022-02-28 13:23:47+01:30'],
+            'just_a_date' => ['dateTime' => '2022-02-28'],
+            'zulu' => ['dateTime' => '2024-04-08T18:00:00.500Z'],
+            'seconds' => ['dateTime' => '2024-04-08T18:00:00.250+01:00'],
+        ];
+    }
 }
