@@ -28,10 +28,7 @@ class EventCreatedTest extends TestCase
     {
         $this->location = new LocationId('335be568-aaf0-4147-80b6-9267daafe23b');
 
-        $this->publicationDate = DateTimeImmutable::createFromFormat(
-            \DateTime::ISO8601,
-            '2016-08-01T00:00:00+0200'
-        );
+        $this->publicationDate = DateTimeFactory::fromISO8601('2016-08-01T00:00:00+0200');
 
         $this->eventCreated = new EventCreated(
             'id',

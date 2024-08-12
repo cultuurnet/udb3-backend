@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
@@ -132,8 +133,8 @@ trait EventFromUDB2
 
         if ($calendarType === 'periods') {
             $dateRange = new DateRange(
-                \DateTimeImmutable::createFromFormat('Y-m-d', $calendarAsArray['periods'][0]['period'][0]['datefrom'][0]['_text']),
-                \DateTimeImmutable::createFromFormat('Y-m-d', $calendarAsArray['periods'][0]['period'][0]['dateto'][0]['_text'])
+                DateTimeFactory::fromFormat('Y-m-d', $calendarAsArray['periods'][0]['period'][0]['datefrom'][0]['_text']),
+                DateTimeFactory::fromFormat('Y-m-d', $calendarAsArray['periods'][0]['period'][0]['dateto'][0]['_text'])
             );
 
             $openingHours = $this->getOpeningHours($calendarAsArray['periods'][0]['period'][0]);
@@ -151,8 +152,8 @@ trait EventFromUDB2
                     $startTime;
             $subEvents[] = new SubEvent(
                 new DateRange(
-                    \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s', $startTime, new DateTimeZone('Europe/Brussels')),
-                    \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s', $endTime, new DateTimeZone('Europe/Brussels'))
+                    DateTimeFactory::fromFormat('Y-m-d\TH:i:s', $startTime, new DateTimeZone('Europe/Brussels')),
+                    DateTimeFactory::fromFormat('Y-m-d\TH:i:s', $endTime, new DateTimeZone('Europe/Brussels'))
                 ),
                 new Status(
                     StatusType::Available()
@@ -230,7 +231,7 @@ trait EventFromUDB2
         if ($wfstatus === 'readyforvalidation') {
             return new Published(
                 $this->eventId,
-                \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s', $lastUpdated, new DateTimeZone('Europe/Brussels')),
+                DateTimeFactory::fromFormat('Y-m-d\TH:i:s', $lastUpdated, new DateTimeZone('Europe/Brussels')),
             );
         }
 

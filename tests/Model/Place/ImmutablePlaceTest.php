@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Place;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -66,8 +67,8 @@ class ImmutablePlaceTest extends TestCase
         $calendar = new SingleSubEventCalendar(
             new SubEvent(
                 new DateRange(
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
+                    DateTimeFactory::fromFormat('d/m/Y', '10/01/2018'),
+                    DateTimeFactory::fromFormat('d/m/Y', '11/01/2018')
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available())

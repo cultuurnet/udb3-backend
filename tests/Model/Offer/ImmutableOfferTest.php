@@ -627,8 +627,8 @@ class ImmutableOfferTest extends TestCase
         return new SingleSubEventCalendar(
             new SubEvent(
                 new DateRange(
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
+                    DateTimeFactory::fromFormat('d/m/Y', '10/01/2018'),
+                    DateTimeFactory::fromFormat('d/m/Y', '11/01/2018')
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available())
