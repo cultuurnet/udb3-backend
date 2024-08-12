@@ -1,7 +1,4 @@
-version: "3.5"
-
 services:
-
   php:
     build: docker/php
     container_name: php.uitdatabank
