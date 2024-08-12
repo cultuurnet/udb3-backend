@@ -88,7 +88,7 @@ class EventDenormalizerTest extends TestCase
     private $denormalizer;
 
     /**
-     * @var MockObject|UuidFactoryInterface
+     * @var UuidFactoryInterface&MockObject
      */
     private $uuidFactory;
 
