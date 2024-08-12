@@ -36,9 +36,9 @@ trait DBALTestConnectionTrait
         $configFile = __DIR__ . '/../config.php';
         $configuration = file_exists($configFile) ? (include $configFile)['database'] : [
             'driver' => 'pdo_mysql',
+            'host' => '127.0.0.1',
             'user' => 'vagrant',
             'password' => 'vagrant',
-            'host' => 'localhost',
         ];
 
         $this->connectionConfiguration = array_merge($configuration, [
