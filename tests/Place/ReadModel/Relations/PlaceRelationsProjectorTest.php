@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Place\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Place\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -48,7 +49,7 @@ final class PlaceRelationsProjectorTest extends TestCase
      */
     public function it_stores_empty_relation_when_place_imported_from_udb2(): void
     {
-        $xml = file_get_contents(__DIR__ . '/place_imported_from_udb2.cdbxml.xml');
+        $xml = SampleFiles::read(__DIR__ . '/place_imported_from_udb2.cdbxml.xml');
 
         $placeCreatedFromCdbXml = new PlaceImportedFromUDB2(
             self::PLACE_ID,

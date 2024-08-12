@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
 
 final class UpdateAttendanceModeHandlerTest extends CommandHandlerScenarioTestCase
@@ -59,7 +60,7 @@ final class UpdateAttendanceModeHandlerTest extends CommandHandlerScenarioTestCa
                 [
                     new EventImportedFromUDB2(
                         $eventId,
-                        file_get_contents(__DIR__ . '/../samples/EventTest.cdbxml.xml'),
+                        SampleFiles::read(__DIR__ . '/../samples/EventTest.cdbxml.xml'),
                         CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2')
                     ),
                 ]

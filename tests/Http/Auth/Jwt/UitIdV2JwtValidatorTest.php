@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Auth\Jwt;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 class UitIdV2JwtValidatorTest extends TestCase
@@ -14,7 +15,7 @@ class UitIdV2JwtValidatorTest extends TestCase
     protected function setUp(): void
     {
         $this->v2Validator = new UitIdV2JwtValidator(
-            file_get_contents(__DIR__ . '/samples/public.pem'),
+            SampleFiles::read(__DIR__ . '/samples/public.pem'),
             ['mock-issuer'],
             'vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'
         );

@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
+use CultuurNet\UDB3\SampleFiles;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -55,7 +56,7 @@ class CdbXMLImporterTest extends TestCase
      */
     private function createJsonPlaceFromCdbXml($fileName, $version = '3.2')
     {
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/' . $fileName
         );
 
@@ -78,7 +79,7 @@ class CdbXMLImporterTest extends TestCase
      */
     private function createJsonPlaceFromCdbXmlWithWeekScheme($fileName)
     {
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/Calendar/' . $fileName
         );
 

@@ -68,6 +68,7 @@ use CultuurNet\UDB3\OfferLDProjectorTestBase;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -266,7 +267,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $recordedOn = '2022-01-20T13:25:21+01:00';
 
-        $jsonLD = Json::decode(file_get_contents(__DIR__ . '/copied_event_with_place_type.json'));
+        $jsonLD = Json::decode(SampleFiles::read(__DIR__ . '/copied_event_with_place_type.json'));
         $jsonLD->created = $recordedOn;
         $jsonLD->modified = $recordedOn;
         $jsonLD->playhead = 1;
@@ -487,7 +488,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             DateTime::fromString($recordedOn)
         );
 
-        $expectedJsonLD = Json::decode(file_get_contents(__DIR__ . '/copied_event.json'));
+        $expectedJsonLD = Json::decode(SampleFiles::read(__DIR__ . '/copied_event.json'));
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = '20a72430-7e3e-4b75-ab59-043156b3169c';
@@ -524,7 +525,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             DateTime::fromString($recordedOn)
         );
 
-        $expectedJsonLD = Json::decode(file_get_contents(__DIR__ . '/copied_event_without_working_hours.json'));
+        $expectedJsonLD = Json::decode(SampleFiles::read(__DIR__ . '/copied_event_without_working_hours.json'));
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = $userId;
@@ -766,7 +767,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         // add the event json to memory
         $this->documentRepository->save(new JsonDocument(
             CdbXMLEventFactory::AN_EVENT_ID,
-            file_get_contents(
+            SampleFiles::read(
                 __DIR__ . '/../../samples/event_with_udb3_place.json'
             )
         ));
@@ -1879,7 +1880,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $eventUpdatedFromUDB2 = new EventUpdatedFromUDB2(
             'foo',
-            file_get_contents(__DIR__ . '/../../samples/event_with_photo.cdbxml.xml'),
+            SampleFiles::read(__DIR__ . '/../../samples/event_with_photo.cdbxml.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
 

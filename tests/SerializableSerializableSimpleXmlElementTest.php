@@ -14,7 +14,7 @@ final class SerializableSerializableSimpleXmlElementTest extends TestCase
     public function it_can_serialize_a_complex_xml(): void
     {
         $cdbXml = new SerializableSimpleXmlElement(
-            file_get_contents(__DIR__ . '/Place/actor.xml'),
+            SampleFiles::read(__DIR__ . '/Place/actor.xml'),
             0,
             false,
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'

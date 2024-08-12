@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Cdb;
 
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 class ActorItemFactoryTest extends TestCase
@@ -46,7 +47,7 @@ class ActorItemFactoryTest extends TestCase
         );
         $expected->setCategories($categoryList);
 
-        $cdbXml = file_get_contents(__DIR__ . '/samples/actor.xml');
+        $cdbXml = SampleFiles::read(__DIR__ . '/samples/actor.xml');
 
         $this->assertEquals(
             $expected,

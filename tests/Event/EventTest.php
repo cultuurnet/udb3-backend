@@ -58,6 +58,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
@@ -1283,7 +1284,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new LegacyLanguage('en')
         );
 
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/samples/event_entryapi_valid_with_keywords.xml'
         );
 
@@ -1317,7 +1318,7 @@ class EventTest extends AggregateRootScenarioTestCase
      */
     public function it_removes_images(): void
     {
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/samples/event_entryapi_valid_with_keywords.xml'
         );
 
@@ -1367,7 +1368,7 @@ class EventTest extends AggregateRootScenarioTestCase
      */
     public function it_silently_ignores_an_image_removal_request_when_image_is_not_present(): void
     {
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/samples/event_entryapi_valid_with_keywords.xml'
         );
 
@@ -2046,7 +2047,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
     protected function getSample(string $file): string
     {
-        return file_get_contents(
+        return SampleFiles::read(
             __DIR__ . '/samples/' . $file
         );
     }

@@ -11,13 +11,14 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 class TabularDataEventFormatterTest extends TestCase
 {
     private function getJSONEventFromFile(string $fileName): string
     {
-        return file_get_contents(__DIR__ . '/../../samples/' . $fileName);
+        return SampleFiles::read(__DIR__ . '/../../samples/' . $fileName);
     }
 
     /**

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 class CalendarForEventDataValidatorTest extends TestCase
@@ -27,7 +28,7 @@ class CalendarForEventDataValidatorTest extends TestCase
     public function it_does_not_throw_for_valid_calendars(string $file): void
     {
         $data = Json::decodeAssociatively(
-            file_get_contents(__DIR__ . '/samples/' . $file)
+            SampleFiles::read(__DIR__ . '/samples/' . $file)
         );
 
         $this->calendarForEventDataValidator->validate($data);

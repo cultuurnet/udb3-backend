@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\SampleFiles;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Uri;
@@ -44,7 +45,7 @@ class Sapi3SearchServiceTest extends TestCase
      */
     public function it_should_fetch_search_results_from_sapi_3(): void
     {
-        $searchResponse = new Response(200, [], file_get_contents(__DIR__ . '/samples/search-response.json'));
+        $searchResponse = new Response(200, [], SampleFiles::read(__DIR__ . '/samples/search-response.json'));
 
         $expectedRequest = new Request(
             'GET',
@@ -83,7 +84,7 @@ class Sapi3SearchServiceTest extends TestCase
      */
     public function it_should_properly_encode_plus_signs_in_queries(): void
     {
-        $searchResponse = new Response(200, [], file_get_contents(__DIR__ . '/samples/search-response.json'));
+        $searchResponse = new Response(200, [], SampleFiles::read(__DIR__ . '/samples/search-response.json'));
 
         $expectedRequest = new Request(
             'GET',

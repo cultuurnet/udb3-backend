@@ -14,6 +14,7 @@ use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\SampleFiles;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -168,7 +169,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event.ttl'), $turtle);
     }
 
     /**
@@ -184,7 +185,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-description.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-description.ttl'), $turtle);
     }
 
     /**
@@ -206,7 +207,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-translations.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-translations.ttl'), $turtle);
     }
 
     /**
@@ -236,7 +237,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-calendar-permanent-and-opening-hours.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-calendar-permanent-and-opening-hours.ttl'), $turtle);
     }
 
     /**
@@ -252,7 +253,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-calendar-periodic.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-calendar-periodic.ttl'), $turtle);
     }
 
     /**
@@ -294,7 +295,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-calendar-periodic-and-opening-hours.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-calendar-periodic-and-opening-hours.ttl'), $turtle);
     }
 
     /**
@@ -310,7 +311,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-calendar-single.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-calendar-single.ttl'), $turtle);
     }
 
     /**
@@ -336,7 +337,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-calendar-multiple.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-calendar-multiple.ttl'), $turtle);
     }
 
     /**
@@ -372,7 +373,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/' . $file), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/' . $file), $turtle);
     }
 
     public function workflowStatusDataProvider(): array
@@ -413,7 +414,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-publication-date.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-publication-date.ttl'), $turtle);
     }
 
     /**
@@ -436,7 +437,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-location.ttl'), $turtle);
     }
 
     /**
@@ -482,7 +483,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-name.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-location-name.ttl'), $turtle);
     }
 
     /**
@@ -508,7 +509,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-location.ttl'), $turtle);
     }
 
     /**
@@ -544,7 +545,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-multiple-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-location-and-multiple-calendar.ttl'), $turtle);
     }
 
     /**
@@ -583,7 +584,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-name-and-multiple-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-location-name-and-multiple-calendar.ttl'), $turtle);
     }
 
     /**
@@ -609,7 +610,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-and-single-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-location-and-single-calendar.ttl'), $turtle);
     }
 
     /**
@@ -638,7 +639,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-location-name-and-single-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-location-name-and-single-calendar.ttl'), $turtle);
     }
 
     /**
@@ -659,7 +660,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-single-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/online-event-with-online-url-and-single-calendar.ttl'), $turtle);
     }
 
     /**
@@ -679,7 +680,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/online-event-with-single-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/online-event-with-single-calendar.ttl'), $turtle);
     }
 
     /**
@@ -710,7 +711,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-multiple-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/online-event-with-online-url-and-multiple-calendar.ttl'), $turtle);
     }
 
     /**
@@ -729,7 +730,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/online-event-with-online-url-and-permanent-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/online-event-with-online-url-and-permanent-calendar.ttl'), $turtle);
     }
 
     /**
@@ -747,7 +748,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/online-event-with-permanent-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/online-event-with-permanent-calendar.ttl'), $turtle);
     }
 
     /**
@@ -765,7 +766,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/mixed-event-with-permanent-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/mixed-event-with-permanent-calendar.ttl'), $turtle);
     }
 
     /**
@@ -785,7 +786,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/mixed-event-with-single-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/mixed-event-with-single-calendar.ttl'), $turtle);
     }
 
     /**
@@ -804,7 +805,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-permanent-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/mixed-event-with-online-url-and-permanent-calendar.ttl'), $turtle);
     }
 
     /**
@@ -825,7 +826,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-single-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/mixed-event-with-online-url-and-single-calendar.ttl'), $turtle);
     }
 
     /**
@@ -856,7 +857,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/mixed-event-with-online-url-and-multiple-calendar.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/mixed-event-with-online-url-and-multiple-calendar.ttl'), $turtle);
     }
 
     /**
@@ -872,7 +873,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-organizer.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-organizer.ttl'), $turtle);
     }
 
     /**
@@ -888,7 +889,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'), $turtle);
     }
 
     /**
@@ -907,7 +908,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'), $turtle);
     }
 
     /**
@@ -929,7 +930,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-dummy-organizer-with-contact-point.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-organizer-with-contact-point.ttl'), $turtle);
     }
 
     /**
@@ -956,7 +957,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-contact-point.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-contact-point.ttl'), $turtle);
     }
 
     /**
@@ -977,7 +978,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-booking-info.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-booking-info.ttl'), $turtle);
     }
 
     /**
@@ -998,7 +999,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-labels.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-labels.ttl'), $turtle);
     }
 
     /**
@@ -1032,7 +1033,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-price-info.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-price-info.ttl'), $turtle);
     }
 
     /**
@@ -1061,7 +1062,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-videos.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-videos.ttl'), $turtle);
     }
 
     /**
@@ -1085,7 +1086,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/event-with-media-object.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-media-object.ttl'), $turtle);
     }
 
     private function givenThereIsAnEvent(array $extraProperties = []): void

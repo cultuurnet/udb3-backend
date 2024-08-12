@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\SampleFiles;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
@@ -222,7 +223,7 @@ final class KinepolisMovieParserTest extends TestCase
                 ))->withDescription(new Description($description)),
             ],
             $this->parser->getParsedMovies(
-                Json::decodeAssociatively(file_get_contents(__DIR__ . '/../samples/KinepolisMovieDetailResponse.json')),
+                Json::decodeAssociatively(SampleFiles::read(__DIR__ . '/../samples/KinepolisMovieDetailResponse.json')),
                 [
                     'KOOST' => new ParsedPriceForATheater(
                         1000,
@@ -372,7 +373,7 @@ final class KinepolisMovieParserTest extends TestCase
                 ),
             ],
             $this->parser->getParsedMovies(
-                Json::decodeAssociatively(file_get_contents(__DIR__ . '/../samples/KinepolisMovieDetailResponseWithEmptyDescription.json')),
+                Json::decodeAssociatively(SampleFiles::read(__DIR__ . '/../samples/KinepolisMovieDetailResponseWithEmptyDescription.json')),
                 [
                     'KOOST' => new ParsedPriceForATheater(
                         1000,
