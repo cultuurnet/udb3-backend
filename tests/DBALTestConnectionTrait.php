@@ -33,15 +33,21 @@ trait DBALTestConnectionTrait
             );
         }
 
-        $configuration = include __DIR__ . '/../config.php';
-        $this->connectionConfiguration = array_merge($configuration['database'] ?? [], [
+        $configFile = __DIR__ . '/../config.php';
+        $configuration = file_exists($configFile) ? (include $configFile)['database'] : [
+            'driver' => 'pdo_mysql',
+            'user' => 'vagrant',
+            'password' => 'vagrant',
+            'host' => 'localhost',
+        ];
+
+        $this->connectionConfiguration = array_merge($configuration, [
             'dbname' => 'udb3_test',
         ]);
 
         $this->connection = DriverManager::getConnection(
             $this->connectionConfiguration
         );
-
     }
 
     public function getConnection(): Connection
