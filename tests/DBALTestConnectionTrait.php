@@ -39,6 +39,7 @@ trait DBALTestConnectionTrait
             'host' => '127.0.0.1',
             'user' => 'vagrant',
             'password' => 'vagrant',
+            'port' => getenv('DATABASE_PORT') ?: 3306,
         ];
 
         $this->connectionConfiguration = array_merge($configuration, [

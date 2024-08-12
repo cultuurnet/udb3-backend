@@ -57,6 +57,8 @@ jobs:
 
             - name: ✅ Run tests
               run: composer test
+              env:
+                DATABASE_PORT: ${{ job.services.mysql.ports['3306'] }}
 
     cs:
         runs-on: ubuntu-latest
