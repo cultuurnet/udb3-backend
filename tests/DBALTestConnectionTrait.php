@@ -13,6 +13,7 @@ use PDO;
 trait DBALTestConnectionTrait
 {
     private ?Connection $connection = null;
+    private array $connectionConfiguration;
 
     protected function initializeConnection(): void
     {
@@ -27,11 +28,15 @@ trait DBALTestConnectionTrait
             );
         }
 
+        $configuration = include __DIR__ . '/../config.php';
+        $this->connectionConfiguration = array_merge($configuration['database'] ?? [], [
+            'dbname' => 'udb3_test',
+        ]);
+
         $this->connection = DriverManager::getConnection(
-            [
-                'url' => 'sqlite:///:memory:',
-            ]
+            $this->connectionConfiguration
         );
+
     }
 
     public function getConnection(): Connection
@@ -51,5 +56,10 @@ trait DBALTestConnectionTrait
     public function createTable(Table $table): void
     {
         $this->getConnection()->getSchemaManager()->createTable($table);
+    }
+
+    public function recreateDatabase()
+    {
+        $this->getConnection()->getSchemaManager()->dropAndCreateDatabase($this->connectionConfiguration['dbname']);
     }
 }
