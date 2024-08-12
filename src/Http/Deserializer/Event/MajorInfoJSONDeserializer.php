@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForEventDataValidator;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Http\Deserializer\Theme\ThemeJSONDeserializer;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 /**
@@ -49,9 +50,9 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
         $data = parent::deserialize($data);
         $this->validator->validate($data);
 
-        $type = $this->typeDeserializer->deserialize(json_encode($data['type']));
+        $type = $this->typeDeserializer->deserialize(Json::encode($data['type']));
 
-        $calendar = $this->calendarDeserializer->deserialize(json_encode($data['calendar']));
+        $calendar = $this->calendarDeserializer->deserialize(Json::encode($data['calendar']));
 
         $locationId = $data['location'];
         if (is_array($locationId) && isset($locationId['id'])) {
@@ -61,7 +62,7 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
 
         $theme = null;
         if (!empty($data['theme'])) {
-            $theme = $this->themeDeserializer->deserialize(json_encode($data['theme']));
+            $theme = $this->themeDeserializer->deserialize(Json::encode($data['theme']));
         }
 
         return new MajorInfo(

@@ -14,6 +14,7 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
@@ -37,8 +38,8 @@ use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
 
@@ -51,7 +52,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
 
     private function getCdbXML(string $filename): string
     {
-        return file_get_contents(__DIR__ . $filename);
+        return SampleFiles::read(__DIR__ . $filename);
     }
 
     /**
@@ -167,8 +168,8 @@ class PlaceTest extends AggregateRootScenarioTestCase
 
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T12:12:12+01:00')
+            DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
+            DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
 
         $cdbXml = $this->getCdbXML('/ReadModel/JSONLD/place_with_long_description.cdbxml.xml');

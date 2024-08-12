@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
@@ -19,14 +20,14 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use DateTimeInterface;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CalendarJSONDeserializerTest extends TestCase
 {
     /**
-     * @var DataValidatorInterface|MockObject
+     * @var DataValidatorInterface&MockObject
      */
     private $calendarDataValidator;
 
@@ -40,7 +41,7 @@ class CalendarJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_json_to_calendar(): void
     {
-        $calendarAsJsonString = file_get_contents(__DIR__ . '/samples/calendar.json');
+        $calendarAsJsonString = SampleFiles::read(__DIR__ . '/samples/calendar.json');
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
@@ -81,8 +82,8 @@ class CalendarJSONDeserializerTest extends TestCase
 
         $expectedCalendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00'),
+            DateTimeFactory::fromAtom('2020-01-26T09:00:00+01:00'),
+            DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00'),
             [],
             $openingHours
         );
@@ -98,7 +99,7 @@ class CalendarJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_json_to_calendar_with_status(): void
     {
-        $calendarAsJsonString = file_get_contents(__DIR__ . '/samples/calendar_with_status.json');
+        $calendarAsJsonString = SampleFiles::read(__DIR__ . '/samples/calendar_with_status.json');
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
@@ -107,8 +108,8 @@ class CalendarJSONDeserializerTest extends TestCase
 
         $expectedCalendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00')
+            DateTimeFactory::fromAtom('2020-01-26T09:00:00+01:00'),
+            DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00')
         );
 
         $expectedCalendar = $expectedCalendar->withStatus(
@@ -132,7 +133,7 @@ class CalendarJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_json_to_calendar_with_booking_availability(): void
     {
-        $calendarAsJsonString = file_get_contents(__DIR__ . '/samples/calendar_with_booking_availability.json');
+        $calendarAsJsonString = SampleFiles::read(__DIR__ . '/samples/calendar_with_booking_availability.json');
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
@@ -145,8 +146,8 @@ class CalendarJSONDeserializerTest extends TestCase
             null,
             [
                 (new TimeStamp(
-                    \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-03T09:00:00+01:00'),
-                    \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00')
+                    DateTimeFactory::fromAtom('2020-02-03T09:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00')
                 ))->withBookingAvailability(BookingAvailability::unavailable()),
             ]
         ))->withBookingAvailability(BookingAvailability::unavailable());
@@ -162,18 +163,18 @@ class CalendarJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_json_to_calendar_with_status_on_time_spans(): void
     {
-        $calendarAsJsonString = file_get_contents(__DIR__ . '/samples/calendar_with_status_on_time_spans.json');
+        $calendarAsJsonString = SampleFiles::read(__DIR__ . '/samples/calendar_with_status_on_time_spans.json');
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
             $this->calendarDataValidator
         );
 
-        $startDate1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00');
-        $endDate1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-01T16:00:00+01:00');
+        $startDate1 = DateTimeFactory::fromAtom('2020-01-26T09:00:00+01:00');
+        $endDate1 = DateTimeFactory::fromAtom('2020-02-01T16:00:00+01:00');
 
-        $startDate2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-03T09:00:00+01:00');
-        $endDate2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00');
+        $startDate2 = DateTimeFactory::fromAtom('2020-02-03T09:00:00+01:00');
+        $endDate2 = DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00');
 
         $timestamps = [
             (new Timestamp(
@@ -230,18 +231,18 @@ class CalendarJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_json_to_calendar_with_booking_availability_on_time_spans(): void
     {
-        $calendarAsJsonString = file_get_contents(__DIR__ . '/samples/calendar_with_booking_availability_on_time_spans.json');
+        $calendarAsJsonString = SampleFiles::read(__DIR__ . '/samples/calendar_with_booking_availability_on_time_spans.json');
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
             $this->calendarDataValidator
         );
 
-        $startDate1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00');
-        $endDate1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-01T16:00:00+01:00');
+        $startDate1 = DateTimeFactory::fromAtom('2020-01-26T09:00:00+01:00');
+        $endDate1 = DateTimeFactory::fromAtom('2020-02-01T16:00:00+01:00');
 
-        $startDate2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-03T09:00:00+01:00');
-        $endDate2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00');
+        $startDate2 = DateTimeFactory::fromAtom('2020-02-03T09:00:00+01:00');
+        $endDate2 = DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00');
 
         $timestamps = [
             (new Timestamp(
@@ -291,23 +292,23 @@ class CalendarJSONDeserializerTest extends TestCase
     {
         return [
             'calendar_of_type_PERMANENT_when_json_only_contains_opening_hours' => [
-                'calendarData' => file_get_contents(__DIR__ . '/samples/calendar_with_opening_hours.json'),
+                'calendarData' => SampleFiles::read(__DIR__ . '/samples/calendar_with_opening_hours.json'),
                 'expectedCalendarType' => CalendarType::PERMANENT(),
             ],
             'calendar_of_type_PERMANENT_when_json_is_empty' => [
-                'calendarData' => file_get_contents(__DIR__ . '/samples/empty_calendar.json'),
+                'calendarData' => SampleFiles::read(__DIR__ . '/samples/empty_calendar.json'),
                 'expectedCalendarType' => CalendarType::PERMANENT(),
             ],
             'calendar_of_type_SINGLE_when_json_contains_a_single_time_span' => [
-                'calendarData' => file_get_contents(__DIR__ . '/samples/calendar_with_single_time_span.json'),
+                'calendarData' => SampleFiles::read(__DIR__ . '/samples/calendar_with_single_time_span.json'),
                 'expectedCalendarType' => CalendarType::SINGLE(),
             ],
             'calendar_of_type_MULTIPLE_when_json_contains_multiple_time_spans' => [
-                'calendarData' => file_get_contents(__DIR__ . '/samples/calendar_with_multiple_time_spans.json'),
+                'calendarData' => SampleFiles::read(__DIR__ . '/samples/calendar_with_multiple_time_spans.json'),
                 'expectedCalendarType' => CalendarType::MULTIPLE(),
             ],
             'calendar_of_type_PERIODIC_when_json_contains_start_and_end_date' => [
-                'calendarData' => file_get_contents(__DIR__ . '/samples/calendar_with_start_and_end_date.json'),
+                'calendarData' => SampleFiles::read(__DIR__ . '/samples/calendar_with_start_and_end_date.json'),
                 'expectedCalendarType' => CalendarType::PERIODIC(),
             ],
         ];

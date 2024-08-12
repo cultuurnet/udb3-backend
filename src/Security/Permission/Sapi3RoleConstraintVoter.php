@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security\Permission;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use GuzzleHttp\Psr7\Request;
@@ -115,7 +116,7 @@ final class Sapi3RoleConstraintVoter implements PermissionVoter
 
         $response = $this->httpClient->sendRequest($request);
 
-        $decodedResponse = json_decode(
+        $decodedResponse = Json::decode(
             $response->getBody()->getContents()
         );
 

@@ -36,7 +36,7 @@ class CanonicalService
         $this->placeRepository = $placeRepository;
     }
 
-    public function getCanonical(string $clusterId): string
+    public function getCanonical(int $clusterId): string
     {
         $placeIds = $this->duplicatePlaceRepository->getPlacesInCluster($clusterId);
 

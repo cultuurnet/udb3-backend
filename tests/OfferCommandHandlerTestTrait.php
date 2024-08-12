@@ -8,7 +8,7 @@ use Broadway\Repository\Repository;
 use Broadway\CommandHandling\Testing\Scenario;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Media\MediaManager;
+use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
@@ -27,12 +27,12 @@ use ReflectionObject;
 trait OfferCommandHandlerTestTrait
 {
     /**
-     * @var Repository|MockObject
+     * @var Repository&MockObject
      */
     protected $organizerRepository;
 
     /**
-     * @var MediaManager|MockObject
+     * @var MediaManagerInterface&MockObject
      */
     protected $mediaManager;
 

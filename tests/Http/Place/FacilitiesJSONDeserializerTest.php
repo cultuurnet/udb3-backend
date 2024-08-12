@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 class FacilitiesJSONDeserializerTest extends TestCase
 {
     /**
-     * @var OfferFacilityResolverInterface|MockObject
+     * @var OfferFacilityResolverInterface&MockObject
      */
     private $facilityResolver;
 

@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Address\Parser\ParsedAddress;
 use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
 use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
@@ -19,6 +20,7 @@ use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\SampleFiles;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -111,7 +113,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
             '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
         ];
 
-        $this->documentRepository->save(new JsonDocument($placeId, json_encode($place)));
+        $this->documentRepository->save(new JsonDocument($placeId, Json::encode($place)));
 
         $this->logger->expects($this->once())
             ->method('warning')
@@ -150,7 +152,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
             'created' => '2023-01-01T12:30:15+01:00',
             'modified' => '2023-01-01T12:30:15+01:00',
         ];
-        $this->documentRepository->save(new JsonDocument($this->placeId, json_encode($place)));
+        $this->documentRepository->save(new JsonDocument($this->placeId, Json::encode($place)));
 
         $this->logger->expects($this->once())
             ->method('warning')
@@ -177,7 +179,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/place.ttl'), $turtle);
     }
 
     /**
@@ -223,7 +225,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-translations.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/place-with-translations.ttl'), $turtle);
     }
 
     /**
@@ -240,7 +242,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-coordinates.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/place-with-coordinates.ttl'), $turtle);
     }
 
     /**
@@ -255,7 +257,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/' . $file), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/' . $file), $turtle);
     }
 
     public function workflowStatusDataProvider(): array
@@ -296,7 +298,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-publication-date.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/place-with-publication-date.ttl'), $turtle);
     }
 
     /**
@@ -317,7 +319,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->placeJsonToTurtleConverter->convert($this->placeId);
 
-        $this->assertEquals(file_get_contents(__DIR__ . '/ttl/place-with-labels.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/place-with-labels.ttl'), $turtle);
     }
 
     private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void
@@ -329,6 +331,6 @@ class PlaceJsonToTurtleConverterTest extends TestCase
     private function givenThereIsAPlace(array $extraProperties = []): void
     {
         $place = array_merge($this->place, $extraProperties);
-        $this->documentRepository->save(new JsonDocument($this->placeId, json_encode($place)));
+        $this->documentRepository->save(new JsonDocument($this->placeId, Json::encode($place)));
     }
 }

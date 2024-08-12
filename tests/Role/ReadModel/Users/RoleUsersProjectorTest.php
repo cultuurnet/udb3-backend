@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -24,12 +25,12 @@ use PHPUnit\Framework\TestCase;
 class RoleUsersProjectorTest extends TestCase
 {
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $repository;
 
     /**
-     * @var UserIdentityResolver|MockObject
+     * @var UserIdentityResolver&MockObject
      */
     private $userIdentityResolver;
 
@@ -293,7 +294,7 @@ class RoleUsersProjectorTest extends TestCase
     {
         return new JsonDocument(
             $uuid->toString(),
-            json_encode([])
+            Json::encode([])
         );
     }
 
@@ -306,6 +307,6 @@ class RoleUsersProjectorTest extends TestCase
         $key = $userIdentityDetail->getUserId();
         $userIdentityDetails[$key] = $userIdentityDetail;
 
-        return new JsonDocument($uuid->toString(), json_encode($userIdentityDetails));
+        return new JsonDocument($uuid->toString(), Json::encode($userIdentityDetails));
     }
 }

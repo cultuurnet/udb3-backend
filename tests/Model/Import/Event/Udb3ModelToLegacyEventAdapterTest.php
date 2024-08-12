@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Event;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
@@ -58,7 +59,7 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
                 AudienceType::members()
             )
             ->withAvailableFrom(
-                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T10:00:00+01:00')
+                DateTimeFactory::fromAtom('2018-01-01T10:00:00+01:00')
             );
 
         $this->adapter = new Udb3ModelToLegacyEventAdapter($event);

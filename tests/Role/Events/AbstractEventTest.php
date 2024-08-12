@@ -16,7 +16,7 @@ class AbstractEventTest extends TestCase
     protected $uuid;
 
     /**
-     * @var AbstractEvent|MockObject
+     * @var AbstractEvent&MockObject
      */
     protected $event;
 

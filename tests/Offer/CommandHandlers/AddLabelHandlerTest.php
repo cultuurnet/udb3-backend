@@ -36,7 +36,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     private array $mockedLabelReadModels;
 
     /**
-     * @var LabelServiceInterface|MockObject
+     * @var LabelServiceInterface&MockObject
      */
     private $labelService;
 

@@ -10,13 +10,13 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use DateTimeImmutable;
-use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
 class PlaceCreatedTest extends TestCase
@@ -34,10 +34,7 @@ class PlaceCreatedTest extends TestCase
             new CountryCode('BE')
         );
 
-        $this->publicationDate = DateTimeImmutable::createFromFormat(
-            \DateTime::ISO8601,
-            '2016-08-01T00:00:00+0200'
-        );
+        $this->publicationDate = DateTimeFactory::fromISO8601('2016-08-01T00:00:00+0200');
 
         $this->placeCreated = new PlaceCreated(
             'id',
@@ -281,10 +278,7 @@ class PlaceCreatedTest extends TestCase
                     new Calendar(
                         CalendarType::PERMANENT()
                     ),
-                    DateTimeImmutable::createFromFormat(
-                        DateTimeInterface::ATOM,
-                        '2016-08-01T00:00:00+02:00'
-                    )
+                    DateTimeFactory::fromAtom('2016-08-01T00:00:00+02:00')
                 ),
             ],
         ];

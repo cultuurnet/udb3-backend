@@ -21,7 +21,7 @@ use Ramsey\Uuid\UuidFactory;
 final class EventBusForwardingConsumerTest extends TestCase
 {
     /**
-     * @var AMQPStreamConnection|MockObject
+     * @var AMQPStreamConnection&MockObject
      */
     private $connection;
 
@@ -32,29 +32,29 @@ final class EventBusForwardingConsumerTest extends TestCase
     private string $consumerTag;
 
     /**
-     * @var EventBus|MockObject
+     * @var EventBus&MockObject
      */
     private $eventBus;
 
     /**
-     * @var DeserializerLocatorInterface|MockObject
+     * @var DeserializerLocatorInterface&MockObject
      */
     private $deserializerLocator;
 
     /**
-     * @var AMQPChannel|MockObject
+     * @var AMQPChannel&MockObject
      */
     private $channel;
 
     private EventBusForwardingConsumer $eventBusForwardingConsumer;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 
     /**
-     * @var DeserializerInterface|MockObject
+     * @var DeserializerInterface&MockObject
      */
     private $deserializer;
 

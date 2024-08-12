@@ -34,6 +34,7 @@ use CultuurNet\UDB3\Place\Events\LabelRemoved as LabelRemovedFromPlace;
 use CultuurNet\UDB3\Place\Events\LabelsImported as PlaceLabelsImported;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -44,12 +45,12 @@ final class ProjectorTest extends TestCase
     private string $relationId;
 
     /**
-     * @var WriteRepositoryInterface|MockObject
+     * @var WriteRepositoryInterface&MockObject
      */
     private $writeRepository;
 
     /**
-     * @var RelationsReadRepositoryInterface|MockObject
+     * @var RelationsReadRepositoryInterface&MockObject
      */
     private $relationsReadRepository;
 
@@ -303,7 +304,7 @@ final class ProjectorTest extends TestCase
             $itemId,
             new OrganizerUpdatedFromUDB2(
                 $itemId,
-                file_get_contents(__DIR__ . '/Samples/organizer_with_same_label_but_different_casing.xml'),
+                SampleFiles::read(__DIR__ . '/Samples/organizer_with_same_label_but_different_casing.xml'),
                 $cdbXmlNamespaceUri
             )
         );
@@ -343,7 +344,7 @@ final class ProjectorTest extends TestCase
                 $itemId,
                 new EventImportedFromUDB2(
                     $itemId,
-                    file_get_contents(__DIR__ . '/Samples/event.xml'),
+                    SampleFiles::read(__DIR__ . '/Samples/event.xml'),
                     $cdbXmlNamespaceUri
                 ),
                 RelationType::event(),
@@ -352,7 +353,7 @@ final class ProjectorTest extends TestCase
                 $itemId,
                 new PlaceImportedFromUDB2(
                     $itemId,
-                    file_get_contents(__DIR__ . '/Samples/place.xml'),
+                    SampleFiles::read(__DIR__ . '/Samples/place.xml'),
                     $cdbXmlNamespaceUri
                 ),
                 RelationType::place(),
@@ -361,7 +362,7 @@ final class ProjectorTest extends TestCase
                 $itemId,
                 new OrganizerImportedFromUDB2(
                     $itemId,
-                    file_get_contents(__DIR__ . '/Samples/organizer.xml'),
+                    SampleFiles::read(__DIR__ . '/Samples/organizer.xml'),
                     $cdbXmlNamespaceUri
                 ),
                 RelationType::organizer(),
@@ -370,7 +371,7 @@ final class ProjectorTest extends TestCase
                 $itemId,
                 new EventUpdatedFromUDB2(
                     $itemId,
-                    file_get_contents(__DIR__ . '/Samples/event.xml'),
+                    SampleFiles::read(__DIR__ . '/Samples/event.xml'),
                     $cdbXmlNamespaceUri
                 ),
                 RelationType::event(),
@@ -379,7 +380,7 @@ final class ProjectorTest extends TestCase
                 $itemId,
                 new PlaceUpdatedFromUDB2(
                     $itemId,
-                    file_get_contents(__DIR__ . '/Samples/place.xml'),
+                    SampleFiles::read(__DIR__ . '/Samples/place.xml'),
                     $cdbXmlNamespaceUri
                 ),
                 RelationType::place(),
@@ -388,7 +389,7 @@ final class ProjectorTest extends TestCase
                 $itemId,
                 new OrganizerUpdatedFromUDB2(
                     $itemId,
-                    file_get_contents(__DIR__ . '/Samples/organizer.xml'),
+                    SampleFiles::read(__DIR__ . '/Samples/organizer.xml'),
                     $cdbXmlNamespaceUri
                 ),
                 RelationType::organizer(),
@@ -397,7 +398,7 @@ final class ProjectorTest extends TestCase
                 $itemId,
                 new OrganizerUpdatedFromUDB2(
                     $itemId,
-                    file_get_contents(__DIR__ . '/Samples/organizer_with_same_label_but_different_casing.xml'),
+                    SampleFiles::read(__DIR__ . '/Samples/organizer_with_same_label_but_different_casing.xml'),
                     $cdbXmlNamespaceUri
                 ),
                 RelationType::organizer(),
@@ -406,7 +407,7 @@ final class ProjectorTest extends TestCase
                 $itemId,
                 new OrganizerUpdatedFromUDB2(
                     $itemId,
-                    file_get_contents(__DIR__ . '/Samples/organizer_with_same_label_but_different_casing_and_visibility.xml'),
+                    SampleFiles::read(__DIR__ . '/Samples/organizer_with_same_label_but_different_casing_and_visibility.xml'),
                     $cdbXmlNamespaceUri
                 ),
                 RelationType::organizer(),

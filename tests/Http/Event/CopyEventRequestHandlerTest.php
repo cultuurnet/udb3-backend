@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Commands\CopyEvent;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
@@ -32,7 +33,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactoryInterface;
@@ -107,8 +107,8 @@ class CopyEventRequestHandlerTest extends TestCase
                     new SingleSubEventCalendar(
                         new SubEvent(
                             new DateRange(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                                DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                             ),
                             new Status(
                                 StatusType::Available()
@@ -136,8 +136,8 @@ class CopyEventRequestHandlerTest extends TestCase
                     new SingleSubEventCalendar(
                         new SubEvent(
                             new DateRange(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                                DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                             ),
                             new Status(
                                 StatusType::Available()
@@ -172,8 +172,8 @@ class CopyEventRequestHandlerTest extends TestCase
                     new SingleSubEventCalendar(
                         new SubEvent(
                             new DateRange(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                                DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                             ),
                             new Status(
                                 StatusType::Available()
@@ -203,8 +203,8 @@ class CopyEventRequestHandlerTest extends TestCase
                     new SingleSubEventCalendar(
                         new SubEvent(
                             new DateRange(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                                DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                             ),
                             new Status(
                                 StatusType::Unavailable()
@@ -236,8 +236,8 @@ class CopyEventRequestHandlerTest extends TestCase
                     new SingleSubEventCalendar(
                         new SubEvent(
                             new DateRange(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                                DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                             ),
                             new Status(
                                 StatusType::TemporarilyUnavailable(),
@@ -274,8 +274,8 @@ class CopyEventRequestHandlerTest extends TestCase
                     (new SingleSubEventCalendar(
                         new SubEvent(
                             new DateRange(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                                DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                             ),
                             new Status(
                                 StatusType::TemporarilyUnavailable(),
@@ -321,8 +321,8 @@ class CopyEventRequestHandlerTest extends TestCase
                     new SingleSubEventCalendar(
                         new SubEvent(
                             new DateRange(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                                DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                             ),
                             new Status(
                                 StatusType::Available()
@@ -346,8 +346,8 @@ class CopyEventRequestHandlerTest extends TestCase
                     new SingleSubEventCalendar(
                         new SubEvent(
                             new DateRange(
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                                DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                             ),
                             new Status(
                                 StatusType::Available()
@@ -380,8 +380,8 @@ class CopyEventRequestHandlerTest extends TestCase
                         new SubEvents(
                             new SubEvent(
                                 new DateRange(
-                                    DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                    DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                                    DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                    DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                                 ),
                                 new Status(
                                     StatusType::Available()
@@ -392,8 +392,8 @@ class CopyEventRequestHandlerTest extends TestCase
                             ),
                             new SubEvent(
                                 new DateRange(
-                                    DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-03T14:00:30+01:00'),
-                                    DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-03T17:00:30+01:00'),
+                                    DateTimeFactory::fromAtom('2021-01-03T14:00:30+01:00'),
+                                    DateTimeFactory::fromAtom('2021-01-03T17:00:30+01:00'),
                                 ),
                                 new Status(
                                     StatusType::Available()
@@ -427,8 +427,8 @@ class CopyEventRequestHandlerTest extends TestCase
                         new SubEvents(
                             new SubEvent(
                                 new DateRange(
-                                    DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                                    DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                                    DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                    DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                                 ),
                                 new Status(
                                     StatusType::Available()
@@ -439,8 +439,8 @@ class CopyEventRequestHandlerTest extends TestCase
                             ),
                             new SubEvent(
                                 new DateRange(
-                                    DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-03T14:00:30+01:00'),
-                                    DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-03T17:00:30+01:00'),
+                                    DateTimeFactory::fromAtom('2021-01-03T14:00:30+01:00'),
+                                    DateTimeFactory::fromAtom('2021-01-03T17:00:30+01:00'),
                                 ),
                                 new Status(
                                     StatusType::Available()
@@ -464,8 +464,8 @@ class CopyEventRequestHandlerTest extends TestCase
                     self::NEW_EVENT_ID,
                     new PeriodicCalendar(
                         new DateRange(
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                         ),
                         new OpeningHours()
                     )
@@ -487,8 +487,8 @@ class CopyEventRequestHandlerTest extends TestCase
                     self::NEW_EVENT_ID,
                     (new PeriodicCalendar(
                         new DateRange(
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                         ),
                         new OpeningHours()
                     ))
@@ -532,8 +532,8 @@ class CopyEventRequestHandlerTest extends TestCase
                     self::NEW_EVENT_ID,
                     new PeriodicCalendar(
                         new DateRange(
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
-                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                         ),
                         new OpeningHours(
                             new OpeningHour(

@@ -17,17 +17,17 @@ use Psr\Log\LoggerInterface;
 final class CommandBusForwardingConsumerTest extends TestCase
 {
     /**
-     * @var CommandBus|MockObject
+     * @var CommandBus&MockObject
      */
     private $commandBus;
 
     /**
-     * @var DeserializerLocatorInterface|MockObject
+     * @var DeserializerLocatorInterface&MockObject
      */
     private $deserializerLocator;
 
     /**
-     * @var AMQPChannel|MockObject
+     * @var AMQPChannel&MockObject
      */
     private $channel;
 
@@ -40,7 +40,7 @@ final class CommandBusForwardingConsumerTest extends TestCase
     private CommandBusForwardingConsumer $commandBusForwardingConsumer;
 
     /**
-     * @var DeserializerInterface|MockObject
+     * @var DeserializerInterface&MockObject
      */
     private $deserializer;
 

@@ -20,12 +20,12 @@ use Psr\Log\LoggerInterface;
 class DefaultGeocodingServiceTest extends TestCase
 {
     /**
-     * @var Geocoder|MockObject
+     * @var Geocoder&MockObject
      */
     private $geocoder;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 

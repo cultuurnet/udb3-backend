@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\CommandHandlers;
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Commands\CopyEvent;
 use CultuurNet\UDB3\Event\Event;
@@ -22,7 +23,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -73,8 +73,8 @@ final class CopyEventHandlerTest extends TestCase
                 null,
                 [
                     new Timestamp(
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2022-01-01T12:00:00+01:00'),
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2022-01-02T12:00:00+01:00')
+                        DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
                     ),
                 ]
             )
@@ -141,8 +141,8 @@ final class CopyEventHandlerTest extends TestCase
                 null,
                 [
                     new Timestamp(
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2022-01-01T12:00:00+01:00'),
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2022-01-02T12:00:00+01:00')
+                        DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
                     ),
                 ]
             )
@@ -216,8 +216,8 @@ final class CopyEventHandlerTest extends TestCase
                 null,
                 [
                     new Timestamp(
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2022-01-01T12:00:00+01:00'),
-                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2022-01-02T12:00:00+01:00')
+                        DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
                     ),
                 ]
             )

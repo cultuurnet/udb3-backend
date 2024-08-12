@@ -163,7 +163,7 @@ class CalendarDenormalizer implements DenormalizerInterface
      */
     private function denormalizeTime($timeString)
     {
-        $dateTime = \DateTimeImmutable::createFromFormat('H:i', $timeString);
+        $dateTime = DateTimeFactory::fromFormat('H:i', $timeString);
         $hour = new Hour((int) $dateTime->format('H'));
         $minute = new Minute((int) $dateTime->format('i'));
         return new Time($hour, $minute);

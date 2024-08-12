@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Contributor;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -17,14 +18,14 @@ use PHPUnit\Framework\TestCase;
 final class ContributorEnrichedRepositoryTest extends TestCase
 {
     /**
-     * @var ContributorRepository|MockObject
+     * @var ContributorRepository&MockObject
      */
     private $contributorRepository;
 
     private InMemoryDocumentRepository $documentRepository;
 
     /**
-     * @var PermissionVoter|MockObject;
+     * @var PermissionVoter&MockObject;
      */
     private $permissionVoter;
 
@@ -80,7 +81,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
             );
 
 
-        $jsonLd = new JsonDocument($this->offerId, json_encode(['@type' => $itemType]));
+        $jsonLd = new JsonDocument($this->offerId, Json::encode(['@type' => $itemType]));
         $this->documentRepository->save($jsonLd);
 
         $fetchJsonLd = $this->contributorEnrichedRepository->fetch($this->offerId, false);
@@ -88,7 +89,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
         $this->assertEquals(
             new JsonDocument(
                 $this->offerId,
-                json_encode([
+                Json::encode([
                     '@type' => $itemType,
                     'contributors' => [
                         'info@example.com',
@@ -123,7 +124,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
             );
 
 
-        $jsonLd = new JsonDocument($this->offerId, json_encode(['@type' => $itemType]));
+        $jsonLd = new JsonDocument($this->offerId, Json::encode(['@type' => $itemType]));
         $this->documentRepository->save($jsonLd);
 
         $fetchJsonLd = $this->contributorEnrichedRepository->fetch($this->offerId, false);
@@ -131,7 +132,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
         $this->assertEquals(
             new JsonDocument(
                 $this->offerId,
-                json_encode([
+                Json::encode([
                     '@type' => $itemType,
                 ])
             ),
@@ -159,7 +160,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
             ->with(new UUID($this->offerId));
 
 
-        $jsonLd = new JsonDocument($this->offerId, json_encode(['@type' => $itemType]));
+        $jsonLd = new JsonDocument($this->offerId, Json::encode(['@type' => $itemType]));
         $this->documentRepository->save($jsonLd);
 
         $fetchJsonLd = $this->contributorEnrichedRepository->fetch($this->offerId);
@@ -167,7 +168,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
         $this->assertEquals(
             new JsonDocument(
                 $this->offerId,
-                json_encode([
+                Json::encode([
                     '@type' => $itemType,
                 ])
             ),
@@ -184,7 +185,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
         $this->contributorEnrichedRepository->save(
             new JsonDocument(
                 $this->offerId,
-                json_encode([
+                Json::encode([
                     '@type' => $itemType,
                     'contributors' => [
                         'info@example.com',
@@ -197,7 +198,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
         $this->assertEquals(
             new JsonDocument(
                 $this->offerId,
-                json_encode(['@type' => $itemType])
+                Json::encode(['@type' => $itemType])
             ),
             $this->contributorEnrichedRepository->fetch($this->offerId)
         );

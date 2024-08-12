@@ -12,6 +12,7 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -32,7 +33,7 @@ class HTMLEventFormatterTest extends TestCase
 
     protected function getJSONEventFromFile(string $fileName): string
     {
-        return file_get_contents(__DIR__ . '/../../samples/' . $fileName);
+        return SampleFiles::read(__DIR__ . '/../../samples/' . $fileName);
     }
 
     protected function getFormattedEventFromJSONFile(string $fileName): array
@@ -420,11 +421,11 @@ class HTMLEventFormatterTest extends TestCase
     }
 
     /**
-     * @return CalendarSummaryRepositoryInterface|MockObject
+     * @return CalendarSummaryRepositoryInterface&MockObject
      */
     private function getCalendarSummaryRepositoryWhichReturns(string $id, string $calendarSummary)
     {
-        /* @var CalendarSummaryRepositoryInterface|MockObject $repository */
+        /* @var CalendarSummaryRepositoryInterface&MockObject $repository */
         $repository = $this->createMock(CalendarSummaryRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('get')
@@ -435,7 +436,7 @@ class HTMLEventFormatterTest extends TestCase
 
     private function getExpectedCalendarSummary(string $fileName): string
     {
-        $expected = file_get_contents(__DIR__ . '/../../samples/' . $fileName);
+        $expected = SampleFiles::read(__DIR__ . '/../../samples/' . $fileName);
         return trim($expected);
     }
 
@@ -456,7 +457,7 @@ class HTMLEventFormatterTest extends TestCase
     ): void {
         $eventWithoutImage = $this->getJSONEventFromFile('event_without_image.json');
 
-        /* @var EventInfoServiceInterface|MockObject $uitpas */
+        /* @var EventInfoServiceInterface&MockObject $uitpas */
         $uitpas = $this->createMock(EventInfoServiceInterface::class);
 
         $prices = $priceData['original'];

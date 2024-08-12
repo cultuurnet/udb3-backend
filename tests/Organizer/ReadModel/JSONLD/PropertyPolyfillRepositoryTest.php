@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\ReadModel\JSONLD;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
@@ -251,7 +252,7 @@ final class PropertyPolyfillRepositoryTest extends TestCase
         $this->repository->save(
             new JsonDocument(
                 self::DOCUMENT_ID,
-                json_encode($given)
+                Json::encode($given)
             )
         );
         return $this;

@@ -16,12 +16,12 @@ final class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     private BroadcastingWriteRepositoryDecorator $broadcastingWriteRepositoryDecorator;
 
     /**
-     * @var EventBus|MockObject
+     * @var EventBus&MockObject
      */
     private $eventBus;
 
     /**
-     * @var WriteRepositoryInterface|MockObject
+     * @var WriteRepositoryInterface&MockObject
      */
     private $writeRepository;
 

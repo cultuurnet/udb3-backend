@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventEvent;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
@@ -125,10 +126,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         }
         $publicationDate = null;
         if (!empty($data['publication_date'])) {
-            $publicationDate = DateTimeImmutable::createFromFormat(
-                DateTimeInterface::ATOM,
-                $data['publication_date']
-            );
+            $publicationDate = DateTimeFactory::fromAtom($data['publication_date']);
         }
         return new self(
             $data['event_id'],

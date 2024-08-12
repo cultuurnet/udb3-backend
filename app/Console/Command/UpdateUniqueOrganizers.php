@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Console\Command;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use Doctrine\DBAL\Connection;
@@ -204,7 +205,7 @@ class UpdateUniqueOrganizers extends Command
 
     private function getOrganizerWebsite(array $organizerEvent): string
     {
-        $payloadArray = json_decode($organizerEvent['payload'], true);
+        $payloadArray = Json::decodeAssociatively($organizerEvent['payload']);
         return $payloadArray['payload']['website'];
     }
 }

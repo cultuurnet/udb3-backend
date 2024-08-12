@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\SluggerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -25,17 +26,17 @@ class CdbXMLImporterTest extends TestCase
     protected CdbXMLImporter $importer;
 
     /**
-     * @var OrganizerServiceInterface|MockObject
+     * @var OrganizerServiceInterface&MockObject
      */
     protected $organizerManager;
 
     /**
-     * @var PlaceServiceInterface|MockObject
+     * @var PlaceServiceInterface&MockObject
      */
     protected $placeManager;
 
     /**
-     * @var SluggerInterface|MockObject
+     * @var SluggerInterface&MockObject
      */
     protected $slugger;
 
@@ -69,7 +70,7 @@ class CdbXMLImporterTest extends TestCase
 
     private function createEventFromCdbXml(string $fileName, string $version = '3.2'): CultureFeed_Cdb_Item_Event
     {
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/' . $fileName
         );
 
@@ -123,7 +124,7 @@ class CdbXMLImporterTest extends TestCase
 
     private function createJsonEventFromCalendarSample(string $fileName): \stdClass
     {
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/../../samples/calendar/' . $fileName
         );
 
@@ -1168,7 +1169,7 @@ class CdbXMLImporterTest extends TestCase
         $jsonEvent = $this->createJsonEventFromCdbXml($cdbxmlFile, $schemaVersion);
 
         $this->assertEquals(
-            file_get_contents(__DIR__ . '/' . $expectedDescriptionFile),
+            SampleFiles::read(__DIR__ . '/' . $expectedDescriptionFile),
             $jsonEvent->description['nl']
         );
     }

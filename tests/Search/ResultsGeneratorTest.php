@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 class ResultsGeneratorTest extends TestCase
 {
     /**
-     * @var SearchServiceInterface|MockObject
+     * @var SearchServiceInterface&MockObject
      */
     private $searchService;
 
@@ -24,7 +24,7 @@ class ResultsGeneratorTest extends TestCase
     private ResultsGenerator $generator;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 

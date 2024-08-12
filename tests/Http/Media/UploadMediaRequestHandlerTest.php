@@ -20,7 +20,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var ImageUploaderInterface|MockObject  */
+    /** @var ImageUploaderInterface&MockObject  */
     private $imageUploader;
 
     private UploadMediaRequestHandler $uploadMediaRequestHandler;

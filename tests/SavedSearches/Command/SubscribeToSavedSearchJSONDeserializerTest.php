@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SavedSearches\Command;
 
 use CultuurNet\UDB3\Deserializer\MissingValueException;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use PHPUnit\Framework\TestCase;
 
@@ -73,6 +74,6 @@ final class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 
     private function getStringFromFile(string $fileName): string
     {
-        return file_get_contents(__DIR__ . '/' . $fileName);
+        return SampleFiles::read(__DIR__ . '/' . $fileName);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Cdb;
 
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 class EventItemFactoryTest extends TestCase
@@ -77,7 +78,7 @@ class EventItemFactoryTest extends TestCase
         $location = new \CultureFeed_Cdb_Data_Location($address);
         $expected->setLocation($location);
 
-        $cdbXml = file_get_contents(__DIR__ . '/samples/event.xml');
+        $cdbXml = SampleFiles::read(__DIR__ . '/samples/event.xml');
 
         $this->assertEquals(
             $expected,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsDuplicate;
 use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsInappropriate;
@@ -20,7 +21,6 @@ use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsDuplicate as FlagAsDuplicate
 use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsInappropriate as FlagAsInappropriatePlace;
 use CultuurNet\UDB3\Place\Commands\Moderation\Publish as PublishPlace;
 use CultuurNet\UDB3\Place\Commands\Moderation\Reject as RejectPlace;
-use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
 final class PatchOfferRequestHandlerTest extends TestCase
@@ -104,7 +104,7 @@ final class PatchOfferRequestHandlerTest extends TestCase
                 'body' => ['publicationDate' => '2030-02-01T12:00:00+00:00'],
                 'expectedCommand' => new Publish(
                     $this->offerId,
-                    \DateTime::createFromFormat(DateTimeInterface::ATOM, '2030-02-01T12:00:00+00:00')
+                    DateTimeFactory::fromAtom('2030-02-01T12:00:00+00:00')
                 ),
             ],
             'Approve place' => [
@@ -137,7 +137,7 @@ final class PatchOfferRequestHandlerTest extends TestCase
                 'body' => ['publicationDate' => '2030-02-01T12:00:00+00:00'],
                 'expectedCommand' => new PublishPlace(
                     $this->offerId,
-                    \DateTime::createFromFormat(DateTimeInterface::ATOM, '2030-02-01T12:00:00+00:00')
+                    DateTimeFactory::fromAtom('2030-02-01T12:00:00+00:00')
                 ),
             ],
         ];

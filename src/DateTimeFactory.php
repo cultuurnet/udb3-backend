@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3;
 
 use DateTimeImmutable;
+use DateTimeZone;
 
 final class DateTimeFactory
 {
@@ -42,5 +43,21 @@ final class DateTimeFactory
         // If we have not returned a DateTimeImmutable object by now, the $datetime string is in an unsupported format.
         // Throw a specific exception, so that it can be converted to a suitable ApiProblem higher up.
         throw new DateTimeInvalid($datetime . ' does not appear to be a valid ISO-8601 datetime string.');
+    }
+
+    public static function fromAtom(string $datetime): DateTimeImmutable
+    {
+        return self::fromFormat(DateTimeImmutable::ATOM, $datetime);
+    }
+
+    public static function fromFormat(string $format, string $datetime, DateTimeZone $timezone = null): DateTimeImmutable
+    {
+        $object = DateTimeImmutable::createFromFormat($format, $datetime, $timezone);
+
+        if ($object instanceof DateTimeImmutable) {
+            return $object;
+        }
+
+        throw new DateTimeInvalid($datetime . ' does not appear to be a valid ' . $format . ' datetime string.');
     }
 }

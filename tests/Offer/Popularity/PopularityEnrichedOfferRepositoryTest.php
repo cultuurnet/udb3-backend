@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Popularity;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -47,7 +48,7 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
         $popularity = new Popularity(1234567);
         $this->popularityRepository->saveScore($offerId, $popularity);
 
-        $jsonLd = new JsonDocument($offerId, json_encode(['@type' => 'Event']));
+        $jsonLd = new JsonDocument($offerId, Json::encode(['@type' => 'Event']));
         $this->decoratedRepository->save($jsonLd);
 
         $fetchJsonLd = $this->popularityEnrichedOfferRepository->fetch($offerId, false);
@@ -79,14 +80,14 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
         $popularity = new Popularity(1234567);
         $this->popularityRepository->saveScore($offerId, $popularity);
 
-        $jsonLd = new JsonDocument($offerId, json_encode(['@type' => 'Event']));
+        $jsonLd = new JsonDocument($offerId, Json::encode(['@type' => 'Event']));
         $this->decoratedRepository->save($jsonLd);
 
         $fetchJsonLd = $this->popularityEnrichedOfferRepository->fetch($offerId, true);
 
         $expectedJsonLd = new JsonDocument(
             $offerId,
-            json_encode(
+            Json::encode(
                 [
                     '@type' => 'Event',
                     'metadata' => [

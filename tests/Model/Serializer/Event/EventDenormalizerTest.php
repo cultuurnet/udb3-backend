@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\Event;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
@@ -87,7 +88,7 @@ class EventDenormalizerTest extends TestCase
     private $denormalizer;
 
     /**
-     * @var MockObject|UuidFactoryInterface
+     * @var UuidFactoryInterface&MockObject
      */
     private $uuidFactory;
 
@@ -409,8 +410,8 @@ class EventDenormalizerTest extends TestCase
             new SingleSubEventCalendar(
                 new SubEvent(
                     new DateRange(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2018-01-01T17:00:00+01:00')
                     ),
                     new Status(
                         StatusType::Available()
@@ -481,8 +482,8 @@ class EventDenormalizerTest extends TestCase
             new SingleSubEventCalendar(
                 new SubEvent(
                     new DateRange(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2018-01-01T17:00:00+01:00')
                     ),
                     new Status(
                         StatusType::Unavailable(),
@@ -544,8 +545,8 @@ class EventDenormalizerTest extends TestCase
             new SingleSubEventCalendar(
                 new SubEvent(
                     new DateRange(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2018-01-01T17:00:00+01:00')
                     ),
                     new Status(
                         StatusType::Available()
@@ -620,8 +621,8 @@ class EventDenormalizerTest extends TestCase
                 new SubEvents(
                     new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                            DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2018-01-01T17:00:00+01:00')
                         ),
                         new Status(
                             StatusType::Available()
@@ -630,8 +631,8 @@ class EventDenormalizerTest extends TestCase
                     ),
                     new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00')
+                            DateTimeFactory::fromAtom('2018-01-03T13:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2018-01-03T17:00:00+01:00')
                         ),
                         new Status(
                             StatusType::Available()
@@ -640,8 +641,8 @@ class EventDenormalizerTest extends TestCase
                     ),
                     new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00')
+                            DateTimeFactory::fromAtom('2018-01-10T13:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2018-01-10T17:00:00+01:00')
                         ),
                         new Status(
                             StatusType::Available()
@@ -741,8 +742,8 @@ class EventDenormalizerTest extends TestCase
                 new SubEvents(
                     new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                            DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2018-01-01T17:00:00+01:00')
                         ),
                         new Status(
                             StatusType::Unavailable(),
@@ -756,8 +757,8 @@ class EventDenormalizerTest extends TestCase
                     ),
                     new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00')
+                            DateTimeFactory::fromAtom('2018-01-03T13:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2018-01-03T17:00:00+01:00')
                         ),
                         new Status(
                             StatusType::Available()
@@ -766,8 +767,8 @@ class EventDenormalizerTest extends TestCase
                     ),
                     new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00')
+                            DateTimeFactory::fromAtom('2018-01-10T13:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2018-01-10T17:00:00+01:00')
                         ),
                         new Status(
                             StatusType::TemporarilyUnavailable()
@@ -776,8 +777,8 @@ class EventDenormalizerTest extends TestCase
                     ),
                     new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00')
+                            DateTimeFactory::fromAtom('2018-01-10T13:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2018-01-10T17:00:00+01:00')
                         ),
                         new Status(
                             StatusType::Available(),
@@ -862,16 +863,16 @@ class EventDenormalizerTest extends TestCase
                 new SubEvents(
                     new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                            DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2018-01-01T17:00:00+01:00')
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Unavailable())
                     ),
                     new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00')
+                            DateTimeFactory::fromAtom('2018-01-03T13:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2018-01-03T17:00:00+01:00')
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Unavailable())
@@ -934,8 +935,8 @@ class EventDenormalizerTest extends TestCase
             (new SingleSubEventCalendar(
                 new SubEvent(
                     new DateRange(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2018-01-01T17:00:00+01:00')
                     ),
                     new Status(
                         StatusType::TemporarilyUnavailable(),
@@ -1018,8 +1019,8 @@ class EventDenormalizerTest extends TestCase
             (new SingleSubEventCalendar(
                 new SubEvent(
                     new DateRange(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2018-01-01T17:00:00+01:00')
                     ),
                     new Status(
                         StatusType::TemporarilyUnavailable(),
@@ -1115,8 +1116,8 @@ class EventDenormalizerTest extends TestCase
                 new SubEvents(
                     new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                            DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2018-01-01T17:00:00+01:00')
                         ),
                         new Status(
                             StatusType::Unavailable(),
@@ -1130,8 +1131,8 @@ class EventDenormalizerTest extends TestCase
                     ),
                     new SubEvent(
                         new DateRange(
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
-                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00')
+                            DateTimeFactory::fromAtom('2018-01-03T13:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2018-01-03T17:00:00+01:00')
                         ),
                         new Status(
                             StatusType::TemporarilyUnavailable(),
@@ -1200,8 +1201,8 @@ class EventDenormalizerTest extends TestCase
             ),
             new PeriodicCalendar(
                 new DateRange(
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00')
+                    DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2018-01-10T17:00:00+01:00')
                 ),
                 new OpeningHours()
             ),
@@ -1270,8 +1271,8 @@ class EventDenormalizerTest extends TestCase
             ),
             new PeriodicCalendar(
                 new DateRange(
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00')
+                    DateTimeFactory::fromAtom('2018-01-01T13:00:00+01:00'),
+                    DateTimeFactory::fromAtom('2018-01-10T17:00:00+01:00')
                 ),
                 new OpeningHours(
                     new OpeningHour(
@@ -1637,7 +1638,7 @@ class EventDenormalizerTest extends TestCase
                     ->withTranslation(new Language('en'), new Description('Example description'))
             )
             ->withAvailableFrom(
-                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00')
+                DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00')
             )
             ->withLabels(
                 new Labels(
@@ -1700,8 +1701,8 @@ class EventDenormalizerTest extends TestCase
                     new TelephoneNumber('02 551 18 70'),
                     new EmailAddress('info@publiq.be'),
                     new ContactBookingAvailability(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-10-01T00:00:00+01:00')
+                        DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2018-10-01T00:00:00+01:00')
                     )
                 )
             )

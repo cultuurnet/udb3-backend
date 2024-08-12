@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class EventFactoryTest extends TestCase
 {
     /**
-     * @var IriGeneratorInterface|MockObject
+     * @var IriGeneratorInterface&MockObject
      */
     private $iriGenerator;
 

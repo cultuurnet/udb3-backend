@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -27,7 +28,7 @@ class EventRelationsProjectorTest extends TestCase
     public const CDBXML_NAMESPACE_33 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
     /**
-     * @var EventRelationsRepository|MockObject
+     * @var EventRelationsRepository&MockObject
      */
     private $repository;
 
@@ -83,9 +84,9 @@ class EventRelationsProjectorTest extends TestCase
      */
     public function cdbXmlDataProvider()
     {
-        $withNone = file_get_contents(__DIR__ . '/event_without_placeid_and_without_organiserid.xml');
-        $withPlace = file_get_contents(__DIR__ . '/event_with_placeid_and_without_organiserid.xml');
-        $withBoth = file_get_contents(__DIR__ . '/event_with_placeid_and_organiserid.xml');
+        $withNone = SampleFiles::read(__DIR__ . '/event_without_placeid_and_without_organiserid.xml');
+        $withPlace = SampleFiles::read(__DIR__ . '/event_with_placeid_and_without_organiserid.xml');
+        $withBoth = SampleFiles::read(__DIR__ . '/event_with_placeid_and_organiserid.xml');
 
         return [
             [

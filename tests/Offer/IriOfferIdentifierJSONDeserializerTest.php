@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Deserializer\MissingValueException;
-use CultuurNet\UDB3\Deserializer\NotWellFormedException;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use JsonException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +15,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
     private IriOfferIdentifierJSONDeserializer $deserializer;
 
     /**
-     * @var IriOfferIdentifierFactoryInterface|MockObject
+     * @var IriOfferIdentifierFactoryInterface&MockObject
      */
     private $iriOfferIdentifierFactory;
 
@@ -53,12 +53,12 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_the_json_is_malformed(): void
+    public function it_throws_a_json_exception_when_the_json_is_malformed(): void
     {
         $json = '{"foo"';
 
-        $this->expectException(NotWellFormedException::class);
-        $this->expectExceptionMessage('Invalid JSON');
+        $this->expectException(JsonException::class);
+        $this->expectExceptionMessage('Syntax error');
 
         $this->deserializer->deserialize($json);
     }

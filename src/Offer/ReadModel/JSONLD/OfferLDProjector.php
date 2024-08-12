@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\ReadModel\JSONLD\OrganizerServiceInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
@@ -61,6 +62,7 @@ use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SluggerInterface;
 use DateTimeInterface;
+use JsonException;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
@@ -939,8 +941,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         try {
             $organizerJSONLD = $this->organizerRepository->fetch($organizerId)->getRawBody();
-
-            return (array)json_decode($organizerJSONLD);
+            return (array)Json::decode($organizerJSONLD);
+        } catch (JsonException $e) {
+            return [];
         } catch (DocumentDoesNotExist $e) {
             // In case the place can not be found at the moment, just add its ID
             return [

@@ -20,12 +20,12 @@ use Symfony\Component\Serializer\Exception\UnsupportedException;
 final class MediaObjectSerializerTest extends TestCase
 {
     /**
-     * @var MockObject|MediaObjectSerializer
+     * @var MediaObjectSerializer
      */
     protected $serializer;
 
     /**
-     * @var MockObject|IriGeneratorInterface
+     * @var IriGeneratorInterface&MockObject
      */
     protected $iriGenerator;
 

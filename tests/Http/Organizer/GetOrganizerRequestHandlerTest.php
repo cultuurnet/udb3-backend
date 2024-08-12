@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\SampleFiles;
 use EasyRdf\Graph;
 use EasyRdf\Serialiser\Turtle;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -21,7 +22,7 @@ class GetOrganizerRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var DocumentRepository|MockObject */
+    /** @var DocumentRepository&MockObject */
     private $organizerRepository;
 
     private GetOrganizerRequestHandler $getOrganizerRequestHandler;
@@ -102,7 +103,7 @@ class GetOrganizerRequestHandlerTest extends TestCase
         $response = $this->getOrganizerRequestHandler->handle($getOrganizerRequest);
 
         $this->assertEquals(
-            file_get_contents(__DIR__ . '/samples/organizer.ttl'),
+            SampleFiles::read(__DIR__ . '/samples/organizer.ttl'),
             $response->getBody()->getContents()
         );
     }

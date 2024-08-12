@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -26,14 +27,14 @@ use PHPUnit\Framework\TestCase;
 final class ProjectorTest extends TestCase
 {
     /**
-     * @var ResourceOwnerRepository|MockObject
+     * @var ResourceOwnerRepository&MockObject
      */
     private $repository;
 
     private Projector $projector;
 
     /**
-     * @var CreatedByToUserIdResolverInterface|MockObject
+     * @var CreatedByToUserIdResolverInterface&MockObject
      */
     private $userIdResolver;
 
@@ -53,7 +54,7 @@ final class ProjectorTest extends TestCase
      */
     public function it_adds_permission_to_the_user_identified_by_the_createdby_element_for_places_imported_from_udb2_actor(): void
     {
-        $cdbXml = file_get_contents(__DIR__ . '/../../actor.xml');
+        $cdbXml = SampleFiles::read(__DIR__ . '/../../actor.xml');
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2');
 
         $payload = new PlaceImportedFromUDB2(
@@ -90,7 +91,7 @@ final class ProjectorTest extends TestCase
      */
     public function it_does_not_add_any_permissions_for_actor_places_imported_from_udb2_with_unresolvable_createdby_value(): void
     {
-        $cdbXml = file_get_contents(__DIR__ . '/../../actor.xml');
+        $cdbXml = SampleFiles::read(__DIR__ . '/../../actor.xml');
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2');
 
         $payload = new PlaceImportedFromUDB2(

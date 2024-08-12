@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class AbstractOrganizerCommandTest extends TestCase
 {
     /**
-     * @var AbstractOrganizerCommand|MockObject
+     * @var AbstractOrganizerCommand&MockObject
      */
     protected $organizerCommand;
 

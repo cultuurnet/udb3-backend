@@ -21,7 +21,7 @@ class AbstractLabelEventTest extends TestCase
     protected $uuid;
 
     /**
-     * @var AbstractLabelEvent|MockObject
+     * @var AbstractLabelEvent&MockObject
      */
     protected $event;
 

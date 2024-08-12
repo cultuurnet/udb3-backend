@@ -10,6 +10,7 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
@@ -57,10 +58,10 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
 use RuntimeException;
@@ -502,8 +503,8 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T12:12:12+01:00')
+            DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
+            DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
 
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
@@ -1283,7 +1284,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new LegacyLanguage('en')
         );
 
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/samples/event_entryapi_valid_with_keywords.xml'
         );
 
@@ -1317,7 +1318,7 @@ class EventTest extends AggregateRootScenarioTestCase
      */
     public function it_removes_images(): void
     {
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/samples/event_entryapi_valid_with_keywords.xml'
         );
 
@@ -1367,7 +1368,7 @@ class EventTest extends AggregateRootScenarioTestCase
      */
     public function it_silently_ignores_an_image_removal_request_when_image_is_not_present(): void
     {
-        $cdbXml = file_get_contents(
+        $cdbXml = SampleFiles::read(
             __DIR__ . '/samples/event_entryapi_valid_with_keywords.xml'
         );
 
@@ -2046,7 +2047,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
     protected function getSample(string $file): string
     {
-        return file_get_contents(
+        return SampleFiles::read(
             __DIR__ . '/samples/' . $file
         );
     }

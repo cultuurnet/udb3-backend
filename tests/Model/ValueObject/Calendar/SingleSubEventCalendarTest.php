@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-use DateTimeImmutable;
+use CultuurNet\UDB3\DateTimeFactory;
 use PHPUnit\Framework\TestCase;
 
 class SingleSubEventCalendarTest extends TestCase
@@ -16,8 +16,8 @@ class SingleSubEventCalendarTest extends TestCase
         $this->singleSubEventCalendar = new SingleSubEventCalendar(
             new SubEvent(
                 new DateRange(
-                    DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
-                    DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018')
+                    DateTimeFactory::fromFormat('d/m/Y', '10/12/2018'),
+                    DateTimeFactory::fromFormat('d/m/Y', '18/12/2018')
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available())
@@ -83,11 +83,11 @@ class SingleSubEventCalendarTest extends TestCase
     public function it_should_return_the_injected_start_and_end_date(): void
     {
         $this->assertEquals(
-            DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
+            DateTimeFactory::fromFormat('d/m/Y', '10/12/2018'),
             $this->singleSubEventCalendar->getStartDate()
         );
         $this->assertEquals(
-            DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018'),
+            DateTimeFactory::fromFormat('d/m/Y', '18/12/2018'),
             $this->singleSubEventCalendar->getEndDate()
         );
     }
@@ -100,8 +100,8 @@ class SingleSubEventCalendarTest extends TestCase
         $expected = new SubEvents(
             new SubEvent(
                 new DateRange(
-                    DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
-                    DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018')
+                    DateTimeFactory::fromFormat('d/m/Y', '10/12/2018'),
+                    DateTimeFactory::fromFormat('d/m/Y', '18/12/2018')
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available())

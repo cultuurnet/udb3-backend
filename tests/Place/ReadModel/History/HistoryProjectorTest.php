@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -75,8 +76,8 @@ use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\SampleFiles;
 use DateTimeImmutable;
-use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
@@ -833,10 +834,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new Published(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            DateTimeImmutable::createFromFormat(
-                DateTimeInterface::ATOM,
-                '2015-04-30T02:00:00+02:00'
-            )
+            DateTimeFactory::fromAtom('2015-04-30T02:00:00+02:00')
         );
 
         $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
@@ -1134,6 +1132,6 @@ class HistoryProjectorTest extends TestCase
 
     private function getActorCdbXml(): string
     {
-        return file_get_contents(__DIR__ . '/actor.xml');
+        return SampleFiles::read(__DIR__ . '/actor.xml');
     }
 }

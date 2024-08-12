@@ -17,12 +17,12 @@ use PHPUnit\Framework\TestCase;
 class DelegatingAMQPMessageFactoryTest extends TestCase
 {
     /**
-     * @var BodyFactoryInterface|MockObject
+     * @var BodyFactoryInterface&MockObject
      */
     private $bodyFactory;
 
     /**
-     * @var PropertiesFactoryInterface|MockObject
+     * @var PropertiesFactoryInterface&MockObject
      */
     private $propertiesFactory;
 

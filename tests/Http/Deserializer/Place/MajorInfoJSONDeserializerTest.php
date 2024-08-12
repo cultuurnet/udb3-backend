@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 final class MajorInfoJSONDeserializerTest extends TestCase
@@ -22,7 +23,7 @@ final class MajorInfoJSONDeserializerTest extends TestCase
      */
     public function it_can_serialize_major_info(): void
     {
-        $majorInfoAsJson = file_get_contents(__DIR__ . '/../samples/place-major-info.json');
+        $majorInfoAsJson = SampleFiles::read(__DIR__ . '/../samples/place-major-info.json');
 
         $majorInfoJSONDeserializer = new MajorInfoJSONDeserializer();
 

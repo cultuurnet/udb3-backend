@@ -20,7 +20,7 @@ class RolesSearchRequestHandlerTest extends TestCase
     private RolesSearchRequestHandler $rolesSearchRequestHandler;
 
     /**
-     * @var RepositoryInterface | MockObject
+     * @var RepositoryInterface&MockObject
      */
     private $roleSearchRepository;
 

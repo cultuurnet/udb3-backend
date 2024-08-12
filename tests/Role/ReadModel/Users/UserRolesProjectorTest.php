@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -22,17 +23,17 @@ use PHPUnit\Framework\TestCase;
 class UserRolesProjectorTest extends TestCase
 {
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $userRolesDocumentRepository;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $roleDetailsDocumentRepository;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $roleUsersDocumentRepository;
 
@@ -93,14 +94,14 @@ class UserRolesProjectorTest extends TestCase
             ->with($userAdded->getUserId())
             ->willReturn(new JsonDocument(
                 $userAdded->getUserId(),
-                json_encode($roles)
+                Json::encode($roles)
             ));
 
         // The resulting user role document with 2 roles.
         $roles[$newRoleUuid->toString()] = $newRoleDetailsDocument->getBody();
         $expectedUserRolesDocument = new JsonDocument(
             $userAdded->getUserId(),
-            json_encode($roles)
+            Json::encode($roles)
         );
 
         $this->userRolesDocumentRepository->expects($this->once())
@@ -148,7 +149,7 @@ class UserRolesProjectorTest extends TestCase
         $roles[$userAdded->getUuid()->toString()] = $roleDetailsDocument->getBody();
         $jsonDocument = new JsonDocument(
             $userAdded->getUserId(),
-            json_encode($roles)
+            Json::encode($roles)
         );
 
         $this->userRolesDocumentRepository->expects($this->once())
@@ -175,7 +176,7 @@ class UserRolesProjectorTest extends TestCase
 
         $jsonDocument = new JsonDocument(
             $userRemoved->getUserId(),
-            json_encode([$userRemoved->getUuid()->toString()])
+            Json::encode([$userRemoved->getUuid()->toString()])
         );
 
         $this->userRolesDocumentRepository->method('fetch')
@@ -216,7 +217,7 @@ class UserRolesProjectorTest extends TestCase
         $users[$userIdentityDetails->getUserId()] = $userIdentityDetails;
         $roleUsersDocument = new JsonDocument(
             $roleDetailsProjectedToJSONLD->getUuid()->toString(),
-            json_encode($users)
+            Json::encode($users)
         );
         $this->roleUsersDocumentRepository->method('fetch')
             ->with($roleDetailsProjectedToJSONLD->getUuid()->toString())
@@ -230,7 +231,7 @@ class UserRolesProjectorTest extends TestCase
         $roles[$roleDetailsProjectedToJSONLD->getUuid()->toString()] = $oldRoleDetailsDocument->getBody();
         $existingUserRolesDocument = new JsonDocument(
             'userId',
-            json_encode($roles)
+            Json::encode($roles)
         );
         $this->userRolesDocumentRepository->method('fetch')
             ->with('userId')
@@ -240,7 +241,7 @@ class UserRolesProjectorTest extends TestCase
         $roles[$roleDetailsProjectedToJSONLD->getUuid()->toString()] = $newRoleDetailsDocument->getBody();
         $newUserRolesDocument = new JsonDocument(
             'userId',
-            json_encode($roles)
+            Json::encode($roles)
         );
         $this->userRolesDocumentRepository->expects($this->once())
             ->method('save')

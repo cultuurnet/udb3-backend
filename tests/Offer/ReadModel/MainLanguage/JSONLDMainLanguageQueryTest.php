@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\ReadModel\MainLanguage;
 
 use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -15,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 class JSONLDMainLanguageQueryTest extends TestCase
 {
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $documentRepository;
 
@@ -78,7 +79,7 @@ class JSONLDMainLanguageQueryTest extends TestCase
      */
     private function expectDocumentWithJsonLd($cdbid, array $data): void
     {
-        $document = new JsonDocument($cdbid, json_encode($data));
+        $document = new JsonDocument($cdbid, Json::encode($data));
 
         $this->documentRepository->expects($this->any())
             ->method('fetch')

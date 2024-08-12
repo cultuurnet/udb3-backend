@@ -36,29 +36,29 @@ final class EventExportServiceTest extends TestCase
     private EventExportService $eventExportService;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $eventRepository;
 
     private ItemIdentifierFactory $itemIdentifierFactory;
 
     /**
-     * @var SearchServiceInterface|MockObject
+     * @var SearchServiceInterface&MockObject
      */
     private $searchService;
 
     /**
-     * @var UuidGeneratorInterface|MockObject
+     * @var UuidGeneratorInterface&MockObject
      */
     private $uuidGenerator;
 
     /**
-     * @var IriGeneratorInterface|MockObject
+     * @var IriGeneratorInterface&MockObject
      */
     private $iriGenerator;
 
     /**
-     * @var NotificationMailerInterface|MockObject
+     * @var NotificationMailerInterface&MockObject
      */
     private $mailer;
 
@@ -69,7 +69,7 @@ final class EventExportServiceTest extends TestCase
     private array $searchResultsDetails;
 
     /**
-     * @var ResultsGeneratorInterface|MockObject
+     * @var ResultsGeneratorInterface&MockObject
      */
     private $resultsGenerator;
 
@@ -188,11 +188,11 @@ final class EventExportServiceTest extends TestCase
     }
 
     /**
-     * @return FileFormatInterface|MockObject
+     * @return FileFormatInterface&MockObject
      */
     private function getFileFormat(string $fileNameExtension)
     {
-        /** @var FileFormatInterface|MockObject $fileFormat */
+        /** @var FileFormatInterface&MockObject $fileFormat */
         $fileFormat = $this->createMock(FileFormatInterface::class);
 
         $fileFormat->expects($this->any())
@@ -510,7 +510,7 @@ final class EventExportServiceTest extends TestCase
         $query = new EventExportQuery('city:Leuven');
         $logger = $this->createMock(LoggerInterface::class);
 
-        /** @var FileFormatInterface|MockObject $fileFormat */
+        /** @var FileFormatInterface&MockObject $fileFormat */
         $fileFormat = $this->createMock(FileFormatInterface::class);
 
         $selection = [];

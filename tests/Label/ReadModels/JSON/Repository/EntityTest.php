@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -106,7 +107,7 @@ class EntityTest extends TestCase
      */
     public function it_can_encode_to_json(): void
     {
-        $json = json_encode($this->entity);
+        $json = Json::encode($this->entity);
 
         $expectedJson = '{"uuid":"' . $this->uuid->toString()
             . '","name":"' . $this->name

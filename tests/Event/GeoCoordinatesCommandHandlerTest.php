@@ -25,10 +25,12 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -40,7 +42,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
     private AddressFormatter $localityAddressFormatter;
 
     /**
-     * @var GeocodingService|MockObject
+     * @var GeocodingService&MockObject
      */
     private $geocodingService;
 
@@ -60,13 +62,12 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
         $documentRepository->expects($this->once())
             ->method('fetch')
             ->with(self::EVENT_ID)
-            ->willReturn(new JsonDocument(self::EVENT_ID, json_encode([
+            ->willReturn(new JsonDocument(self::EVENT_ID, Json::encode([
                 'name' => [
                     'nl' => 'Faith no More',
                     'fr' => 'Faith no More - a la francais',
-
                 ],
-            ], JSON_THROW_ON_ERROR)));
+            ])));
 
         return new GeoCoordinatesCommandHandler(
             $eventRepository,
@@ -94,7 +95,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $eventImported = new EventImportedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/samples/event_004aea08-e13d-48c9-b9eb-a18f20e6d44e.xml'),
+            SampleFiles::read(__DIR__ . '/samples/event_004aea08-e13d-48c9-b9eb-a18f20e6d44e.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 
@@ -135,7 +136,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $eventImported = new EventImportedFromUDB2(
             $eventId,
-            file_get_contents(__DIR__ . '/samples/event_004aea08-e13d-48c9-b9eb-a18f20e6d44e.xml'),
+            SampleFiles::read(__DIR__ . '/samples/event_004aea08-e13d-48c9-b9eb-a18f20e6d44e.xml'),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 

@@ -31,7 +31,7 @@ class PlaceRepositoryTest extends TestCase
     private PlaceRepository $placeRepository;
 
     /**
-     * @var EventStore|MockObject
+     * @var EventStore&MockObject
      */
     private $eventStore;
 

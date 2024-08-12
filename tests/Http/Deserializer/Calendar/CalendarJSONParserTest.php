@@ -8,15 +8,17 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp;
-use DateTimeInterface;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 class CalendarJSONParserTest extends TestCase
@@ -33,8 +35,8 @@ class CalendarJSONParserTest extends TestCase
 
     protected function setUp(): void
     {
-        $updateCalendar = file_get_contents(__DIR__ . '/samples/calendar_all_fields.json');
-        $this->updateCalendarAsArray = json_decode($updateCalendar, true);
+        $updateCalendar = SampleFiles::read(__DIR__ . '/samples/calendar_all_fields.json');
+        $this->updateCalendarAsArray = Json::decodeAssociatively($updateCalendar);
 
         $this->calendarJSONParser = new CalendarJSONParser();
     }
@@ -44,7 +46,7 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_can_get_the_start_date(): void
     {
-        $startDate = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00');
+        $startDate = DateTimeFactory::fromAtom('2020-01-26T09:00:00+01:00');
 
         $this->assertEquals(
             $startDate,
@@ -59,8 +61,8 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_returns_null_when_start_date_is_missing(): void
     {
-        $updateCalendar = file_get_contents(__DIR__ . '/samples/calendar_missing_start_and_end.json');
-        $updateCalendarAsArray = json_decode($updateCalendar, true);
+        $updateCalendar = SampleFiles::read(__DIR__ . '/samples/calendar_missing_start_and_end.json');
+        $updateCalendarAsArray = Json::decodeAssociatively($updateCalendar);
 
         $this->assertNull(
             $this->calendarJSONParser->getStartDate(
@@ -74,7 +76,7 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_can_get_the_end_date(): void
     {
-        $endDate = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00');
+        $endDate = DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00');
 
         $this->assertEquals(
             $endDate,
@@ -89,8 +91,8 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_returns_null_when_end_date_is_missing(): void
     {
-        $updateCalendar = file_get_contents(__DIR__ . '/samples/calendar_missing_start_and_end.json');
-        $updateCalendarAsArray = json_decode($updateCalendar, true);
+        $updateCalendar = SampleFiles::read(__DIR__ . '/samples/calendar_missing_start_and_end.json');
+        $updateCalendarAsArray = Json::decodeAssociatively($updateCalendar);
 
         $this->assertNull(
             $this->calendarJSONParser->getEndDate(
@@ -134,11 +136,11 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_can_get_the_timestamps(): void
     {
-        $startDatePeriod1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00');
-        $endDatePeriod1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-01T16:00:00+01:00');
+        $startDatePeriod1 = DateTimeFactory::fromAtom('2020-01-26T09:00:00+01:00');
+        $endDatePeriod1 = DateTimeFactory::fromAtom('2020-02-01T16:00:00+01:00');
 
-        $startDatePeriod2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-03T09:00:00+01:00');
-        $endDatePeriod2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00');
+        $startDatePeriod2 = DateTimeFactory::fromAtom('2020-02-03T09:00:00+01:00');
+        $endDatePeriod2 = DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00');
 
         $timestamps = [
             (new Timestamp(
@@ -180,9 +182,8 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_should_not_create_timestamps_when_json_is_missing_an_end_property(): void
     {
-        $calendarData = json_decode(
-            file_get_contents(__DIR__ . '/samples/calendar_missing_time_span_end.json'),
-            true
+        $calendarData = Json::decodeAssociatively(
+            SampleFiles::read(__DIR__ . '/samples/calendar_missing_time_span_end.json')
         );
 
         $this->assertEmpty(
@@ -195,9 +196,8 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_should_not_create_timestamps_when_json_is_missing_a_start_property(): void
     {
-        $calendarData = json_decode(
-            file_get_contents(__DIR__ . '/samples/calendar_missing_time_span_start.json'),
-            true
+        $calendarData = Json::decodeAssociatively(
+            SampleFiles::read(__DIR__ . '/samples/calendar_missing_time_span_start.json')
         );
 
         $this->assertEmpty(
@@ -255,9 +255,8 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_should_not_create_opening_hours_when_fields_are_missing(): void
     {
-        $calendarData = json_decode(
-            file_get_contents(__DIR__ . '/samples/calendar_with_opening_hours_but_missing_fields.json'),
-            true
+        $calendarData = Json::decodeAssociatively(
+            SampleFiles::read(__DIR__ . '/samples/calendar_with_opening_hours_but_missing_fields.json')
         );
 
         $this->assertEmpty(

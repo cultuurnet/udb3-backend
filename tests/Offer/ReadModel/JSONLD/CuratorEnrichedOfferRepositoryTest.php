@@ -23,7 +23,7 @@ final class CuratorEnrichedOfferRepositoryTest extends TestCase
     private CuratorEnrichedOfferRepository $curatorEnrichedOfferRepository;
 
     /**
-     * @var NewsArticleRepository|MockObject
+     * @var NewsArticleRepository&MockObject
      */
     private $newsArticleRepository;
 

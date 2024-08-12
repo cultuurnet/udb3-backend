@@ -12,12 +12,12 @@ use PHPUnit\Framework\TestCase;
 class AbstractEventStoreDecoratorTest extends TestCase
 {
     /**
-     * @var EventStore|MockObject
+     * @var EventStore&MockObject
      */
     private $eventStore;
 
     /**
-     * @var AbstractEventStoreDecorator|MockObject
+     * @var AbstractEventStoreDecorator&MockObject
      */
     private $abstractEventStoreDecorator;
 

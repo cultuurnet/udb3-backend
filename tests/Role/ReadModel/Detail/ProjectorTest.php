@@ -29,7 +29,7 @@ class ProjectorTest extends TestCase
     private Query $query;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $repository;
 

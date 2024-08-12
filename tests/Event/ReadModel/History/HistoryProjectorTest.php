@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\History;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
@@ -80,6 +81,7 @@ use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -127,7 +129,7 @@ class HistoryProjectorTest extends TestCase
 
     protected function getEventCdbXml(string $eventId): string
     {
-        return file_get_contents(__DIR__ . '/event-' . $eventId . '.xml');
+        return SampleFiles::read(__DIR__ . '/event-' . $eventId . '.xml');
     }
 
     /**
@@ -1455,10 +1457,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new Published(
             self::EVENT_ID_1,
-            DateTimeImmutable::createFromFormat(
-                DateTimeInterface::ATOM,
-                '2015-04-30T02:00:00+02:00'
-            )
+            DateTimeFactory::fromAtom('2015-04-30T02:00:00+02:00')
         );
 
         $domainMessage = new DomainMessage(

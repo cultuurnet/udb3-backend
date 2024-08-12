@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Commands\Moderation;
 
 use Cake\Chronos\Chronos;
+use CultuurNet\UDB3\DateTimeFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -15,12 +16,9 @@ class AbstractPublishTest extends TestCase
      */
     public function it_can_store_a_future_publication_date(): void
     {
-        $futurePublicationDate = \DateTimeImmutable::createFromFormat(
-            DATE_ATOM,
-            Chronos::now()->addWeek()->format(DATE_ATOM)
-        );
+        $futurePublicationDate = DateTimeFactory::fromAtom(Chronos::now()->addWeek()->toAtomString());
 
-        /** @var AbstractPublish|MockObject $publishCommand */
+        /** @var AbstractPublish&MockObject $publishCommand */
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
             ['513b3060-c94c-4aef-bfaa-9ad4fc54d979', $futurePublicationDate]
@@ -40,7 +38,7 @@ class AbstractPublishTest extends TestCase
         $now = Chronos::now();
         Chronos::setTestNow($now);
 
-        /** @var AbstractPublish|MockObject $publishCommand */
+        /** @var AbstractPublish&MockObject $publishCommand */
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
             ['0399351f-89b6-4b16-981e-d4e71b8817e5']
@@ -63,7 +61,7 @@ class AbstractPublishTest extends TestCase
         $lastMonth = $now->subMonth();
         Chronos::setTestNow($now);
 
-        /** @var AbstractPublish|MockObject $publishCommand */
+        /** @var AbstractPublish&MockObject $publishCommand */
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
             ['b9cf614a-96b1-467e-831f-9f91224994bf', $lastMonth]

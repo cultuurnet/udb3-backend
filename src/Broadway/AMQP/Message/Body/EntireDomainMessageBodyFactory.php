@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Broadway\AMQP\Message\Body;
 use Broadway\Domain\DomainMessage;
 use Broadway\Serializer\Serializable;
 use Broadway\Serializer\SerializationException;
+use CultuurNet\UDB3\Json;
 
 class EntireDomainMessageBodyFactory implements BodyFactoryInterface
 {
@@ -23,7 +24,7 @@ class EntireDomainMessageBodyFactory implements BodyFactoryInterface
             'recorded_on' => $domainMessage->getRecordedOn()->toString(),
         ];
 
-        return json_encode($data);
+        return Json::encode($data);
     }
 
     /**

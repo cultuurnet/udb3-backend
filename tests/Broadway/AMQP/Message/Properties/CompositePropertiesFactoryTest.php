@@ -13,12 +13,12 @@ use PHPUnit\Framework\TestCase;
 class CompositePropertiesFactoryTest extends TestCase
 {
     /**
-     * @var PropertiesFactoryInterface|MockObject
+     * @var PropertiesFactoryInterface&MockObject
      */
     private $mockFactory1;
 
     /**
-     * @var PropertiesFactoryInterface|MockObject
+     * @var PropertiesFactoryInterface&MockObject
      */
     private $mockFactory2;
 

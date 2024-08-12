@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 final class ProjectorTest extends TestCase
 {
     /**
-     * @var ResourceOwnerRepository|MockObject
+     * @var ResourceOwnerRepository&MockObject
      */
     private $repository;
 

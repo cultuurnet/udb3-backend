@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
 final class CreatePlaceJSONDeserializerTest extends TestCase
@@ -23,7 +24,7 @@ final class CreatePlaceJSONDeserializerTest extends TestCase
      */
     public function it_can_serialize_create_place_with_main_language_info(): void
     {
-        $createPlaceAsJson = file_get_contents(__DIR__ . '/../samples/place-create-with-main-language.json');
+        $createPlaceAsJson = SampleFiles::read(__DIR__ . '/../samples/place-create-with-main-language.json');
 
         $createPlaceJSONDeserializer = new CreatePlaceJSONDeserializer();
 

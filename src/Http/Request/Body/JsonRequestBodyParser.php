@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Request\Body;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Json;
 use InvalidArgumentException;
 use JsonException;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,7 +21,7 @@ final class JsonRequestBodyParser implements RequestBodyParser
         }
 
         try {
-            $decoded = json_decode($body, false, 512, JSON_THROW_ON_ERROR);
+            $decoded = Json::decode($body);
         } catch (JsonException $e) {
             throw ApiProblem::bodyInvalidSyntax('JSON');
         }

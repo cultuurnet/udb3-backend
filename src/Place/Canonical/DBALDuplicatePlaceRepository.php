@@ -17,16 +17,17 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 
     public function getClusterIds(): array
     {
-        return $this->connection->createQueryBuilder()
+        $result = $this->connection->createQueryBuilder()
             ->select('DISTINCT cluster_id')
             ->from('duplicate_places')
-            ->where('processed = 0')
             ->orderBy('cluster_id')
             ->execute()
             ->fetchFirstColumn();
+
+        return array_map('intval', $result);
     }
 
-    public function getPlacesInCluster(string $clusterId): array
+    public function getPlacesInCluster(int $clusterId): array
     {
         return $this->connection->createQueryBuilder()
             ->select('place_uuid')
@@ -37,7 +38,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->fetchFirstColumn();
     }
 
-    public function setCanonicalOnCluster(string $clusterId, string $canonical): void
+    public function setCanonicalOnCluster(int $clusterId, string $canonical): void
     {
         $this->connection->createQueryBuilder()
             ->update('duplicate_places')
@@ -76,15 +77,5 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->fetchFirstColumn();
 
         return count($duplicates) > 0 ? $duplicates : null;
-    }
-
-    public function markAsProcessed(string $placeId): void
-    {
-        $this->connection->createQueryBuilder()
-            ->update('duplicate_places')
-            ->set('processed', '1')
-            ->where('place_uuid = :place_uuid')
-            ->setParameter(':place_uuid', $placeId)
-            ->execute();
     }
 }

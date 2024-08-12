@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\BookingInfo;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\TestCase;
@@ -34,8 +35,8 @@ class AbstractBookingInfoEventTest extends TestCase
             new MultilingualString(new Language('nl'), 'urlLabel'),
             '0123456789',
             'foo@bar.com',
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-01-01T00:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-01-31T00:00:00+01:00')
+            DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
         );
         $this->abstractBookingInfoEvent = new MockAbstractBookingInfoEvent(
             $this->itemId,
@@ -54,8 +55,8 @@ class AbstractBookingInfoEventTest extends TestCase
             new MultilingualString(new Language('nl'), 'urlLabel'),
             '0123456789',
             'foo@bar.com',
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-01-01T00:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-01-31T00:00:00+01:00')
+            DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
         );
         $expectedAbstractBookingInfoEvent = new MockAbstractBookingInfoEvent(
             $expectedItemId,
@@ -76,8 +77,8 @@ class AbstractBookingInfoEventTest extends TestCase
             new MultilingualString(new Language('nl'), 'urlLabel'),
             '0123456789',
             'foo@bar.com',
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-01-01T00:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-01-31T00:00:00+01:00')
+            DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
+            DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
         );
 
         $itemId = $this->abstractBookingInfoEvent->getItemId();
@@ -140,8 +141,8 @@ class AbstractBookingInfoEventTest extends TestCase
                         new MultilingualString(new Language('nl'), 'urlLabel'),
                         '0123456789',
                         'foo@bar.com',
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-01-01T00:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-01-31T00:00:00+01:00')
+                        DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
                     )
                 ),
             ],

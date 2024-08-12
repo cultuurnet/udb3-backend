@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use PHPUnit\Framework\TestCase;
@@ -41,7 +42,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
     {
         $this->requestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromString(json_encode($data))
+                ->withBodyFromString(Json::encode($data))
                 ->withRouteParameter('offerType', $offerType)
                 ->withRouteParameter('offerId', self::OFFER_ID)
                 ->build('PUT')
@@ -198,7 +199,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
             fn () => $this->requestHandler->handle(
                 (new Psr7RequestBuilder())
-                    ->withBodyFromString(json_encode($data))
+                    ->withBodyFromString(Json::encode($data))
                     ->withRouteParameter('offerType', $offerType)
                     ->withRouteParameter('offerId', self::OFFER_ID)
                     ->build('PUT')

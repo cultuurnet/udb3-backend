@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -17,12 +18,12 @@ use PHPUnit\Framework\TestCase;
 class Sapi3RoleConstraintVoterTest extends TestCase
 {
     /**
-     * @var UserConstraintsReadRepositoryInterface|MockObject
+     * @var UserConstraintsReadRepositoryInterface&MockObject
      */
     private $userConstraintsReadRepository;
 
     /**
-     * @var HttpClient|MockObject
+     * @var HttpClient&MockObject
      */
     private $httpClient;
 
@@ -78,7 +79,7 @@ class Sapi3RoleConstraintVoterTest extends TestCase
             ['X-Api-Key' => 'cf462083-7bbd-46fc-95c3-6a0bc95918a5']
         );
 
-        $response = new Response(200, [], json_encode(['totalItems' => $totalItems]));
+        $response = new Response(200, [], Json::encode(['totalItems' => $totalItems]));
 
         $this->httpClient
             ->expects($this->once())

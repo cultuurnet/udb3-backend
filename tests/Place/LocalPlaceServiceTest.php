@@ -14,22 +14,22 @@ use PHPUnit\Framework\TestCase;
 class LocalPlaceServiceTest extends TestCase
 {
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $documentRepository;
 
     /**
-     * @var Repository|MockObject
+     * @var Repository&MockObject
      */
     private $placeRepository;
 
     /**
-     * @var IriGeneratorInterface|MockObject
+     * @var IriGeneratorInterface&MockObject
      */
     private $iriGenerator;
 
     /**
-     * @var PlaceRelationsRepository|MockObject
+     * @var PlaceRelationsRepository&MockObject
      */
     private $placeRelationsRepository;
 

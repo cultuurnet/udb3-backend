@@ -33,7 +33,7 @@ final class AddImageRequestHandlerTest extends TestCase
 
     private AddImageRequestHandler $addImageRequestHandler;
 
-    /** @var Repository|MockObject */
+    /** @var Repository&MockObject */
     private $imageRepository;
 
     protected function setUp(): void

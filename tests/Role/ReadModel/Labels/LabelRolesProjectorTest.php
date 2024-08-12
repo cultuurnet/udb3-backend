@@ -25,7 +25,7 @@ class LabelRolesProjectorTest extends TestCase
     private LabelRolesProjector $labelRolesProjector;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $labelRolesRepository;
 

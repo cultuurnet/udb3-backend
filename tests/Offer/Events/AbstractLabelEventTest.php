@@ -7,13 +7,12 @@ namespace CultuurNet\UDB3\Offer\Events;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Item\Events\LabelAdded;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class AbstractLabelEventTest extends TestCase
 {
     /**
-     * @var AbstractLabelEvent|MockObject
+     * @var LabelAdded
      */
     protected $labelEvent;
 

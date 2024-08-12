@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
@@ -28,6 +29,7 @@ use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -35,21 +37,21 @@ use Psr\Log\LoggerInterface;
 class GeoCoordinatesProcessManagerTest extends TestCase
 {
     /**
-     * @var CommandBus|MockObject
+     * @var CommandBus&MockObject
      */
     private $commandBus;
 
     private CultureFeedAddressFactoryInterface $addressFactory;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 
     private GeoCoordinatesProcessManager $processManager;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $documentRepository;
 
@@ -136,12 +138,12 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             new Metadata([]),
             new PlaceImportedFromUDB2(
                 '318F2ACB-F612-6F75-0037C9C29F44087A',
-                file_get_contents(__DIR__ . '/actor.xml'),
+                SampleFiles::read(__DIR__ . '/actor.xml'),
                 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
             )
         );
 
-        /** @var CultureFeedAddressFactory|MockObject $addressFactory */
+        /** @var CultureFeedAddressFactory&MockObject $addressFactory */
         $addressFactory = $this->createMock(CultureFeedAddressFactoryInterface::class);
 
         $documentRepository = $this->createMock(DocumentRepository::class);
@@ -268,7 +270,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new PlaceImportedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/actor.xml'),
+                        SampleFiles::read(__DIR__ . '/actor.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -289,7 +291,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new PlaceUpdatedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/actor.xml'),
+                        SampleFiles::read(__DIR__ . '/actor.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -319,7 +321,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new PlaceImportedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/actor_without_contactinfo.xml'),
+                        SampleFiles::read(__DIR__ . '/actor_without_contactinfo.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -340,7 +342,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new PlaceUpdatedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/actor_without_contactinfo.xml'),
+                        SampleFiles::read(__DIR__ . '/actor_without_contactinfo.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -361,7 +363,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new PlaceImportedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/actor_without_physical_address.xml'),
+                        SampleFiles::read(__DIR__ . '/actor_without_physical_address.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -382,7 +384,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new PlaceUpdatedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        file_get_contents(__DIR__ . '/actor_without_physical_address.xml'),
+                        SampleFiles::read(__DIR__ . '/actor_without_physical_address.xml'),
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
                     )
                 ),
@@ -407,7 +409,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
         $this->documentRepository->expects($this->once())
             ->method('fetch')
             ->with('4b735422-2bf3-4241-aabb-d70609d2d1d3')
-            ->willReturn(new JsonDocument('4b735422-2bf3-4241-aabb-d70609d2d1d3', json_encode([
+            ->willReturn(new JsonDocument('4b735422-2bf3-4241-aabb-d70609d2d1d3', Json::encode([
                 'mainLanguage' => 'nl',
                 'address' => [
                     'nl' => [
@@ -417,7 +419,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         'streetAddress' => 'Bondgenotenlaan 1',
                     ],
                 ],
-            ], JSON_THROW_ON_ERROR)));
+            ])));
 
         $expectedCommand = new UpdateGeoCoordinatesFromAddress(
             '4b735422-2bf3-4241-aabb-d70609d2d1d3',

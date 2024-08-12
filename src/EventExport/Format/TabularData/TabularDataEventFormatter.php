@@ -10,6 +10,7 @@ use CommerceGuys\Intl\Currency\CurrencyRepositoryInterface;
 use CommerceGuys\Intl\Formatter\NumberFormatter;
 use CommerceGuys\Intl\Formatter\NumberFormatterInterface;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
@@ -122,7 +123,7 @@ class TabularDataEventFormatter
     protected function formatDateWithoutTime(string $date): string
     {
         $timezone = new \DateTimeZone('Europe/Brussels');
-        $datetime = \DateTime::createFromFormat(DateTimeInterface::ATOM, $date, $timezone);
+        $datetime = DateTimeFactory::fromAtom($date)->setTimezone($timezone);
         return $datetime->format('Y-m-d');
     }
 
