@@ -50,11 +50,6 @@ class SimilarEventsRepositoryTest extends TestCase
         $this->skippedRepository = new SkippedSimilarEventsRepository($this->getConnection());
     }
 
-    public function tearDown(): void
-    {
-        $this->recreateDatabase();
-    }
-
     /**
      * @test
      */

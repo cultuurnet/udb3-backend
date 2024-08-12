@@ -58,8 +58,6 @@ final class SuggestProductionRequestHandlerTest extends TestCase
      */
     public function it_returns_a_suggestion(): void
     {
-        $this->markTestSkipped('Requires MySQL syntax which SQLite does not support.');
-
         $suggestion = new Suggestion(
             '3ab86064-045c-42cf-b0c9-24710467031d',
             '04456137-19c4-464b-9c51-272af9f689d8',

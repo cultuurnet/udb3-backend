@@ -15,6 +15,11 @@ trait DBALTestConnectionTrait
     private ?Connection $connection = null;
     private array $connectionConfiguration;
 
+    public function tearDown(): void
+    {
+        $this->recreateDatabase();
+    }
+
     protected function initializeConnection(): void
     {
         if (!class_exists('PDO')) {
@@ -58,7 +63,7 @@ trait DBALTestConnectionTrait
         $this->getConnection()->getSchemaManager()->createTable($table);
     }
 
-    public function recreateDatabase()
+    public function recreateDatabase(): void
     {
         $this->getConnection()->getSchemaManager()->dropAndCreateDatabase($this->connectionConfiguration['dbname']);
     }

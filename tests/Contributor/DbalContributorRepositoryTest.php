@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 final class DbalContributorRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
+
     public const TABLE_NAME = 'contributor_relations';
 
     private UUID $brusselsEvent;
@@ -27,7 +28,7 @@ final class DbalContributorRepositoryTest extends TestCase
 
     private static function getTableDefinition(Schema $schema): Table
     {
-        $table = $schema->createTable(self::TABLE_NAME);
+        $table = $schema->hasTable(self::TABLE_NAME) ? $schema->getTable(self::TABLE_NAME) : $schema->createTable(self::TABLE_NAME);
 
         $table->addColumn('uuid', Types::GUID)->setLength(36)->setNotnull(true);
         $table->addColumn('email', Types::TEXT)->setNotnull(true);
