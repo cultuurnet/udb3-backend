@@ -69,7 +69,7 @@ final class ProductionCommandHandlerTest extends TestCase
         $createdProduction = $this->productionRepository->find($command->getProductionId());
         $this->assertEquals($command->getProductionId(), $createdProduction->getProductionId());
         $this->assertEquals($name, $createdProduction->getName());
-        $this->assertEquals($events, $createdProduction->getEventIds());
+        $this->assertEqualsCanonicalizing($events, $createdProduction->getEventIds());
     }
 
     /**
