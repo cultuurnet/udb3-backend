@@ -57,6 +57,9 @@ jobs:
               if: steps.composer-cache.outputs.cache-hit != 'true'
               run: composer install --no-progress --no-suggest
 
+            - name: Configure MySQL for high connections
+              run: mysql -u root -pvagrant -h 127.0.0.1 -e "SET GLOBAL max_connections = 500;"
+
             - name: ✅ Run tests
               run: composer test
               env:
