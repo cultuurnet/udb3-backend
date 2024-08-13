@@ -18,6 +18,7 @@ trait DBALTestConnectionTrait
     public function tearDown(): void
     {
         $this->recreateDatabase();
+        $this->getConnection()->close();
     }
 
     protected function initializeConnection(): void
