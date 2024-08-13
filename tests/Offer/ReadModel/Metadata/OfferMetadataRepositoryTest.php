@@ -20,10 +20,7 @@ class OfferMetadataRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = $this->createSchema();
-        $this->createTable(
-            OfferMetadataSchemaConfigurator::getTableDefinition($schema)
-        );
+        $this->setUpDatabase();
 
         $this->repository = new OfferMetadataRepository($this->getConnection());
     }

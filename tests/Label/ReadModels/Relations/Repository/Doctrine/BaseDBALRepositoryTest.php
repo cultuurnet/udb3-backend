@@ -17,6 +17,8 @@ abstract class BaseDBALRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->setUpDatabase();
+
         $this->tableName = 'test_places_relations';
 
         $schemaConfigurator = new SchemaConfigurator($this->tableName);

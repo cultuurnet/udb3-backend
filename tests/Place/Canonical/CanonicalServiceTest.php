@@ -29,15 +29,13 @@ class CanonicalServiceTest extends TestCase
 
     public function setUp(): void
     {
+        $this->setUpDatabase();
+
         $this->oldestPlaceId = '8717c43d-026f-42e9-9ea9-799623c5763c';
         $this->museumPassPlaceId = '901e23fe-b393-4cc6-9307-8e3e3f2ea77f';
         $anotherMuseumPassPlaceId = '526605d3-7cc4-4607-97a4-065896253f42';
         $this->mostEventsPlaceId = '34621f3b-b626-4672-be7c-33972ac13791';
 
-        $table = new Table('duplicate_places');
-        $table->addColumn('cluster_id', Types::BIGINT)->setNotnull(true);
-        $table->addColumn('place_uuid', Types::GUID)->setLength(36)->setNotnull(true);
-        $this->createTable($table);
         $this->getConnection()->insert(
             'duplicate_places',
             [
@@ -118,12 +116,6 @@ class CanonicalServiceTest extends TestCase
         );
 
         $documentRepository = new InMemoryDocumentRepository();
-        $labelsRelations = new Table('labels_relations');
-        $labelsRelations->addColumn('labelName', Types::STRING)->setLength(255);
-        $labelsRelations->addColumn('relationType', Types::STRING)->setLength(255);
-        $labelsRelations->addColumn('relationId', Types::GUID)->setNotnull(true);
-        $labelsRelations->addColumn('imported', Types::BOOLEAN)->setNotnull(true)->setDefault(0);
-        $this->createTable($labelsRelations);
 
         $this->getConnection()->insert(
             'labels_relations',
@@ -144,12 +136,6 @@ class CanonicalServiceTest extends TestCase
                 'imported' => '0',
             ]
         );
-
-        $eventRelations = new Table('event_relations');
-        $eventRelations->addColumn('event', Types::STRING)->setLength(36)->setNotnull(true);
-        $eventRelations->addColumn('organizer', Types::STRING)->setLength(36)->setNotnull(true);
-        $eventRelations->addColumn('place', Types::STRING)->setLength(36)->setNotnull(true);
-        $this->createTable($eventRelations);
 
         $this->getConnection()->insert(
             'event_relations',

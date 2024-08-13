@@ -31,6 +31,8 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->setUpDatabase();
+
         $this->roleIds = [
             new UUID('36c96c3b-9ce4-492b-9b4e-fee465beb597'),
             new UUID('f874cea2-4f8e-475c-8e97-47f881fc5e1a'),

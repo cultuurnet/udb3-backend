@@ -17,15 +17,9 @@ class DBALRepositoryTest extends TestCase
 
     public function setUp(): void
     {
+        $this->setUpDatabase();
         $this->repository = new DBALEventRelationsRepository(
             $this->getConnection()
-        );
-
-        $schemaManager = $this->getConnection()->getSchemaManager();
-        $schema = $schemaManager->createSchema();
-
-        $schemaManager->createTable(
-            $this->repository->configureSchema($schema)
         );
 
         $this->tableName = 'event_relations';

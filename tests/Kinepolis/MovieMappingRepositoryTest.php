@@ -35,15 +35,10 @@ final class MovieMappingRepositoryTest extends TestCase
 
     public function setUp(): void
     {
+        $this->setUpDatabase();
         $this->eventId = '31c43ce5-4879-49a7-8627-dd1b60c5a9ed';
 
         $this->movieId = 'Kinepolis:tDECAm47127';
-
-        $this->createTable(
-            self::getTableDefinition(
-                $this->createSchema()
-            )
-        );
 
         $this->getConnection()->insert(
             self::TABLE_NAME,

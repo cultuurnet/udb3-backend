@@ -34,6 +34,8 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->setUpDatabase();
+
         $serializer = $this->createMock(Serializer::class);
 
         /** @var AggregateAwareDBALEventStore&MockObject $dbalEventStore */
@@ -61,15 +63,6 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
             $this->uniqueTableName,
             $this->uniqueConstraintService
         );
-
-        $schemaManager = $this->getConnection()->getSchemaManager();
-        $schema = $schemaManager->createSchema();
-
-        $table = $dbalEventStore->configureSchema($schema);
-        $schemaManager->createTable($table);
-
-        $uniqueTable = $this->uniqueDBALEventStoreDecorator->configureSchema($schema);
-        $schemaManager->createTable($uniqueTable);
     }
 
     /**

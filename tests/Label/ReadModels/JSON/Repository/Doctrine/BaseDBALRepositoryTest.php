@@ -20,6 +20,8 @@ abstract class BaseDBALRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->setUpDatabase();
+
         $this->tableName = 'test_labels_json';
 
         $schemaConfigurator = new SchemaConfigurator($this->tableName);

@@ -39,17 +39,13 @@ final class DbalContributorRepositoryTest extends TestCase
 
     public function setUp(): void
     {
+        $this->setUpDatabase();
+
         $contributorRelationsTableName = 'contributor_relations';
 
         $this->brusselsEvent = new UUID('22d25373-259f-4abc-9b2a-93b1777cf4da');
 
         $this->ghentEvent = new UUID('9e4c6ef8-3bbc-45ab-9828-c621f781c978');
-
-        $this->createTable(
-            self::getTableDefinition(
-                $this->createSchema()
-            )
-        );
 
         $this->getConnection()->insert(
             $contributorRelationsTableName,

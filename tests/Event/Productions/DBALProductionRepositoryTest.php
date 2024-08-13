@@ -19,10 +19,7 @@ final class DBALProductionRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = $this->createSchema();
-        $this->createTable(
-            ProductionSchemaConfigurator::getTableDefinition($schema)
-        );
+        $this->setUpDatabase();
 
         $this->repository = new DBALProductionRepository($this->getConnection());
     }

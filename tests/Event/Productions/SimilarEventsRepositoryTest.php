@@ -31,17 +31,7 @@ class SimilarEventsRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = $this->createSchema();
-
-        $this->createTable(
-            SimilarEventsSchemaConfigurator::getTableDefinition($schema)
-        );
-        $this->createTable(
-            ProductionSchemaConfigurator::getTableDefinition($schema)
-        );
-        $this->createTable(
-            SkippedSimilarEventsSchemaConfigurator::getTableDefinition($schema)
-        );
+        $this->setUpDatabase();
 
         $this->repository = new SimilarEventsRepository($this->getConnection());
 

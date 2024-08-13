@@ -18,8 +18,7 @@ class SkippedSimilarEventsRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = $this->createSchema();
-        $this->createTable(SkippedSimilarEventsSchemaConfigurator::getTableDefinition($schema));
+        $this->setUpDatabase();
 
         $this->repository = new SkippedSimilarEventsRepository($this->getConnection());
     }

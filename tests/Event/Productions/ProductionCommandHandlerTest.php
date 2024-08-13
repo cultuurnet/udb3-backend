@@ -34,10 +34,7 @@ final class ProductionCommandHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = $this->createSchema();
-        $this->createTable(
-            ProductionSchemaConfigurator::getTableDefinition($schema)
-        );
+        $this->setUpDatabase();
 
         $this->productionRepository = new DBALProductionRepository($this->getConnection());
         $this->skippedSimilarEventsRepository = $this->createMock(SkippedSimilarEventsRepository::class);

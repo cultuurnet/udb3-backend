@@ -31,17 +31,7 @@ final class SuggestProductionRequestHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = $this->createSchema();
-
-        $this->createTable(
-            SimilarEventsSchemaConfigurator::getTableDefinition($schema)
-        );
-        $this->createTable(
-            ProductionSchemaConfigurator::getTableDefinition($schema)
-        );
-        $this->createTable(
-            SkippedSimilarEventsSchemaConfigurator::getTableDefinition($schema)
-        );
+        $this->setUpDatabase();
 
         $this->similarEventsRepository = new SimilarEventsRepository($this->getConnection());
 

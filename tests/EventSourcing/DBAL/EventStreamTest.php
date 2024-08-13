@@ -25,6 +25,8 @@ class EventStreamTest extends TestCase
 
     public function setUp(): void
     {
+        $this->setUpDatabase();
+
         $table = 'events';
         $payloadSerializer = new SimpleInterfaceSerializer();
         $metadataSerializer = new SimpleInterfaceSerializer();
@@ -35,13 +37,6 @@ class EventStreamTest extends TestCase
             $metadataSerializer,
             $table,
             AggregateType::event()
-        );
-
-        $schemaManager = $this->getConnection()->getSchemaManager();
-        $schema = $schemaManager->createSchema();
-
-        $schemaManager->createTable(
-            $this->eventStore->configureSchema($schema)
         );
 
         $this->eventStream = new EventStream(

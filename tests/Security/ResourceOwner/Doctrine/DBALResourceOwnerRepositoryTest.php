@@ -15,6 +15,8 @@ final class DBALResourceOwnerRepositoryTest extends TestCase
 
     public function setUp(): void
     {
+        $this->setUpDatabase();
+
         $table = 'event_permission';
         $idField = 'event_id';
 
