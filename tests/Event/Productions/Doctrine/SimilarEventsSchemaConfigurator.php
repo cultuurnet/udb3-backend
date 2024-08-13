@@ -16,7 +16,7 @@ class SimilarEventsSchemaConfigurator
     {
         $table = $schema->createTable(self::TABLE);
 
-        $table->addColumn('similarity', Types::DECIMAL)->setNotnull(true);
+        $table->addColumn('similarity', Types::DECIMAL, ['precision' => 10, 'scale' => 2])->setNotnull(true);
         $table->addColumn('event1', Types::GUID)->setLength(36)->setNotnull(true);
         $table->addColumn('event2', Types::GUID)->setLength(36)->setNotnull(true);
 
