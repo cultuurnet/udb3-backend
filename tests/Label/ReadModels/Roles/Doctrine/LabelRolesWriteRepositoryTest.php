@@ -83,7 +83,7 @@ class LabelRolesWriteRepositoryTest extends TestCase
 
         $actualRows = $this->getRows();
 
-        $this->assertEquals($expectedRows, $actualRows);
+        $this->assertEqualsCanonicalizing($expectedRows, $actualRows);
     }
 
     /**
