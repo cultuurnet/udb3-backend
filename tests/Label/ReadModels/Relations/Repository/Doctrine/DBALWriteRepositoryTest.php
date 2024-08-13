@@ -76,7 +76,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 
         $actualOfferLabelRelation = $this->getLabelRelations();
 
-        $this->assertEquals(
+        $this->assertEqualsCanonicalizing(
             [
                 $labelRelation1,
                 $labelRelation2,
