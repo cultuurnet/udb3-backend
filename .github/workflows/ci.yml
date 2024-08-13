@@ -11,12 +11,13 @@ jobs:
         name: Unit tests ${{ matrix.php-versions }}
         services:
           mysql:
-            image: mysql:8
+            image: bitnami/mysql:8.0
             env:
               MYSQL_ALLOW_EMPTY_PASSWORD: false
               MYSQL_ROOT_PASSWORD: vagrant
               MYSQL_USER: vagrant
               MYSQL_DATABASE: udb3_test
+              MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
             ports:
               - 3306/tcp
             options: >-
@@ -54,9 +55,6 @@ jobs:
             - name: 📦 Install dependencies
               if: steps.composer-cache.outputs.cache-hit != 'true'
               run: composer install --no-progress --no-suggest
-
-            - name: 🗝️ Configure MySQL user to use mysql_native_password
-              run: mysql -u root -pvagrant -h mysql -e "ALTER USER 'vagrant'@'%' IDENTIFIED WITH mysql_native_password BY 'vagrant';"
 
             - name: ✅ Run tests
               run: composer test
