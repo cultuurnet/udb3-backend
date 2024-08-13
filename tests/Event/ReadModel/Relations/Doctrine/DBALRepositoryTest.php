@@ -192,7 +192,7 @@ class DBALRepositoryTest extends TestCase
         $events = $this->repository
             ->getEventsLocatedAtPlace('e64362f5-43e1-468b-97d6-8981fb0fe426');
         $expectedData = ['e201cea1-4a79-4834-9501-b28a92900fa1', 'cd996276-7aac-40b7-8bf4-e505dbbf11bf'];
-        $this->assertEquals($expectedData, $events);
+        $this->assertEqualsCanonicalizing($expectedData, $events);
     }
 
     /**

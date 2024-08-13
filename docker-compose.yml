@@ -1,7 +1,4 @@
-version: "3.5"
-
 services:
-
   php:
     build: docker/php
     container_name: php.uitdatabank
@@ -25,6 +22,7 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - 'udb3-mysql:/var/lib/mysql'
+      - ./docker/mysql:/docker-entrypoint-initdb.d
     ports:
       - '3306:3306'
     networks:

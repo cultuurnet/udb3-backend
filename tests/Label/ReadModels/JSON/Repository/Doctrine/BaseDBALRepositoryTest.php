@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use PDO;
 use PHPUnit\Framework\TestCase;
 
 abstract class BaseDBALRepositoryTest extends TestCase
@@ -39,7 +40,13 @@ abstract class BaseDBALRepositoryTest extends TestCase
 
         $sql = 'INSERT INTO ' . $this->tableName . ' VALUES (?, ?, ?, ?, ?)';
 
-        $this->connection->executeQuery($sql, $values);
+        $this->connection->executeQuery($sql, $values, [
+            PDO::PARAM_STR,
+            PDO::PARAM_STR,
+            PDO::PARAM_BOOL,
+            PDO::PARAM_BOOL,
+            PDO::PARAM_BOOL,
+        ]);
     }
 
     protected function entityToValues(Entity $entity): array
@@ -58,7 +65,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
         $sql = 'SELECT * FROM ' . $this->tableName;
 
         $statement = $this->connection->executeQuery($sql);
-        $row = $statement->fetch(\PDO::FETCH_ASSOC);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
 
         return $this->rowToEntity($row);
     }

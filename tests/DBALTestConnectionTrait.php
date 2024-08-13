@@ -13,6 +13,13 @@ use PDO;
 trait DBALTestConnectionTrait
 {
     private ?Connection $connection = null;
+    private array $connectionConfiguration;
+
+    public function tearDown(): void
+    {
+        $this->recreateDatabase();
+        $this->getConnection()->close();
+    }
 
     protected function initializeConnection(): void
     {
@@ -21,16 +28,27 @@ trait DBALTestConnectionTrait
         }
 
         $availableDrivers = PDO::getAvailableDrivers();
-        if (!in_array('sqlite', $availableDrivers)) {
+        if (!in_array('mysql', $availableDrivers)) {
             $this->markTestSkipped(
-                'PDO sqlite driver is required to run this test.'
+                'PDO mysql driver is required to run this test.'
             );
         }
 
+        $configFile = __DIR__ . '/../config.php';
+        $configuration = file_exists($configFile) ? (include $configFile)['database'] : [
+            'driver' => 'pdo_mysql',
+            'host' => '127.0.0.1',
+            'user' => 'vagrant',
+            'password' => 'vagrant',
+            'port' => getenv('DATABASE_PORT') ?: 3306,
+        ];
+
+        $this->connectionConfiguration = array_merge($configuration, [
+            'dbname' => 'udb3_test',
+        ]);
+
         $this->connection = DriverManager::getConnection(
-            [
-                'url' => 'sqlite:///:memory:',
-            ]
+            $this->connectionConfiguration
         );
     }
 
@@ -51,5 +69,10 @@ trait DBALTestConnectionTrait
     public function createTable(Table $table): void
     {
         $this->getConnection()->getSchemaManager()->createTable($table);
+    }
+
+    public function recreateDatabase(): void
+    {
+        $this->getConnection()->getSchemaManager()->dropAndCreateDatabase($this->connectionConfiguration['dbname']);
     }
 }

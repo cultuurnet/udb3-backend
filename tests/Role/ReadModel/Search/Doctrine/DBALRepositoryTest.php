@@ -152,16 +152,16 @@ class DBALRepositoryTest extends TestCase
             );
         }
 
-        // Search everything, results are sorted alphabetically.
+        // Search everything, results are sorted alphabetically and case-insensitive.
         $this->connection->beginTransaction();
         $actualResults = $this->dbalRepository->search();
         $this->connection->rollBack();
 
         $this->assertEquals(
             [
-                $expectedRole1,
                 $expectedRole2,
                 $expectedRole3,
+                $expectedRole1,
             ],
             $actualResults->getMember()
         );
@@ -176,7 +176,7 @@ class DBALRepositoryTest extends TestCase
             $actualResults->getTotalItems()
         );
 
-        // Search everything, results are sorted alphabetically.
+        // Search everything, results are sorted alphabetically and case-insensitive.
         $this->connection->beginTransaction();
         $actualResults = $this->dbalRepository->search('validator', 5);
         $this->connection->rollBack();

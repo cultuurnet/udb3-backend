@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
+use PDO;
 use PHPUnit\Framework\TestCase;
 
 abstract class BaseDBALRepositoryTest extends TestCase
@@ -36,7 +37,12 @@ abstract class BaseDBALRepositoryTest extends TestCase
 
         $sql = 'INSERT INTO ' . $this->tableName . ' VALUES (?, ?, ?, ?)';
 
-        $this->connection->executeQuery($sql, $values);
+        $this->connection->executeQuery($sql, $values, [
+            PDO::PARAM_STR,
+            PDO::PARAM_STR,
+            PDO::PARAM_STR,
+            PDO::PARAM_BOOL,
+        ]);
     }
 
     protected function labelRelationToValues(LabelRelation $offerLabelRelation): array

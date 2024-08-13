@@ -96,6 +96,8 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         }
 
         $ownershipSearchRows = $queryBuilder
+            ->orderBy('item_id', 'ASC')
+            ->orderBy('state', 'ASC')
             ->execute()
             ->fetchAllAssociative();
 

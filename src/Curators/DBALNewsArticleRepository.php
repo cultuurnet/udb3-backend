@@ -71,6 +71,7 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
         }
 
         $newsArticleRows = $query
+            ->orderBy('headline', 'ASC')
             ->setMaxResults($newsArticleSearch->getItemsPerPage())
             ->execute()
             ->fetchAllAssociative();

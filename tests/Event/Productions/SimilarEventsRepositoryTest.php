@@ -55,8 +55,6 @@ class SimilarEventsRepositoryTest extends TestCase
      */
     public function it_throws_when_there_are_no_suggestions(): void
     {
-        $this->markTestSkipped('Requires MySQL syntax which SQLite does not support.');
-
         $this->expectException(SuggestionsNotFound::class);
         $this->repository->findNextSuggestion();
     }
@@ -66,8 +64,6 @@ class SimilarEventsRepositoryTest extends TestCase
      */
     public function it_throws_when_there_are_no_suggestions_because_they_are_all_in_the_same_productions_already(): void
     {
-        $this->markTestSkipped('Requires MySQL syntax which SQLite does not support.');
-
         $production = $this->givenProduction(['879b282d-56fc-4ef6-a2b6-aebeb8c66a8a', '04456137-19c4-464b-9c51-272af9f689d8']);
 
         $suggestionInProduction = new Suggestion($production->getEventIds()[0], $production->getEventIds()[1], 0.80);
@@ -82,8 +78,6 @@ class SimilarEventsRepositoryTest extends TestCase
      */
     public function it_returns_a_suggestion(): void
     {
-        $this->markTestSkipped('Requires MySQL syntax which SQLite does not support.');
-
         $expected = new Suggestion('3ab86064-045c-42cf-b0c9-24710467031d', '04456137-19c4-464b-9c51-272af9f689d8', 0.75);
         $this->repository->add($expected);
         $actual = $this->repository->findNextSuggestion();
@@ -95,8 +89,6 @@ class SimilarEventsRepositoryTest extends TestCase
      */
     public function it_returns_the_suggestion_with_the_highest_similarity(): void
     {
-        $this->markTestSkipped('Requires MySQL syntax which SQLite does not support.');
-
         $this->repository->add(new Suggestion('3ab86064-045c-42cf-b0c9-24710467031d', '04456137-19c4-464b-9c51-272af9f689d8', 0.75));
 
         $expected = new Suggestion('879b282d-56fc-4ef6-a2b6-aebeb8c66a8a', '04456137-19c4-464b-9c51-272af9f689d8', 0.80);
@@ -111,8 +103,6 @@ class SimilarEventsRepositoryTest extends TestCase
      */
     public function it_never_returns_a_suggestion_of_which_both_events_are_in_the_same_production_already(): void
     {
-        $this->markTestSkipped('Requires MySQL syntax which SQLite does not support.');
-
         $production = $this->givenProduction(['879b282d-56fc-4ef6-a2b6-aebeb8c66a8a', '04456137-19c4-464b-9c51-272af9f689d8']);
 
         $suggestionInProduction = new Suggestion($production->getEventIds()[0], $production->getEventIds()[1], 0.80);
@@ -130,8 +120,6 @@ class SimilarEventsRepositoryTest extends TestCase
      */
     public function it_returns_a_suggestion_of_which_one_event_is_in_a_production(): void
     {
-        $this->markTestSkipped('Requires MySQL syntax which SQLite does not support.');
-
         $production = $this->givenProduction(['879b282d-56fc-4ef6-a2b6-aebeb8c66a8a', '04456137-19c4-464b-9c51-272af9f689d8']);
 
         $suggestionInProduction = new Suggestion($production->getEventIds()[0], $production->getEventIds()[1], 0.80);
@@ -149,8 +137,6 @@ class SimilarEventsRepositoryTest extends TestCase
      */
     public function it_never_returns_a_suggestion_of_a_skipped_pair_of_events(): void
     {
-        $this->markTestSkipped('Requires MySQL syntax which SQLite does not support.');
-
         $skippedPair = $this->givenSkippedPair('879b282d-56fc-4ef6-a2b6-aebeb8c66a8a', '04456137-19c4-464b-9c51-272af9f689d8');
         $skippedPairWithDifferentOrder = $this->givenSkippedPair('d0659a06-4c17-4f72-8f12-747fb1ee8b10', 'e7605f5b-9f8e-438d-9c53-f991a7e9ae36');
 

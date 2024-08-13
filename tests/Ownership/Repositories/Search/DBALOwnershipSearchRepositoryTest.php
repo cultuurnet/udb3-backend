@@ -140,7 +140,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
         $this->ownershipSearchRepository->save($anotherOwnershipItem);
 
         $this->assertEquals(
-            new OwnershipItemCollection($ownershipItem, $anotherOwnershipItem),
+            new OwnershipItemCollection($anotherOwnershipItem, $ownershipItem),
             $this->ownershipSearchRepository->search(
                 new SearchQuery([
                     new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
@@ -203,7 +203,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
         $this->ownershipSearchRepository->save($anotherOwnershipItem);
 
         $this->assertEquals(
-            new OwnershipItemCollection($anotherOwnershipItem),
+            new OwnershipItemCollection($ownershipItem),
             $this->ownershipSearchRepository->search(
                 new SearchQuery(
                     [
@@ -239,7 +239,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
         $this->ownershipSearchRepository->save($anotherOwnershipItem);
 
         $this->assertEquals(
-            new OwnershipItemCollection($ownershipItem),
+            new OwnershipItemCollection($anotherOwnershipItem),
             $this->ownershipSearchRepository->search(
                 new SearchQuery(
                     [
