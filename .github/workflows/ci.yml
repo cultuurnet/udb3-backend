@@ -56,7 +56,7 @@ jobs:
               run: composer install --no-progress --no-suggest
 
             - name: 🗝️ Configure MySQL user to use mysql_native_password
-              run: mysql -u root -pvagrant -h 127.0.0.1 -e "ALTER USER 'vagrant'@'%' IDENTIFIED WITH mysql_native_password BY 'vagrant';"
+              run: mysql -u root -pvagrant -h mysql -e "ALTER USER 'vagrant'@'%' IDENTIFIED WITH mysql_native_password BY 'vagrant';"
 
             - name: ✅ Run tests
               run: composer test
