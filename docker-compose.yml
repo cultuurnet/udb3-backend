@@ -13,7 +13,7 @@ services:
           - php.uitdatabank.dev
 
   mysql:
-    image: 'mysql/mysql-server:8.0'
+    image: 'bitnami/mysql:8.0'
     container_name: mysql.uitdatabank
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
