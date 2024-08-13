@@ -20,7 +20,7 @@ jobs:
               MYSQL_DATABASE: udb3_test
               MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
             ports:
-              - 3306/tcp
+              - 3306:3306
             options: >-
               --health-cmd="mysqladmin ping"
               --health-interval=10s
