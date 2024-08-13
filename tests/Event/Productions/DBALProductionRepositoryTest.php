@@ -34,7 +34,7 @@ final class DBALProductionRepositoryTest extends TestCase
     {
         $production = $this->givenThereIsAProduction();
         $result = $this->repository->find($production->getProductionId());
-        $this->assertEquals($production, $result);
+        $this->assertEqualsCanonicalizing($production, $result);
     }
 
     /**
@@ -151,7 +151,7 @@ final class DBALProductionRepositoryTest extends TestCase
 
         $renamedProduction = $this->repository->find($production->getProductionId());
         $this->assertEquals('Bar', $renamedProduction->getName());
-        $this->assertEquals($production->getEventIds(), $renamedProduction->getEventIds());
+        $this->assertEqualsCanonicalizing($production->getEventIds(), $renamedProduction->getEventIds());
     }
 
     /**
@@ -172,7 +172,7 @@ final class DBALProductionRepositoryTest extends TestCase
 
         $production = $this->repository->findProductionForEventId($event);
         $this->assertEquals($name, $production->getName());
-        $this->assertEquals([$event, $otherEvent], $production->getEventIds());
+        $this->assertEqualsCanonicalizing([$event, $otherEvent], $production->getEventIds());
     }
 
     /**
