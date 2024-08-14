@@ -11,8 +11,8 @@ use Broadway\Domain\Metadata;
 use Broadway\EventSourcing\EventStreamDecorator;
 use Broadway\EventStore\EventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
-use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\AggregateType;
+use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PHPUnit\Framework\TestCase;
 
 class EventStreamTest extends TestCase
@@ -86,7 +86,8 @@ class EventStreamTest extends TestCase
     public function it_retrieves_all_events_from_the_event_store(
         EventStreamDecorator $eventStreamDecorator = null,
         array $expectedDecoratedMetadata = []
-    ): void {
+    ): void
+    {
         $history = $this->fillHistory();
 
         if (!is_null($eventStreamDecorator)) {
@@ -211,16 +212,12 @@ class EventStreamTest extends TestCase
 
         $domainEventStreams = iterator_to_array($domainEventStreams);
         $expectedDomainEventStreams = [];
-        foreach ($history as $key => $domainMessage) {
-            // The history array is zero-based but sqlite index is one-based.
-            // So to start from the 4th element the index needs to be 3.
-            if ($key >= 3) {
-                $expectedDomainEventStreams[] = new DomainEventStream(
-                    [
-                        $domainMessage,
-                    ]
-                );
-            }
+        foreach ($history as $domainMessage) {
+            $expectedDomainEventStreams[] = new DomainEventStream(
+                [
+                    $domainMessage,
+                ]
+            );
         }
 
         $this->assertEquals($expectedDomainEventStreams, $domainEventStreams);
@@ -556,7 +553,8 @@ class EventStreamTest extends TestCase
         EventStream $eventStream,
         array $domainMessages,
         AggregateType $aggregateType
-    ): void {
+    ): void
+    {
         $eventStream = $eventStream->withAggregateType($aggregateType->toString());
 
         $domainEventStreams = $eventStream();
