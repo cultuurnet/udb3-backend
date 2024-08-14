@@ -51,7 +51,7 @@ class RecordedOn
      */
     public function toString()
     {
-        return \DateTime::createFromFormat(
+        return DateTimeFactory::fromFormat(
             DateTime::FORMAT_STRING,
             $this->recorded->toString()
         )->format('c');

@@ -210,7 +210,7 @@ class OrganizerLDProjector implements EventListener
         $jsonLD->url = $organizerCreated->getUrls();
 
         $recordedOn = $domainMessage->getRecordedOn()->toString();
-        $jsonLD->created = \DateTime::createFromFormat(
+        $jsonLD->created = \CultuurNet\UDB3\DateTimeFactory::fromFormat(
             DateTime::FORMAT_STRING,
             $recordedOn
         )->format('c');
@@ -258,7 +258,7 @@ class OrganizerLDProjector implements EventListener
         ];
 
         $recordedOn = $domainMessage->getRecordedOn()->toString();
-        $jsonLD->created = \DateTime::createFromFormat(
+        $jsonLD->created = \CultuurNet\UDB3\DateTimeFactory::fromFormat(
             DateTime::FORMAT_STRING,
             $recordedOn
         )->format('c');

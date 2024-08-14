@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Log;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use Monolog\Logger;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -42,7 +43,7 @@ class SocketIOEmitterHandlerTest extends TestCase
             'level' => $level,
             'level_name' => Logger::getLevelName($level),
             'channel' => 'test',
-            'datetime' => \DateTime::createFromFormat(
+            'datetime' => DateTimeFactory::fromFormat(
                 'U.u',
                 sprintf('%.6F', microtime(true))
             ),
