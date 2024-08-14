@@ -58,13 +58,17 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             $this->userRolesTableName
         );
 
+        $dbalWriteRepository = new DBALWriteRepository(
+            $this->getConnection(),
+            $this->getTableName(),
+        );
+
         $this->entityByUuid = new Entity(
             new UUID('7f328086-0e56-4c7d-a2e7-38ac5eaa0347'),
             'bibliotheekweek',
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );
-        $this->saveEntity($this->entityByUuid);
 
         $this->entityByName = new Entity(
             new UUID('25ea383c-b14d-4776-989c-24e0ac044638'),
@@ -72,7 +76,6 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );
-        $this->saveEntity($this->entityByName);
 
         $this->entityPrivateAccess = new Entity(
             new UUID('6639d6d2-ac7d-4995-91e3-7660c74cf1eb'),
@@ -80,7 +83,6 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE()
         );
-        $this->saveEntity($this->entityPrivateAccess);
 
         $this->entityPrivateNoAccess = new Entity(
             new UUID('b14dd3ea-6962-4565-91b6-d0e8d929e685'),
@@ -88,7 +90,6 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE()
         );
-        $this->saveEntity($this->entityPrivateNoAccess);
 
         $this->excluded = new Entity(
             new UUID('67dcd2a0-5301-4747-a956-3741420efd52'),
@@ -97,16 +98,15 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             Privacy::PRIVACY_PUBLIC(),
             true
         );
-        $this->saveEntity($this->excluded);
 
-        for ($i = 0; $i < 10; $i++) {
-            $entity = new Entity(
-                new UUID('15c8c391-724d-4878-8a06-86163ed5412' . $i),
-                'label' . $i,
-                Visibility::VISIBLE(),
-                Privacy::PRIVACY_PUBLIC()
+        $entities = [$this->excluded, $this->entityPrivateAccess, $this->entityPrivateNoAccess, $this->entityByUuid, $this->entityByName];
+        foreach ($entities as $entity) {
+            $dbalWriteRepository->save(
+                $entity->getUuid(),
+                $entity->getName(),
+                $entity->getVisibility(),
+                $entity->getPrivacy()
             );
-            $this->saveEntity($entity);
         }
     }
 

@@ -19,6 +19,8 @@ class LabelRolesWriteRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->setUpDatabase();
+
         $this->labelRolesTableName = 'label_roles';
 
         $schemaConfigurator = new SchemaConfigurator($this->labelRolesTableName);

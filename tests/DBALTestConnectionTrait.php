@@ -77,7 +77,7 @@ trait DBALTestConnectionTrait
         $input = new ArrayInput([]);
         $input->setInteractive(false);
 
-        $command->run($input, new ConsoleOutput());
+        $command->run($input, new NullOutput());
     }
 
     public function getConnection(): Connection

@@ -22,7 +22,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
     {
         $this->setUpDatabase();
 
-        $this->tableName = 'test_labels_json';
+        $this->tableName = 'labels_json';
 
         $schemaConfigurator = new SchemaConfigurator($this->tableName);
 

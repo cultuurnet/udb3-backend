@@ -19,7 +19,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
     {
         $this->setUpDatabase();
 
-        $this->tableName = 'test_places_relations';
+        $this->tableName = 'places_relations';
 
         $schemaConfigurator = new SchemaConfigurator($this->tableName);
 
