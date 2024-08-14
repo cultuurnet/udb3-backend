@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Event\Productions\Doctrine\ProductionSchemaConfigurator;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;

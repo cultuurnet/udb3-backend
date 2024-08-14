@@ -12,7 +12,6 @@ use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
 use PDO;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\NullOutput;
 
 trait DBALTestConnectionTrait

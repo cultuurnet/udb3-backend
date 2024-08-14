@@ -97,7 +97,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         /** @var Entity[] $entities */
         $entities = [$this->excluded, $this->entityPrivateAccess, $this->entityPrivateNoAccess, $this->entityByUuid, $this->entityByName];
         foreach ($entities as $entity) {
-           $this->saveEntity($entity);
+            $this->saveEntity($entity);
         }
 
         for ($i = 0; $i < 10; $i++) {

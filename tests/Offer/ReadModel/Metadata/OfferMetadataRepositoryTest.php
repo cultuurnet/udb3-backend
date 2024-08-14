@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Offer\ReadModel\Metadata;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Offer\ReadModel\Metadata\Doctrine\OfferMetadataSchemaConfigurator;
 use PHPUnit\Framework\TestCase;
 
 class OfferMetadataRepositoryTest extends TestCase
