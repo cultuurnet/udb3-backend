@@ -86,8 +86,7 @@ class EventStreamTest extends TestCase
     public function it_retrieves_all_events_from_the_event_store(
         EventStreamDecorator $eventStreamDecorator = null,
         array $expectedDecoratedMetadata = []
-    ): void
-    {
+    ): void {
         $history = $this->fillHistory();
 
         if (!is_null($eventStreamDecorator)) {
@@ -553,8 +552,7 @@ class EventStreamTest extends TestCase
         EventStream $eventStream,
         array $domainMessages,
         AggregateType $aggregateType
-    ): void
-    {
+    ): void {
         $eventStream = $eventStream->withAggregateType($aggregateType->toString());
 
         $domainEventStreams = $eventStream();

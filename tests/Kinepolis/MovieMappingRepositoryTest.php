@@ -6,9 +6,6 @@ namespace CultuurNet\UDB3\Kinepolis;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Kinepolis\Mapping\MovieMappingRepository;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 
 final class MovieMappingRepositoryTest extends TestCase
