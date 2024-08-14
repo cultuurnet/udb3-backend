@@ -22,6 +22,10 @@ final class SchemaConfigurator implements SchemaConfiguratorInterface
     public function configure(AbstractSchemaManager $schemaManager): void
     {
         $schema = $schemaManager->createSchema();
+        if ($schema->hasTable($this->tableName)) {
+            return;
+        }
+
         $table = $schema->createTable($this->tableName);
 
         $table->addColumn(

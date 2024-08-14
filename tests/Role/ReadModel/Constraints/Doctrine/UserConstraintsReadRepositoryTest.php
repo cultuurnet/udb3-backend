@@ -42,22 +42,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
         $this->userRolesTableName = 'user_roles';
         $this->rolePermissionsTableName = 'role_permissions';
-        $this->rolesSearchTableName = 'roles_search';
-
-        $permissionSchemaConfigurator = new PermissionSchemaConfigurator(
-            $this->userRolesTableName,
-            $this->rolePermissionsTableName
-        );
-        $permissionSchemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
-
-        $constraintSchemaConfigurator = new SearchSchemaConfigurator(
-            $this->rolesSearchTableName
-        );
-        $constraintSchemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
+        $this->rolesSearchTableName = 'roles_search_v3';
 
         $this->userConstraintsReadRepository = new UserConstraintsReadRepository(
             $this->getConnection(),

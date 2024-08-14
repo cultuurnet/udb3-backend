@@ -23,8 +23,8 @@ class UserPermissionsReadRepositoryTest extends TestCase
     {
         $this->setUpDatabase();
 
-        $this->userRoleTableName = 'user_role';
-        $this->rolePermissionTableName = 'role_permission';
+        $this->userRoleTableName = 'user_roles';
+        $this->rolePermissionTableName = 'role_permissions';
 
         $schemaConfigurator = new SchemaConfigurator(
             $this->userRoleTableName,

@@ -58,11 +58,6 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             $this->userRolesTableName
         );
 
-        $dbalWriteRepository = new DBALWriteRepository(
-            $this->getConnection(),
-            $this->getTableName(),
-        );
-
         $this->entityByUuid = new Entity(
             new UUID('7f328086-0e56-4c7d-a2e7-38ac5eaa0347'),
             'bibliotheekweek',
@@ -99,14 +94,20 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             true
         );
 
+        /** @var Entity[] $entities */
         $entities = [$this->excluded, $this->entityPrivateAccess, $this->entityPrivateNoAccess, $this->entityByUuid, $this->entityByName];
         foreach ($entities as $entity) {
-            $dbalWriteRepository->save(
-                $entity->getUuid(),
-                $entity->getName(),
-                $entity->getVisibility(),
-                $entity->getPrivacy()
+           $this->saveEntity($entity);
+        }
+
+        for ($i = 0; $i < 10; $i++) {
+            $entity = new Entity(
+                new UUID('15c8c391-724d-4878-8a06-86163ed5412' . $i),
+                'label' . $i,
+                Visibility::VISIBLE(),
+                Privacy::PRIVACY_PUBLIC()
             );
+            $this->saveEntity($entity);
         }
     }
 

@@ -27,7 +27,7 @@ class EventStreamTest extends TestCase
     {
         $this->setUpDatabase();
 
-        $table = 'events';
+        $table = 'event_store';
         $payloadSerializer = new SimpleInterfaceSerializer();
         $metadataSerializer = new SimpleInterfaceSerializer();
 
@@ -401,14 +401,6 @@ class EventStreamTest extends TestCase
         $stores = [];
         foreach ($aggregateTypes as $aggregateType) {
             $stores[$aggregateType->toString()] = $this->createAggregateAwareDBALEventStore($aggregateType);
-        }
-
-        $schemaManager = $this->getConnection()->getSchemaManager();
-        $schema = $schemaManager->createSchema();
-
-        $table = $stores['event']->configureSchema($schema);
-        if ($table) {
-            $schemaManager->createTable($table);
         }
 
         $domainMessages = $this->createDomainMessages();
