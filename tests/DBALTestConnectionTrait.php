@@ -47,9 +47,9 @@ trait DBALTestConnectionTrait
         }
 
         $availableDrivers = PDO::getAvailableDrivers();
-        if (!in_array('sqlite', $availableDrivers)) {
+        if (!in_array('mysql', $availableDrivers)) {
             $this->markTestSkipped(
-                'PDO sqlite driver is required to run this test.'
+                'PDO mysql driver is required to run this test.'
             );
         }
 
