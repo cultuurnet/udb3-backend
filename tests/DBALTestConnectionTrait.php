@@ -19,7 +19,7 @@ trait DBALTestConnectionTrait
     private ?Connection $connection = null;
     private array $connectionConfiguration;
 
-    public function setUpDatabase()
+    public function setUpDatabase(): void
     {
         if (!$this->getConnection()->getSchemaManager()->tablesExist('duplicate_places')) {
             $this->runMigrations();

@@ -23,16 +23,6 @@ final class MovieMappingRepositoryTest extends TestCase
 
     private MovieMappingRepository $movieMappingRepository;
 
-    private static function getTableDefinition(Schema $schema): Table
-    {
-        $table = $schema->createTable(self::TABLE_NAME);
-
-        $table->addColumn('event_id', Types::GUID)->setLength(36)->setNotnull(true);
-        $table->addColumn('movie_id', Types::STRING)->setNotnull(true);
-
-        return $table;
-    }
-
     public function setUp(): void
     {
         $this->setUpDatabase();
