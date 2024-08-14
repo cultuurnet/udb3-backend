@@ -363,7 +363,7 @@ class EventStreamTest extends TestCase
         $domainMessages = $this->createDomainMessages();
         $this->appendDomainMessages($this->eventStore, $domainMessages);
 
-        $startId = 3;
+        $startId = 1;
         $eventStream = $this->eventStream->withStartId($startId);
 
         $domainEventStreams = $eventStream();
