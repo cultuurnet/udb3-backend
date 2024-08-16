@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Calendar;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use PHPUnit\Framework\TestCase;
@@ -51,7 +52,7 @@ class OpeningTimeTest extends TestCase
     public function it_can_be_constructed_from_a_native_date_time(): void
     {
         $openingTime = OpeningTime::fromNativeDateTime(
-            \DateTime::createFromFormat('H:i', '9:30')
+            DateTimeFactory::fromFormat('H:i', '9:30')
         );
 
         $this->assertEquals($this->openingTime, $openingTime);
