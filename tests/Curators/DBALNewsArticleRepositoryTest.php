@@ -17,7 +17,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
 
     private DBALNewsArticleRepository $dbalNewsArticleRepository;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         $this->setUpDatabase();
         $this->dbalNewsArticleRepository = new DBALNewsArticleRepository($this->getConnection());

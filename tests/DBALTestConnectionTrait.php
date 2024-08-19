@@ -50,7 +50,7 @@ trait DBALTestConnectionTrait
         $this->getConnection()->close();
     }
 
-    protected function initializeConnection(): void
+    private function initializeConnection(): void
     {
         if (!class_exists('PDO')) {
             $this->markTestSkipped('PDO is required to run this test.');
