@@ -22,14 +22,10 @@ final class DBALPlaceRelationsRepository implements PlaceRelationsRepository
 
     public function storeRelations(string $placeId, ?string $organizerId): void
     {
-        $this->connection->beginTransaction();
-
         $insert = $this->prepareInsertStatement();
         $insert->bindValue('place', $placeId);
         $insert->bindValue('organizer', $organizerId);
         $insert->execute();
-
-        $this->connection->commit();
     }
 
     private function prepareInsertStatement(): DriverStatement

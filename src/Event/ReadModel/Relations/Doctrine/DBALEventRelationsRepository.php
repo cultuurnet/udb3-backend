@@ -22,15 +22,11 @@ final class DBALEventRelationsRepository implements EventRelationsRepository
 
     public function storeRelations(string $eventId, ?string $placeId, ?string $organizerId): void
     {
-        $this->connection->beginTransaction();
-
         $insert = $this->prepareInsertStatement();
         $insert->bindValue('event', $eventId);
         $insert->bindValue('place', $placeId);
         $insert->bindValue('organizer', $organizerId);
         $insert->execute();
-
-        $this->connection->commit();
     }
 
     public function removeOrganizer(string $eventId): void
