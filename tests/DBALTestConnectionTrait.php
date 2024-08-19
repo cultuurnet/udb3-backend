@@ -15,7 +15,6 @@ use Symfony\Component\Console\Output\NullOutput;
 trait DBALTestConnectionTrait
 {
     private ?Connection $connection = null;
-    private array $connectionConfiguration;
 
     public function setUpDatabase(): void
     {
@@ -59,8 +58,8 @@ trait DBALTestConnectionTrait
             'port' => getenv('DATABASE_PORT') ?: 3306,
         ];
 
-        $this->connectionConfiguration = array_merge($configuration, ['dbname' => 'udb3_test']);
-        $this->connection = DriverManager::getConnection($this->connectionConfiguration);
+        $connectionConfiguration = array_merge($configuration, ['dbname' => 'udb3_test']);
+        $this->connection = DriverManager::getConnection($connectionConfiguration);
 
         $this->runMigrations();
     }
