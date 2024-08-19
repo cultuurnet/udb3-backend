@@ -15,14 +15,21 @@ use Symfony\Component\Console\Output\NullOutput;
 trait DBALTestConnectionTrait
 {
     private ?Connection $connection = null;
+    private bool $withRollback = true;
+    private array $truncateTables = [];
 
-    public function setUpDatabase(): void
+    public function setUpDatabase(bool $withRollback = true, array $truncateTables = []): void
     {
-        if (!$this->getConnection()->getSchemaManager()->tablesExist('duplicate_places')) {
+        $this->withRollback = $withRollback;
+        $this->truncateTables = $truncateTables;
+
+        if (count($this->getConnection()->getSchemaManager()->listTableNames()) === 0) {
             $this->runMigrations();
         }
 
-        $this->getConnection()->beginTransaction();
+        if ($this->withRollback) {
+            $this->getConnection()->beginTransaction();
+        }
     }
 
     public function setUp()
@@ -32,7 +39,14 @@ trait DBALTestConnectionTrait
 
     public function tearDown(): void
     {
-        $this->getConnection()->rollBack();
+        if ($this->withRollback) {
+            $this->getConnection()->rollBack();
+        }
+
+        foreach ($this->truncateTables as $table) {
+            $this->getConnection()->executeQuery('TRUNCATE TABLE ' . $table);
+        }
+
         $this->getConnection()->close();
     }
 
