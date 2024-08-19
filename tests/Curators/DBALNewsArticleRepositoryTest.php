@@ -19,7 +19,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->setUpDatabase();
+        $this->setUpDatabase(false, ['news_article']);
         $this->dbalNewsArticleRepository = new DBALNewsArticleRepository($this->getConnection());
 
         $this->getConnection()->insert(
@@ -49,21 +49,6 @@ final class DBALNewsArticleRepositoryTest extends TestCase
                 'publisher_logo' => 'https://www.buzz.be/img/favicon.png',
             ]
         );
-    }
-
-    public function tearDown(): void
-    {
-        var_dump('tearDown');
-        
-        if ($this->withRollback) {
-            $this->getConnection()->rollBack();
-        }
-
-        foreach ($this->truncateTables as $table) {
-            $this->getConnection()->executeQuery('TRUNCATE TABLE ' . $table);
-        }
-
-        $this->getConnection()->close();
     }
 
     /**
