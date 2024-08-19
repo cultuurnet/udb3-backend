@@ -34,7 +34,9 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->setUpDatabase();
+        $this->uniqueTableName = 'labels_unique';
+
+        $this->setUpDatabase(false, ['event_store', 'labels_unique']);
 
         $serializer = $this->createMock(Serializer::class);
 
@@ -44,8 +46,6 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
             ->setConstructorArgs([$this->getConnection(), $serializer, $serializer, 'event_store', AggregateType::event()])
             ->enableProxyingToOriginalMethods()
             ->getMock();
-
-        $this->uniqueTableName = 'labels_unique';
 
         $this->uniqueConstraintService = $this->createMock(UniqueConstraintService::class);
 

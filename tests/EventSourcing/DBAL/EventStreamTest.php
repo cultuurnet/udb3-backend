@@ -25,9 +25,10 @@ class EventStreamTest extends TestCase
 
     public function setUp(): void
     {
-        $this->setUpDatabase();
-
         $table = 'event_store';
+
+        $this->setUpDatabase(false, [$table]);
+
         $payloadSerializer = new SimpleInterfaceSerializer();
         $metadataSerializer = new SimpleInterfaceSerializer();
 
