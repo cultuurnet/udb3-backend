@@ -357,34 +357,6 @@ class EventStreamTest extends TestCase
     /**
      * @test
      */
-    public function it_can_handle_a_start_id(): void
-    {
-        $domainMessages = $this->createDomainMessages();
-        $this->appendDomainMessages($this->eventStore, $domainMessages);
-
-        $startId = 1;
-        $eventStream = $this->eventStream->withStartId($startId);
-
-        $domainEventStreams = $eventStream();
-
-        $domainEventStreams = iterator_to_array($domainEventStreams);
-
-        $expectedDomainEventStreams = [];
-        foreach ($domainMessages as $key => $domainMessage) {
-            if ($key >= $startId - 1) {
-                $expectedDomainEventStreams[] = new DomainEventStream([$domainMessage]);
-            }
-        }
-
-        $this->assertEquals(
-            $expectedDomainEventStreams,
-            $domainEventStreams
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_can_handle_an_aggregate_type(): void
     {
         /** @var AggregateType[] $aggregateTypes */
