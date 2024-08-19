@@ -212,12 +212,16 @@ class EventStreamTest extends TestCase
 
         $domainEventStreams = iterator_to_array($domainEventStreams);
         $expectedDomainEventStreams = [];
-        foreach ($history as $domainMessage) {
-            $expectedDomainEventStreams[] = new DomainEventStream(
-                [
-                    $domainMessage,
-                ]
-            );
+        foreach ($history as $key => $domainMessage) {
+            // The history array is zero-based but MySQL primary index is one-based.
+            // So to start from the 4th element the index needs to be 3.
+            if ($key >= 3) {
+                $expectedDomainEventStreams[] = new DomainEventStream(
+                    [
+                        $domainMessage,
+                    ]
+                );
+            }
         }
 
         $this->assertEquals($expectedDomainEventStreams, $domainEventStreams);
