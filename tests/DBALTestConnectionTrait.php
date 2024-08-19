@@ -6,8 +6,6 @@ namespace CultuurNet\UDB3;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
 use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
 use PDO;
 use Symfony\Component\Console\Application;
@@ -86,20 +84,5 @@ trait DBALTestConnectionTrait
         }
 
         return $this->connection;
-    }
-
-    public function createSchema(): Schema
-    {
-        return $this->getConnection()->getSchemaManager()->createSchema();
-    }
-
-    public function createTable(Table $table): void
-    {
-        $this->getConnection()->getSchemaManager()->createTable($table);
-    }
-
-    public function recreateDatabase(): void
-    {
-        $this->getConnection()->getSchemaManager()->dropAndCreateDatabase($this->connectionConfiguration['dbname']);
     }
 }
