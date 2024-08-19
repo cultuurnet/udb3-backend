@@ -51,6 +51,21 @@ final class DBALNewsArticleRepositoryTest extends TestCase
         );
     }
 
+    public function tearDown(): void
+    {
+        var_dump('tearDown');
+        
+        if ($this->withRollback) {
+            $this->getConnection()->rollBack();
+        }
+
+        foreach ($this->truncateTables as $table) {
+            $this->getConnection()->executeQuery('TRUNCATE TABLE ' . $table);
+        }
+
+        $this->getConnection()->close();
+    }
+
     /**
      * @test
      */
