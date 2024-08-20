@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches;
 
-use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\SavedSearches\Doctrine\ColumnNames;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchesOwnedByCurrentUser as SavedSearchReadModelRepositoryInterface;
@@ -40,10 +40,10 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
             ->insert($this->tableName)
             ->values(
                 [
-                    SchemaConfigurator::ID => '?',
-                    SchemaConfigurator::USER => '?',
-                    SchemaConfigurator::NAME => '?',
-                    SchemaConfigurator::QUERY => '?',
+                    ColumnNames::ID => '?',
+                    ColumnNames::USER => '?',
+                    ColumnNames::NAME => '?',
+                    ColumnNames::QUERY => '?',
                 ]
             )
             ->setParameters(
@@ -66,10 +66,10 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
     ): void {
         $this->connection->createQueryBuilder()
             ->update($this->tableName)
-            ->set(SchemaConfigurator::NAME, '?')
-            ->set(SchemaConfigurator::QUERY, '?')
-            ->where(SchemaConfigurator::USER . ' = ?')
-            ->andWhere(SchemaConfigurator::ID . ' = ?')
+            ->set(ColumnNames::NAME, '?')
+            ->set(ColumnNames::QUERY, '?')
+            ->where(ColumnNames::USER . ' = ?')
+            ->andWhere(ColumnNames::ID . ' = ?')
             ->setParameters(
                 [
                     $name,
@@ -87,8 +87,8 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
     ): void {
         $queryBuilder = $this->connection->createQueryBuilder()
             ->delete($this->tableName)
-            ->where(SchemaConfigurator::USER . ' = ?')
-            ->andWhere(SchemaConfigurator::ID . ' = ?')
+            ->where(ColumnNames::USER . ' = ?')
+            ->andWhere(ColumnNames::ID . ' = ?')
             ->setParameters(
                 [
                     $userId,
@@ -107,7 +107,7 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select('*')
             ->from($this->tableName)
-            ->where(SchemaConfigurator::USER . ' = ?')
+            ->where(ColumnNames::USER . ' = ?')
             ->setParameters(
                 [
                     $this->userId,
@@ -120,10 +120,10 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
 
         while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             $savedSearches[] = new SavedSearch(
-                $row[SchemaConfigurator::NAME],
-                new QueryString($row[SchemaConfigurator::QUERY]),
-                $row[SchemaConfigurator::ID],
-                $row[SchemaConfigurator::USER]
+                $row[ColumnNames::NAME],
+                new QueryString($row[ColumnNames::QUERY]),
+                $row[ColumnNames::ID],
+                $row[ColumnNames::USER]
             );
         }
 
