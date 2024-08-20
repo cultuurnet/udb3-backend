@@ -23,12 +23,6 @@ abstract class BaseDBALRepositoryTest extends TestCase
         $this->setUpDatabase();
 
         $this->tableName = 'labels_json';
-
-        $schemaConfigurator = new SchemaConfigurator($this->tableName);
-
-        $schemaManager = $this->getConnection()->getSchemaManager();
-
-        $schemaConfigurator->configure($schemaManager);
     }
 
     protected function getTableName(): string
@@ -75,13 +69,13 @@ abstract class BaseDBALRepositoryTest extends TestCase
     protected function rowToEntity(array $row): Entity
     {
         return new Entity(
-            new UUID($row[SchemaConfigurator::UUID_COLUMN]),
-            $row[SchemaConfigurator::NAME_COLUMN],
-            $row[SchemaConfigurator::VISIBLE_COLUMN]
+            new UUID($row[ColumnNames::UUID_COLUMN]),
+            $row[ColumnNames::NAME_COLUMN],
+            $row[ColumnNames::VISIBLE_COLUMN]
                 ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
-            $row[SchemaConfigurator::PRIVATE_COLUMN]
+            $row[ColumnNames::PRIVATE_COLUMN]
                 ? Privacy::PRIVACY_PRIVATE() : Privacy::PRIVACY_PUBLIC(),
-            (bool) $row[SchemaConfigurator::EXCLUDED_COLUMN]
+            (bool) $row[ColumnNames::EXCLUDED_COLUMN]
         );
     }
 }
