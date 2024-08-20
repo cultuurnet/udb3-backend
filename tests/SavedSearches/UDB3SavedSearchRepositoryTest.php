@@ -22,7 +22,6 @@ class UDB3SavedSearchRepositoryTest extends TestCase
     protected function setUp(): void
     {
         $this->setUpDatabase();
-        //$this->createTable();
 
         $this->udb3SavedSearchRepository = new UDB3SavedSearchRepository(
             $this->getConnection(),
