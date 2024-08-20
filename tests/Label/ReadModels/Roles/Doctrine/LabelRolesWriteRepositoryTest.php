@@ -23,11 +23,6 @@ class LabelRolesWriteRepositoryTest extends TestCase
 
         $this->labelRolesTableName = 'label_roles';
 
-        $schemaConfigurator = new SchemaConfigurator($this->labelRolesTableName);
-        $schemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
-
         $this->labelRolesWriteRepository = new LabelRolesWriteRepository(
             $this->connection,
             $this->labelRolesTableName
@@ -48,8 +43,8 @@ class LabelRolesWriteRepositoryTest extends TestCase
 
         $expectedRows = [
             [
-                SchemaConfigurator::LABEL_ID_COLUMN => $labelId->toString(),
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
+                ColumnNames::LABEL_ID_COLUMN => $labelId->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
             ],
         ];
 
@@ -74,12 +69,12 @@ class LabelRolesWriteRepositoryTest extends TestCase
 
         $expectedRows = [
             [
-                SchemaConfigurator::LABEL_ID_COLUMN => $labelId1->toString(),
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId1->toString(),
+                ColumnNames::LABEL_ID_COLUMN => $labelId1->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $roleId1->toString(),
             ],
             [
-                SchemaConfigurator::LABEL_ID_COLUMN => $labelId2->toString(),
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId2->toString(),
+                ColumnNames::LABEL_ID_COLUMN => $labelId2->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $roleId2->toString(),
             ],
         ];
 
@@ -106,8 +101,8 @@ class LabelRolesWriteRepositoryTest extends TestCase
 
         $expectedRows = [
             [
-                SchemaConfigurator::LABEL_ID_COLUMN => $labelId1->toString(),
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId1->toString(),
+                ColumnNames::LABEL_ID_COLUMN => $labelId1->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $roleId1->toString(),
             ],
         ];
 
@@ -122,8 +117,8 @@ class LabelRolesWriteRepositoryTest extends TestCase
         $this->connection->insert(
             $this->labelRolesTableName,
             [
-                SchemaConfigurator::LABEL_ID_COLUMN => $labelId->toString(),
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
+                ColumnNames::LABEL_ID_COLUMN => $labelId->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }

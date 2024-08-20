@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
+use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\ColumnNames as LabelRolesColumnNames;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -178,13 +178,13 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
     private function createUserLabelsSubQuery(): QueryBuilder
     {
         return $this->createQueryBuilder()
-            ->select('DISTINCT ' . LabelRolesSchemaConfigurator::LABEL_ID_COLUMN)
+            ->select('DISTINCT ' . LabelRolesColumnNames::LABEL_ID_COLUMN)
             ->from($this->userRolesTableName, 'ur')
             ->innerJoin(
                 'ur',
                 $this->labelRolesTableName,
                 'lr',
-                'ur.' . PermissionsSchemaConfigurator::ROLE_ID_COLUMN . ' = lr.' . LabelRolesSchemaConfigurator::ROLE_ID_COLUMN
+                'ur.' . PermissionsSchemaConfigurator::ROLE_ID_COLUMN . ' = lr.' . LabelRolesColumnNames::ROLE_ID_COLUMN
             )
             ->where('ur.' . PermissionsSchemaConfigurator::USER_ID_COLUMN . '= :' . PermissionsSchemaConfigurator::USER_ID_COLUMN);
     }
