@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine;
 
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
-use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\ColumnNames as PermissionsSchemaConfigurator;
-use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\ColumnNames as SearchSchemaConfigurator;
+use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\ColumnNames as PermissionsColumnNames;
+use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\ColumnNames as SearchColumnNames;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Doctrine\DBAL\Connection;
 
@@ -40,29 +40,29 @@ class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInte
         Permission $permission
     ): array {
         $userRolesSubQuery = $this->connection->createQueryBuilder()
-            ->select(PermissionsSchemaConfigurator::ROLE_ID_COLUMN)
+            ->select(PermissionsColumnNames::ROLE_ID_COLUMN)
             ->from($this->userRolesTableName)
-            ->where(PermissionsSchemaConfigurator::USER_ID_COLUMN . ' = :userId');
+            ->where(PermissionsColumnNames::USER_ID_COLUMN . ' = :userId');
 
         $queryBuilder = $this->connection->createQueryBuilder();
         $userConstraintsQuery = $queryBuilder
-            ->select('rs.' . SearchSchemaConfigurator::CONSTRAINT_COLUMN)
+            ->select('rs.' . SearchColumnNames::CONSTRAINT_COLUMN)
             ->from($this->rolesSearchTableName, 'rs')
             ->innerJoin(
                 'rs',
                 sprintf('(%s)', $userRolesSubQuery->getSQL()),
                 'ur',
-                'rs.' . SearchSchemaConfigurator::UUID_COLUMN . ' = ur.' . PermissionsSchemaConfigurator::ROLE_ID_COLUMN
+                'rs.' . SearchColumnNames::UUID_COLUMN . ' = ur.' . PermissionsColumnNames::ROLE_ID_COLUMN
             )
             ->innerJoin(
                 'rs',
                 $this->rolePermissionsTableName,
                 'rp',
-                'rs.' . SearchSchemaConfigurator::UUID_COLUMN . ' = rp.' . PermissionsSchemaConfigurator::ROLE_ID_COLUMN
+                'rs.' . SearchColumnNames::UUID_COLUMN . ' = rp.' . PermissionsColumnNames::ROLE_ID_COLUMN
             )
-            ->where(PermissionsSchemaConfigurator::PERMISSION_COLUMN . ' = :permission')
+            ->where(PermissionsColumnNames::PERMISSION_COLUMN . ' = :permission')
             ->andWhere($queryBuilder->expr()->isNotNull(
-                'rs.' . SearchSchemaConfigurator::CONSTRAINT_COLUMN
+                'rs.' . SearchColumnNames::CONSTRAINT_COLUMN
             ))
             ->setParameter('userId', $userId)
             ->setParameter('permission', $permission->toString());

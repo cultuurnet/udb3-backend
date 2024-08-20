@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\ColumnNames as LabelRolesCol
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\ColumnNames as PermissionsSchemaConfigurator;
+use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\ColumnNames as PermissionsColumnNames;
 
 final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 {
@@ -437,8 +437,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $this->getConnection()->insert(
             $this->userRolesTableName,
             [
-                PermissionsSchemaConfigurator::USER_ID_COLUMN => $userId,
-                PermissionsSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
+                PermissionsColumnNames::USER_ID_COLUMN => $userId,
+                PermissionsColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }
