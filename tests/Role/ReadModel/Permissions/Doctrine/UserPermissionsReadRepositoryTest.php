@@ -26,15 +26,6 @@ class UserPermissionsReadRepositoryTest extends TestCase
         $this->userRoleTableName = 'user_roles';
         $this->rolePermissionTableName = 'role_permissions';
 
-        $schemaConfigurator = new SchemaConfigurator(
-            $this->userRoleTableName,
-            $this->rolePermissionTableName
-        );
-
-        $schemaManager = $this->getConnection()->getSchemaManager();
-
-        $schemaConfigurator->configure($schemaManager);
-
         $this->repository = new UserPermissionsReadRepository(
             $this->getConnection(),
             $this->userRoleTableName,
@@ -55,8 +46,8 @@ class UserPermissionsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->userRoleTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
-                SchemaConfigurator::USER_ID_COLUMN => $userId,
+                ColumnNames::ROLE_ID_COLUMN => $roleId,
+                ColumnNames::USER_ID_COLUMN => $userId,
             ]
         );
 
@@ -64,8 +55,8 @@ class UserPermissionsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->userRoleTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::USER_ID_COLUMN => $userId,
+                ColumnNames::ROLE_ID_COLUMN => $otherRoleId,
+                ColumnNames::USER_ID_COLUMN => $userId,
             ]
         );
 
@@ -73,15 +64,15 @@ class UserPermissionsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $roleId,
+                ColumnNames::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
             ]
         );
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $roleId,
+                ColumnNames::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
 
@@ -89,15 +80,15 @@ class UserPermissionsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $otherRoleId,
+                ColumnNames::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::aanbodModereren()->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $otherRoleId,
+                ColumnNames::PERMISSION_COLUMN => Permission::aanbodModereren()->toString(),
             ]
         );
 
@@ -128,8 +119,8 @@ class UserPermissionsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->userRoleTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
-                SchemaConfigurator::USER_ID_COLUMN => $userId,
+                ColumnNames::ROLE_ID_COLUMN => $roleId,
+                ColumnNames::USER_ID_COLUMN => $userId,
             ]
         );
 
@@ -137,8 +128,8 @@ class UserPermissionsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->userRoleTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::USER_ID_COLUMN => $userId,
+                ColumnNames::ROLE_ID_COLUMN => $otherRoleId,
+                ColumnNames::USER_ID_COLUMN => $userId,
             ]
         );
 
@@ -146,15 +137,15 @@ class UserPermissionsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $roleId,
+                ColumnNames::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
             ]
         );
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $roleId,
+                ColumnNames::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
 
@@ -162,15 +153,15 @@ class UserPermissionsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $otherRoleId,
+                ColumnNames::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::aanbodModereren()->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $otherRoleId,
+                ColumnNames::PERMISSION_COLUMN => Permission::aanbodModereren()->toString(),
             ]
         );
 
