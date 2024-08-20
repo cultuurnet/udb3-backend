@@ -196,7 +196,7 @@ class CalendarFactory implements CalendarFactoryInterface
                 }
 
                 foreach ($openingTimes as $openingTime) {
-                    $opens = \DateTime::createFromFormat(
+                    $opens = \CultuurNet\UDB3\DateTimeFactory::fromFormat(
                         'H:i:s',
                         $openingTime->getOpenFrom()
                     );

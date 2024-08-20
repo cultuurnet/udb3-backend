@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Ownership\Readmodels;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
@@ -60,7 +61,7 @@ final class OwnershipLDProjector implements EventListener
         $body->requesterId = $ownershipRequested->getRequesterId();
         $body->state = OwnershipState::requested()->toString();
 
-        $body->created = \DateTime::createFromFormat(
+        $body->created = DateTimeFactory::fromFormat(
             DateTime::FORMAT_STRING,
             $domainMessage->getRecordedOn()->toString()
         )->format('c');

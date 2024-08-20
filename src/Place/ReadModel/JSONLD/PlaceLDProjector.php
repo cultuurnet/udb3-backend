@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Completeness\Completeness;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
@@ -207,7 +208,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         ];
 
         $recordedOn = $domainMessage->getRecordedOn()->toString();
-        $jsonLD->created = \DateTime::createFromFormat(
+        $jsonLD->created = DateTimeFactory::fromFormat(
             DateTime::FORMAT_STRING,
             $recordedOn
         )->format('c');
