@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SavedSearches;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
-use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\SavedSearches\Doctrine\ColumnNames;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use PHPUnit\Framework\TestCase;
@@ -148,15 +148,6 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         );
     }
 
-    private function createTable(): void
-    {
-        $schemaConfigurator = new SchemaConfigurator($this->tableName);
-
-        $schemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
-    }
-
     /**
      * @return SavedSearch[]
      * @throws \Doctrine\DBAL\DBALException
@@ -171,9 +162,9 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $savedSearches = [];
         foreach ($rows as $row) {
             $savedSearches[] = new SavedSearch(
-                $row[SchemaConfigurator::NAME],
-                new QueryString($row[SchemaConfigurator::QUERY]),
-                $row[SchemaConfigurator::ID]
+                $row[ColumnNames::NAME],
+                new QueryString($row[ColumnNames::QUERY]),
+                $row[ColumnNames::ID]
             );
         }
 

@@ -6,11 +6,11 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
-use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
+use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\ColumnNames as LabelRolesColumnNames;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionsSchemaConfigurator;
+use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\ColumnNames as PermissionsColumnNames;
 
 final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 {
@@ -35,21 +35,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         parent::setUp();
 
         $this->labelRolesTableName = 'label_roles';
-        $schemaConfigurator = new LabelRolesSchemaConfigurator(
-            $this->labelRolesTableName
-        );
-        $schemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
-
         $this->userRolesTableName = 'user_roles';
-        $schemaConfigurator = new PermissionsSchemaConfigurator(
-            $this->userRolesTableName,
-            'role_permissions'
-        );
-        $schemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
 
         $this->dbalReadRepository = new DBALReadRepository(
             $this->getConnection(),
@@ -439,8 +425,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $this->getConnection()->insert(
             $this->labelRolesTableName,
             [
-                LabelRolesSchemaConfigurator::LABEL_ID_COLUMN => $labelId->toString(),
-                LabelRolesSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
+                LabelRolesColumnNames::LABEL_ID_COLUMN => $labelId->toString(),
+                LabelRolesColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }
@@ -451,8 +437,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $this->getConnection()->insert(
             $this->userRolesTableName,
             [
-                PermissionsSchemaConfigurator::USER_ID_COLUMN => $userId,
-                PermissionsSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
+                PermissionsColumnNames::USER_ID_COLUMN => $userId,
+                PermissionsColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }

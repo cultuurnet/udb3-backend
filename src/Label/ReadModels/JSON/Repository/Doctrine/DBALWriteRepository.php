@@ -21,11 +21,11 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
         $queryBuilder = $this->createQueryBuilder()
             ->insert($this->getTableName())
             ->values([
-                SchemaConfigurator::UUID_COLUMN => '?',
-                SchemaConfigurator::NAME_COLUMN => '?',
-                SchemaConfigurator::VISIBLE_COLUMN => '?',
-                SchemaConfigurator::PRIVATE_COLUMN => '?',
-                SchemaConfigurator::EXCLUDED_COLUMN => '?',
+                ColumnNames::UUID_COLUMN => '?',
+                ColumnNames::NAME_COLUMN => '?',
+                ColumnNames::VISIBLE_COLUMN => '?',
+                ColumnNames::PRIVATE_COLUMN => '?',
+                ColumnNames::EXCLUDED_COLUMN => '?',
             ])
             ->setParameters([
                 $uuid->toString(),
@@ -41,7 +41,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
     public function updateVisible(UUID $uuid): void
     {
         $this->executeUpdate(
-            SchemaConfigurator::VISIBLE_COLUMN,
+            ColumnNames::VISIBLE_COLUMN,
             true,
             $uuid
         );
@@ -50,7 +50,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
     public function updateInvisible(UUID $uuid): void
     {
         $this->executeUpdate(
-            SchemaConfigurator::VISIBLE_COLUMN,
+            ColumnNames::VISIBLE_COLUMN,
             false,
             $uuid
         );
@@ -59,7 +59,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
     public function updatePublic(UUID $uuid): void
     {
         $this->executeUpdate(
-            SchemaConfigurator::PRIVATE_COLUMN,
+            ColumnNames::PRIVATE_COLUMN,
             false,
             $uuid
         );
@@ -68,7 +68,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
     public function updatePrivate(UUID $uuid): void
     {
         $this->executeUpdate(
-            SchemaConfigurator::PRIVATE_COLUMN,
+            ColumnNames::PRIVATE_COLUMN,
             true,
             $uuid
         );
@@ -77,7 +77,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
     public function updateIncluded(UUID $uuid): void
     {
         $this->executeUpdate(
-            SchemaConfigurator::EXCLUDED_COLUMN,
+            ColumnNames::EXCLUDED_COLUMN,
             false,
             $uuid
         );
@@ -86,7 +86,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
     public function updateExcluded(UUID $uuid): void
     {
         $this->executeUpdate(
-            SchemaConfigurator::EXCLUDED_COLUMN,
+            ColumnNames::EXCLUDED_COLUMN,
             true,
             $uuid
         );
@@ -100,7 +100,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
         $queryBuilder = $this->createQueryBuilder()
             ->update($this->getTableName())
             ->set($column, '?')
-            ->where(SchemaConfigurator::UUID_COLUMN . ' = ?')
+            ->where(ColumnNames::UUID_COLUMN . ' = ?')
             ->setParameters([
                 $value ? 1 : 0,
                 $uuid->toString(),

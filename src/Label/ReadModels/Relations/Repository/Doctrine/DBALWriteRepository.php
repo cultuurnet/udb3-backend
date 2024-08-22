@@ -20,10 +20,10 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $queryBuilder = $this->createQueryBuilder()
             ->insert($this->getTableName())
             ->values([
-                SchemaConfigurator::LABEL_NAME => '?',
-                SchemaConfigurator::RELATION_TYPE => '?',
-                SchemaConfigurator::RELATION_ID => '?',
-                SchemaConfigurator::IMPORTED => '?',
+                ColumnNames::LABEL_NAME => '?',
+                ColumnNames::RELATION_TYPE => '?',
+                ColumnNames::RELATION_ID => '?',
+                ColumnNames::IMPORTED => '?',
             ])
             ->setParameters([
                 $labelName,
@@ -41,8 +41,8 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
     ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
-            ->where(SchemaConfigurator::LABEL_NAME . ' = ?')
-            ->andWhere(SchemaConfigurator::RELATION_ID . ' = ?')
+            ->where(ColumnNames::LABEL_NAME . ' = ?')
+            ->andWhere(ColumnNames::RELATION_ID . ' = ?')
             ->setParameters([$labelName, $relationId]);
 
         $this->executeTransactional($queryBuilder);
@@ -52,8 +52,8 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
     {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
-            ->where(SchemaConfigurator::RELATION_ID . ' = :relationId')
-            ->andWhere(SchemaConfigurator::IMPORTED . ' = :imported')
+            ->where(ColumnNames::RELATION_ID . ' = :relationId')
+            ->andWhere(ColumnNames::IMPORTED . ' = :imported')
             ->setParameters(
                 [
                     ':relationId' => $relationId,

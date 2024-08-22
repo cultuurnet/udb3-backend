@@ -133,18 +133,6 @@ class AggregateAwareDBALEventStoreTest extends TestCase
         );
     }
 
-    private function createTable(): void
-    {
-        $schemaManager = $this->getConnection()->getSchemaManager();
-        $schema = $schemaManager->createSchema();
-
-        $table = $this->aggregateAwareDBALEventStore->configureSchema(
-            $schema
-        );
-
-        $schemaManager->createTable($table);
-    }
-
     private function createDomainMessage(UUID $uuid): DomainMessage
     {
         return new DomainMessage(

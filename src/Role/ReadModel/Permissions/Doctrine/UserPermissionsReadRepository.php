@@ -32,18 +32,18 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
     public function getPermissions(string $userId): array
     {
         $userRoleQuery = $this->connection->createQueryBuilder()
-            ->select(SchemaConfigurator::ROLE_ID_COLUMN)
+            ->select(ColumnNames::ROLE_ID_COLUMN)
             ->from($this->userRoleTableName)
-            ->where(SchemaConfigurator::USER_ID_COLUMN . ' = :userId');
+            ->where(ColumnNames::USER_ID_COLUMN . ' = :userId');
 
         $userPermissionQuery = $this->connection->createQueryBuilder()
-            ->select('DISTINCT ' . SchemaConfigurator::PERMISSION_COLUMN)
+            ->select('DISTINCT ' . ColumnNames::PERMISSION_COLUMN)
             ->from($this->rolePermissionTableName, 'rp')
             ->innerJoin(
                 'rp',
                 sprintf('(%s)', $userRoleQuery->getSQL()),
                 'up',
-                'rp.' . SchemaConfigurator::ROLE_ID_COLUMN . ' = up.' . SchemaConfigurator::ROLE_ID_COLUMN
+                'rp.' . ColumnNames::ROLE_ID_COLUMN . ' = up.' . ColumnNames::ROLE_ID_COLUMN
             )
             ->setParameter('userId', $userId);
 
@@ -58,19 +58,19 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
     public function hasPermission(string $userId, Permission $permission): bool
     {
         $userRoleQuery = $this->connection->createQueryBuilder()
-            ->select(SchemaConfigurator::ROLE_ID_COLUMN)
+            ->select(ColumnNames::ROLE_ID_COLUMN)
             ->from($this->userRoleTableName)
-            ->where(SchemaConfigurator::USER_ID_COLUMN . ' = :userId');
+            ->where(ColumnNames::USER_ID_COLUMN . ' = :userId');
 
         $userPermissionQuery = $this->connection->createQueryBuilder()
-            ->select('DISTINCT ' . SchemaConfigurator::PERMISSION_COLUMN)
+            ->select('DISTINCT ' . ColumnNames::PERMISSION_COLUMN)
             ->from($this->rolePermissionTableName, 'rp')
-            ->andWhere(SchemaConfigurator::PERMISSION_COLUMN . ' = :permission')
+            ->andWhere(ColumnNames::PERMISSION_COLUMN . ' = :permission')
             ->innerJoin(
                 'rp',
                 sprintf('(%s)', $userRoleQuery->getSQL()),
                 'up',
-                'rp.' . SchemaConfigurator::ROLE_ID_COLUMN . ' = up.' . SchemaConfigurator::ROLE_ID_COLUMN
+                'rp.' . ColumnNames::ROLE_ID_COLUMN . ' = up.' . ColumnNames::ROLE_ID_COLUMN
             )
             ->setParameter('userId', $userId)
             ->setParameter('permission', $permission->toString());

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches\ReadModel;
 
-use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\SavedSearches\Doctrine\ColumnNames;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use Doctrine\DBAL\Connection;
 
@@ -27,7 +27,7 @@ class SavedSearchReadRepository
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select('*')
             ->from($this->tableName)
-            ->andWhere(SchemaConfigurator::ID . ' = ?')
+            ->andWhere(ColumnNames::ID . ' = ?')
             ->setParameters(
                 [
                     $id,
@@ -41,10 +41,10 @@ class SavedSearchReadRepository
         }
 
         return new SavedSearch(
-            $row[SchemaConfigurator::NAME],
-            new QueryString($row[SchemaConfigurator::QUERY]),
-            $row[SchemaConfigurator::ID],
-            $row[SchemaConfigurator::USER],
+            $row[ColumnNames::NAME],
+            new QueryString($row[ColumnNames::QUERY]),
+            $row[ColumnNames::ID],
+            $row[ColumnNames::USER],
         );
     }
 }
