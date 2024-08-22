@@ -10,9 +10,6 @@ use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\EventSourcing\AbstractEventStoreDecorator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Types;
 
 class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
 {
@@ -56,36 +53,6 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
             $this->connection->rollBack();
             throw $exception;
         }
-    }
-
-    public function configureSchema(Schema $schema): ?Table
-    {
-        if ($schema->hasTable($this->uniqueTableName)) {
-            return null;
-        }
-
-        return $this->createUniqueTable($this->uniqueTableName);
-    }
-
-    private function createUniqueTable(string $tableName): Table
-    {
-        $schema = new Schema();
-
-        $table = $schema->createTable($tableName);
-
-        $table->addColumn(self::UUID_COLUMN, Types::GUID)
-            ->setLength(36)
-            ->setNotnull(true);
-
-        $table->addColumn(self::UNIQUE_COLUMN, Types::STRING)
-            ->setLength(255)
-            ->setNotnull(true);
-
-        $table->setPrimaryKey([self::UUID_COLUMN]);
-        $table->addUniqueIndex([self::UUID_COLUMN]);
-        $table->addUniqueIndex([self::UNIQUE_COLUMN]);
-
-        return $table;
     }
 
     /**

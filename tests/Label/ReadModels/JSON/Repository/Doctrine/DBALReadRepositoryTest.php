@@ -6,11 +6,11 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
-use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
+use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\ColumnNames as LabelRolesColumnNames;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionsSchemaConfigurator;
+use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\ColumnNames as PermissionsColumnNames;
 
 final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 {
@@ -35,21 +35,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         parent::setUp();
 
         $this->labelRolesTableName = 'label_roles';
-        $schemaConfigurator = new LabelRolesSchemaConfigurator(
-            $this->labelRolesTableName
-        );
-        $schemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
-
         $this->userRolesTableName = 'user_roles';
-        $schemaConfigurator = new PermissionsSchemaConfigurator(
-            $this->userRolesTableName,
-            'role_permissions'
-        );
-        $schemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
 
         $this->dbalReadRepository = new DBALReadRepository(
             $this->getConnection(),
@@ -64,7 +50,6 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );
-        $this->saveEntity($this->entityByUuid);
 
         $this->entityByName = new Entity(
             new UUID('25ea383c-b14d-4776-989c-24e0ac044638'),
@@ -72,7 +57,6 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );
-        $this->saveEntity($this->entityByName);
 
         $this->entityPrivateAccess = new Entity(
             new UUID('6639d6d2-ac7d-4995-91e3-7660c74cf1eb'),
@@ -80,7 +64,6 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE()
         );
-        $this->saveEntity($this->entityPrivateAccess);
 
         $this->entityPrivateNoAccess = new Entity(
             new UUID('b14dd3ea-6962-4565-91b6-d0e8d929e685'),
@@ -88,7 +71,6 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE()
         );
-        $this->saveEntity($this->entityPrivateNoAccess);
 
         $this->excluded = new Entity(
             new UUID('67dcd2a0-5301-4747-a956-3741420efd52'),
@@ -97,7 +79,12 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             Privacy::PRIVACY_PUBLIC(),
             true
         );
-        $this->saveEntity($this->excluded);
+
+        /** @var Entity[] $entities */
+        $entities = [$this->excluded, $this->entityPrivateAccess, $this->entityPrivateNoAccess, $this->entityByUuid, $this->entityByName];
+        foreach ($entities as $entity) {
+            $this->saveEntity($entity);
+        }
 
         for ($i = 0; $i < 10; $i++) {
             $entity = new Entity(
@@ -438,8 +425,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $this->getConnection()->insert(
             $this->labelRolesTableName,
             [
-                LabelRolesSchemaConfigurator::LABEL_ID_COLUMN => $labelId->toString(),
-                LabelRolesSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
+                LabelRolesColumnNames::LABEL_ID_COLUMN => $labelId->toString(),
+                LabelRolesColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }
@@ -450,8 +437,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $this->getConnection()->insert(
             $this->userRolesTableName,
             [
-                PermissionsSchemaConfigurator::USER_ID_COLUMN => $userId,
-                PermissionsSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
+                PermissionsColumnNames::USER_ID_COLUMN => $userId,
+                PermissionsColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }

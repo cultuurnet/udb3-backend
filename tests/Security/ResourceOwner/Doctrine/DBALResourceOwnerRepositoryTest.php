@@ -15,12 +15,10 @@ final class DBALResourceOwnerRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        $table = 'event_permission';
-        $idField = 'event_id';
+        $this->setUpDatabase();
 
-        (new SchemaConfigurator($table, $idField))->configure(
-            $this->getConnection()->getSchemaManager()
-        );
+        $table = 'event_permission_readmodel';
+        $idField = 'event_id';
 
         $this->repository = new DBALResourceOwnerRepository(
             $table,

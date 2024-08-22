@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
-use CultuurNet\UDB3\Event\Productions\Doctrine\SkippedSimilarEventsSchemaConfigurator;
 use PDO;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -18,8 +17,7 @@ class SkippedSimilarEventsRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = $this->createSchema();
-        $this->createTable(SkippedSimilarEventsSchemaConfigurator::getTableDefinition($schema));
+        $this->setUpDatabase();
 
         $this->repository = new SkippedSimilarEventsRepository($this->getConnection());
     }

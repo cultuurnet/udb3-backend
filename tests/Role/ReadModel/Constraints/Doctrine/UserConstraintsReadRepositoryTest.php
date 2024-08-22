@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
-use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionSchemaConfigurator;
-use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\SchemaConfigurator as SearchSchemaConfigurator;
+use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\ColumnNames as PermissionColumnNames;
+use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\ColumnNames as SearchColumnNames;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
 
@@ -31,6 +31,8 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->setUpDatabase();
+
         $this->roleIds = [
             new UUID('36c96c3b-9ce4-492b-9b4e-fee465beb597'),
             new UUID('f874cea2-4f8e-475c-8e97-47f881fc5e1a'),
@@ -40,22 +42,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
         $this->userRolesTableName = 'user_roles';
         $this->rolePermissionsTableName = 'role_permissions';
-        $this->rolesSearchTableName = 'roles_search';
-
-        $permissionSchemaConfigurator = new PermissionSchemaConfigurator(
-            $this->userRolesTableName,
-            $this->rolePermissionsTableName
-        );
-        $permissionSchemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
-
-        $constraintSchemaConfigurator = new SearchSchemaConfigurator(
-            $this->rolesSearchTableName
-        );
-        $constraintSchemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
+        $this->rolesSearchTableName = 'roles_search_v3';
 
         $this->userConstraintsReadRepository = new UserConstraintsReadRepository(
             $this->getConnection(),
@@ -151,8 +138,8 @@ class UserConstraintsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->userRolesTableName,
             [
-                PermissionSchemaConfigurator::USER_ID_COLUMN => $userId,
-                PermissionSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
+                PermissionColumnNames::USER_ID_COLUMN => $userId,
+                PermissionColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }
@@ -163,8 +150,8 @@ class UserConstraintsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->rolePermissionsTableName,
             [
-                PermissionSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
-                PermissionSchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
+                PermissionColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
+                PermissionColumnNames::PERMISSION_COLUMN => $permission->toString(),
             ]
         );
     }
@@ -177,9 +164,9 @@ class UserConstraintsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->rolesSearchTableName,
             [
-                SearchSchemaConfigurator::UUID_COLUMN => $roleId->toString(),
-                SearchSchemaConfigurator::NAME_COLUMN => $roleName,
-                SearchSchemaConfigurator::CONSTRAINT_COLUMN => $constraint,
+                SearchColumnNames::UUID_COLUMN => $roleId->toString(),
+                SearchColumnNames::NAME_COLUMN => $roleName,
+                SearchColumnNames::CONSTRAINT_COLUMN => $constraint,
             ]
         );
     }

@@ -17,15 +17,12 @@ final class DBALNewsArticleRepositoryTest extends TestCase
 
     private DBALNewsArticleRepository $dbalNewsArticleRepository;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
+        // There are some issues when running these on GitHub Actions for PHP 8.0
+        // It seems that the news articles from the 'it_can_get_a_news_article' don't get a rollback on PHP 8.0
+        $this->setUpDatabase(true, ['news_article']);
         $this->dbalNewsArticleRepository = new DBALNewsArticleRepository($this->getConnection());
-
-        $this->createTable(
-            NewsArticleSchemaConfigurator::getTableDefinition(
-                $this->createSchema()
-            )
-        );
 
         $this->getConnection()->insert(
             'news_article',

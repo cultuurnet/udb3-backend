@@ -14,7 +14,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     public function getLabelRelations(string $labelName)
     {
         $aliases = $this->getAliases();
-        $whereLabelName = SchemaConfigurator::LABEL_NAME . ' = ?';
+        $whereLabelName = ColumnNames::LABEL_NAME . ' = ?';
 
         $queryBuilder = $this->createQueryBuilder()->select($aliases)
             ->from($this->getTableName())
@@ -31,12 +31,12 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
 
     public function getLabelRelationsForType(string $labelName, RelationType $relationType): array
     {
-        $whereLabelName = SchemaConfigurator::LABEL_NAME . ' = ?';
+        $whereLabelName = ColumnNames::LABEL_NAME . ' = ?';
 
-        return $this->createQueryBuilder()->select(SchemaConfigurator::RELATION_ID)
+        return $this->createQueryBuilder()->select(ColumnNames::RELATION_ID)
             ->from($this->getTableName())
             ->where($whereLabelName)
-            ->andWhere(SchemaConfigurator::RELATION_TYPE . ' = ?')
+            ->andWhere(ColumnNames::RELATION_TYPE . ' = ?')
             ->setParameters([$labelName, $relationType->toString()])
             ->execute()
             ->fetchFirstColumn();
@@ -45,7 +45,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     public function getLabelRelationsForItem(string $relationId): array
     {
         $aliases = $this->getAliases();
-        $whereRelationId = SchemaConfigurator::RELATION_ID . ' = ?';
+        $whereRelationId = ColumnNames::RELATION_ID . ' = ?';
 
         $queryBuilder = $this->createQueryBuilder()->select($aliases)
             ->from($this->getTableName())
@@ -69,10 +69,10 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     private function getAliases(): array
     {
         return [
-            SchemaConfigurator::LABEL_NAME,
-            SchemaConfigurator::RELATION_TYPE,
-            SchemaConfigurator::RELATION_ID,
-            SchemaConfigurator::IMPORTED,
+            ColumnNames::LABEL_NAME,
+            ColumnNames::RELATION_TYPE,
+            ColumnNames::RELATION_ID,
+            ColumnNames::IMPORTED,
         ];
     }
 }

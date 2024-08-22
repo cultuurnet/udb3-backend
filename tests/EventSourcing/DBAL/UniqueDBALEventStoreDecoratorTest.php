@@ -34,16 +34,18 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->uniqueTableName = 'labels_unique';
+
+        $this->setUpDatabase(false, ['event_store', 'labels_unique']);
+
         $serializer = $this->createMock(Serializer::class);
 
         /** @var AggregateAwareDBALEventStore&MockObject $dbalEventStore */
         $dbalEventStore = $this
             ->getMockBuilder(AggregateAwareDBALEventStore::class)
-            ->setConstructorArgs([$this->getConnection(), $serializer, $serializer, 'labelsEventStore', AggregateType::event()])
+            ->setConstructorArgs([$this->getConnection(), $serializer, $serializer, 'event_store', AggregateType::event()])
             ->enableProxyingToOriginalMethods()
             ->getMock();
-
-        $this->uniqueTableName = 'uniqueTableName';
 
         $this->uniqueConstraintService = $this->createMock(UniqueConstraintService::class);
 
@@ -61,15 +63,6 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
             $this->uniqueTableName,
             $this->uniqueConstraintService
         );
-
-        $schemaManager = $this->getConnection()->getSchemaManager();
-        $schema = $schemaManager->createSchema();
-
-        $table = $dbalEventStore->configureSchema($schema);
-        $schemaManager->createTable($table);
-
-        $uniqueTable = $this->uniqueDBALEventStoreDecorator->configureSchema($schema);
-        $schemaManager->createTable($uniqueTable);
     }
 
     /**
@@ -128,7 +121,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
             // Make sure no events were appended to the event store.
             $rowCountResult = $this->connection->createQueryBuilder()
                 ->select('count(*) as total')
-                ->from('labelsEventStore')
+                ->from('event_store')
                 ->execute()
                 ->fetch();
 

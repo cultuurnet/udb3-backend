@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 
-use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\ColumnNames;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use JsonSerializable;
 
@@ -53,20 +53,20 @@ class LabelRelation implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            SchemaConfigurator::LABEL_NAME => $this->labelName,
-            SchemaConfigurator::RELATION_TYPE => $this->relationType->toString(),
-            SchemaConfigurator::RELATION_ID => $this->relationId,
-            SchemaConfigurator::IMPORTED => $this->imported,
+            ColumnNames::LABEL_NAME => $this->labelName,
+            ColumnNames::RELATION_TYPE => $this->relationType->toString(),
+            ColumnNames::RELATION_ID => $this->relationId,
+            ColumnNames::IMPORTED => $this->imported,
         ];
     }
 
     public static function fromRelationalData(array $relation): LabelRelation
     {
         return new self(
-            $relation[SchemaConfigurator::LABEL_NAME],
-            new RelationType($relation[SchemaConfigurator::RELATION_TYPE]),
-            $relation[SchemaConfigurator::RELATION_ID],
-            (bool) $relation[SchemaConfigurator::IMPORTED]
+            $relation[ColumnNames::LABEL_NAME],
+            new RelationType($relation[ColumnNames::RELATION_TYPE]),
+            $relation[ColumnNames::RELATION_ID],
+            (bool) $relation[ColumnNames::IMPORTED]
         );
     }
 }
