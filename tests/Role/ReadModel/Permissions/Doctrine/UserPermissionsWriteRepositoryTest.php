@@ -22,17 +22,10 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->userRoleTableName = 'user_role';
-        $this->rolePermissionTableName = 'role_permission';
+        $this->setUpDatabase();
 
-        $schemaConfigurator = new SchemaConfigurator(
-            $this->userRoleTableName,
-            $this->rolePermissionTableName,
-        );
-
-        $schemaManager = $this->getConnection()->getSchemaManager();
-
-        $schemaConfigurator->configure($schemaManager);
+        $this->userRoleTableName = 'user_roles';
+        $this->rolePermissionTableName = 'role_permissions';
 
         $this->repository = new UserPermissionsWriteRepository(
             $this->getConnection(),

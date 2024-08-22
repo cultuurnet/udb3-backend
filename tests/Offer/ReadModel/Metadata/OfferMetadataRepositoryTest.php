@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Offer\ReadModel\Metadata;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Offer\ReadModel\Metadata\Doctrine\OfferMetadataSchemaConfigurator;
 use PHPUnit\Framework\TestCase;
 
 class OfferMetadataRepositoryTest extends TestCase
@@ -20,10 +19,7 @@ class OfferMetadataRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = $this->createSchema();
-        $this->createTable(
-            OfferMetadataSchemaConfigurator::getTableDefinition($schema)
-        );
+        $this->setUpDatabase();
 
         $this->repository = new OfferMetadataRepository($this->getConnection());
     }

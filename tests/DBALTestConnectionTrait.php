@@ -6,22 +6,51 @@ namespace CultuurNet\UDB3;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
+use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
 use PDO;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 
 trait DBALTestConnectionTrait
 {
     private ?Connection $connection = null;
-    private array $connectionConfiguration;
+    private bool $withRollback = true;
+    private array $truncateTables = [];
+
+    public function setUpDatabase(bool $withRollback = true, array $truncateTables = []): void
+    {
+        $this->withRollback = $withRollback;
+        $this->truncateTables = $truncateTables;
+
+        if (count($this->getConnection()->getSchemaManager()->listTableNames()) === 0) {
+            $this->runMigrations();
+        }
+
+        if ($this->withRollback) {
+            $this->getConnection()->beginTransaction();
+        }
+    }
+
+    public function setUp()
+    {
+        $this->setUpDatabase();
+    }
 
     public function tearDown(): void
     {
-        $this->recreateDatabase();
+        if ($this->withRollback) {
+            $this->getConnection()->rollBack();
+        }
+
+        foreach ($this->truncateTables as $table) {
+            $this->getConnection()->executeQuery('TRUNCATE TABLE ' . $table);
+        }
+
         $this->getConnection()->close();
     }
 
-    protected function initializeConnection(): void
+    private function initializeConnection(): void
     {
         if (!class_exists('PDO')) {
             $this->markTestSkipped('PDO is required to run this test.');
@@ -43,13 +72,22 @@ trait DBALTestConnectionTrait
             'port' => getenv('DATABASE_PORT') ?: 3306,
         ];
 
-        $this->connectionConfiguration = array_merge($configuration, [
-            'dbname' => 'udb3_test',
-        ]);
+        $connectionConfiguration = array_merge($configuration, ['dbname' => 'udb3_test']);
+        $this->connection = DriverManager::getConnection($connectionConfiguration);
 
-        $this->connection = DriverManager::getConnection(
-            $this->connectionConfiguration
-        );
+        $this->runMigrations();
+    }
+
+    protected function runMigrations(): void
+    {
+        $command = new MigrateCommand();
+        $command->setApplication(new Application());
+        $command->setConnection($this->connection);
+
+        $input = new ArrayInput([]);
+        $input->setInteractive(false);
+
+        $command->run($input, new NullOutput());
     }
 
     public function getConnection(): Connection
@@ -59,20 +97,5 @@ trait DBALTestConnectionTrait
         }
 
         return $this->connection;
-    }
-
-    public function createSchema(): Schema
-    {
-        return $this->getConnection()->getSchemaManager()->createSchema();
-    }
-
-    public function createTable(Table $table): void
-    {
-        $this->getConnection()->getSchemaManager()->createTable($table);
-    }
-
-    public function recreateDatabase(): void
-    {
-        $this->getConnection()->getSchemaManager()->dropAndCreateDatabase($this->connectionConfiguration['dbname']);
     }
 }

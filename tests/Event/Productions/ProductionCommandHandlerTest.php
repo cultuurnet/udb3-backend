@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Event\Productions\Doctrine\ProductionSchemaConfigurator;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -34,10 +33,7 @@ final class ProductionCommandHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = $this->createSchema();
-        $this->createTable(
-            ProductionSchemaConfigurator::getTableDefinition($schema)
-        );
+        $this->setUpDatabase();
 
         $this->productionRepository = new DBALProductionRepository($this->getConnection());
         $this->skippedSimilarEventsRepository = $this->createMock(SkippedSimilarEventsRepository::class);

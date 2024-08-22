@@ -33,6 +33,8 @@ class AggregateAwareDBALEventStoreTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->setUpDatabase();
+
         $this->payloadSerializer = new SimpleInterfaceSerializer();
 
         $this->metadataSerializer = new SimpleInterfaceSerializer();
@@ -48,8 +50,6 @@ class AggregateAwareDBALEventStoreTest extends TestCase
             $this->tableName,
             $this->aggregateType
         );
-
-        $this->createTable();
     }
 
     /**

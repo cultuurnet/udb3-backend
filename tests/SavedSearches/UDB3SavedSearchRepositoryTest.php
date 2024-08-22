@@ -15,14 +15,13 @@ class UDB3SavedSearchRepositoryTest extends TestCase
     use DBALTestConnectionTrait;
 
     private const USERID = '6f072ba8-c510-40ac-b387-51f582650e26';
-    private string $tableName;
+    private string $tableName = 'saved_searches_sapi3';
 
     private UDB3SavedSearchRepository $udb3SavedSearchRepository;
 
     protected function setUp(): void
     {
-        $this->createTable();
-
+        $this->setUpDatabase();
 
         $this->udb3SavedSearchRepository = new UDB3SavedSearchRepository(
             $this->getConnection(),
@@ -151,7 +150,6 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 
     private function createTable(): void
     {
-        $this->tableName = 'saved_searches';
         $schemaConfigurator = new SchemaConfigurator($this->tableName);
 
         $schemaConfigurator->configure(

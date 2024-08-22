@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Event\Productions\Doctrine\ProductionSchemaConfigurator;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -19,10 +18,7 @@ final class DBALProductionRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = $this->createSchema();
-        $this->createTable(
-            ProductionSchemaConfigurator::getTableDefinition($schema)
-        );
+        $this->setUpDatabase();
 
         $this->repository = new DBALProductionRepository($this->getConnection());
     }

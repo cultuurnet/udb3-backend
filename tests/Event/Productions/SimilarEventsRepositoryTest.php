@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
-use CultuurNet\UDB3\Event\Productions\Doctrine\ProductionSchemaConfigurator;
-use CultuurNet\UDB3\Event\Productions\Doctrine\SimilarEventsSchemaConfigurator;
-use CultuurNet\UDB3\Event\Productions\Doctrine\SkippedSimilarEventsSchemaConfigurator;
 use PHPUnit\Framework\TestCase;
 
 class SimilarEventsRepositoryTest extends TestCase
@@ -31,17 +28,7 @@ class SimilarEventsRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = $this->createSchema();
-
-        $this->createTable(
-            SimilarEventsSchemaConfigurator::getTableDefinition($schema)
-        );
-        $this->createTable(
-            ProductionSchemaConfigurator::getTableDefinition($schema)
-        );
-        $this->createTable(
-            SkippedSimilarEventsSchemaConfigurator::getTableDefinition($schema)
-        );
+        $this->setUpDatabase();
 
         $this->repository = new SimilarEventsRepository($this->getConnection());
 

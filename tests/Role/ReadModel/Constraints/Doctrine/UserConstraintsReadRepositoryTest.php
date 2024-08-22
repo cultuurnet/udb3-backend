@@ -31,6 +31,8 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->setUpDatabase();
+
         $this->roleIds = [
             new UUID('36c96c3b-9ce4-492b-9b4e-fee465beb597'),
             new UUID('f874cea2-4f8e-475c-8e97-47f881fc5e1a'),
@@ -40,22 +42,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
         $this->userRolesTableName = 'user_roles';
         $this->rolePermissionsTableName = 'role_permissions';
-        $this->rolesSearchTableName = 'roles_search';
-
-        $permissionSchemaConfigurator = new PermissionSchemaConfigurator(
-            $this->userRolesTableName,
-            $this->rolePermissionsTableName
-        );
-        $permissionSchemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
-
-        $constraintSchemaConfigurator = new SearchSchemaConfigurator(
-            $this->rolesSearchTableName
-        );
-        $constraintSchemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
+        $this->rolesSearchTableName = 'roles_search_v3';
 
         $this->userConstraintsReadRepository = new UserConstraintsReadRepository(
             $this->getConnection(),

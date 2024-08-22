@@ -19,11 +19,7 @@ class DBALPopularityRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->createTable(
-            PopularitySchemaConfigurator::getTableDefinition(
-                $this->createSchema()
-            )
-        );
+        $this->setUpDatabase();
 
         $this->getConnection()->insert(
             'offer_popularity',

@@ -21,8 +21,10 @@ class UserPermissionsReadRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->userRoleTableName = 'user_role';
-        $this->rolePermissionTableName = 'role_permission';
+        $this->setUpDatabase();
+
+        $this->userRoleTableName = 'user_roles';
+        $this->rolePermissionTableName = 'role_permissions';
 
         $schemaConfigurator = new SchemaConfigurator(
             $this->userRoleTableName,
