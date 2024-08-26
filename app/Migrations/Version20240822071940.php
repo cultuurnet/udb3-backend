@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
-use Doctrine\DBAL\Types\Type;
 
 class Version20240822071940 extends AbstractMigration
 {
