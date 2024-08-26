@@ -28,7 +28,7 @@ final class YoutubeTrailerRepository implements TrailerRepository
         $this->enabled = $enabled;
     }
 
-    public function search(string $title): ?Video
+    public function findMatchingTrailer(string $title): ?Video
     {
         if (!$this->enabled) {
             return null;

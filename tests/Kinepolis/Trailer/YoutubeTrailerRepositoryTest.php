@@ -65,14 +65,14 @@ final class YoutubeTrailerRepositoryTest extends TestCase
         );
         $this->search->expects($this->never())->method('listSearch');
 
-        $video = $disabledTrailerRepository->search('Het Smelt');
+        $video = $disabledTrailerRepository->findMatchingTrailer('Het Smelt');
         $this->assertNull($video);
     }
 
     /**
      * @test
      */
-    public function it_will_return_null_if_no_trailers_were_found(): void
+    public function it_will_return_null_if_no_trailer_was_found(): void
     {
         $this->search->expects($this->once())->method('listSearch')->with('id,snippet', [
             'channelId' => $this->channelId,
@@ -85,7 +85,7 @@ final class YoutubeTrailerRepositoryTest extends TestCase
         );
         $this->uuidGenerator->expects($this->never())->method('generate');
 
-        $video = $this->trailerRepository->search('NotFound');
+        $video = $this->trailerRepository->findMatchingTrailer('NotFound');
         $this->assertNull($video);
     }
 
@@ -106,7 +106,7 @@ final class YoutubeTrailerRepositoryTest extends TestCase
         );
         $this->uuidGenerator->expects($this->once())->method('generate')->willReturn($videoId);
 
-        $video = $this->trailerRepository->search('Visite d\'équipe: TKT:{');
+        $video = $this->trailerRepository->findMatchingTrailer('Visite d\'équipe: TKT:{');
         $this->assertEquals(
             new Video(
                 $videoId,
