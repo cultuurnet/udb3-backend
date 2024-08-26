@@ -20,27 +20,11 @@ class Version20240822071940 extends AbstractMigration
 
         $table = $schema->createTable('duplicate_places_removed_from_cluster_import');
         $table->addColumn('place_uuid', Types::GUID)->setLength(36)->setNotnull(true);
-
-        $table = $schema->getTable('duplicate_places');
-        $table->changeColumn(
-            'cluster_id',
-            [
-                'type' => Type::getType(Types::STRING),
-                'length' => 40, //SHA1 length
-            ]
-        );
     }
 
     public function down(Schema $schema): void
     {
         $schema->dropTable('duplicate_places_import');
         $schema->dropTable('duplicate_places_removed_from_cluster_import');
-        $table = $schema->getTable('duplicate_places');
-        $table->changeColumn(
-            'cluster_id',
-            [
-                'type' => Type::getType(Types::BIGINT),
-            ]
-        );
     }
 }
