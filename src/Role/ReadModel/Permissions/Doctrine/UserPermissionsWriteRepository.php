@@ -36,12 +36,12 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
 
             $connection->delete(
                 $this->userRoleTableName,
-                [SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString()]
+                [ColumnNames::ROLE_ID_COLUMN => $roleId->toString()]
             );
 
             $connection->delete(
                 $this->rolePermissionTableName,
-                [SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString()]
+                [ColumnNames::ROLE_ID_COLUMN => $roleId->toString()]
             );
 
             $connection->commit();
@@ -56,8 +56,8 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         $this->connection->insert(
             $this->rolePermissionTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
-                SchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
+                ColumnNames::PERMISSION_COLUMN => $permission->toString(),
             ]
         );
     }
@@ -67,8 +67,8 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         $this->connection->delete(
             $this->rolePermissionTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
-                SchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
+                ColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
+                ColumnNames::PERMISSION_COLUMN => $permission->toString(),
             ]
         );
     }
@@ -78,8 +78,8 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         $this->connection->insert(
             $this->userRoleTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
-                SchemaConfigurator::USER_ID_COLUMN => $userId,
+                ColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
+                ColumnNames::USER_ID_COLUMN => $userId,
             ]
         );
     }
@@ -89,8 +89,8 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         $this->connection->delete(
             $this->userRoleTableName,
             [
-                SchemaConfigurator::USER_ID_COLUMN => $userId,
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
+                ColumnNames::USER_ID_COLUMN => $userId,
+                ColumnNames::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }

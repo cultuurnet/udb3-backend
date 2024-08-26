@@ -19,11 +19,9 @@ class DBALRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->tableName = 'test_roles_search';
+        $this->setUpDatabase();
 
-        $schemaConfigurator = new SchemaConfigurator($this->tableName);
-        $schemaManager = $this->getConnection()->getSchemaManager();
-        $schemaConfigurator->configure($schemaManager);
+        $this->tableName = 'roles_search_v3';
 
         $this->dbalRepository = new DBALRepository(
             $this->getConnection(),

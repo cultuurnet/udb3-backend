@@ -27,7 +27,7 @@ class DBALRepository implements RepositoryInterface
 
         $q
             ->delete($this->tableName)
-            ->where($expr->eq(SchemaConfigurator::UUID_COLUMN, ':role_id'))
+            ->where($expr->eq(ColumnNames::UUID_COLUMN, ':role_id'))
             ->setParameter('role_id', $uuid);
         $q->execute();
     }
@@ -39,9 +39,9 @@ class DBALRepository implements RepositoryInterface
             ->insert($this->tableName)
             ->values(
                 [
-                    SchemaConfigurator::UUID_COLUMN => ':role_id',
-                    SchemaConfigurator::NAME_COLUMN => ':role_name',
-                    SchemaConfigurator::CONSTRAINT_COLUMN => ':constraint',
+                    ColumnNames::UUID_COLUMN => ':role_id',
+                    ColumnNames::NAME_COLUMN => ':role_name',
+                    ColumnNames::CONSTRAINT_COLUMN => ':constraint',
                 ]
             )
             ->setParameter('role_id', $uuid)
@@ -95,9 +95,9 @@ class DBALRepository implements RepositoryInterface
 
         $q
             ->update($this->tableName)
-            ->where($expr->eq(SchemaConfigurator::UUID_COLUMN, ':role_id'))
-            ->set(SchemaConfigurator::UUID_COLUMN, ':role_id')
-            ->set(SchemaConfigurator::NAME_COLUMN, ':role_name')
+            ->where($expr->eq(ColumnNames::UUID_COLUMN, ':role_id'))
+            ->set(ColumnNames::UUID_COLUMN, ':role_id')
+            ->set(ColumnNames::NAME_COLUMN, ':role_name')
             ->setParameter('role_id', $uuid)
             ->setParameter('role_name', $name);
         $q->execute();
@@ -110,9 +110,9 @@ class DBALRepository implements RepositoryInterface
 
         $q
             ->update($this->tableName)
-            ->where($expr->eq(SchemaConfigurator::UUID_COLUMN, ':role_id'))
-            ->set(SchemaConfigurator::UUID_COLUMN, ':role_id')
-            ->set(SchemaConfigurator::CONSTRAINT_COLUMN, ':constraint')
+            ->where($expr->eq(ColumnNames::UUID_COLUMN, ':role_id'))
+            ->set(ColumnNames::UUID_COLUMN, ':role_id')
+            ->set(ColumnNames::CONSTRAINT_COLUMN, ':constraint')
             ->setParameter('role_id', $uuid)
             ->setParameter('constraint', $constraint);
         $q->execute();

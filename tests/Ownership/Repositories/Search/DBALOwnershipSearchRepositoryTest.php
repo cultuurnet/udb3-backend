@@ -22,9 +22,9 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->ownershipSearchRepository = new DBALOwnershipSearchRepository($this->getConnection());
+        $this->setUpDatabase();
 
-        $this->createTable(OwnershipSearchSchemaConfigurator::getTableDefinition($this->createSchema()));
+        $this->ownershipSearchRepository = new DBALOwnershipSearchRepository($this->getConnection());
     }
 
     /**

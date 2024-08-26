@@ -15,11 +15,7 @@ class DBALRecommendationRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->createTable(
-            RecommendationsSchemaConfigurator::getTableDefinition(
-                $this->createSchema()
-            )
-        );
+        $this->setUpDatabase();
 
         $this->getConnection()->insert(
             'event_recommendations',

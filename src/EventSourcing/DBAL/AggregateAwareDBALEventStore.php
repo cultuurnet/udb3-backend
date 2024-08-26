@@ -15,8 +15,6 @@ use CultuurNet\UDB3\AggregateType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
 
 class AggregateAwareDBALEventStore implements EventStore
 {
@@ -111,40 +109,6 @@ class AggregateAwareDBALEventStore implements EventStore
         ];
 
         $connection->insert($this->tableName, $data);
-    }
-
-    public function configureSchema(Schema $schema): ?Table
-    {
-        if ($schema->hasTable($this->tableName)) {
-            return null;
-        }
-
-        return $this->configureTable();
-    }
-
-    public function configureTable(): Table
-    {
-        $schema = new Schema();
-
-        $table = $schema->createTable($this->tableName);
-
-        $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('uuid', 'guid', ['length' => 36]);
-        $table->addColumn('playhead', 'integer', ['unsigned' => true]);
-        $table->addColumn('payload', 'text');
-        $table->addColumn('metadata', 'text');
-        $table->addColumn('recorded_on', 'string', ['length' => 32]);
-        $table->addColumn('type', 'string', ['length' => 128]);
-        $table->addColumn('aggregate_type', 'string', ['length' => 128]);
-
-        $table->setPrimaryKey(['id']);
-
-        $table->addUniqueIndex(['uuid', 'playhead']);
-
-        $table->addIndex(['type']);
-        $table->addIndex(['aggregate_type']);
-
-        return $table;
     }
 
     private function prepareLoadStatement(): Statement

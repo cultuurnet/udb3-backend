@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SavedSearches;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
-use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\SavedSearches\Doctrine\ColumnNames;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use PHPUnit\Framework\TestCase;
@@ -15,14 +15,13 @@ class UDB3SavedSearchRepositoryTest extends TestCase
     use DBALTestConnectionTrait;
 
     private const USERID = '6f072ba8-c510-40ac-b387-51f582650e26';
-    private string $tableName;
+    private string $tableName = 'saved_searches_sapi3';
 
     private UDB3SavedSearchRepository $udb3SavedSearchRepository;
 
     protected function setUp(): void
     {
-        $this->createTable();
-
+        $this->setUpDatabase();
 
         $this->udb3SavedSearchRepository = new UDB3SavedSearchRepository(
             $this->getConnection(),
@@ -149,16 +148,6 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         );
     }
 
-    private function createTable(): void
-    {
-        $this->tableName = 'saved_searches';
-        $schemaConfigurator = new SchemaConfigurator($this->tableName);
-
-        $schemaConfigurator->configure(
-            $this->getConnection()->getSchemaManager()
-        );
-    }
-
     /**
      * @return SavedSearch[]
      * @throws \Doctrine\DBAL\DBALException
@@ -173,9 +162,9 @@ class UDB3SavedSearchRepositoryTest extends TestCase
         $savedSearches = [];
         foreach ($rows as $row) {
             $savedSearches[] = new SavedSearch(
-                $row[SchemaConfigurator::NAME],
-                new QueryString($row[SchemaConfigurator::QUERY]),
-                $row[SchemaConfigurator::ID]
+                $row[ColumnNames::NAME],
+                new QueryString($row[ColumnNames::QUERY]),
+                $row[ColumnNames::ID]
             );
         }
 

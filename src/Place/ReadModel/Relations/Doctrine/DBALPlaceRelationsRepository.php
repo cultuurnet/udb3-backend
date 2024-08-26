@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement as DriverStatement;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
 
 final class DBALPlaceRelationsRepository implements PlaceRelationsRepository
 {
@@ -22,14 +20,10 @@ final class DBALPlaceRelationsRepository implements PlaceRelationsRepository
 
     public function storeRelations(string $placeId, ?string $organizerId): void
     {
-        $this->connection->beginTransaction();
-
         $insert = $this->prepareInsertStatement();
         $insert->bindValue('place', $placeId);
         $insert->bindValue('organizer', $organizerId);
         $insert->execute();
-
-        $this->connection->commit();
     }
 
     private function prepareInsertStatement(): DriverStatement
@@ -70,36 +64,5 @@ final class DBALPlaceRelationsRepository implements PlaceRelationsRepository
             ->setParameter(0, $placeId);
 
         $q->execute();
-    }
-
-    public function configureSchema(Schema $schema): ?Table
-    {
-        if ($schema->hasTable($this->tableName)) {
-            return null;
-        }
-
-        return $this->configureTable();
-    }
-
-    public function configureTable(): ?Table
-    {
-        $schema = new Schema();
-
-        $table = $schema->createTable($this->tableName);
-
-        $table->addColumn(
-            'place',
-            'string',
-            ['length' => 36, 'notnull' => false]
-        );
-        $table->addColumn(
-            'organizer',
-            'string',
-            ['length' => 36, 'notnull' => false]
-        );
-
-        $table->setPrimaryKey(['place']);
-
-        return $table;
     }
 }

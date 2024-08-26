@@ -33,6 +33,8 @@ class AggregateAwareDBALEventStoreTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->setUpDatabase();
+
         $this->payloadSerializer = new SimpleInterfaceSerializer();
 
         $this->metadataSerializer = new SimpleInterfaceSerializer();
@@ -48,8 +50,6 @@ class AggregateAwareDBALEventStoreTest extends TestCase
             $this->tableName,
             $this->aggregateType
         );
-
-        $this->createTable();
     }
 
     /**
@@ -131,18 +131,6 @@ class AggregateAwareDBALEventStoreTest extends TestCase
             $this->domainMessageToRow($domainMessage),
             $rows[0]
         );
-    }
-
-    private function createTable(): void
-    {
-        $schemaManager = $this->getConnection()->getSchemaManager();
-        $schema = $schemaManager->createSchema();
-
-        $table = $this->aggregateAwareDBALEventStore->configureSchema(
-            $schema
-        );
-
-        $schemaManager->createTable($table);
     }
 
     private function createDomainMessage(UUID $uuid): DomainMessage

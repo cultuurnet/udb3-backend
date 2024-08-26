@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Migrations;
 
-use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\ColumnNames;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
@@ -19,28 +19,28 @@ class Version20181106123049 extends AbstractMigration
         $table = $schema->createTable(self::ROLES_SEARCH_V3);
 
         $table->addColumn(
-            SchemaConfigurator::UUID_COLUMN,
+            ColumnNames::UUID_COLUMN,
             Types::GUID,
             ['length' => 36]
         );
 
         $table->addColumn(
-            SchemaConfigurator::NAME_COLUMN,
+            ColumnNames::NAME_COLUMN,
             Types::STRING
         )
             ->setLength(255);
 
         $table->addColumn(
-            SchemaConfigurator::CONSTRAINT_COLUMN,
+            ColumnNames::CONSTRAINT_COLUMN,
             Types::STRING
         )
             ->setNotnull(false);
 
-        $table->setPrimaryKey([SchemaConfigurator::UUID_COLUMN]);
+        $table->setPrimaryKey([ColumnNames::UUID_COLUMN]);
         $table->addUniqueIndex(
             [
-                SchemaConfigurator::UUID_COLUMN,
-                SchemaConfigurator::NAME_COLUMN,
+                ColumnNames::UUID_COLUMN,
+                ColumnNames::NAME_COLUMN,
             ]
         );
     }

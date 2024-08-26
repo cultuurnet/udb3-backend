@@ -11,8 +11,8 @@ use Broadway\Domain\Metadata;
 use Broadway\EventSourcing\EventStreamDecorator;
 use Broadway\EventStore\EventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
-use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\AggregateType;
+use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PHPUnit\Framework\TestCase;
 
 class EventStreamTest extends TestCase
@@ -25,7 +25,10 @@ class EventStreamTest extends TestCase
 
     public function setUp(): void
     {
-        $table = 'events';
+        $table = 'event_store';
+
+        $this->setUpDatabase(false, [$table]);
+
         $payloadSerializer = new SimpleInterfaceSerializer();
         $metadataSerializer = new SimpleInterfaceSerializer();
 
@@ -35,13 +38,6 @@ class EventStreamTest extends TestCase
             $metadataSerializer,
             $table,
             AggregateType::event()
-        );
-
-        $schemaManager = $this->getConnection()->getSchemaManager();
-        $schema = $schemaManager->createSchema();
-
-        $schemaManager->createTable(
-            $this->eventStore->configureSchema($schema)
         );
 
         $this->eventStream = new EventStream(
@@ -217,7 +213,7 @@ class EventStreamTest extends TestCase
         $domainEventStreams = iterator_to_array($domainEventStreams);
         $expectedDomainEventStreams = [];
         foreach ($history as $key => $domainMessage) {
-            // The history array is zero-based but sqlite index is one-based.
+            // The history array is zero-based but MySQL primary index is one-based.
             // So to start from the 4th element the index needs to be 3.
             if ($key >= 3) {
                 $expectedDomainEventStreams[] = new DomainEventStream(
@@ -366,34 +362,6 @@ class EventStreamTest extends TestCase
     /**
      * @test
      */
-    public function it_can_handle_a_start_id(): void
-    {
-        $domainMessages = $this->createDomainMessages();
-        $this->appendDomainMessages($this->eventStore, $domainMessages);
-
-        $startId = 3;
-        $eventStream = $this->eventStream->withStartId($startId);
-
-        $domainEventStreams = $eventStream();
-
-        $domainEventStreams = iterator_to_array($domainEventStreams);
-
-        $expectedDomainEventStreams = [];
-        foreach ($domainMessages as $key => $domainMessage) {
-            if ($key >= $startId - 1) {
-                $expectedDomainEventStreams[] = new DomainEventStream([$domainMessage]);
-            }
-        }
-
-        $this->assertEquals(
-            $expectedDomainEventStreams,
-            $domainEventStreams
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_can_handle_an_aggregate_type(): void
     {
         /** @var AggregateType[] $aggregateTypes */
@@ -406,14 +374,6 @@ class EventStreamTest extends TestCase
         $stores = [];
         foreach ($aggregateTypes as $aggregateType) {
             $stores[$aggregateType->toString()] = $this->createAggregateAwareDBALEventStore($aggregateType);
-        }
-
-        $schemaManager = $this->getConnection()->getSchemaManager();
-        $schema = $schemaManager->createSchema();
-
-        $table = $stores['event']->configureSchema($schema);
-        if ($table) {
-            $schemaManager->createTable($table);
         }
 
         $domainMessages = $this->createDomainMessages();

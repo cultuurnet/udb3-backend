@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement as DriverStatement;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
 
 final class DBALEventRelationsRepository implements EventRelationsRepository
 {
@@ -22,15 +20,11 @@ final class DBALEventRelationsRepository implements EventRelationsRepository
 
     public function storeRelations(string $eventId, ?string $placeId, ?string $organizerId): void
     {
-        $this->connection->beginTransaction();
-
         $insert = $this->prepareInsertStatement();
         $insert->bindValue('event', $eventId);
         $insert->bindValue('place', $placeId);
         $insert->bindValue('organizer', $organizerId);
         $insert->execute();
-
-        $this->connection->commit();
     }
 
     public function removeOrganizer(string $eventId): void
@@ -203,45 +197,9 @@ final class DBALEventRelationsRepository implements EventRelationsRepository
     {
         $q = $this->connection->createQueryBuilder();
         $q->delete($this->tableName)
-          ->where('event = ?')
-          ->setParameter(0, $eventId);
+            ->where('event = ?')
+            ->setParameter(0, $eventId);
 
         $q->execute();
-    }
-
-    public function configureSchema(Schema $schema): ?Table
-    {
-        if ($schema->hasTable($this->tableName)) {
-            return null;
-        }
-
-        return $this->configureTable();
-    }
-
-    public function configureTable(): ?Table
-    {
-        $schema = new Schema();
-
-        $table = $schema->createTable($this->tableName);
-
-        $table->addColumn(
-            'event',
-            'string',
-            ['length' => 36, 'notnull' => false]
-        );
-        $table->addColumn(
-            'organizer',
-            'string',
-            ['length' => 36, 'notnull' => false]
-        );
-        $table->addColumn(
-            'place',
-            'string',
-            ['length' => 36, 'notnull' => false]
-        );
-
-        $table->setPrimaryKey(['event']);
-
-        return $table;
     }
 }

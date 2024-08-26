@@ -8,11 +8,11 @@ use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
+use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\ColumnNames as LabelRolesColumnNames;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionsSchemaConfigurator;
+use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\ColumnNames as PermissionsColumnNames;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 
@@ -37,7 +37,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
     public function getByUuid(UUID $uuid): ?Entity
     {
         $aliases = $this->getAliases();
-        $whereId = SchemaConfigurator::UUID_COLUMN . ' = ?';
+        $whereId = ColumnNames::UUID_COLUMN . ' = ?';
 
         $queryBuilder = $this->createQueryBuilder()->select($aliases)
             ->from($this->getTableName())
@@ -52,7 +52,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         $aliases = $this->getAliases();
         $queryBuilder = $this->createQueryBuilder();
         $likeCondition = $queryBuilder->expr()->like(
-            SchemaConfigurator::NAME_COLUMN,
+            ColumnNames::NAME_COLUMN,
             $queryBuilder->expr()->literal($name)
         );
 
@@ -60,7 +60,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             ->from($this->getTableName())
             ->where($likeCondition)
             ->setParameter(
-                SchemaConfigurator::NAME_COLUMN,
+                ColumnNames::NAME_COLUMN,
                 $name
             );
 
@@ -103,7 +103,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
         $aliases = $this->getAliases();
         $queryBuilder->select($aliases)
-            ->orderBy(SchemaConfigurator::NAME_COLUMN);
+            ->orderBy(ColumnNames::NAME_COLUMN);
 
         if ($query->getOffset()) {
             $queryBuilder
@@ -137,12 +137,12 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         $queryBuilder->from($this->getTableName())
             ->where($like)
             ->setParameter(
-                SchemaConfigurator::NAME_COLUMN,
+                ColumnNames::NAME_COLUMN,
                 $this->createLikeParameter($query)
             );
 
         if ($query->isSuggestion()) {
-            $queryBuilder->andWhere(SchemaConfigurator::EXCLUDED_COLUMN . ' = :excluded')
+            $queryBuilder->andWhere(ColumnNames::EXCLUDED_COLUMN . ' = :excluded')
                 ->setParameter(':excluded', 0);
         }
 
@@ -151,23 +151,23 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
                 $queryBuilder->expr()->orX(
                     // The 'neq' is done on purpose to handle the bit/bool MySQL oddities.
                     $queryBuilder->expr()->neq(
-                        SchemaConfigurator::PRIVATE_COLUMN,
+                        ColumnNames::PRIVATE_COLUMN,
                         true
                     ),
                     $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->in(
-                            SchemaConfigurator::UUID_COLUMN,
+                            ColumnNames::UUID_COLUMN,
                             $this->createUserLabelsSubQuery()->getSQL()
                         ),
                         // It is possible to add an non private label to a role, this label can be used always.
                         $queryBuilder->expr()->eq(
-                            SchemaConfigurator::PRIVATE_COLUMN,
+                            ColumnNames::PRIVATE_COLUMN,
                             true
                         )
                     )
                 )
             )->setParameter(
-                PermissionsSchemaConfigurator::USER_ID_COLUMN,
+                PermissionsColumnNames::USER_ID_COLUMN,
                 $query->getUserId()
             );
         }
@@ -178,15 +178,15 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
     private function createUserLabelsSubQuery(): QueryBuilder
     {
         return $this->createQueryBuilder()
-            ->select('DISTINCT ' . LabelRolesSchemaConfigurator::LABEL_ID_COLUMN)
+            ->select('DISTINCT ' . LabelRolesColumnNames::LABEL_ID_COLUMN)
             ->from($this->userRolesTableName, 'ur')
             ->innerJoin(
                 'ur',
                 $this->labelRolesTableName,
                 'lr',
-                'ur.' . PermissionsSchemaConfigurator::ROLE_ID_COLUMN . ' = lr.' . LabelRolesSchemaConfigurator::ROLE_ID_COLUMN
+                'ur.' . PermissionsColumnNames::ROLE_ID_COLUMN . ' = lr.' . LabelRolesColumnNames::ROLE_ID_COLUMN
             )
-            ->where('ur.' . PermissionsSchemaConfigurator::USER_ID_COLUMN . '= :' . PermissionsSchemaConfigurator::USER_ID_COLUMN);
+            ->where('ur.' . PermissionsColumnNames::USER_ID_COLUMN . '= :' . PermissionsColumnNames::USER_ID_COLUMN);
     }
 
     /**
@@ -195,19 +195,19 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
     private function getAliases(): array
     {
         return [
-            SchemaConfigurator::UUID_COLUMN,
-            SchemaConfigurator::NAME_COLUMN,
-            SchemaConfigurator::VISIBLE_COLUMN,
-            SchemaConfigurator::PRIVATE_COLUMN,
-            SchemaConfigurator::EXCLUDED_COLUMN,
+            ColumnNames::UUID_COLUMN,
+            ColumnNames::NAME_COLUMN,
+            ColumnNames::VISIBLE_COLUMN,
+            ColumnNames::PRIVATE_COLUMN,
+            ColumnNames::EXCLUDED_COLUMN,
         ];
     }
 
     private function createLike(QueryBuilder $queryBuilder): string
     {
         return $queryBuilder->expr()->like(
-            SchemaConfigurator::NAME_COLUMN,
-            ':' . SchemaConfigurator::NAME_COLUMN
+            ColumnNames::NAME_COLUMN,
+            ':' . ColumnNames::NAME_COLUMN
         );
     }
 
@@ -247,17 +247,17 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
     private function rowToEntity(array $row): Entity
     {
-        $uuid = new UUID($row[SchemaConfigurator::UUID_COLUMN]);
+        $uuid = new UUID($row[ColumnNames::UUID_COLUMN]);
 
-        $name = $row[SchemaConfigurator::NAME_COLUMN];
+        $name = $row[ColumnNames::NAME_COLUMN];
 
-        $visibility = $row[SchemaConfigurator::VISIBLE_COLUMN]
+        $visibility = $row[ColumnNames::VISIBLE_COLUMN]
             ? Visibility::VISIBLE() : Visibility::INVISIBLE();
 
-        $privacy = $row[SchemaConfigurator::PRIVATE_COLUMN]
+        $privacy = $row[ColumnNames::PRIVATE_COLUMN]
             ? Privacy::PRIVACY_PRIVATE() : Privacy::PRIVACY_PUBLIC();
 
-        $excluded =  (bool) $row[SchemaConfigurator::EXCLUDED_COLUMN];
+        $excluded =  (bool) $row[ColumnNames::EXCLUDED_COLUMN];
 
         return new Entity(
             $uuid,
