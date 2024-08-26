@@ -78,7 +78,11 @@ final class YoutubeTrailerRepositoryTest extends TestCase
             'channelId' => $this->channelId,
             'q' => 'NotFound',
             'maxResults' => 1,
-        ])->willReturn([]);
+        ])->willReturn(
+            Json::decodeAssociatively(
+                SampleFiles::read(__DIR__ . '/../samples/YoutubeNoResults.json')
+            )
+        );
         $this->uuidGenerator->expects($this->never())->method('generate');
 
         $video = $this->trailerRepository->search('NotFound');
