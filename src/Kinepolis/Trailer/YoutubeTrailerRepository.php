@@ -36,7 +36,7 @@ final class YoutubeTrailerRepository implements TrailerRepository
 
         $response = $this->youTubeClient->search->listSearch('id,snippet', [
             'channelId' => $this->channelId,
-            'q' => $title,
+            'q' => urlencode($title),
             'maxResults' => 1,
         ]);
 
