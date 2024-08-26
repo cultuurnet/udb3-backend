@@ -8,7 +8,6 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use Google_Client;
 use Google_Service_YouTube;
 
 final class YoutubeTrailerRepository implements TrailerRepository
@@ -21,15 +20,11 @@ final class YoutubeTrailerRepository implements TrailerRepository
 
     private bool $enabled;
 
-    public function __construct(string $developerKey, string $channelId, UuidGeneratorInterface $uuidGenerator, bool $enabled = true)
+    public function __construct(Google_Service_YouTube $youTubeClient, string $channelId, UuidGeneratorInterface $uuidGenerator, bool $enabled = true)
     {
         $this->channelId = $channelId;
         $this->uuidGenerator = $uuidGenerator;
-
-        $client = new Google_Client();
-        $client->setApplicationName('UiTDatabankTrailerFinder');
-        $client->setDeveloperKey($developerKey);
-        $this->youTubeClient = new Google_Service_YouTube($client);
+        $this->youTubeClient = $youTubeClient;
         $this->enabled = $enabled;
     }
 

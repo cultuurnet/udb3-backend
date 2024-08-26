@@ -63,6 +63,8 @@ use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
 use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
+use Google_Client;
+use Google_Service_YouTube;
 use Http\Adapter\Guzzle7\Client;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
@@ -471,7 +473,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('image_uploader'),
                     new Version4Generator(),
                     new YoutubeTrailerRepository(
-                        $container->get('config')['kinepolis']['trailers']['developer_key'],
+                        new Google_Service_YouTube(
+                            new Google_Client(
+                                [
+                                    'application_name' => 'UiTDatabankTrailerFinder',
+                                    'developer_key' => $container->get('config')['kinepolis']['trailers']['developer_key'],
+                                ]
+                            )
+                        ),
                         $container->get('config')['kinepolis']['trailers']['channel_id'],
                         new Version4Generator(),
                         $container->get('config')['kinepolis']['trailers']['enabled'],
