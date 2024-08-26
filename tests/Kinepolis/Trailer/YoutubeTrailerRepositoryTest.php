@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Kinepolis\Trailer;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use Google\Service\YouTube\Resource\Search;
 use Google_Service_YouTube;
 use PHPUnit\Framework\MockObject\MockObject;
