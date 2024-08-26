@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Kinepolis\Trailer;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\SampleFiles;
 use Google\Service\YouTube\Resource\Search;
 use Google_Service_YouTube;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -26,11 +31,19 @@ final class YoutubeTrailerRepositoryTest extends TestCase
      */
     private $uuidGenerator;
 
+    /**
+     * @var Search&MockObject
+     */
+    private $search;
+
     public function setUp(): void
     {
+        $this->search = $this->createMock(Search::class);
         $this->youtubeClient = $this->createMock(Google_Service_YouTube::class);
+        $this->youtubeClient->search = $this->search;
         $this->channelId = 'mockChannelId';
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
+
         $this->trailerRepository = new YoutubeTrailerRepository(
             $this->youtubeClient,
             $this->channelId,
@@ -51,9 +64,10 @@ final class YoutubeTrailerRepositoryTest extends TestCase
             false
         );
 
-        $this->youtubeClient->expects($this->never())->method('search');
-        $result = $disabledTrailerRepository->search('Het Smelt');
-        $this->assertNull($result);
+
+        $this->search->expects($this->never())->method('listSearch');
+        $video = $disabledTrailerRepository->search('Het Smelt');
+        $this->assertNull($video);
     }
 
     /**
@@ -61,14 +75,23 @@ final class YoutubeTrailerRepositoryTest extends TestCase
      */
     public function it_will_sanitize_searches(): void
     {
-        $search = $this->createMock(Search::class);
-
-        $this->youtubeClient->expects($this->once())->method('search')->willReturn($search);
-        $search->expects($this->once())->method('listSearch')->with('id,snippet', [
+        $videoId = '37b04e81-42eb-4df7-8116-abe4217df426';
+        $this->search->expects($this->once())->method('listSearch')->with('id,snippet', [
             'channelId' => $this->channelId,
-            'q' => 'Visite%20d%27%C3%A9quipe%3A%20TKT%3A%7B',
+            'q' => 'Visite+d%27%C3%A9quipe%3A+TKT%3A%7B',
             'maxResults' => 1,
-        ]);
-        $this->trailerRepository->search('Visite d\'équipe: TKT:{');
+        ])->willReturn(Json::decodeAssociatively(SampleFiles::read(__DIR__ . '/../samples/YoutubeSearchResult.json')));
+        $this->uuidGenerator->expects($this->once())->method('generate')->willReturn($videoId);
+
+        $video = $this->trailerRepository->search('Visite d\'équipe: TKT:{');
+
+        $this->assertEquals(
+            new Video(
+                $videoId,
+                new Url('https://www.youtube.com/watch?v=26r2alNpYSg'),
+                new Language('nl')
+            ),
+            $video
+        );
     }
 }
