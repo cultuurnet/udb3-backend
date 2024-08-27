@@ -26,9 +26,10 @@ final class UserServiceProvider extends AbstractServiceProvider
 {
     private ?JsonWebToken $jsonWebToken;
 
-    function __construct(?JsonWebToken $jsonWebToken)
+    function __construct()
     {
-        $this->jsonWebToken = $jsonWebToken;
+        $container = $this->getContainer();
+        $this->jsonWebToken = $container->get(JsonWebToken::class);
     }
 
     protected function getProvidedServiceNames(): array

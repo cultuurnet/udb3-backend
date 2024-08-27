@@ -30,14 +30,17 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 final class AMQPPublisherServiceProvider extends AbstractServiceProvider
 {
+
     private AMQPStreamConnection $connection;
     private ?JsonWebToken $jsonWebToken;
-    
-    public function __construct(AMQPStreamConnection $connection, ?JsonWebToken $jsonWebToken)
+
+    public function __construct()
     {
-        $this->connection = $connection;
-        $this->jsonWebToken = $jsonWebToken;
+        $container = $this->getContainer();
+        $this->connection = $container->get(AMQPStreamConnection::class);
+        $this->jsonWebToken = $container->get(JsonWebToken::class);
     }
+
 
     public function getProvidedServiceNames(): array
     {
