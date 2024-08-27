@@ -47,8 +47,7 @@ final class YoutubeTrailerRepositoryTest extends TestCase
         $this->trailerRepository = new YoutubeTrailerRepository(
             $this->youtubeClient,
             $this->channelId,
-            $this->uuidGenerator,
-            true
+            $this->uuidGenerator
         );
     }
 

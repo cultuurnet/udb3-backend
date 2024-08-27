@@ -18,7 +18,7 @@ final class YoutubeTrailerRepository implements TrailerRepository
 
     private UuidGeneratorInterface $uuidGenerator;
 
-    public function __construct(Google_Service_YouTube $youTubeClient, string $channelId, UuidGeneratorInterface $uuidGenerator, bool $enabled = true)
+    public function __construct(Google_Service_YouTube $youTubeClient, string $channelId, UuidGeneratorInterface $uuidGenerator)
     {
         $this->channelId = $channelId;
         $this->uuidGenerator = $uuidGenerator;
