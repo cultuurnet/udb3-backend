@@ -482,8 +482,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                             )
                         ),
                         $container->get('config')['kinepolis']['trailers']['channel_id'],
-                        new Version4Generator(),
-                        $container->get('config')['kinepolis']['trailers']['enabled'],
+                        new Version4Generator()
                     ),
                     $container->get(ProductionRepository::class),
                     LoggerFactory::create(

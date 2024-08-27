@@ -19,11 +19,6 @@ final class YoutubeTrailerRepositoryTest extends TestCase
 {
     private TrailerRepository $trailerRepository;
 
-    /**
-     * @var Google_Service_YouTube&MockObject
-     */
-    private $youtubeClient;
-
     private string $channelId;
 
     /**
@@ -39,34 +34,16 @@ final class YoutubeTrailerRepositoryTest extends TestCase
     public function setUp(): void
     {
         $this->search = $this->createMock(Search::class);
-        $this->youtubeClient = $this->createMock(Google_Service_YouTube::class);
-        $this->youtubeClient->search = $this->search;
+        $youtubeClient = $this->createMock(Google_Service_YouTube::class);
+        $youtubeClient->search = $this->search;
         $this->channelId = 'mockChannelId';
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
 
         $this->trailerRepository = new YoutubeTrailerRepository(
-            $this->youtubeClient,
+            $youtubeClient,
             $this->channelId,
-            $this->uuidGenerator,
-            true
+            $this->uuidGenerator
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_will_only_search_when_enabled(): void
-    {
-        $disabledTrailerRepository = new YoutubeTrailerRepository(
-            $this->youtubeClient,
-            $this->channelId,
-            $this->uuidGenerator,
-            false
-        );
-        $this->search->expects($this->never())->method('listSearch');
-
-        $video = $disabledTrailerRepository->findMatchingTrailer('Het Smelt');
-        $this->assertNull($video);
     }
 
     /**

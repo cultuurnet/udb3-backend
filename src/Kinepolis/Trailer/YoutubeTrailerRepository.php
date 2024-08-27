@@ -18,22 +18,15 @@ final class YoutubeTrailerRepository implements TrailerRepository
 
     private UuidGeneratorInterface $uuidGenerator;
 
-    private bool $enabled;
-
-    public function __construct(Google_Service_YouTube $youTubeClient, string $channelId, UuidGeneratorInterface $uuidGenerator, bool $enabled = true)
+    public function __construct(Google_Service_YouTube $youTubeClient, string $channelId, UuidGeneratorInterface $uuidGenerator)
     {
         $this->channelId = $channelId;
         $this->uuidGenerator = $uuidGenerator;
         $this->youTubeClient = $youTubeClient;
-        $this->enabled = $enabled;
     }
 
     public function findMatchingTrailer(string $title): ?Video
     {
-        if (!$this->enabled) {
-            return null;
-        }
-
         $response = $this->youTubeClient->search->listSearch('id,snippet', [
             'channelId' => $this->channelId,
             'q' => urlencode($title),
