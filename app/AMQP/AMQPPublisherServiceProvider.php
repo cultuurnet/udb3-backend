@@ -31,10 +31,12 @@ use PhpAmqpLib\Message\AMQPMessage;
 final class AMQPPublisherServiceProvider extends AbstractServiceProvider
 {
     private AMQPStreamConnection $connection;
-
-    function __construct(AMQPStreamConnection $connection)
+    private ?JsonWebToken $jsonWebToken;
+    
+    public function __construct(AMQPStreamConnection $connection, ?JsonWebToken $jsonWebToken)
     {
         $this->connection = $connection;
+        $this->jsonWebToken = $jsonWebToken;
     }
 
     public function getProvidedServiceNames(): array
@@ -92,7 +94,7 @@ final class AMQPPublisherServiceProvider extends AbstractServiceProvider
                         // Check if the API key or Client ID is in the list of keys / ids that should have their
                         // messages routed to the "cli" queue to offload the API queue if the API key or Client ID is
                         // sending A LOT of requests. (Configured manually in config.yml)
-                        $jwt = $container->get(JsonWebToken::class);
+                        $jwt = $this->jsonWebToken;
                         $clientId = $jwt instanceof JsonWebToken ? $jwt->getClientId() : null;
                         $apiKey = $container->get(ApiKey::class);
                         $apiKey = $apiKey instanceof ApiKey ? $apiKey->toString() : null;

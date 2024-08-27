@@ -24,6 +24,13 @@ use League\Container\DefinitionContainerInterface;
 
 final class UserServiceProvider extends AbstractServiceProvider
 {
+    private ?JsonWebToken $jsonWebToken;
+
+    function __construct(?JsonWebToken $jsonWebToken)
+    {
+        $this->jsonWebToken = $jsonWebToken;
+    }
+
     protected function getProvidedServiceNames(): array
     {
         return [
@@ -72,13 +79,13 @@ final class UserServiceProvider extends AbstractServiceProvider
             GetCurrentUserRequestHandler::class,
             fn () => new GetCurrentUserRequestHandler(
                 $container->get(UserIdentityResolver::class),
-                $container->get(JsonWebToken::class)
+                $this->jsonWebToken
             )
         );
 
         $container->addShared(
             UserEmailAddressRepository::class,
-            fn () => new InMemoryUserEmailAddressRepository($container->get(JsonWebToken::class))
+            fn () => new InMemoryUserEmailAddressRepository($this->jsonWebToken)
         );
     }
 
