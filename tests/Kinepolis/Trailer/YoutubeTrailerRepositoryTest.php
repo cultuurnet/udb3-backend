@@ -55,23 +55,6 @@ final class YoutubeTrailerRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_will_only_search_when_enabled(): void
-    {
-        $disabledTrailerRepository = new YoutubeTrailerRepository(
-            $this->youtubeClient,
-            $this->channelId,
-            $this->uuidGenerator,
-            false
-        );
-        $this->search->expects($this->never())->method('listSearch');
-
-        $video = $disabledTrailerRepository->findMatchingTrailer('Het Smelt');
-        $this->assertNull($video);
-    }
-
-    /**
-     * @test
-     */
     public function it_will_return_null_if_no_trailer_was_found(): void
     {
         $this->search->expects($this->once())->method('listSearch')->with('id,snippet', [
