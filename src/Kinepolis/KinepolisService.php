@@ -153,7 +153,7 @@ final class KinepolisService
             $movieTitle = $movie['title'];
             $trailer = null;
             try {
-                $trailer =  $this->trailerRepository->search($movieTitle);
+                $trailer =  $this->trailerRepository->findMatchingTrailer($movieTitle);
             } catch (Exception $exception) {
                 $this->logger->error('Problem with searching trailer for ' . $movieTitle . ':' . $exception->getMessage());
             }
