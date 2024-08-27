@@ -31,7 +31,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 final class AMQPPublisherServiceProvider extends AbstractServiceProvider
 {
     private AMQPStreamConnection $connection;
-    
+
     function __construct(AMQPStreamConnection $connection)
     {
         $this->connection = $connection;

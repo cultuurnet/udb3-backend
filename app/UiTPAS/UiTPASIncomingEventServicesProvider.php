@@ -53,7 +53,7 @@ final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
 
                 $consumerFactory = new EventBusForwardingConsumerFactory(
                     0,
-                    $container->get('amqp.connection'),
+                    $this->connection,
                     LoggerFactory::create($container, LoggerName::forAmqpWorker('uitpas')),
                     $uitpasDeserializerLocator,
                     $container->get(EventBus::class),
