@@ -25,10 +25,18 @@ use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 final class AMQPPublisherServiceProvider extends AbstractServiceProvider
 {
+    private AMQPStreamConnection $connection;
+    
+    function __construct(AMQPStreamConnection $connection)
+    {
+        $this->connection = $connection;
+    }
+
     public function getProvidedServiceNames(): array
     {
         return [AMQPPublisher::class];
@@ -41,8 +49,7 @@ final class AMQPPublisherServiceProvider extends AbstractServiceProvider
         $container->addShared(
             AMQPPublisher::class,
             function () use ($container): ReplayFilteringEventListener {
-                $connection = $container->get('amqp.connection');
-                $channel = $connection->channel();
+                $channel = $this->connection->channel();
 
                 $contentTypeMapping = [
                     EventProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.event-projected-to-jsonld+json',
