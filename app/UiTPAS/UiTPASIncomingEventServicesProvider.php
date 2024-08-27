@@ -21,7 +21,7 @@ final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
 {
     private AMQPStreamConnection $connection;
 
-    function __construct()
+    public function __construct()
     {
         $container = $this->getContainer();
         $this->connection = $container->get(AMQPStreamConnection::class);

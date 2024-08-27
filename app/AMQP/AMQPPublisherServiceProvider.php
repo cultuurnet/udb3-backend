@@ -30,7 +30,6 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 final class AMQPPublisherServiceProvider extends AbstractServiceProvider
 {
-
     private AMQPStreamConnection $connection;
     private ?JsonWebToken $jsonWebToken;
 
