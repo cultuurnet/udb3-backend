@@ -121,7 +121,6 @@ final class AddLabelToItems extends AbstractCommand
     private function addLabelToItems(OutputInterface $output, int $count, Generator $results, ItemType $itemType, Label $label): void
     {
         $progressBar = new ProgressBar($output, $count);
-        $exceptions = [];
         foreach ($results as $id => $result) {
             try {
                 if ($itemType->sameAs(ItemType::organizer())) {
@@ -133,14 +132,10 @@ final class AddLabelToItems extends AbstractCommand
                     $labelCommand
                 );
             } catch (Exception $exception) {
-                $exceptions[$id] = 'Item with id: ' . $id . ' caused an exception: ' . $exception->getMessage();
+               $output->writeln('Item with id: ' . $id . ' caused an exception: ' . $exception->getMessage());
             }
             $progressBar->advance();
         }
         $progressBar->finish();
-
-        foreach ($exceptions as $exception) {
-            $output->writeln($exception);
-        }
     }
 }
