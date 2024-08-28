@@ -82,47 +82,18 @@ final class AddLabelToItems extends AbstractCommand
         $newLabel = new Label(
             new LabelName($input->getArgument('label'))
         );
+        $searchGenerator = $this->getSearchGenerator($itemType);
 
-        if ($itemType->sameAs(ItemType::event())) {
-            $count = $this->eventsSearchResultsGenerator->count($query);
-            if ($this->askConfirmation($input, $output, $newLabel, $count, $itemType)) {
-                $results = $this->eventsSearchResultsGenerator->search($query);
-                $this->addLabelToItems(
-                    $output,
-                    $count,
-                    $results,
-                    $itemType,
-                    $newLabel
-                );
-            }
-        }
-
-        if ($itemType->sameAs(ItemType::place())) {
-            $count = $this->placesSearchResultsGenerator->count($query);
-            if ($this->askConfirmation($input, $output, $newLabel, $count, $itemType)) {
-                $results = $this->placesSearchResultsGenerator->search($query);
-                $this->addLabelToItems(
-                    $output,
-                    $count,
-                    $results,
-                    $itemType,
-                    $newLabel
-                );
-            }
-        }
-
-        if ($itemType->sameAs(ItemType::organizer())) {
-            $count = $this->organizersSearchResultsGenerator->count($query);
-            if ($this->askConfirmation($input, $output, $newLabel, $count, $itemType)) {
-                $results = $this->organizersSearchResultsGenerator->search($query);
-                $this->addLabelToItems(
-                    $output,
-                    $count,
-                    $results,
-                    $itemType,
-                    $newLabel
-                );
-            }
+        $count = $searchGenerator->count($query);
+        if ($this->askConfirmation($input, $output, $newLabel, $count, $itemType)) {
+            $results = $searchGenerator->search($query);
+            $this->addLabelToItems(
+                $output,
+                $count,
+                $results,
+                $itemType,
+                $newLabel
+            );
         }
 
         return self::SUCCESS;
@@ -140,6 +111,17 @@ final class AddLabelToItems extends AbstractCommand
                     true
                 )
             );
+    }
+
+    private function getSearchGenerator(ItemType $itemType): ResultsGenerator
+    {
+        if ($itemType->sameAs(ItemType::event())) {
+            return $this->eventsSearchResultsGenerator;
+        }
+        if ($itemType->sameAs(ItemType::place())){
+            return $this->placesSearchResultsGenerator;
+        }
+        return $this->organizersSearchResultsGenerator;
     }
 
     private function addLabelToItems(OutputInterface $output, int $count, Generator $results, ItemType $itemType, Label $label): void
