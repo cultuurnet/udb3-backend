@@ -1,6 +1,7 @@
 @sapi3
 Feature: Test the Search API v3 default queries from UiTID
 
+  # sapi3KeyWithUitIdFilterForDiest has a default filter with 'regions:nis-24020' on UiTidV1
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
