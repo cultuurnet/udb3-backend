@@ -132,7 +132,7 @@ final class AddLabelToItems extends AbstractCommand
                     $labelCommand
                 );
             } catch (Exception $exception) {
-               $output->writeln('Item with id: ' . $id . ' caused an exception: ' . $exception->getMessage());
+                $output->writeln('Item with id: ' . $id . ' caused an exception: ' . $exception->getMessage());
             }
             $progressBar->advance();
         }
