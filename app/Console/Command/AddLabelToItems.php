@@ -23,11 +23,11 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class AddLabelToItems extends AbstractCommand
 {
-    private ResultsGenerator $eventsSearchResultsGenerator;
+    private SearchServiceInterface $eventsSearchService;
 
-    private ResultsGenerator $placesSearchResultsGenerator;
+    private SearchServiceInterface $placesSearchService;
 
-    private ResultsGenerator $organizersSearchResultsGenerator;
+    private SearchServiceInterface $organizersSearchService;
 
     public function __construct(
         CommandBus $commandBus,
@@ -35,21 +35,9 @@ final class AddLabelToItems extends AbstractCommand
         SearchServiceInterface $placesSearchService,
         SearchServiceInterface $organizersSearchService
     ) {
-        $this->eventsSearchResultsGenerator = new ResultsGenerator(
-            $eventsSearchService,
-            new Sorting('created', 'asc'),
-            100
-        );
-        $this->placesSearchResultsGenerator = new ResultsGenerator(
-            $placesSearchService,
-            new Sorting('created', 'asc'),
-            100
-        );
-        $this->organizersSearchResultsGenerator = new ResultsGenerator(
-            $organizersSearchService,
-            new Sorting('created', 'asc'),
-            100
-        );
+        $this->eventsSearchService = $eventsSearchService;
+        $this->placesSearchService = $placesSearchService;
+        $this->organizersSearchService = $organizersSearchService;
 
         parent::__construct($commandBus);
     }
@@ -115,13 +103,19 @@ final class AddLabelToItems extends AbstractCommand
 
     private function getSearchGenerator(ItemType $itemType): ResultsGenerator
     {
-        if ($itemType->sameAs(ItemType::event())) {
-            return $this->eventsSearchResultsGenerator;
+        $searchService = $this->eventsSearchService;
+        if ($itemType->sameAs(ItemType::place())) {
+            $searchService = $this->placesSearchService;
         }
-        if ($itemType->sameAs(ItemType::place())){
-            return $this->placesSearchResultsGenerator;
+        if ($itemType->sameAs(ItemType::organizer())) {
+            $searchService = $this->organizersSearchService;
         }
-        return $this->organizersSearchResultsGenerator;
+
+        return new ResultsGenerator(
+            $searchService,
+            new Sorting('created', 'asc'),
+            100
+        );
     }
 
     private function addLabelToItems(OutputInterface $output, int $count, Generator $results, ItemType $itemType, Label $label): void
