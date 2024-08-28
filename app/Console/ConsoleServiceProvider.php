@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Console;
 
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\Console\Command\AddLabelToItems;
 use CultuurNet\UDB3\Console\Command\BulkRemoveFromProduction;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
@@ -97,6 +98,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.offer:change-owner-bulk',
         'console.organizer:change-owner',
         'console.organizer:change-owner-bulk',
+        'console.label:add-label-to-items',
         'console.label:exclude',
         'console.label:exclude-invalid',
         'console.label:include',
@@ -352,6 +354,16 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('event_command_bus'),
                 $container->get('organizer_owner.repository')
             )
+        );
+
+        $container->addShared(
+            'console.label:add-label-to-items',
+            fn () => new AddLabelToItems(
+                $container->get('event_command_bus'),
+                $container->get(EventsSapi3SearchService::class),
+                $container->get(PlacesSapi3SearchService::class),
+                $container->get(OrganizersSapi3SearchService::class),
+            ),
         );
 
         $container->addShared(
