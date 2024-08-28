@@ -16,7 +16,6 @@ Feature: Test the Search API v3 default queries from UiTID
     And I wait 2 seconds
     When I send a GET request to "/places" with parameters:
       | limit                 | 1 |
-      | embed                 | true |
       | disableDefaultFilters | true |
       | q                     | id:%{placeId} |
     Then the JSON response at "totalItems" should be 0
@@ -31,7 +30,6 @@ Feature: Test the Search API v3 default queries from UiTID
     And I wait 2 seconds
     When I send a GET request to "/events" with parameters:
       | limit                 | 1 |
-      | embed                 | true |
       | disableDefaultFilters | true |
       | q                     | id:%{eventId} |
     Then the JSON response at "totalItems" should be 0
@@ -45,7 +43,6 @@ Feature: Test the Search API v3 default queries from UiTID
     And I wait 2 seconds
     When I send a GET request to "/places" with parameters:
       | limit                 | 1 |
-      | embed                 | true |
       | disableDefaultFilters | true |
       | q                     | id:%{placeId} |
     Then the JSON response at "totalItems" should be 1
@@ -60,7 +57,6 @@ Feature: Test the Search API v3 default queries from UiTID
     And I wait 2 seconds
     When I send a GET request to "/events" with parameters:
       | limit                 | 1 |
-      | embed                 | true |
       | disableDefaultFilters | true |
       | q                     | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
