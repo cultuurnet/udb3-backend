@@ -7,7 +7,7 @@ Feature: Test the Search API v3 default queries from UiTID
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     And I send and accept "application/json"
 
-  Scenario: Search for a place blocked by the default query
+  Scenario: Search for a place that will be filtered out by the default query
     Given I create a place from "places/hemmekes.json" and save the "id" as "placeId"
     And I am using the Search API v3 base URL
     And I am not authorized
@@ -20,7 +20,7 @@ Feature: Test the Search API v3 default queries from UiTID
       | q                     | id:%{placeId} |
     Then the JSON response at "totalItems" should be 0
 
-  Scenario: Search for an event blocked by the default query
+  Scenario: Search for an event that will be filtered out by the default query
     Given I create a place from "places/hemmekes.json" and save the "url" as "placeUrl"
     And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
     And I am using the Search API v3 base URL
