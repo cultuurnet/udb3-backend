@@ -11,7 +11,7 @@ Feature: Test the Search API v3 default queries from UiTID
     Given I create a place from "places/hemmekes.json" and save the "id" as "placeId"
     And I am using the Search API v3 base URL
     And I am not authorized
-    And I am using an UiTID v1 API key of consumer "regionFilterDiest"
+    And I am using an UiTID v1 API key of consumer "sapi3KeyWithUitIdFilterForDiest"
     And I am not using a x-client-id header
     And I wait 2 seconds
     When I send a GET request to "/places" with parameters:
@@ -26,7 +26,7 @@ Feature: Test the Search API v3 default queries from UiTID
     And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
     And I am using the Search API v3 base URL
     And I am not authorized
-    And I am using an UiTID v1 API key of consumer "regionFilterDiest"
+    And I am using an UiTID v1 API key of consumer "sapi3KeyWithUitIdFilterForDiest"
     And I am not using a x-client-id header
     And I wait 2 seconds
     When I send a GET request to "/events" with parameters:
@@ -40,7 +40,7 @@ Feature: Test the Search API v3 default queries from UiTID
     Given I create a place from "places/citadel.json" and save the "id" as "placeId"
     And I am using the Search API v3 base URL
     And I am not authorized
-    And I am using an UiTID v1 API key of consumer "regionFilterDiest"
+    And I am using an UiTID v1 API key of consumer "sapi3KeyWithUitIdFilterForDiest"
     And I am not using a x-client-id header
     And I wait 2 seconds
     When I send a GET request to "/places" with parameters:
@@ -55,7 +55,7 @@ Feature: Test the Search API v3 default queries from UiTID
     And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
     And I am using the Search API v3 base URL
     And I am not authorized
-    And I am using an UiTID v1 API key of consumer "regionFilterDiest"
+    And I am using an UiTID v1 API key of consumer "sapi3KeyWithUitIdFilterForDiest"
     And I am not using a x-client-id header
     And I wait 2 seconds
     When I send a GET request to "/events" with parameters:
