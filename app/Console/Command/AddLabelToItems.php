@@ -70,11 +70,11 @@ final class AddLabelToItems extends AbstractCommand
         $newLabel = new Label(
             new LabelName($input->getArgument('label'))
         );
-        $searchGenerator = $this->getSearchGenerator($itemType);
+        $resultsGenerator = $this->getResultsGenerator($itemType);
 
-        $count = $searchGenerator->count($query);
+        $count = $resultsGenerator->count($query);
         if ($this->askConfirmation($input, $output, $newLabel, $count, $itemType)) {
-            $results = $searchGenerator->search($query);
+            $results = $resultsGenerator->search($query);
             $this->addLabelToItems(
                 $output,
                 $count,
@@ -101,7 +101,7 @@ final class AddLabelToItems extends AbstractCommand
             );
     }
 
-    private function getSearchGenerator(ItemType $itemType): ResultsGenerator
+    private function getResultsGenerator(ItemType $itemType): ResultsGenerator
     {
         $searchService = $this->eventsSearchService;
         if ($itemType->sameAs(ItemType::place())) {
