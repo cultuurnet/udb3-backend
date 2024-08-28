@@ -50,7 +50,7 @@ Feature: Test the Search API v3 default queries from UiTID
       | q                     | id:%{placeId} |
     Then the JSON response at "totalItems" should be 1
 
-  Scenario: Search for an event bwithin by the default query
+  Scenario: Search for an event within by the default query
     Given I create a place from "places/citadel.json" and save the "url" as "placeUrl"
     And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
     And I am using the Search API v3 base URL
