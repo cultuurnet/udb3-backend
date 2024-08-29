@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
 use CultuurNet\UDB3\Auth0\Auth0ServiceProvider;
@@ -8,6 +10,7 @@ use CultuurNet\UDB3\Cache\CacheServiceProvider;
 use CultuurNet\UDB3\Clock\ClockServiceProvider;
 use CultuurNet\UDB3\CommandHandling\CommandBusServiceProvider;
 use CultuurNet\UDB3\Configuration\ConfigurationServiceProvider;
+use CultuurNet\UDB3\Container\CachedContainer;
 use CultuurNet\UDB3\Contributor\ContributorServiceProvider;
 use CultuurNet\UDB3\Culturefeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Curators\CuratorsServiceProvider;
@@ -78,6 +81,7 @@ use CultuurNet\UDB3\UiTPASService\UiTPASServiceOrganizerServiceProvider;
 use CultuurNet\UDB3\User\UserServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
+use League\Route\Cache\FileCache;
 
 date_default_timezone_set('Europe/Brussels');
 
@@ -88,142 +92,149 @@ date_default_timezone_set('Europe/Brussels');
  */
 libxml_use_internal_errors(true);
 
-$container = new Container();
-$container->delegate(new ReflectionContainer(true));
+$fileCache = new FileCache(__DIR__ . '/.container.cache', 1000 * 60 * 5);
 
-/** Supporting services */
-$container->addServiceProvider(new ConfigurationServiceProvider());
-$container->addServiceProvider(new EventStoreServiceProvider());
-$container->addServiceProvider(new SentryServiceProvider());
-$container->addServiceProvider(new CommandBusServiceProvider());
-$container->addServiceProvider(new EventBusServiceProvider());
-$container->addServiceProvider(new SwiftMailerServiceProvider());
-$container->addServiceProvider(new ClockServiceProvider());
-$container->addServiceProvider(new CacheServiceProvider());
-$container->addServiceProvider(new DatabaseServiceProvider());
-$container->addServiceProvider(new ContributorServiceProvider());
+$container = new CachedContainer(function (Container $container) {
+    $container->delegate(new ReflectionContainer(true));
 
-/** Queue */
-$container->addServiceProvider(new AMQPConnectionServiceProvider());
-$container->addServiceProvider(new AMQPPublisherServiceProvider());
+    /** Supporting services */
+    $container->addServiceProvider(new ConfigurationServiceProvider());
+    $container->addServiceProvider(new EventStoreServiceProvider());
+    $container->addServiceProvider(new SentryServiceProvider());
+    $container->addServiceProvider(new CommandBusServiceProvider());
+    $container->addServiceProvider(new EventBusServiceProvider());
+    $container->addServiceProvider(new SwiftMailerServiceProvider());
+    $container->addServiceProvider(new ClockServiceProvider());
+    $container->addServiceProvider(new CacheServiceProvider());
+    $container->addServiceProvider(new DatabaseServiceProvider());
+    $container->addServiceProvider(new ContributorServiceProvider());
 
-/** Search */
-$container->addServiceProvider(new SavedSearchesServiceProvider());
+    /** Queue */
+    $container->addServiceProvider(new AMQPConnectionServiceProvider());
+    $container->addServiceProvider(new AMQPPublisherServiceProvider());
 
-/** CultureFeed */
-$container->addServiceProvider(new CultureFeedServiceProvider());
+    /** Search */
+    $container->addServiceProvider(new SavedSearchesServiceProvider());
 
-/** Security */
-$container->addServiceProvider(new GeneralSecurityServiceProvider());
-$container->addServiceProvider(new OfferSecurityServiceProvider());
-$container->addServiceProvider(new OrganizerSecurityServiceProvider());
+    /** CultureFeed */
+    $container->addServiceProvider(new CultureFeedServiceProvider());
 
-/** Event */
-$container->addServiceProvider(new EventServiceProvider());
-$container->addServiceProvider(new EventJSONLDServiceProvider());
-$container->addServiceProvider(new EventEditingServiceProvider());
-$container->addServiceProvider(new EventReadServiceProvider());
-$container->addServiceProvider(new EventCommandHandlerProvider());
-$container->addServiceProvider(new EventRequestHandlerServiceProvider());
-$container->addServiceProvider(new EventPermissionServiceProvider());
-$container->addServiceProvider(new ProductionServiceProvider());
-$container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
-$container->addServiceProvider(new EventHistoryServiceProvider());
+    /** Security */
+    $container->addServiceProvider(new GeneralSecurityServiceProvider());
+    $container->addServiceProvider(new OfferSecurityServiceProvider());
+    $container->addServiceProvider(new OrganizerSecurityServiceProvider());
 
-/** Place **/
-$container->addServiceProvider(new PlaceServiceProvider());
-$container->addServiceProvider(new PlaceJSONLDServiceProvider());
-$container->addServiceProvider(new PlaceEditingServiceProvider());
-$container->addServiceProvider(new PlaceReadServiceProvider());
-$container->addServiceProvider(new PlaceRequestHandlerServiceProvider());
-$container->addServiceProvider(new PlacePermissionServiceProvider());
-$container->addServiceProvider(new PlaceGeoCoordinatesServiceProvider());
-$container->addServiceProvider(new PlaceHistoryServiceProvider());
+    /** Event */
+    $container->addServiceProvider(new EventServiceProvider());
+    $container->addServiceProvider(new EventJSONLDServiceProvider());
+    $container->addServiceProvider(new EventEditingServiceProvider());
+    $container->addServiceProvider(new EventReadServiceProvider());
+    $container->addServiceProvider(new EventCommandHandlerProvider());
+    $container->addServiceProvider(new EventRequestHandlerServiceProvider());
+    $container->addServiceProvider(new EventPermissionServiceProvider());
+    $container->addServiceProvider(new ProductionServiceProvider());
+    $container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
+    $container->addServiceProvider(new EventHistoryServiceProvider());
 
-/** Organizer **/
-$container->addServiceProvider(new OrganizerServiceProvider());
-$container->addServiceProvider(new OrganizerRequestHandlerServiceProvider());
-$container->addServiceProvider(new OrganizerJSONLDServiceProvider());
-$container->addServiceProvider(new OrganizerCommandHandlerProvider());
-$container->addServiceProvider(new OrganizerPermissionServiceProvider());
-$container->addServiceProvider(new OrganizerGeoCoordinatesServiceProvider());
+    /** Place **/
+    $container->addServiceProvider(new PlaceServiceProvider());
+    $container->addServiceProvider(new PlaceJSONLDServiceProvider());
+    $container->addServiceProvider(new PlaceEditingServiceProvider());
+    $container->addServiceProvider(new PlaceReadServiceProvider());
+    $container->addServiceProvider(new PlaceRequestHandlerServiceProvider());
+    $container->addServiceProvider(new PlacePermissionServiceProvider());
+    $container->addServiceProvider(new PlaceGeoCoordinatesServiceProvider());
+    $container->addServiceProvider(new PlaceHistoryServiceProvider());
 
-/** Roles */
-$container->addServiceProvider(new RoleServiceProvider());
-$container->addServiceProvider(new RoleRequestHandlerServiceProvider());
+    /** Organizer **/
+    $container->addServiceProvider(new OrganizerServiceProvider());
+    $container->addServiceProvider(new OrganizerRequestHandlerServiceProvider());
+    $container->addServiceProvider(new OrganizerJSONLDServiceProvider());
+    $container->addServiceProvider(new OrganizerCommandHandlerProvider());
+    $container->addServiceProvider(new OrganizerPermissionServiceProvider());
+    $container->addServiceProvider(new OrganizerGeoCoordinatesServiceProvider());
 
-/** Metadata */
-$container->addServiceProvider(new MetadataServiceProvider());
+    /** Roles */
+    $container->addServiceProvider(new RoleServiceProvider());
+    $container->addServiceProvider(new RoleRequestHandlerServiceProvider());
 
-/** Export */
-$container->addServiceProvider(new ExportServiceProvider());
+    /** Metadata */
+    $container->addServiceProvider(new MetadataServiceProvider());
 
-/** User */
-$container->addServiceProvider(new UserPermissionsServiceProvider());
-$container->addServiceProvider(new UserServiceProvider());
+    /** Export */
+    $container->addServiceProvider(new ExportServiceProvider());
 
-/** Offer */
-$container->addServiceProvider(new OfferServiceProvider());
+    /** User */
+    $container->addServiceProvider(new UserPermissionsServiceProvider());
+    $container->addServiceProvider(new UserServiceProvider());
 
-/** Label */
-$container->addServiceProvider(new LabelServiceProvider());
-$container->addServiceProvider(new BulkLabelOfferServiceProvider());
+    /** Offer */
+    $container->addServiceProvider(new OfferServiceProvider());
 
-/** Uitpas */
-$container->addServiceProvider(new UiTPASServiceLabelsServiceProvider());
-$container->addServiceProvider(new UiTPASServiceEventServiceProvider());
-$container->addServiceProvider(new UiTPASServiceOrganizerServiceProvider());
-$container->addServiceProvider(new UiTPASIncomingEventServicesProvider());
+    /** Label */
+    $container->addServiceProvider(new LabelServiceProvider());
+    $container->addServiceProvider(new BulkLabelOfferServiceProvider());
 
-/** Media */
-$container->addServiceProvider(new MediaServiceProvider());
-$container->addServiceProvider(new ImageStorageProvider());
-$container->addServiceProvider(new MediaImportServiceProvider());
+    /** Uitpas */
+    $container->addServiceProvider(new UiTPASServiceLabelsServiceProvider());
+    $container->addServiceProvider(new UiTPASServiceEventServiceProvider());
+    $container->addServiceProvider(new UiTPASServiceOrganizerServiceProvider());
+    $container->addServiceProvider(new UiTPASIncomingEventServicesProvider());
 
-/** Search */
-$container->addServiceProvider(new Sapi3SearchServiceProvider());
+    /** Media */
+    $container->addServiceProvider(new MediaServiceProvider());
+    $container->addServiceProvider(new ImageStorageProvider());
+    $container->addServiceProvider(new MediaImportServiceProvider());
 
-/** Auth */
-// Provides authentication of HTTP requests. While the HTTP authentication is not needed in CLI context, the service
-// provider still needs to be registered in the general bootstrap.php instead of web/index.php so CLI commands have
-// access to services like CurrentUser, which is also provided when an async job is being handled in the CLI and the
-// user who triggered the job is being impersonated.
-$container->addServiceProvider(new AuthServiceProvider());
-$container->addServiceProvider(new Auth0ServiceProvider());
-$container->addServiceProvider(new KeycloakServiceProvider());
+    /** Search */
+    $container->addServiceProvider(new Sapi3SearchServiceProvider());
 
-/** UDB2 */
-$container->addServiceProvider(new UDB2EventServicesProvider());
+    /** Auth */
+    // Provides authentication of HTTP requests. While the HTTP authentication is not needed in CLI context, the service
+    // provider still needs to be registered in the general bootstrap.php instead of web/index.php so CLI commands have
+    // access to services like CurrentUser, which is also provided when an async job is being handled in the CLI and the
+    // user who triggered the job is being impersonated.
+    $container->addServiceProvider(new AuthServiceProvider());
+    $container->addServiceProvider(new Auth0ServiceProvider());
+    $container->addServiceProvider(new KeycloakServiceProvider());
 
-/** Geocoding */
-$container->addServiceProvider(new GeocodingServiceProvider());
+    /** UDB2 */
+    $container->addServiceProvider(new UDB2EventServicesProvider());
 
-/** Curators */
-$container->addServiceProvider(new CuratorsServiceProvider());
+    /** Geocoding */
+    $container->addServiceProvider(new GeocodingServiceProvider());
 
-/** Term */
-$container->addServiceProvider(new TermServiceProvider());
+    /** Curators */
+    $container->addServiceProvider(new CuratorsServiceProvider());
 
-/** Jobs */
-$container->addServiceProvider(new JobsServiceProvider());
+    /** Term */
+    $container->addServiceProvider(new TermServiceProvider());
 
-/** RDF */
-RdfNamespaces::register();
-$container->addServiceProvider(new RdfServiceProvider());
-$container->addServiceProvider(new PlaceRdfServiceProvider());
-$container->addServiceProvider(new EventRdfServiceProvider());
-$container->addServiceProvider(new OrganizerRdfServiceProvider());
+    /** Jobs */
+    $container->addServiceProvider(new JobsServiceProvider());
 
-/** Ownership */
-$container->addServiceProvider(new OwnershipServiceProvider());
-$container->addServiceProvider(new OwnershipCommandHandlerProvider());
-$container->addServiceProvider(new OwnershipRequestHandlerServiceProvider());
+    /** RDF */
+    RdfNamespaces::register();
+    $container->addServiceProvider(new RdfServiceProvider());
+    $container->addServiceProvider(new PlaceRdfServiceProvider());
+    $container->addServiceProvider(new EventRdfServiceProvider());
+    $container->addServiceProvider(new OrganizerRdfServiceProvider());
 
-/** Mailinglist */
-$container->addServiceProvider(new MailinglistServiceProvider());
+    /** Ownership */
+    $container->addServiceProvider(new OwnershipServiceProvider());
+    $container->addServiceProvider(new OwnershipCommandHandlerProvider());
+    $container->addServiceProvider(new OwnershipRequestHandlerServiceProvider());
 
-if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
-    LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);
-}
+    /** Mailinglist */
+    $container->addServiceProvider(new MailinglistServiceProvider());
+
+    if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
+        LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);
+    }
+
+    return $container;
+
+}, $fileCache);
+
 
 return $container;
