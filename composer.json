@@ -68,7 +68,7 @@
     "rase/socket.io-emitter": "0.6.1",
     "sentry/sentry": "^3.6",
     "slim/psr7": "^1.4",
-    "sweetrdf/easyrdf": "1.1.1",
+    "sweetrdf/easyrdf": "1.8.0",
     "swiftmailer/swiftmailer": "~5.3",
     "symfony/console": "^5.4",
     "symfony/process": "4.4.30",
