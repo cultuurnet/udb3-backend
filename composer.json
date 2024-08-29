@@ -22,7 +22,7 @@
     "ext-simplexml": "*",
     "ext-tidy": "*",
     "ext-xmlreader": "*",
-    "auth0/auth0-php": "^8.2",
+    "auth0/auth0-php": "8.2",
     "broadway/broadway": "^2.4",
     "cakephp/chronos": "^1.3",
     "chrisboulton/php-resque": "dev-compat-1-2 as 1.2",
@@ -109,8 +109,7 @@
   "config": {
     "allow-plugins": {
       "kylekatarnls/update-helper": true,
-      "icanhazstring/composer-unused": true,
-      "php-http/discovery": true
+      "icanhazstring/composer-unused": true
     },
     "preferred-install": {
       "cultuurnet/*": "source",
