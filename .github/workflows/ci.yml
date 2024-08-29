@@ -7,25 +7,25 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ['7.4', '8.0']
+                php-versions: ["7.4", "8.0"]
         name: Unit tests ${{ matrix.php-versions }}
         services:
-          mysql:
-            image: bitnami/mysql:8.0
-            env:
-              MYSQL_ALLOW_EMPTY_PASSWORD: false
-              MYSQL_PASSWORD: vagrant
-              MYSQL_ROOT_PASSWORD: vagrant
-              MYSQL_USER: vagrant
-              MYSQL_DATABASE: udb3_test
-              MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
-            ports:
-              - 3306:3306
-            options: >-
-              --health-cmd="mysqladmin ping"
-              --health-interval=10s
-              --health-timeout=5s
-              --health-retries=3
+            mysql:
+                image: bitnami/mysql:8.0
+                env:
+                    MYSQL_ALLOW_EMPTY_PASSWORD: false
+                    MYSQL_PASSWORD: vagrant
+                    MYSQL_ROOT_PASSWORD: vagrant
+                    MYSQL_USER: vagrant
+                    MYSQL_DATABASE: udb3_test
+                    MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
+                ports:
+                    - 3306:3306
+                options: >-
+                    --health-cmd="mysqladmin ping"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=3
         steps:
             - name: 📤 Checkout project
               uses: actions/checkout@v4
@@ -60,13 +60,13 @@ jobs:
             - name: ✅ Run tests
               run: composer test
               env:
-                DATABASE_PORT: ${{ job.services.mysql.ports['3306'] }}
+                  DATABASE_PORT: ${{ job.services.mysql.ports['3306'] }}
 
     cs:
         runs-on: ubuntu-latest
         strategy:
-          matrix:
-            php-versions: [ '7.4', '8.0', '8.1' ]
+            matrix:
+                php-versions: ["7.4", "8.0", "8.1"]
         name: Code style ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
@@ -98,8 +98,8 @@ jobs:
     phpstan:
         runs-on: ubuntu-latest
         strategy:
-          matrix:
-            php-versions: [ '7.4', '8.0', '8.1' ]
+            matrix:
+                php-versions: ["7.4", "8.0", "8.1"]
         name: Static analysis ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
@@ -131,32 +131,32 @@ jobs:
     unused:
         runs-on: ubuntu-latest
         strategy:
-          matrix:
-            php-versions: [ '7.4', '8.0', '8.1' ]
+            matrix:
+                php-versions: ["7.4", "8.0", "8.1"]
         name: Unused composer dependencies ${{ matrix.php-versions }}
         steps:
-            -   name: 📤 Checkout project
-                uses: actions/checkout@v4
+            - name: 📤 Checkout project
+              uses: actions/checkout@v4
 
-            -   name: 🐘 Install PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: ${{ matrix.php-versions }}
-                    extensions: tidy, zip
-                    tools: composer
+            - name: 🐘 Install PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-versions }}
+                  extensions: tidy, zip
+                  tools: composer
 
-            -   name: 📩 Cache Composer packages
-                id: composer-cache
-                uses: actions/cache@v3
-                with:
-                    path: vendor
-                    key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-                    restore-keys: |
-                        ${{ runner.os }}-php-
+            - name: 📩 Cache Composer packages
+              id: composer-cache
+              uses: actions/cache@v3
+              with:
+                  path: vendor
+                  key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-php-
 
-            -   name: 📦 Install dependencies
-                if: steps.composer-cache.outputs.cache-hit != 'true'
-                run: composer install --no-progress --no-suggest
+            - name: 📦 Install dependencies
+              if: steps.composer-cache.outputs.cache-hit != 'true'
+              run: composer install --no-progress --no-suggest
 
-            -   name: 🗑 Run unused dependencies check
-                run: composer unused
+            - name: 🗑 Run unused dependencies check
+              run: composer unused
