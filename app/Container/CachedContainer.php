@@ -27,11 +27,10 @@ final class CachedContainer implements DefinitionContainerInterface
             $unserializedBuilder = unserialize($cachedContainerBuilder);
             $this->container = $unserializedBuilder();
         } else {
-            $buildContainer = $builder(new Container());
-            $this->container = $buildContainer;
+            $this->container = $builder(new Container());
             $serializedBuilder = serialize(
                 new SerializableClosure(
-                    fn () => $builder(new Container())
+                    fn () => $this->container
                 )
             );
             $cache->set(self::CACHE_KEY, $serializedBuilder);
