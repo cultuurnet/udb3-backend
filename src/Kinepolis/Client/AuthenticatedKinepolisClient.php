@@ -140,7 +140,8 @@ final class AuthenticatedKinepolisClient implements KinepolisClient
     private function getFileName(string $path): string
     {
         $fileName = substr($path, strrpos($path, '/') + 1);
-        // When we are on PHP 8, the check on false can be removed.
+        // When we are on PHP 8, the check on false & the phpstan ignore can be removed.
+        /** @phpstan-ignore-next-line */
         if ($fileName === false || $fileName === '') {
             throw new ImageNotFound(sprintf('Cannot process path: "%s"', $path));
         }
