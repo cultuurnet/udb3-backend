@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Canonical;
 
+use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterChangeResult;
 use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterRecord;
 use Doctrine\DBAL\Connection;
 
@@ -131,5 +132,37 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             'INSERT INTO duplicate_places SET cluster_id = :cluster_id, place_uuid = :place_uuid, canonical = :canonical',
             ['cluster_id' => $clusterId, ':place_uuid' => $placeUuid, 'canonical' => $canonical]
         );
+    }
+
+    public function calculateHowManyClustersHaveChanged(): ClusterChangeResult
+    {
+        $statement = $this->connection->executeQuery('SELECT
+            (not_in_duplicate / total_import * 100) AS percentage_not_in_duplicate,
+            (not_in_import / total_duplicate * 100) AS percentage_not_in_import
+        FROM
+            (SELECT COUNT(*) AS total_import FROM duplicate_places_import) AS import_total,
+            (SELECT COUNT(*) AS total_duplicate FROM duplicate_places) AS duplicate_total,
+            (SELECT COUNT(*) AS not_in_duplicate
+             FROM duplicate_places_import dpi
+             LEFT JOIN duplicate_places dp
+             ON dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid
+             WHERE dp.cluster_id IS NULL) AS diff_import_to_duplicate,
+            (SELECT COUNT(*) AS not_in_import
+             FROM duplicate_places dp
+             LEFT JOIN duplicate_places_import dpi
+             ON dp.cluster_id = dpi.cluster_id AND dp.place_uuid = dpi.place_uuid
+             WHERE dpi.cluster_id IS NULL) AS diff_duplicate_to_import;Ê
+        ');
+
+        return ClusterChangeResult::fromArray($statement->fetchAssociative());
+    }
+
+    public function howManyPlacesAreToBeImported(): int
+    {
+        $statement = $this->connection->executeQuery('SELECT count(*) as total FROM duplicate_places_import');
+
+        $count = $statement->fetchAssociative();
+
+        return (int)$count['total'];
     }
 }

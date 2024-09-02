@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Canonical;
 
+use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterChangeResult;
 use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterRecord;
 
 interface DuplicatePlaceRepository
@@ -33,4 +34,7 @@ interface DuplicatePlaceRepository
     public function calculateNotYetInCluster(): array;
 
     public function addToDuplicatePlaces(string $clusterId, string $placeUuid, string $canonical=null): void;
+
+    public function calculateHowManyClustersHaveChanged(): ClusterChangeResult;
+    public function howManyPlacesAreToBeImported(): int;
 }
