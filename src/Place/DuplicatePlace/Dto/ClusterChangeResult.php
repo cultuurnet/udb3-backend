@@ -28,8 +28,8 @@ class ClusterChangeResult
     public static function fromArray(array $array): self
     {
         return new self(
-            (int)round($array['percentage_not_in_duplicate'] ?? 0),
-            (int)round($array['percentage_not_in_import'] ?? 0)
+            (int)round((float)$array['percentage_not_in_duplicate']),
+            (int)round((float)$array['percentage_not_in_import'])
         );
     }
 }
