@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Canonical;
 
+use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterRecord;
 use Doctrine\DBAL\Connection;
 
 class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
@@ -97,5 +98,12 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
     public function addToDuplicatePlacesRemovedFromCluster(string $clusterId): void
     {
         $this->connection->executeQuery('INSERT INTO duplicate_places_removed_from_cluster SET cluster_id  = :cluster_id', [':cluster_id' => $clusterId]);
+    }
+
+    private function processRawToClusterRecord(array $data): array
+    {
+        return array_map(function ($row): ClusterRecord {
+            return ClusterRecord::fromArray($row);
+        }, $data);
     }
 }
