@@ -78,4 +78,24 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 
         return count($duplicates) > 0 ? $duplicates : null;
     }
+
+    /** @return ClusterRecord[] */
+    public function calculateNoLongerInCluster(): array
+    {
+        $statement = $this->connection->executeQuery('
+           SELECT dp.*
+           FROM duplicate_places dp
+           LEFT JOIN duplicate_places_import dpi
+           ON dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid
+           WHERE dpi.cluster_id IS NULL
+           ORDER BY dp.cluster_id asc, dp.place_uuid asc
+        ');
+
+        return $this->processRawToClusterRecord($statement->fetchAllAssociative());
+    }
+
+    public function addToDuplicatePlacesRemovedFromCluster(string $clusterId): void
+    {
+        $this->connection->executeQuery('INSERT INTO duplicate_places_removed_from_cluster SET cluster_id  = :cluster_id', [':cluster_id' => $clusterId]);
+    }
 }
