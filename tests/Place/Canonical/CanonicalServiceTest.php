@@ -203,7 +203,7 @@ class CanonicalServiceTest extends TestCase
      */
     public function it_will_return_the_MPM_place(): void
     {
-        $canonicalId = $this->canonicalService->getCanonical(1);
+        $canonicalId = $this->canonicalService->getCanonical('1');
 
         $this->assertEquals(
             $this->museumPassPlaceId,
@@ -216,7 +216,7 @@ class CanonicalServiceTest extends TestCase
      */
     public function it_will_get_the_place_with_most_events(): void
     {
-        $canonicalId = $this->canonicalService->getCanonical(3);
+        $canonicalId = $this->canonicalService->getCanonical('3');
 
         $this->assertEquals(
             $this->mostEventsPlaceId,
@@ -232,7 +232,7 @@ class CanonicalServiceTest extends TestCase
         $this->expectException(MuseumPassNotUniqueInCluster::class);
         $this->expectExceptionMessage('Cluster 2 contains 2 MuseumPass places');
 
-        $this->canonicalService->getCanonical(2);
+        $this->canonicalService->getCanonical('2');
     }
 
     /**
@@ -240,7 +240,7 @@ class CanonicalServiceTest extends TestCase
      */
     public function it_will_get_the_oldest_place_if_equal_nr_of_events(): void
     {
-        $canonicalId = $this->canonicalService->getCanonical(4);
+        $canonicalId = $this->canonicalService->getCanonical('4');
 
         $this->assertEquals(
             $this->oldestPlaceId,
