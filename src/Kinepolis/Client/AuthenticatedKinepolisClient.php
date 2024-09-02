@@ -142,7 +142,7 @@ final class AuthenticatedKinepolisClient implements KinepolisClient
         $fileName = substr($path, strrpos($path, '/') + 1);
         // When we are on PHP 8, the check on false can be removed.
         if ($fileName === false || $fileName === '') {
-            throw new ImageNotFound('Cannot process ' . $path);
+            throw new ImageNotFound(sprintf('Cannot process path: "%s"', $path));
         }
         return $fileName;
     }
