@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\Canonical;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterChangeResult;
 use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterRecord;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -199,5 +200,88 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         $this->duplicatePlaceRepository->addToDuplicatePlaces('5', '0671f7a3-8301-43da-bf56-03c5c1e33332');
         $raw = $this->connection->fetchAllAssociative('select * from duplicate_places where cluster_id = 5');
         $this->assertEquals([['cluster_id' => 5, 'place_uuid' => '0671f7a3-8301-43da-bf56-03c5c1e33332', 'canonical' => null]], $raw);
+    }
+
+    /** @dataProvider clusterChangesDataProvider */
+    public function test_calculate_how_many_clusters_have_changed(array $clusters, int $percentageNotInDuplicate, int $percentageNotInImport): void
+    {
+        foreach ($clusters as [$clusterId, $placeUuid]) {
+            $this->getConnection()->insert(
+                'duplicate_places_import',
+                [
+                    'cluster_id' => $clusterId,
+                    'place_uuid' => $placeUuid,
+                ]
+            );
+        }
+
+        $result = $this->duplicatePlaceRepository->calculateHowManyClustersHaveChanged();
+
+        $this->assertEquals(new ClusterChangeResult($percentageNotInDuplicate, $percentageNotInImport), $result);
+    }
+
+    public static function clusterChangesDataProvider(): array
+    {
+        return [
+            'everything is new' => [
+                [
+
+                ],
+                0,
+                100,
+            ],
+            'Some new, some removed' => [
+                [
+                    ['cluster_1', '19ce6565-76be-425d-94d6-894f84dd2947'],
+                    ['cluster_1', '1accbcfb-3b22-4762-bc13-be0f67fd3116'],
+                    ['new', '04a549ba-6e5e-433b-9601-07b7a809758e'],
+                ],
+                33,
+                60,
+            ],
+            'Nothing has changed' => [
+                [
+                    ['cluster_1', '19ce6565-76be-425d-94d6-894f84dd2947'],
+                    ['cluster_1', '1accbcfb-3b22-4762-bc13-be0f67fd3116'],
+                    ['cluster_1', '526605d3-7cc4-4607-97a4-065896253f42'],
+                    ['cluster_2', '4a355db3-c3f9-4acc-8093-61b333a3aefb'],
+                    ['cluster_2', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad'],
+                ],
+                0,
+                0,
+            ],
+            'Everything single place has been moved' => [
+                [
+                    ['5', '19ce6565-76be-425d-94d6-894f84dd2947'],
+                    ['5', '1accbcfb-3b22-4762-bc13-be0f67fd3116'],
+                    ['5', '526605d3-7cc4-4607-97a4-065896253f42'],
+                    ['5', '4a355db3-c3f9-4acc-8093-61b333a3aefb'],
+                    ['5', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad'],
+                ],
+                100,
+                100,
+            ],
+        ];
+    }
+
+    public function test_how_many_places_are_to_be_imported(): void
+    {
+        $this->getConnection()->insert(
+            'duplicate_places_import',
+            [
+                'cluster_id' => 'cluster_1',
+                'place_uuid' => '19ce6565-76be-425d-94d6-894f84dd2947',
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places_import',
+            [
+                'cluster_id' => 'cluster_1',
+                'place_uuid' => '1accbcfb-3b22-4762-bc13-be0f67fd3116',
+            ]
+        );
+
+        $count = $this->duplicatePlaceRepository->howManyPlacesAreToBeImported();
+        $this->assertEquals(2, $count);
     }
 }
