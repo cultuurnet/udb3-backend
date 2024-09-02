@@ -22,9 +22,14 @@ class ImportDuplicatePlacesProcessor
     public function sync(): void
     {
         $noLongerInClusters = $this->duplicatePlaceRepository->calculateNoLongerInCluster();
+        $notYetInClusters = $this->duplicatePlaceRepository->calculateNotYetInCluster();
 
         foreach ($noLongerInClusters as $noLongerInCluster) {
             $this->duplicatePlaceRepository->addToDuplicatePlacesRemovedFromCluster($noLongerInCluster->getClusterId());
+        }
+
+        foreach ($notYetInClusters as $notYetInCluster) {
+            $this->duplicatePlaceRepository->addToDuplicatePlaces($notYetInCluster->getClusterId(), $notYetInCluster->getPlaceUuid()->toString());
         }
     }
 }

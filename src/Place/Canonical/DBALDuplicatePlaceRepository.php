@@ -19,9 +19,11 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
     public function getClusterIds(): array
     {
         $result = $this->connection->createQueryBuilder()
-            ->select('DISTINCT cluster_id')
+            ->select('cluster_id')
             ->from('duplicate_places')
+            ->having('count(*) = sum(canonical IS NULL)')
             ->orderBy('cluster_id')
+            ->groupBy('cluster_id')
             ->execute()
             ->fetchFirstColumn();
 
@@ -95,15 +97,39 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return $this->processRawToClusterRecord($statement->fetchAllAssociative());
     }
 
-    public function addToDuplicatePlacesRemovedFromCluster(string $clusterId): void
+    /** @return ClusterRecord[] */
+    public function calculateNotYetInCluster(): array
     {
-        $this->connection->executeQuery('INSERT INTO duplicate_places_removed_from_cluster SET cluster_id  = :cluster_id', [':cluster_id' => $clusterId]);
+        $statement = $this->connection->executeQuery('
+           SELECT dpi.*
+           FROM duplicate_places_import dpi
+           LEFT JOIN duplicate_places dp
+           ON dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid
+           WHERE dp.cluster_id IS NULL
+           ORDER BY dp.cluster_id asc, dp.place_uuid asc
+        ');
+
+        return $this->processRawToClusterRecord($statement->fetchAllAssociative());
     }
 
+    /** @return ClusterRecord[] */
     private function processRawToClusterRecord(array $data): array
     {
         return array_map(function ($row): ClusterRecord {
             return ClusterRecord::fromArray($row);
         }, $data);
+    }
+
+    public function addToDuplicatePlacesRemovedFromCluster(string $clusterId): void
+    {
+        $this->connection->executeQuery('INSERT INTO duplicate_places_removed_from_cluster SET cluster_id  = :cluster_id', [':cluster_id' => $clusterId]);
+    }
+
+    public function addToDuplicatePlaces(string $clusterId, string $placeUuid, string $canonical = null): void
+    {
+        $this->connection->executeQuery(
+            'INSERT INTO duplicate_places SET cluster_id = :cluster_id, place_uuid = :place_uuid, canonical = :canonical',
+            ['cluster_id' => $clusterId, ':place_uuid' => $placeUuid, 'canonical' => $canonical]
+        );
     }
 }
