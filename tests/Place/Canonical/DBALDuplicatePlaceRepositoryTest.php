@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\Canonical;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterRecord;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
 class DBALDuplicatePlaceRepositoryTest extends TestCase
 {
@@ -172,5 +174,29 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
             ],
             $this->duplicatePlaceRepository->getDuplicatesOfPlace('64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad')
         );
+    }
+
+    public function test_calculate_no_longer_in_cluster(): void
+    {
+        $list = [
+            new ClusterRecord('cluster_1', Uuid::fromString('19ce6565-76be-425d-94d6-894f84dd2947')),
+            new ClusterRecord('cluster_1', Uuid::fromString('1accbcfb-3b22-4762-bc13-be0f67fd3116')),
+            new ClusterRecord('cluster_1', Uuid::fromString('526605d3-7cc4-4607-97a4-065896253f42')),
+            new ClusterRecord('cluster_2', Uuid::fromString('4a355db3-c3f9-4acc-8093-61b333a3aefb')),
+            new ClusterRecord('cluster_2', Uuid::fromString('64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad')),
+        ];
+
+        $this->assertEquals(
+            $list,
+            $this->duplicatePlaceRepository->calculateNoLongerInCluster()
+        );
+    }
+
+    public function test_add_to_duplicate_places_removed_from_cluster(): void
+    {
+        $this->duplicatePlaceRepository->addToDuplicatePlacesRemovedFromCluster('64901efc-6bd7-4e9d-8916-fcdeb5b1c8af');
+
+        $raw = $this->connection->fetchAllAssociative('select * from duplicate_places_removed_from_cluster');
+        $this->assertEquals([['cluster_id' => '64901efc-6bd7-4e9d-8916-fcdeb5b1c8af']], $raw);
     }
 }
