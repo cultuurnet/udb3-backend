@@ -45,7 +45,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         CanonicalService $canonicalService,
         EventBus $eventBus,
         DocumentEventFactory $placeEventFactory,
-        EventRelationsRepository $eventRelationsRepository,
+        EventRelationsRepository $eventRelationsRepository
     ) {
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
         $this->duplicatePlaceRemovedFromClusterRepository = $duplicatePlaceRemovedFromClusterRepository;
@@ -158,7 +158,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             }
         }
 
-        if (! $onlySetCanonical) {
+        if (!$onlySetCanonical) {
             // 4. Trigger a SAPI3 reindex on the places removed from duplicate_places
 
             $this->reindexPlaces($this->duplicatePlaceRemovedFromClusterRepository->getDuplicatePlacesRemovedFromCluster(), $output, $dryRun);
