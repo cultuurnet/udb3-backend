@@ -37,70 +37,70 @@ class CanonicalServiceTest extends TestCase
         $this->getConnection()->insert(
             'duplicate_places',
             [
-                'cluster_id' => '1',
+                'cluster_id' => 'cluster_1',
                 'place_uuid' => '5d202668-7b6f-4848-9271-f0e0474f7922',
             ]
         );
         $this->getConnection()->insert(
             'duplicate_places',
             [
-                'cluster_id' => '1',
+                'cluster_id' => 'cluster_1',
                 'place_uuid' => $this->museumPassPlaceId,
             ]
         );
         $this->getConnection()->insert(
             'duplicate_places',
             [
-                'cluster_id' => '1',
+                'cluster_id' => 'cluster_1',
                 'place_uuid' => 'b22d5d76-dceb-4583-8947-e1183a93c10d',
             ]
         );
         $this->getConnection()->insert(
             'duplicate_places',
             [
-                'cluster_id' => '2',
+                'cluster_id' => 'cluster_2',
                 'place_uuid' => $anotherMuseumPassPlaceId,
             ]
         );
         $this->getConnection()->insert(
             'duplicate_places',
             [
-                'cluster_id' => '2',
+                'cluster_id' => 'cluster_2',
                 'place_uuid' => $this->museumPassPlaceId,
             ]
         );
         $this->getConnection()->insert(
             'duplicate_places',
             [
-                'cluster_id' => '2',
+                'cluster_id' => 'cluster_2',
                 'place_uuid' => '5d202668-7b6f-4848-9271-f0e0474f7922',
             ]
         );
         $this->getConnection()->insert(
             'duplicate_places',
             [
-                'cluster_id' => '2',
+                'cluster_id' => 'cluster_2',
                 'place_uuid' => 'b22d5d76-dceb-4583-8947-e1183a93c10d',
             ]
         );
         $this->getConnection()->insert(
             'duplicate_places',
             [
-                'cluster_id' => '3',
+                'cluster_id' => 'cluster_3',
                 'place_uuid' => '5d202668-7b6f-4848-9271-f0e0474f7922',
             ]
         );
         $this->getConnection()->insert(
             'duplicate_places',
             [
-                'cluster_id' => '3',
+                'cluster_id' => 'cluster_3',
                 'place_uuid' => $this->mostEventsPlaceId,
             ]
         );
         $this->getConnection()->insert(
             'duplicate_places',
             [
-                'cluster_id' => '3',
+                'cluster_id' => 'cluster_3',
                 'place_uuid' => 'b22d5d76-dceb-4583-8947-e1183a93c10d',
             ]
         );
@@ -108,7 +108,7 @@ class CanonicalServiceTest extends TestCase
         $this->getConnection()->insert(
             'duplicate_places',
             [
-                'cluster_id' => '4',
+                'cluster_id' => 'cluster_4',
                 'place_uuid' => $this->oldestPlaceId,
             ]
         );
@@ -166,7 +166,7 @@ class CanonicalServiceTest extends TestCase
             $this->getConnection()->insert(
                 'duplicate_places',
                 [
-                    'cluster_id' => '4',
+                    'cluster_id' => 'cluster_4',
                     'place_uuid' => $placeId,
                 ]
             );
@@ -203,7 +203,7 @@ class CanonicalServiceTest extends TestCase
      */
     public function it_will_return_the_MPM_place(): void
     {
-        $canonicalId = $this->canonicalService->getCanonical(1);
+        $canonicalId = $this->canonicalService->getCanonical('cluster_1');
 
         $this->assertEquals(
             $this->museumPassPlaceId,
@@ -216,7 +216,7 @@ class CanonicalServiceTest extends TestCase
      */
     public function it_will_get_the_place_with_most_events(): void
     {
-        $canonicalId = $this->canonicalService->getCanonical(3);
+        $canonicalId = $this->canonicalService->getCanonical('cluster_3');
 
         $this->assertEquals(
             $this->mostEventsPlaceId,
@@ -230,9 +230,9 @@ class CanonicalServiceTest extends TestCase
     public function it_will_throw_an_exception_when_cluster_contains_2_MPM_places(): void
     {
         $this->expectException(MuseumPassNotUniqueInCluster::class);
-        $this->expectExceptionMessage('Cluster 2 contains 2 MuseumPass places');
+        $this->expectExceptionMessage('Cluster cluster_2 contains 2 MuseumPass places');
 
-        $this->canonicalService->getCanonical(2);
+        $this->canonicalService->getCanonical('cluster_2');
     }
 
     /**
@@ -240,7 +240,7 @@ class CanonicalServiceTest extends TestCase
      */
     public function it_will_get_the_oldest_place_if_equal_nr_of_events(): void
     {
-        $canonicalId = $this->canonicalService->getCanonical(4);
+        $canonicalId = $this->canonicalService->getCanonical('cluster_4');
 
         $this->assertEquals(
             $this->oldestPlaceId,

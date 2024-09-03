@@ -24,10 +24,10 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->execute()
             ->fetchFirstColumn();
 
-        return array_map('intval', $result);
+        return $result;
     }
 
-    public function getPlacesInCluster(int $clusterId): array
+    public function getPlacesInCluster(string $clusterId): array
     {
         return $this->connection->createQueryBuilder()
             ->select('place_uuid')
@@ -38,7 +38,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->fetchFirstColumn();
     }
 
-    public function setCanonicalOnCluster(int $clusterId, string $canonical): void
+    public function setCanonicalOnCluster(string $clusterId, string $canonical): void
     {
         $this->connection->createQueryBuilder()
             ->update('duplicate_places')
