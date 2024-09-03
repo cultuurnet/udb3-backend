@@ -13,6 +13,8 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepos
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
+use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlacesRemovedFromClusterRepository;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 
 final class PlaceServiceProvider extends AbstractServiceProvider
@@ -27,6 +29,7 @@ final class PlaceServiceProvider extends AbstractServiceProvider
             PlaceRepository::class,
             'place_service',
             'duplicate_place_repository',
+            DuplicatePlaceRemovedFromClusterRepository::class,
             'canonical_service',
         ];
     }
@@ -84,6 +87,11 @@ final class PlaceServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'duplicate_place_repository',
             fn () => new DBALDuplicatePlaceRepository($container->get('dbal_connection'))
+        );
+
+        $container->addShared(
+            DuplicatePlaceRemovedFromClusterRepository::class,
+            fn () => new DBALDuplicatePlacesRemovedFromClusterRepository($container->get('dbal_connection'))
         );
 
         $container->addShared(

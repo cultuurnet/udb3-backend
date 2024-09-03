@@ -107,16 +107,8 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return $statement->fetchAssociative()['total'];
     }
 
-    public function addToDuplicatePlacesRemovedFromCluster(string $placeId): void
-    {
-        $this->connection->createQueryBuilder()
-            ->insert('duplicate_places_removed_from_cluster')
-            ->setValue('place_uuid', ':place_uuid')
-            ->setParameter(':place_uuid', $placeId)
-            ->execute();
-    }
 
-    private function processRawToClusterRecord(array $data): array
+    private function convertRawToClusterRecord(array $data): array
     {
         return array_map(function ($row): ClusterRecord {
             return ClusterRecord::fromArray($row);

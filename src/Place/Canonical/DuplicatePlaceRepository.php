@@ -24,8 +24,6 @@ interface DuplicatePlaceRepository
 
     public function getDuplicatesOfPlace(string $placeId): ?array;
 
-    public function addToDuplicatePlacesRemovedFromCluster(string $placeId): void;
-
     /** @return ClusterRecord[] */
     public function calculateNoLongerInCluster(): array;
 

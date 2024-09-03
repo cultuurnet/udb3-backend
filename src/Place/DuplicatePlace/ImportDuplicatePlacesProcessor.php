@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\DuplicatePlace;
 
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use Doctrine\DBAL\Connection;
 
 class ImportDuplicatePlacesProcessor
 {
     private DuplicatePlaceRepository $duplicatePlaceRepository;
+    private DuplicatePlaceRemovedFromClusterRepository $duplicatePlacesRemovedFromClusterRepository;
     private Connection $connection;
 
     public function __construct(
         DuplicatePlaceRepository $duplicatePlaceRepository,
+        DuplicatePlaceRemovedFromClusterRepository $duplicatePlacesRemovedFromClusterRepository,
         Connection $connection
     ) {
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
+        $this->duplicatePlacesRemovedFromClusterRepository = $duplicatePlacesRemovedFromClusterRepository;
         $this->connection = $connection;
     }
 
@@ -33,7 +37,7 @@ class ImportDuplicatePlacesProcessor
                 continue;
             }
 
-            $this->duplicatePlaceRepository->addToDuplicatePlacesRemovedFromCluster(
+            $this->duplicatePlacesRemovedFromClusterRepository->addPlace(
                 $noLongerInCluster->getPlaceUuid()->toString()
             );
         }
