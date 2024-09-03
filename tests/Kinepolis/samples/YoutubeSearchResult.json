@@ -1,0 +1,50 @@
+{
+  "etag": "In45_JAOVxQTd3A5oRZ8raXTBK8",
+  "eventId": null,
+  "kind": "youtube#searchListResponse",
+  "nextPageToken": "CAEQAA",
+  "prevPageToken": null,
+  "regionCode": "BE",
+  "visitorId": null,
+  "pageInfo": {
+    "resultsPerPage": 1,
+    "totalResults": 9
+  },
+  "items": [
+    {
+      "etag": "nDCS2xwuuHOTFuAN8jGSN8jFoUs",
+      "kind": "youtube#searchResult",
+      "id": {
+        "channelId": null,
+        "kind": "youtube#video",
+        "playlistId": null,
+        "videoId": "26r2alNpYSg"
+      },
+      "snippet": {
+        "channelId": "UC3up88jyCBqPStM7OkCKrjA",
+        "channelTitle": "Kinepolis Belgi\u00eb",
+        "description": "Venez rencontrer les acteurs et réalisateurs lors d'avant-premières exceptionnelles.\n\nL'occasion de partager un moment privilégié avec eux et de découvrir les coulisses des tournages. \n\nRéservation des places - au tarif habituel - conseillée",
+        "liveBroadcastContent": "none",
+        "publishedAt": "2023-06-01T08:38:06Z",
+        "title": "Visite d'équipe: TKT:{ | Offici\u00eble Trailer",
+        "thumbnails": {
+          "default": {
+            "height": 90,
+            "url": "https:\/\/i.ytimg.com\/vi\/26r2alNpYSg\/default.jpg",
+            "width": 120
+          },
+          "medium": {
+            "height": 180,
+            "url": "https:\/\/i.ytimg.com\/vi\/26r2alNpYSg\/mqdefault.jpg",
+            "width": 320
+          },
+          "high": {
+            "height": 360,
+            "url": "https:\/\/i.ytimg.com\/vi\/26r2alNpYSg\/hqdefault.jpg",
+            "width": 480
+          }
+        }
+      }
+    }
+  ]
+}
