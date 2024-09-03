@@ -49,7 +49,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->setParameters([
                 ':canonical' => $canonical,
                 ':cluster_id' => $clusterId,
-                ':place_uuid' => $canonical,
+                ':canonical' => $canonical,
             ])
             ->execute();
     }
@@ -83,35 +83,39 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
     /** @return ClusterRecord[] */
     public function calculateNoLongerInCluster(): array
     {
-        $statement = $this->connection->executeQuery('
-           SELECT dp.*
-           FROM duplicate_places dp
-           LEFT JOIN duplicate_places_import dpi
-           ON dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid
-           WHERE dpi.cluster_id IS NULL
-           ORDER BY dp.cluster_id asc, dp.place_uuid asc
-        ');
+        $qb = $this->connection->createQueryBuilder();
+        $qb->select('dp.*')
+            ->from('duplicate_places', 'dp')
+            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid')
+            ->where('dpi.cluster_id IS NULL')
+            ->orderBy('dp.cluster_id', 'asc')
+            ->addOrderBy('dp.place_uuid', 'asc');
+
+        $statement = $qb->execute();
 
         return $this->processRawToClusterRecord($statement->fetchAllAssociative());
     }
 
     public function calculatePlaceInDuplicatePlacesImport(string $placeId): array
     {
-        $statement = $this->connection->executeQuery(
-            '
-           SELECT dpi.*
-           FROM duplicate_places_import dpi
-           WHERE dpi.place_uuid = :place_id
-        ',
-            ['place_id' => $placeId]
-        );
+        $qb = $this->connection->createQueryBuilder();
+        $qb->select('dpi.*')
+            ->from('duplicate_places_import', 'dpi')
+            ->where('dpi.place_uuid = :place_id')
+            ->setParameter(':place_id', $placeId);
+
+        $statement = $qb->execute();
 
         return $this->processRawToClusterRecord($statement->fetchAllAssociative());
     }
 
     public function addToDuplicatePlacesRemovedFromCluster(string $placeId): void
     {
-        $this->connection->executeQuery('INSERT INTO duplicate_places_removed_from_cluster SET place_uuid  = :place_uuid', [':place_uuid' => $placeId]);
+        $this->connection->createQueryBuilder()
+            ->insert('duplicate_places_removed_from_cluster')
+            ->setValue('place_uuid', ':place_uuid')
+            ->setParameter(':place_uuid', $placeId)
+            ->execute();
     }
 
     private function processRawToClusterRecord(array $data): array
@@ -123,9 +127,10 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 
     public function deleteCluster(string $clusterId): void
     {
-        $this->connection->executeQuery(
-            'DELETE dp FROM duplicate_places dp WHERE dp.cluster_id = :cluster_id;',
-            [':cluster_id' => $clusterId]
-        );
+        $this->connection->createQueryBuilder()
+            ->delete('duplicate_places')
+            ->where('cluster_id = :cluster_id')
+            ->setParameter(':cluster_id', $clusterId)
+            ->execute();
     }
 }
