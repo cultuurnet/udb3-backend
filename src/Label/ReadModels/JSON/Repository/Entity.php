@@ -68,7 +68,7 @@ class Entity implements \JsonSerializable
     /**
      * @inheritdoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             self::ID => $this->uuid->toString(),

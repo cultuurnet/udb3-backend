@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Kinepolis\Client;
 
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Kinepolis\Exception\ImageNotFound;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\UploadedFile;
 use Psr\Http\Client\ClientInterface;
@@ -138,6 +139,10 @@ final class AuthenticatedKinepolisClient implements KinepolisClient
 
     private function getFileName(string $path): string
     {
-        return substr($path, strrpos($path, '/') + 1);
+        $fileName = substr($path, strrpos($path, '/') + 1);
+        if (empty($fileName)) {
+            throw new ImageNotFound(sprintf('Cannot process path: "%s"', $path));
+        }
+        return $fileName;
     }
 }
