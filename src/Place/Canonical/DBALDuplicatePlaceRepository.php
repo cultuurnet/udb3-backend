@@ -49,7 +49,6 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->setParameters([
                 ':canonical' => $canonical,
                 ':cluster_id' => $clusterId,
-                ':canonical' => $canonical,
             ])
             ->execute();
     }
@@ -96,17 +95,16 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return $this->processRawToClusterRecord($statement->fetchAllAssociative());
     }
 
-    public function calculatePlaceInDuplicatePlacesImport(string $placeId): array
+    public function countPlacesInDuplicatePlacesImport(string $placeId): int
     {
         $qb = $this->connection->createQueryBuilder();
-        $qb->select('dpi.*')
-            ->from('duplicate_places_import', 'dpi')
-            ->where('dpi.place_uuid = :place_id')
-            ->setParameter(':place_id', $placeId);
+        $statement = $qb->select('count(*) as total')
+            ->from('duplicate_places_import')
+            ->where('place_uuid = :place_id')
+            ->setParameter(':place_id', $placeId)
+            ->execute();
 
-        $statement = $qb->execute();
-
-        return $this->processRawToClusterRecord($statement->fetchAllAssociative());
+        return $statement->fetchAssociative()['total'];
     }
 
     public function addToDuplicatePlacesRemovedFromCluster(string $placeId): void

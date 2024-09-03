@@ -28,7 +28,7 @@ class ImportDuplicatePlacesProcessor
         foreach ($noLongerInClusters as $noLongerInCluster) {
             $this->duplicatePlaceRepository->deleteCluster($noLongerInCluster->getClusterId());
 
-            if (count($this->duplicatePlaceRepository->calculatePlaceInDuplicatePlacesImport($noLongerInCluster->getPlaceUuid()->toString())) > 0) {
+            if ($this->duplicatePlaceRepository->countPlacesInDuplicatePlacesImport($noLongerInCluster->getPlaceUuid()->toString()) > 0) {
                 // We will only index places that do not occur in any cluster.
                 continue;
             }

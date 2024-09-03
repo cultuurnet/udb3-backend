@@ -29,7 +29,7 @@ interface DuplicatePlaceRepository
     /** @return ClusterRecord[] */
     public function calculateNoLongerInCluster(): array;
 
-    public function calculatePlaceInDuplicatePlacesImport(string $placeId): array;
+    public function countPlacesInDuplicatePlacesImport(string $placeId): int;
 
     public function deleteCluster(string $clusterId): void;
 }
