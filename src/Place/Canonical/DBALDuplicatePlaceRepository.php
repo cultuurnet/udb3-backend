@@ -137,11 +137,9 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
     public function calculateHowManyClustersHaveChanged(): ClusterChangeResult
     {
         $statement = $this->connection->executeQuery('SELECT
-            (not_in_duplicate / total_import * 100) AS percentage_not_in_duplicate,
-            (not_in_import / total_duplicate * 100) AS percentage_not_in_import
+            not_in_duplicate,
+            not_in_import
         FROM
-            (SELECT COUNT(*) AS total_import FROM duplicate_places_import) AS import_total,
-            (SELECT COUNT(*) AS total_duplicate FROM duplicate_places) AS duplicate_total,
             (SELECT COUNT(*) AS not_in_duplicate
              FROM duplicate_places_import dpi
              LEFT JOIN duplicate_places dp
@@ -151,7 +149,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
              FROM duplicate_places dp
              LEFT JOIN duplicate_places_import dpi
              ON dp.cluster_id = dpi.cluster_id AND dp.place_uuid = dpi.place_uuid
-             WHERE dpi.cluster_id IS NULL) AS diff_duplicate_to_import;Ê
+             WHERE dpi.cluster_id IS NULL) AS diff_duplicate_to_import;
         ');
 
         return ClusterChangeResult::fromArray($statement->fetchAssociative());

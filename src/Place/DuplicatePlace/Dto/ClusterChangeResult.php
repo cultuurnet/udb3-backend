@@ -6,30 +6,30 @@ namespace CultuurNet\UDB3\Place\DuplicatePlace\Dto;
 
 class ClusterChangeResult
 {
-    private int $percentageNewClusters;
-    private int $percentageClustersToRemove;
+    private int $amountNewClusters;
+    private int $amountRemovedClusters;
 
     public function __construct(int $percentageNewClusters, int $percentageClustersToRemove)
     {
-        $this->percentageNewClusters = $percentageNewClusters;
-        $this->percentageClustersToRemove = $percentageClustersToRemove;
+        $this->amountNewClusters = $percentageNewClusters;
+        $this->amountRemovedClusters = $percentageClustersToRemove;
     }
 
-    public function getPercentageNewClusters(): int
+    public function getAmountNewClusters(): int
     {
-        return $this->percentageNewClusters;
+        return $this->amountNewClusters;
     }
 
-    public function getPercentageClustersToRemove(): int
+    public function getAmountRemovedClusters(): int
     {
-        return $this->percentageClustersToRemove;
+        return $this->amountRemovedClusters;
     }
 
     public static function fromArray(array $array): self
     {
         return new self(
-            (int)round((float)$array['percentage_not_in_duplicate']),
-            (int)round((float)$array['percentage_not_in_import'])
+            (int)round((float)$array['not_in_duplicate']),
+            (int)round((float)$array['not_in_import'])
         );
     }
 }

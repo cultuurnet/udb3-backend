@@ -228,7 +228,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
 
                 ],
                 0,
-                100,
+                5,
             ],
             'Some new, some removed' => [
                 [
@@ -236,8 +236,8 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
                     ['cluster_1', '1accbcfb-3b22-4762-bc13-be0f67fd3116'],
                     ['new', '04a549ba-6e5e-433b-9601-07b7a809758e'],
                 ],
-                33,
-                60,
+                1,
+                3,
             ],
             'Nothing has changed' => [
                 [
@@ -258,8 +258,8 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
                     ['5', '4a355db3-c3f9-4acc-8093-61b333a3aefb'],
                     ['5', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad'],
                 ],
-                100,
-                100,
+                5,
+                5,
             ],
         ];
     }

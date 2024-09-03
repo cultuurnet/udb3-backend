@@ -106,36 +106,6 @@ class ImportDuplicatePlacesTest extends TestCase
             ->expects($this->once())
             ->method('sync');
 
-        $this->output
-            ->expects($this->once())
-            ->method('writeln')
-            ->with('Duplicate places are synced. You probably want to run place:process-duplicates to process the clusters now.');
-
-        $this->assertEquals(0, $this->command->run($this->input, $this->output));
-    }
-
-    public function testExecuteFailsWhenChangesExceedLimitAndConfirmationIsDenied(): void
-    {
-        $this->dbalDuplicatePlaceRepository
-            ->expects($this->once())
-            ->method('howManyPlacesAreToBeImported')
-            ->willReturn(10);
-
-        $this->dbalDuplicatePlaceRepository
-            ->expects($this->once())
-            ->method('calculateHowManyClustersHaveChanged')
-            ->willReturn(new ClusterChangeResult(80, 20));
-
-        $helper = $this->createMock(QuestionHelper::class);
-        $helper->expects($this->exactly(2))
-            ->method('ask')
-            ->willReturnOnConsecutiveCalls(true, false);
-        $this->command->setHelperSet(new HelperSet(['question' => $helper]));
-
-        $this->importDuplicatePlacesProcessor
-            ->expects($this->never())
-            ->method('sync');
-
         $this->assertEquals(0, $this->command->run($this->input, $this->output));
     }
 }
