@@ -92,7 +92,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 
         $statement = $qb->execute();
 
-        return $this->processRawToClusterRecord($statement->fetchAllAssociative());
+        return $this->convertRawToClusterRecord($statement->fetchAllAssociative());
     }
 
     public function countPlacesInDuplicatePlacesImport(string $placeId): int
