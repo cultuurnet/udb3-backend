@@ -7,9 +7,6 @@ namespace CultuurNet\UDB3\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/*
- * Adding primary keys
- * */
 class Version20240830071940 extends AbstractMigration
 {
     public function up(Schema $schema): void
