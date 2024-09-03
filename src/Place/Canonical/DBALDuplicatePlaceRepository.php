@@ -95,9 +95,23 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return $this->processRawToClusterRecord($statement->fetchAllAssociative());
     }
 
-    public function addToDuplicatePlacesRemovedFromCluster(string $clusterId): void
+    public function calculatePlaceInDuplicatePlacesImport(string $placeId): array
     {
-        $this->connection->executeQuery('INSERT INTO duplicate_places_removed_from_cluster SET cluster_id  = :cluster_id', [':cluster_id' => $clusterId]);
+        $statement = $this->connection->executeQuery(
+            '
+           SELECT dpi.*
+           FROM duplicate_places_import dpi
+           WHERE dpi.place_uuid = :place_id
+        ',
+            ['place_id' => $placeId]
+        );
+
+        return $this->processRawToClusterRecord($statement->fetchAllAssociative());
+    }
+
+    public function addToDuplicatePlacesRemovedFromCluster(string $placeId): void
+    {
+        $this->connection->executeQuery('INSERT INTO duplicate_places_removed_from_cluster SET place_uuid  = :place_uuid', [':place_uuid' => $placeId]);
     }
 
     private function processRawToClusterRecord(array $data): array
@@ -105,5 +119,13 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return array_map(function ($row): ClusterRecord {
             return ClusterRecord::fromArray($row);
         }, $data);
+    }
+
+    public function deleteCluster(string $clusterId): void
+    {
+        $this->connection->executeQuery(
+            'DELETE dp FROM duplicate_places dp WHERE dp.cluster_id = :cluster_id;',
+            [':cluster_id' => $clusterId]
+        );
     }
 }

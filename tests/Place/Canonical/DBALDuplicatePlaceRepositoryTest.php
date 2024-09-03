@@ -197,6 +197,14 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         $this->duplicatePlaceRepository->addToDuplicatePlacesRemovedFromCluster('64901efc-6bd7-4e9d-8916-fcdeb5b1c8af');
 
         $raw = $this->connection->fetchAllAssociative('select * from duplicate_places_removed_from_cluster');
-        $this->assertEquals([['cluster_id' => '64901efc-6bd7-4e9d-8916-fcdeb5b1c8af']], $raw);
+        $this->assertEquals([['place_uuid' => '64901efc-6bd7-4e9d-8916-fcdeb5b1c8af']], $raw);
+    }
+
+    public function test_delete_cluster(): void
+    {
+        $this->duplicatePlaceRepository->deleteCluster('cluster_1');
+
+        $raw = $this->connection->fetchAssociative('select count(*) as total from duplicate_places where cluster_id = :cluster_id', ['cluster_id' => 'cluster_1']);
+        $this->assertEquals(0, $raw['total']);
     }
 }

@@ -5,26 +5,38 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\DuplicatePlace;
 
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
+use Doctrine\DBAL\Connection;
 
-/**
- * Calculate with two arrays containing information about places that are no longer in a cluster and those that are not yet in a cluster.
- */
 class ImportDuplicatePlacesProcessor
 {
     private DuplicatePlaceRepository $duplicatePlaceRepository;
+    private Connection $connection;
 
     public function __construct(
-        DuplicatePlaceRepository $duplicatePlaceRepository
+        DuplicatePlaceRepository $duplicatePlaceRepository,
+        Connection $connection
     ) {
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
+        $this->connection = $connection;
     }
 
     public function sync(): void
     {
         $noLongerInClusters = $this->duplicatePlaceRepository->calculateNoLongerInCluster();
 
+        $this->connection->beginTransaction();
         foreach ($noLongerInClusters as $noLongerInCluster) {
-            $this->duplicatePlaceRepository->addToDuplicatePlacesRemovedFromCluster($noLongerInCluster->getClusterId());
+            $this->duplicatePlaceRepository->deleteCluster($noLongerInCluster->getClusterId());
+
+            if (count($this->duplicatePlaceRepository->calculatePlaceInDuplicatePlacesImport($noLongerInCluster->getPlaceUuid()->toString())) > 0) {
+                // We will only index places that do not occur in any cluster.
+                continue;
+            }
+
+            $this->duplicatePlaceRepository->addToDuplicatePlacesRemovedFromCluster(
+                $noLongerInCluster->getPlaceUuid()->toString()
+            );
         }
+        $this->connection->commit();
     }
 }
