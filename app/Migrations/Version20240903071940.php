@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-class Version20240830071940 extends AbstractMigration
+class Version20240903071940 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
