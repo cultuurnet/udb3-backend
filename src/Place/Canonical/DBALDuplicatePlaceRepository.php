@@ -17,6 +17,8 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 
     public function getClusterIdsWithoutCanonical(): array
     {
+        // We need to use a group by because the canonical place itself will always have the canonical set to NULL.
+        // Why? Because this means they have not been processed yet and should be picked up by the CLI command.
         return $this->connection->createQueryBuilder()
             ->select('cluster_id')
             ->from('duplicate_places')
