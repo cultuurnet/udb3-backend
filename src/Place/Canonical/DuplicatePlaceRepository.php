@@ -21,4 +21,10 @@ interface DuplicatePlaceRepository
     public function getCanonicalOfPlace(string $placeId): ?string;
 
     public function getDuplicatesOfPlace(string $placeId): ?array;
+
+    public function getPlacesNoLongerInCluster(): array;
+
+    public function deleteCluster(string $clusterId): void;
+
+    public function getClustersToBeRemoved(): array;
 }

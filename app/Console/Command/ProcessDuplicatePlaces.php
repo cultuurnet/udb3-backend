@@ -12,10 +12,10 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
-use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -36,23 +36,23 @@ final class ProcessDuplicatePlaces extends AbstractCommand
 
     private DocumentEventFactory $placeEventFactory;
 
-    private Connection $connection;
+    private DuplicatePlaceRemovedFromClusterRepository $duplicatePlaceRemovedFromClusterRepository;
 
     public function __construct(
         CommandBus $commandBus,
         DuplicatePlaceRepository $duplicatePlaceRepository,
+        DuplicatePlaceRemovedFromClusterRepository $duplicatePlaceRemovedFromClusterRepository,
         CanonicalService $canonicalService,
         EventBus $eventBus,
         DocumentEventFactory $placeEventFactory,
-        EventRelationsRepository $eventRelationsRepository,
-        Connection $connection
+        EventRelationsRepository $eventRelationsRepository
     ) {
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
+        $this->duplicatePlaceRemovedFromClusterRepository = $duplicatePlaceRemovedFromClusterRepository;
         $this->canonicalService = $canonicalService;
         $this->eventBus = $eventBus;
         $this->placeEventFactory = $placeEventFactory;
         $this->eventRelationsRepository = $eventRelationsRepository;
-        $this->connection = $connection;
 
         parent::__construct($commandBus);
     }
@@ -158,9 +158,10 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             }
         }
 
-        if (! $onlySetCanonical) {
+        if (!$onlySetCanonical) {
             // 4. Trigger a SAPI3 reindex on the places removed from duplicate_places
-            $this->reindexPlaces($this->getDuplicatePlacesRemovedFromCluster(), $output, $dryRun);
+
+            $this->reindexPlaces($this->duplicatePlaceRemovedFromClusterRepository->getAllPlaces(), $output, $dryRun);
         }
 
         return self::SUCCESS;
@@ -183,15 +184,6 @@ final class ProcessDuplicatePlaces extends AbstractCommand
                     false
                 )
             );
-    }
-
-    private function getDuplicatePlacesRemovedFromCluster(): array
-    {
-        return $this->connection->createQueryBuilder()
-            ->select('place_uuid')
-            ->from('duplicate_places_removed_from_cluster')
-            ->execute()
-            ->fetchFirstColumn();
     }
 
     private function reindexPlaces(array $placesToReIndex, OutputInterface $output, bool $dryRun): void
