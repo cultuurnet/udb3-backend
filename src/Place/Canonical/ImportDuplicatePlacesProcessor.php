@@ -27,6 +27,8 @@ class ImportDuplicatePlacesProcessor
         $placesNoLongerInCluster = $this->duplicatePlaceRepository->getPlacesNoLongerInCluster();
         $clustersToBeRemoved = $this->duplicatePlaceRepository->getClustersToBeRemoved();
 
+        $this->duplicatePlacesRemovedFromClusterRepository->truncateTable();
+
         foreach ($placesNoLongerInCluster as $placeUuid) {
             $this->duplicatePlacesRemovedFromClusterRepository->addPlace(
                 $placeUuid

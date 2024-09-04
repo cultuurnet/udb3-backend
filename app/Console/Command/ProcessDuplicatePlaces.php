@@ -162,7 +162,6 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             // 4. Trigger a SAPI3 reindex on the places removed from duplicate_places
 
             $this->reindexPlaces($this->duplicatePlaceRemovedFromClusterRepository->getDuplicatePlacesRemovedFromCluster(), $output, $dryRun);
-            $this->duplicatePlaceRemovedFromClusterRepository->truncateTable();
         }
 
         return self::SUCCESS;
