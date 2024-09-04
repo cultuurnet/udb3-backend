@@ -26,11 +26,14 @@ interface DuplicatePlaceRepository
 
     /** @return ClusterRecordRow[] */
     public function getClustersToImport(): array;
+
     public function getClustersToBeRemoved(): array;
 
     public function addToDuplicatePlaces(ClusterRecordRow $clusterRecordRow): void;
+
     public function deleteCluster(string $clusterId): void;
 
-    public function calculateHowManyClustersHaveChanged(): ClustersDiffResult;
     public function howManyPlacesAreToBeImported(): int;
+
+    public function howManyPlacesAreToBeDeleted(): int;
 }

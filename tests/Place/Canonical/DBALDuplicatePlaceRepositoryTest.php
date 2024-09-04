@@ -253,7 +253,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
     }
 
     /** @dataProvider clusterChangesDataProvider */
-    public function test_calculate_how_many_clusters_have_changed(array $clusters, int $percentageNotInDuplicate, int $percentageNotInImport): void
+    public function test_calculate_how_many_clusters_have_changed(array $clusters, int $expectedPlacesTobeImported, int $expectedPlacesTobeDeleted): void
     {
         foreach ($clusters as [$clusterId, $placeUuid]) {
             $this->getConnection()->insert(
@@ -265,9 +265,8 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
             );
         }
 
-        $result = $this->duplicatePlaceRepository->calculateHowManyClustersHaveChanged();
-
-        $this->assertEquals(new ClustersDiffResult($percentageNotInDuplicate, $percentageNotInImport), $result);
+        $this->assertEquals($expectedPlacesTobeImported, $this->duplicatePlaceRepository->howManyPlacesAreToBeImported());
+        $this->assertEquals($expectedPlacesTobeDeleted, $this->duplicatePlaceRepository->howManyPlacesAreToBeDeleted());
     }
 
     public static function clusterChangesDataProvider(): array
@@ -319,19 +318,40 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         $this->getConnection()->insert(
             'duplicate_places_import',
             [
-                'cluster_id' => 'cluster_1',
+                'cluster_id' => 'my_brand_new_cluster',
                 'place_uuid' => '19ce6565-76be-425d-94d6-894f84dd2947',
             ]
         );
         $this->getConnection()->insert(
             'duplicate_places_import',
             [
-                'cluster_id' => 'cluster_1',
+                'cluster_id' => 'my_brand_new_cluster',
                 'place_uuid' => '1accbcfb-3b22-4762-bc13-be0f67fd3116',
             ]
         );
 
         $count = $this->duplicatePlaceRepository->howManyPlacesAreToBeImported();
         $this->assertEquals(2, $count);
+    }
+
+    public function test_how_many_places_are_to_be_deleted(): void
+    {
+        $this->getConnection()->insert(
+            'duplicate_places_import',
+            [
+                'cluster_id' => 'cluster_2',
+                'place_uuid' => '4a355db3-c3f9-4acc-8093-61b333a3aefb',
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places_import',
+            [
+                'cluster_id' => 'cluster_2',
+                'place_uuid' => '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad',
+            ]
+        );
+
+        $count = $this->duplicatePlaceRepository->howManyPlacesAreToBeDeleted();
+        $this->assertEquals(3, $count);
     }
 }

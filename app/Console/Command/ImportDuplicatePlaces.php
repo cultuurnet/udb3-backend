@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
-use CultuurNet\UDB3\Place\DuplicatePlace\ImportDuplicatePlacesProcessor;
+use CultuurNet\UDB3\Place\Canonical\ImportDuplicatePlacesProcessor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,18 +19,15 @@ class ImportDuplicatePlaces extends BaseCommand
 
     private ImportDuplicatePlacesProcessor $importDuplicatePlacesProcessor;
     private DBALDuplicatePlaceRepository $dbalDuplicatePlaceRepository;
-    private LoggerInterface $logger;
 
     public function __construct(
         DBALDuplicatePlaceRepository $dbalDuplicatePlaceRepository,
-        ImportDuplicatePlacesProcessor $importDuplicatePlacesProcessor,
-        LoggerInterface $logger
+        ImportDuplicatePlacesProcessor $importDuplicatePlacesProcessor
     ) {
         parent::__construct();
 
         $this->importDuplicatePlacesProcessor = $importDuplicatePlacesProcessor;
         $this->dbalDuplicatePlaceRepository = $dbalDuplicatePlaceRepository;
-        $this->logger = $logger;
     }
 
     public function configure(): void
@@ -48,17 +45,10 @@ class ImportDuplicatePlaces extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        $placesToImport = $this->dbalDuplicatePlaceRepository->howManyPlacesAreToBeImported();
-        $clusterChangeResult = $this->dbalDuplicatePlaceRepository->calculateHowManyClustersHaveChanged();
+        $howManyPlacesAreToBeImported = $this->dbalDuplicatePlaceRepository->howManyPlacesAreToBeImported();
+        $howManyPlacesAreToBeDeleted = $this->dbalDuplicatePlaceRepository->howManyPlacesAreToBeDeleted();
 
-        if ($placesToImport === 0) {
-            $msg = 'Import duplicate places failed. Duplicate_places_import table is empty.';
-            $this->logger->error($msg);
-            $output->writeln(sprintf('<error>%s</error>', $msg));
-            return self::FAILURE;
-        }
-
-        if ($clusterChangeResult->getAmountRemovedClusters() === 0 && $clusterChangeResult->getAmountNewClusters() === 0) {
+        if ($howManyPlacesAreToBeImported === 0 && $howManyPlacesAreToBeDeleted === 0) {
             $output->writeln('duplicate_places is already synced');
             return self::SUCCESS;
         }
@@ -67,9 +57,9 @@ class ImportDuplicatePlaces extends BaseCommand
             $input,
             $output,
             sprintf(
-                'This action will change a total of %d new places, and remove %d places from the duplicate places table. Do you want to continue? [y/N] ',
-                $clusterChangeResult->getAmountNewClusters(),
-                $clusterChangeResult->getAmountRemovedClusters(),
+                'This action will sync a total of %d new places, and remove %d places from the duplicate places table. Do you want to continue? [y/N] ',
+                $howManyPlacesAreToBeImported,
+                $howManyPlacesAreToBeDeleted,
             )
         )) {
             return self::SUCCESS;

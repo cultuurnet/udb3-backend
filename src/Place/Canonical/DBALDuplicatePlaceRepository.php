@@ -146,34 +146,31 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->execute();
     }
 
-    public function calculateHowManyClustersHaveChanged(): ClustersDiffResult
-    {
-        // Subquery 1: COUNT from `duplicate_places_import` not present in `duplicate_places`
-        $qb1 = $this->connection->createQueryBuilder();
-        $qb1->select('COUNT(*) AS not_in_duplicate')
-            ->from('duplicate_places_import', 'dpi')
-            ->leftJoin('dpi', 'duplicate_places', 'dp', 'dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid')
-            ->where('dp.cluster_id IS NULL');
-
-        // Subquery 2: COUNT from `duplicate_places` not present in `duplicate_places_import`
-        $qb2 = $this->connection->createQueryBuilder();
-        $qb2->select('COUNT(*) AS not_in_import')
-            ->from('duplicate_places', 'dp')
-            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.cluster_id = dpi.cluster_id AND dp.place_uuid = dpi.place_uuid')
-            ->where('dpi.cluster_id IS NULL');
-
-        return new ClustersDiffResult(
-            (int)round((float)$qb1->execute()->fetchOne()),
-            (int)round((float)$qb2->execute()->fetchOne()),
-        );
-    }
-
     public function howManyPlacesAreToBeImported(): int
     {
-        $statement = $this->connection->executeQuery('SELECT count(*) as total FROM duplicate_places_import');
+        // COUNT from `duplicate_places_import` not present in `duplicate_places`
+        $result = $this->connection->createQueryBuilder()
+            ->select('COUNT(*) AS not_in_duplicate')
+            ->from('duplicate_places_import', 'dpi')
+            ->leftJoin('dpi', 'duplicate_places', 'dp', 'dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid')
+            ->where('dp.cluster_id IS NULL')
+            ->execute();
 
-        $count = $statement->fetchAssociative();
+        $a = $result->fetchOne();
 
-        return (int)$count['total'];
+        return (int)($a ?? 0);
+    }
+
+    public function howManyPlacesAreToBeDeleted(): int
+    {
+        // COUNT from `duplicate_places` not present in `duplicate_places_import`
+        $result = $this->connection->createQueryBuilder()
+            ->select('COUNT(*) AS not_in_import')
+            ->from('duplicate_places', 'dp')
+            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.cluster_id = dpi.cluster_id AND dp.place_uuid = dpi.place_uuid')
+            ->where('dpi.cluster_id IS NULL')
+            ->execute();
+
+        return (int)($result->fetchOne() ?? 0);
     }
 }

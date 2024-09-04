@@ -21,8 +21,6 @@ class ImportDuplicatePlacesTest extends TestCase
     private $dbalDuplicatePlaceRepository;
     /** @var ImportDuplicatePlacesProcessor|MockObject  */
     private $importDuplicatePlacesProcessor;
-    /** @var LoggerInterface|MockObject  */
-    private $logger;
     /** @var InputInterface|MockObject  */
     private $input;
     /** @var OutputInterface|MockObject  */
@@ -33,35 +31,13 @@ class ImportDuplicatePlacesTest extends TestCase
     {
         $this->dbalDuplicatePlaceRepository = $this->createMock(DBALDuplicatePlaceRepository::class);
         $this->importDuplicatePlacesProcessor = $this->createMock(ImportDuplicatePlacesProcessor::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
         $this->input = $this->createMock(InputInterface::class);
         $this->output = $this->createMock(OutputInterface::class);
 
         $this->command = new ImportDuplicatePlaces(
             $this->dbalDuplicatePlaceRepository,
-            $this->importDuplicatePlacesProcessor,
-            $this->logger
+            $this->importDuplicatePlacesProcessor
         );
-    }
-
-    public function testExecuteFailsWhenImportTableIsEmpty(): void
-    {
-        $this->dbalDuplicatePlaceRepository
-            ->expects($this->once())
-            ->method('howManyPlacesAreToBeImported')
-            ->willReturn(0);
-
-        $this->logger
-            ->expects($this->once())
-            ->method('error')
-            ->with('Import duplicate places failed. Duplicate_places_import table is empty.');
-
-        $this->output
-            ->expects($this->once())
-            ->method('writeln')
-            ->with('<error>Import duplicate places failed. Duplicate_places_import table is empty.</error>');
-
-        $this->assertEquals(1, $this->command->run($this->input, $this->output));
     }
 
     public function testExecuteSucceedsWhenTablesAreAlreadySynced(): void
@@ -69,12 +45,12 @@ class ImportDuplicatePlacesTest extends TestCase
         $this->dbalDuplicatePlaceRepository
             ->expects($this->once())
             ->method('howManyPlacesAreToBeImported')
-            ->willReturn(10);
+            ->willReturn(0);
 
         $this->dbalDuplicatePlaceRepository
             ->expects($this->once())
-            ->method('calculateHowManyClustersHaveChanged')
-            ->willReturn(new ClustersDiffResult(0, 0));
+            ->method('howManyPlacesAreToBeDeleted')
+            ->willReturn(0);
 
         $this->output
             ->expects($this->once())
@@ -89,12 +65,12 @@ class ImportDuplicatePlacesTest extends TestCase
         $this->dbalDuplicatePlaceRepository
             ->expects($this->once())
             ->method('howManyPlacesAreToBeImported')
-            ->willReturn(10);
+            ->willReturn(50);
 
         $this->dbalDuplicatePlaceRepository
             ->expects($this->once())
-            ->method('calculateHowManyClustersHaveChanged')
-            ->willReturn(new ClustersDiffResult(50, 30));
+            ->method('howManyPlacesAreToBeDeleted')
+            ->willReturn(30);
 
         $helper = $this->createMock(QuestionHelper::class);
         $helper->expects($this->once())
