@@ -220,4 +220,13 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         $raw = $this->connection->fetchAssociative('select count(*) as total from duplicate_places where cluster_id = :cluster_id', ['cluster_id' => 'cluster_1']);
         $this->assertEquals(0, $raw['total']);
     }
+
+    public function test_add_to_duplicate_places(): void {
+        $placeUuid = '19ce6565-76be-425d-94d6-894f84dd2947';
+
+        $this->duplicatePlaceRepository->addToDuplicatePlaces(new ClusterRecordRow('cluster_new', $placeUuid));
+
+        $raw = $this->connection->fetchAssociative('select count(*) as total from duplicate_places where cluster_id = :cluster_id and place_uuid = :place_uuid', ['cluster_id' => 'cluster_new', 'place_uuid' => $placeUuid]);
+        $this->assertEquals(1, $raw['total']);
+    }
 }
