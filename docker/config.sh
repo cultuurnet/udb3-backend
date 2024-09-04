@@ -10,7 +10,7 @@ if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
   cp "$DIR"/.env .
 else
-  echo "Error: missing appconfig see docker.md prerequisites to fix this."
+  echo "Error: missing appconfig. The appconfig and udb3-backend repositories must be cloned into the same parent folder."
   exit 1
 fi
 
@@ -18,6 +18,6 @@ DIR="../appconfig/files/uitdatabank/docker/keys/"
 if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
 else
-  echo "Error: missing appconfig see docker.md prerequisites to fix this."
+  echo "Error: missing appconfig. The appconfig and udb3-backend repositories must be cloned into the same parent folder."
   exit 1
 fi
