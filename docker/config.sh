@@ -5,19 +5,19 @@ if ! grep -q "host.docker.internal" /etc/hosts; then
   sudo sh -c 'echo "127.0.0.1 host.docker.internal" >> /etc/hosts'
 fi
 
-DIR="../appconfig/files/udb3/docker/udb3-backend/"
+DIR="../appconfig/files/uitdatabank/docker/udb3-backend/"
 if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
   cp "$DIR"/.env .
 else
-  echo "Error: missing appconfig see docker.md prerequisites to fix this."
+  echo "Error: missing appconfig. The appconfig and udb3-backend repositories must be cloned into the same parent folder."
   exit 1
 fi
 
-DIR="../appconfig/files/udb3/docker/keys/"
+DIR="../appconfig/files/uitdatabank/docker/keys/"
 if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
 else
-  echo "Error: missing appconfig see docker.md prerequisites to fix this."
+  echo "Error: missing appconfig. The appconfig and udb3-backend repositories must be cloned into the same parent folder."
   exit 1
 fi
