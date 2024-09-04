@@ -56,13 +56,23 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         $this->duplicatePlaceRepository = new DBALDuplicatePlaceRepository($this->getConnection());
     }
 
+    private function insertDuplicatePlaceImport(string $clusterId, string $placeUuid): void
+    {
+        $qb = $this->getConnection()->createQueryBuilder();
+        $qb->insert('duplicate_places_import')
+            ->setValue('cluster_id', ':cluster_id')
+            ->setValue('place_uuid', ':place_uuid')
+            ->setParameter('cluster_id', $clusterId)
+            ->setParameter('place_uuid', $placeUuid)
+            ->execute();
+    }
+
     /**
      * @test
      */
     public function it_can_return_clusterIds(): void
     {
         $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
-
         $this->assertEquals(['cluster_1', 'cluster_2'], $clusterIds);
     }
 
@@ -72,7 +82,6 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
     public function it_can_return_placeIds(): void
     {
         $clusterIds = $this->duplicatePlaceRepository->getPlacesInCluster('cluster_1');
-
         $this->assertEquals(
             [
                 '19ce6565-76be-425d-94d6-894f84dd2947',
@@ -91,7 +100,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         $this->duplicatePlaceRepository->setCanonicalOnCluster('cluster_1', '1accbcfb-3b22-4762-bc13-be0f67fd3116');
         $this->duplicatePlaceRepository->setCanonicalOnCluster('cluster_2', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad');
 
-        $actualRows = $this->connection->createQueryBuilder()
+        $actualRows = $this->getConnection()->createQueryBuilder()
             ->select('*')
             ->from('duplicate_places')
             ->orderBy('place_uuid')
@@ -176,13 +185,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
 
     public function test_places_no_longer_in_cluster(): void
     {
-        $this->getConnection()->insert(
-            'duplicate_places_import',
-            [
-                'cluster_id' => 'cluster_2',
-                'place_uuid' => '19ce6565-76be-425d-94d6-894f84dd2947',
-            ]
-        );
+        $this->insertDuplicatePlaceImport('cluster_2', '19ce6565-76be-425d-94d6-894f84dd2947');
 
         $this->assertEquals(
             [
@@ -197,13 +200,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
 
     public function test_clusters_to_be_removed(): void
     {
-        $this->getConnection()->insert(
-            'duplicate_places_import',
-            [
-                'cluster_id' => 'cluster_2',
-                'place_uuid' => '19ce6565-76be-425d-94d6-894f84dd2947',
-            ]
-        );
+        $this->insertDuplicatePlaceImport('cluster_2', '19ce6565-76be-425d-94d6-894f84dd2947');
 
         $this->assertEquals(
             [
@@ -213,12 +210,17 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         );
     }
 
-
     public function test_delete_cluster(): void
     {
         $this->duplicatePlaceRepository->deleteCluster('cluster_1');
 
-        $raw = $this->connection->fetchAssociative('select count(*) as total from duplicate_places where cluster_id = :cluster_id', ['cluster_id' => 'cluster_1']);
+        $qb = $this->getConnection()->createQueryBuilder();
+        $qb->select('count(*) as total')
+            ->from('duplicate_places')
+            ->where('cluster_id = :cluster_id')
+            ->setParameter('cluster_id', 'cluster_1');
+        $raw = $qb->execute()->fetchAssociative();
+
         $this->assertEquals(0, $raw['total']);
     }
 }
