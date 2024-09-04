@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Console\Command;
 
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\ImportDuplicatePlacesProcessor;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

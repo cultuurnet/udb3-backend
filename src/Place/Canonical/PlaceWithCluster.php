@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Canonical;
 
-class ClusterRecordRow
+class PlaceWithCluster
 {
     private string $clusterId;
     private string $placeUuid;

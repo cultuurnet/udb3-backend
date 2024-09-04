@@ -58,18 +58,18 @@ class ImportDuplicatePlacesProcessorTest extends TestCase
     public function test_insert_new_clusters(): void
     {
         $places = [
-            new ClusterRecordRow('cluster_1', Uuid::uuid4()->toString()),
-            new ClusterRecordRow('cluster_1', Uuid::uuid4()->toString()),
-            new ClusterRecordRow('cluster_2', Uuid::uuid4()->toString()),
+            new PlaceWithCluster('cluster_1', Uuid::uuid4()->toString()),
+            new PlaceWithCluster('cluster_1', Uuid::uuid4()->toString()),
+            new PlaceWithCluster('cluster_2', Uuid::uuid4()->toString()),
         ];
 
         $this->duplicatePlaceRepository->expects($this->once())
-            ->method('getClustersToImport')
+            ->method('getPlacesWithCluster')
             ->willReturn($places);
 
         $this->duplicatePlaceRepository->expects($this->exactly(count($places)))
             ->method('addToDuplicatePlaces')
-            ->willReturnCallback(function (ClusterRecordRow $clusterRecordRow) use ($places) {
+            ->willReturnCallback(function (PlaceWithCluster $clusterRecordRow) use ($places) {
                 $this->assertContains($clusterRecordRow, $places);
             });
 

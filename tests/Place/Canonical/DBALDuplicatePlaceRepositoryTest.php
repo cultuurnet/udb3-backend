@@ -238,7 +238,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
     {
         $placeUuid = '19ce6565-76be-425d-94d6-894f84dd2947';
 
-        $this->duplicatePlaceRepository->addToDuplicatePlaces(new ClusterRecordRow('cluster_new', $placeUuid));
+        $this->duplicatePlaceRepository->addToDuplicatePlaces(new PlaceWithCluster('cluster_new', $placeUuid));
 
         $raw = $this->getConnection()->createQueryBuilder()->select('count(*) as total')
             ->from('duplicate_places')
