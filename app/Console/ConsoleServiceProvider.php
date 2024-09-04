@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Console;
 
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\Console\Command\AddLabelToItems;
 use CultuurNet\UDB3\Console\Command\BulkRemoveFromProduction;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
@@ -25,7 +26,6 @@ use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeEventCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
-use CultuurNet\UDB3\Console\Command\ImportMovieIdsFromCsv;
 use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Console\Command\IncludeLabel;
 use CultuurNet\UDB3\Console\Command\KeycloakCommand;
@@ -59,10 +59,13 @@ use CultuurNet\UDB3\Kinepolis\Parser\KinepolisPriceParser;
 use CultuurNet\UDB3\Kinepolis\Trailer\YoutubeTrailerRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
 use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
+use Google_Client;
+use Google_Service_YouTube;
 use Http\Adapter\Guzzle7\Client;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
@@ -95,6 +98,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.offer:change-owner-bulk',
         'console.organizer:change-owner',
         'console.organizer:change-owner-bulk',
+        'console.label:add-label-to-items',
         'console.label:exclude',
         'console.label:exclude-invalid',
         'console.label:include',
@@ -109,7 +113,6 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:convert-educational-description',
         'console.execute-command-from-csv',
         'console.movies:fetch',
-        'console.movies:migrate',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -250,11 +253,11 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new ProcessDuplicatePlaces(
                 $container->get('event_command_bus'),
                 $container->get('duplicate_place_repository'),
+                $container->get(DuplicatePlaceRemovedFromClusterRepository::class),
                 $container->get('canonical_service'),
                 $container->get(EventBus::class),
                 $container->get('place_jsonld_projected_event_factory'),
                 $container->get(EventRelationsRepository::class),
-                $container->get('dbal_connection')
             )
         );
 
@@ -353,6 +356,16 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
+            'console.label:add-label-to-items',
+            fn () => new AddLabelToItems(
+                $container->get('event_command_bus'),
+                $container->get(EventsSapi3SearchService::class),
+                $container->get(PlacesSapi3SearchService::class),
+                $container->get(OrganizersSapi3SearchService::class),
+            ),
+        );
+
+        $container->addShared(
             'console.label:exclude',
             fn () => new ExcludeLabel($container->get('event_command_bus'))
         );
@@ -442,14 +455,6 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            'console.movies:migrate',
-            fn () => new ImportMovieIdsFromCsv(
-                new MovieMappingRepository($container->get(('dbal_connection'))),
-                $container->get('event_jsonld_repository')
-            )
-        );
-
-        $container->addShared(
             'console.movies:fetch',
             fn () => new FetchMoviesFromKinepolisApi(
                 new KinepolisService(
@@ -471,10 +476,16 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('image_uploader'),
                     new Version4Generator(),
                     new YoutubeTrailerRepository(
-                        $container->get('config')['kinepolis']['trailers']['developer_key'],
+                        new Google_Service_YouTube(
+                            new Google_Client(
+                                [
+                                    'application_name' => 'UiTDatabankTrailerFinder',
+                                    'developer_key' => $container->get('config')['kinepolis']['trailers']['developer_key'],
+                                ]
+                            )
+                        ),
                         $container->get('config')['kinepolis']['trailers']['channel_id'],
-                        new Version4Generator(),
-                        $container->get('config')['kinepolis']['trailers']['enabled'],
+                        new Version4Generator()
                     ),
                     $container->get(ProductionRepository::class),
                     LoggerFactory::create(

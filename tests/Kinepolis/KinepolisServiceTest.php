@@ -335,7 +335,7 @@ final class KinepolisServiceTest extends TestCase
         );
         $this->trailerRepository
             ->expects($this->once())
-            ->method('search')
+            ->method('findMatchingTrailer')
             ->with('Discovery Day')
             ->willReturn($video);
 
@@ -512,7 +512,7 @@ final class KinepolisServiceTest extends TestCase
         );
         $this->trailerRepository
             ->expects($this->once())
-            ->method('search')
+            ->method('findMatchingTrailer')
             ->with('Het Smelt')
             ->willReturn($video);
 
@@ -678,7 +678,7 @@ final class KinepolisServiceTest extends TestCase
         );
         $this->trailerRepository
             ->expects($this->once())
-            ->method('search')
+            ->method('findMatchingTrailer')
             ->with('Het Smelt')
             ->willReturn($video);
 

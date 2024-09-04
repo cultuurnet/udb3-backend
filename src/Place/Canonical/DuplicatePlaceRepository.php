@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Canonical;
 
-use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterRecord;
-
 interface DuplicatePlaceRepository
 {
     /**
@@ -24,7 +22,7 @@ interface DuplicatePlaceRepository
 
     public function getDuplicatesOfPlace(string $placeId): ?array;
 
-    public function addToDuplicatePlacesRemovedFromCluster(string $clusterId): void;
+    public function getPlacesNoLongerInCluster(): array;
 
     /** @return ClusterRecord[] */
     public function calculateNoLongerInCluster(): array;
@@ -33,4 +31,7 @@ interface DuplicatePlaceRepository
     public function calculateNotYetInCluster(): array;
 
     public function addToDuplicatePlaces(string $clusterId, string $placeUuid, string $canonical=null): void;
+    public function deleteCluster(string $clusterId): void;
+
+    public function getClustersToBeRemoved(): array;
 }

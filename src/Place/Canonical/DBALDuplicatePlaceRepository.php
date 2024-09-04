@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Canonical;
 
-use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterRecord;
 use Doctrine\DBAL\Connection;
 
 class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
@@ -51,7 +50,6 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->setParameters([
                 ':canonical' => $canonical,
                 ':cluster_id' => $clusterId,
-                ':place_uuid' => $canonical,
             ])
             ->execute();
     }
@@ -82,42 +80,40 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return count($duplicates) > 0 ? $duplicates : null;
     }
 
-    /** @return ClusterRecord[] */
-    public function calculateNoLongerInCluster(): array
+    public function getPlacesNoLongerInCluster(): array
     {
-        $statement = $this->connection->executeQuery('
-           SELECT dp.*
-           FROM duplicate_places dp
-           LEFT JOIN duplicate_places_import dpi
-           ON dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid
-           WHERE dpi.cluster_id IS NULL
-           ORDER BY dp.cluster_id asc, dp.place_uuid asc
-        ');
+        // All places that do not exist in duplicate_places_import
+        $statement = $this->connection->createQueryBuilder()
+            ->select('DISTINCT dp.place_uuid')
+            ->from('duplicate_places', 'dp')
+            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.place_uuid = dpi.place_uuid')
+            ->where('dpi.place_uuid IS NULL')
+            ->execute();
 
-        return $this->processRawToClusterRecord($statement->fetchAllAssociative());
+        return $statement->fetchFirstColumn();
     }
 
-    /** @return ClusterRecord[] */
-    public function calculateNotYetInCluster(): array
+    public function getClustersToBeRemoved(): array
     {
-        $statement = $this->connection->executeQuery('
-           SELECT dpi.*
-           FROM duplicate_places_import dpi
-           LEFT JOIN duplicate_places dp
-           ON dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid
-           WHERE dp.cluster_id IS NULL
-           ORDER BY dp.cluster_id asc, dp.place_uuid asc
-        ');
+        // All clusters that do not exist in duplicate_places_import
+        $statement = $this->connection->createQueryBuilder()
+            ->select('DISTINCT dp.cluster_id')
+            ->from('duplicate_places', 'dp')
+            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.cluster_id = dpi.cluster_id')
+            ->where('dpi.cluster_id IS NULL')
+            ->orderBy('dp.cluster_id', 'asc')
+            ->execute();
 
-        return $this->processRawToClusterRecord($statement->fetchAllAssociative());
+        return $statement->fetchFirstColumn();
     }
 
-    /** @return ClusterRecord[] */
-    private function processRawToClusterRecord(array $data): array
+    public function deleteCluster(string $clusterId): void
     {
-        return array_map(function ($row): ClusterRecord {
-            return ClusterRecord::fromArray($row);
-        }, $data);
+        $this->connection->createQueryBuilder()
+            ->delete('duplicate_places')
+            ->where('cluster_id = :cluster_id')
+            ->setParameter(':cluster_id', $clusterId)
+            ->execute();
     }
 
     public function addToDuplicatePlacesRemovedFromCluster(string $clusterId): void

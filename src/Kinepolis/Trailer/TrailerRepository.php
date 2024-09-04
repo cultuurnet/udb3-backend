@@ -8,5 +8,5 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 
 interface TrailerRepository
 {
-    public function search(string $title): ?Video;
+    public function findMatchingTrailer(string $title): ?Video;
 }
