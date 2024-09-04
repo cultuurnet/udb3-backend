@@ -224,12 +224,12 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
     {
         $this->duplicatePlaceRepository->deleteCluster('cluster_1');
 
-        $qb = $this->getConnection()->createQueryBuilder();
-        $qb->select('count(*) as total')
+        $raw = $this->getConnection()->createQueryBuilder()->select('count(*) as total')
             ->from('duplicate_places')
             ->where('cluster_id = :cluster_id')
-            ->setParameter('cluster_id', 'cluster_1');
-        $raw = $qb->execute()->fetchAssociative();
+            ->setParameter('cluster_id', 'cluster_1')
+            ->execute()
+            ->fetchAssociative();
 
         $this->assertEquals(0, $raw['total']);
     }
@@ -240,7 +240,15 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
 
         $this->duplicatePlaceRepository->addToDuplicatePlaces(new ClusterRecordRow('cluster_new', $placeUuid));
 
-        $raw = $this->connection->fetchAssociative('select count(*) as total from duplicate_places where cluster_id = :cluster_id and place_uuid = :place_uuid', ['cluster_id' => 'cluster_new', 'place_uuid' => $placeUuid]);
+        $raw = $this->getConnection()->createQueryBuilder()->select('count(*) as total')
+            ->from('duplicate_places')
+            ->where('cluster_id = :cluster_id')
+            ->andWhere('place_uuid = :place_uuid')
+            ->setParameter('cluster_id', 'cluster_1')
+            ->setParameter('place_uuid', $placeUuid)
+            ->execute()
+            ->fetchAssociative();
+
         $this->assertEquals(1, $raw['total']);
     }
 }
