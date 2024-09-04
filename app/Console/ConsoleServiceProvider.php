@@ -27,7 +27,6 @@ use CultuurNet\UDB3\Console\Command\GeocodeEventCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
 use CultuurNet\UDB3\Console\Command\ImportDuplicatePlaces;
-use CultuurNet\UDB3\Console\Command\ImportMovieIdsFromCsv;
 use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Console\Command\IncludeLabel;
 use CultuurNet\UDB3\Console\Command\KeycloakCommand;
