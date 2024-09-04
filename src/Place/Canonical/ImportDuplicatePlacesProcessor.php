@@ -44,7 +44,7 @@ class ImportDuplicatePlacesProcessor
         $notYetInClusters = $this->duplicatePlaceRepository->getClustersToImport();
 
         foreach ($notYetInClusters as $notYetInCluster) {
-            $this->duplicatePlaceRepository->addToDuplicatePlaces($notYetInCluster->getClusterId(), $notYetInCluster->getPlaceUuid());
+            $this->duplicatePlaceRepository->addToDuplicatePlaces($notYetInCluster);
         }
     }
 }

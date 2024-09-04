@@ -138,11 +138,15 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         $this->connection->executeQuery('INSERT INTO duplicate_places_removed_from_cluster SET cluster_id  = :cluster_id', [':cluster_id' => $clusterId]);
     }
 
-    public function addToDuplicatePlaces(string $clusterId, string $placeUuid, string $canonical = null): void
+    public function addToDuplicatePlaces(ClusterRecordRow $clusterRecordRow): void
     {
         $this->connection->executeQuery(
             'INSERT INTO duplicate_places SET cluster_id = :cluster_id, place_uuid = :place_uuid, canonical = :canonical',
-            ['cluster_id' => $clusterId, ':place_uuid' => $placeUuid, 'canonical' => $canonical]
+            [
+                ':cluster_id' => $clusterRecordRow->getClusterId(),
+                ':place_uuid' => $clusterRecordRow->getPlaceUuid(),
+                ':canonical' => $clusterRecordRow->getCanonical()
+            ]
         );
     }
 }

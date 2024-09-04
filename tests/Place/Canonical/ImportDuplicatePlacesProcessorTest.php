@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Place\Canonical;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
 class ImportDuplicatePlacesProcessorTest extends TestCase
 {
@@ -27,7 +28,7 @@ class ImportDuplicatePlacesProcessorTest extends TestCase
     }
 
     /**
-     * @dataProvider syncDataProvider
+     * @dataProvider syncDataProviderDeleteOldClusters
      */
     public function test_delete_old_clusters(array $placesNoLongerInCluster, array $clustersToBeRemoved): void
     {
@@ -54,7 +55,28 @@ class ImportDuplicatePlacesProcessorTest extends TestCase
         $this->importDuplicatePlacesProcessor->sync();
     }
 
-    public function syncDataProvider(): array
+    public function test_insert_new_clusters(): void
+    {
+        $places = [
+            new ClusterRecordRow('cluster_1', Uuid::uuid4()->toString()),
+            new ClusterRecordRow('cluster_1', Uuid::uuid4()->toString()),
+            new ClusterRecordRow('cluster_2', Uuid::uuid4()->toString()),
+        ];
+
+        $this->duplicatePlaceRepository->expects($this->once())
+            ->method('getClustersToImport')
+            ->willReturn($places);
+
+        $this->duplicatePlaceRepository->expects($this->exactly(count($places)))
+            ->method('addToDuplicatePlaces')
+            ->willReturnCallback(function (ClusterRecordRow $clusterRecordRow) use ($places) {
+                $this->assertContains($clusterRecordRow, $places);
+            });
+
+        $this->importDuplicatePlacesProcessor->sync();
+    }
+
+    public function syncDataProviderDeleteOldClusters(): array
     {
         return [
             'no places and no clusters' => [

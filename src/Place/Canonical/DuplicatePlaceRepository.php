@@ -27,7 +27,7 @@ interface DuplicatePlaceRepository
     /** @return ClusterRecordRow[] */
     public function getClustersToImport(): array;
 
-    public function addToDuplicatePlaces(string $clusterId, string $placeUuid, string $canonical=null): void;
+    public function addToDuplicatePlaces(ClusterRecordRow $clusterRecordRow): void;
     public function deleteCluster(string $clusterId): void;
 
     public function getClustersToBeRemoved(): array;
