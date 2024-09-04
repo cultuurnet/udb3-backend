@@ -136,23 +136,24 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 
     public function calculateHowManyClustersHaveChanged(): ClusterChangeResult
     {
-        $statement = $this->connection->executeQuery('SELECT
-            not_in_duplicate,
-            not_in_import
-        FROM
-            (SELECT COUNT(*) AS not_in_duplicate
-             FROM duplicate_places_import dpi
-             LEFT JOIN duplicate_places dp
-             ON dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid
-             WHERE dp.cluster_id IS NULL) AS diff_import_to_duplicate,
-            (SELECT COUNT(*) AS not_in_import
-             FROM duplicate_places dp
-             LEFT JOIN duplicate_places_import dpi
-             ON dp.cluster_id = dpi.cluster_id AND dp.place_uuid = dpi.place_uuid
-             WHERE dpi.cluster_id IS NULL) AS diff_duplicate_to_import;
-        ');
+        // Subquery 1: COUNT from `duplicate_places_import` not present in `duplicate_places`
+        $qb1 = $this->connection->createQueryBuilder();
+        $qb1->select('COUNT(*) AS not_in_duplicate')
+            ->from('duplicate_places_import', 'dpi')
+            ->leftJoin('dpi', 'duplicate_places', 'dp', 'dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid')
+            ->where('dp.cluster_id IS NULL');
 
-        return ClusterChangeResult::fromArray($statement->fetchAssociative());
+        // Subquery 2: COUNT from `duplicate_places` not present in `duplicate_places_import`
+        $qb2 = $this->connection->createQueryBuilder();
+        $qb2->select('COUNT(*) AS not_in_import')
+            ->from('duplicate_places', 'dp')
+            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.cluster_id = dpi.cluster_id AND dp.place_uuid = dpi.place_uuid')
+            ->where('dpi.cluster_id IS NULL');
+
+        return new ClusterChangeResult(
+            $qb1->execute()->fetchOne(),
+            $qb2->execute()->fetchOne()
+        );
     }
 
     public function howManyPlacesAreToBeImported(): int

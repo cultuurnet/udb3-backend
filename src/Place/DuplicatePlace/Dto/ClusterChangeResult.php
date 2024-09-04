@@ -9,10 +9,10 @@ class ClusterChangeResult
     private int $amountNewClusters;
     private int $amountRemovedClusters;
 
-    public function __construct(int $percentageNewClusters, int $percentageClustersToRemove)
+    public function __construct(int $amountNewClusters, int $amountRemovedClusters)
     {
-        $this->amountNewClusters = $percentageNewClusters;
-        $this->amountRemovedClusters = $percentageClustersToRemove;
+        $this->amountNewClusters = $amountNewClusters;
+        $this->amountRemovedClusters = $amountRemovedClusters;
     }
 
     public function getAmountNewClusters(): int
@@ -23,13 +23,5 @@ class ClusterChangeResult
     public function getAmountRemovedClusters(): int
     {
         return $this->amountRemovedClusters;
-    }
-
-    public static function fromArray(array $array): self
-    {
-        return new self(
-            (int)round((float)$array['not_in_duplicate']),
-            (int)round((float)$array['not_in_import'])
-        );
     }
 }
