@@ -135,13 +135,16 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 
     public function addToDuplicatePlaces(ClusterRecordRow $clusterRecordRow): void
     {
-        $this->connection->executeQuery(
-            'INSERT INTO duplicate_places SET cluster_id = :cluster_id, place_uuid = :place_uuid, canonical = :canonical',
-            [
+        $this->connection->createQueryBuilder()
+            ->insert('duplicate_places')
+            ->setValue('cluster_id', ':cluster_id')
+            ->setValue('place_uuid', ':place_uuid')
+            ->setValue('canonical', ':canonical')
+            ->setParameters([
                 ':cluster_id' => $clusterRecordRow->getClusterId(),
                 ':place_uuid' => $clusterRecordRow->getPlaceUuid(),
-                ':canonical' => $clusterRecordRow->getCanonical()
-            ]
-        );
+                ':canonical' => $clusterRecordRow->getCanonical(),
+            ])
+            ->execute();
     }
 }

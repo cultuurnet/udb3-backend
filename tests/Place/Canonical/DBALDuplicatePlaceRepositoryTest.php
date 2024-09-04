@@ -221,7 +221,8 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         $this->assertEquals(0, $raw['total']);
     }
 
-    public function test_add_to_duplicate_places(): void {
+    public function test_add_to_duplicate_places(): void
+    {
         $placeUuid = '19ce6565-76be-425d-94d6-894f84dd2947';
 
         $this->duplicatePlaceRepository->addToDuplicatePlaces(new ClusterRecordRow('cluster_new', $placeUuid));
