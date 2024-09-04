@@ -2,10 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Place\DuplicatePlace;
-
-use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
-use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
+namespace CultuurNet\UDB3\Place\Canonical;
 
 class ImportDuplicatePlacesProcessor
 {
