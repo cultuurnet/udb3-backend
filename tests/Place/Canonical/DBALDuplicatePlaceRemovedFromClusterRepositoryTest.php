@@ -28,7 +28,7 @@ class DBALDuplicatePlaceRemovedFromClusterRepositoryTest extends TestCase
         $this->assertEquals([['place_uuid' => '64901efc-6bd7-4e9d-8916-fcdeb5b1c8af']], $raw);
     }
 
-    public function test_get_duplicate_places_removed_from_cluster(): void
+    public function test_get_all_places(): void
     {
         $this->getConnection()->insert(
             'duplicate_places_removed_from_cluster',
@@ -46,6 +46,6 @@ class DBALDuplicatePlaceRemovedFromClusterRepositoryTest extends TestCase
         $this->assertEquals([
             '64901efc-6bd7-4e9d-8916-fcdeb5b1c8af',
             'b22d5d76-dceb-4583-8947-e1183a93c10d',
-        ], $this->repository->getDuplicatePlacesRemovedFromCluster());
+        ], $this->repository->getAllPlaces());
     }
 }
