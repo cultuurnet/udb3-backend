@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\Canonical;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
-use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterChangeResult;
 use PHPUnit\Framework\TestCase;
 
 class DBALDuplicatePlaceRepositoryTest extends TestCase
@@ -268,7 +267,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
 
         $result = $this->duplicatePlaceRepository->calculateHowManyClustersHaveChanged();
 
-        $this->assertEquals(new ClusterChangeResult($percentageNotInDuplicate, $percentageNotInImport), $result);
+        $this->assertEquals(new ClustersDiffResult($percentageNotInDuplicate, $percentageNotInImport), $result);
     }
 
     public static function clusterChangesDataProvider(): array

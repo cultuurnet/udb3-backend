@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Canonical;
 
-use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterChangeResult;
-
 interface DuplicatePlaceRepository
 {
     /**
@@ -28,10 +26,11 @@ interface DuplicatePlaceRepository
 
     /** @return ClusterRecordRow[] */
     public function getClustersToImport(): array;
+    public function getClustersToBeRemoved(): array;
 
     public function addToDuplicatePlaces(ClusterRecordRow $clusterRecordRow): void;
     public function deleteCluster(string $clusterId): void;
 
-    public function calculateHowManyClustersHaveChanged(): ClusterChangeResult;
+    public function calculateHowManyClustersHaveChanged(): ClustersDiffResult;
     public function howManyPlacesAreToBeImported(): int;
 }

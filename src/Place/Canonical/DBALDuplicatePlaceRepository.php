@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Canonical;
 
-use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterChangeResult;
 use Doctrine\DBAL\Connection;
 
 class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
@@ -147,7 +146,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->execute();
     }
 
-    public function calculateHowManyClustersHaveChanged(): ClusterChangeResult
+    public function calculateHowManyClustersHaveChanged(): ClustersDiffResult
     {
         // Subquery 1: COUNT from `duplicate_places_import` not present in `duplicate_places`
         $qb1 = $this->connection->createQueryBuilder();
@@ -163,9 +162,9 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.cluster_id = dpi.cluster_id AND dp.place_uuid = dpi.place_uuid')
             ->where('dpi.cluster_id IS NULL');
 
-        return new ClusterChangeResult(
-            $qb1->execute()->fetchOne(),
-            $qb2->execute()->fetchOne()
+        return new ClustersDiffResult(
+            (int)round((float)$qb1->execute()->fetchOne()),
+            (int)round((float)$qb2->execute()->fetchOne()),
         );
     }
 

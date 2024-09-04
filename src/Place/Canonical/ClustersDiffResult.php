@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Place\DuplicatePlace\Dto;
+namespace CultuurNet\UDB3\Place\Canonical;
 
-class ClusterChangeResult
+class ClustersDiffResult
 {
     private int $amountNewClusters;
     private int $amountRemovedClusters;

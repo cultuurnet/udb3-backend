@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Console\Command;
 
+use CultuurNet\UDB3\Place\Canonical\ClustersDiffResult;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
-use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterChangeResult;
-use CultuurNet\UDB3\Place\DuplicatePlace\ImportDuplicatePlacesProcessor;
+use CultuurNet\UDB3\Place\Canonical\ImportDuplicatePlacesProcessor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -74,7 +74,7 @@ class ImportDuplicatePlacesTest extends TestCase
         $this->dbalDuplicatePlaceRepository
             ->expects($this->once())
             ->method('calculateHowManyClustersHaveChanged')
-            ->willReturn(new ClusterChangeResult(0, 0));
+            ->willReturn(new ClustersDiffResult(0, 0));
 
         $this->output
             ->expects($this->once())
@@ -94,7 +94,7 @@ class ImportDuplicatePlacesTest extends TestCase
         $this->dbalDuplicatePlaceRepository
             ->expects($this->once())
             ->method('calculateHowManyClustersHaveChanged')
-            ->willReturn(new ClusterChangeResult(50, 30));
+            ->willReturn(new ClustersDiffResult(50, 30));
 
         $helper = $this->createMock(QuestionHelper::class);
         $helper->expects($this->once())
