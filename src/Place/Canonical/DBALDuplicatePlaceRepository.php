@@ -107,6 +107,23 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return $statement->fetchFirstColumn();
     }
 
+    /** @return ClusterRecordRow[] */
+    public function getClustersToImport(): array
+    {
+        // All clusters that do not exist in duplicate_places_import
+        $statement = $this->connection->createQueryBuilder()
+            ->select('dpi.cluster_id, dpi.place_uuid')
+            ->from('duplicate_places_import', 'dpi')
+            ->leftJoin('dpi', 'duplicate_places', 'dp', 'dp.cluster_id = dpi.cluster_id')
+            ->where('dp.cluster_id IS NULL')
+            ->orderBy('dpi.cluster_id', 'asc')
+            ->execute();
+
+        return array_map(static function (array $row) {
+            return new ClusterRecordRow($row['cluster_id'], $row['place_uuid']);
+        }, $statement->fetchAllAssociative());
+    }
+
     public function deleteCluster(string $clusterId): void
     {
         $this->connection->createQueryBuilder()

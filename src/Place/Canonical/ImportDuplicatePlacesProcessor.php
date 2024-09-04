@@ -20,6 +20,7 @@ class ImportDuplicatePlacesProcessor
     public function sync(): void
     {
         $this->deleteOldClusters();
+        $this->insertNewClusters();
     }
 
     private function deleteOldClusters(): void
@@ -35,6 +36,15 @@ class ImportDuplicatePlacesProcessor
 
         foreach ($clustersToBeRemoved as $clusterUuid) {
             $this->duplicatePlaceRepository->deleteCluster($clusterUuid);
+        }
+    }
+
+    private function insertNewClusters(): void
+    {
+        $notYetInClusters = $this->duplicatePlaceRepository->getClustersToImport();
+
+        foreach ($notYetInClusters as $notYetInCluster) {
+            $this->duplicatePlaceRepository->addToDuplicatePlaces($notYetInCluster->getClusterId(), $notYetInCluster->getPlaceUuid());
         }
     }
 }
