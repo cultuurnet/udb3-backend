@@ -103,18 +103,6 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return $statement->fetchFirstColumn();
     }
 
-    public function countPlacesInDuplicatePlacesImport(string $placeId): int
-    {
-        $statement = $this->connection->createQueryBuilder()
-            ->select('count(*) as total')
-            ->from('duplicate_places_import')
-            ->where('place_uuid = :place_id')
-            ->setParameter(':place_id', $placeId)
-            ->execute();
-
-        return $statement->fetchAssociative()['total'];
-    }
-
     public function deleteCluster(string $clusterId): void
     {
         $this->connection->createQueryBuilder()

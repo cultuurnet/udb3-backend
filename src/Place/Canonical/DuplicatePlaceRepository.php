@@ -24,8 +24,6 @@ interface DuplicatePlaceRepository
 
     public function getPlacesNoLongerInCluster(): array;
 
-    public function countPlacesInDuplicatePlacesImport(string $placeId): int;
-
     public function deleteCluster(string $clusterId): void;
 
     public function getClustersToBeRemoved(): array;
