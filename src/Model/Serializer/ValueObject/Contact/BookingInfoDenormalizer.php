@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Contact;
 
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\InvalidUrl;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Web\TranslatedWebsiteLabelDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
@@ -59,8 +60,12 @@ class BookingInfoDenormalizer implements DenormalizerInterface
         }
 
         if (isset($data['url']) && isset($data['urlLabel'])) {
+            try {
+                $url = new Url($data['url']);
+            } catch (\InvalidArgumentException $exception) {
+                throw new InvalidUrl($exception->getMessage());
+            }
             /* @var TranslatedWebsiteLabel $label */
-            $url = new Url($data['url']);
             $label = $this->websiteLabelDenormalizer->denormalize(
                 $data['urlLabel'],
                 TranslatedWebsiteLabel::class,
