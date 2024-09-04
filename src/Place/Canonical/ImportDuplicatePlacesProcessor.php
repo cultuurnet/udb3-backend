@@ -43,7 +43,7 @@ class ImportDuplicatePlacesProcessor
 
     private function insertNewClusters(): void
     {
-        $notYetInClusters = $this->duplicatePlaceRepository->getClustersToImport();
+        $notYetInClusters = $this->duplicatePlaceRepository->getPlacesWithCluster();
 
         foreach ($notYetInClusters as $notYetInCluster) {
             $this->duplicatePlaceRepository->addToDuplicatePlaces($notYetInCluster);

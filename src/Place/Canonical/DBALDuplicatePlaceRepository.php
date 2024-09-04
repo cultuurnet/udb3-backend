@@ -105,8 +105,8 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return $statement->fetchFirstColumn();
     }
 
-    /** @return ClusterRecordRow[] */
-    public function getClustersToImport(): array
+    /** @return PlaceWithCluster[] */
+    public function getPlacesWithCluster(): array
     {
         // All clusters that do not exist in duplicate_places_import
         $statement = $this->connection->createQueryBuilder()
@@ -118,7 +118,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->execute();
 
         return array_map(static function (array $row) {
-            return new ClusterRecordRow($row['cluster_id'], $row['place_uuid']);
+            return new PlaceWithCluster($row['cluster_id'], $row['place_uuid']);
         }, $statement->fetchAllAssociative());
     }
 
@@ -131,7 +131,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->execute();
     }
 
-    public function addToDuplicatePlaces(ClusterRecordRow $clusterRecordRow): void
+    public function addToDuplicatePlaces(PlaceWithCluster $clusterRecordRow): void
     {
         $this->connection->createQueryBuilder()
             ->insert('duplicate_places')
