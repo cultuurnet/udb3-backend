@@ -15,12 +15,16 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         $this->connection = $connection;
     }
 
-    public function getClusterIds(): array
+    public function getClusterIdsWithoutCanonical(): array
     {
+        // We need to use a group by because the canonical place itself will always have the canonical set to NULL.
+        // Why? Because this means they have not been processed yet and should be picked up by the CLI command.
         return $this->connection->createQueryBuilder()
-            ->select('DISTINCT cluster_id')
+            ->select('cluster_id')
             ->from('duplicate_places')
+            ->having('count(*) = sum(canonical IS NULL)')
             ->orderBy('cluster_id')
+            ->groupBy('cluster_id')
             ->execute()
             ->fetchFirstColumn();
     }
@@ -103,12 +107,44 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return $statement->fetchFirstColumn();
     }
 
+    /** @return PlaceWithCluster[] */
+    public function getPlacesWithCluster(): array
+    {
+        // All clusters that do not exist in duplicate_places_import
+        $statement = $this->connection->createQueryBuilder()
+            ->select('dpi.cluster_id, dpi.place_uuid')
+            ->from('duplicate_places_import', 'dpi')
+            ->leftJoin('dpi', 'duplicate_places', 'dp', 'dp.cluster_id = dpi.cluster_id')
+            ->where('dp.cluster_id IS NULL')
+            ->orderBy('dpi.cluster_id', 'asc')
+            ->execute();
+
+        return array_map(static function (array $row) {
+            return new PlaceWithCluster($row['cluster_id'], $row['place_uuid']);
+        }, $statement->fetchAllAssociative());
+    }
+
     public function deleteCluster(string $clusterId): void
     {
         $this->connection->createQueryBuilder()
             ->delete('duplicate_places')
             ->where('cluster_id = :cluster_id')
             ->setParameter(':cluster_id', $clusterId)
+            ->execute();
+    }
+
+    public function addToDuplicatePlaces(PlaceWithCluster $clusterRecordRow): void
+    {
+        $this->connection->createQueryBuilder()
+            ->insert('duplicate_places')
+            ->setValue('cluster_id', ':cluster_id')
+            ->setValue('place_uuid', ':place_uuid')
+            ->setValue('canonical', ':canonical')
+            ->setParameters([
+                ':cluster_id' => $clusterRecordRow->getClusterId(),
+                ':place_uuid' => $clusterRecordRow->getPlaceUuid(),
+                ':canonical' => $clusterRecordRow->getCanonical(),
+            ])
             ->execute();
     }
 }

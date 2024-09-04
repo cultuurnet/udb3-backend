@@ -70,10 +70,20 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_clusterIds(): void
+    public function it_can_return_clusterIds_without_canonicals(): void
     {
-        $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
-        $this->assertEquals(['cluster_1', 'cluster_2'], $clusterIds);
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => 'cluster_2',
+                'place_uuid' => 'e90c0acd-f153-4b35-bd4d-d3ce2d535332',
+                'canonical' => 'e90c0acd-f153-4b35-bd4d-d3ce2d535332',
+            ]
+        );
+
+        $clusterIds = $this->duplicatePlaceRepository->getClusterIdsWithoutCanonical();
+
+        $this->assertEquals(['cluster_1'], $clusterIds);
     }
 
     /**
@@ -214,13 +224,31 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
     {
         $this->duplicatePlaceRepository->deleteCluster('cluster_1');
 
-        $qb = $this->getConnection()->createQueryBuilder();
-        $qb->select('count(*) as total')
+        $raw = $this->getConnection()->createQueryBuilder()->select('count(*) as total')
             ->from('duplicate_places')
             ->where('cluster_id = :cluster_id')
-            ->setParameter('cluster_id', 'cluster_1');
-        $raw = $qb->execute()->fetchAssociative();
+            ->setParameter('cluster_id', 'cluster_1')
+            ->execute()
+            ->fetchAssociative();
 
         $this->assertEquals(0, $raw['total']);
+    }
+
+    public function test_add_to_duplicate_places(): void
+    {
+        $placeUuid = '19ce6565-76be-425d-94d6-894f84dd2947';
+
+        $this->duplicatePlaceRepository->addToDuplicatePlaces(new PlaceWithCluster('cluster_new', $placeUuid));
+
+        $raw = $this->getConnection()->createQueryBuilder()->select('count(*) as total')
+            ->from('duplicate_places')
+            ->where('cluster_id = :cluster_id')
+            ->andWhere('place_uuid = :place_uuid')
+            ->setParameter('cluster_id', 'cluster_1')
+            ->setParameter('place_uuid', $placeUuid)
+            ->execute()
+            ->fetchAssociative();
+
+        $this->assertEquals(1, $raw['total']);
     }
 }
