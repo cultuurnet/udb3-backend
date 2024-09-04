@@ -67,6 +67,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\InvalidUrl;
 use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
@@ -1001,7 +1002,7 @@ class PlaceDenormalizerTest extends TestCase
             ],
         ];
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidUrl::class);
 
         $this->denormalizer->denormalize($placeData, ImmutablePlace::class);
     }
