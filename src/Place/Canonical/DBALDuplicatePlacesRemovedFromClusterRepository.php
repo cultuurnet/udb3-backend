@@ -24,7 +24,7 @@ class DBALDuplicatePlacesRemovedFromClusterRepository implements DuplicatePlaceR
             ->execute();
     }
 
-    public function getDuplicatePlacesRemovedFromCluster(): array
+    public function getAllPlaces(): array
     {
         return $this->connection->createQueryBuilder()
             ->select('place_uuid')
