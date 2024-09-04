@@ -12,7 +12,7 @@ interface DuplicatePlaceRepository
     /**
      * @return string[]
      */
-    public function getClusterIds(): array;
+    public function getClusterIdsWithoutCanonical(): array;
 
     /**
      * @return string[]
@@ -25,15 +25,13 @@ interface DuplicatePlaceRepository
 
     public function getDuplicatesOfPlace(string $placeId): ?array;
 
-    public function addToDuplicatePlacesRemovedFromCluster(string $clusterId): void;
+    public function getPlacesNoLongerInCluster(): array;
 
-    /** @return ClusterRecord[] */
-    public function calculateNoLongerInCluster(): array;
+    /** @return ClusterRecordRow[] */
+    public function getClustersToImport(): array;
 
-    /** @return ClusterRecord[] */
-    public function calculateNotYetInCluster(): array;
-
-    public function addToDuplicatePlaces(string $clusterId, string $placeUuid, string $canonical=null): void;
+    public function addToDuplicatePlaces(ClusterRecordRow $clusterRecordRow): void;
+    public function deleteCluster(string $clusterId): void;
 
     public function calculateHowManyClustersHaveChanged(): ClusterChangeResult;
     public function howManyPlacesAreToBeImported(): int;

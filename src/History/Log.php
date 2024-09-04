@@ -80,7 +80,7 @@ class Log implements JsonSerializable
     /**
      * @inheritdoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $log = [
             'date' => $this->date->format('c'),

@@ -6,9 +6,7 @@ namespace CultuurNet\UDB3\Place\Canonical;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterChangeResult;
-use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterRecord;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 
 class DBALDuplicatePlaceRepositoryTest extends TestCase
 {
@@ -59,14 +57,34 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         $this->duplicatePlaceRepository = new DBALDuplicatePlaceRepository($this->getConnection());
     }
 
+    private function insertDuplicatePlaceImport(string $clusterId, string $placeUuid): void
+    {
+        $qb = $this->getConnection()->createQueryBuilder();
+        $qb->insert('duplicate_places_import')
+            ->setValue('cluster_id', ':cluster_id')
+            ->setValue('place_uuid', ':place_uuid')
+            ->setParameter('cluster_id', $clusterId)
+            ->setParameter('place_uuid', $placeUuid)
+            ->execute();
+    }
+
     /**
      * @test
      */
-    public function it_can_return_clusterIds(): void
+    public function it_can_return_clusterIds_without_canonicals(): void
     {
-        $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => 'cluster_2',
+                'place_uuid' => 'e90c0acd-f153-4b35-bd4d-d3ce2d535332',
+                'canonical' => 'e90c0acd-f153-4b35-bd4d-d3ce2d535332',
+            ]
+        );
 
-        $this->assertEquals(['cluster_1', 'cluster_2'], $clusterIds);
+        $clusterIds = $this->duplicatePlaceRepository->getClusterIdsWithoutCanonical();
+
+        $this->assertEquals(['cluster_1'], $clusterIds);
     }
 
     /**
@@ -75,7 +93,6 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
     public function it_can_return_placeIds(): void
     {
         $clusterIds = $this->duplicatePlaceRepository->getPlacesInCluster('cluster_1');
-
         $this->assertEquals(
             [
                 '19ce6565-76be-425d-94d6-894f84dd2947',
@@ -94,7 +111,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         $this->duplicatePlaceRepository->setCanonicalOnCluster('cluster_1', '1accbcfb-3b22-4762-bc13-be0f67fd3116');
         $this->duplicatePlaceRepository->setCanonicalOnCluster('cluster_2', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad');
 
-        $actualRows = $this->connection->createQueryBuilder()
+        $actualRows = $this->getConnection()->createQueryBuilder()
             ->select('*')
             ->from('duplicate_places')
             ->orderBy('place_uuid')
@@ -177,29 +194,63 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         );
     }
 
-    public function test_calculate_not_yet_in_cluster(): void
+    public function test_places_no_longer_in_cluster(): void
     {
-        $this->getConnection()->insert(
-            'duplicate_places_import',
-            [
-                'cluster_id' => '10',
-                'place_uuid' => '64901efc-6bd7-4e9d-8916-fcdeb5b1c8af',
-            ]
-        );
+        $this->insertDuplicatePlaceImport('cluster_2', '19ce6565-76be-425d-94d6-894f84dd2947');
 
         $this->assertEquals(
             [
-                new ClusterRecord('10', Uuid::fromString('64901efc-6bd7-4e9d-8916-fcdeb5b1c8af')),
+                '1accbcfb-3b22-4762-bc13-be0f67fd3116',
+                '4a355db3-c3f9-4acc-8093-61b333a3aefb',
+                '526605d3-7cc4-4607-97a4-065896253f42',
+                '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad',
             ],
-            $this->duplicatePlaceRepository->calculateNotYetInCluster()
+            $this->duplicatePlaceRepository->getPlacesNoLongerInCluster()
         );
+    }
+
+    public function test_clusters_to_be_removed(): void
+    {
+        $this->insertDuplicatePlaceImport('cluster_2', '19ce6565-76be-425d-94d6-894f84dd2947');
+
+        $this->assertEquals(
+            [
+                'cluster_1',
+            ],
+            $this->duplicatePlaceRepository->getClustersToBeRemoved()
+        );
+    }
+
+    public function test_delete_cluster(): void
+    {
+        $this->duplicatePlaceRepository->deleteCluster('cluster_1');
+
+        $raw = $this->getConnection()->createQueryBuilder()->select('count(*) as total')
+            ->from('duplicate_places')
+            ->where('cluster_id = :cluster_id')
+            ->setParameter('cluster_id', 'cluster_1')
+            ->execute()
+            ->fetchAssociative();
+
+        $this->assertEquals(0, $raw['total']);
     }
 
     public function test_add_to_duplicate_places(): void
     {
-        $this->duplicatePlaceRepository->addToDuplicatePlaces('5', '0671f7a3-8301-43da-bf56-03c5c1e33332');
-        $raw = $this->connection->fetchAllAssociative('select * from duplicate_places where cluster_id = 5');
-        $this->assertEquals([['cluster_id' => 5, 'place_uuid' => '0671f7a3-8301-43da-bf56-03c5c1e33332', 'canonical' => null]], $raw);
+        $placeUuid = '19ce6565-76be-425d-94d6-894f84dd2947';
+
+        $this->duplicatePlaceRepository->addToDuplicatePlaces(new ClusterRecordRow('cluster_new', $placeUuid));
+
+        $raw = $this->getConnection()->createQueryBuilder()->select('count(*) as total')
+            ->from('duplicate_places')
+            ->where('cluster_id = :cluster_id')
+            ->andWhere('place_uuid = :place_uuid')
+            ->setParameter('cluster_id', 'cluster_1')
+            ->setParameter('place_uuid', $placeUuid)
+            ->execute()
+            ->fetchAssociative();
+
+        $this->assertEquals(1, $raw['total']);
     }
 
     /** @dataProvider clusterChangesDataProvider */

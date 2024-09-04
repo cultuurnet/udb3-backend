@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\Canonical;
 
 use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterChangeResult;
-use CultuurNet\UDB3\Place\DuplicatePlace\Dto\ClusterRecord;
 use Doctrine\DBAL\Connection;
 
 class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
@@ -17,9 +16,9 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         $this->connection = $connection;
     }
 
-    public function getClusterIds(): array
+    public function getClusterIdsWithoutCanonical(): array
     {
-        $result = $this->connection->createQueryBuilder()
+        return $this->connection->createQueryBuilder()
             ->select('cluster_id')
             ->from('duplicate_places')
             ->having('count(*) = sum(canonical IS NULL)')
@@ -27,8 +26,6 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->groupBy('cluster_id')
             ->execute()
             ->fetchFirstColumn();
-
-        return $result;
     }
 
     public function getPlacesInCluster(string $clusterId): array
@@ -52,7 +49,6 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->setParameters([
                 ':canonical' => $canonical,
                 ':cluster_id' => $clusterId,
-                ':place_uuid' => $canonical,
             ])
             ->execute();
     }
@@ -83,55 +79,72 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return count($duplicates) > 0 ? $duplicates : null;
     }
 
-    /** @return ClusterRecord[] */
-    public function calculateNoLongerInCluster(): array
+    public function getPlacesNoLongerInCluster(): array
     {
-        $statement = $this->connection->executeQuery('
-           SELECT dp.*
-           FROM duplicate_places dp
-           LEFT JOIN duplicate_places_import dpi
-           ON dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid
-           WHERE dpi.cluster_id IS NULL
-           ORDER BY dp.cluster_id asc, dp.place_uuid asc
-        ');
+        // All places that do not exist in duplicate_places_import
+        $statement = $this->connection->createQueryBuilder()
+            ->select('DISTINCT dp.place_uuid')
+            ->from('duplicate_places', 'dp')
+            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.place_uuid = dpi.place_uuid')
+            ->where('dpi.place_uuid IS NULL')
+            ->execute();
 
-        return $this->processRawToClusterRecord($statement->fetchAllAssociative());
+        return $statement->fetchFirstColumn();
     }
 
-    /** @return ClusterRecord[] */
-    public function calculateNotYetInCluster(): array
+    public function getClustersToBeRemoved(): array
     {
-        $statement = $this->connection->executeQuery('
-           SELECT dpi.*
-           FROM duplicate_places_import dpi
-           LEFT JOIN duplicate_places dp
-           ON dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid
-           WHERE dp.cluster_id IS NULL
-           ORDER BY dp.cluster_id asc, dp.place_uuid asc
-        ');
+        // All clusters that do not exist in duplicate_places_import
+        $statement = $this->connection->createQueryBuilder()
+            ->select('DISTINCT dp.cluster_id')
+            ->from('duplicate_places', 'dp')
+            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.cluster_id = dpi.cluster_id')
+            ->where('dpi.cluster_id IS NULL')
+            ->orderBy('dp.cluster_id', 'asc')
+            ->execute();
 
-        return $this->processRawToClusterRecord($statement->fetchAllAssociative());
+        return $statement->fetchFirstColumn();
     }
 
-    /** @return ClusterRecord[] */
-    private function processRawToClusterRecord(array $data): array
+    /** @return ClusterRecordRow[] */
+    public function getClustersToImport(): array
     {
-        return array_map(function ($row): ClusterRecord {
-            return ClusterRecord::fromArray($row);
-        }, $data);
+        // All clusters that do not exist in duplicate_places_import
+        $statement = $this->connection->createQueryBuilder()
+            ->select('dpi.cluster_id, dpi.place_uuid')
+            ->from('duplicate_places_import', 'dpi')
+            ->leftJoin('dpi', 'duplicate_places', 'dp', 'dp.cluster_id = dpi.cluster_id')
+            ->where('dp.cluster_id IS NULL')
+            ->orderBy('dpi.cluster_id', 'asc')
+            ->execute();
+
+        return array_map(static function (array $row) {
+            return new ClusterRecordRow($row['cluster_id'], $row['place_uuid']);
+        }, $statement->fetchAllAssociative());
     }
 
-    public function addToDuplicatePlacesRemovedFromCluster(string $clusterId): void
+    public function deleteCluster(string $clusterId): void
     {
-        $this->connection->executeQuery('INSERT INTO duplicate_places_removed_from_cluster SET cluster_id  = :cluster_id', [':cluster_id' => $clusterId]);
+        $this->connection->createQueryBuilder()
+            ->delete('duplicate_places')
+            ->where('cluster_id = :cluster_id')
+            ->setParameter(':cluster_id', $clusterId)
+            ->execute();
     }
 
-    public function addToDuplicatePlaces(string $clusterId, string $placeUuid, string $canonical = null): void
+    public function addToDuplicatePlaces(ClusterRecordRow $clusterRecordRow): void
     {
-        $this->connection->executeQuery(
-            'INSERT INTO duplicate_places SET cluster_id = :cluster_id, place_uuid = :place_uuid, canonical = :canonical',
-            ['cluster_id' => $clusterId, ':place_uuid' => $placeUuid, 'canonical' => $canonical]
-        );
+        $this->connection->createQueryBuilder()
+            ->insert('duplicate_places')
+            ->setValue('cluster_id', ':cluster_id')
+            ->setValue('place_uuid', ':place_uuid')
+            ->setValue('canonical', ':canonical')
+            ->setParameters([
+                ':cluster_id' => $clusterRecordRow->getClusterId(),
+                ':place_uuid' => $clusterRecordRow->getPlaceUuid(),
+                ':canonical' => $clusterRecordRow->getCanonical(),
+            ])
+            ->execute();
     }
 
     public function calculateHowManyClustersHaveChanged(): ClusterChangeResult
