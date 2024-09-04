@@ -15,9 +15,9 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         $this->connection = $connection;
     }
 
-    public function getClusterIds(): array
+    public function getClusterIdsWithoutCanonical(): array
     {
-        $result = $this->connection->createQueryBuilder()
+        return $this->connection->createQueryBuilder()
             ->select('cluster_id')
             ->from('duplicate_places')
             ->having('count(*) = sum(canonical IS NULL)')
@@ -25,8 +25,6 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->groupBy('cluster_id')
             ->execute()
             ->fetchFirstColumn();
-
-        return $result;
     }
 
     public function getPlacesInCluster(string $clusterId): array

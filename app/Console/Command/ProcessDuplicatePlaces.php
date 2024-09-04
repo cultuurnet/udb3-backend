@@ -97,7 +97,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         if ($onlyRunClusterId) {
             $clusterIds = [(int)$onlyRunClusterId];
         } else {
-            $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
+            $clusterIds = $this->duplicatePlaceRepository->getClusterIdsWithoutCanonical();
         }
 
         if (count($clusterIds) === 0) {

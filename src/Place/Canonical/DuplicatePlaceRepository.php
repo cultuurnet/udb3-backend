@@ -9,7 +9,7 @@ interface DuplicatePlaceRepository
     /**
      * @return string[]
      */
-    public function getClusterIds(): array;
+    public function getClusterIdsWithoutCanonical(): array;
 
     /**
      * @return string[]

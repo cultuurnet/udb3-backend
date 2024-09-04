@@ -59,11 +59,20 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_clusterIds(): void
+    public function it_can_return_clusterIds_without_canonicals(): void
     {
-        $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => 'cluster_2',
+                'place_uuid' => 'e90c0acd-f153-4b35-bd4d-d3ce2d535332',
+                'canonical' => 'e90c0acd-f153-4b35-bd4d-d3ce2d535332'
+            ]
+        );
 
-        $this->assertEquals(['cluster_1', 'cluster_2'], $clusterIds);
+        $clusterIds = $this->duplicatePlaceRepository->getClusterIdsWithoutCanonical();
+
+        $this->assertEquals(['cluster_1'], $clusterIds);
     }
 
     /**
