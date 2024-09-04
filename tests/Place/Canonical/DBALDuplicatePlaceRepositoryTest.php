@@ -213,7 +213,6 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         );
     }
 
-
     public function test_delete_cluster(): void
     {
         $this->duplicatePlaceRepository->deleteCluster('cluster_1');

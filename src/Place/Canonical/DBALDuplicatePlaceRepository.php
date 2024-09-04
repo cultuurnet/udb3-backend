@@ -133,11 +133,6 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->execute();
     }
 
-    public function addToDuplicatePlacesRemovedFromCluster(string $clusterId): void
-    {
-        $this->connection->executeQuery('INSERT INTO duplicate_places_removed_from_cluster SET cluster_id  = :cluster_id', [':cluster_id' => $clusterId]);
-    }
-
     public function addToDuplicatePlaces(ClusterRecordRow $clusterRecordRow): void
     {
         $this->connection->executeQuery(
