@@ -19,6 +19,11 @@ class ImportDuplicatePlacesProcessor
 
     public function sync(): void
     {
+        $this->deleteOldClusters();
+    }
+
+    private function deleteOldClusters(): void
+    {
         $placesNoLongerInCluster = $this->duplicatePlaceRepository->getPlacesNoLongerInCluster();
         $clustersToBeRemoved = $this->duplicatePlaceRepository->getClustersToBeRemoved();
 
