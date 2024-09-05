@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Console\Command;
 
-use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
-use CultuurNet\UDB3\Place\Canonical\ImportDuplicatePlacesProcessor;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /*
  * @todo This is a temporary script and can probably be removed somewhere in 2025
@@ -50,7 +46,7 @@ class FixClusterIdsDuplicatePlaces extends BaseCommand
 
         $count = 0;
         foreach ($results as $row) {
-            if($row['cluster_id'] === $row['new_cluster_id']) {
+            if ($row['cluster_id'] === $row['new_cluster_id']) {
                 continue;
             }
 
