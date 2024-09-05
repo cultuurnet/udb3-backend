@@ -24,11 +24,13 @@ interface DuplicatePlaceRepository
 
     public function getPlacesNoLongerInCluster(): array;
 
+    public function getClustersToBeRemoved(): array;
+
     /** @return PlaceWithCluster[] */
     public function getPlacesWithCluster(): array;
 
     public function addToDuplicatePlaces(PlaceWithCluster $clusterRecordRow): void;
     public function deleteCluster(string $clusterId): void;
 
-    public function getClustersToBeRemoved(): array;
+    public function howManyPlacesAreToBeImported(): int;
 }

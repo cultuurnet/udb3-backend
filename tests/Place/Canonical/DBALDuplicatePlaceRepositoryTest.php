@@ -251,4 +251,86 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
 
         $this->assertEquals(1, $raw['total']);
     }
+
+    /** @dataProvider clusterChangesDataProvider */
+    public function test_calculate_how_many_clusters_have_changed(array $clusters, int $expectedPlacesTobeImported, int $expectedPlacesTobeDeleted): void
+    {
+        foreach ($clusters as [$clusterId, $placeUuid]) {
+            $this->getConnection()->insert(
+                'duplicate_places_import',
+                [
+                    'cluster_id' => $clusterId,
+                    'place_uuid' => $placeUuid,
+                ]
+            );
+        }
+
+        $this->assertEquals($expectedPlacesTobeImported, $this->duplicatePlaceRepository->howManyPlacesAreToBeImported());
+        $this->assertCount($expectedPlacesTobeDeleted, $this->duplicatePlaceRepository->getPlacesNoLongerInCluster());
+    }
+
+    public static function clusterChangesDataProvider(): array
+    {
+        return [
+            'everything is new' => [
+                [
+
+                ],
+                0,
+                5,
+            ],
+            'Some new, some removed' => [
+                [
+                    ['cluster_1', '19ce6565-76be-425d-94d6-894f84dd2947'],
+                    ['cluster_1', '1accbcfb-3b22-4762-bc13-be0f67fd3116'],
+                    ['new', '04a549ba-6e5e-433b-9601-07b7a809758e'],
+                ],
+                1,
+                3,
+            ],
+            'Nothing has changed' => [
+                [
+                    ['cluster_1', '19ce6565-76be-425d-94d6-894f84dd2947'],
+                    ['cluster_1', '1accbcfb-3b22-4762-bc13-be0f67fd3116'],
+                    ['cluster_1', '526605d3-7cc4-4607-97a4-065896253f42'],
+                    ['cluster_2', '4a355db3-c3f9-4acc-8093-61b333a3aefb'],
+                    ['cluster_2', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad'],
+                ],
+                0,
+                0,
+            ],
+            'Everything single place has been moved' => [
+                [
+                    ['5', '19ce6565-76be-425d-94d6-894f84dd2947'],
+                    ['5', '1accbcfb-3b22-4762-bc13-be0f67fd3116'],
+                    ['5', '526605d3-7cc4-4607-97a4-065896253f42'],
+                    ['5', '4a355db3-c3f9-4acc-8093-61b333a3aefb'],
+                    ['5', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad'],
+                ],
+                5,
+                0,
+            ],
+        ];
+    }
+
+    public function test_how_many_places_are_to_be_imported(): void
+    {
+        $this->getConnection()->insert(
+            'duplicate_places_import',
+            [
+                'cluster_id' => 'my_brand_new_cluster',
+                'place_uuid' => '19ce6565-76be-425d-94d6-894f84dd2947',
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places_import',
+            [
+                'cluster_id' => 'my_brand_new_cluster',
+                'place_uuid' => '1accbcfb-3b22-4762-bc13-be0f67fd3116',
+            ]
+        );
+
+        $count = $this->duplicatePlaceRepository->howManyPlacesAreToBeImported();
+        $this->assertEquals(2, $count);
+    }
 }
