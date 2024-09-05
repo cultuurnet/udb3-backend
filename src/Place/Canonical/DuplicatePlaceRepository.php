@@ -33,6 +33,4 @@ interface DuplicatePlaceRepository
     public function deleteCluster(string $clusterId): void;
 
     public function howManyPlacesAreToBeImported(): int;
-
-    public function howManyPlacesAreToBeDeleted(): int;
 }

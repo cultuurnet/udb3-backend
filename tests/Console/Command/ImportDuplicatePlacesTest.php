@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\ImportDuplicatePlacesProcessor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -47,8 +48,8 @@ class ImportDuplicatePlacesTest extends TestCase
 
         $this->dbalDuplicatePlaceRepository
             ->expects($this->once())
-            ->method('howManyPlacesAreToBeDeleted')
-            ->willReturn(0);
+            ->method('getPlacesNoLongerInCluster')
+            ->willReturn([]);
 
         $this->output
             ->expects($this->once())
@@ -67,8 +68,8 @@ class ImportDuplicatePlacesTest extends TestCase
 
         $this->dbalDuplicatePlaceRepository
             ->expects($this->once())
-            ->method('howManyPlacesAreToBeDeleted')
-            ->willReturn(30);
+            ->method('getPlacesNoLongerInCluster')
+            ->willReturn([Uuid::uuid4()]);
 
         $helper = $this->createMock(QuestionHelper::class);
         $helper->expects($this->once())

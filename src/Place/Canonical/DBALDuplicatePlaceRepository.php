@@ -124,6 +124,19 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         }, $statement->fetchAllAssociative());
     }
 
+    public function howManyPlacesAreToBeImported(): int
+    {
+        // COUNT from `duplicate_places_import` not present in `duplicate_places`
+        $result = $this->connection->createQueryBuilder()
+            ->select('COUNT(*) AS not_in_duplicate')
+            ->from('duplicate_places_import', 'dpi')
+            ->leftJoin('dpi', 'duplicate_places', 'dp', 'dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid')
+            ->where('dp.cluster_id IS NULL')
+            ->execute();
+
+        return (int)($result->fetchOne() ?? 0);
+    }
+
     public function deleteCluster(string $clusterId): void
     {
         $this->connection->createQueryBuilder()
@@ -146,33 +159,5 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
                 ':canonical' => $clusterRecordRow->getCanonical(),
             ])
             ->execute();
-    }
-
-    public function howManyPlacesAreToBeImported(): int
-    {
-        // COUNT from `duplicate_places_import` not present in `duplicate_places`
-        $result = $this->connection->createQueryBuilder()
-            ->select('COUNT(*) AS not_in_duplicate')
-            ->from('duplicate_places_import', 'dpi')
-            ->leftJoin('dpi', 'duplicate_places', 'dp', 'dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid')
-            ->where('dp.cluster_id IS NULL')
-            ->execute();
-
-        $a = $result->fetchOne();
-
-        return (int)($a ?? 0);
-    }
-
-    public function howManyPlacesAreToBeDeleted(): int
-    {
-        // COUNT from `duplicate_places` not present in `duplicate_places_import`
-        $result = $this->connection->createQueryBuilder()
-            ->select('COUNT(*) AS not_in_import')
-            ->from('duplicate_places', 'dp')
-            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.cluster_id = dpi.cluster_id AND dp.place_uuid = dpi.place_uuid')
-            ->where('dpi.cluster_id IS NULL')
-            ->execute();
-
-        return (int)($result->fetchOne() ?? 0);
     }
 }
