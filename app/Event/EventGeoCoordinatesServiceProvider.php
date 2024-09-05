@@ -36,8 +36,7 @@ final class EventGeoCoordinatesServiceProvider extends AbstractServiceProvider
                     new FullAddressFormatter(),
                     new LocalityAddressFormatter(),
                     $container->get(GeocodingService::class),
-                    $container->get('event_jsonld_repository'),
-                    $container->get('config')['add_location_name_to_coordinates_lookup'] ?? false
+                    $container->get('event_jsonld_repository')
                 );
                 $handler->setLogger(
                     LoggerFactory::create(
