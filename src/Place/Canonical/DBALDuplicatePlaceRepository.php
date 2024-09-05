@@ -80,18 +80,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return count($duplicates) > 0 ? $duplicates : null;
     }
 
-    public function getPlacesNoLongerInCluster(): array
-    {
-        // All places that do not exist in duplicate_places_import
-        $statement = $this->connection->createQueryBuilder()
-            ->select('DISTINCT dp.place_uuid')
-            ->from('duplicate_places', 'dp')
-            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.place_uuid = dpi.place_uuid')
-            ->where('dpi.place_uuid IS NULL')
-            ->execute();
 
-        return $statement->fetchFirstColumn();
-    }
 
     public function getClustersToBeRemoved(): array
     {
@@ -135,6 +124,19 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->execute();
 
         return (int)($result->fetchOne() ?? 0);
+    }
+
+    public function getPlacesNoLongerInCluster(): array
+    {
+        // All places that do not exist in duplicate_places_import
+        $statement = $this->connection->createQueryBuilder()
+            ->select('DISTINCT dp.place_uuid')
+            ->from('duplicate_places', 'dp')
+            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.place_uuid = dpi.place_uuid')
+            ->where('dpi.place_uuid IS NULL')
+            ->execute();
+
+        return $statement->fetchFirstColumn();
     }
 
     public function deleteCluster(string $clusterId): void

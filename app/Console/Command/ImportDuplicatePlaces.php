@@ -45,7 +45,7 @@ class ImportDuplicatePlaces extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $howManyPlacesAreToBeImported = $this->dbalDuplicatePlaceRepository->howManyPlacesAreToBeImported();
-        $howManyPlacesAreToBeDeleted = $this->dbalDuplicatePlaceRepository->howManyPlacesAreToBeDeleted();
+        $howManyPlacesAreToBeDeleted = count($this->dbalDuplicatePlaceRepository->getPlacesNoLongerInCluster());
 
         if ($howManyPlacesAreToBeImported === 0 && $howManyPlacesAreToBeDeleted === 0) {
             $output->writeln('duplicate_places is already synced');
