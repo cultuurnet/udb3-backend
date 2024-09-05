@@ -9,7 +9,7 @@ interface DuplicatePlaceRepository
     /**
      * @return string[]
      */
-    public function getClusterIds(): array;
+    public function getClusterIdsWithoutCanonical(): array;
 
     /**
      * @return string[]
@@ -21,4 +21,14 @@ interface DuplicatePlaceRepository
     public function getCanonicalOfPlace(string $placeId): ?string;
 
     public function getDuplicatesOfPlace(string $placeId): ?array;
+
+    public function getPlacesNoLongerInCluster(): array;
+
+    /** @return PlaceWithCluster[] */
+    public function getPlacesWithCluster(): array;
+
+    public function addToDuplicatePlaces(PlaceWithCluster $clusterRecordRow): void;
+    public function deleteCluster(string $clusterId): void;
+
+    public function getClustersToBeRemoved(): array;
 }
