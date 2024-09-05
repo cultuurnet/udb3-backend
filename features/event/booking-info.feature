@@ -51,6 +51,29 @@ Feature: Test the UDB3 events API
     }
     """
 
+  Scenario: Update bookingInfo with malformed url
+    Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    {
+      "url": "https://www.arboretumkalmthout.be%20",
+      "urlLabel": {
+        "nl": "Koop tickets"
+      }
+    }
+    """
+      When I send a PUT request to "%{eventUrl}/booking-info"
+      Then the response status should be "400"
+      And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/body/invalid-data",
+      "title": "Invalid body data",
+      "status": 400,
+      "detail": "Given string is not a valid url."
+    }
+    """
+
   Scenario: Update bookingInfo with url but missing urlLabel
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:

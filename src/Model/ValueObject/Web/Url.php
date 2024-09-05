@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Web;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\MatchesRegexPattern;
+use InvalidArgumentException;
 
 class Url
 {
@@ -14,10 +15,14 @@ class Url
 
     public function __construct(string $value)
     {
-        $this->guardRegexPattern('/\\Ahttp[s]?:\\/\\//', strtolower($value));
+        try {
+            $this->guardRegexPattern('/\\Ahttp[s]?:\\/\\//', strtolower($value));
+        } catch (InvalidArgumentException $exception) {
+            throw new InvalidUrl('Given string is not a valid url.');
+        }
 
         if (filter_var($value, FILTER_VALIDATE_URL) === false) {
-            throw new \InvalidArgumentException('Given string is not a valid url.');
+            throw new InvalidUrl('Given string is not a valid url.');
         }
 
         $this->setValue($value);
