@@ -59,6 +59,7 @@ use CultuurNet\UDB3\Kinepolis\Parser\KinepolisPriceParser;
 use CultuurNet\UDB3\Kinepolis\Trailer\YoutubeTrailerRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
@@ -252,11 +253,11 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new ProcessDuplicatePlaces(
                 $container->get('event_command_bus'),
                 $container->get('duplicate_place_repository'),
+                $container->get(DuplicatePlaceRemovedFromClusterRepository::class),
                 $container->get('canonical_service'),
                 $container->get(EventBus::class),
                 $container->get('place_jsonld_projected_event_factory'),
                 $container->get(EventRelationsRepository::class),
-                $container->get('dbal_connection')
             )
         );
 
