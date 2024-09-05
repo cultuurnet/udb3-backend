@@ -67,7 +67,7 @@ class ImportDuplicatePlaces extends BaseCommand
         // Everything before this was just safety checks, below is the actual code that syncs duplicate places
         $this->importDuplicatePlacesProcessor->sync();
 
-        $output->writeln('Duplicate places are synced and old clusters where removed. You probably want to run place:process-duplicates to give canonicals to the new clusters now.');
+        $output->writeln('Duplicate places were synced and old clusters were removed. You probably want to run place:process-duplicates to give canonicals to the new clusters now.');
 
         return self::SUCCESS;
     }
