@@ -51,7 +51,7 @@ class UrlTest extends TestCase
      */
     public function it_should_reject_an_invalid_url(string $url): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidUrl::class);
         new Url($url);
     }
 

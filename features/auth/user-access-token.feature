@@ -12,11 +12,11 @@ Feature: Test authentication with Auth0 user access tokens
     And the JSON response should be:
     """
     {
-      "uuid":"auth0|630774d3b0c2b2dd21cf781d",
-      "email":"bert+acceptance-tests@publiq.be",
-      "username":"bert+acceptance-tests",
-      "id":"auth0|630774d3b0c2b2dd21cf781d",
-      "nick":"bert+acceptance-tests"
+      "uuid":"d759fd36-fb28-4fe3-8ec6-b4aaf990371d",
+      "email":"dev+udbtestinvoerder@publiq.be",
+      "username":"dev+udbtestinvoerder@publiq.be",
+      "id":"d759fd36-fb28-4fe3-8ec6-b4aaf990371d",
+      "nick":"dev+udbtestinvoerder@publiq.be"
     }
     """
 
