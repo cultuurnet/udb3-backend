@@ -27,6 +27,25 @@ Feature: Test event terms property
     }
     """
 
+  Scenario: Create an event with an empty term id
+    When I set the JSON request payload from "events/event-with-empty-term-id.json"
+    When I send a POST request to "/events"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/body/invalid-data",
+      "title": "Invalid body data",
+      "status": 400,
+      "schemaErrors": [
+        {
+          "jsonPointer": "/terms/0/id",
+          "error": "The term  does not exist or is not supported"
+        }
+      ]
+    }
+    """
+
   @bugfix # https://jira.uitdatabank.be/browse/III-4705
   Scenario: Create an event with a flandersregion term that should be ignored
     When I create an event from "events/event-with-flandersregion-term.json" and save the "url" as "eventUrl"
