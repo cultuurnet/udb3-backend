@@ -214,4 +214,37 @@ final class ImportTermRequestBodyParserTest extends TestCase
             fn () => $this->importTermRequestBodyParser->parse($request)->getParsedBody()
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_empty_term(): void
+    {
+        $terms = (object) [
+            'name' => (object) [
+                'nl' => 'Cafe Den Hemel',
+            ],
+            'terms' => [
+                (object) [
+                    'id' => '',
+                    'label' => '',
+                    'domain' => 'eventtype',
+                ],
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withParsedBody($terms)
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/terms/0/id',
+                    'The term  does not exist or is not supported'
+                )
+            ),
+            fn () => $this->importTermRequestBodyParser->parse($request)->getParsedBody()
+        );
+    }
 }
