@@ -53,8 +53,10 @@ class CdbXMLItemBaseImporter
         $itemLastUpdatedDate = $item->getLastUpdated();
 
         if (!empty($itemLastUpdatedDate)) {
-            $lastUpdatedDate = LegacyDateTimeFactory::dateTimeFromDateString(
-                $itemLastUpdatedDate
+            $lastUpdatedDate = DateTimeFactory::fromFormat(
+                'Y-m-d?H:i:s',
+                $itemLastUpdatedDate,
+                new DateTimeZone('Europe/Brussels')
             );
 
             $jsonLD->modified = $lastUpdatedDate->format('c');
