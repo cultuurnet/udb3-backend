@@ -74,8 +74,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             $this->defaultAddressFormatter,
             $this->localityAddressFormatter,
             $this->geocodingService,
-            $documentRepository,
-            true
+            $documentRepository
         );
     }
 

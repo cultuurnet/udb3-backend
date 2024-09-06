@@ -24,9 +24,7 @@ final class GeocodingServiceProvider extends AbstractServiceProvider
         $container->addShared(
             GeocodingService::class,
             function () use ($container) {
-                $geocodingServiceFactory = new GeocodingServiceFactory(
-                    $container->get('config')['add_location_name_to_coordinates_lookup'] ?? false
-                );
+                $geocodingServiceFactory = new GeocodingServiceFactory();
 
                 return new CachedGeocodingService(
                     $geocodingServiceFactory->createService(

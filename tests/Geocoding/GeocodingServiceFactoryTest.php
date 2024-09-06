@@ -11,7 +11,7 @@ class GeocodingServiceFactoryTest extends TestCase
 {
     public function testCreateServiceWithEnrichedFeature(): void
     {
-        $factory = new GeocodingServiceFactory(true);
+        $factory = new GeocodingServiceFactory();
 
         $service = $factory->createService(
             $this->createMock(LoggerInterface::class),
@@ -21,29 +21,10 @@ class GeocodingServiceFactoryTest extends TestCase
         $this->assertInstanceOf(GeocodingServiceWithLocationName::class, $service);
     }
 
-    public function testCreateServiceWithBasicFeature(): void
-    {
-        $factory = new GeocodingServiceFactory(false);
-
-        $service = $factory->createService(
-            $this->createMock(LoggerInterface::class),
-            'google_api_key'
-        );
-
-        $this->assertInstanceOf(DefaultGeocodingService::class, $service);
-    }
-
     public function testGetCacheNameWithEnrichedFeature(): void
     {
-        $factory = new GeocodingServiceFactory(true);
+        $factory = new GeocodingServiceFactory();
 
         $this->assertEquals('geocoords_with_location_name', $factory->getCacheName());
-    }
-
-    public function testGetCacheNameWithBasicFeature(): void
-    {
-        $factory = new GeocodingServiceFactory(false);
-
-        $this->assertEquals('geocoords', $factory->getCacheName());
     }
 }
