@@ -241,7 +241,7 @@ final class ImportTermRequestBodyParserTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/terms/0/id',
-                    'The term  does not exist or is not supported'
+                    'Category ID should not be empty.'
                 )
             ),
             fn () => $this->importTermRequestBodyParser->parse($request)->getParsedBody()

@@ -59,14 +59,16 @@ final class ImportTermRequestBodyParser implements RequestBodyParser
                 function ($term, int $index) {
                     if ($term instanceof stdClass && isset($term->id) && is_string($term->id)) {
                         $id = $term->id;
+
                         try {
                             $category = $this->categoryResolver->byId(new CategoryID($id));
                         } catch (EmptyCategoryId $exception) {
-                            $category = null;
-                        }
-                        if ($category) {
-                            $term->label = $category->getLabel()->toString();
-                            $term->domain = $category->getDomain()->toString();
+                            throw ApiProblem::bodyInvalidData(
+                                new SchemaError(
+                                    '/terms/' . $index . '/id',
+                                    $exception->getMessage()
+                                )
+                            );
                         }
 
                         if ($category === null) {
@@ -77,6 +79,9 @@ final class ImportTermRequestBodyParser implements RequestBodyParser
                                 )
                             );
                         }
+
+                        $term->label = $category->getLabel()->toString();
+                        $term->domain = $category->getDomain()->toString();
                     }
 
                     return $term;
