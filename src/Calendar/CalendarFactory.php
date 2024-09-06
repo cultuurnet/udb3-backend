@@ -34,11 +34,12 @@ class CalendarFactory implements CalendarFactoryInterface
                 $startDateString = $timestamp->getDate() . 'T00:00:00';
             }
         }
-        $startDate = !empty($startDateString) ? DateTimeFactory::fromFormat(
-            'Y-m-d?H:i:s',
-            $startDateString,
-            new DateTimeZone('Europe/Brussels')
-        ) : null;
+        $startDate = !empty($startDateString) ?
+            DateTimeFactory::fromFormat(
+                'Y-m-d?H:i:s',
+                $startDateString,
+                new DateTimeZone('Europe/Brussels')
+            ) : null;
 
         //
         // Get the end day.
@@ -61,7 +62,12 @@ class CalendarFactory implements CalendarFactoryInterface
                 $endDateString = $timestamp->getDate() . 'T' . $endTime;
             }
         }
-        $endDate = !empty($endDateString) ? LegacyDateTimeFactory::dateTimeFromDateString($endDateString) : null;
+        $endDate = !empty($endDateString) ?
+            DateTimeFactory::fromFormat(
+                'Y-m-d?H:i:s',
+                $endDateString,
+                new DateTimeZone('Europe/Brussels')
+            ) : null;
 
         //
         // Get the time stamps.
