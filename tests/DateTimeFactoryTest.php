@@ -81,6 +81,21 @@ class DateTimeFactoryTest extends TestCase
         $this->assertEquals($expected, $datetime);
     }
 
+    /**
+     * @test
+     */
+    public function it_creates_a_date_time_object_from_a_cdb_format(): void
+    {
+        $dateTime = DateTimeFactory::fromCdbFormat('2014-06-30T11:48:26');
+        $this->assertEquals(
+            new DateTimeImmutable(
+                '2014-06-30T11:48:26',
+                new DateTimeZone('Europe/Brussels')
+            ),
+            $dateTime
+        );
+    }
+
     public function validAtomDataProvider(): array
     {
         return [
