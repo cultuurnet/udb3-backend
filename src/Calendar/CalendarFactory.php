@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Calendar;
 
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
-use CultuurNet\UDB3\Cdb\DateTimeFactory;
+use CultuurNet\UDB3\Cdb\DateTimeFactory as LegacyDateTimeFactory;
 use DateTimeInterface;
 
 class CalendarFactory implements CalendarFactoryInterface
@@ -32,7 +32,7 @@ class CalendarFactory implements CalendarFactoryInterface
                 $startDateString = $timestamp->getDate() . 'T00:00:00';
             }
         }
-        $startDate = !empty($startDateString) ? DateTimeFactory::dateTimeFromDateString($startDateString) : null;
+        $startDate = !empty($startDateString) ? LegacyDateTimeFactory::dateTimeFromDateString($startDateString) : null;
 
         //
         // Get the end day.
@@ -55,7 +55,7 @@ class CalendarFactory implements CalendarFactoryInterface
                 $endDateString = $timestamp->getDate() . 'T' . $endTime;
             }
         }
-        $endDate = !empty($endDateString) ? DateTimeFactory::dateTimeFromDateString($endDateString) : null;
+        $endDate = !empty($endDateString) ? LegacyDateTimeFactory::dateTimeFromDateString($endDateString) : null;
 
         //
         // Get the time stamps.
@@ -243,8 +243,8 @@ class CalendarFactory implements CalendarFactoryInterface
         string $startDateString,
         string $endDateString
     ): Timestamp {
-        $startDate = DateTimeFactory::dateTimeFromDateString($startDateString);
-        $endDate = DateTimeFactory::dateTimeFromDateString($endDateString);
+        $startDate = LegacyDateTimeFactory::dateTimeFromDateString($startDateString);
+        $endDate = LegacyDateTimeFactory::dateTimeFromDateString($endDateString);
 
         return $this->createChronologicalTimestamp($startDate, $endDate);
     }
