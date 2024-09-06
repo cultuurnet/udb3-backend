@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
 use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
-use CultuurNet\UDB3\Cdb\DateTimeFactory as LegacyDateTimeFactory;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
