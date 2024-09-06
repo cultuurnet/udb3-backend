@@ -40,7 +40,7 @@ Feature: Test event terms property
       "schemaErrors": [
         {
           "jsonPointer": "/terms/0/id",
-          "error": "The term  does not exist or is not supported"
+          "error": "Category ID should not be empty."
         }
       ]
     }
