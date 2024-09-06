@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Calendar;
 
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
-use CultuurNet\UDB3\Cdb\DateTimeFactory as LegacyDateTimeFactory;
 use CultuurNet\UDB3\DateTimeFactory;
 use DateTimeInterface;
 use DateTimeZone;
