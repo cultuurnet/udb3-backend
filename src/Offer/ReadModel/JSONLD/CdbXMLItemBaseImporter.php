@@ -87,8 +87,10 @@ class CdbXMLItemBaseImporter
 
     private function formatAvailableString(string $availableString): string
     {
-        $available = LegacyDateTimeFactory::dateTimeFromDateString(
-            $availableString
+        $available = DateTimeFactory::fromFormat(
+            'Y-m-d?H:i:s',
+            $availableString,
+            new DateTimeZone('Europe/Brussels')
         );
 
         return $available->format('c');
