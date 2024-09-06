@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
-use DateTimeZone;
 
 final class CdbXMLItemBaseImporter
 {
@@ -40,24 +39,14 @@ final class CdbXMLItemBaseImporter
         $itemCreationDate = $item->getCreationDate();
 
         if (!empty($itemCreationDate)) {
-            $creationDate = DateTimeFactory::fromFormat(
-                'Y-m-d?H:i:s',
-                $itemCreationDate,
-                new DateTimeZone('Europe/Brussels')
-            );
-
+            $creationDate = DateTimeFactory::fromCdbFormat($itemCreationDate);
             $jsonLD->created = $creationDate->format('c');
         }
 
         $itemLastUpdatedDate = $item->getLastUpdated();
 
         if (!empty($itemLastUpdatedDate)) {
-            $lastUpdatedDate = DateTimeFactory::fromFormat(
-                'Y-m-d?H:i:s',
-                $itemLastUpdatedDate,
-                new DateTimeZone('Europe/Brussels')
-            );
-
+            $lastUpdatedDate = DateTimeFactory::fromCdbFormat($itemLastUpdatedDate);
             $jsonLD->modified = $lastUpdatedDate->format('c');
         }
 
@@ -86,12 +75,7 @@ final class CdbXMLItemBaseImporter
 
     private function formatAvailableString(string $availableString): string
     {
-        $available = DateTimeFactory::fromFormat(
-            'Y-m-d?H:i:s',
-            $availableString,
-            new DateTimeZone('Europe/Brussels')
-        );
-
+        $available = DateTimeFactory::fromCdbFormat($availableString);
         return $available->format('c');
     }
 
