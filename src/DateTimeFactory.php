@@ -9,6 +9,7 @@ use DateTimeZone;
 
 final class DateTimeFactory
 {
+    private CONST CDB_FORMAT = 'Y-m-d?H:i:s';
     /**
      * Converts ISO-8601 datetime strings to DateTimeImmutable objects.
      * Use this as much as possible instead of doing DateTimeImmutable::createFromFormat() or new DateTimeImmutable()
@@ -59,5 +60,14 @@ final class DateTimeFactory
         }
 
         throw new DateTimeInvalid($datetime . ' does not appear to be a valid ' . $format . ' datetime string.');
+    }
+
+    public static function fromCdbFormat(string $datetime): DateTimeImmutable
+    {
+        return self::fromFormat(
+            self::CDB_FORMAT,
+            $datetime,
+            new DateTimeZone('Europe/Brussels')
+        );
     }
 }
