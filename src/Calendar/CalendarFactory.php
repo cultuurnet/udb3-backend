@@ -8,7 +8,6 @@ use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultuurNet\UDB3\DateTimeFactory;
 use DateTimeInterface;
-use DateTimeZone;
 
 final class CalendarFactory implements CalendarFactoryInterface
 {
@@ -33,12 +32,7 @@ final class CalendarFactory implements CalendarFactoryInterface
                 $startDateString = $timestamp->getDate() . 'T00:00:00';
             }
         }
-        $startDate = !empty($startDateString) ?
-            DateTimeFactory::fromFormat(
-                'Y-m-d?H:i:s',
-                $startDateString,
-                new DateTimeZone('Europe/Brussels')
-            ) : null;
+        $startDate = !empty($startDateString) ? DateTimeFactory::fromCdbFormat($startDateString) : null;
 
         //
         // Get the end day.
@@ -61,12 +55,7 @@ final class CalendarFactory implements CalendarFactoryInterface
                 $endDateString = $timestamp->getDate() . 'T' . $endTime;
             }
         }
-        $endDate = !empty($endDateString) ?
-            DateTimeFactory::fromFormat(
-                'Y-m-d?H:i:s',
-                $endDateString,
-                new DateTimeZone('Europe/Brussels')
-            ) : null;
+        $endDate = !empty($endDateString) ? DateTimeFactory::fromCdbFormat($endDateString) : null;
 
         //
         // Get the time stamps.
@@ -254,16 +243,8 @@ final class CalendarFactory implements CalendarFactoryInterface
         string $startDateString,
         string $endDateString
     ): Timestamp {
-        $startDate = DateTimeFactory::fromFormat(
-            'Y-m-d?H:i:s',
-            $startDateString,
-            new DateTimeZone('Europe/Brussels')
-        );
-        $endDate = DateTimeFactory::fromFormat(
-            'Y-m-d?H:i:s',
-            $endDateString,
-            new DateTimeZone('Europe/Brussels')
-        );
+        $startDate = DateTimeFactory::fromCdbFormat($startDateString);
+        $endDate = DateTimeFactory::fromCdbFormat($endDateString);
 
         return $this->createChronologicalTimestamp($startDate, $endDate);
     }
