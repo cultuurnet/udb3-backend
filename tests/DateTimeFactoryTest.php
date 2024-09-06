@@ -83,16 +83,14 @@ class DateTimeFactoryTest extends TestCase
 
     /**
      * @test
+     * @dataProvider validCdbFormats
      */
-    public function it_creates_a_date_time_object_from_a_cdb_format(): void
+    public function it_creates_a_date_time_object_from_a_cdb_format(string $given, DateTimeImmutable $expected): void
     {
-        $dateTime = DateTimeFactory::fromCdbFormat('2014-06-30T11:48:26');
+        $actual = DateTimeFactory::fromCdbFormat($given);
         $this->assertEquals(
-            new DateTimeImmutable(
-                '2014-06-30T11:48:26',
-                new DateTimeZone('Europe/Brussels')
-            ),
-            $dateTime
+            $expected,
+            $actual
         );
     }
 
@@ -132,6 +130,26 @@ class DateTimeFactoryTest extends TestCase
             'just_a_date' => ['dateTime' => '2022-02-28'],
             'zulu' => ['dateTime' => '2024-04-08T18:00:00.500Z'],
             'seconds' => ['dateTime' => '2024-04-08T18:00:00.250+01:00'],
+        ];
+    }
+
+    public function validCdbFormats(): array
+    {
+        return [
+            'T' => [
+                'given' => '2014-06-30T11:48:26',
+                'expected' => new DateTimeImmutable(
+                    '2014-06-30T11:48:26',
+                    new DateTimeZone('Europe/Brussels')
+                ),
+            ],
+            'space' => [
+                'given' => '2016-04-15 19:52:31',
+                'expected' => new DateTimeImmutable(
+                    '2016-04-15T19:52:31',
+                    new DateTimeZone('Europe/Brussels')
+                ),
+            ],
         ];
     }
 }
