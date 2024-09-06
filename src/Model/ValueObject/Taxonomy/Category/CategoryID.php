@@ -24,7 +24,7 @@ class CategoryID
         try {
             $this->guardNotEmpty($value);
         } catch (InvalidArgumentException $exception) {
-            throw new EmptyCategoryId('Category cannot be empty.');
+            throw new EmptyCategoryId();
         }
 
         $this->setValue($value);
