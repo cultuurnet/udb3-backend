@@ -7,8 +7,10 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\DateTimeFactory as LegacyDateTimeFactory;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
+use DateTimeZone;
 
 class CdbXMLItemBaseImporter
 {
@@ -39,9 +41,10 @@ class CdbXMLItemBaseImporter
         $itemCreationDate = $item->getCreationDate();
 
         if (!empty($itemCreationDate)) {
-            // format using ISO-8601 with time zone designator
-            $creationDate = LegacyDateTimeFactory::dateTimeFromDateString(
-                $itemCreationDate
+            $creationDate = DateTimeFactory::fromFormat(
+                'Y-m-d?H:i:s',
+                $itemCreationDate,
+                new DateTimeZone('Europe/Brussels')
             );
 
             $jsonLD->created = $creationDate->format('c');
