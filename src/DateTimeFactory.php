@@ -9,7 +9,7 @@ use DateTimeZone;
 
 final class DateTimeFactory
 {
-    private CONST CDB_FORMAT = 'Y-m-d?H:i:s';
+    private const CDB_FORMAT = 'Y-m-d?H:i:s';
     /**
      * Converts ISO-8601 datetime strings to DateTimeImmutable objects.
      * Use this as much as possible instead of doing DateTimeImmutable::createFromFormat() or new DateTimeImmutable()
