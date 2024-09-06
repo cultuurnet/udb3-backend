@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use DateTimeZone;
 
-class CdbXMLItemBaseImporter
+final class CdbXMLItemBaseImporter
 {
     use MultilingualJsonLDProjectorTrait;
 

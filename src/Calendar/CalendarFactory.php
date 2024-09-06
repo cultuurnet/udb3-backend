@@ -10,7 +10,7 @@ use CultuurNet\UDB3\DateTimeFactory;
 use DateTimeInterface;
 use DateTimeZone;
 
-class CalendarFactory implements CalendarFactoryInterface
+final class CalendarFactory implements CalendarFactoryInterface
 {
     public function createFromCdbCalendar(\CultureFeed_Cdb_Data_Calendar $cdbCalendar): Calendar
     {
