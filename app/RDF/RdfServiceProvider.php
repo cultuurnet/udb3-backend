@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\RDF;
 
 use CultuurNet\UDB3\Address\Parser\AddressParser;
 use CultuurNet\UDB3\Address\Parser\CachingAddressParser;
-use CultuurNet\UDB3\Address\Parser\GeopuntAddressParser;
 use CultuurNet\UDB3\Address\Parser\GoogleMapsAddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -30,19 +29,8 @@ final class RdfServiceProvider extends AbstractServiceProvider
     {
         $this->container->addShared(
             AddressParser::class,
-            fn (): AddressParser => $this->createAddressParser(
-                $this->container->get('config')['rdf']['google_maps_address_parser'] ?? false
-            )
+            fn (): AddressParser => $this->createGoogleMapsAddressParser()
         );
-    }
-
-    private function createAddressParser(bool $googleMapsAddressParser): AddressParser
-    {
-        if ($googleMapsAddressParser) {
-            return $this->createGoogleMapsAddressParser();
-        }
-
-        return $this->createGeoPuntAddressParser();
     }
 
     private function createGoogleMapsAddressParser(): AddressParser
@@ -61,19 +49,6 @@ final class RdfServiceProvider extends AbstractServiceProvider
         $parser->setLogger($logger);
 
         $parser = new CachingAddressParser($parser, $this->container->get('cache')('google_addresses'));
-        $parser->setLogger($logger);
-
-        return $parser;
-    }
-
-    private function createGeoPuntAddressParser(): AddressParser
-    {
-        $logger = LoggerFactory::create($this->getContainer(), LoggerName::forService('address_parser', 'geopunt'));
-
-        $parser = new GeopuntAddressParser($this->container->get('config')['geopuntAddressParser']['url'] ?? '');
-        $parser->setLogger($logger);
-
-        $parser = new CachingAddressParser($parser, $this->container->get('cache')('geopunt_addresses'));
         $parser->setLogger($logger);
 
         return $parser;
