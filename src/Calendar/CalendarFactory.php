@@ -7,7 +7,9 @@ namespace CultuurNet\UDB3\Calendar;
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultuurNet\UDB3\Cdb\DateTimeFactory as LegacyDateTimeFactory;
+use CultuurNet\UDB3\DateTimeFactory;
 use DateTimeInterface;
+use DateTimeZone;
 
 class CalendarFactory implements CalendarFactoryInterface
 {
@@ -32,7 +34,11 @@ class CalendarFactory implements CalendarFactoryInterface
                 $startDateString = $timestamp->getDate() . 'T00:00:00';
             }
         }
-        $startDate = !empty($startDateString) ? LegacyDateTimeFactory::dateTimeFromDateString($startDateString) : null;
+        $startDate = !empty($startDateString) ? DateTimeFactory::fromFormat(
+            'Y-m-d?H:i:s',
+            $startDateString,
+            new DateTimeZone('Europe/Brussels')
+        ) : null;
 
         //
         // Get the end day.
