@@ -255,8 +255,16 @@ class CalendarFactory implements CalendarFactoryInterface
         string $startDateString,
         string $endDateString
     ): Timestamp {
-        $startDate = LegacyDateTimeFactory::dateTimeFromDateString($startDateString);
-        $endDate = LegacyDateTimeFactory::dateTimeFromDateString($endDateString);
+        $startDate = DateTimeFactory::fromFormat(
+            'Y-m-d?H:i:s',
+            $startDateString,
+            new DateTimeZone('Europe/Brussels')
+        );
+        $endDate = DateTimeFactory::fromFormat(
+            'Y-m-d?H:i:s',
+            $endDateString,
+            new DateTimeZone('Europe/Brussels')
+        );
 
         return $this->createChronologicalTimestamp($startDate, $endDate);
     }
