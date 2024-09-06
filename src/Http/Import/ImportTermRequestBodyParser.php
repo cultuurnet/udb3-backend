@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\EmptyCategoryId;
 use Psr\Http\Message\ServerRequestInterface;
 use stdClass;
 
@@ -58,7 +59,11 @@ final class ImportTermRequestBodyParser implements RequestBodyParser
                 function ($term, int $index) {
                     if ($term instanceof stdClass && isset($term->id) && is_string($term->id)) {
                         $id = $term->id;
-                        $category = $this->categoryResolver->byId(new CategoryID($id));
+                        try {
+                            $category = $this->categoryResolver->byId(new CategoryID($id));
+                        } catch (EmptyCategoryId $exception) {
+                            $category = null;
+                        }
                         if ($category) {
                             $term->label = $category->getLabel()->toString();
                             $term->domain = $category->getDomain()->toString();
