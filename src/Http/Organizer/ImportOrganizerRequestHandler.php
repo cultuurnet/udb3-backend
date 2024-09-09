@@ -197,7 +197,6 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
             try {
                 $this->commandBus->dispatch($command);
             } catch (UniqueConstraintException $e) {
-                // Is only catched when synchronous_imports is set to true inside config.yml
                 throw ApiProblem::duplicateUrl($url->toString(), $e->getDuplicateValue());
             }
         }
