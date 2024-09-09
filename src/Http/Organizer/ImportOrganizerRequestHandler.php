@@ -192,7 +192,6 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
         $commands[] = new ImportLabels($organizerId, $data->getLabels());
         $commands[] = new ImportImages($organizerId, $data->getImages());
 
-        $lastCommandId = null;
         foreach ($commands as $command) {
             try {
                 $this->commandBus->dispatch($command);
