@@ -15,7 +15,7 @@ class UniqueAddressIdentifierFactory
             $this->getParts($title, $address, $currentUserId)
         );
 
-        return mb_strtolower($this->escapeQueryChars(implode('_', array_filter($parts))));
+        return mb_strtolower($this->escapeReservedElasticsearchCharacters(implode('_', array_filter($parts))));
     }
 
     private function getParts(string $title, Address $address, string $currentUserId): array
@@ -31,15 +31,12 @@ class UniqueAddressIdentifierFactory
     }
 
     /**
-     * Escape special characters in the query string for Elasticsearch.
-     *
-     * @param string $query The raw query string.
-     * @return string The escaped query string.
+     * Escape reserved Elasticsearch characters in the query string for Elasticsearch.
      */
-    private function escapeQueryChars(string $query): string
+    private function escapeReservedElasticsearchCharacters(string $query): string
     {
         // List of special characters that need escaping
-        $specialChars = ['\\', '+', '-', '=', '&&', '||', '>', '<', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '/'];
+        $specialChars = ['\\', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '/'];
 
         // Escape each character
         foreach ($specialChars as $char) {

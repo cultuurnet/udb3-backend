@@ -9,9 +9,9 @@ trait UtilitySteps
     private bool $initialPreventDuplicatePlaceCreationValue;
 
     /**
-     * @Given /^I create a name that includes special characters and keep it as "([^"]*)"$/
+     * @Given /^I create a name that includes special characters of elastic search and keep it as "([^"]*)"$/
      */
-    public function iCreateANameOfCharactersThatIncludesSpecialCharactersAndKeepItAs(string $variableName)
+    public function iCreateANameThatIncludesSpecialCharactersOfElasticSearchAndKeepItAs(string $variableName): void
     {
         $this->variableState->setVariable($variableName, '(a)![a]' . uniqid('', true));
     }
