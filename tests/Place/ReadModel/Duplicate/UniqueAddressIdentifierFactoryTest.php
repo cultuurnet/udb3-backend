@@ -51,6 +51,17 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
                 'user123',
                 'kerkstraat_1_2000_antwerpen_be_user123',
             ],
+            'address with special chars' => [
+                '',
+                new Udb3Address(
+                    new Udb3Street('Kerkstraat 1!'),
+                    new Udb3PostalCode('2000'),
+                    new Udb3Locality('Antwerpen(Berchem)'),
+                    new CountryCode('BE')
+                ),
+                'user123',
+                'kerkstraat_1\!_2000_antwerpen\(berchem\)_be_user123',
+            ],
         ];
     }
 }
