@@ -9,6 +9,14 @@ trait UtilitySteps
     private bool $initialPreventDuplicatePlaceCreationValue;
 
     /**
+     * @Given /^I create a name that includes special characters and keep it as "([^"]*)"$/
+     */
+    public function iCreateANameOfCharactersThatIncludesSpecialCharactersAndKeepItAs(string $variableName)
+    {
+        $this->variableState->setVariable($variableName, '(a)![a]' . uniqid('', true));
+    }
+
+    /**
      * @Given I create a random name of :nrOfCharacters characters
      */
     public function iCreateARandomNameOfCharacters(int $nrOfCharacters): void
