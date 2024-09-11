@@ -129,11 +129,9 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
 
     private function dateFromUdb2UnixTime(int $unixTime): \DateTime
     {
-        $dateTime = new \DateTime(
+        return new \DateTime(
             '@' . $unixTime,
             new \DateTimeZone('Europe/Brussels')
         );
-
-        return $dateTime;
     }
 }

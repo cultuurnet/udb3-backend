@@ -526,13 +526,11 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
     public function descriptionSamplesProvider(): array
     {
-        $samples = [
+        return [
             ['place_with_short_description.cdbxml.xml', 'Korte beschrijving.'],
             ['place_with_long_description.cdbxml.xml', 'Lange beschrijving.'],
             ['place_with_short_and_long_description.cdbxml.xml', "Korte beschrijving.\n\nLange beschrijving."],
         ];
-
-        return $samples;
     }
 
     /**
@@ -997,13 +995,11 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $cdbXml = SampleFiles::read(
             __DIR__ . '/' . $fileName
         );
-        $event = new PlaceImportedFromUDB2(
+        return new PlaceImportedFromUDB2(
             'someId',
             $cdbXml,
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
-
-        return $event;
     }
 
     private function placeUpdatedFromUDB2(string $fileName): PlaceUpdatedFromUDB2
@@ -1011,12 +1007,10 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $cdbXml = SampleFiles::read(
             __DIR__ . '/' . $fileName
         );
-        $event = new PlaceUpdatedFromUDB2(
+        return new PlaceUpdatedFromUDB2(
             'someId',
             $cdbXml,
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
-
-        return $event;
     }
 }

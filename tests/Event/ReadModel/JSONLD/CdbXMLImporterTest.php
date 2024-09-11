@@ -84,15 +84,13 @@ class CdbXMLImporterTest extends TestCase
     {
         $event = $this->createEventFromCdbXml($fileName, $version);
 
-        $jsonEvent = $this->importer->documentWithCdbXML(
+        return $this->importer->documentWithCdbXML(
             new \stdClass(),
             $event,
             $this->placeManager,
             $this->organizerManager,
             $this->slugger
         );
-
-        return $jsonEvent;
     }
 
     private function createJsonEventFromCdbXmlWithAgeRange(?int $ageFrom = null, ?int $ageTo = null): \stdClass
@@ -104,15 +102,13 @@ class CdbXMLImporterTest extends TestCase
         $event->setAgeFrom($ageFrom);
         $event->setAgeTo($ageTo);
 
-        $jsonEvent = $this->importer->documentWithCdbXML(
+        return $this->importer->documentWithCdbXML(
             new \stdClass(),
             $event,
             $this->placeManager,
             $this->organizerManager,
             $this->slugger
         );
-
-        return $jsonEvent;
     }
 
     private function createJsonEventFromCdbXmlWithoutAgeFrom(): \stdClass
@@ -133,15 +129,13 @@ class CdbXMLImporterTest extends TestCase
             $cdbXml
         );
 
-        $jsonEvent = $this->importer->documentWithCdbXML(
+        return $this->importer->documentWithCdbXML(
             new \stdClass(),
             $event,
             $this->placeManager,
             $this->organizerManager,
             $this->slugger
         );
-
-        return $jsonEvent;
     }
 
     /**

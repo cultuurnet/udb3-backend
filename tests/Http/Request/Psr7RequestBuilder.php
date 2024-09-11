@@ -113,8 +113,7 @@ final class Psr7RequestBuilder
             $request = $request->withAttribute($routeParameter, $value);
         }
 
-        $request = $request->withParsedBody($this->parsedBody);
-        return $request;
+        return $request->withParsedBody($this->parsedBody);
     }
 
     private static function getUriFactory(): UriFactory

@@ -50,13 +50,11 @@ class CulturefeedSlugger implements SluggerInterface
             '',
             $string
         );
-        $string = preg_replace(
+        return preg_replace(
             '/^' . preg_quote($this->separator) . '/',
             '',
             $string
         );
-
-        return $string;
     }
 
     private function transliterate(string $string): string

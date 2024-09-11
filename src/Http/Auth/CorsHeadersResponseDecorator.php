@@ -42,8 +42,6 @@ final class CorsHeadersResponseDecorator
         // If specific headers have been requested to be used, echo them back. Otherwise allow the default headers.
         $requestedHeaders = $request->getHeader('Access-Control-Request-Headers');
         $allowedHeaders = count($requestedHeaders) ? $requestedHeaders[0] : 'authorization,x-api-key';
-        $response = $response->withHeader('Access-Control-Allow-Headers', $allowedHeaders);
-
-        return $response;
+        return $response->withHeader('Access-Control-Allow-Headers', $allowedHeaders);
     }
 }

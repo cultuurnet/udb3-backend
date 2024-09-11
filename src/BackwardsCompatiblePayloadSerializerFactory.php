@@ -103,9 +103,7 @@ class BackwardsCompatiblePayloadSerializerFactory
             function (array $serializedObject) {
                 $serializedObject['class'] = TitleTranslated::class;
 
-                $serializedObject = self::replaceEventIdWithItemId($serializedObject);
-
-                return $serializedObject;
+                return self::replaceEventIdWithItemId($serializedObject);
             }
         );
 
@@ -114,9 +112,7 @@ class BackwardsCompatiblePayloadSerializerFactory
             function (array $serializedObject) {
                 $serializedObject['class'] = DescriptionTranslated::class;
 
-                $serializedObject = self::replaceEventIdWithItemId($serializedObject);
-
-                return $serializedObject;
+                return self::replaceEventIdWithItemId($serializedObject);
             }
         );
 
@@ -171,9 +167,7 @@ class BackwardsCompatiblePayloadSerializerFactory
             function (array $serializedObject) {
                 $serializedObject['class'] = LabelAdded::class;
 
-                $serializedObject = self::replaceEventIdWithItemId($serializedObject);
-
-                return $serializedObject;
+                return self::replaceEventIdWithItemId($serializedObject);
             }
         );
 
@@ -184,9 +178,7 @@ class BackwardsCompatiblePayloadSerializerFactory
 
                 $serializedObject = self::replaceEventIdWithItemId($serializedObject);
 
-                $serializedObject = self::replaceKeywordWithLabel($serializedObject);
-
-                return $serializedObject;
+                return self::replaceKeywordWithLabel($serializedObject);
             }
         );
 
@@ -197,9 +189,7 @@ class BackwardsCompatiblePayloadSerializerFactory
 
                 $serializedObject = self::replaceEventIdWithItemId($serializedObject);
 
-                $serializedObject = self::replaceKeywordWithLabel($serializedObject);
-
-                return $serializedObject;
+                return self::replaceKeywordWithLabel($serializedObject);
             }
         );
 
@@ -208,9 +198,7 @@ class BackwardsCompatiblePayloadSerializerFactory
             function (array $serializedObject) {
                 $serializedObject['class'] = LabelRemoved::class;
 
-                $serializedObject = self::replaceEventIdWithItemId($serializedObject);
-
-                return $serializedObject;
+                return self::replaceEventIdWithItemId($serializedObject);
             }
         );
 
@@ -233,9 +221,7 @@ class BackwardsCompatiblePayloadSerializerFactory
         $payloadManipulatingSerializer->manipulateEventsOfClass(
             'CultuurNet\UDB3\Place\Events\FacilitiesUpdated',
             function (array $serializedObject) {
-                $serializedObject = self::replacePlaceIdWithItemId($serializedObject);
-
-                return $serializedObject;
+                return self::replacePlaceIdWithItemId($serializedObject);
             }
         );
 
@@ -245,9 +231,7 @@ class BackwardsCompatiblePayloadSerializerFactory
         $payloadManipulatingSerializer->manipulateEventsOfClass(
             'CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated',
             function (array $serializedObject) {
-                $serializedObject = self::replacePlaceIdWithItemId($serializedObject);
-
-                return $serializedObject;
+                return self::replacePlaceIdWithItemId($serializedObject);
             }
         );
 
@@ -355,8 +339,7 @@ class BackwardsCompatiblePayloadSerializerFactory
             $payloadManipulatingSerializer->manipulateEventsOfClass(
                 $refactoredEventEvent,
                 function (array $serializedObject) {
-                    $serializedObject = self::replaceEventIdWithItemId($serializedObject);
-                    return $serializedObject;
+                    return self::replaceEventIdWithItemId($serializedObject);
                 }
             );
         }
@@ -378,8 +361,7 @@ class BackwardsCompatiblePayloadSerializerFactory
             $payloadManipulatingSerializer->manipulateEventsOfClass(
                 $refactoredPlaceEvent,
                 function (array $serializedObject) {
-                    $serializedObject = self::replacePlaceIdWithItemId($serializedObject);
-                    return $serializedObject;
+                    return self::replacePlaceIdWithItemId($serializedObject);
                 }
             );
         }

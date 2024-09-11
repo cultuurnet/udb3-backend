@@ -213,8 +213,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 
         return $jsonDocument->applyAssoc(
             function (array $json) use ($obsoleteProperties) {
-                $json = array_diff_key($json, array_flip($obsoleteProperties));
-                return $json;
+                return array_diff_key($json, array_flip($obsoleteProperties));
             }
         );
     }
@@ -237,9 +236,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                 };
 
                 $json = $filterNullLabels($json, 'labels');
-                $json = $filterNullLabels($json, 'hiddenLabels');
-
-                return $json;
+                return $filterNullLabels($json, 'hiddenLabels');
             }
         );
     }

@@ -126,10 +126,9 @@ class RoleLabelsProjector extends RoleProjector
 
     private function createNewDocument(UUID $uuid): JsonDocument
     {
-        $document = new JsonDocument(
+        return new JsonDocument(
             $uuid->toString(),
             Json::encode([])
         );
-        return $document;
     }
 }

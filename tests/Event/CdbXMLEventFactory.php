@@ -39,12 +39,10 @@ class CdbXMLEventFactory
     {
         $cdbXml = SampleFiles::read($this->samplesPath . '/' . $fileName);
 
-        $event = new $eventClass(
+        return new $eventClass(
             self::AN_EVENT_ID,
             $cdbXml,
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
-
-        return $event;
     }
 }

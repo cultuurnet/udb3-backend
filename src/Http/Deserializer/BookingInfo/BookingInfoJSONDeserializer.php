@@ -37,7 +37,7 @@ class BookingInfoJSONDeserializer extends JSONDeserializer
             $availabilityEnds = DateTimeFactory::fromISO8601($bookingInfo['availabilityEnds']);
         }
 
-        $bookingInfo = new BookingInfo(
+        return new BookingInfo(
             isset($bookingInfo['url']) ? (string) $bookingInfo['url'] : null,
             isset($bookingInfo['urlLabel']) ? MultilingualString::deserialize($bookingInfo['urlLabel']) : null,
             isset($bookingInfo['phone']) ? (string) $bookingInfo['phone'] : null,
@@ -45,7 +45,5 @@ class BookingInfoJSONDeserializer extends JSONDeserializer
             $availabilityStarts,
             $availabilityEnds
         );
-
-        return $bookingInfo;
     }
 }
