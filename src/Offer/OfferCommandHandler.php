@@ -43,9 +43,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->mediaManager = $mediaManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handle($command): void
     {
         $commandName = get_class($command);

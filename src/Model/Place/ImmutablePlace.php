@@ -138,9 +138,6 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         return new UUID('00000000-0000-0000-0000-000000000000');
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function guardCalendarType(Calendar $calendar): void
     {
         if (!($calendar instanceof CalendarWithOpeningHours)) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Log;
 
+use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\NormalizerFormatter;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
@@ -27,10 +28,7 @@ class SocketIOEmitterHandler extends AbstractProcessingHandler
         $this->emitter = $emitter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         $event = $record['formatted']['message'];
         $data = $record['formatted']['context'];
@@ -38,10 +36,7 @@ class SocketIOEmitterHandler extends AbstractProcessingHandler
         $this->emitter->emit($event, $data);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function getDefaultFormatter()
+    protected function getDefaultFormatter(): FormatterInterface
     {
         return new NormalizerFormatter();
     }
