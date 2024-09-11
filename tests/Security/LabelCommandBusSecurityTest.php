@@ -21,8 +21,6 @@ class LabelCommandBusSecurityTest extends TestCase
      */
     private $securityDecoratee;
 
-    private string $userId;
-
     /**
      * @var ReadRepositoryInterface&MockObject
      */
@@ -36,7 +34,7 @@ class LabelCommandBusSecurityTest extends TestCase
     {
         $this->securityDecoratee = $this->createMock(CommandBusSecurity::class);
 
-        $this->userId = '82650413-baf2-4257-a25b-d25dc18999dc';
+        $userId = '82650413-baf2-4257-a25b-d25dc18999dc';
 
         $this->labelReadRepository = $this->createMock(
             ReadRepositoryInterface::class
@@ -44,7 +42,7 @@ class LabelCommandBusSecurityTest extends TestCase
 
         $this->securityWithLabelPrivacy = new LabelCommandBusSecurity(
             $this->securityDecoratee,
-            $this->userId,
+            $userId,
             $this->labelReadRepository
         );
 

@@ -41,8 +41,6 @@ class GeoCoordinatesProcessManagerTest extends TestCase
      */
     private $commandBus;
 
-    private CultureFeedAddressFactoryInterface $addressFactory;
-
     /**
      * @var LoggerInterface&MockObject
      */
@@ -58,13 +56,13 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
-        $this->addressFactory = new CultureFeedAddressFactory();
+        $addressFactory = new CultureFeedAddressFactory();
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->documentRepository = $this->createMock(DocumentRepository::class);
 
         $this->processManager = new GeoCoordinatesProcessManager(
             $this->commandBus,
-            $this->addressFactory,
+            $addressFactory,
             $this->logger,
             $this->documentRepository
         );

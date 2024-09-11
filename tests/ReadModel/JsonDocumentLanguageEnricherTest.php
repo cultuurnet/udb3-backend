@@ -10,20 +10,18 @@ use PHPUnit\Framework\TestCase;
 
 class JsonDocumentLanguageEnricherTest extends TestCase
 {
-    private ConfigurableJsonDocumentLanguageAnalyzer $languageAnalyzer;
-
     private JsonDocumentLanguageEnricher $enricher;
 
     public function setUp(): void
     {
-        $this->languageAnalyzer = new ConfigurableJsonDocumentLanguageAnalyzer(
+        $languageAnalyzer = new ConfigurableJsonDocumentLanguageAnalyzer(
             [
                 'name',
                 'description',
             ]
         );
 
-        $this->enricher = new JsonDocumentLanguageEnricher($this->languageAnalyzer);
+        $this->enricher = new JsonDocumentLanguageEnricher($languageAnalyzer);
     }
 
     /**
