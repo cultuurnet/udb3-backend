@@ -9,6 +9,14 @@ trait UtilitySteps
     private bool $initialPreventDuplicatePlaceCreationValue;
 
     /**
+     * @Given /^I create a name that includes special characters of elastic search and keep it as "([^"]*)"$/
+     */
+    public function iCreateANameThatIncludesSpecialCharactersOfElasticSearchAndKeepItAs(string $variableName): void
+    {
+        $this->variableState->setVariable($variableName, '(a)![a]' . uniqid('', true));
+    }
+
+    /**
      * @Given I create a random name of :nrOfCharacters characters
      */
     public function iCreateARandomNameOfCharacters(int $nrOfCharacters): void
