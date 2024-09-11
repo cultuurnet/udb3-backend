@@ -16,20 +16,11 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
  */
 final class ContactPoint implements Serializable, JsonLdSerializableInterface
 {
-    /**
-     * @var array
-     */
-    private $phones = [];
+    private array $phones = [];
 
-    /**
-     * @var array
-     */
-    private $emails = [];
+    private array $emails = [];
 
-    /**
-     * @var array
-     */
-    private $urls = [];
+    private array $urls = [];
 
     public function __construct(array $phones = [], array $emails = [], array $urls = [])
     {

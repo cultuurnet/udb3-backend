@@ -14,10 +14,7 @@ use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValida
  */
 class CreatePlaceDataValidator implements DataValidatorInterface
 {
-    /**
-     * @var CompositeDataValidator
-     */
-    private $validator;
+    private CompositeDataValidator $validator;
 
     public function __construct()
     {

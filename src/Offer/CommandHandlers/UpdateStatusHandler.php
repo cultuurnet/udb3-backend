@@ -10,10 +10,7 @@ use CultuurNet\UDB3\Offer\OfferRepository;
 
 class UpdateStatusHandler implements CommandHandler
 {
-    /**
-     * @var OfferRepository
-     */
-    private $offerRepository;
+    private OfferRepository $offerRepository;
 
     public function __construct(OfferRepository $offerRepository)
     {

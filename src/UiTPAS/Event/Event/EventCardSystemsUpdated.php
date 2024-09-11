@@ -9,15 +9,12 @@ use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 
 class EventCardSystemsUpdated
 {
-    /**
-     * @var Id
-     */
-    private $id;
+    private Id $id;
 
     /**
      * @var CardSystem[]
      */
-    private $cardSystems;
+    private array $cardSystems;
 
     /**
      * @param CardSystem[] $cardSystems

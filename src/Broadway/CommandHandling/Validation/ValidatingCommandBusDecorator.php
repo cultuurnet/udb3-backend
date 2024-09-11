@@ -9,15 +9,9 @@ use Broadway\CommandHandling\CommandHandler;
 
 class ValidatingCommandBusDecorator implements CommandBus
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var CommandValidatorInterface
-     */
-    private $commandValidator;
+    private CommandValidatorInterface $commandValidator;
 
     public function __construct(
         CommandBus $commandBus,

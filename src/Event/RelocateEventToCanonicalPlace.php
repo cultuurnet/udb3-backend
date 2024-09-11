@@ -15,15 +15,9 @@ use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
 
 final class RelocateEventToCanonicalPlace implements EventListener
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var CanonicalPlaceRepository
-     */
-    private $canonicalPlaceRepository;
+    private CanonicalPlaceRepository $canonicalPlaceRepository;
 
     public function __construct(CommandBus $commandBus, CanonicalPlaceRepository $canonicalPlaceRepository)
     {

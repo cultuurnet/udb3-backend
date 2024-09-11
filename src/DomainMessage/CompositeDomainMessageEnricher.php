@@ -11,7 +11,7 @@ class CompositeDomainMessageEnricher implements DomainMessageEnricherInterface
     /**
      * @var DomainMessageEnricherInterface[]
      */
-    private $enrichers;
+    private array $enrichers;
 
     public function __construct()
     {

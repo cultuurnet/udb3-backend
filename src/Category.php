@@ -14,20 +14,11 @@ use InvalidArgumentException;
  */
 class Category implements Serializable, JsonLdSerializableInterface
 {
-    /**
-     * @var string
-     */
-    protected $id;
+    protected string $id;
 
-    /**
-     * @var string
-     */
-    protected $label;
+    protected string $label;
 
-    /**
-     * @var string
-     */
-    protected $domain;
+    protected string $domain;
 
     public function __construct(string $id, string $label, string $domain)
     {

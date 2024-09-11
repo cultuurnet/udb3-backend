@@ -10,15 +10,9 @@ use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
 
 class FilteringEventListener implements EventListener
 {
-    /**
-     * @var EventListener
-     */
-    protected $eventListener;
+    protected EventListener $eventListener;
 
-    /**
-     * @var DomainMessageSpecificationInterface
-     */
-    private $domainMessageSpecification;
+    private DomainMessageSpecificationInterface $domainMessageSpecification;
 
     public function __construct(
         EventListener $eventListener,

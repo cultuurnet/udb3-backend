@@ -6,15 +6,9 @@ namespace CultuurNet\UDB3\Model\ValueObject\Web;
 
 class WebsiteLink
 {
-    /**
-     * @var Url
-     */
-    private $url;
+    private Url $url;
 
-    /**
-     * @var TranslatedWebsiteLabel
-     */
-    private $label;
+    private TranslatedWebsiteLabel $label;
 
 
     public function __construct(Url $url, TranslatedWebsiteLabel $label)

@@ -9,16 +9,9 @@ use CultuurNet\UDB3\Language;
 
 abstract class AbstractUpdateDescription extends AbstractCommand
 {
-    /**
-     * Description to be added.
-     * @var Description
-     */
-    protected $description;
+    protected Description $description;
 
-    /**
-     * @var Language
-     */
-    protected $language;
+    protected Language $language;
 
     /**
      * @param string $itemId

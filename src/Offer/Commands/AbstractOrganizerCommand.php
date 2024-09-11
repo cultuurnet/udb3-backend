@@ -6,11 +6,7 @@ namespace CultuurNet\UDB3\Offer\Commands;
 
 abstract class AbstractOrganizerCommand extends AbstractCommand
 {
-    /**
-     * OrganizerId to be set
-     * @var string
-     */
-    protected $organizerId;
+    protected string $organizerId;
 
     /**
      * @param string $itemId

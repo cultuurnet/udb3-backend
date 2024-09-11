@@ -10,15 +10,9 @@ use CultuurNet\UDB3\DomainMessage\DomainMessageEnricherInterface;
 
 class EnrichingEventListenerDecorator implements EventListener
 {
-    /**
-     * @var EventListener
-     */
-    private $decoratee;
+    private EventListener $decoratee;
 
-    /**
-     * @var DomainMessageEnricherInterface
-     */
-    private $enricher;
+    private DomainMessageEnricherInterface $enricher;
 
     public function __construct(
         EventListener $decoratee,

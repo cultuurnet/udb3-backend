@@ -8,10 +8,7 @@ use Broadway\Domain\DomainMessage;
 
 class DomainMessageIsNot implements DomainMessageSpecificationInterface
 {
-    /**
-     * @var DomainMessageSpecificationInterface
-     */
-    private $domainMessageSpecification;
+    private DomainMessageSpecificationInterface $domainMessageSpecification;
 
 
     public function __construct(DomainMessageSpecificationInterface $domainMessageSpecification)

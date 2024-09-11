@@ -12,20 +12,11 @@ use CultuurNet\UDB3\Deserializer\DataValidationException;
  */
 class CompositeDataValidator implements DataValidatorInterface
 {
-    /**
-     * @var array
-     */
-    private $validators = [];
+    private array $validators = [];
 
-    /**
-     * @var string
-     */
-    private $fieldLevelGlue = '.';
+    private string $fieldLevelGlue = '.';
 
-    /**
-     * @var bool
-     */
-    private $overwriteErrorMessages;
+    private bool $overwriteErrorMessages;
 
     /**
      * @param string $fieldLevelGlue

@@ -19,15 +19,12 @@ class OfferMetadataProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var OfferMetadataRepository
-     */
-    private $offerMetadataRepository;
+    private OfferMetadataRepository $offerMetadataRepository;
 
     /**
      * @var array<string,string>
      */
-    private $apiKeyConsumerMapping;
+    private array $apiKeyConsumerMapping;
 
     public function __construct(
         OfferMetadataRepository $repository,

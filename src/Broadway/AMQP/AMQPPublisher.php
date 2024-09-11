@@ -17,25 +17,13 @@ class AMQPPublisher implements EventListener
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var string
-     */
-    private $exchange;
+    private string $exchange;
 
-    /**
-     * @var SpecificationInterface
-     */
-    private $domainMessageSpecification;
+    private SpecificationInterface $domainMessageSpecification;
 
-    /**
-     * @var AMQPChannel
-     */
-    private $channel;
+    private AMQPChannel $channel;
 
-    /**
-     * @var AMQPMessageFactoryInterface
-     */
-    private $messageFactory;
+    private AMQPMessageFactoryInterface $messageFactory;
 
     private Closure $determineRoutingKey;
 

@@ -11,10 +11,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 abstract class BaseHistoryProjector implements EventListener
 {
-    /**
-     * @var DocumentRepository
-     */
-    private $documentRepository;
+    private DocumentRepository $documentRepository;
 
     public function __construct(DocumentRepository $documentRepository)
     {

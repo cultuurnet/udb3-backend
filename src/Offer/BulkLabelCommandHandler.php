@@ -21,15 +21,9 @@ class BulkLabelCommandHandler extends Udb3CommandHandler implements LoggerAwareI
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var ResultsGeneratorInterface
-     */
-    private $resultsGenerator;
+    private ResultsGeneratorInterface $resultsGenerator;
 
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
     public function __construct(
         ResultsGeneratorInterface $resultsGenerator,

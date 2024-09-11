@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\EventExport;
 
 class EventExportResult
 {
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
     /**
      * @param string $url

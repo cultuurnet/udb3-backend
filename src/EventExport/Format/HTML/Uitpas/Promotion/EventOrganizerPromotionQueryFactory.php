@@ -11,10 +11,7 @@ use CultuurNet\UDB3\Clock\Clock;
 
 class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterface
 {
-    /**
-     * @var Clock
-     */
-    private $clock;
+    private Clock $clock;
 
 
     public function __construct(Clock $clock)

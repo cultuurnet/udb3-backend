@@ -11,7 +11,7 @@ class CompositePropertiesFactory implements PropertiesFactoryInterface
     /**
      * @var PropertiesFactoryInterface[]
      */
-    private $factories;
+    private array $factories;
 
     public function __construct()
     {

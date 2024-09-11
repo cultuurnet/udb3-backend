@@ -10,10 +10,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 final class PopularityEnrichedOfferRepository extends DocumentRepositoryDecorator
 {
-    /**
-     * @var PopularityRepository
-     */
-    private $popularityRepository;
+    private PopularityRepository $popularityRepository;
 
     public function __construct(PopularityRepository $popularityRepository, DocumentRepository $documentRepository)
     {

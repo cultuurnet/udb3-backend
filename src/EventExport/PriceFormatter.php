@@ -6,30 +6,15 @@ namespace CultuurNet\UDB3\EventExport;
 
 class PriceFormatter
 {
-    /**
-     * @var int
-     */
-    protected $significantDecimals = 2;
+    protected int $significantDecimals = 2;
 
-    /**
-     * @var string
-     */
-    protected $decimalPoint = '.';
+    protected string $decimalPoint = '.';
 
-    /**
-     * @var string
-     */
-    protected $thousandsSeparator = ',';
+    protected string $thousandsSeparator = ',';
 
-    /**
-     * @var string
-     */
-    protected $freeLabel = '';
+    protected string $freeLabel = '';
 
-    /**
-     * @var bool
-     */
-    protected $useFreeLabel = false;
+    protected bool $useFreeLabel = false;
 
     /**
      * @param int          $significantDecimals

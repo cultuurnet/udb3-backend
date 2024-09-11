@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Description;
 
 abstract class AbstractDescriptionUpdated extends AbstractEvent
 {
-    /**
-     * @var Description
-     */
-    protected $description;
+    protected Description $description;
 
     final public function __construct(string $id, Description $description)
     {
