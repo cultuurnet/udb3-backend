@@ -23,7 +23,7 @@ class JSONLDMainLanguageQuery implements MainLanguageQueryInterface
         $this->fallbackLanguage = $fallbackLanguage;
     }
 
-    public function execute($cdbid): Language
+    public function execute(string $cdbid): Language
     {
         try {
             $document = $this->documentRepository->fetch($cdbid);

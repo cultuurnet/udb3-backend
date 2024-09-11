@@ -16,10 +16,7 @@ class CategoryID
     use IsString;
     use IsNotEmpty;
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
         try {
             $this->guardNotEmpty($value);

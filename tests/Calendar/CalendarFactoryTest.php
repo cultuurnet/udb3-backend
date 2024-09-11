@@ -855,10 +855,7 @@ class CalendarFactoryTest extends TestCase
         $this->assertEquals($expectedCalendar, $calendar);
     }
 
-    /**
-     * @param string $xmlContent
-     */
-    private function createPeriodListFromXML($xmlContent): \CultureFeed_Cdb_Data_Calendar_PeriodList
+    private function createPeriodListFromXML(string $xmlContent): \CultureFeed_Cdb_Data_Calendar_PeriodList
     {
         $xmlElement = new \SimpleXMLElement($xmlContent);
         return \CultureFeed_Cdb_Data_Calendar_PeriodList::parseFromCdbXml($xmlElement);
@@ -985,10 +982,7 @@ class CalendarFactoryTest extends TestCase
         $this->assertEquals($expectedCalendar, $calendar);
     }
 
-    /**
-     * @param string $xmlContent
-     */
-    private function createPermanentCalendarFromXML($xmlContent): \CultureFeed_Cdb_Data_Calendar_Permanent
+    private function createPermanentCalendarFromXML(string $xmlContent): \CultureFeed_Cdb_Data_Calendar_Permanent
     {
         $xmlElement = new \SimpleXMLElement($xmlContent);
         return \CultureFeed_Cdb_Data_Calendar_Permanent::parseFromCdbXml($xmlElement);

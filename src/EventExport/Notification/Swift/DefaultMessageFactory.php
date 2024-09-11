@@ -21,16 +21,12 @@ class DefaultMessageFactory implements MessageFactoryInterface
 
     private string $senderName;
 
-    /**
-     * @param string                  $senderAddress
-     * @param string                  $senderName
-     */
     public function __construct(
         BodyFactoryInterface $plainTextBodyFactory,
         BodyFactoryInterface $htmlBodyFactory,
         SubjectFactoryInterface $subjectFactory,
-        $senderAddress,
-        $senderName
+        string $senderAddress,
+        string $senderName
     ) {
         $this->plainTextBodyFactory = $plainTextBodyFactory;
         $this->htmlBodyFactory = $htmlBodyFactory;

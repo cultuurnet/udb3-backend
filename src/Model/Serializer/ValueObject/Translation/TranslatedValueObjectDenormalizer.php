@@ -14,8 +14,7 @@ abstract class TranslatedValueObjectDenormalizer implements DenormalizerInterfac
 {
     /**
      * @inheritdoc
-     */
-    public function denormalize($data, $class, $format = null, array $context = [])
+     */public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             $selfClass = get_class($this);
@@ -67,10 +66,9 @@ abstract class TranslatedValueObjectDenormalizer implements DenormalizerInterfac
     }
 
     /**
-     * @param object $originalValue
      * @return TranslatedValueObject
      */
-    abstract protected function createTranslatedValueObject(Language $originalLanguage, $originalValue);
+    abstract protected function createTranslatedValueObject(Language $originalLanguage, object $originalValue);
 
     /**
      * @param string|array $value

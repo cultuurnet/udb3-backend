@@ -41,19 +41,17 @@ class LabelsDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @todo Extract to a separate LabelDenormalizer
-     * @param string $label
+     *@todo Extract to a separate LabelDenormalizer
      */
-    private function denormalizeLabel($label): Label
+    private function denormalizeLabel(string $label): Label
     {
         return new Label(new LabelName($label));
     }
 
     /**
-     * @todo Extract to a separate HiddenLabelDenormalizer
-     * @param string $label
+     *@todo Extract to a separate HiddenLabelDenormalizer
      */
-    private function denormalizeHiddenLabel($label): Label
+    private function denormalizeHiddenLabel(string $label): Label
     {
         return new Label(new LabelName($label), false);
     }

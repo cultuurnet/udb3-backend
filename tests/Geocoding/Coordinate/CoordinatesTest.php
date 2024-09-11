@@ -35,11 +35,9 @@ class CoordinatesTest extends TestCase
     /**
      * @test
      * @dataProvider validLatLonStringProvider
-     *
-     * @param string $latLonString
      */
     public function it_can_be_created_from_a_valid_lat_lon_string(
-        $latLonString,
+        string $latLonString,
         Coordinates $expectedCoordinates
     ): void {
         $coordinates = Coordinates::fromLatLonString($latLonString);
@@ -49,10 +47,8 @@ class CoordinatesTest extends TestCase
     /**
      * @test
      * @dataProvider invalidLatLonStringProvider
-     *
-     * @param string $latLonString
      */
-    public function it_throws_an_exception_if_the_given_string_is_invalid($latLonString): void
+    public function it_throws_an_exception_if_the_given_string_is_invalid(string $latLonString): void
     {
         $this->expectException(\InvalidArgumentException::class);
         Coordinates::fromLatLonString($latLonString);

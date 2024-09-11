@@ -76,10 +76,9 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStrings(\stdClass $json, $propertyName): array
+    private function getLanguageStrings(\stdClass $json, string $propertyName): array
     {
         if (strpos($propertyName, '.') === false) {
             return $this->getLanguageStringsFromProperty($json, $propertyName);
@@ -89,10 +88,9 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStringsFromProperty(\stdClass $json, $propertyName): array
+    private function getLanguageStringsFromProperty(\stdClass $json, string $propertyName): array
     {
         if (!isset($json->{$propertyName})) {
             return [];
@@ -108,10 +106,9 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStringsFromNestedProperty(\stdClass $json, $propertyName): array
+    private function getLanguageStringsFromNestedProperty(\stdClass $json, string $propertyName): array
     {
         $nestedProperties = explode('.', $propertyName);
         $traversedProperties = [];

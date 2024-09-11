@@ -10,10 +10,7 @@ abstract class AbstractUpdateContactPoint extends AbstractCommand
 {
     protected ContactPoint $contactPoint;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, ContactPoint $contactPoint)
+    public function __construct(string $itemId, ContactPoint $contactPoint)
     {
         parent::__construct($itemId);
         $this->contactPoint = $contactPoint;

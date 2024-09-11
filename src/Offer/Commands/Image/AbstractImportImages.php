@@ -11,10 +11,7 @@ class AbstractImportImages extends AbstractCommand
 {
     private ImageCollection $imageCollection;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, ImageCollection $imageCollection)
+    public function __construct(string $itemId, ImageCollection $imageCollection)
     {
         parent::__construct($itemId);
         $this->imageCollection = $imageCollection;

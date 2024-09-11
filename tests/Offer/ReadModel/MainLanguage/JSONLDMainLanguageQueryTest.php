@@ -71,10 +71,7 @@ class JSONLDMainLanguageQueryTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @param string $cdbid
-     */
-    private function expectDocumentWithJsonLd($cdbid, array $data): void
+    private function expectDocumentWithJsonLd(string $cdbid, array $data): void
     {
         $document = new JsonDocument($cdbid, Json::encode($data));
 

@@ -127,10 +127,7 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
         }
     }
 
-    /**
-     * @param int $unixTime
-     */
-    private function dateFromUdb2UnixTime($unixTime): \DateTime
+    private function dateFromUdb2UnixTime(int $unixTime): \DateTime
     {
         $dateTime = new \DateTime(
             '@' . $unixTime,

@@ -11,21 +11,13 @@ class Url implements MediaSpecificationInterface
 {
     private string $url;
 
-    /**
-     * Url constructor.
-     *
-     * @param string $url
-     */
-    public function __construct($url)
+    public function __construct(string $url)
     {
         Assert::stringNotEmpty($url);
         $this->url = $url;
     }
 
-    /**
-     * @param stdClass $mediaObject
-     */
-    public function matches($mediaObject): bool
+    public function matches(stdClass $mediaObject): bool
     {
         Assert::object($mediaObject);
         return $mediaObject->contentUrl === $this->url;

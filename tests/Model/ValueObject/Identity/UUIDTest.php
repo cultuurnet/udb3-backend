@@ -11,9 +11,8 @@ class UUIDTest extends TestCase
     /**
      * @test
      * @dataProvider validUUIDDataProvider
-     * @param string $uuidString
      */
-    public function it_should_accept_a_valid_uuid_string($uuidString): void
+    public function it_should_accept_a_valid_uuid_string(string $uuidString): void
     {
         $uuid = new UUID($uuidString);
         $this->assertEquals($uuidString, $uuid->toString());

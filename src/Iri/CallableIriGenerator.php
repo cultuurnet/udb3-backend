@@ -28,7 +28,7 @@ class CallableIriGenerator implements IriGeneratorInterface
         $this->callback = $callback;
     }
 
-    public function iri($item): string
+    public function iri(string $item): string
     {
         $callback = $this->callback;
         return $callback($item);

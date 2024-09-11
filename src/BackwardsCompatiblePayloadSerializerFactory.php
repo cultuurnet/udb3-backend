@@ -455,12 +455,7 @@ class BackwardsCompatiblePayloadSerializerFactory
         return self::replaceKeys('place_id', 'item_id', $serializedObject);
     }
 
-    /**
-     * @param string $oldKey
-     * @param string $newKey
-     * @param array $serializedObject
-     */
-    private static function replaceKeys($oldKey, $newKey, $serializedObject): array
+    private static function replaceKeys(string $oldKey, string $newKey, array $serializedObject): array
     {
         if (isset($serializedObject['payload'][$oldKey])) {
             $value = $serializedObject['payload'][$oldKey];

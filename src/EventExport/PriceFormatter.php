@@ -16,17 +16,11 @@ class PriceFormatter
 
     protected bool $useFreeLabel = false;
 
-    /**
-     * @param int          $significantDecimals
-     * @param string       $decimalPoint
-     * @param string       $thousandsSeparator
-     * @param string|false $freeLabel
-     */
     public function __construct(
-        $significantDecimals = 2,
-        $decimalPoint = '.',
-        $thousandsSeparator = ',',
-        $freeLabel = ''
+        int $significantDecimals = 2,
+        string $decimalPoint = '.',
+        string $thousandsSeparator = ',',
+        string $freeLabel = ''
     ) {
         $this->setSignificantDecimals($significantDecimals);
         $this->setDecimalPoint($decimalPoint);
@@ -71,43 +65,28 @@ class PriceFormatter
         return $price;
     }
 
-    /**
-     * @param int $significantDecimals
-     */
-    public function setSignificantDecimals($significantDecimals): void
+    public function setSignificantDecimals(int $significantDecimals): void
     {
         $this->significantDecimals = $significantDecimals;
     }
 
-    /**
-     * @param string $decimalPoint
-     */
-    public function setDecimalPoint($decimalPoint): void
+    public function setDecimalPoint(string $decimalPoint): void
     {
         $this->decimalPoint = $decimalPoint;
     }
 
-    /**
-     * @param string $thousandsSeparator
-     */
-    public function setThousandsSeparator($thousandsSeparator): void
+    public function setThousandsSeparator(string $thousandsSeparator): void
     {
         $this->thousandsSeparator = $thousandsSeparator;
     }
 
-    /**
-     * @param string $freeLabel
-     */
-    public function useFreeLabel($freeLabel): void
+    public function useFreeLabel(string $freeLabel): void
     {
         $this->setFreeLabel($freeLabel);
         $this->enableFreeLabel();
     }
 
-    /**
-     * @param string $freeLabel
-     */
-    public function setFreeLabel($freeLabel): void
+    public function setFreeLabel(string $freeLabel): void
     {
         $this->freeLabel = $freeLabel;
     }

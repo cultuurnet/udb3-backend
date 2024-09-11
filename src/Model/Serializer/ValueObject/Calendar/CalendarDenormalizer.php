@@ -151,10 +151,9 @@ class CalendarDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @todo Extract to a separate TimeDenormalizer
-     * @param string $timeString
+     *@todo Extract to a separate TimeDenormalizer
      */
-    private function denormalizeTime($timeString): Time
+    private function denormalizeTime(string $timeString): Time
     {
         $dateTime = DateTimeFactory::fromFormat('H:i', $timeString);
         $hour = new Hour((int) $dateTime->format('H'));

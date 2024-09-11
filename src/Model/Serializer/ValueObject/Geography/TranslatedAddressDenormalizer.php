@@ -23,7 +23,7 @@ class TranslatedAddressDenormalizer extends TranslatedValueObjectDenormalizer
     /**
      * @inheritdoc
      */
-    protected function createTranslatedValueObject(Language $originalLanguage, $originalValue)
+    protected function createTranslatedValueObject(Language $originalLanguage, object $originalValue)
     {
         return new TranslatedAddress($originalLanguage, $originalValue);
     }

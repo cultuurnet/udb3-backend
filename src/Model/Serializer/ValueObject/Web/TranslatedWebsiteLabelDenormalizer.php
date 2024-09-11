@@ -19,7 +19,7 @@ class TranslatedWebsiteLabelDenormalizer extends TranslatedValueObjectDenormaliz
     /**
      * @inheritdoc
      */
-    protected function createTranslatedValueObject(Language $originalLanguage, $originalValue)
+    protected function createTranslatedValueObject(Language $originalLanguage, object $originalValue)
     {
         return new TranslatedWebsiteLabel($originalLanguage, $originalValue);
     }

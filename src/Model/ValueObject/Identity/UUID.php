@@ -17,10 +17,7 @@ class UUID
      */
     public const BC_REGEX = '\\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12}\\z';
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $this->guardRegexPattern(
             '/' . self::BC_REGEX . '/',

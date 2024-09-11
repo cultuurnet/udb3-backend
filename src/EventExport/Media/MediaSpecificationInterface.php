@@ -8,8 +8,5 @@ use stdClass;
 
 interface MediaSpecificationInterface
 {
-    /**
-     * @param stdClass $mediaObject
-     */
-    public function matches($mediaObject): bool;
+    public function matches(stdClass $mediaObject): bool;
 }

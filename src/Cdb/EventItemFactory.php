@@ -12,19 +12,15 @@ class EventItemFactory implements EventItemFactoryInterface
 {
     private string $namespaceUri;
 
-    /**
-     * @param string $namespaceUri
-     */
-    public function __construct($namespaceUri)
+    public function __construct(string $namespaceUri)
     {
         $this->namespaceUri = $namespaceUri;
     }
 
     /**
-     * @param string $cdbXml
      * @throws \CultureFeed_Cdb_ParseException
      */
-    public function createFromCdbXml($cdbXml): CultureFeed_Cdb_Item_Event
+    public function createFromCdbXml(string $cdbXml): CultureFeed_Cdb_Item_Event
     {
         return self::createEventFromCdbXml($this->namespaceUri, $cdbXml);
     }

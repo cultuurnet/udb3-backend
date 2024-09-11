@@ -8,10 +8,7 @@ class EventExportResult
 {
     private string $url;
 
-    /**
-     * @param string $url
-     */
-    public function __construct($url)
+    public function __construct(string $url)
     {
         $this->setUrl($url);
     }
@@ -21,10 +18,7 @@ class EventExportResult
         return $this->url;
     }
 
-    /**
-     * @param string $url
-     */
-    private function setUrl($url): void
+    private function setUrl(string $url): void
     {
         $this->url = $url;
     }

@@ -46,11 +46,7 @@ class CdbXMLImporterTest extends TestCase
         date_default_timezone_set('Europe/Brussels');
     }
 
-    /**
-     * @param string $fileName
-     * @param string $version
-     */
-    private function createJsonPlaceFromCdbXml($fileName, $version = '3.2'): \stdClass
+    private function createJsonPlaceFromCdbXml(string $fileName, string $version = '3.2'): \stdClass
     {
         $cdbXml = SampleFiles::read(
             __DIR__ . '/' . $fileName
@@ -69,10 +65,7 @@ class CdbXMLImporterTest extends TestCase
         return $jsonPlace;
     }
 
-    /**
-     * @param string $fileName
-     */
-    private function createJsonPlaceFromCdbXmlWithWeekScheme($fileName): \stdClass
+    private function createJsonPlaceFromCdbXmlWithWeekScheme(string $fileName): \stdClass
     {
         $cdbXml = SampleFiles::read(
             __DIR__ . '/Calendar/' . $fileName
