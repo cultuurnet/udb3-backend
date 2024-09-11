@@ -8,8 +8,5 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 interface IriOfferIdentifierFactoryInterface
 {
-    /**
-     * @return IriOfferIdentifier
-     */
-    public function fromIri(Url $iri);
+    public function fromIri(Url $iri): IriOfferIdentifier;
 }

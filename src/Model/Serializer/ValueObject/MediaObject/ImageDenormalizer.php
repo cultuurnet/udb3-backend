@@ -50,10 +50,7 @@ final class ImageDenormalizer implements DenormalizerInterface
         return new Image($id, $language, $description, $copyrightHolder);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === Image::class;
     }

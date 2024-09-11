@@ -19,10 +19,7 @@ abstract class AbstractUpdateContactPoint extends AbstractCommand
         $this->contactPoint = $contactPoint;
     }
 
-    /**
-     * @return ContactPoint
-     */
-    public function getContactPoint()
+    public function getContactPoint(): ContactPoint
     {
         return $this->contactPoint;
     }

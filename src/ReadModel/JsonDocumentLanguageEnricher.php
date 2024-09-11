@@ -18,10 +18,7 @@ class JsonDocumentLanguageEnricher implements JsonDocumentMetaDataEnricherInterf
         $this->languageAnalyzer = $languageAnalyzer;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function enrich(JsonDocument $jsonDocument, Metadata $metadata)
+    public function enrich(JsonDocument $jsonDocument, Metadata $metadata): JsonDocument
     {
         $body = $jsonDocument->getBody();
 

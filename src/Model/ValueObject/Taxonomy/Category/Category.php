@@ -22,26 +22,17 @@ class Category
         $this->domain = $domain;
     }
 
-    /**
-     * @return CategoryID
-     */
-    public function getId()
+    public function getId(): CategoryID
     {
         return $this->id;
     }
 
-    /**
-     * @return CategoryLabel|null
-     */
-    public function getLabel()
+    public function getLabel(): ?CategoryLabel
     {
         return $this->label;
     }
 
-    /**
-     * @return CategoryDomain|null
-     */
-    public function getDomain()
+    public function getDomain(): ?CategoryDomain
     {
         return $this->domain;
     }

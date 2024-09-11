@@ -8,13 +8,7 @@ use Broadway\Domain\DomainMessage;
 
 interface DomainMessageEnricherInterface
 {
-    /**
-     * @return bool
-     */
-    public function supports(DomainMessage $domainMessage);
+    public function supports(DomainMessage $domainMessage): bool;
 
-    /**
-     * @return DomainMessage
-     */
-    public function enrich(DomainMessage $domainMessage);
+    public function enrich(DomainMessage $domainMessage): DomainMessage;
 }

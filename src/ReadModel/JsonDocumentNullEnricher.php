@@ -8,10 +8,7 @@ use Broadway\Domain\Metadata;
 
 class JsonDocumentNullEnricher implements JsonDocumentMetaDataEnricherInterface
 {
-    /**
-     * @return JsonDocument
-     */
-    public function enrich(JsonDocument $jsonDocument, Metadata $metadata)
+    public function enrich(JsonDocument $jsonDocument, Metadata $metadata): JsonDocument
     {
         return $jsonDocument;
     }

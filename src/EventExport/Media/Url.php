@@ -24,9 +24,8 @@ class Url implements MediaSpecificationInterface
 
     /**
      * @param stdClass $mediaObject
-     * @return bool
      */
-    public function matches($mediaObject)
+    public function matches($mediaObject): bool
     {
         Assert::object($mediaObject);
         return $mediaObject->contentUrl === $this->url;

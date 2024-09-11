@@ -39,9 +39,8 @@ class PriceFormatter
 
     /**
      * @param float|int $price
-     * @return string $price
      */
-    public function format($price)
+    public function format($price): string
     {
         // Limit the number of decimals, and set the decimal point and thousands separator.
         $price = number_format(

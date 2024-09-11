@@ -20,5 +20,5 @@ interface IriGeneratorInterface
      * @return string
      *   The IRI for the specified item.
      */
-    public function iri($item);
+    public function iri($item): string;
 }

@@ -24,10 +24,7 @@ class MediaManagerImageCollectionFactory implements ImageCollectionFactory
         $this->mediaManager = $mediaManager;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function fromMediaObjectReferences(MediaObjectReferences $mediaObjectReferences)
+    public function fromMediaObjectReferences(MediaObjectReferences $mediaObjectReferences): ImageCollection
     {
         $mediaObjectsReferences = $mediaObjectReferences->filter(
             function (MediaObjectReference $mediaObjectReference) {

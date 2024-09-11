@@ -9,8 +9,5 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 interface AMQPMessageFactoryInterface
 {
-    /**
-     * @return AMQPMessage
-     */
-    public function createAMQPMessage(DomainMessage $domainMessage);
+    public function createAMQPMessage(DomainMessage $domainMessage): AMQPMessage;
 }

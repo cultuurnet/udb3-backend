@@ -27,10 +27,7 @@ class CulturefeedSlugger implements SluggerInterface
         $this->separator = $separator;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function slug($string)
+    public function slug($string): string
     {
         // transliterate
         $string = $this->transliterate($string);

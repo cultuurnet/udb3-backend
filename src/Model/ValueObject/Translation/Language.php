@@ -23,10 +23,7 @@ class Language
         $this->setValue($code);
     }
 
-    /**
-     * @return string
-     */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->toString();
     }

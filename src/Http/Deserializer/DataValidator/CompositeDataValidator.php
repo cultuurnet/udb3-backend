@@ -33,9 +33,8 @@ class CompositeDataValidator implements DataValidatorInterface
 
     /**
      * @param string[] $depth
-     * @return CompositeDataValidator
      */
-    public function withValidator(DataValidatorInterface $validator, $depth = [])
+    public function withValidator(DataValidatorInterface $validator, $depth = []): CompositeDataValidator
     {
         $c = clone $this;
         $c->validators[] = [
@@ -82,9 +81,8 @@ class CompositeDataValidator implements DataValidatorInterface
 
     /**
      * @param array $depth
-     * @return array|null
      */
-    private function getValidatorContext(array $data, $depth)
+    private function getValidatorContext(array $data, $depth): ?array
     {
         if (empty($depth)) {
             return $data;
@@ -115,9 +113,8 @@ class CompositeDataValidator implements DataValidatorInterface
     /**
      * @param string $fieldName
      * @param array $depth
-     * @return string
      */
-    private function getCompleteFieldName($fieldName, $depth)
+    private function getCompleteFieldName($fieldName, $depth): string
     {
         if (empty($depth)) {
             return $fieldName;

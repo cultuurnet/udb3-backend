@@ -24,10 +24,7 @@ class AddLabelToMultiple implements AsyncCommand
         $this->label = $label;
     }
 
-    /**
-     * @return OfferIdentifierCollection
-     */
-    public function getOfferIdentifiers()
+    public function getOfferIdentifiers(): OfferIdentifierCollection
     {
         return $this->offerIdentifiers;
     }

@@ -13,15 +13,12 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
  */
 class ExportEventsAsOOXMLJSONDeserializer extends ExportEventsJSONDeserializer
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function createCommand(
         EventExportQuery $query,
         $include,
         EmailAddress $address = null,
         $selection = null
-    ) {
+    ): ExportEvents {
         return new ExportEventsAsOOXML(
             $query,
             $include,

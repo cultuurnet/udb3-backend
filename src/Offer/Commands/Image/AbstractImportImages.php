@@ -20,10 +20,7 @@ class AbstractImportImages extends AbstractCommand
         $this->imageCollection = $imageCollection;
     }
 
-    /**
-     * @return ImageCollection
-     */
-    public function getImages()
+    public function getImages(): ImageCollection
     {
         return $this->imageCollection;
     }

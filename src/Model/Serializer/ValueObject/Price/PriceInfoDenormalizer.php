@@ -71,20 +71,16 @@ class PriceInfoDenormalizer implements DenormalizerInterface
         return new PriceInfo($basePrice, new Tariffs(...$tariffs));
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === PriceInfo::class;
     }
 
     /**
      * @todo Extract to a separate TariffDenormalizer
-     * @return Tariff
      * @throws \Money\UnknownCurrencyException
      */
-    private function denormalizeTariff(array $tariffData, array $context = [])
+    private function denormalizeTariff(array $tariffData, array $context = []): Tariff
     {
         /* @var TranslatedTariffName $tariffName */
         $tariffName = $this->tariffNameDenormalizer->denormalize(

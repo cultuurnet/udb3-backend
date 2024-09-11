@@ -24,10 +24,7 @@ class DelegatingAMQPMessageFactory implements AMQPMessageFactoryInterface
         $this->propertiesFactory = $propertiesFactory;
     }
 
-    /**
-     * @return AMQPMessage
-     */
-    public function createAMQPMessage(DomainMessage $domainMessage)
+    public function createAMQPMessage(DomainMessage $domainMessage): AMQPMessage
     {
         return new AMQPMessage(
             $this->bodyFactory->createBody($domainMessage),

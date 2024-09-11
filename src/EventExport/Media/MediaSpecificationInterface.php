@@ -10,7 +10,6 @@ interface MediaSpecificationInterface
 {
     /**
      * @param stdClass $mediaObject
-     * @return bool
      */
-    public function matches($mediaObject);
+    public function matches($mediaObject): bool;
 }

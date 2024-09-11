@@ -41,7 +41,7 @@ class CdbXMLImporter
     public function documentWithCdbXML(
         $base,
         \CultureFeed_Cdb_Item_Actor $actor
-    ) {
+    ): stdClass {
         $jsonLD = clone $base;
 
         $detail = null;
