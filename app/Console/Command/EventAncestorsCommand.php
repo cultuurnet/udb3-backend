@@ -14,10 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class EventAncestorsCommand extends AbstractCommand
 {
-    /**
-     * @var EventStore
-     */
-    private $eventStore;
+    private EventStore $eventStore;
 
     public function __construct(CommandBus $commandBus, EventStore $eventStore)
     {

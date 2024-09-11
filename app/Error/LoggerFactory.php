@@ -20,17 +20,14 @@ final class LoggerFactory
     /**
      * @var Logger[]
      */
-    private static $loggers;
+    private static array $loggers;
 
     /**
      * @var StreamHandler[]
      */
-    private static $streamHandlers = [];
+    private static array $streamHandlers = [];
 
-    /**
-     * @var SentryHandlerScopeDecorator|null
-     */
-    private static $sentryHandler;
+    private static ?SentryHandlerScopeDecorator $sentryHandler = null;
 
     public static function create(
         ContainerInterface $container,

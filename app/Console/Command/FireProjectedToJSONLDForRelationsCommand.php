@@ -13,10 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJSONLDCommand
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(EventBus $eventBus, Connection $connection, DocumentEventFactory $organizerEventFactory, DocumentEventFactory $placeEventFactory)
     {

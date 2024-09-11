@@ -22,15 +22,9 @@ class UpdateUniqueOrganizers extends Command
     private const ORGANIZER_CREATED = 'CultuurNet.UDB3.Organizer.Events.OrganizerCreatedWithUniqueWebsite';
     private const ORGANIZER_WEBSITE_UPDATED = 'CultuurNet.UDB3.Organizer.Events.WebsiteUpdated';
 
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var WebsiteNormalizer
-     */
-    private $websiteNormalizer;
+    private WebsiteNormalizer $websiteNormalizer;
 
     public function __construct(Connection $connection, WebsiteNormalizer $websiteNormalizer)
     {
