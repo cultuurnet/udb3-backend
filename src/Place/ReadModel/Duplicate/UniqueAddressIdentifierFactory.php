@@ -30,9 +30,6 @@ class UniqueAddressIdentifierFactory
         ];
     }
 
-    /**
-     * Escape reserved Elasticsearch characters in the query string for Elasticsearch.
-     */
     private function escapeReservedElasticsearchCharacters(string $query): string
     {
         // List of special characters that need escaping
