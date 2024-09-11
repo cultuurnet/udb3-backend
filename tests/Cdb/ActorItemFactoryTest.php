@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ActorItemFactoryTest extends TestCase
 {
-    /**
-     * @var ActorItemFactory
-     */
-    private $factory;
+    private ActorItemFactory $factory;
 
     public function setUp(): void
     {

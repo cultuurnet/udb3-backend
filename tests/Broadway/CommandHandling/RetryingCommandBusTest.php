@@ -14,15 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class RetryingCommandBusTest extends TestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $decoratee;
+    private MockObject $decoratee;
 
-    /**
-     * @var RetryingCommandBus
-     */
-    private $commandBus;
+    private RetryingCommandBus $commandBus;
 
     protected function setUp(): void
     {

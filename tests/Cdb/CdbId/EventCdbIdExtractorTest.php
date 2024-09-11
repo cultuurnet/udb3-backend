@@ -9,20 +9,11 @@ use PHPUnit\Framework\TestCase;
 
 class EventCdbIdExtractorTest extends TestCase
 {
-    /**
-     * @var ArrayMappingService
-     */
-    private $placeExternalIdMappingService;
+    private ArrayMappingService $placeExternalIdMappingService;
 
-    /**
-     * @var ArrayMappingService
-     */
-    private $organizerExternalIdMappingService;
+    private ArrayMappingService $organizerExternalIdMappingService;
 
-    /**
-     * @var EventCdbIdExtractor
-     */
-    private $cdbIdExtractor;
+    private EventCdbIdExtractor $cdbIdExtractor;
 
     public function setUp(): void
     {

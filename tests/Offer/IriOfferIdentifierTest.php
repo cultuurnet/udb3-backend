@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class IriOfferIdentifierTest extends TestCase
 {
-    /**
-     * @var IriOfferIdentifier
-     */
-    private $identifier;
+    private IriOfferIdentifier $identifier;
 
     public function setUp(): void
     {

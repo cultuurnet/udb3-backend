@@ -18,15 +18,9 @@ class OfferMetadataEnrichedOfferRepositoryTest extends TestCase
      */
     private $offerMetadataRepository;
 
-    /**
-     * @var InMemoryDocumentRepository
-     */
-    private $decoratedRepository;
+    private InMemoryDocumentRepository $decoratedRepository;
 
-    /**
-     * @var OfferMetadataEnrichedOfferRepository
-     */
-    private $offerMetadataEnrichedOfferRepository;
+    private OfferMetadataEnrichedOfferRepository $offerMetadataEnrichedOfferRepository;
 
     protected function setUp(): void
     {

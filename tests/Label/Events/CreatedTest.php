@@ -19,8 +19,7 @@ class CreatedTest extends TestCase
 
     protected Privacy $privacy;
 
-    /** @var Created */
-    protected $created;
+    protected Created $created;
 
     protected function setUp(): void
     {

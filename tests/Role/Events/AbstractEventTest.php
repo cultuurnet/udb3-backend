@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractEventTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
     /**
      * @var AbstractEvent&MockObject

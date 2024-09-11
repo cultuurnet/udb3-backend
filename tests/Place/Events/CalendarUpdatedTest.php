@@ -11,25 +11,13 @@ use PHPUnit\Framework\TestCase;
 
 class CalendarUpdatedTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $placeId;
+    private string $placeId;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
-    /**
-     * @var array
-     */
-    private $calendarUpdatedAsArray;
+    private array $calendarUpdatedAsArray;
 
-    /**
-     * @var CalendarUpdated
-     */
-    private $calendarUpdated;
+    private CalendarUpdated $calendarUpdated;
 
     protected function setUp(): void
     {

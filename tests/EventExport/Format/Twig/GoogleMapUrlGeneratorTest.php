@@ -11,10 +11,7 @@ class GoogleMapUrlGeneratorTest extends TestCase
 {
     public const TEST_API_KEY = 'MY_API_KEY';
 
-    /**
-     * @var GoogleMapUrlGenerator
-     */
-    private $generator;
+    private GoogleMapUrlGenerator $generator;
 
     protected function setUp(): void
     {

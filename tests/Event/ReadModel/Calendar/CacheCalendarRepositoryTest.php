@@ -12,15 +12,9 @@ use PHPUnit\Framework\TestCase;
 
 class CacheCalendarRepositoryTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    protected $eventId;
+    protected string $eventId;
 
-    /**
-     * @var CultureFeed_Cdb_Data_Calendar_PeriodList
-     */
-    protected $calendar;
+    protected CultureFeed_Cdb_Data_Calendar_PeriodList $calendar;
 
     public function setUp(): void
     {

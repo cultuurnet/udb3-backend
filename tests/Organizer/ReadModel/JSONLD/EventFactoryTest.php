@@ -10,25 +10,17 @@ use PHPUnit\Framework\TestCase;
 
 class EventFactoryTest extends TestCase
 {
-    /**
-     * @var CallableIriGenerator
-     */
-    private $iriGenerator;
-
-    /**
-     * @var EventFactory
-     */
-    private $factory;
+    private EventFactory $factory;
 
     public function setUp(): void
     {
-        $this->iriGenerator = new CallableIriGenerator(
+        $iriGenerator = new CallableIriGenerator(
             function ($id) {
                 return 'organizers/' . $id;
             }
         );
 
-        $this->factory = new EventFactory($this->iriGenerator);
+        $this->factory = new EventFactory($iriGenerator);
     }
 
     /**

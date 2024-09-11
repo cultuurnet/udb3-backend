@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class EventIDParserTest extends TestCase
 {
-    /**
-     * @var EventIDParser
-     */
-    private $parser;
+    private EventIDParser $parser;
 
     public function setUp(): void
     {

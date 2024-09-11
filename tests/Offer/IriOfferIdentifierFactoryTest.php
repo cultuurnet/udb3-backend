@@ -11,15 +11,9 @@ use RuntimeException;
 
 class IriOfferIdentifierFactoryTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $regex;
+    private string $regex;
 
-    /**
-     * @var IriOfferIdentifierFactory
-     */
-    private $iriOfferIdentifierFactory;
+    private IriOfferIdentifierFactory $iriOfferIdentifierFactory;
 
     public function setUp(): void
     {

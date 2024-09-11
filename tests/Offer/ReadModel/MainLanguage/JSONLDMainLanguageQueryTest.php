@@ -20,10 +20,7 @@ class JSONLDMainLanguageQueryTest extends TestCase
      */
     private $documentRepository;
 
-    /**
-     * @var JSONLDMainLanguageQuery
-     */
-    private $query;
+    private JSONLDMainLanguageQuery $query;
 
     public function setUp(): void
     {

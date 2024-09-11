@@ -8,43 +8,28 @@ use PHPUnit\Framework\TestCase;
 
 class TitleTranslatedTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $organizerId;
+    private TitleTranslated $titleTranslated;
 
-    private string $title;
-
-    private string $language;
-
-    /**
-     * @var TitleTranslated
-     */
-    private $titleTranslated;
-
-    /**
-     * @var array
-     */
-    private $titleTranslatedAsArray;
+    private array $titleTranslatedAsArray;
 
     protected function setUp(): void
     {
-        $this->organizerId = '3ad6c135-9b2d-4360-8886-3a58aaf66039';
+        $organizerId = '3ad6c135-9b2d-4360-8886-3a58aaf66039';
 
-        $this->title = 'Het Depot';
+        $title = 'Het Depot';
 
-        $this->language = 'nl';
+        $language = 'nl';
 
         $this->titleTranslated = new TitleTranslated(
-            $this->organizerId,
-            $this->title,
-            $this->language
+            $organizerId,
+            $title,
+            $language
         );
 
         $this->titleTranslatedAsArray = [
-            'organizer_id' =>  $this->organizerId,
-            'title' => $this->title,
-            'language' => $this->language,
+            'organizer_id' => $organizerId,
+            'title' => $title,
+            'language' => $language,
         ];
     }
 

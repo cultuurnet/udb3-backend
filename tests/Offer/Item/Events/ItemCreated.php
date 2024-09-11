@@ -9,15 +9,9 @@ use CultuurNet\UDB3\Language;
 
 class ItemCreated implements Serializable
 {
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var Language
-     */
-    protected $mainLanguage;
+    protected Language $mainLanguage;
 
     /**
      * @param string $itemId

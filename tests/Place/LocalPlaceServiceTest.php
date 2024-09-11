@@ -33,10 +33,7 @@ class LocalPlaceServiceTest extends TestCase
      */
     private $placeRelationsRepository;
 
-    /**
-     * @var LocalPlaceService
-     */
-    private $localPlaceService;
+    private LocalPlaceService $localPlaceService;
 
     protected function setUp(): void
     {

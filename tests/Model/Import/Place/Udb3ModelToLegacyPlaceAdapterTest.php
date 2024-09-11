@@ -27,10 +27,7 @@ use PHPUnit\Framework\TestCase;
 
 class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
 {
-    /**
-     * @var Udb3ModelToLegacyPlaceAdapter
-     */
-    private $adapter;
+    private Udb3ModelToLegacyPlaceAdapter $adapter;
 
     public function setUp(): void
     {

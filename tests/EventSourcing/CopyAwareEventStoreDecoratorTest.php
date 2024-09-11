@@ -19,10 +19,7 @@ class CopyAwareEventStoreDecoratorTest extends TestCase
      */
     protected $eventStore;
 
-    /**
-     * @var CopyAwareEventStoreDecorator
-     */
-    protected $copyAwareEventStore;
+    protected CopyAwareEventStoreDecorator $copyAwareEventStore;
 
     protected function setUp(): void
     {

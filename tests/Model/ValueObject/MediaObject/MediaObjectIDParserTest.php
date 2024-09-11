@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class MediaObjectIDParserTest extends TestCase
 {
-    /**
-     * @var MediaObjectIDParser
-     */
-    private $parser;
+    private MediaObjectIDParser $parser;
 
     public function setUp(): void
     {

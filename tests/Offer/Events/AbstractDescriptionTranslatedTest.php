@@ -11,25 +11,13 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractDescriptionTranslatedTest extends TestCase
 {
-    /**
-     * @var AbstractDescriptionTranslated
-     */
-    protected $descriptionTranslatedEvent;
+    protected AbstractDescriptionTranslated $descriptionTranslatedEvent;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var Language
-     */
-    protected $language;
+    protected Language $language;
 
-    /**
-     * @var Description
-     */
-    protected $description;
+    protected Description $description;
 
     public function setUp(): void
     {

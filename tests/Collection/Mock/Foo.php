@@ -6,15 +6,9 @@ namespace CultuurNet\UDB3\Collection\Mock;
 
 class Foo
 {
-    /**
-     * @var int
-     */
-    protected $id;
+    protected int $id;
 
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name;
 
     public function __construct(int $id, string $name)
     {

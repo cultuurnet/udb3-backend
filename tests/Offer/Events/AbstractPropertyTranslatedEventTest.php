@@ -9,25 +9,13 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractPropertyTranslatedEventTest extends TestCase
 {
-    /**
-     * @var MockAbstractPropertyTranslatedEvent
-     */
-    protected $propertyTranslatedEvent;
+    protected MockAbstractPropertyTranslatedEvent $propertyTranslatedEvent;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var Language
-     */
-    protected $language;
+    protected Language $language;
 
-    /**
-     * @var String
-     */
-    protected $title;
+    protected string $title;
 
     public function setUp(): void
     {

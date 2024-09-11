@@ -16,20 +16,11 @@ class AbstractUpdateDescriptionTest extends TestCase
      */
     protected $updateDescriptionCommand;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var Description
-     */
-    protected $description;
+    protected Description $description;
 
-    /**
-     * @var Language
-     */
-    protected $language;
+    protected Language $language;
 
     public function setUp(): void
     {

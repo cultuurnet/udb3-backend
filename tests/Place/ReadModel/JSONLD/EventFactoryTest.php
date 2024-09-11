@@ -16,10 +16,7 @@ class EventFactoryTest extends TestCase
      */
     private $iriGenerator;
 
-    /**
-     * @var EventFactory
-     */
-    private $factory;
+    private EventFactory $factory;
 
     public function setUp(): void
     {
