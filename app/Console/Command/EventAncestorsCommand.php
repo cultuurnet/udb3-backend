@@ -35,7 +35,7 @@ class EventAncestorsCommand extends AbstractCommand
             );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $cdbid = $input->getArgument('cdbid');
 
