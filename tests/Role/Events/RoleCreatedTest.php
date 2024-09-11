@@ -74,10 +74,7 @@ class RoleCreatedTest extends TestCase
         $this->assertEquals($this->createdAsArray(), $createdAsArray);
     }
 
-    /**
-     * @return array
-     */
-    protected function createdAsArray()
+    protected function createdAsArray(): array
     {
         return [
             'uuid' => $this->roleCreated->getUuid()->toString(),

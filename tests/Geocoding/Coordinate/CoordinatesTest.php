@@ -58,10 +58,7 @@ class CoordinatesTest extends TestCase
         Coordinates::fromLatLonString($latLonString);
     }
 
-    /**
-     * @return array
-     */
-    public function validLatLonStringProvider()
+    public function validLatLonStringProvider(): array
     {
         return [
             [
@@ -137,10 +134,7 @@ class CoordinatesTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function invalidLatLonStringProvider()
+    public function invalidLatLonStringProvider(): array
     {
         return [
             ['-45|90'],

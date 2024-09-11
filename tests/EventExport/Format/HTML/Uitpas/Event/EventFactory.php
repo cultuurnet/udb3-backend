@@ -10,9 +10,8 @@ class EventFactory
 {
     /**
      * @param float|int $points
-     * @return Event
      */
-    public function buildEventWithPoints($points)
+    public function buildEventWithPoints($points): Event
     {
         $event = new Event();
         $event->cardSystems = [];

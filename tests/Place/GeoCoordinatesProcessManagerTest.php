@@ -175,10 +175,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
         $processManager->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function addressEventDataProvider()
+    public function addressEventDataProvider(): array
     {
         return [
             'place_created' => [
@@ -308,10 +305,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function missingAddressEventDataProvider()
+    public function missingAddressEventDataProvider(): array
     {
         return [
             'place_imported_from_udb2_without_address' => [

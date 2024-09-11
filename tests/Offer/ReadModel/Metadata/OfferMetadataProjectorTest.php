@@ -150,10 +150,7 @@ class OfferMetadataProjectorTest extends TestCase
         $this->project($this->createPlaceImportedFromUdb2(), $metadata);
     }
 
-    /**
-     * @return array
-     */
-    public function createdByApiConsumerDataProvider()
+    public function createdByApiConsumerDataProvider(): array
     {
         return [
             'without api key' => [

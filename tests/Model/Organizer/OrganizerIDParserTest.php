@@ -32,10 +32,7 @@ class OrganizerIDParserTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function organizerUrlDataProvider()
+    public function organizerUrlDataProvider(): array
     {
         return [
             'regular' => [

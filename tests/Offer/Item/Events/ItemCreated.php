@@ -25,18 +25,12 @@ class ItemCreated implements Serializable
         $this->mainLanguage = $mainLanguage ? $mainLanguage : new Language('nl');
     }
 
-    /**
-     * @return string
-     */
-    public function getItemId()
+    public function getItemId(): string
     {
         return $this->itemId;
     }
 
-    /**
-     * @return Language
-     */
-    public function getMainLanguage()
+    public function getMainLanguage(): Language
     {
         return $this->mainLanguage;
     }

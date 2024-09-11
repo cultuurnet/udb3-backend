@@ -90,10 +90,7 @@ class AbstractDescriptionTranslatedTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractDescriptionTranslated' => [

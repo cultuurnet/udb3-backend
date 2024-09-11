@@ -49,9 +49,8 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @param string $fileName
      * @param string $version
-     * @return \stdClass
      */
-    private function createJsonPlaceFromCdbXml($fileName, $version = '3.2')
+    private function createJsonPlaceFromCdbXml($fileName, $version = '3.2'): \stdClass
     {
         $cdbXml = SampleFiles::read(
             __DIR__ . '/' . $fileName
@@ -72,9 +71,8 @@ class CdbXMLImporterTest extends TestCase
 
     /**
      * @param string $fileName
-     * @return \stdClass
      */
-    private function createJsonPlaceFromCdbXmlWithWeekScheme($fileName)
+    private function createJsonPlaceFromCdbXmlWithWeekScheme($fileName): \stdClass
     {
         $cdbXml = SampleFiles::read(
             __DIR__ . '/Calendar/' . $fileName

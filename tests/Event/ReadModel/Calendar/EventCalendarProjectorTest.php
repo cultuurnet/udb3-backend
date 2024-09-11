@@ -78,10 +78,7 @@ class EventCalendarProjectorTest extends TestCase
         $this->projector->applyEventUpdatedFromUDB2($event);
     }
 
-    /**
-     * @return PeriodList
-     */
-    private function getPeriodList()
+    private function getPeriodList(): PeriodList
     {
         $periodList = new PeriodList();
 
@@ -108,10 +105,7 @@ class EventCalendarProjectorTest extends TestCase
         return $periodList;
     }
 
-    /**
-     * @return TimestampList
-     */
-    private function getTimestampList()
+    private function getTimestampList(): TimestampList
     {
         $timestampList = new TimestampList();
 

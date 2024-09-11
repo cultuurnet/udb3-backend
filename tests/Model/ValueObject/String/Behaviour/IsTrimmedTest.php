@@ -19,10 +19,7 @@ class IsTrimmedTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $trimmed->toString());
     }
 
-    /**
-     * @return array
-     */
-    public function trimDataProvider()
+    public function trimDataProvider(): array
     {
         return [
             'unmodified' => [
@@ -61,10 +58,7 @@ class IsTrimmedTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $trimmed->toString());
     }
 
-    /**
-     * @return array
-     */
-    public function trimLeftToRightDataProvider()
+    public function trimLeftToRightDataProvider(): array
     {
         return [
             'unmodified' => [
@@ -103,10 +97,7 @@ class IsTrimmedTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $trimmed->toString());
     }
 
-    /**
-     * @return array
-     */
-    public function trimRightToLeftDataProvider()
+    public function trimRightToLeftDataProvider(): array
     {
         return [
             'unmodified' => [

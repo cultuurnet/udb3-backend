@@ -96,10 +96,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->then([new AddressTranslated($id, $updatedAddress, new Language('fr'))]);
     }
 
-    /**
-     * @return array
-     */
-    public function updateAddressDataProvider()
+    public function updateAddressDataProvider(): array
     {
         return [
             [

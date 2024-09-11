@@ -22,10 +22,7 @@ class HourTest extends TestCase
         new Hour($invalidHour);
     }
 
-    /**
-     * @return array
-     */
-    public function invalidHourDataProvider()
+    public function invalidHourDataProvider(): array
     {
         return [
             'negative' => [
@@ -49,10 +46,7 @@ class HourTest extends TestCase
         $this->assertEquals($validHour, $hour->toInteger());
     }
 
-    /**
-     * @return array
-     */
-    public function validHourDataProvider()
+    public function validHourDataProvider(): array
     {
         return array_map(
             function ($hour) {

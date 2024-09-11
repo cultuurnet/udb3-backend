@@ -20,10 +20,7 @@ class EmailAddressTest extends TestCase
         $this->assertEquals($email, $emailAddress->toString());
     }
 
-    /**
-     * @return array
-     */
-    public function validEmailAddressDataProvider()
+    public function validEmailAddressDataProvider(): array
     {
         return [
             'regular' => [
@@ -46,10 +43,7 @@ class EmailAddressTest extends TestCase
         new EmailAddress($email);
     }
 
-    /**
-     * @return array
-     */
-    public function invalidEmailAddressDataProvider()
+    public function invalidEmailAddressDataProvider(): array
     {
         return [
             'without_at' => [

@@ -93,10 +93,7 @@ class AbstractContactPointUpdatedTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractContactPointUpdated' => [
