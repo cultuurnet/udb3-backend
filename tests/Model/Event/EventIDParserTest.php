@@ -32,10 +32,7 @@ class EventIDParserTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function eventUrlDataProvider()
+    public function eventUrlDataProvider(): array
     {
         return [
             'regular' => [

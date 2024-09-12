@@ -32,10 +32,7 @@ class PlaceIDParserTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function placeUrlDataProvider()
+    public function placeUrlDataProvider(): array
     {
         return [
             'regular' => [

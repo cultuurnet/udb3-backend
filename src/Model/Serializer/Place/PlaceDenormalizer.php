@@ -108,7 +108,7 @@ class PlaceDenormalizer extends OfferDenormalizer
         );
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): ImmutablePlace
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("PlaceDenormalizer does not support {$class}.");

@@ -20,18 +20,12 @@ abstract class DateTimeImmutableRange
         $this->to = $to;
     }
 
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getFrom()
+    public function getFrom(): ?\DateTimeImmutable
     {
         return $this->from;
     }
 
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getTo()
+    public function getTo(): ?\DateTimeImmutable
     {
         return $this->to;
     }

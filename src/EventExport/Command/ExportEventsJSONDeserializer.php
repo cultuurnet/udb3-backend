@@ -58,12 +58,11 @@ abstract class ExportEventsJSONDeserializer extends JSONDeserializer
     /**
      * @param string[] $include
      * @param string[]|null $selection
-     * @return ExportEvents
      */
     abstract protected function createCommand(
         EventExportQuery $query,
         $include,
         EmailAddress $address = null,
         $selection = null
-    );
+    ): ExportEvents;
 }

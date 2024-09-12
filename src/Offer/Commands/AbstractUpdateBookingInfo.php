@@ -19,10 +19,7 @@ abstract class AbstractUpdateBookingInfo extends AbstractCommand
         $this->bookingInfo = $bookingInfo;
     }
 
-    /**
-     * @return BookingInfo
-     */
-    public function getBookingInfo()
+    public function getBookingInfo(): BookingInfo
     {
         return $this->bookingInfo;
     }

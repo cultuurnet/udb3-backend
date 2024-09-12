@@ -35,10 +35,7 @@ class LabelsDenormalizer implements DenormalizerInterface
         return new Labels(...$labels);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === Labels::class;
     }
@@ -46,9 +43,8 @@ class LabelsDenormalizer implements DenormalizerInterface
     /**
      * @todo Extract to a separate LabelDenormalizer
      * @param string $label
-     * @return Label
      */
-    private function denormalizeLabel($label)
+    private function denormalizeLabel($label): Label
     {
         return new Label(new LabelName($label));
     }
@@ -56,9 +52,8 @@ class LabelsDenormalizer implements DenormalizerInterface
     /**
      * @todo Extract to a separate HiddenLabelDenormalizer
      * @param string $label
-     * @return Label
      */
-    private function denormalizeHiddenLabel($label)
+    private function denormalizeHiddenLabel($label): Label
     {
         return new Label(new LabelName($label), false);
     }

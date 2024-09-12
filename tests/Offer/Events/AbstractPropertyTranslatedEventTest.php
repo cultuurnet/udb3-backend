@@ -82,10 +82,7 @@ class AbstractPropertyTranslatedEventTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractPropertyTranslatedEvent' => [

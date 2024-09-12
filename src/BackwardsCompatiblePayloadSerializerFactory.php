@@ -445,18 +445,12 @@ class BackwardsCompatiblePayloadSerializerFactory
         return $payloadManipulatingSerializer;
     }
 
-    /**
-     * @return array
-     */
-    private static function replaceEventIdWithItemId(array $serializedObject)
+    private static function replaceEventIdWithItemId(array $serializedObject): array
     {
         return self::replaceKeys('event_id', 'item_id', $serializedObject);
     }
 
-    /**
-     * @return array
-     */
-    private static function replacePlaceIdWithItemId(array $serializedObject)
+    private static function replacePlaceIdWithItemId(array $serializedObject): array
     {
         return self::replaceKeys('place_id', 'item_id', $serializedObject);
     }
@@ -465,9 +459,8 @@ class BackwardsCompatiblePayloadSerializerFactory
      * @param string $oldKey
      * @param string $newKey
      * @param array $serializedObject
-     * @return array
      */
-    private static function replaceKeys($oldKey, $newKey, $serializedObject)
+    private static function replaceKeys($oldKey, $newKey, $serializedObject): array
     {
         if (isset($serializedObject['payload'][$oldKey])) {
             $value = $serializedObject['payload'][$oldKey];
@@ -478,10 +471,7 @@ class BackwardsCompatiblePayloadSerializerFactory
         return $serializedObject;
     }
 
-    /**
-     * @return array
-     */
-    private static function replaceKeywordWithLabel(array $serializedObject)
+    private static function replaceKeywordWithLabel(array $serializedObject): array
     {
         $keyword = $serializedObject['payload']['keyword'];
         $serializedObject['payload']['label'] = $keyword;
@@ -490,13 +480,10 @@ class BackwardsCompatiblePayloadSerializerFactory
         return $serializedObject;
     }
 
-    /**
-     * @return array
-     */
     private static function addLabelName(
         array $serializedObject,
         ReadRepositoryInterface $labelRepository
-    ) {
+    ): array {
         if (!isset($serializedObject['payload']['name'])) {
             $uuid = $serializedObject['payload']['uuid'];
             $label = $labelRepository->getByUuid(new UUID($uuid));
@@ -507,13 +494,10 @@ class BackwardsCompatiblePayloadSerializerFactory
         return $serializedObject;
     }
 
-    /**
-     * @return array
-     */
     private static function fixOrganizerLabelEvent(
         array $serializedObject,
         ReadRepositoryInterface $labelRepository
-    ) {
+    ): array {
         if (!isset($serializedObject['payload']['label']) ||
             !isset($serializedObject['payload']['visibility'])) {
             $uuid = $serializedObject['payload']['labelId'];
@@ -526,10 +510,7 @@ class BackwardsCompatiblePayloadSerializerFactory
         return $serializedObject;
     }
 
-    /**
-     * @return array
-     */
-    private static function removeLocationNameAndAddress(array $serializedObject)
+    private static function removeLocationNameAndAddress(array $serializedObject): array
     {
         if (isset($serializedObject['payload']['location']) && !is_string($serializedObject['payload']['location'])) {
             $locationId = $serializedObject['payload']['location']['cdbid'];
@@ -546,10 +527,7 @@ class BackwardsCompatiblePayloadSerializerFactory
         return $serializedObject;
     }
 
-    /**
-     * @return array
-     */
-    private static function addDefaultMainLanguage(array $serializedObject)
+    private static function addDefaultMainLanguage(array $serializedObject): array
     {
         if (!isset($serializedObject['payload']['main_language'])) {
             $mainLanguage = new Language('nl');

@@ -22,10 +22,7 @@ class MinuteTest extends TestCase
         new Minute($invalidMinute);
     }
 
-    /**
-     * @return array
-     */
-    public function invalidMinuteDataProvider()
+    public function invalidMinuteDataProvider(): array
     {
         return [
             'negative' => [
@@ -49,10 +46,7 @@ class MinuteTest extends TestCase
         $this->assertEquals($validMinute, $minute->toInteger());
     }
 
-    /**
-     * @return array
-     */
-    public function validMinuteDataProvider()
+    public function validMinuteDataProvider(): array
     {
         return array_map(
             function ($minute) {

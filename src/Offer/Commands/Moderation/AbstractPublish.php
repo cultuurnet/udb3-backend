@@ -27,10 +27,7 @@ abstract class AbstractPublish extends AbstractModerationCommand
         $this->publicationDate = $publicationDate;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
-    public function getPublicationDate()
+    public function getPublicationDate(): ?\DateTimeInterface
     {
         return $this->publicationDate;
     }

@@ -18,10 +18,7 @@ abstract class AbstractOrganizerCommand extends AbstractCommand
         $this->organizerId = $organizerId;
     }
 
-    /**
-     * @return string
-     */
-    public function getOrganizerId()
+    public function getOrganizerId(): string
     {
         return $this->organizerId;
     }

@@ -19,10 +19,7 @@ class UUIDTest extends TestCase
         $this->assertEquals($uuidString, $uuid->toString());
     }
 
-    /**
-     * @return array
-     */
-    public function validUUIDDataProvider()
+    public function validUUIDDataProvider(): array
     {
         return [
             'nil' => ['00000000-0000-0000-0000-000000000000'],

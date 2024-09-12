@@ -36,11 +36,9 @@ abstract class AbstractCsvImportCommand extends AbstractCommand
     abstract public function getColumnHeaders(): string;
 
     /**
-     * @inheritdoc
      * @throws \League\Csv\Exception
-     * @see Command::execute()
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $csvReader = Reader::createFromPath(
             $input->getArgument(self::CSV_FILE_ARG)

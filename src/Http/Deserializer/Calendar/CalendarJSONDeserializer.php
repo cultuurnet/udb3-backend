@@ -72,11 +72,7 @@ class CalendarJSONDeserializer extends JSONDeserializer
         return $calendar;
     }
 
-    /**
-     *
-     * @return CalendarType
-     */
-    private function getCalendarType(array $data)
+    private function getCalendarType(array $data): CalendarType
     {
         if (count($this->calendarJSONParser->getTimestamps($data)) > 1) {
             return CalendarType::MULTIPLE();

@@ -32,10 +32,7 @@ class MediaObjectIDParserTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function mediaUrlDataProvider()
+    public function mediaUrlDataProvider(): array
     {
         return [
             'regular' => [

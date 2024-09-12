@@ -16,10 +16,7 @@ class DomainMessageIsNot implements DomainMessageSpecificationInterface
         $this->domainMessageSpecification = $domainMessageSpecification;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSatisfiedBy(DomainMessage $domainMessage)
+    public function isSatisfiedBy(DomainMessage $domainMessage): bool
     {
         return !$this->domainMessageSpecification->isSatisfiedBy($domainMessage);
     }

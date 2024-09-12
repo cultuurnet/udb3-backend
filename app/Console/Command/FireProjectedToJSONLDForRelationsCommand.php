@@ -28,7 +28,7 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
             ->setDescription('Fires JSONLD projected events for organizers and places having relations');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $connection = $this->connection;
 

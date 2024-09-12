@@ -124,10 +124,8 @@ class EventOrganizerPromotionQueryFactoryTest extends TestCase
     /**
      * Creates the base for the query, with all necessary properties set that
      * are independent from the cultural event passed to createForEvent().
-     *
-     * @return CultureFeed_Uitpas_Passholder_Query_SearchPromotionPointsOptions
      */
-    private function createBaseQuery()
+    private function createBaseQuery(): CultureFeed_Uitpas_Passholder_Query_SearchPromotionPointsOptions
     {
         $expectedQueryOptions = new CultureFeed_Uitpas_Passholder_Query_SearchPromotionPointsOptions();
         $expectedQueryOptions->max = 2;

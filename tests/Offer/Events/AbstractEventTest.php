@@ -69,10 +69,7 @@ class AbstractEventTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractEvent' => [

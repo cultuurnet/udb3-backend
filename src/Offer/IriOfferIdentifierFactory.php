@@ -28,10 +28,7 @@ class IriOfferIdentifierFactory implements IriOfferIdentifierFactoryInterface
         }
     }
 
-    /**
-     * @return IriOfferIdentifier
-     */
-    public function fromIri(Url $iri)
+    public function fromIri(Url $iri): IriOfferIdentifier
     {
         $match = @preg_match(
             '@^' . $this->regex . '$@',

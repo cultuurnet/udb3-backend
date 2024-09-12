@@ -109,10 +109,7 @@ class CdbXmlContactInfoImporterTest extends TestCase
         $this->assertEquals($expectedContactPoint, $jsonLd->contactPoint);
     }
 
-    /**
-     * @return \CultureFeed_Cdb_Data_ContactInfo
-     */
-    private function createCdbContactInfo()
+    private function createCdbContactInfo(): \CultureFeed_Cdb_Data_ContactInfo
     {
         $contactInfo = new \CultureFeed_Cdb_Data_ContactInfo();
 

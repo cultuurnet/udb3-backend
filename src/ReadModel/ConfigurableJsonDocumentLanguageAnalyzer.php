@@ -26,7 +26,7 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     /**
      * @return Language[]
      */
-    public function determineAvailableLanguages(JsonDocument $jsonDocument)
+    public function determineAvailableLanguages(JsonDocument $jsonDocument): array
     {
         $json = $jsonDocument->getBody();
         $languageStrings = [];
@@ -48,7 +48,7 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     /**
      * @return Language[]
      */
-    public function determineCompletedLanguages(JsonDocument $jsonDocument)
+    public function determineCompletedLanguages(JsonDocument $jsonDocument): array
     {
         $json = $jsonDocument->getBody();
         $languageStrings = [];
@@ -79,7 +79,7 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
      * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStrings(\stdClass $json, $propertyName)
+    private function getLanguageStrings(\stdClass $json, $propertyName): array
     {
         if (strpos($propertyName, '.') === false) {
             return $this->getLanguageStringsFromProperty($json, $propertyName);
@@ -92,7 +92,7 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
      * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStringsFromProperty(\stdClass $json, $propertyName)
+    private function getLanguageStringsFromProperty(\stdClass $json, $propertyName): array
     {
         if (!isset($json->{$propertyName})) {
             return [];
@@ -111,7 +111,7 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
      * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStringsFromNestedProperty(\stdClass $json, $propertyName)
+    private function getLanguageStringsFromNestedProperty(\stdClass $json, $propertyName): array
     {
         $nestedProperties = explode('.', $propertyName);
         $traversedProperties = [];
@@ -154,7 +154,7 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
      * @param string[] $languageStrings
      * @return Language[]
      */
-    private function getLanguageStringsAsValueObjects(array $languageStrings)
+    private function getLanguageStringsAsValueObjects(array $languageStrings): array
     {
         return array_map(
             function ($languageString) {

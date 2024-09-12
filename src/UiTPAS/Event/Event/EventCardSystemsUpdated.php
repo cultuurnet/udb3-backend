@@ -27,10 +27,7 @@ class EventCardSystemsUpdated
         $this->cardSystems = $cardSystems;
     }
 
-    /**
-     * @return Id
-     */
-    public function getId()
+    public function getId(): Id
     {
         return $this->id;
     }

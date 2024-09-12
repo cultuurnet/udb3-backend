@@ -11,10 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 
 class TranslatedWebsiteLabelDenormalizer extends TranslatedValueObjectDenormalizer
 {
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === TranslatedWebsiteLabel::class;
     }

@@ -18,8 +18,6 @@ interface SluggerInterface
     * Returns the slug for a given string
     *
     * @param string $string
-    *
-    * @return string
     **/
-    public function slug($string);
+    public function slug($string): string;
 }

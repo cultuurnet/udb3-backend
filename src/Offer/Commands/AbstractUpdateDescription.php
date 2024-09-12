@@ -23,18 +23,12 @@ abstract class AbstractUpdateDescription extends AbstractCommand
         $this->language = $language;
     }
 
-    /**
-     * @return Description
-     */
-    public function getDescription()
+    public function getDescription(): Description
     {
         return $this->description;
     }
 
-    /**
-     * @return Language
-     */
-    public function getLanguage()
+    public function getLanguage(): Language
     {
         return $this->language;
     }

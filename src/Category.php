@@ -55,10 +55,7 @@ class Category implements Serializable, JsonLdSerializableInterface
         ];
     }
 
-    /**
-     * @return Category
-     */
-    public static function deserialize(array $data)
+    public static function deserialize(array $data): Category
     {
         return new self($data['id'], $data['label'], $data['domain']);
     }
@@ -69,10 +66,7 @@ class Category implements Serializable, JsonLdSerializableInterface
         return $this->serialize();
     }
 
-    /**
-     * @return Category
-     */
-    public static function fromUdb3ModelCategory(Udb3ModelCategory $category)
+    public static function fromUdb3ModelCategory(Udb3ModelCategory $category): Category
     {
         $label = $category->getLabel();
         $domain = $category->getDomain();

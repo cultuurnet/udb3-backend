@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 use Doctrine\Migrations\AbstractMigration;
 
 class Version20180108080352 extends AbstractMigration
@@ -28,10 +29,9 @@ class Version20180108080352 extends AbstractMigration
     }
 
     /**
-     * @return \Doctrine\DBAL\Schema\Table
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    private function getLabelsRelationsTable(Schema $schema)
+    private function getLabelsRelationsTable(Schema $schema): Table
     {
         return $schema->getTable('labels_relations');
     }

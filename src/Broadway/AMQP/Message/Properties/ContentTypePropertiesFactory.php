@@ -16,10 +16,7 @@ class ContentTypePropertiesFactory implements PropertiesFactoryInterface
         $this->contentTypeLookup = $contentTypeLookup;
     }
 
-    /**
-     * @return array
-     */
-    public function createProperties(DomainMessage $domainMessage)
+    public function createProperties(DomainMessage $domainMessage): array
     {
         $payloadClassName = get_class($domainMessage->getPayload());
         $contentType = $this->contentTypeLookup->getContentType($payloadClassName);

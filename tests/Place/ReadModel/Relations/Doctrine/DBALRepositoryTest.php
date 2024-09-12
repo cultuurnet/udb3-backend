@@ -70,10 +70,7 @@ class DBALRepositoryTest extends TestCase
         $this->assertEquals($expectedPlaces, $actualPlaces);
     }
 
-    /**
-     * @return array
-     */
-    private function seedPlaceRelations(PlaceRelationsRepository $repository)
+    private function seedPlaceRelations(PlaceRelationsRepository $repository): array
     {
         $relations = [
             ['place' => 'placeId1', 'organizer' => 'organizerId1'],

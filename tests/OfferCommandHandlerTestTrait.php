@@ -40,9 +40,8 @@ trait OfferCommandHandlerTestTrait
      * Get the namespaced classname of the command to create.
      * @param string $className
      *   Name of the class
-     * @return string
      */
-    private function getCommandClass($className)
+    private function getCommandClass($className): string
     {
         $reflection = new ReflectionObject($this);
         return $reflection->getNamespaceName() . '\\Commands\\' . $className;
@@ -52,9 +51,8 @@ trait OfferCommandHandlerTestTrait
      * Get the namespaced classname of the event to create.
      * @param string $className
      *   Name of the class
-     * @return string
      */
-    private function getEventClass($className)
+    private function getEventClass($className): string
     {
         $reflection = new ReflectionObject($this);
         return $reflection->getNamespaceName() . '\\Events\\' . $className;

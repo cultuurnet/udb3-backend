@@ -37,10 +37,7 @@ class AgeRangeTest extends TestCase
         $this->assertEquals($expectedAgeRangeString, $actualAgeRangeString);
     }
 
-    /**
-     * @return array
-     */
-    public function ageRangeStringProvider()
+    public function ageRangeStringProvider(): array
     {
         return [
             'ALL' =>
@@ -117,10 +114,7 @@ class AgeRangeTest extends TestCase
         AgeRange::fromString($ageRangeString);
     }
 
-    /**
-     * @return array
-     */
-    public function invalidAgeRangeStringProvider()
+    public function invalidAgeRangeStringProvider(): array
     {
         return [
             'dat boi' => [

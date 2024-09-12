@@ -280,42 +280,27 @@ class ImmutableOrganizerTest extends TestCase
         $this->assertEquals($updatedContactPoint, $updatedOrganizer->getContactPoint());
     }
 
-    /**
-     * @return UUID
-     */
-    private function getId()
+    private function getId(): UUID
     {
         return new UUID('6db73fca-a23b-4c48-937d-62aaea73fbe8');
     }
 
-    /**
-     * @return Language
-     */
-    private function getMainLanguage()
+    private function getMainLanguage(): Language
     {
         return new Language('nl');
     }
 
-    /**
-     * @return TranslatedTitle
-     */
-    private function getTitle()
+    private function getTitle(): TranslatedTitle
     {
         return new TranslatedTitle($this->getMainLanguage(), new Title('Publiq'));
     }
 
-    /**
-     * @return Url
-     */
-    private function getUrl()
+    private function getUrl(): Url
     {
         return new Url('https://www.publiq.be');
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    private function getOrganizer()
+    private function getOrganizer(): ImmutableOrganizer
     {
         return new ImmutableOrganizer(
             $this->getId(),

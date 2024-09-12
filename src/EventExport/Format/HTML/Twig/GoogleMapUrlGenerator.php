@@ -18,7 +18,7 @@ class GoogleMapUrlGenerator extends AbstractExtension
         $this->googleMapsApiKey = $googleMapsApiKey;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction(

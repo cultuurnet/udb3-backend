@@ -30,10 +30,7 @@ class MergedDescriptionTest extends TestCase
         $this->assertEquals($expectedMergedDescription, $actualMergedDescription);
     }
 
-    /**
-     * @return array
-     */
-    public function shortAndLongDescriptionDataProvider()
+    public function shortAndLongDescriptionDataProvider(): array
     {
         /* @codingStandardsIgnoreStart */
         return [

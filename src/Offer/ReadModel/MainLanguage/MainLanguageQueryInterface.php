@@ -11,8 +11,7 @@ interface MainLanguageQueryInterface
 {
     /**
      * @param string $cdbid
-     * @return Language
      * @throws EntityNotFoundException
      */
-    public function execute($cdbid);
+    public function execute($cdbid): Language;
 }

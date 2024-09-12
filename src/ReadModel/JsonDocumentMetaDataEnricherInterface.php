@@ -8,8 +8,5 @@ use Broadway\Domain\Metadata;
 
 interface JsonDocumentMetaDataEnricherInterface
 {
-    /**
-     * @return JsonDocument
-     */
-    public function enrich(JsonDocument $jsonDocument, Metadata $metadata);
+    public function enrich(JsonDocument $jsonDocument, Metadata $metadata): JsonDocument;
 }

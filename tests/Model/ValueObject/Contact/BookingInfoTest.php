@@ -113,18 +113,12 @@ class BookingInfoTest extends TestCase
         $this->assertNull($withoutAvailability->getAvailability());
     }
 
-    /**
-     * @return Url
-     */
-    private function getUrl()
+    private function getUrl(): Url
     {
         return new Url('http://google.com');
     }
 
-    /**
-     * @return TranslatedWebsiteLabel
-     */
-    private function getWebsiteLabel()
+    private function getWebsiteLabel(): TranslatedWebsiteLabel
     {
         return new TranslatedWebsiteLabel(
             new Language('nl'),
@@ -132,44 +126,29 @@ class BookingInfoTest extends TestCase
         );
     }
 
-    /**
-     * @return WebsiteLink
-     */
-    private function getWebsiteLink()
+    private function getWebsiteLink(): WebsiteLink
     {
         return new WebsiteLink($this->getUrl(), $this->getWebsiteLabel());
     }
 
-    /**
-     * @return TelephoneNumber
-     */
-    private function getTelephoneNumber()
+    private function getTelephoneNumber(): TelephoneNumber
     {
         return new TelephoneNumber('+3244/444444');
     }
 
-    /**
-     * @return EmailAddress
-     */
-    private function getEmailAddress()
+    private function getEmailAddress(): EmailAddress
     {
         return new EmailAddress('test@foo.com');
     }
 
-    /**
-     * @return BookingAvailability
-     */
-    private function getAvailability()
+    private function getAvailability(): BookingAvailability
     {
         $from = DateTimeFactory::fromFormat('d-m-Y', '01-01-2018');
         $to = DateTimeFactory::fromFormat('d-m-Y', '18-01-2018');
         return BookingAvailability::fromTo($from, $to);
     }
 
-    /**
-     * @return BookingInfo
-     */
-    private function getBookingInfo()
+    private function getBookingInfo(): BookingInfo
     {
         return new BookingInfo(
             $this->getWebsiteLink(),

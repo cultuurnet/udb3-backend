@@ -70,10 +70,7 @@ class ContactPointDenormalizer implements DenormalizerInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === ContactPoint::class;
     }
