@@ -65,9 +65,6 @@ class Entity implements \JsonSerializable
         return $this->excluded;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function jsonSerialize(): array
     {
         return [

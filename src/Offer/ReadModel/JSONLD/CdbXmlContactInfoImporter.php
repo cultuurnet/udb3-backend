@@ -10,9 +10,6 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
 {
     use MultilingualJsonLDProjectorTrait;
 
-    /**
-     * @inheritdoc
-     */
     public function importBookingInfo(
         \stdClass $jsonLD,
         \CultureFeed_Cdb_Data_ContactInfo $contactInfo,
@@ -77,9 +74,6 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     public function importContactPoint(
         \stdClass $jsonLD,
         \CultureFeed_Cdb_Data_ContactInfo $contactInfo

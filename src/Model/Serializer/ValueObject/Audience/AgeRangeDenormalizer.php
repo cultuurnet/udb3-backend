@@ -50,9 +50,6 @@ class AgeRangeDenormalizer implements DenormalizerInterface
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === AgeRange::class;

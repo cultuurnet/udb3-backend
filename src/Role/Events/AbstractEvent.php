@@ -23,9 +23,6 @@ abstract class AbstractEvent implements Serializable
         return $this->uuid;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function serialize(): array
     {
         return ['uuid' => $this->getUuid()->toString()];

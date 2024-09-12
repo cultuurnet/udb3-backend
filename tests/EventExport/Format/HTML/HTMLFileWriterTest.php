@@ -511,9 +511,6 @@ final class HTMLFileWriterTest extends TestCase
         $this->assertEquals($html, SampleFiles::read($filePath));
     }
 
-    /**
-     * @inheritdoc
-     */
     public function tearDown(): void
     {
         if ($this->filePath && file_exists($this->filePath)) {

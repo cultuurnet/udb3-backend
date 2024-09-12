@@ -23,9 +23,6 @@ class CreateEventDataValidator implements DataValidatorInterface
             ->withValidator(new RequiredPropertiesDataValidator(['mainLanguage']));
     }
 
-    /**
-     * @inheritdoc
-     */
     public function validate(array $data): void
     {
         $this->validator->validate($data);
