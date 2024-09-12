@@ -1,0 +1,22 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Permanent event"
+  },
+  "terms": [
+    {
+      "domain":"eventtype",
+      "id":"",
+      "label":""
+    },
+    {
+      "id": "reg.34",
+      "domain": "flandersregion",
+      "label": "Brussel"
+    }
+  ],
+  "location": {
+    "@id": "%{placeUrl}"
+  },
+  "calendarType": "permanent"
+}

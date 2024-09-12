@@ -34,3 +34,21 @@ Feature: Test creating places
     }
     """
     Then I restore the duplicate configuration
+
+    Scenario: Be prevented from creating a new place if we already have one on that address when the the address contains special chars
+        Given I prevent duplicate place creation
+        Given I create a name that includes special characters of elastic search and keep it as "name"
+        Given I create a minimal place and save the "id" as "originalPlaceId" then I should get a "201" response code
+        Then I wait for the place with url "/places/%{originalPlaceId}" to be indexed
+        Given I create a minimal place then I should get a "409" response code
+        Then the JSON response should be:
+    """
+    {
+        "type": "https://api.publiq.be/probs/uitdatabank/duplicate-place",
+        "title": "Duplicate place",
+        "status": 409,
+        "detail": "A place with this address / name combination already exists. Please use the existing place for your purposes.",
+        "duplicatePlaceUri": "%{baseUrl}/place/%{originalPlaceId}"
+    }
+    """
+    Then I restore the duplicate configuration
