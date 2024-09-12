@@ -13,9 +13,6 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
  */
 class StatusType extends Enum
 {
-    /**
-     * @inheritdoc
-     */
     public static function getAllowedValues(): array
     {
         return [

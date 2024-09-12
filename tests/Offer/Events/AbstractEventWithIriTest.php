@@ -8,26 +8,15 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractEventWithIriTest extends TestCase
 {
-    /**
-     * @var AbstractEventWithIri
-     */
-    protected $event;
+    protected AbstractEventWithIri $event;
 
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    protected $iri;
+    protected string $iri;
 
     public function setUp(): void
     {
-        $this->id = '1';
+        $id = '1';
         $this->iri = 'event/1';
-        $this->event = new MockAbstractEventWithIri($this->id, $this->iri);
+        $this->event = new MockAbstractEventWithIri($id, $this->iri);
     }
 
     /**

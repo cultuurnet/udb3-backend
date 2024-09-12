@@ -18,15 +18,9 @@ class AbstractUpdateBookingInfoTest extends TestCase
      */
     protected $updateBookingInfo;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var BookingInfo
-     */
-    protected $bookingInfo;
+    protected BookingInfo $bookingInfo;
 
     public function setUp(): void
     {

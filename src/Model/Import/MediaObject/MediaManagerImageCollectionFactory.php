@@ -17,20 +17,14 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectType;
 
 class MediaManagerImageCollectionFactory implements ImageCollectionFactory
 {
-    /**
-     * @var MediaManagerInterface
-     */
-    private $mediaManager;
+    private MediaManagerInterface $mediaManager;
 
     public function __construct(MediaManagerInterface $mediaManager)
     {
         $this->mediaManager = $mediaManager;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function fromMediaObjectReferences(MediaObjectReferences $mediaObjectReferences)
+    public function fromMediaObjectReferences(MediaObjectReferences $mediaObjectReferences): ImageCollection
     {
         $mediaObjectsReferences = $mediaObjectReferences->filter(
             function (MediaObjectReference $mediaObjectReference) {

@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Query;
 
 class AddConstraint extends AbstractCommand
 {
-    /**
-     * @var Query
-     */
-    private $query;
+    private Query $query;
 
     public function __construct(
         UUID $uuid,

@@ -9,9 +9,6 @@ use CultuurNet\UDB3\Offer\OfferFacilityResolver;
 
 class EventFacilityResolver extends OfferFacilityResolver
 {
-    /**
-     * @inheritdoc
-     */
     final protected function getFacilities(): array
     {
         return [

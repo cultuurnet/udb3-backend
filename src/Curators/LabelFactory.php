@@ -10,10 +10,7 @@ use InvalidArgumentException;
 
 class LabelFactory
 {
-    /**
-     * @var array
-     */
-    private $labelMapping;
+    private array $labelMapping;
 
     public function __construct(array $labelMapping)
     {

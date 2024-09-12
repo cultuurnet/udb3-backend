@@ -9,8 +9,5 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 
 interface ImageCollectionFactory
 {
-    /**
-     * @return ImageCollection
-     */
-    public function fromMediaObjectReferences(MediaObjectReferences $mediaObjectReferences);
+    public function fromMediaObjectReferences(MediaObjectReferences $mediaObjectReferences): ImageCollection;
 }

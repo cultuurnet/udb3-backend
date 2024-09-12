@@ -11,10 +11,8 @@ class HourTest extends TestCase
     /**
      * @test
      * @dataProvider invalidHourDataProvider
-     *
-     * @param int $invalidHour
      */
-    public function it_should_not_be_lower_than_zero_or_higher_than_twenty_three($invalidHour): void
+    public function it_should_not_be_lower_than_zero_or_higher_than_twenty_three(int $invalidHour): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Hour should be an integer between 0 and 23.');
@@ -22,10 +20,7 @@ class HourTest extends TestCase
         new Hour($invalidHour);
     }
 
-    /**
-     * @return array
-     */
-    public function invalidHourDataProvider()
+    public function invalidHourDataProvider(): array
     {
         return [
             'negative' => [
@@ -40,19 +35,14 @@ class HourTest extends TestCase
     /**
      * @test
      * @dataProvider validHourDataProvider
-     *
-     * @param int $validHour
      */
-    public function it_should_be_between_zero_and_twenty_three($validHour): void
+    public function it_should_be_between_zero_and_twenty_three(int $validHour): void
     {
         $hour = new Hour($validHour);
         $this->assertEquals($validHour, $hour->toInteger());
     }
 
-    /**
-     * @return array
-     */
-    public function validHourDataProvider()
+    public function validHourDataProvider(): array
     {
         return array_map(
             function ($hour) {

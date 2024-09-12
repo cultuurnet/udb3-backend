@@ -15,7 +15,7 @@ class RequiredPropertiesDataValidator implements DataValidatorInterface
     /**
      * @var string[]
      */
-    private $requiredFields;
+    private array $requiredFields;
 
     /**
      * @param string[] $requiredFields

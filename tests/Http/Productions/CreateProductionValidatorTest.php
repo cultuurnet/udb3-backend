@@ -10,10 +10,7 @@ use Ramsey\Uuid\Uuid;
 
 class CreateProductionValidatorTest extends TestCase
 {
-    /**
-     * @var CreateProductionValidator
-     */
-    private $validator;
+    private CreateProductionValidator $validator;
 
     protected function setUp(): void
     {

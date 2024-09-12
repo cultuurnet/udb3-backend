@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class JsonEquals
 {
-    /**
-     * @var TestCase
-     */
-    private $testCase;
+    private TestCase $testCase;
 
 
     public function __construct(TestCase $testCase)

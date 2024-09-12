@@ -83,10 +83,7 @@ use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class EventDenormalizerTest extends TestCase
 {
-    /**
-     * @var EventDenormalizer
-     */
-    private $denormalizer;
+    private EventDenormalizer $denormalizer;
 
     /**
      * @var UuidFactoryInterface&MockObject

@@ -33,11 +33,9 @@ class CopyAwareEventStoreDecorator extends AbstractEventStoreDecorator
     }
 
     /**
-     * @return string
-     *
      * @throws UnknownParentAggregateException
      */
-    private function identifyParent(DomainMessage $message)
+    private function identifyParent(DomainMessage $message): string
     {
         /** @var AggregateCopiedEventInterface $domainEvent */
         $domainEvent = $message->getPayload();

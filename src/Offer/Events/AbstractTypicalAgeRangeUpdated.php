@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Offer\AgeRange;
 
 abstract class AbstractTypicalAgeRangeUpdated extends AbstractEvent
 {
-    /**
-     * @var AgeRange
-     */
-    protected $typicalAgeRange;
+    protected AgeRange $typicalAgeRange;
 
     final public function __construct(string $id, AgeRange $typicalAgeRange)
     {

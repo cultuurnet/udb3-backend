@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Language;
 
 class JsonDocumentLanguageEnricher implements JsonDocumentMetaDataEnricherInterface
 {
-    /**
-     * @var JsonDocumentLanguageAnalyzerInterface
-     */
-    private $languageAnalyzer;
+    private JsonDocumentLanguageAnalyzerInterface $languageAnalyzer;
 
 
     public function __construct(
@@ -21,10 +18,7 @@ class JsonDocumentLanguageEnricher implements JsonDocumentMetaDataEnricherInterf
         $this->languageAnalyzer = $languageAnalyzer;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function enrich(JsonDocument $jsonDocument, Metadata $metadata)
+    public function enrich(JsonDocument $jsonDocument, Metadata $metadata): JsonDocument
     {
         $body = $jsonDocument->getBody();
 

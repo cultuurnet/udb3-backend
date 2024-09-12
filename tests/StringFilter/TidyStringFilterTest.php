@@ -6,9 +6,6 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class TidyStringFilterTest extends StringFilterTest
 {
-    /**
-     * {@inheritdoc}
-     */
     protected string $filterClass = TidyStringFilter::class;
 
     /**

@@ -9,20 +9,11 @@ use PHPUnit\Framework\TestCase;
 
 class PublishedTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $itemId;
+    private string $itemId;
 
-    /**
-     * @var \DateTimeInterface
-     */
-    private $publicationDate;
+    private \DateTimeInterface $publicationDate;
 
-    /**
-     * @var Published
-     */
-    private $published;
+    private Published $published;
 
     protected function setUp(): void
     {

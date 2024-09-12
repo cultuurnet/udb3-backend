@@ -16,25 +16,13 @@ use function Sentry\withScope;
  */
 final class SentryHandlerScopeDecorator implements HandlerInterface
 {
-    /**
-     * @var HandlerInterface
-     */
-    private $decoratedHandler;
+    private HandlerInterface $decoratedHandler;
 
-    /**
-     * @var JsonWebToken|null
-     */
-    private $jwt;
+    private ?JsonWebToken $jwt;
 
-    /**
-     * @var ApiKey|null
-     */
-    private $apiKey;
+    private ?ApiKey $apiKey;
 
-    /**
-     * @var string|null
-     */
-    private $apiName;
+    private ?string $apiName;
 
     public function __construct(
         HandlerInterface $decoratedHandler,

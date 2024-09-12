@@ -20,15 +20,9 @@ use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
 
 class RoleLabelsProjector extends RoleProjector
 {
-    /**
-     * @var ReadRepositoryInterface
-     */
-    private $labelJsonRepository;
+    private ReadRepositoryInterface $labelJsonRepository;
 
-    /**
-     * @var DocumentRepository
-     */
-    private $labelRolesRepository;
+    private DocumentRepository $labelRolesRepository;
 
 
     public function __construct(
@@ -125,20 +119,16 @@ class RoleLabelsProjector extends RoleProjector
     /**
      * @return Entity[]
      */
-    private function getLabelDetails(JsonDocument $document)
+    private function getLabelDetails(JsonDocument $document): array
     {
         return Json::decodeAssociatively($document->getRawBody());
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function createNewDocument(UUID $uuid)
+    private function createNewDocument(UUID $uuid): JsonDocument
     {
-        $document = new JsonDocument(
+        return new JsonDocument(
             $uuid->toString(),
             Json::encode([])
         );
-        return $document;
     }
 }

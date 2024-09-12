@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Event\EventType;
 
 abstract class AbstractTypeUpdated extends AbstractEvent
 {
-    /**
-     * @var EventType
-     */
-    protected $type;
+    protected EventType $type;
 
     final public function __construct(string $itemId, EventType $type)
     {

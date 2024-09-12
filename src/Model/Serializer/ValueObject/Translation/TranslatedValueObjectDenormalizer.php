@@ -67,10 +67,9 @@ abstract class TranslatedValueObjectDenormalizer implements DenormalizerInterfac
     }
 
     /**
-     * @param object $originalValue
      * @return TranslatedValueObject
      */
-    abstract protected function createTranslatedValueObject(Language $originalLanguage, $originalValue);
+    abstract protected function createTranslatedValueObject(Language $originalLanguage, object $originalValue);
 
     /**
      * @param string|array $value

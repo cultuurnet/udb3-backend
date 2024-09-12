@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class EventItemFactoryTest extends TestCase
 {
-    /**
-     * @var EventItemFactory
-     */
-    private $factory;
+    private EventItemFactory $factory;
 
     public function setUp(): void
     {

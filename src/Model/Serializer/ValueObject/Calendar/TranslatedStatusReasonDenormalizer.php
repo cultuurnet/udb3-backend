@@ -11,10 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 class TranslatedStatusReasonDenormalizer extends TranslatedValueObjectDenormalizer
 {
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === TranslatedStatusReason::class;
     }
@@ -22,7 +19,7 @@ class TranslatedStatusReasonDenormalizer extends TranslatedValueObjectDenormaliz
     /**
      * @inheritdoc
      */
-    protected function createTranslatedValueObject(Language $originalLanguage, $originalValue)
+    protected function createTranslatedValueObject(Language $originalLanguage, object $originalValue)
     {
         return new TranslatedStatusReason($originalLanguage, $originalValue);
     }

@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class UpdateContactPointTest extends TestCase
 {
-    /**
-     * @var UpdateContactPoint
-     */
-    protected $updateContactPoint;
+    protected UpdateContactPoint $updateContactPoint;
 
     public function setUp(): void
     {

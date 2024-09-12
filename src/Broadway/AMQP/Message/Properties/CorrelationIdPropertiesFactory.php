@@ -8,10 +8,7 @@ use Broadway\Domain\DomainMessage;
 
 class CorrelationIdPropertiesFactory implements PropertiesFactoryInterface
 {
-    /**
-     * @return array
-     */
-    public function createProperties(DomainMessage $domainMessage)
+    public function createProperties(DomainMessage $domainMessage): array
     {
         return ['correlation_id' => $domainMessage->getId() . '-' . $domainMessage->getPlayhead()];
     }

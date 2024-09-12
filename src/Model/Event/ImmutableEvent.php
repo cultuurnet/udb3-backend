@@ -97,9 +97,6 @@ class ImmutableEvent extends ImmutableOffer implements Event
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function guardCalendarType(Calendar $calendar): void
     {
         // Any calendar is fine for events.

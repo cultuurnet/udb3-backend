@@ -30,21 +30,16 @@ class SubscribeUserToMailinglistRequestHandlerTest extends TestCase
      */
     private $mailinglistClient;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private $logger;
-
     private ServerRequestInterface $request;
 
     protected function setUp(): void
     {
         $this->mailinglistClient = $this->createMock(MailinglistClient::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createMock(LoggerInterface::class);
 
         $this->handler = new SubscribeUserToMailinglistRequestHandler(
             $this->mailinglistClient,
-            $this->logger
+            $logger
         );
 
         $this->request = (new Psr7RequestBuilder())

@@ -10,20 +10,11 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractContactPointUpdatedTest extends TestCase
 {
-    /**
-     * @var AbstractContactPointUpdated
-     */
-    protected $contactPointUpdated;
+    protected AbstractContactPointUpdated $contactPointUpdated;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var ContactPoint
-     */
-    protected $contactPoint;
+    protected ContactPoint $contactPoint;
 
     public function setUp(): void
     {
@@ -102,10 +93,7 @@ class AbstractContactPointUpdatedTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractContactPointUpdated' => [

@@ -10,20 +10,11 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractDescriptionUpdatedTest extends TestCase
 {
-    /**
-     * @var AbstractDescriptionUpdated
-     */
-    protected $descriptionUpdated;
+    protected AbstractDescriptionUpdated $descriptionUpdated;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var Description
-     */
-    protected $description;
+    protected Description $description;
 
     public function setUp(): void
     {
@@ -90,10 +81,7 @@ class AbstractDescriptionUpdatedTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractDescriptionUpdated' => [

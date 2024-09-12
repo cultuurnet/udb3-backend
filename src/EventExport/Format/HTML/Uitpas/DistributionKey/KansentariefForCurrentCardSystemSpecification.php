@@ -10,7 +10,7 @@ class KansentariefForCurrentCardSystemSpecification implements DistributionKeySp
 {
     public function isSatisfiedBy(
         CultureFeed_Uitpas_DistributionKey $distributionKey
-    ) {
+    ): bool {
         $satisfied = false;
 
         foreach ($distributionKey->conditions as $condition) {

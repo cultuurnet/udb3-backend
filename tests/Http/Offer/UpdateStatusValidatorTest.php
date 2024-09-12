@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class UpdateStatusValidatorTest extends TestCase
 {
-    /**
-     * @var UpdateStatusValidator
-     */
-    private $validator;
+    private UpdateStatusValidator $validator;
 
     protected function setUp(): void
     {

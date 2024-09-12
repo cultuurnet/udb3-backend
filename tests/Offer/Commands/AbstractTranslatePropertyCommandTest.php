@@ -15,15 +15,9 @@ class AbstractTranslatePropertyCommandTest extends TestCase
      */
     protected $translatePropertyCommand;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var Language
-     */
-    protected $language;
+    protected Language $language;
 
     public function setUp(): void
     {

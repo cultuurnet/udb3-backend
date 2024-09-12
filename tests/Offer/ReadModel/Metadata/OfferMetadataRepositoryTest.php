@@ -12,10 +12,7 @@ class OfferMetadataRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var OfferMetadataRepository
-     */
-    private $repository;
+    private OfferMetadataRepository $repository;
 
     protected function setUp(): void
     {

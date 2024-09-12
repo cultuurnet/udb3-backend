@@ -11,15 +11,9 @@ use JsonException;
 
 class DecodedDocument
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var array
-     */
-    private $body;
+    private array $body;
 
     public function __construct(string $id, array $body)
     {

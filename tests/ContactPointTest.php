@@ -14,25 +14,13 @@ use PHPUnit\Framework\TestCase;
 
 class ContactPointTest extends TestCase
 {
-    /**
-     * @var array
-     */
-    private $phones;
+    private array $phones;
 
-    /**
-     * @var array
-     */
-    private $emails;
+    private array $emails;
 
-    /**
-     * @var array
-     */
-    private $urls;
+    private array $urls;
 
-    /**
-     * @var ContactPoint
-     */
-    private $contactPoint;
+    private ContactPoint $contactPoint;
 
     protected function setUp(): void
     {

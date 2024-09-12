@@ -11,20 +11,11 @@ class SimilarEventsRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var SimilarEventsRepository
-     */
-    private $repository;
+    private SimilarEventsRepository $repository;
 
-    /**
-     * @var DBALProductionRepository
-     */
-    private $productionsRepository;
+    private DBALProductionRepository $productionsRepository;
 
-    /**
-     * @var SkippedSimilarEventsRepository
-     */
-    private $skippedRepository;
+    private SkippedSimilarEventsRepository $skippedRepository;
 
     protected function setUp(): void
     {

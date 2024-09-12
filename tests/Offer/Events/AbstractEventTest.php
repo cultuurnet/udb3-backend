@@ -8,15 +8,9 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractEventTest extends TestCase
 {
-    /**
-     * @var MockAbstractEvent
-     */
-    protected $event;
+    protected MockAbstractEvent $event;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
     public function setUp(): void
     {
@@ -75,10 +69,7 @@ class AbstractEventTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractEvent' => [

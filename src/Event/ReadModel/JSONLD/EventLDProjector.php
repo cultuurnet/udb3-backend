@@ -347,8 +347,7 @@ final class EventLDProjector extends OfferLDProjector implements
         unset($eventJsonLD->availableFrom);
 
         $newDocument = new JsonDocument($eventCopied->getItemId());
-        $newDocument = $newDocument->withBody($eventJsonLD);
-        return $newDocument;
+        return $newDocument->withBody($eventJsonLD);
     }
 
     protected function applyEventDeleted(EventDeleted $eventDeleted): JsonDocument

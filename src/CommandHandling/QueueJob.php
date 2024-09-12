@@ -10,25 +10,13 @@ use Throwable;
 
 class QueueJob
 {
-    /**
-     * @var Resque_Job
-     */
-    public $job;
+    public Resque_Job $job;
 
-    /**
-     * @var array
-     */
-    public $args;
+    public array $args;
 
-    /**
-     * @var ResqueCommandBus
-     */
-    private static $commandBus;
+    private static ResqueCommandBus $commandBus;
 
-    /**
-     * @var LoggerInterface
-     */
-    private static $logger;
+    private static LoggerInterface $logger;
 
     public static function setCommandBus(ResqueCommandBus $commandBus): void
     {

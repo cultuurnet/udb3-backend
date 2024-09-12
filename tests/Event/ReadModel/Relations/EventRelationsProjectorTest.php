@@ -79,10 +79,7 @@ class EventRelationsProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function cdbXmlDataProvider()
+    public function cdbXmlDataProvider(): array
     {
         $withNone = SampleFiles::read(__DIR__ . '/event_without_placeid_and_without_organiserid.xml');
         $withPlace = SampleFiles::read(__DIR__ . '/event_with_placeid_and_without_organiserid.xml');

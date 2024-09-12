@@ -10,25 +10,17 @@ use SimpleXMLElement;
 
 class EventItemFactory implements EventItemFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $namespaceUri;
+    private string $namespaceUri;
 
-    /**
-     * @param string $namespaceUri
-     */
-    public function __construct($namespaceUri)
+    public function __construct(string $namespaceUri)
     {
         $this->namespaceUri = $namespaceUri;
     }
 
     /**
-     * @param string $cdbXml
      * @throws \CultureFeed_Cdb_ParseException
-     * @return \CultureFeed_Cdb_Item_Event
      */
-    public function createFromCdbXml($cdbXml)
+    public function createFromCdbXml(string $cdbXml): CultureFeed_Cdb_Item_Event
     {
         return self::createEventFromCdbXml($this->namespaceUri, $cdbXml);
     }
@@ -58,11 +50,10 @@ class EventItemFactory implements EventItemFactoryInterface
 
     /**
      * UDB2 contained a bug that allowed for a keyword to have a semicolon.
-     * @return CultureFeed_Cdb_Item_Event
      */
     private static function splitKeywordTagOnSemiColon(
         CultureFeed_Cdb_Item_Event $event
-    ) {
+    ): CultureFeed_Cdb_Item_Event {
         $event = clone $event;
 
         /**
@@ -89,12 +80,9 @@ class EventItemFactory implements EventItemFactoryInterface
         return $event;
     }
 
-    /**
-     * @return bool
-     */
     private static function isEventOlderThanSplitKeywordFix(
         CultureFeed_Cdb_Item_Event $event
-    ) {
+    ): bool {
         return $event->getLastUpdated() < '2016-03-10T00:00:00';
     }
 }

@@ -31,19 +31,15 @@ class CategoriesDenormalizer implements DenormalizerInterface
         return new Categories(...$categories);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === Categories::class;
     }
 
     /**
      * @todo Extract to a separate CategoryDenormalizer
-     * @return Category
      */
-    private function denormalizeCategory(array $categoryData)
+    private function denormalizeCategory(array $categoryData): Category
     {
         $id = new CategoryID($categoryData['id']);
         $label = isset($categoryData['label']) ? new CategoryLabel($categoryData['label']) : null;

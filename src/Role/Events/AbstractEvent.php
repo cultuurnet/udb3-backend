@@ -11,10 +11,7 @@ abstract class AbstractEvent implements Serializable
 {
     public const UUID = 'uuid';
 
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
     public function __construct(UUID $uuid)
     {
@@ -26,9 +23,6 @@ abstract class AbstractEvent implements Serializable
         return $this->uuid;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function serialize(): array
     {
         return ['uuid' => $this->getUuid()->toString()];

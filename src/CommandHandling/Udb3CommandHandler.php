@@ -11,9 +11,6 @@ use Broadway\CommandHandling\CommandHandler;
  */
 abstract class Udb3CommandHandler implements CommandHandler
 {
-    /**
-     * {@inheritDoc}
-     */
     public function handle($command): void
     {
         $method = $this->getHandleMethod($command);

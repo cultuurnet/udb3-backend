@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class CanonicalPlaceRepositoryTest extends TestCase
 {
-    /**
-     * @var CanonicalPlaceRepository
-     */
-    private $canonicalPlaceRepository;
+    private CanonicalPlaceRepository $canonicalPlaceRepository;
 
     /**
      * @var PlaceRepository&MockObject

@@ -26,10 +26,7 @@ class DelegatingAMQPMessageFactoryTest extends TestCase
      */
     private $propertiesFactory;
 
-    /**
-     * @var DelegatingAMQPMessageFactory
-     */
-    private $messageFactory;
+    private DelegatingAMQPMessageFactory $messageFactory;
 
     public function setUp(): void
     {

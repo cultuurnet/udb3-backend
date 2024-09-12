@@ -25,8 +25,7 @@ final class PropertyPolyfillRepository extends DocumentRepositoryDecorator
         $document = parent::fetch($id, $includeMetadata);
         $document = $this->polyfillNewProperties($document);
         $document = $this->removeNullLabels($document);
-        $document = $this->fixDuplicateLabelVisibility($document);
-        return $document;
+        return $this->fixDuplicateLabelVisibility($document);
     }
 
     private function polyfillNewProperties(JsonDocument $jsonDocument): JsonDocument
@@ -34,8 +33,7 @@ final class PropertyPolyfillRepository extends DocumentRepositoryDecorator
         return $jsonDocument->applyAssoc(
             function (array $json) {
                 $json = $this->polyfillImageType($json);
-                $json = $this->polyfillImageInLanguage($json);
-                return $json;
+                return $this->polyfillImageInLanguage($json);
             }
         );
     }
@@ -97,9 +95,7 @@ final class PropertyPolyfillRepository extends DocumentRepositoryDecorator
                 };
 
                 $json = $filterNullLabels($json, 'labels');
-                $json = $filterNullLabels($json, 'hiddenLabels');
-
-                return $json;
+                return $filterNullLabels($json, 'hiddenLabels');
             }
         );
     }

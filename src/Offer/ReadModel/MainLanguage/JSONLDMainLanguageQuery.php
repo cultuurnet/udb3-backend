@@ -11,16 +11,9 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class JSONLDMainLanguageQuery implements MainLanguageQueryInterface
 {
-    /**
-     * @var DocumentRepository
-     */
-    private $documentRepository;
+    private DocumentRepository $documentRepository;
 
-    /**
-     * @var Language|null
-     */
-    private $fallbackLanguage;
-
+    private ?Language $fallbackLanguage;
 
     public function __construct(
         DocumentRepository $documentRepository,
@@ -30,10 +23,7 @@ class JSONLDMainLanguageQuery implements MainLanguageQueryInterface
         $this->fallbackLanguage = $fallbackLanguage;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function execute($cdbid)
+    public function execute(string $cdbid): Language
     {
         try {
             $document = $this->documentRepository->fetch($cdbid);

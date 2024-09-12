@@ -9,20 +9,14 @@ use Broadway\CommandHandling\CommandHandler;
 
 class LazyLoadingCommandBus implements CommandBus
 {
-    /**
-     * @var bool
-     */
-    private $first = true;
+    private bool $first = true;
 
     /**
      * @var callable
      */
     private $beforeFirstDispatch;
 
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
     public function __construct(CommandBus $commandBus)
     {

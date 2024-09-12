@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
 final class AudienceUpdated extends AbstractEvent
 {
-    /**
-     * @var Audience
-     */
-    private $audience;
+    private Audience $audience;
 
     public function __construct(
         string $itemId,

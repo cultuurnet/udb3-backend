@@ -31,12 +31,6 @@ final class CommandBusForwardingConsumerTest extends TestCase
      */
     private $channel;
 
-    /**
-     * Seconds to delay the actual consumption of the message after it arrived.
-     */
-    private int $delay;
-
-
     private CommandBusForwardingConsumer $commandBusForwardingConsumer;
 
     /**
@@ -44,12 +38,9 @@ final class CommandBusForwardingConsumerTest extends TestCase
      */
     private $deserializer;
 
-
     public function setUp(): void
     {
         $connection = $this->createMock(AMQPStreamConnection::class);
-
-        $this->delay = 1;
 
         $queueName = 'my-queue';
         $exchangeName = 'my-exchange';
@@ -72,7 +63,7 @@ final class CommandBusForwardingConsumerTest extends TestCase
             $consumerTag,
             $exchangeName,
             $queueName,
-            $this->delay
+            1
         );
 
         $logger = $this->createMock(LoggerInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Log;
 
+use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\NormalizerFormatter;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
@@ -11,16 +12,9 @@ use SocketIO\Emitter;
 
 class SocketIOEmitterHandler extends AbstractProcessingHandler
 {
-    /**
-     * @var Emitter
-     */
-    protected $emitter;
+    protected Emitter $emitter;
 
-    /**
-     * @param integer $level  The minimum logging level at which this handler will be triggered
-     * @param Boolean $bubble Whether the messages that are handled can bubble up the stack or not
-     */
-    public function __construct(Emitter $emitter, $level = Logger::DEBUG, $bubble = true)
+    public function __construct(Emitter $emitter, int $level = Logger::DEBUG, bool $bubble = true)
     {
         parent::__construct(
             $level,
@@ -30,10 +24,7 @@ class SocketIOEmitterHandler extends AbstractProcessingHandler
         $this->emitter = $emitter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         $event = $record['formatted']['message'];
         $data = $record['formatted']['context'];
@@ -41,10 +32,7 @@ class SocketIOEmitterHandler extends AbstractProcessingHandler
         $this->emitter->emit($event, $data);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function getDefaultFormatter()
+    protected function getDefaultFormatter(): FormatterInterface
     {
         return new NormalizerFormatter();
     }

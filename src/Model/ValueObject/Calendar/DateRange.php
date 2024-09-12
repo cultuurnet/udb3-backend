@@ -20,7 +20,7 @@ class DateRange extends DateTimeImmutableRange
      *   Positive if this date range is greater than the given date range.
      *   Zero if both ranges are the same.
      */
-    public function compare(DateRange $dateRange)
+    public function compare(DateRange $dateRange): int
     {
         if ($this->getFrom() < $dateRange->getFrom()) {
             return -1;

@@ -16,15 +16,9 @@ class AbstractTypicalAgeRangeUpdatedTest extends TestCase
      */
     protected $typicalAgeRangeUpdated;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var AgeRange
-     */
-    protected $typicalAgeRange;
+    protected AgeRange $typicalAgeRange;
 
     public function setUp(): void
     {
@@ -91,10 +85,7 @@ class AbstractTypicalAgeRangeUpdatedTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractTypicalAgeRangeUpdated' => [

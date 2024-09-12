@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class UpdateTypicalAgeRangeTest extends TestCase
 {
-    /**
-     * @var UpdateTypicalAgeRange
-     */
-    protected $updateTypicalAgeRange;
+    protected UpdateTypicalAgeRange $updateTypicalAgeRange;
 
     public function setUp(): void
     {

@@ -20,9 +20,6 @@ abstract class StringFilterTest extends TestCase
 
     protected StringFilterInterface $filter;
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUp(): void
     {
         parent::setUp();

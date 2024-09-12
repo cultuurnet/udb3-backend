@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event;
 
 class PointCollectingSpecification implements EventSpecification
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isSatisfiedBy(\CultureFeed_Uitpas_Event_CultureEvent $event)
+    public function isSatisfiedBy(\CultureFeed_Uitpas_Event_CultureEvent $event): bool
     {
         return $event->numberOfPoints !== null && $event->numberOfPoints > 0;
     }

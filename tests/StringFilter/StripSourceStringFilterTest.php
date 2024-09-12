@@ -6,9 +6,6 @@ namespace CultuurNet\UDB3\StringFilter;
 
 class StripSourceStringFilterTest extends StringFilterTest
 {
-    /**
-     * {@inheritdoc}
-     */
     protected string $filterClass = StripSourceStringFilter::class;
 
     /**

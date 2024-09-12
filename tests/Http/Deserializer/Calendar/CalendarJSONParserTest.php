@@ -23,15 +23,9 @@ use PHPUnit\Framework\TestCase;
 
 class CalendarJSONParserTest extends TestCase
 {
-    /**
-     * @var array
-     */
-    private $updateCalendarAsArray;
+    private array $updateCalendarAsArray;
 
-    /**
-     * @var CalendarJSONParser
-     */
-    private $calendarJSONParser;
+    private CalendarJSONParser $calendarJSONParser;
 
     protected function setUp(): void
     {

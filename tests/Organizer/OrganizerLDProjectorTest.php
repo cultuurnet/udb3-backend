@@ -130,13 +130,11 @@ final class OrganizerLDProjectorTest extends TestCase
             __DIR__ . '/Samples/' . $fileName
         );
 
-        $event = new OrganizerImportedFromUDB2(
+        return new OrganizerImportedFromUDB2(
             'someId',
             $cdbXml,
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
-
-        return $event;
     }
 
     private function organizerUpdatedFromUDB2(string $fileName): OrganizerUpdatedFromUDB2

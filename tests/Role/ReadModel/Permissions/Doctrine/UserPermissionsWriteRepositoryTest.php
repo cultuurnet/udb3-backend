@@ -231,8 +231,6 @@ class UserPermissionsWriteRepositoryTest extends TestCase
         $sql = 'SELECT * FROM ' . $tableName;
 
         $statement = $this->getConnection()->executeQuery($sql);
-        $rows = $statement->fetchAllAssociative();
-
-        return $rows;
+        return $statement->fetchAllAssociative();
     }
 }

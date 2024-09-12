@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
 final class LocationUpdated extends AbstractEvent
 {
-    /**
-     * @var LocationId
-     */
-    private $locationId;
+    private LocationId $locationId;
 
     public function __construct(
         string $eventId,

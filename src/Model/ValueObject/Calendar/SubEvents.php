@@ -43,18 +43,12 @@ class SubEvents extends Collection
         }
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getStartDate()
+    public function getStartDate(): \DateTimeImmutable
     {
         return $this->startDate;
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getEndDate()
+    public function getEndDate(): \DateTimeImmutable
     {
         return $this->endDate;
     }

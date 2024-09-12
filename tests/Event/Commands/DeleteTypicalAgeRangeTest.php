@@ -8,10 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class DeleteTypicalAgeRangeTest extends TestCase
 {
-    /**
-     * @var DeleteTypicalAgeRange
-     */
-    protected $deleteTypicalAgeRange;
+    protected DeleteTypicalAgeRange $deleteTypicalAgeRange;
 
     public function setUp(): void
     {

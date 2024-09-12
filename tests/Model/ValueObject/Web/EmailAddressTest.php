@@ -11,19 +11,14 @@ class EmailAddressTest extends TestCase
     /**
      * @test
      * @dataProvider validEmailAddressDataProvider
-     *
-     * @param string $email
      */
-    public function it_should_accept_a_valid_email_address($email): void
+    public function it_should_accept_a_valid_email_address(string $email): void
     {
         $emailAddress = new EmailAddress($email);
         $this->assertEquals($email, $emailAddress->toString());
     }
 
-    /**
-     * @return array
-     */
-    public function validEmailAddressDataProvider()
+    public function validEmailAddressDataProvider(): array
     {
         return [
             'regular' => [
@@ -35,10 +30,8 @@ class EmailAddressTest extends TestCase
     /**
      * @test
      * @dataProvider invalidEmailAddressDataProvider
-     *
-     * @param string $email
      */
-    public function it_should_reject_an_invalid_email_address($email): void
+    public function it_should_reject_an_invalid_email_address(string $email): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given string is not a valid e-mail address.');
@@ -46,10 +39,7 @@ class EmailAddressTest extends TestCase
         new EmailAddress($email);
     }
 
-    /**
-     * @return array
-     */
-    public function invalidEmailAddressDataProvider()
+    public function invalidEmailAddressDataProvider(): array
     {
         return [
             'without_at' => [

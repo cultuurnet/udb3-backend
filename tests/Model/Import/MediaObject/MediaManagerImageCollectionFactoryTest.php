@@ -31,10 +31,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
      */
     private $mediaManager;
 
-    /**
-     * @var MediaManagerImageCollectionFactory
-     */
-    private $factory;
+    private MediaManagerImageCollectionFactory $factory;
 
     public function setUp(): void
     {

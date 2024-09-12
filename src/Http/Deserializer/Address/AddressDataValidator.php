@@ -14,10 +14,7 @@ use CultuurNet\UDB3\Http\Deserializer\DataValidator\NotEmptyPropertiesDataValida
  */
 class AddressDataValidator implements DataValidatorInterface
 {
-    /**
-     * @var NotEmptyPropertiesDataValidator
-     */
-    private $notEmptyPropertiesDataValidator;
+    private NotEmptyPropertiesDataValidator $notEmptyPropertiesDataValidator;
 
     public function __construct()
     {

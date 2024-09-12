@@ -70,7 +70,6 @@ class ImportOrganizerRequestHandlerTest extends TestCase
     private TraceableCommandBus $commandBus;
     private MockObject $uuidGenerator;
     private ImportOrganizerRequestHandler $importOrganizerRequestHandler;
-    private MockObject $mediaObjectRepository;
 
     private array $mediaObjects;
 
@@ -79,7 +78,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
         $this->aggregateRepository = $this->createMock(Repository::class);
         $this->commandBus = new TraceableCommandBus();
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
-        $this->mediaObjectRepository = $this->createMock(MediaObjectRepository::class);
+        $mediaObjectRepository = $this->createMock(MediaObjectRepository::class);
 
         $this->importOrganizerRequestHandler = new ImportOrganizerRequestHandler(
             $this->aggregateRepository,
@@ -91,12 +90,12 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                 RemoveEmptyArraysRequestBodyParser::createForOrganizers(),
                 ImagesPropertyPolyfillRequestBodyParser::createForOrganizers(
                     new CallableIriGenerator(fn (string $id) => 'https://io.uitdatabank.dev/images/' . $id),
-                    $this->mediaObjectRepository
+                    $mediaObjectRepository
                 )
             )
         );
 
-        $this->mediaObjectRepository->expects($this->any())
+        $mediaObjectRepository->expects($this->any())
             ->method('load')
             ->willReturnCallback(
                 function (string $id): MediaObject {

@@ -10,10 +10,7 @@ namespace CultuurNet\UDB3\Deserializer;
  */
 class DataValidationException extends \Exception
 {
-    /**
-     * @var string[]
-     */
-    private $validationMessages = [];
+    private array $validationMessages = [];
 
     /**
      * @param string[] $validationMessages
@@ -26,7 +23,7 @@ class DataValidationException extends \Exception
     /**
      * @return string[]
      */
-    public function getValidationMessages()
+    public function getValidationMessages(): array
     {
         return $this->validationMessages;
     }

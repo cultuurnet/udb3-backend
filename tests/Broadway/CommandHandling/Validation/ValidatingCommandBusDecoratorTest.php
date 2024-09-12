@@ -21,10 +21,7 @@ class ValidatingCommandBusDecoratorTest extends TestCase
      */
     private $validator;
 
-    /**
-     * @var ValidatingCommandBusDecorator
-     */
-    private $decorator;
+    private ValidatingCommandBusDecorator $decorator;
 
     public function setUp(): void
     {

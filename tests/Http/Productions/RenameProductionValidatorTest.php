@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class RenameProductionValidatorTest extends TestCase
 {
-    /**
-     * @var RenameProductionValidator
-     */
-    private $validator;
+    private RenameProductionValidator $validator;
 
     protected function setUp(): void
     {

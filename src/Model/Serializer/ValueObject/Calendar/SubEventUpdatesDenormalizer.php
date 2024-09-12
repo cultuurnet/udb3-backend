@@ -26,7 +26,7 @@ final class SubEventUpdatesDenormalizer implements DenormalizerInterface
         return new SubEventUpdates(...$updates);
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === SubEventUpdates::class;
     }

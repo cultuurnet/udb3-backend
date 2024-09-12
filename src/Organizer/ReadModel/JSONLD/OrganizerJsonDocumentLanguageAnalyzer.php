@@ -28,7 +28,7 @@ class OrganizerJsonDocumentLanguageAnalyzer extends ConfigurableJsonDocumentLang
      *
      * @return \CultuurNet\UDB3\Language[]
      */
-    public function determineAvailableLanguages(JsonDocument $jsonDocument)
+    public function determineAvailableLanguages(JsonDocument $jsonDocument): array
     {
         $jsonDocument = $this->polyFillMultilingualFields($jsonDocument);
         return parent::determineAvailableLanguages($jsonDocument);
@@ -41,7 +41,7 @@ class OrganizerJsonDocumentLanguageAnalyzer extends ConfigurableJsonDocumentLang
      *
      * @return \CultuurNet\UDB3\Language[]
      */
-    public function determineCompletedLanguages(JsonDocument $jsonDocument)
+    public function determineCompletedLanguages(JsonDocument $jsonDocument): array
     {
         $jsonDocument = $this->polyFillMultilingualFields($jsonDocument);
         return parent::determineCompletedLanguages($jsonDocument);
@@ -52,9 +52,8 @@ class OrganizerJsonDocumentLanguageAnalyzer extends ConfigurableJsonDocumentLang
      * @replay_i18n
      * @see https://jira.uitdatabank.be/browse/III-2201
      *
-     * @return JsonDocument
      */
-    private function polyFillMultilingualFields(JsonDocument $jsonDocument)
+    private function polyFillMultilingualFields(JsonDocument $jsonDocument): JsonDocument
     {
         $body = $jsonDocument->getBody();
         $mainLanguage = isset($body->mainLanguage) ? $body->mainLanguage : 'nl';

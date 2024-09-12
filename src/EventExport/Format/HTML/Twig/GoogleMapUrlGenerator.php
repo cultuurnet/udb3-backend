@@ -11,17 +11,14 @@ class GoogleMapUrlGenerator extends AbstractExtension
 {
     public const STATIC_MAP_URL = 'https://maps.googleapis.com/maps/api/staticmap';
 
-    /**
-     * @var string
-     */
-    private $googleMapsApiKey;
+    private string $googleMapsApiKey;
 
     public function __construct(string $googleMapsApiKey)
     {
         $this->googleMapsApiKey = $googleMapsApiKey;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction(

@@ -22,10 +22,8 @@ class LanguageTest extends TestCase
 
     /**
      * Data provider with invalid codes.
-     *
-     * @return array
      */
-    public function invalidCodes()
+    public function invalidCodes(): array
     {
         return [
             ['eng'],

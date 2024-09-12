@@ -15,15 +15,9 @@ use CultuurNet\UDB3\Place\PlaceRepository;
 
 class OfferRepository implements Repository
 {
-    /**
-     * @var EventRepository
-     */
-    private $eventRepository;
+    private EventRepository $eventRepository;
 
-    /**
-     * @var PlaceRepository
-     */
-    private $placeRepository;
+    private PlaceRepository $placeRepository;
 
     public function __construct(
         EventRepository $eventRepository,

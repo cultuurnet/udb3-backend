@@ -9,40 +9,24 @@ use CultuurNet\UDB3\Language;
 
 class ItemCreated implements Serializable
 {
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var Language
-     */
-    protected $mainLanguage;
+    protected Language $mainLanguage;
 
-    /**
-     * @param string $itemId
-     * @param Language $mainLanguage
-     */
     public function __construct(
-        $itemId,
+        string $itemId,
         Language $mainLanguage = null
     ) {
         $this->itemId = $itemId;
         $this->mainLanguage = $mainLanguage ? $mainLanguage : new Language('nl');
     }
 
-    /**
-     * @return string
-     */
-    public function getItemId()
+    public function getItemId(): string
     {
         return $this->itemId;
     }
 
-    /**
-     * @return Language
-     */
-    public function getMainLanguage()
+    public function getMainLanguage(): Language
     {
         return $this->mainLanguage;
     }
