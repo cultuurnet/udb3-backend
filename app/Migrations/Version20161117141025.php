@@ -25,11 +25,7 @@ class Version20161117141025 extends AbstractMigration
         $this->changeColumnName('relationId', 'offerId');
     }
 
-    /**
-     * @param string $oldName
-     * @param string $newName
-     */
-    private function changeColumnName($oldName, $newName): void
+    private function changeColumnName(string $oldName, string $newName): void
     {
         $this->connection->exec(
             "ALTER TABLE labels_relations CHANGE $oldName $newName VARCHAR(255)"

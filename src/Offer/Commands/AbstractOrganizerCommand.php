@@ -8,11 +8,7 @@ abstract class AbstractOrganizerCommand extends AbstractCommand
 {
     protected string $organizerId;
 
-    /**
-     * @param string $itemId
-     * @param string $organizerId
-     */
-    public function __construct($itemId, $organizerId)
+    public function __construct(string $itemId, string $organizerId)
     {
         parent::__construct($itemId);
         $this->organizerId = $organizerId;

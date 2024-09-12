@@ -115,10 +115,7 @@ class EventCalendarProjectorTest extends TestCase
         return $timestampList;
     }
 
-    /**
-     * @param string $id
-     */
-    private function repositoryExpectsCalendarToBeSaved($id, Calendar $calendar): void
+    private function repositoryExpectsCalendarToBeSaved(string $id, Calendar $calendar): void
     {
         $this->repository->expects($this->once())
             ->method('save')

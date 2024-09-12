@@ -12,10 +12,9 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      * @dataProvider ageRangeStringProvider
-     * @param string $ageRangeString
      */
     public function it_should_create_ranges_from_strings(
-        $ageRangeString,
+        string $ageRangeString,
         AgeRange $expectedRange
     ): void {
         $ageRange = AgeRange::fromString($ageRangeString);
@@ -100,14 +99,11 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      * @dataProvider invalidAgeRangeStringProvider
-     * @param string $ageRangeString
-     * @param string $exception
-     * @param string $exceptionMessage
      */
     public function it_should_throw_an_exception_on_unexpected_age_range_strings(
-        $ageRangeString,
-        $exception,
-        $exceptionMessage
+        string $ageRangeString,
+        string $exception,
+        string $exceptionMessage
     ): void {
         $this->expectException($exception);
         $this->expectExceptionMessage($exceptionMessage);

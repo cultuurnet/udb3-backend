@@ -36,23 +36,13 @@ trait OfferCommandHandlerTestTrait
      */
     protected $mediaManager;
 
-    /**
-     * Get the namespaced classname of the command to create.
-     * @param string $className
-     *   Name of the class
-     */
-    private function getCommandClass($className): string
+    private function getCommandClass(string $className): string
     {
         $reflection = new ReflectionObject($this);
         return $reflection->getNamespaceName() . '\\Commands\\' . $className;
     }
 
-    /**
-     * Get the namespaced classname of the event to create.
-     * @param string $className
-     *   Name of the class
-     */
-    private function getEventClass($className): string
+    private function getEventClass(string $className): string
     {
         $reflection = new ReflectionObject($this);
         return $reflection->getNamespaceName() . '\\Events\\' . $className;

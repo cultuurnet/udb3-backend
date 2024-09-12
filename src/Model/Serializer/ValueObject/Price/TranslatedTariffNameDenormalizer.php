@@ -19,7 +19,7 @@ class TranslatedTariffNameDenormalizer extends TranslatedValueObjectDenormalizer
     /**
      * @inheritdoc
      */
-    protected function createTranslatedValueObject(Language $originalLanguage, $originalValue)
+    protected function createTranslatedValueObject(Language $originalLanguage, object $originalValue)
     {
         return new TranslatedTariffName($originalLanguage, $originalValue);
     }

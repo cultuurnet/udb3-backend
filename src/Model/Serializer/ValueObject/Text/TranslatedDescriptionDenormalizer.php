@@ -19,7 +19,7 @@ class TranslatedDescriptionDenormalizer extends TranslatedValueObjectDenormalize
     /**
      * @inheritdoc
      */
-    protected function createTranslatedValueObject(Language $originalLanguage, $originalValue)
+    protected function createTranslatedValueObject(Language $originalLanguage, object $originalValue)
     {
         return new TranslatedDescription($originalLanguage, $originalValue);
     }

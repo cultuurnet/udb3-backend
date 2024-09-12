@@ -160,11 +160,7 @@ class CopyAwareEventStoreDecoratorTest extends TestCase
         $this->assertEquals($expectedEventStream, $eventStream);
     }
 
-    /**
-     * @param int $playhead
-     * @param string $parentId
-     */
-    private function getDomainMessage($playhead, $parentId): DomainMessage
+    private function getDomainMessage(int $playhead, string $parentId): DomainMessage
     {
         $event = $this->createMock(AggregateCopiedEventInterface::class);
         $event->method('getParentAggregateId')->willReturn($parentId);

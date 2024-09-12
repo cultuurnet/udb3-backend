@@ -65,7 +65,7 @@ interface CollectionInterface extends \IteratorAggregate
      * @throws CollectionKeyNotFoundException
      *   When the provided key is not present in the Collection.
      */
-    public function withoutKey($key);
+    public function withoutKey(string $key);
 
     /**
      * @param mixed $item

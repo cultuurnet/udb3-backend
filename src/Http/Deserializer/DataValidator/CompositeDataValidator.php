@@ -18,13 +18,9 @@ class CompositeDataValidator implements DataValidatorInterface
 
     private bool $overwriteErrorMessages;
 
-    /**
-     * @param string $fieldLevelGlue
-     * @param bool $overwriteErrorMessages
-     */
     public function __construct(
-        $fieldLevelGlue = '.',
-        $overwriteErrorMessages = false
+        string $fieldLevelGlue = '.',
+        bool $overwriteErrorMessages = false
     ) {
         $this->validators = [];
         $this->fieldLevelGlue = (string) $fieldLevelGlue;
@@ -34,7 +30,7 @@ class CompositeDataValidator implements DataValidatorInterface
     /**
      * @param string[] $depth
      */
-    public function withValidator(DataValidatorInterface $validator, $depth = []): CompositeDataValidator
+    public function withValidator(DataValidatorInterface $validator, array $depth = []): CompositeDataValidator
     {
         $c = clone $this;
         $c->validators[] = [
@@ -79,10 +75,7 @@ class CompositeDataValidator implements DataValidatorInterface
         }
     }
 
-    /**
-     * @param array $depth
-     */
-    private function getValidatorContext(array $data, $depth): ?array
+    private function getValidatorContext(array $data, array $depth): ?array
     {
         if (empty($depth)) {
             return $data;
@@ -110,11 +103,7 @@ class CompositeDataValidator implements DataValidatorInterface
         return $data[$key];
     }
 
-    /**
-     * @param string $fieldName
-     * @param array $depth
-     */
-    private function getCompleteFieldName($fieldName, $depth): string
+    private function getCompleteFieldName(string $fieldName, array $depth): string
     {
         if (empty($depth)) {
             return $fieldName;
@@ -123,12 +112,7 @@ class CompositeDataValidator implements DataValidatorInterface
         return implode($this->fieldLevelGlue, $depth) . '.' . $fieldName;
     }
 
-    /**
-     * @param string $fieldName
-     * @param string $validationMessage
-     * @param array $errors
-     */
-    private function storeFieldErrorMessage($fieldName, $validationMessage, &$errors): void
+    private function storeFieldErrorMessage(string $fieldName, string $validationMessage, array &$errors): void
     {
         if (!isset($errors[$fieldName]) || $this->overwriteErrorMessages) {
             $errors[$fieldName] = $validationMessage;

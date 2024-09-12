@@ -10,10 +10,7 @@ abstract class AbstractUpdateBookingInfo extends AbstractCommand
 {
     protected BookingInfo $bookingInfo;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, BookingInfo $bookingInfo)
+    public function __construct(string $itemId, BookingInfo $bookingInfo)
     {
         parent::__construct($itemId);
         $this->bookingInfo = $bookingInfo;

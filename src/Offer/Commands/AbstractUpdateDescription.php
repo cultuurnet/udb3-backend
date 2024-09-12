@@ -13,10 +13,7 @@ abstract class AbstractUpdateDescription extends AbstractCommand
 
     protected Language $language;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, Language $language, Description $description)
+    public function __construct(string $itemId, Language $language, Description $description)
     {
         parent::__construct($itemId);
         $this->description = $description;

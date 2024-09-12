@@ -20,11 +20,8 @@ class EventIDParserTest extends TestCase
     /**
      * @test
      * @dataProvider eventUrlDataProvider
-     *
-     * @param string $url
-     * @param string $uuid
      */
-    public function it_should_return_an_event_id_from_the_given_event_url($url, $uuid): void
+    public function it_should_return_an_event_id_from_the_given_event_url(string $url, string $uuid): void
     {
         $url = new Url($url);
         $expected = new UUID($uuid);

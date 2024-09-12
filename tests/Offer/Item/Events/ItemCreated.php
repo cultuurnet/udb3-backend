@@ -13,12 +13,8 @@ class ItemCreated implements Serializable
 
     protected Language $mainLanguage;
 
-    /**
-     * @param string $itemId
-     * @param Language $mainLanguage
-     */
     public function __construct(
-        $itemId,
+        string $itemId,
         Language $mainLanguage = null
     ) {
         $this->itemId = $itemId;

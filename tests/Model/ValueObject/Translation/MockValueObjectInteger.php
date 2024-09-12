@@ -10,10 +10,7 @@ class MockValueObjectInteger
 {
     use IsInteger;
 
-    /**
-     * @param int $value
-     */
-    public function __construct($value)
+    public function __construct(int $value)
     {
         $this->setValue($value);
     }

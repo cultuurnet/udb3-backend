@@ -19,7 +19,7 @@ class TranslatedStatusReasonDenormalizer extends TranslatedValueObjectDenormaliz
     /**
      * @inheritdoc
      */
-    protected function createTranslatedValueObject(Language $originalLanguage, $originalValue)
+    protected function createTranslatedValueObject(Language $originalLanguage, object $originalValue)
     {
         return new TranslatedStatusReason($originalLanguage, $originalValue);
     }

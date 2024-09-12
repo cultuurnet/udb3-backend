@@ -15,19 +15,13 @@ class CulturefeedSlugger implements SluggerInterface
 
     protected string $separator;
 
-    /**
-     * @param int $length
-     *   The maximum length the slug can have.
-     * @param string $separator
-     *   The separator that will be used instead of whitespaces.
-     */
-    public function __construct($length = 50, $separator = '-')
+    public function __construct(int $length = 50, string $separator = '-')
     {
         $this->length = $length;
         $this->separator = $separator;
     }
 
-    public function slug($string): string
+    public function slug(string $string): string
     {
         // transliterate
         $string = $this->transliterate($string);

@@ -20,11 +20,8 @@ class MediaObjectIDParserTest extends TestCase
     /**
      * @test
      * @dataProvider mediaUrlDataProvider
-     *
-     * @param string $url
-     * @param string $uuid
      */
-    public function it_should_return_a_media_id_from_the_given_media_url($url, $uuid): void
+    public function it_should_return_a_media_id_from_the_given_media_url(string $url, string $uuid): void
     {
         $url = new Url($url);
         $expected = new UUID($uuid);

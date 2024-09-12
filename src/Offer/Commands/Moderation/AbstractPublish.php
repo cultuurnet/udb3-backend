@@ -8,14 +8,9 @@ use Cake\Chronos\Chronos;
 
 abstract class AbstractPublish extends AbstractModerationCommand
 {
-    /** @var  \DateTimeInterface */
-    private $publicationDate;
+    private \DateTimeInterface $publicationDate;
 
-    /**
-     * AbstractPublish constructor.
-     * @param string $itemId
-     */
-    public function __construct($itemId, \DateTimeInterface $publicationDate = null)
+    public function __construct(string $itemId, \DateTimeInterface $publicationDate = null)
     {
         parent::__construct($itemId);
 

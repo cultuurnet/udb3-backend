@@ -10,10 +10,7 @@ class MockValueObjectString
 {
     use IsString;
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $this->setValue($value);
     }

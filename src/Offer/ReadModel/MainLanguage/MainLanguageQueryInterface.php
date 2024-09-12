@@ -10,8 +10,7 @@ use CultuurNet\UDB3\Language;
 interface MainLanguageQueryInterface
 {
     /**
-     * @param string $cdbid
      * @throws EntityNotFoundException
      */
-    public function execute($cdbid): Language;
+    public function execute(string $cdbid): Language;
 }

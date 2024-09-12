@@ -380,10 +380,7 @@ class UserRolesProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @param string $roleName
-     */
-    private function createRoleDetailsDocument(UUID $uuid, $roleName): JsonDocument
+    private function createRoleDetailsDocument(UUID $uuid, string $roleName): JsonDocument
     {
         $document = new JsonDocument($uuid->toString());
 
