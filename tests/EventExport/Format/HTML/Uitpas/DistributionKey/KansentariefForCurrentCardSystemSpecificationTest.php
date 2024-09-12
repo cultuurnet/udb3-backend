@@ -25,7 +25,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
         $conditionFactory = new DistributionKeyConditionFactory();
         $keyFactory = new DistributionKeyFactory();
 
-        $data = [
+        return [
             [
                 $keyFactory->buildKey(
                     '1.0',
@@ -68,8 +68,6 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
                 ),
             ],
         ];
-
-        return $data;
     }
 
     /**
@@ -89,7 +87,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
         $conditionFactory = new DistributionKeyConditionFactory();
         $keyFactory = new DistributionKeyFactory();
 
-        $data = [
+        return [
             [
                 $keyFactory->buildKey(
                     '1.0',
@@ -132,8 +130,6 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
                 ),
             ],
         ];
-
-        return $data;
     }
 
     /**

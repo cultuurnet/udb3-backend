@@ -60,9 +60,7 @@ class PriceFormatter
 
         // Trim the decimal point if there were only zeroes after the decimal point. Don't do this in the same trim as
         // above, as that would format 50,00 as 5.
-        $price = trim($price, $this->decimalPoint);
-
-        return $price;
+        return trim($price, $this->decimalPoint);
     }
 
     public function setSignificantDecimals(int $significantDecimals): void

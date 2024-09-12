@@ -204,9 +204,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $offer = $this->denormalizeMediaObjectReferences($data, $offer);
         $offer = $this->denormalizeVideos($data, $offer);
         $offer = $this->denormalizeWorkflowStatus($data, $offer);
-        $offer = $this->denormalizeAvailableFrom($data, $offer);
-
-        return $offer;
+        return $this->denormalizeAvailableFrom($data, $offer);
     }
 
     protected function denormalizeDescription(array $data, ImmutableOffer $offer): ImmutableOffer

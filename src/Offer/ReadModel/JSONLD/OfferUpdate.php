@@ -22,7 +22,7 @@ class OfferUpdate
      */
     public static function calendar(Calendar $calendar): \Closure
     {
-        $offerCalenderUpdate = function ($body) use ($calendar) {
+        return function ($body) use ($calendar) {
             // Purge any existing calendar data
             unset(
                 $body->calendarType,
@@ -37,7 +37,5 @@ class OfferUpdate
                 $calendar->toJsonLd()
             );
         };
-
-        return $offerCalenderUpdate;
     }
 }

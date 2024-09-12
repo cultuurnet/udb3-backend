@@ -49,7 +49,7 @@ final class EmbeddingRelatedResourcesOfferRepository extends DocumentRepositoryD
         string $property,
         DocumentRepository $documentRepository
     ): JsonDocument {
-        $document = $document->applyAssoc(
+        return $document->applyAssoc(
             function (array $json) use ($property, $documentRepository): array {
                 $url = $json[$property]['@id'] ?? null;
                 if (!is_string($url)) {
@@ -73,8 +73,6 @@ final class EmbeddingRelatedResourcesOfferRepository extends DocumentRepositoryD
                 return $json;
             }
         );
-
-        return $document;
     }
 
     private function getUuidFromUrl(string $url): string

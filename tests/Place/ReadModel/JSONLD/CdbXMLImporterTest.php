@@ -57,12 +57,10 @@ class CdbXMLImporterTest extends TestCase
             $cdbXml
         );
 
-        $jsonPlace = $this->importer->documentWithCdbXML(
+        return $this->importer->documentWithCdbXML(
             new \stdClass(),
             $actor
         );
-
-        return $jsonPlace;
     }
 
     private function createJsonPlaceFromCdbXmlWithWeekScheme(string $fileName): \stdClass
@@ -76,12 +74,10 @@ class CdbXMLImporterTest extends TestCase
             $cdbXml
         );
 
-        $jsonPlace = $this->importer->documentWithCdbXML(
+        return $this->importer->documentWithCdbXML(
             new \stdClass(),
             $actor
         );
-
-        return $jsonPlace;
     }
 
     /**
