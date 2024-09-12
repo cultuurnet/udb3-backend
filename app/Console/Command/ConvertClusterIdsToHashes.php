@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /*
  * @todo This is a temporary script and can probably be removed somewhere in 2025
  * */
-class FixClusterIdsDuplicatePlaces extends BaseCommand
+class ConvertClusterIdsToHashes extends BaseCommand
 {
     private Connection $connection;
 
@@ -27,7 +27,7 @@ class FixClusterIdsDuplicatePlaces extends BaseCommand
     public function configure(): void
     {
         $this
-            ->setName('place:duplicate-places:fix-cluster-ids')
+            ->setName('place:duplicate-places:convert-cluster-ids-to-hashes')
             ->setDescription('Convert the cluster ids from integers to the new sha1 hashes')
         ;
     }
