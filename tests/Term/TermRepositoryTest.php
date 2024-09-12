@@ -46,10 +46,7 @@ final class TermRepositoryTest extends TestCase
         ],
     ];
 
-    /**
-     * @var TermRepository
-     */
-    private $repository;
+    private TermRepository $repository;
 
     protected function setUp(): void
     {

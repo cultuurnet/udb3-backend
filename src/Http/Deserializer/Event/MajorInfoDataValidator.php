@@ -17,10 +17,7 @@ use CultuurNet\UDB3\Http\Deserializer\Theme\ThemeDataValidator;
  */
 class MajorInfoDataValidator implements DataValidatorInterface
 {
-    /**
-     * @var CompositeDataValidator
-     */
-    private $validator;
+    private CompositeDataValidator $validator;
 
     public function __construct()
     {

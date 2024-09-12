@@ -20,15 +20,9 @@ use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
 
 class RoleLabelsProjector extends RoleProjector
 {
-    /**
-     * @var ReadRepositoryInterface
-     */
-    private $labelJsonRepository;
+    private ReadRepositoryInterface $labelJsonRepository;
 
-    /**
-     * @var DocumentRepository
-     */
-    private $labelRolesRepository;
+    private DocumentRepository $labelRolesRepository;
 
 
     public function __construct(

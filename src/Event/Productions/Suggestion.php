@@ -6,20 +6,11 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 class Suggestion
 {
-    /**
-     * @var string
-     */
-    private $eventOne;
+    private string $eventOne;
 
-    /**
-     * @var string
-     */
-    private $eventTwo;
+    private string $eventTwo;
 
-    /**
-     * @var float
-     */
-    private $similarity;
+    private float $similarity;
 
     public function __construct(string $eventOne, string $eventTwo, float $similarity)
     {

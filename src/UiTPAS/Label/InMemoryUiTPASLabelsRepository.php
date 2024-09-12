@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 final class InMemoryUiTPASLabelsRepository implements UiTPASLabelsRepository
 {
-    /**
-     * @var Label[]
-     */
-    private $labels;
+    private array $labels;
 
     /**
      * @param Label[] $labels

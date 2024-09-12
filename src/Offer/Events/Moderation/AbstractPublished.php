@@ -10,10 +10,7 @@ use DateTimeInterface;
 
 abstract class AbstractPublished extends AbstractEvent
 {
-    /**
-     * @var DateTimeInterface
-     */
-    private $publicationDate;
+    private DateTimeInterface $publicationDate;
 
     final public function __construct(string $itemId, DateTimeInterface $publicationDate)
     {

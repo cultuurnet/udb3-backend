@@ -11,19 +11,9 @@ namespace CultuurNet\UDB3;
  */
 class CulturefeedSlugger implements SluggerInterface
 {
-    /**
-     * The maximum length the slug can have.
-     *
-     * @var int
-     */
-    protected $length;
+    protected int $length;
 
-    /**
-     * The separator that will be used instead of whitespaces.
-     *
-     * @var string
-     */
-    protected $separator;
+    protected string $separator;
 
     /**
      * @param int $length

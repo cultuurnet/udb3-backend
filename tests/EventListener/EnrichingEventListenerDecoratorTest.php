@@ -37,10 +37,7 @@ class EnrichingEventListenerDecoratorTest extends TestCase
      */
     private $decoratee;
 
-    /**
-     * @var EnrichingEventListenerDecorator
-     */
-    private $enrichingDecorator;
+    private EnrichingEventListenerDecorator $enrichingDecorator;
 
     public function setUp(): void
     {

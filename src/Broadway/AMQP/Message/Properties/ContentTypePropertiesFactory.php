@@ -8,10 +8,7 @@ use Broadway\Domain\DomainMessage;
 
 class ContentTypePropertiesFactory implements PropertiesFactoryInterface
 {
-    /**
-     * @var ContentTypeLookupInterface
-     */
-    private $contentTypeLookup;
+    private ContentTypeLookupInterface $contentTypeLookup;
 
 
     public function __construct(ContentTypeLookupInterface $contentTypeLookup)

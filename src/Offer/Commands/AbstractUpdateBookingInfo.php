@@ -8,11 +8,7 @@ use CultuurNet\UDB3\BookingInfo;
 
 abstract class AbstractUpdateBookingInfo extends AbstractCommand
 {
-    /**
-     * The bookingInfo entry
-     * @var BookingInfo
-     */
-    protected $bookingInfo;
+    protected BookingInfo $bookingInfo;
 
     /**
      * @param string $itemId

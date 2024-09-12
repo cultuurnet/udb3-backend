@@ -10,20 +10,11 @@ use PHPUnit\Framework\TestCase;
 
 class PermissionAddedTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
-    /**
-     * @var Permission
-     */
-    protected $permission;
+    protected Permission $permission;
 
-    /**
-     * @var PermissionAdded
-     */
-    protected $event;
+    protected PermissionAdded $event;
 
     protected function setUp(): void
     {

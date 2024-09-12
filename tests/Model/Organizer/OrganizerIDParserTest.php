@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class OrganizerIDParserTest extends TestCase
 {
-    /**
-     * @var OrganizerIDParser
-     */
-    private $parser;
+    private OrganizerIDParser $parser;
 
     public function setUp(): void
     {

@@ -8,10 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 final class ProductionId
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
     private function __construct(string $id)
     {

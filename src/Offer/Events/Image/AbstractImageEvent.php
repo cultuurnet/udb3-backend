@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
 abstract class AbstractImageEvent extends AbstractEvent
 {
-    /**
-     * @var Image
-     */
-    protected $image;
+    protected Image $image;
 
     final public function __construct(string $itemId, Image $image)
     {

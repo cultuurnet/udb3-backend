@@ -11,30 +11,15 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 class DefaultMessageFactory implements MessageFactoryInterface
 {
-    /**
-     * @var BodyFactoryInterface
-     */
-    private $plainTextBodyFactory;
+    private BodyFactoryInterface $plainTextBodyFactory;
 
-    /**
-     * @var BodyFactoryInterface
-     */
-    private $htmlBodyFactory;
+    private BodyFactoryInterface $htmlBodyFactory;
 
-    /**
-     * @var SubjectFactoryInterface
-     */
-    private $subjectFactory;
+    private SubjectFactoryInterface $subjectFactory;
 
-    /**
-     * @var string
-     */
-    private $senderAddress;
+    private string $senderAddress;
 
-    /**
-     * @var string
-     */
-    private $senderName;
+    private string $senderName;
 
     /**
      * @param string                  $senderAddress

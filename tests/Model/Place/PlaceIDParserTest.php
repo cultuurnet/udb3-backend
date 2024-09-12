@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class PlaceIDParserTest extends TestCase
 {
-    /**
-     * @var PlaceIDParser
-     */
-    private $parser;
+    private PlaceIDParser $parser;
 
     public function setUp(): void
     {

@@ -6,15 +6,9 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 class SimilarEventPair
 {
-    /**
-     * @var string
-     */
-    private $eventOne;
+    private string $eventOne;
 
-    /**
-     * @var string
-     */
-    private $eventTwo;
+    private string $eventTwo;
 
     public function __construct(string $eventOne, string $eventTwo)
     {

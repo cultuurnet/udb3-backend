@@ -35,20 +35,11 @@ class AMQPPublisherTest extends TestCase
      */
     private $specification;
 
-    /**
-     * @var AMQPPublisher
-     */
-    private $amqpPublisher;
+    private AMQPPublisher $amqpPublisher;
 
-    /**
-     * @var DomainMessage
-     */
-    private $domainMessage;
+    private DomainMessage $domainMessage;
 
-    /**
-     * @var DelegatingAMQPMessageFactory
-     */
-    private $messageFactory;
+    private DelegatingAMQPMessageFactory $messageFactory;
 
     protected function setUp(): void
     {

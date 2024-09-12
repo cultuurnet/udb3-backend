@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Facility;
 
 abstract class AbstractFacilitiesUpdated extends AbstractEvent
 {
-    /**
-     * @var array
-     */
-    protected $facilities;
+    protected array $facilities;
 
     final public function __construct(string $id, array $facilities)
     {

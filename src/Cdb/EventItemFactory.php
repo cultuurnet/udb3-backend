@@ -10,10 +10,7 @@ use SimpleXMLElement;
 
 class EventItemFactory implements EventItemFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $namespaceUri;
+    private string $namespaceUri;
 
     /**
      * @param string $namespaceUri

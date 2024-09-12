@@ -13,10 +13,7 @@ class AddLabelToMultiple implements AsyncCommand
 {
     use AsyncCommandTrait;
 
-    /**
-     * @var OfferIdentifierCollection
-     */
-    protected $offerIdentifiers;
+    protected OfferIdentifierCollection $offerIdentifiers;
 
     protected Label $label;
 

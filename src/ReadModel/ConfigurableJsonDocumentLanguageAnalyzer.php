@@ -11,7 +11,7 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     /**
      * @var string[]
      */
-    private $translatableProperties;
+    private array $translatableProperties;
 
     /**
      * @param string[] $translatableProperties

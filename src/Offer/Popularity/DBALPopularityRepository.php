@@ -8,10 +8,7 @@ use Doctrine\DBAL\Connection;
 
 class DBALPopularityRepository implements PopularityRepository
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {

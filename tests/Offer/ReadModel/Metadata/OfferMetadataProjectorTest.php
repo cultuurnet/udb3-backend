@@ -39,10 +39,7 @@ class OfferMetadataProjectorTest extends TestCase
      */
     private $repository;
 
-    /**
-     * @var OfferMetadataProjector
-     */
-    private $projector;
+    private OfferMetadataProjector $projector;
 
     protected function setUp(): void
     {

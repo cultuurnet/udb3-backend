@@ -20,10 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 class CdbXMLImporterTest extends TestCase
 {
-    /**
-     * @var CdbXMLImporter
-     */
-    protected $importer;
+    protected CdbXMLImporter $importer;
 
     public function setUp(): void
     {

@@ -80,10 +80,7 @@ use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class PlaceDenormalizerTest extends TestCase
 {
-    /**
-     * @var PlaceDenormalizer
-     */
-    private $denormalizer;
+    private PlaceDenormalizer $denormalizer;
 
     public function setUp(): void
     {

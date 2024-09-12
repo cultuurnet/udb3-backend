@@ -12,10 +12,7 @@ use CultuurNet\UDB3\Term\TermRepository;
 
 final class TermLabelOfferRepositoryDecorator extends DocumentRepositoryDecorator
 {
-    /**
-     * @var TermRepository
-     */
-    private $termRepository;
+    private TermRepository $termRepository;
 
     public function __construct(DocumentRepository $repository, TermRepository $termRepository)
     {

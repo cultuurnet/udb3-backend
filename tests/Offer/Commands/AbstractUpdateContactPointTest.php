@@ -15,15 +15,9 @@ class AbstractUpdateContactPointTest extends TestCase
      */
     protected $updateContactPoint;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var ContactPoint
-     */
-    protected $contactPoint;
+    protected ContactPoint $contactPoint;
 
     public function setUp(): void
     {

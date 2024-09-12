@@ -6,21 +6,11 @@ namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category;
 
 class Category
 {
-    /**
-     * @var CategoryID
-     */
-    private $id;
+    private CategoryID $id;
 
-    /**
-     * @var CategoryLabel|null
-     */
-    private $label;
+    private ?CategoryLabel $label;
 
-    /**
-     * @var CategoryDomain|null
-     */
-    protected $domain;
-
+    protected ?CategoryDomain $domain;
 
     public function __construct(
         CategoryID $id,

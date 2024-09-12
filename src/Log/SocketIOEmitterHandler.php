@@ -11,10 +11,7 @@ use SocketIO\Emitter;
 
 class SocketIOEmitterHandler extends AbstractProcessingHandler
 {
-    /**
-     * @var Emitter
-     */
-    protected $emitter;
+    protected Emitter $emitter;
 
     /**
      * @param integer $level  The minimum logging level at which this handler will be triggered

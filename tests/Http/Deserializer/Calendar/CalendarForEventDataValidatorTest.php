@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class CalendarForEventDataValidatorTest extends TestCase
 {
-    /**
-     * @var CalendarForEventDataValidator
-     */
-    private $calendarForEventDataValidator;
+    private CalendarForEventDataValidator $calendarForEventDataValidator;
 
     protected function setUp(): void
     {

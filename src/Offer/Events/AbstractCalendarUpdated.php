@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Calendar\Calendar;
 
 abstract class AbstractCalendarUpdated extends AbstractEvent
 {
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     final public function __construct(string $itemId, Calendar $calendar)
     {

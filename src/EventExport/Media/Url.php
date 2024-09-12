@@ -9,10 +9,7 @@ use Webmozart\Assert\Assert;
 
 class Url implements MediaSpecificationInterface
 {
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
     /**
      * Url constructor.

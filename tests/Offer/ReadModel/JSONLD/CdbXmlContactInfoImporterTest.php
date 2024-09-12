@@ -8,15 +8,9 @@ use PHPUnit\Framework\TestCase;
 
 class CdbXmlContactInfoImporterTest extends TestCase
 {
-    /**
-     * @var CdbXmlContactInfoImporter
-     */
-    private $cdbXmlContactInfoImporter;
+    private CdbXmlContactInfoImporter $cdbXmlContactInfoImporter;
 
-    /**
-     * @var \CultureFeed_Cdb_Data_ContactInfo
-     */
-    private $cdbContactInfo;
+    private \CultureFeed_Cdb_Data_ContactInfo $cdbContactInfo;
 
     protected function setUp(): void
     {

@@ -11,15 +11,9 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractPublishedTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $itemId;
+    private string $itemId;
 
-    /**
-     * @var \DateTimeInterface
-     */
-    private $publicationDate;
+    private \DateTimeInterface $publicationDate;
 
     /**
      * @var AbstractPublished&MockObject

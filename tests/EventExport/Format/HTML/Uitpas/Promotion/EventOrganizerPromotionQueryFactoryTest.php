@@ -14,15 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class EventOrganizerPromotionQueryFactoryTest extends TestCase
 {
-    /**
-     * @var EventOrganizerPromotionQueryFactory
-     */
-    protected $queryFactory;
+    protected EventOrganizerPromotionQueryFactory $queryFactory;
 
-    /**
-     * @var int
-     */
-    protected $unixTime = 435052800;
+    protected int $unixTime = 435052800;
 
     public function setUp(): void
     {

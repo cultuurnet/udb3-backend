@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class AddLabelToQueryTest extends TestCase
 {
-    /**
-     * @var AddLabelToQuery
-     */
-    protected $labelQuery;
+    protected AddLabelToQuery $labelQuery;
 
     public function setUp(): void
     {

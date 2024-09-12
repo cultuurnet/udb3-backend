@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
 class AbstractImportImages extends AbstractCommand
 {
-    /**
-     * @var ImageCollection
-     */
-    private $imageCollection;
+    private ImageCollection $imageCollection;
 
     /**
      * @param string $itemId

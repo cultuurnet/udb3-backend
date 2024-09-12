@@ -6,16 +6,9 @@ namespace CultuurNet\UDB3\Model\ValueObject;
 
 abstract class DateTimeImmutableRange
 {
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $from;
+    private ?\DateTimeImmutable $from = null;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $to;
-
+    private ?\DateTimeImmutable $to = null;
 
     public function __construct(\DateTimeImmutable $from = null, \DateTimeImmutable $to = null)
     {

@@ -17,7 +17,7 @@ class DayOfWeekCollection implements Serializable
     /**
      * @var string[]
      */
-    private $daysOfWeek = [];
+    private array $daysOfWeek = [];
 
     public function __construct(DayOfWeek ...$daysOfWeek)
     {

@@ -13,10 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 final class UploadImageTest extends TestCase
 {
-    /**
-     * @var UploadImage
-     */
-    private $uploadImage;
+    private UploadImage $uploadImage;
 
     protected function setUp(): void
     {

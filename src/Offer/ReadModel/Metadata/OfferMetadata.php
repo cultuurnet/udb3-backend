@@ -6,15 +6,9 @@ namespace CultuurNet\UDB3\Offer\ReadModel\Metadata;
 
 final class OfferMetadata
 {
-    /**
-     * @var string
-     */
-    private $offerId;
+    private string $offerId;
 
-    /**
-     * @var string
-     */
-    private $createdByApiConsumer;
+    private string $createdByApiConsumer;
 
     public function __construct(
         string $offerId,

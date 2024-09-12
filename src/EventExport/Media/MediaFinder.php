@@ -8,10 +8,7 @@ use stdClass;
 
 class MediaFinder
 {
-    /**
-     * @var MediaSpecificationInterface
-     */
-    private $specification;
+    private MediaSpecificationInterface $specification;
 
     /**
      * MediaFinder constructor.

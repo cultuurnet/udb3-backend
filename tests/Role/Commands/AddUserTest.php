@@ -9,25 +9,15 @@ use PHPUnit\Framework\TestCase;
 
 class AddUserTest extends TestCase
 {
-    /**
-     * @var AddUser
-     */
-    private $addUser;
-
-    /**
-     * @var UUID
-     */
-    private $uuid;
-
-    private string $userId;
+    private AddUser $addUser;
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID('7ce4cb7e-af7c-4724-bfbe-d943ac2b949a');
+        $uuid = new UUID('7ce4cb7e-af7c-4724-bfbe-d943ac2b949a');
 
-        $this->userId = 'userId';
+        $userId = 'userId';
 
-        $this->addUser = new AddUser($this->uuid, $this->userId);
+        $this->addUser = new AddUser($uuid, $userId);
     }
 
     /**

@@ -21,25 +21,16 @@ class LabelCommandBusSecurityTest extends TestCase
      */
     private $securityDecoratee;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
     /**
      * @var ReadRepositoryInterface&MockObject
      */
     private $labelReadRepository;
 
-    /**
-     * @var LabelCommandBusSecurity
-     */
-    private $securityWithLabelPrivacy;
+    private LabelCommandBusSecurity $securityWithLabelPrivacy;
 
-    /**
-     * @var AddLabel
-     */
-    private $addLabel;
+    private AddLabel $addLabel;
 
     protected function setUp(): void
     {

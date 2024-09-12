@@ -10,15 +10,9 @@ use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
 final class EventCopied extends AbstractEvent implements AggregateCopiedEventInterface
 {
-    /**
-     * @var string
-     */
-    private $originalEventId;
+    private string $originalEventId;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     public function __construct(
         string $eventId,

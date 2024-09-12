@@ -11,25 +11,13 @@ use PHPUnit\Framework\TestCase;
 
 class EventCopiedTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $eventId;
+    private string $eventId;
 
-    /**
-     * @var string
-     */
-    private $originalEventId;
+    private string $originalEventId;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
-    /**
-     * @var EventCopied
-     */
-    private $eventCopied;
+    private EventCopied $eventCopied;
 
     protected function setUp(): void
     {

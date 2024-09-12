@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class CalendarForPlaceDataValidatorTest extends TestCase
 {
-    /**
-     * @var CalendarForPlaceDataValidator
-     */
-    private $calendarForPlaceDataValidator;
+    private CalendarForPlaceDataValidator $calendarForPlaceDataValidator;
 
     protected function setUp(): void
     {

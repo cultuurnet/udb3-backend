@@ -14,15 +14,9 @@ class ContextEnrichingLogger implements LoggerInterface
 {
     use LoggerTrait;
 
-    /**
-     * @var LoggerInterface
-     */
-    protected $decoratee;
+    protected LoggerInterface $decoratee;
 
-    /**
-     * @var array
-     */
-    protected $context;
+    protected array $context;
 
 
     public function __construct(LoggerInterface $decoratee, array $context)

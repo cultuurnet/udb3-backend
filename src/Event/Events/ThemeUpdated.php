@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Theme;
 
 final class ThemeUpdated extends AbstractEvent
 {
-    /**
-     * @var Theme
-     */
-    protected $theme;
+    protected Theme $theme;
 
     /**
      * @param string $itemId

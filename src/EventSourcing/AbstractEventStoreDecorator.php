@@ -9,10 +9,7 @@ use Broadway\EventStore\EventStore;
 
 abstract class AbstractEventStoreDecorator implements EventStore
 {
-    /**
-     * @var EventStore
-     */
-    private $eventStore;
+    private EventStore $eventStore;
 
     public function __construct(EventStore $eventStore)
     {

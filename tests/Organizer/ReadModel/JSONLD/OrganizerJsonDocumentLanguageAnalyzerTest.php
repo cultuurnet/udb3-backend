@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
 {
-    /**
-     * @var OrganizerJsonDocumentLanguageAnalyzer
-     */
-    private $analyzer;
+    private OrganizerJsonDocumentLanguageAnalyzer $analyzer;
 
     public function setUp(): void
     {

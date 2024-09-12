@@ -9,17 +9,11 @@ use PHPUnit\Framework\TestCase;
 
 class RenameRoleTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
     protected string $name;
 
-    /**
-     * @var RenameRole
-     */
-    protected $renameRole;
+    protected RenameRole $renameRole;
 
     protected function setUp(): void
     {

@@ -9,17 +9,11 @@ use PHPUnit\Framework\TestCase;
 
 class CreateRoleTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
     protected string $name;
 
-    /**
-     * @var CreateRole
-     */
-    protected $createRole;
+    protected CreateRole $createRole;
 
     protected function setUp(): void
     {

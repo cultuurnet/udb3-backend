@@ -13,15 +13,9 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange as Udb3ModelAgeRange;
  */
 class AgeRange
 {
-    /**
-     * @var ?Age
-     */
-    private $from;
+    private ?Age $from;
 
-    /**
-     * @var ?Age
-     */
-    private $to;
+    private ?Age $to;
 
     /**
      * @throws InvalidAgeRangeException

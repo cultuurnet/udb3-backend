@@ -8,11 +8,7 @@ use CultuurNet\UDB3\ContactPoint;
 
 abstract class AbstractUpdateContactPoint extends AbstractCommand
 {
-    /**
-     * The contactPoint entry
-     * @var ContactPoint
-     */
-    protected $contactPoint;
+    protected ContactPoint $contactPoint;
 
     /**
      * @param string $itemId

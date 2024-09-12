@@ -9,10 +9,7 @@ use Broadway\Domain\DateTime;
 
 class RecordedOn
 {
-    /**
-     * @var DateTime
-     */
-    private $recorded;
+    private DateTime $recorded;
 
     /**
      * ModifiedDateTime constructor.

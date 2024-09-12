@@ -14,15 +14,9 @@ class AbstractOrganizerCommandTest extends TestCase
      */
     protected $organizerCommand;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var string
-     */
-    protected $organizerId;
+    protected string $organizerId;
 
     public function setUp(): void
     {

@@ -26,15 +26,9 @@ class EventCalendarProjectorTest extends TestCase
      */
     protected $repository;
 
-    /**
-     * @var EventCalendarProjector
-     */
-    protected $projector;
+    protected EventCalendarProjector $projector;
 
-    /**
-     * @var CdbXMLEventFactory
-     */
-    protected $cdbXMLEventFactory;
+    protected CdbXMLEventFactory $cdbXMLEventFactory;
 
     public function setUp(): void
     {

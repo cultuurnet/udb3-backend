@@ -13,15 +13,9 @@ class DBALRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var DBALPlaceRelationsRepository
-     */
-    private $repository;
+    private DBALPlaceRelationsRepository $repository;
 
-    /**
-     * @var string
-     */
-    private $tableName;
+    private string $tableName;
 
     protected function setUp(): void
     {

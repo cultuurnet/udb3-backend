@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class JsonDocumentNullEnricherTest extends TestCase
 {
-    /**
-     * @var JsonDocumentNullEnricher
-     */
-    private $enricher;
+    private JsonDocumentNullEnricher $enricher;
 
     public function setUp(): void
     {

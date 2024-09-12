@@ -10,10 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 
 final class TermRepository
 {
-    /**
-     * @var array
-     */
-    private $mapping;
+    private array $mapping;
 
     public function __construct(array $mapping)
     {

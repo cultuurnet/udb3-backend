@@ -13,25 +13,13 @@ use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase
 {
-    /**
-     * @var Foo
-     */
-    protected $foo1;
+    protected Foo $foo1;
 
-    /**
-     * @var Foo
-     */
-    protected $foo2;
+    protected Foo $foo2;
 
-    /**
-     * @var FooExtended
-     */
-    protected $fooExtended;
+    protected FooExtended $fooExtended;
 
-    /**
-     * @var \stdClass
-     */
-    protected $notFoo;
+    protected \stdClass $notFoo;
 
     protected function setUp(): void
     {

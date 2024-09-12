@@ -12,10 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class UpdateBookingInfoTest extends TestCase
 {
-    /**
-     * @var UpdateBookingInfo
-     */
-    protected $updateBookingInfo;
+    protected UpdateBookingInfo $updateBookingInfo;
 
     public function setUp(): void
     {
