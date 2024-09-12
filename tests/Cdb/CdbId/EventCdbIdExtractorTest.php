@@ -9,29 +9,25 @@ use PHPUnit\Framework\TestCase;
 
 class EventCdbIdExtractorTest extends TestCase
 {
-    private ArrayMappingService $placeExternalIdMappingService;
-
-    private ArrayMappingService $organizerExternalIdMappingService;
-
     private EventCdbIdExtractor $cdbIdExtractor;
 
     public function setUp(): void
     {
-        $this->placeExternalIdMappingService = new ArrayMappingService(
+        $placeExternalIdMappingService = new ArrayMappingService(
             [
                 'external-id-1' => '9434513c-0f86-4085-83ac-dc4b64b44185',
             ]
         );
 
-        $this->organizerExternalIdMappingService = new ArrayMappingService(
+        $organizerExternalIdMappingService = new ArrayMappingService(
             [
                 'external-id-1' => '46573cf5-d279-4baf-8ad4-9e7d7f312100',
             ]
         );
 
         $this->cdbIdExtractor = new EventCdbIdExtractor(
-            $this->placeExternalIdMappingService,
-            $this->organizerExternalIdMappingService
+            $placeExternalIdMappingService,
+            $organizerExternalIdMappingService
         );
     }
 

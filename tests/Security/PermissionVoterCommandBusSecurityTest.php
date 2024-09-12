@@ -16,24 +16,19 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
 {
     private string $godUserId;
 
-    /**
-     * @var ResourceOwnerQuery&MockObject
-     */
-    private $permissionRepository;
-
     private AnyOfVoter $permissionVoter;
 
     protected function setUp(): void
     {
         $this->godUserId = 'bb0bf2b3-49ba-4f2a-a1e4-ce7ec93a5ea0';
 
-        $this->permissionRepository = $this->createMock(
+        $permissionRepository = $this->createMock(
             ResourceOwnerQuery::class
         );
 
         $this->permissionVoter = new AnyOfVoter(
             new GodUserVoter([$this->godUserId]),
-            new ResourceOwnerVoter($this->permissionRepository, false)
+            new ResourceOwnerVoter($permissionRepository, false)
         );
     }
 

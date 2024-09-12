@@ -14,21 +14,6 @@ use PHPUnit\Framework\TestCase;
 class LocalPlaceServiceTest extends TestCase
 {
     /**
-     * @var DocumentRepository&MockObject
-     */
-    private $documentRepository;
-
-    /**
-     * @var Repository&MockObject
-     */
-    private $placeRepository;
-
-    /**
-     * @var IriGeneratorInterface&MockObject
-     */
-    private $iriGenerator;
-
-    /**
      * @var PlaceRelationsRepository&MockObject
      */
     private $placeRelationsRepository;
@@ -37,23 +22,23 @@ class LocalPlaceServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->documentRepository = $this->createMock(
+        $documentRepository = $this->createMock(
             DocumentRepository::class
         );
 
-        $this->placeRepository = $this->createMock(Repository::class);
+        $placeRepository = $this->createMock(Repository::class);
 
         $this->placeRelationsRepository = $this->createMock(
             PlaceRelationsRepository::class
         );
 
-        $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
+        $iriGenerator = $this->createMock(IriGeneratorInterface::class);
 
         $this->localPlaceService = new LocalPlaceService(
-            $this->documentRepository,
-            $this->placeRepository,
+            $documentRepository,
+            $placeRepository,
             $this->placeRelationsRepository,
-            $this->iriGenerator
+            $iriGenerator
         );
     }
 

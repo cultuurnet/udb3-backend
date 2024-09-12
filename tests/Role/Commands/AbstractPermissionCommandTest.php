@@ -11,8 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractPermissionCommandTest extends TestCase
 {
-    private UUID $uuid;
-
     private Permission $rolePermission;
 
     /**
@@ -22,12 +20,12 @@ class AbstractPermissionCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID('e6f81e9d-33c4-4886-a4b5-dba566d811d5');
+        $uuid = new UUID('e6f81e9d-33c4-4886-a4b5-dba566d811d5');
         $this->rolePermission = Permission::aanbodBewerken();
 
         $this->abstractPermissionCommand = $this->getMockForAbstractClass(
             AbstractPermissionCommand::class,
-            [$this->uuid, $this->rolePermission]
+            [$uuid, $this->rolePermission]
         );
     }
 

@@ -111,8 +111,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
     private ImportPlaceRequestHandler $importPlaceRequestHandler;
 
-    private InMemoryDocumentRepository $organizerRepository;
-
     private function getSimplePlace(): array
     {
         return [
@@ -146,8 +144,8 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
-        $this->organizerRepository = new InMemoryDocumentRepository();
-        $this->organizerRepository->save(new JsonDocument('5cf42d51-3a4f-46f0-a8af-1cf672be8c84', '{}'));
+        $organizerRepository = new InMemoryDocumentRepository();
+        $organizerRepository->save(new JsonDocument('5cf42d51-3a4f-46f0-a8af-1cf672be8c84', '{}'));
 
         $this->importPlaceRequestHandler = new ImportPlaceRequestHandler(
             $this->aggregateRepository,
@@ -159,7 +157,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             $this->imageCollectionFactory,
             true,
             $this->createMock(LookupDuplicatePlace::class),
-            $this->organizerRepository
+            $organizerRepository
         );
 
         $this->commandBus->record();
