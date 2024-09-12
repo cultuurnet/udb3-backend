@@ -14,7 +14,8 @@ abstract class TranslatedValueObjectDenormalizer implements DenormalizerInterfac
 {
     /**
      * @inheritdoc
-     */public function denormalize($data, $class, $format = null, array $context = [])
+     */
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             $selfClass = get_class($this);
