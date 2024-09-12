@@ -9,25 +9,13 @@ use PHPUnit\Framework\TestCase;
 
 class LocationUpdatedTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $eventId;
+    private string $eventId;
 
-    /**
-     * @var LocationId
-     */
-    private $locationId;
+    private LocationId $locationId;
 
-    /**
-     * @var array
-     */
-    private $locationUpdatedAsArray;
+    private array $locationUpdatedAsArray;
 
-    /**
-     * @var LocationUpdated
-     */
-    private $locationUpdated;
+    private LocationUpdated $locationUpdated;
 
     protected function setUp(): void
     {

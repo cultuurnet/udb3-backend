@@ -10,20 +10,11 @@ use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 
 final class Impersonator
 {
-    /**
-     * @var string|null
-     */
-    private $userId;
+    private ?string $userId = null;
 
-    /**
-     * @var JsonWebToken|null
-     */
-    private $jwt;
+    private ?JsonWebToken $jwt = null;
 
-    /**
-     * @var ApiKey|null
-     */
-    private $apiKey;
+    private ?ApiKey $apiKey = null;
 
     public function getUserId(): ?string
     {

@@ -13,15 +13,9 @@ use InvalidArgumentException;
  */
 final class StatusReason
 {
-    /**
-     * @var Language
-     */
-    private $language;
+    private Language $language;
 
-    /**
-     * @var string
-     */
-    private $reason;
+    private string $reason;
 
     public function __construct(Language $language, string $reason)
     {

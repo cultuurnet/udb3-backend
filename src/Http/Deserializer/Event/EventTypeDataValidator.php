@@ -14,10 +14,7 @@ use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValida
  */
 class EventTypeDataValidator implements DataValidatorInterface
 {
-    /**
-     * @var RequiredPropertiesDataValidator
-     */
-    private $requiredFieldsValidator;
+    private RequiredPropertiesDataValidator $requiredFieldsValidator;
 
     public function __construct()
     {

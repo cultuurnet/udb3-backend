@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class OrganizerIDParserTest extends TestCase
 {
-    /**
-     * @var OrganizerIDParser
-     */
-    private $parser;
+    private OrganizerIDParser $parser;
 
     public function setUp(): void
     {
@@ -23,11 +20,8 @@ class OrganizerIDParserTest extends TestCase
     /**
      * @test
      * @dataProvider organizerUrlDataProvider
-     *
-     * @param string $url
-     * @param string $uuid
      */
-    public function it_should_return_an_organizer_id_from_the_given_organizer_url($url, $uuid): void
+    public function it_should_return_an_organizer_id_from_the_given_organizer_url(string $url, string $uuid): void
     {
         $url = new Url($url);
         $expected = new UUID($uuid);
@@ -35,10 +29,7 @@ class OrganizerIDParserTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function organizerUrlDataProvider()
+    public function organizerUrlDataProvider(): array
     {
         return [
             'regular' => [

@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class RecordedOnTest extends TestCase
 {
-    /**
-     * @var RecordedOn
-     */
-    private $recordedOn;
+    private RecordedOn $recordedOn;
 
     protected function setUp(): void
     {

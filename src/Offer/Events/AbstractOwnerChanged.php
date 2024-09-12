@@ -8,15 +8,9 @@ use Broadway\Serializer\Serializable;
 
 abstract class AbstractOwnerChanged implements Serializable
 {
-    /**
-     * @var string
-     */
-    private $offerId;
+    private string $offerId;
 
-    /**
-     * @var string
-     */
-    private $newOwnerId;
+    private string $newOwnerId;
 
     final public function __construct(string $offerId, string $newOwnerId)
     {

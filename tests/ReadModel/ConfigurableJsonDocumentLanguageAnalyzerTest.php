@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigurableJsonDocumentLanguageAnalyzerTest extends TestCase
 {
-    /**
-     * @var ConfigurableJsonDocumentLanguageAnalyzer
-     */
-    private $analyzer;
+    private ConfigurableJsonDocumentLanguageAnalyzer $analyzer;
 
     public function setUp(): void
     {

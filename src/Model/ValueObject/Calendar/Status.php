@@ -6,15 +6,9 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 final class Status
 {
-    /**
-     * @var StatusType
-     */
-    private $type;
+    private StatusType $type;
 
-    /**
-     * @var TranslatedStatusReason|null
-     */
-    private $reason;
+    private ?TranslatedStatusReason $reason;
 
     public function __construct(StatusType $type, ?TranslatedStatusReason $reason = null)
     {

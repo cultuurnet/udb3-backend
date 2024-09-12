@@ -11,10 +11,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 class OfferMetadataEnrichedOfferRepository extends DocumentRepositoryDecorator
 {
-    /**
-     * @var OfferMetadataRepository
-     */
-    private $offerMetadataRepository;
+    private OfferMetadataRepository $offerMetadataRepository;
 
     public function __construct(OfferMetadataRepository $offerMetadataRepository, DocumentRepository $documentRepository)
     {

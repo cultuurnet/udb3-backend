@@ -8,10 +8,7 @@ use DateTimeInterface;
 
 class FrozenClock implements Clock
 {
-    /**
-     * @var DateTimeInterface
-     */
-    private $time;
+    private DateTimeInterface $time;
 
     public function __construct(DateTimeInterface $dateTime)
     {

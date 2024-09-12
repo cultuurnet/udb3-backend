@@ -10,15 +10,9 @@ use CultuurNet\UDB3\Place\PlaceEvent;
 
 final class AddressTranslated extends PlaceEvent
 {
-    /**
-     * @var Address
-     */
-    private $address;
+    private Address $address;
 
-    /**
-     * @var Language
-     */
-    private $language;
+    private Language $language;
 
     public function __construct(string $placeId, Address $address, Language $language)
     {

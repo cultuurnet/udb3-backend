@@ -103,10 +103,7 @@ class MultilingualStringTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function stringForLanguageDataProvider()
+    public function stringForLanguageDataProvider(): array
     {
         return [
             [

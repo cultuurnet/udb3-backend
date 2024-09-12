@@ -20,10 +20,7 @@ class BroadcastingDocumentRepositoryDecoratorTest extends TestCase
      */
     protected $decoratedRepository;
 
-    /**
-     * @var BroadcastingDocumentRepositoryDecorator
-     */
-    protected $repository;
+    protected BroadcastingDocumentRepositoryDecorator $repository;
 
     /**
      * @var DocumentEventFactory&MockObject

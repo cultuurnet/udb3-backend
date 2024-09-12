@@ -51,19 +51,15 @@ class MediaObjectReferencesDenormalizer implements DenormalizerInterface
         return new MediaObjectReferences(...$references);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === MediaObjectReferences::class;
     }
 
     /**
      * @todo Extract to a separate MediaObjectReferenceDenormalizer
-     * @return MediaObjectReference
      */
-    private function denormalizeMediaObjectReference(array $referenceData)
+    private function denormalizeMediaObjectReference(array $referenceData): MediaObjectReference
     {
         $id = $this->mediaObjectIdParser->fromUrl(new Url($referenceData['@id']));
         $description = new Description($referenceData['description']);

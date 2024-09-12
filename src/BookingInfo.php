@@ -14,35 +14,17 @@ use DateTimeImmutable;
  */
 final class BookingInfo implements JsonLdSerializableInterface
 {
-    /**
-     * @var string|null
-     */
-    private $phone;
+    private ?string $phone;
 
-    /**
-     * @var string|null
-     */
-    private $email;
+    private ?string $email;
 
-    /**
-     * @var string|null
-     */
-    private $url;
+    private ?string $url;
 
-    /**
-     * @var MultilingualString|null
-     */
-    private $urlLabel;
+    private ?MultilingualString $urlLabel;
 
-    /**
-     * @var DateTimeImmutable|null
-     */
-    private $availabilityStarts;
+    private ?DateTimeImmutable $availabilityStarts;
 
-    /**
-     * @var DateTimeImmutable|null
-     */
-    private $availabilityEnds;
+    private ?DateTimeImmutable $availabilityEnds;
 
     public function __construct(
         ?string $url = null,

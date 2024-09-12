@@ -9,10 +9,7 @@ use RuntimeException;
 
 class IriOfferIdentifierFactory implements IriOfferIdentifierFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $regex;
+    private string $regex;
 
     public function __construct(string $regex)
     {
@@ -31,10 +28,7 @@ class IriOfferIdentifierFactory implements IriOfferIdentifierFactoryInterface
         }
     }
 
-    /**
-     * @return IriOfferIdentifier
-     */
-    public function fromIri(Url $iri)
+    public function fromIri(Url $iri): IriOfferIdentifier
     {
         $match = @preg_match(
             '@^' . $this->regex . '$@',

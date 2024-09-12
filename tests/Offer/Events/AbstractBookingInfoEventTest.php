@@ -17,15 +17,9 @@ class AbstractBookingInfoEventTest extends TestCase
      */
     protected $abstractBookingInfoEvent;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var BookingInfo
-     */
-    protected $bookingInfo;
+    protected BookingInfo $bookingInfo;
 
     public function setUp(): void
     {
@@ -116,10 +110,7 @@ class AbstractBookingInfoEventTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractBookingInfoEvent' => [

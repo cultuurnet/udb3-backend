@@ -14,10 +14,7 @@ use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValida
  */
 class CreateEventDataValidator implements DataValidatorInterface
 {
-    /**
-     * @var CompositeDataValidator
-     */
-    private $validator;
+    private CompositeDataValidator $validator;
 
     public function __construct()
     {
@@ -26,9 +23,6 @@ class CreateEventDataValidator implements DataValidatorInterface
             ->withValidator(new RequiredPropertiesDataValidator(['mainLanguage']));
     }
 
-    /**
-     * @inheritdoc
-     */
     public function validate(array $data): void
     {
         $this->validator->validate($data);

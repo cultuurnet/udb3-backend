@@ -38,7 +38,7 @@ final class AddImageDenormalizer implements DenormalizerInterface
         }
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === AbstractAddImage::class;
     }

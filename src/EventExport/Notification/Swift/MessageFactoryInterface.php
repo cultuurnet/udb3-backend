@@ -9,11 +9,8 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 interface MessageFactoryInterface
 {
-    /**
-     * @return \Swift_Message
-     */
     public function createMessageFor(
         EmailAddress $address,
         EventExportResult $eventExportResult
-    );
+    ): \Swift_Message;
 }

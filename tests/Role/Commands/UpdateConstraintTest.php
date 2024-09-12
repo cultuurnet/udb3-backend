@@ -10,20 +10,11 @@ use PHPUnit\Framework\TestCase;
 
 class UpdateConstraintTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
-    /**
-     * @var Query
-     */
-    protected $query;
+    protected Query $query;
 
-    /**
-     * @var UpdateConstraint
-     */
-    protected $updateConstraint;
+    protected UpdateConstraint $updateConstraint;
 
     protected function setUp(): void
     {

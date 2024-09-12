@@ -9,27 +9,15 @@ use Webmozart\Assert\Assert;
 
 class Url implements MediaSpecificationInterface
 {
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
-    /**
-     * Url constructor.
-     *
-     * @param string $url
-     */
-    public function __construct($url)
+    public function __construct(string $url)
     {
         Assert::stringNotEmpty($url);
         $this->url = $url;
     }
 
-    /**
-     * @param stdClass $mediaObject
-     * @return bool
-     */
-    public function matches($mediaObject)
+    public function matches(stdClass $mediaObject): bool
     {
         Assert::object($mediaObject);
         return $mediaObject->contentUrl === $this->url;

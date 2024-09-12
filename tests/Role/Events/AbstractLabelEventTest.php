@@ -10,15 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractLabelEventTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $labelId;
+    protected UUID $labelId;
 
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
     /**
      * @var AbstractLabelEvent&MockObject

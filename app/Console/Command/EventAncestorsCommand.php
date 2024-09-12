@@ -14,10 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class EventAncestorsCommand extends AbstractCommand
 {
-    /**
-     * @var EventStore
-     */
-    private $eventStore;
+    private EventStore $eventStore;
 
     public function __construct(CommandBus $commandBus, EventStore $eventStore)
     {
@@ -38,7 +35,7 @@ class EventAncestorsCommand extends AbstractCommand
             );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $cdbid = $input->getArgument('cdbid');
 

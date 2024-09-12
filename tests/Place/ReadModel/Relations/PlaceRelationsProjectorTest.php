@@ -30,10 +30,7 @@ final class PlaceRelationsProjectorTest extends TestCase
      */
     private $repository;
 
-    /**
-     * @var PlaceRelationsProjector
-     */
-    private $projector;
+    private PlaceRelationsProjector $projector;
 
     protected function setUp(): void
     {

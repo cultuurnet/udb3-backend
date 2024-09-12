@@ -855,11 +855,7 @@ class CalendarFactoryTest extends TestCase
         $this->assertEquals($expectedCalendar, $calendar);
     }
 
-    /**
-     * @param string $xmlContent
-     * @return \CultureFeed_Cdb_Data_Calendar_PeriodList
-     */
-    private function createPeriodListFromXML($xmlContent)
+    private function createPeriodListFromXML(string $xmlContent): \CultureFeed_Cdb_Data_Calendar_PeriodList
     {
         $xmlElement = new \SimpleXMLElement($xmlContent);
         return \CultureFeed_Cdb_Data_Calendar_PeriodList::parseFromCdbXml($xmlElement);
@@ -986,20 +982,13 @@ class CalendarFactoryTest extends TestCase
         $this->assertEquals($expectedCalendar, $calendar);
     }
 
-    /**
-     * @param string $xmlContent
-     * @return \CultureFeed_Cdb_Data_Calendar_Permanent
-     */
-    private function createPermanentCalendarFromXML($xmlContent)
+    private function createPermanentCalendarFromXML(string $xmlContent): \CultureFeed_Cdb_Data_Calendar_Permanent
     {
         $xmlElement = new \SimpleXMLElement($xmlContent);
         return \CultureFeed_Cdb_Data_Calendar_Permanent::parseFromCdbXml($xmlElement);
     }
 
-    /**
-     * @return array
-     */
-    public function permanentCalendarDataProvider()
+    public function permanentCalendarDataProvider(): array
     {
         return [
             'import permanent event, no weekscheme as periodic event' => [

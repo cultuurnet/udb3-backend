@@ -64,15 +64,9 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
      */
     private $completeOffer;
 
-    /**
-     * @var Udb3ModelToLegacyOfferAdapter
-     */
-    private $adapter;
+    private Udb3ModelToLegacyOfferAdapter $adapter;
 
-    /**
-     * @var Udb3ModelToLegacyOfferAdapter
-     */
-    private $completeAdapter;
+    private Udb3ModelToLegacyOfferAdapter $completeAdapter;
 
     public function setUp(): void
     {

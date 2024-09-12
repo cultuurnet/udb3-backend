@@ -24,9 +24,7 @@ class StripHtmlStringFilter implements StringFilterInterface
         $string = $this->limitConsecutiveNewlines($string, 2);
 
         // Trim any whitespace or newlines from the start and/or end of the string.
-        $string = trim($string);
-
-        return $string;
+        return trim($string);
     }
 
     /**

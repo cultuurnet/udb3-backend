@@ -9,7 +9,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
-use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
@@ -29,24 +28,16 @@ class GeoCoordinatesProcessManagerTest extends TestCase
      */
     private $commandBus;
 
-    /**
-     * @var CultureFeedAddressFactoryInterface
-     */
-    private $addressFactory;
-
-    /**
-     * @var GeoCoordinatesProcessManager
-     */
-    private $processManager;
+    private GeoCoordinatesProcessManager $processManager;
 
     public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
-        $this->addressFactory = new CultureFeedAddressFactory();
+        $addressFactory = new CultureFeedAddressFactory();
 
         $this->processManager = new GeoCoordinatesProcessManager(
             $this->commandBus,
-            $this->addressFactory,
+            $addressFactory,
             new NullLogger()
         );
     }

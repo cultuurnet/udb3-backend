@@ -6,21 +6,11 @@ namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category;
 
 class Category
 {
-    /**
-     * @var CategoryID
-     */
-    private $id;
+    private CategoryID $id;
 
-    /**
-     * @var CategoryLabel|null
-     */
-    private $label;
+    private ?CategoryLabel $label;
 
-    /**
-     * @var CategoryDomain|null
-     */
-    protected $domain;
-
+    protected ?CategoryDomain $domain;
 
     public function __construct(
         CategoryID $id,
@@ -32,26 +22,17 @@ class Category
         $this->domain = $domain;
     }
 
-    /**
-     * @return CategoryID
-     */
-    public function getId()
+    public function getId(): CategoryID
     {
         return $this->id;
     }
 
-    /**
-     * @return CategoryLabel|null
-     */
-    public function getLabel()
+    public function getLabel(): ?CategoryLabel
     {
         return $this->label;
     }
 
-    /**
-     * @return CategoryDomain|null
-     */
-    public function getDomain()
+    public function getDomain(): ?CategoryDomain
     {
         return $this->domain;
     }

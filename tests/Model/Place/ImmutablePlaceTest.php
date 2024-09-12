@@ -208,26 +208,17 @@ class ImmutablePlaceTest extends TestCase
         $this->assertNull($nilLocation->getGeoCoordinates());
     }
 
-    /**
-     * @return UUID
-     */
-    private function getId()
+    private function getId(): UUID
     {
         return new UUID('aadcee95-6180-4924-a8eb-ed829d4957a2');
     }
 
-    /**
-     * @return Language
-     */
-    private function getMainLanguage()
+    private function getMainLanguage(): Language
     {
         return new Language('nl');
     }
 
-    /**
-     * @return TranslatedTitle
-     */
-    private function getTitle()
+    private function getTitle(): TranslatedTitle
     {
         return new TranslatedTitle(
             $this->getMainLanguage(),
@@ -243,10 +234,7 @@ class ImmutablePlaceTest extends TestCase
         return new PermanentCalendar(new OpeningHours());
     }
 
-    /**
-     * @return TranslatedAddress
-     */
-    private function getAddress()
+    private function getAddress(): TranslatedAddress
     {
         $address = new Address(
             new Street('___'),
@@ -258,10 +246,7 @@ class ImmutablePlaceTest extends TestCase
         return new TranslatedAddress(new Language('nl'), $address);
     }
 
-    /**
-     * @return Categories
-     */
-    private function getTerms()
+    private function getTerms(): Categories
     {
         return new Categories(
             new Category(
@@ -272,10 +257,7 @@ class ImmutablePlaceTest extends TestCase
         );
     }
 
-    /**
-     * @return ImmutablePlace
-     */
-    private function getPlace()
+    private function getPlace(): ImmutablePlace
     {
         return new ImmutablePlace(
             $this->getId(),

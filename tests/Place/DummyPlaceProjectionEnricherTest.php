@@ -13,20 +13,14 @@ use Ramsey\Uuid\Uuid;
 
 class DummyPlaceProjectionEnricherTest extends TestCase
 {
-    /**
-     * @var DummyPlaceProjectionEnricher
-     */
-    private $enricher;
+    private DummyPlaceProjectionEnricher $enricher;
 
     /**
      * @var DocumentRepository&MockObject
      */
     private $repository;
 
-    /**
-     * @var string
-     */
-    private $dummyPlaceId;
+    private string $dummyPlaceId;
 
     protected function setUp(): void
     {

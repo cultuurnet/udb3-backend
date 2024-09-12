@@ -12,10 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class PayloadInNamespaceTest extends TestCase
 {
-    /**
-     * @var DomainMessage
-     */
-    private $domainMessage;
+    private DomainMessage $domainMessage;
 
     protected function setUp(): void
     {

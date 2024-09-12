@@ -8,10 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class SimpleDeserializerLocatorTest extends TestCase
 {
-    /**
-     * @var SimpleDeserializerLocator
-     */
-    protected $deserializerLocator;
+    protected SimpleDeserializerLocator $deserializerLocator;
 
     public function setUp(): void
     {

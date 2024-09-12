@@ -9,39 +9,23 @@ use CultuurNet\UDB3\Language;
 
 abstract class AbstractUpdateDescription extends AbstractCommand
 {
-    /**
-     * Description to be added.
-     * @var Description
-     */
-    protected $description;
+    protected Description $description;
 
-    /**
-     * @var Language
-     */
-    protected $language;
+    protected Language $language;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, Language $language, Description $description)
+    public function __construct(string $itemId, Language $language, Description $description)
     {
         parent::__construct($itemId);
         $this->description = $description;
         $this->language = $language;
     }
 
-    /**
-     * @return Description
-     */
-    public function getDescription()
+    public function getDescription(): Description
     {
         return $this->description;
     }
 
-    /**
-     * @return Language
-     */
-    public function getLanguage()
+    public function getLanguage(): Language
     {
         return $this->language;
     }

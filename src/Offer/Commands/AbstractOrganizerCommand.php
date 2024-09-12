@@ -6,26 +6,15 @@ namespace CultuurNet\UDB3\Offer\Commands;
 
 abstract class AbstractOrganizerCommand extends AbstractCommand
 {
-    /**
-     * OrganizerId to be set
-     * @var string
-     */
-    protected $organizerId;
+    protected string $organizerId;
 
-    /**
-     * @param string $itemId
-     * @param string $organizerId
-     */
-    public function __construct($itemId, $organizerId)
+    public function __construct(string $itemId, string $organizerId)
     {
         parent::__construct($itemId);
         $this->organizerId = $organizerId;
     }
 
-    /**
-     * @return string
-     */
-    public function getOrganizerId()
+    public function getOrganizerId(): string
     {
         return $this->organizerId;
     }

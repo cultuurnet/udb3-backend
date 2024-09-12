@@ -19,15 +19,9 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class ImportOfferAutoClassificationLabels extends Command
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
     public function __construct(Connection $connection, CommandBus $commandBus)
     {

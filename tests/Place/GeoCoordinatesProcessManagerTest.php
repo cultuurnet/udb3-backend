@@ -41,8 +41,6 @@ class GeoCoordinatesProcessManagerTest extends TestCase
      */
     private $commandBus;
 
-    private CultureFeedAddressFactoryInterface $addressFactory;
-
     /**
      * @var LoggerInterface&MockObject
      */
@@ -58,13 +56,13 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
-        $this->addressFactory = new CultureFeedAddressFactory();
+        $addressFactory = new CultureFeedAddressFactory();
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->documentRepository = $this->createMock(DocumentRepository::class);
 
         $this->processManager = new GeoCoordinatesProcessManager(
             $this->commandBus,
-            $this->addressFactory,
+            $addressFactory,
             $this->logger,
             $this->documentRepository
         );
@@ -175,10 +173,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
         $processManager->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function addressEventDataProvider()
+    public function addressEventDataProvider(): array
     {
         return [
             'place_created' => [
@@ -308,10 +303,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function missingAddressEventDataProvider()
+    public function missingAddressEventDataProvider(): array
     {
         return [
             'place_imported_from_udb2_without_address' => [

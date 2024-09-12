@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Place\PlaceEvent;
 
 final class AddressUpdated extends PlaceEvent
 {
-    /**
-     * @var Address
-     */
-    private $address;
+    private Address $address;
 
     public function __construct(string $placeId, Address $address)
     {

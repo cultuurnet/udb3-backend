@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 
 class CultureFeedAddressFactory implements CultureFeedAddressFactoryInterface
 {
-    /**
-     * @return Address
-     */
-    public function fromCdbAddress(\CultureFeed_Cdb_Data_Address_PhysicalAddress $cdbAddress)
+    public function fromCdbAddress(\CultureFeed_Cdb_Data_Address_PhysicalAddress $cdbAddress): Address
     {
         $requiredFields = [
             'street' => $cdbAddress->getStreet(),

@@ -38,10 +38,7 @@ class EventCdbIdExtractor implements EventCdbIdExtractorInterface
         $this->organizerExternalIdMappingService = $organizerExternalIdMappingService;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getRelatedPlaceCdbId(\CultureFeed_Cdb_Item_Event $cdbEvent)
+    public function getRelatedPlaceCdbId(\CultureFeed_Cdb_Item_Event $cdbEvent): ?string
     {
         $cdbPlace = $cdbEvent->getLocation();
 
@@ -55,10 +52,7 @@ class EventCdbIdExtractor implements EventCdbIdExtractorInterface
         }
     }
 
-    /**
-     * @return string|null
-     */
-    public function getRelatedOrganizerCdbId(\CultureFeed_Cdb_Item_Event $cdbEvent)
+    public function getRelatedOrganizerCdbId(\CultureFeed_Cdb_Item_Event $cdbEvent): ?string
     {
         $cdbOrganizer = $cdbEvent->getOrganiser();
 
@@ -74,12 +68,11 @@ class EventCdbIdExtractor implements EventCdbIdExtractorInterface
 
     /**
      * @param \CultureFeed_Cdb_Data_Location|\CultureFeed_Cdb_Data_Organiser $embeddedCdb
-     * @return null|string
      */
     private function getCdbIdFromEmbeddedLocationOrOrganizer(
         $embeddedCdb,
         MappingServiceInterface $externalIdMappingService
-    ) {
+    ): ?string {
         if (!is_null($embeddedCdb->getCdbid())) {
             return $embeddedCdb->getCdbid();
         }

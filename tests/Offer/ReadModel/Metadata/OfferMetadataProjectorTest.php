@@ -39,10 +39,7 @@ class OfferMetadataProjectorTest extends TestCase
      */
     private $repository;
 
-    /**
-     * @var OfferMetadataProjector
-     */
-    private $projector;
+    private OfferMetadataProjector $projector;
 
     protected function setUp(): void
     {
@@ -153,10 +150,7 @@ class OfferMetadataProjectorTest extends TestCase
         $this->project($this->createPlaceImportedFromUdb2(), $metadata);
     }
 
-    /**
-     * @return array
-     */
-    public function createdByApiConsumerDataProvider()
+    public function createdByApiConsumerDataProvider(): array
     {
         return [
             'without api key' => [

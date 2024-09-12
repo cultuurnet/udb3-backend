@@ -8,8 +8,5 @@ use Broadway\Domain\DomainMessage;
 
 interface PropertiesFactoryInterface
 {
-    /**
-     * @return array
-     */
-    public function createProperties(DomainMessage $domainMessage);
+    public function createProperties(DomainMessage $domainMessage): array;
 }

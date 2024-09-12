@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class EventIDParserTest extends TestCase
 {
-    /**
-     * @var EventIDParser
-     */
-    private $parser;
+    private EventIDParser $parser;
 
     public function setUp(): void
     {
@@ -23,11 +20,8 @@ class EventIDParserTest extends TestCase
     /**
      * @test
      * @dataProvider eventUrlDataProvider
-     *
-     * @param string $url
-     * @param string $uuid
      */
-    public function it_should_return_an_event_id_from_the_given_event_url($url, $uuid): void
+    public function it_should_return_an_event_id_from_the_given_event_url(string $url, string $uuid): void
     {
         $url = new Url($url);
         $expected = new UUID($uuid);
@@ -35,10 +29,7 @@ class EventIDParserTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function eventUrlDataProvider()
+    public function eventUrlDataProvider(): array
     {
         return [
             'regular' => [

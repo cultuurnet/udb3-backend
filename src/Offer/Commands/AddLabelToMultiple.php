@@ -13,10 +13,7 @@ class AddLabelToMultiple implements AsyncCommand
 {
     use AsyncCommandTrait;
 
-    /**
-     * @var OfferIdentifierCollection
-     */
-    protected $offerIdentifiers;
+    protected OfferIdentifierCollection $offerIdentifiers;
 
     protected Label $label;
 
@@ -27,10 +24,7 @@ class AddLabelToMultiple implements AsyncCommand
         $this->label = $label;
     }
 
-    /**
-     * @return OfferIdentifierCollection
-     */
-    public function getOfferIdentifiers()
+    public function getOfferIdentifiers(): OfferIdentifierCollection
     {
         return $this->offerIdentifiers;
     }

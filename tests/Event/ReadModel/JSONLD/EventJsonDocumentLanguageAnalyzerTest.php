@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class EventJsonDocumentLanguageAnalyzerTest extends TestCase
 {
-    /**
-     * @var EventJsonDocumentLanguageAnalyzer
-     */
-    private $analyzer;
+    private EventJsonDocumentLanguageAnalyzer $analyzer;
 
     public function setUp(): void
     {

@@ -8,10 +8,7 @@ use stdClass;
 
 class MediaFinder
 {
-    /**
-     * @var MediaSpecificationInterface
-     */
-    private $specification;
+    private MediaSpecificationInterface $specification;
 
     /**
      * MediaFinder constructor.
@@ -25,10 +22,8 @@ class MediaFinder
     /**
      * @param stdClass[] $media
      *  A list of media objects
-     *
-     * @return stdClass|null
      */
-    public function find(array $media)
+    public function find(array $media): ?stdClass
     {
         $specification = $this->specification;
         return array_reduce(

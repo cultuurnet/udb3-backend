@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class SimpleContextAwareCommandBusTest extends TestCase
 {
-    /**
-     * @var SimpleContextAwareCommandBus
-     */
-    protected $commandBus;
+    protected SimpleContextAwareCommandBus $commandBus;
 
     /**
      * @var ContextAwareInterface&CommandHandler&MockObject

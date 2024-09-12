@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class CorrelationIdPropertiesFactoryTest extends TestCase
 {
-    /**
-     * @var CorrelationIdPropertiesFactory
-     */
-    private $factory;
+    private CorrelationIdPropertiesFactory $factory;
 
     public function setUp(): void
     {

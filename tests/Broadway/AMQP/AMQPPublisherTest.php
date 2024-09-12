@@ -35,20 +35,9 @@ class AMQPPublisherTest extends TestCase
      */
     private $specification;
 
-    /**
-     * @var AMQPPublisher
-     */
-    private $amqpPublisher;
+    private AMQPPublisher $amqpPublisher;
 
-    /**
-     * @var DomainMessage
-     */
-    private $domainMessage;
-
-    /**
-     * @var DelegatingAMQPMessageFactory
-     */
-    private $messageFactory;
+    private DomainMessage $domainMessage;
 
     protected function setUp(): void
     {
@@ -56,7 +45,7 @@ class AMQPPublisherTest extends TestCase
 
         $this->specification = $this->createMock(SpecificationInterface::class);
 
-        $this->messageFactory = new DelegatingAMQPMessageFactory(
+        $messageFactory = new DelegatingAMQPMessageFactory(
             new PayloadOnlyBodyFactory(),
             new CorrelationIdPropertiesFactory()
         );
@@ -65,7 +54,7 @@ class AMQPPublisherTest extends TestCase
             $this->amqpChannel,
             'exchange_name',
             $this->specification,
-            $this->messageFactory
+            $messageFactory
         );
 
         $this->domainMessage = new DomainMessage(

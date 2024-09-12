@@ -8,10 +8,7 @@ use CultuurNet\UDB3\ContactPoint;
 
 abstract class AbstractContactPointUpdated extends AbstractEvent
 {
-    /**
-     * @var ContactPoint
-     */
-    protected $contactPoint;
+    protected ContactPoint $contactPoint;
 
     final public function __construct(string $id, ContactPoint $contactPoint)
     {

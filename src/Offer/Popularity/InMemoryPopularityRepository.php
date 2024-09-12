@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\Offer\Popularity;
 
 final class InMemoryPopularityRepository implements PopularityRepository
 {
-    /**
-     * @var array
-     */
-    private $popularityScores = [];
+    private array $popularityScores = [];
 
     public function saveScore(string $offerId, Popularity $popularity): void
     {
