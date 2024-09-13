@@ -2,10 +2,10 @@
 
 APPCONFIG_ROOTDIR=${APPCONFIG:-'../appconfig'}
 
-if ! grep -q "host.docker.internal" /etc/hosts; then
-  echo "host.docker.internal has to be in your hosts-file, to add you need sudo privileges"
-  sudo sh -c 'echo "127.0.0.1 host.docker.internal" >> /etc/hosts'
-fi
+#if ! grep -q "host.docker.internal" /etc/hosts; then
+#  echo "host.docker.internal has to be in your hosts-file, to add you need sudo privileges"
+#  sudo sh -c 'echo "127.0.0.1 host.docker.internal" >> /etc/hosts'
+#fi
 
 DIR="${APPCONFIG_ROOTDIR}/files/uitdatabank/docker/udb3-backend/"
 if [ -d "$DIR" ]; then
