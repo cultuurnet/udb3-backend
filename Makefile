@@ -7,16 +7,16 @@ down:
 	docker-compose down
 
 bash:
-	docker exec -it php.uitdatabank bash
+	docker-compose exec -T php bash
 
 config:
 	sh ./docker/config.sh
 
 install:
-	docker exec -it php.uitdatabank composer install
+	docker-compose exec -T php composer install
 
 migrate:
-	docker exec -it php.uitdatabank ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
+	docker-compose exec -T php ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
 
 init: install migrate
 
@@ -42,7 +42,7 @@ test-group:
 	docker exec -it php.uitdatabank composer test -- --group=$(group)
 
 feature-init:
-	docker exec -it php.uitdatabank composer feature -- --tags @init
+	docker-compose exec -T php composer feature -- --tags @init
 
 feature-tag:
 	docker exec -it php.uitdatabank composer feature -- --tags $(tag)
