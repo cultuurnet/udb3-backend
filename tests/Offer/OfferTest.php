@@ -84,7 +84,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my favorite giphy gif'),
             new CopyrightHolder('Bert Ramakers'),
             new Url('http://foo.bar/media/my_favorite_giphy_gif.gif'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
     }
 
@@ -137,7 +137,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my updated pic'),
             new CopyrightHolder('Dirk Dirkingn updated'),
             new Url('http://foo.bar/media/my_pic.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $secondImage = new Image(
             new UUID('837bd340-e939-4210-8af9-e4baedd0d44e'),
@@ -145,7 +145,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my second pic'),
             new CopyrightHolder('Dirk Dirkingn again'),
             new Url('http://foo.bar/media/my_2nd_pic.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $updatedImageCollection = ImageCollection::fromArray([$updatedImage])->withMain($secondImage);
 
@@ -509,7 +509,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_best_selfie.gif'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $image = $this->image;
 
@@ -548,7 +548,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_best_selfie.gif'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $this->scenario
@@ -719,7 +719,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_best_selfie.gif'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $newerImage = new Image(
             new UUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
@@ -727,7 +727,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('pic'),
             new CopyrightHolder('Henk'),
             new Url('http://foo.bar/media/pic.jpeg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $originalMainImage = $this->image;
 
@@ -798,7 +798,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('pic'),
             new CopyrightHolder('Henk'),
             new Url('http://foo.bar/media/pic.jpeg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $this->scenario
@@ -2078,7 +2078,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('mijn favoriete wallpaper'),
             new CopyrightHolder('Dirk Dirkingn'),
             new Url('http://foo.bar/media/mijn_favoriete_wallpaper_<3.jpg'),
-            new LegacyLanguage('nl')
+            new Language('nl')
         );
 
         $udb2Images = ImageCollection::fromArray([
@@ -2088,7 +2088,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new Description('episch panorama'),
                 new CopyrightHolder('Dirk Dirkingn'),
                 new Url('http://foo.bar/media/episch_panorama.jpg'),
-                new LegacyLanguage('nl')
+                new Language('nl')
             ),
         ]);
 
@@ -2143,7 +2143,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkingn'),
             new Url('http://foo.bar/media/my_pic.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         return [

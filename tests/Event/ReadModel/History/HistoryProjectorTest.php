@@ -902,7 +902,7 @@ class HistoryProjectorTest extends TestCase
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $event = new ImageAdded(self::EVENT_ID_1, $image);
@@ -940,7 +940,7 @@ class HistoryProjectorTest extends TestCase
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $event = new ImageRemoved(self::EVENT_ID_1, $image);
@@ -1012,7 +1012,7 @@ class HistoryProjectorTest extends TestCase
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test1.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $image2 = new Image(
@@ -1021,7 +1021,7 @@ class HistoryProjectorTest extends TestCase
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test2.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $event = new ImagesImportedFromUDB2(
@@ -1069,7 +1069,7 @@ class HistoryProjectorTest extends TestCase
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test1.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $image2 = new Image(
@@ -1078,7 +1078,7 @@ class HistoryProjectorTest extends TestCase
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test2.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $event = new ImagesUpdatedFromUDB2(
@@ -1288,7 +1288,7 @@ class HistoryProjectorTest extends TestCase
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $event = new MainImageSelected(self::EVENT_ID_1, $image);

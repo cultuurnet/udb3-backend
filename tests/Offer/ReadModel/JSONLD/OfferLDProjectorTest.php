@@ -839,7 +839,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $expectedMediaObjects = [
             (object) [
@@ -907,7 +907,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('my best pokerface'),
             new CopyrightHolder('Hans Langucci'),
             new Url('http://foo.bar/media/de305d54-ddde-eddd-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $image2 = new Image(
@@ -916,7 +916,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $expectedWithoutLastImage = (object) [
@@ -1015,7 +1015,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -1053,7 +1053,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://images.uitdatabank.be/edcea9f6-756b-4935-9c8b-d7d9c262d041.jpeg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -1093,7 +1093,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -1144,7 +1144,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -1183,7 +1183,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -1214,7 +1214,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -1265,7 +1265,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('THE FOX'),
             new CopyrightHolder('THE FOX'),
             new Url('https://images.uitdatabank.dev/20160606/THE_FOX.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -1317,7 +1317,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('funny giphy image'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/5ae74e68-20a3-4cb1-b255-8e405aa01ab9.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -1377,7 +1377,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('funny giphy image'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('https://example.com/entity/5ae74e68-20a3-4cb1-b255-8e405aa01ab9'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -1428,7 +1428,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -2295,7 +2295,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('epische panorama foto'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/ED5B9B25-8C16-48E5-9899-27BB2D110C57.jpg'),
-            new LegacyLanguage('nl')
+            new Language('nl')
         );
         $expectedMediaObjects = [
             (object) [
@@ -2356,7 +2356,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_pic.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $selfie = new Image(
@@ -2365,7 +2365,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('my favorite selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/img_182.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         return [
