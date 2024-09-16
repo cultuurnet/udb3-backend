@@ -65,6 +65,7 @@ services:
 
 networks:
   uitdatabank:
+    name: uitdatabank
     driver: bridge
 
 volumes:
