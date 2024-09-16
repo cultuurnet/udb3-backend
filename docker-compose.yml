@@ -8,7 +8,7 @@ services:
     ports:
       - '8000:80'
     networks:
-      uitdatabank:
+      uitdatabank-backend:
         aliases:
           - php.uitdatabank.dev
     depends_on:
@@ -29,7 +29,7 @@ services:
     ports:
       - '3306:3306'
     networks:
-      uitdatabank:
+      uitdatabank-backend:
         aliases:
           - mysql.uitdatabank.dev
     healthcheck:
@@ -47,7 +47,9 @@ services:
     volumes:
       - 'udb3-redis:/data'
     networks:
-      - uitdatabank
+      uitdatabank-backend:
+        aliases:
+          - redis.uitdatabank.dev
     healthcheck:
       test: [ 'CMD', 'redis-cli', 'ping' ]
       retries: 3
@@ -61,10 +63,12 @@ services:
       - 5672:5672
       - 15672:15672
     networks:
-      - uitdatabank
+      uitdatabank-backend:
+        aliases:
+          - rabbitmq.uitdatabank.dev
 
 networks:
-  uitdatabank:
+  uitdatabank-backend:
     name: uitdatabank
     driver: bridge
 
