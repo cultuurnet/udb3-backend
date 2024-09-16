@@ -11,6 +11,9 @@ services:
       uitdatabank:
         aliases:
           - php.uitdatabank.dev
+    depends_on:
+      mysql:
+        condition: service_healthy
 
   mysql:
     image: 'bitnami/mysql:8.0'
