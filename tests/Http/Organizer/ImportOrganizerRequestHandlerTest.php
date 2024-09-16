@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\MediaObjectRepository;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
@@ -125,7 +124,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $mediaObject
             ->method('getLanguage')
-            ->willReturn(new LegacyLanguage($language));
+            ->willReturn(new Language($language));
 
         $this->mediaObjects[$id] = $mediaObject;
     }

@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -67,7 +66,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     new ImageDescription('Uploaded image'),
                     new CopyrightHolder('madewithlove'),
                     new Url('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
-                    new LegacyLanguage('nl')
+                    new Language('nl')
                 )
             );
 
