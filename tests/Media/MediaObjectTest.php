@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -55,7 +54,7 @@ final class MediaObjectTest extends AggregateRootScenarioTestCase
                         $description,
                         $copyrightHolder,
                         $location,
-                        LegacyLanguage::fromUdb3ModelLanguage($language)
+                        $language
                     ),
                 ]
             );

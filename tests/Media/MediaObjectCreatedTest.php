@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Media;
 
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
