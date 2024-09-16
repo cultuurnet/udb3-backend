@@ -8,12 +8,13 @@ use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -52,7 +53,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         Description $description,
         CopyrightHolder $copyrightHolder,
         Url $sourceLocation,
-        Language $language
+        LegacyLanguage $language
     ): MediaObject {
         try {
             /** @var MediaObject $existingMediaObject */
@@ -70,7 +71,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $description,
             $copyrightHolder,
             $sourceLocation,
-            $language
+            $language->toUdb3ModelLanguage()
         );
 
         $this->repository->save($mediaObject);
@@ -132,7 +133,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $mediaObject->getDescription(),
             $mediaObject->getCopyrightHolder(),
             $mediaObject->getSourceLocation(),
-            new \CultuurNet\UDB3\Model\ValueObject\Translation\Language($mediaObject->getLanguage()->toString())
+            $mediaObject->getLanguage()
         );
     }
 }
