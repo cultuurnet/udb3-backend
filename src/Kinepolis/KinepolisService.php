@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
@@ -245,7 +246,7 @@ final class KinepolisService
             $uploadedImage,
             new MediaDescription($parsedMovie->getTitle()->toString()),
             new CopyrightHolder('Kinepolis'),
-            new LegacyLanguage('nl')
+            new Language('nl')
         );
         return new AddImage($eventId, $imageId);
     }
