@@ -48,7 +48,7 @@ feature-tag:
 	docker exec -it php.uitdatabank composer feature -- --tags $(tag)
 
 feature:
-	docker exec -it php.uitdatabank composer feature -- --tags "~@init&&~@external"
+	docker-compose exec -T php composer feature -- --tags "~@init&&~@external"
 
 feature-filter:
 	docker exec -it php.uitdatabank composer feature -- $(path)
