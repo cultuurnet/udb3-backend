@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -44,7 +43,7 @@ class MediaObject extends EventSourcedAggregateRoot
                 $description,
                 $copyrightHolder,
                 $sourceLocation,
-                LegacyLanguage::fromUdb3ModelLanguage($language)
+                $language
             )
         );
 
@@ -63,7 +62,7 @@ class MediaObject extends EventSourcedAggregateRoot
         $this->description = $mediaObjectCreated->getDescription();
         $this->copyrightHolder = $mediaObjectCreated->getCopyrightHolder();
         $this->sourceLocation = $mediaObjectCreated->getSourceLocation();
-        $this->language = $mediaObjectCreated->getLanguage()->toUdb3ModelLanguage();
+        $this->language = $mediaObjectCreated->getLanguage();
     }
 
     public function getDescription(): Description
