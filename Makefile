@@ -7,7 +7,7 @@ down:
 	docker-compose down
 
 bash:
-	docker-compose exec -T php bash
+	docker-compose exec php bash
 
 config:
 	sh ./docker/config.sh
