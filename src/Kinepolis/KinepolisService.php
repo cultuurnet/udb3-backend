@@ -88,6 +88,7 @@ final class KinepolisService
         $this->trailerRepository = $trailerRepository;
         $this->productionRepository = $productionRepository;
         $this->logger = $logger;
+        $this->trailersEnabled = $trailersEnabled;
     }
 
     public function import(): void
