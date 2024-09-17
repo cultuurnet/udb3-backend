@@ -9,23 +9,23 @@
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 
-<http://host.docker.internal:8080/events/%{eventId}>
+<http://php:80/events/%{eventId}>
   a cidoc:E7_Activity ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
-    skos:notation "http://host.docker.internal:8080/events/%{eventId}"^^xsd:anyURI ;
+    skos:notation "http://php:80/events/%{eventId}"^^xsd:anyURI ;
     generiek:gestructureerdeIdentificator [
       a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "http://host.docker.internal:8080/events/" ;
+      generiek:naamruimte "http://php:80/events/" ;
       generiek:lokaleIdentificator "%{eventId}"
     ]
   ] ;
   dcterms:title "Permanent event"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.2.0.0> ;
-  cidoc:P14_carried_out_by <http://host.docker.internal:8080/organizers/%{organizerId}> ;
+  cidoc:P14_carried_out_by <http://php:80/organizers/%{organizerId}> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  prov:atLocation <http://host.docker.internal:8080/places/%{uuid_place}> .
+  prov:atLocation <http://php:80/places/%{uuid_place}> .

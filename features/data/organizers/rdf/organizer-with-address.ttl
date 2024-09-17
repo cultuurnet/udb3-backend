@@ -10,16 +10,16 @@
 @prefix locn: <http://www.w3.org/ns/locn#> .
 @prefix geosparql: <http://www.opengis.net/ont/geosparql#> .
 
-<http://host.docker.internal:8080/organizers/%{organizerId}>
+<http://php:80/organizers/%{organizerId}>
   a cp:Organisator ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
-    skos:notation "http://host.docker.internal:8080/organizers/%{organizerId}"^^xsd:anyURI ;
+    skos:notation "http://php:80/organizers/%{organizerId}"^^xsd:anyURI ;
     generiek:gestructureerdeIdentificator [
       a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "http://host.docker.internal:8080/organizers/" ;
+      generiek:naamruimte "http://php:80/organizers/" ;
       generiek:lokaleIdentificator "%{organizerId}"
     ]
   ] ;

@@ -7,16 +7,16 @@
 @prefix locn: <http://www.w3.org/ns/locn#> .
 @prefix geosparql: <http://www.opengis.net/ont/geosparql#> .
 
-<http://host.docker.internal:8080/places/%{placeId}>
+<http://php:80/places/%{placeId}>
   a dcterms:Location ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
-    skos:notation "http://host.docker.internal:8080/places/%{placeId}"^^xsd:anyURI ;
+    skos:notation "http://php:80/places/%{placeId}"^^xsd:anyURI ;
     generiek:gestructureerdeIdentificator [
       a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "http://host.docker.internal:8080/places/" ;
+      generiek:naamruimte "http://php:80/places/" ;
       generiek:lokaleIdentificator "%{placeId}"
     ]
   ] ;

@@ -9,16 +9,16 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix schema: <https://schema.org/> .
 
-<http://host.docker.internal:8080/organizers/%{organizerId}>
+<http://php:80/organizers/%{organizerId}>
   a cp:Organisator ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
-    skos:notation "http://host.docker.internal:8080/organizers/%{organizerId}"^^xsd:anyURI ;
+    skos:notation "http://php:80/organizers/%{organizerId}"^^xsd:anyURI ;
     generiek:gestructureerdeIdentificator [
       a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "http://host.docker.internal:8080/organizers/" ;
+      generiek:naamruimte "http://php:80/organizers/" ;
       generiek:lokaleIdentificator "%{organizerId}"
     ]
   ] ;
