@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Google_Service_YouTube;
-use Google\Service\Exception as GoogleException;
 
 final class YoutubeTrailerRepository implements TrailerRepository
 {
