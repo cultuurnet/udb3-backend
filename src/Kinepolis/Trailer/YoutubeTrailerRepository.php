@@ -28,15 +28,11 @@ final class YoutubeTrailerRepository implements TrailerRepository
 
     public function findMatchingTrailer(string $title): ?Video
     {
-        try {
-            $response = $this->youTubeClient->search->listSearch('id,snippet', [
-                'channelId' => $this->channelId,
-                'q' => urlencode($title),
-                'maxResults' => 1,
-            ]);
-        } catch (GoogleException $exception) {
-            throw new QuotaExceeded($exception->getMessage());
-        }
+        $response = $this->youTubeClient->search->listSearch('id,snippet', [
+            'channelId' => $this->channelId,
+            'q' => urlencode($title),
+            'maxResults' => 1,
+        ]);
 
         foreach ($response['items'] as $result) {
             switch ($result['id']['kind']) {
