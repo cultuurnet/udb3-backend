@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Google_Service_YouTube;
+use Google\Service\Exception as GoogleException;
 
 final class YoutubeTrailerRepository implements TrailerRepository
 {
@@ -27,11 +28,15 @@ final class YoutubeTrailerRepository implements TrailerRepository
 
     public function findMatchingTrailer(string $title): ?Video
     {
-        $response = $this->youTubeClient->search->listSearch('id,snippet', [
-            'channelId' => $this->channelId,
-            'q' => urlencode($title),
-            'maxResults' => 1,
-        ]);
+        try {
+            $response = $this->youTubeClient->search->listSearch('id,snippet', [
+                'channelId' => $this->channelId,
+                'q' => urlencode($title),
+                'maxResults' => 1,
+            ]);
+        } catch (GoogleException $exception) {
+            throw new QuotaExceeded($exception->getMessage());
+        }
 
         foreach ($response['items'] as $result) {
             switch ($result['id']['kind']) {
