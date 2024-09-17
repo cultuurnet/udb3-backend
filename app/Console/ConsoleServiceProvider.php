@@ -505,7 +505,8 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     LoggerFactory::create(
                         $container,
                         LoggerName::forService('fetching-movies', 'kinepolis')
-                    )
+                    ),
+                    $container->get('config')['kinepolis']['trailers']['enabled'],
                 ),
             )
         );
