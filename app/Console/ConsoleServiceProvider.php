@@ -511,11 +511,11 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                         new Version4Generator()
                     ),
                     $container->get(ProductionRepository::class),
+                    $container->get('config')['kinepolis']['trailers']['enabled'] ??  true,
                     LoggerFactory::create(
                         $container,
                         LoggerName::forService('fetching-movies', 'kinepolis')
-                    ),
-                    $container->get('config')['kinepolis']['trailers']['enabled'],
+                    )
                 ),
             )
         );

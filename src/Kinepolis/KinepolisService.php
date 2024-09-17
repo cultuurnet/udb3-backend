@@ -74,8 +74,8 @@ final class KinepolisService
         UuidGeneratorInterface $uuidGenerator,
         TrailerRepository $trailerRepository,
         ProductionRepository $productionRepository,
-        LoggerInterface $logger,
-        bool $trailersEnabled = true
+        bool $trailersEnabled,
+        LoggerInterface $logger
     ) {
         $this->commandBus = $commandBus;
         $this->aggregateRepository = $aggregateRepository;
@@ -87,8 +87,8 @@ final class KinepolisService
         $this->uuidGenerator = $uuidGenerator;
         $this->trailerRepository = $trailerRepository;
         $this->productionRepository = $productionRepository;
-        $this->logger = $logger;
         $this->trailersEnabled = $trailersEnabled;
+        $this->logger = $logger;
     }
 
     public function import(): void
