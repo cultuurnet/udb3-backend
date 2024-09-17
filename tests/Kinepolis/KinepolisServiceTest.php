@@ -137,7 +137,8 @@ final class KinepolisServiceTest extends TestCase
             $this->uuidGenerator,
             $this->trailerRepository,
             $this->productionRepository,
-            $this->createMock(LoggerInterface::class)
+            $this->createMock(LoggerInterface::class),
+            true
         );
 
         $this->commandBus->record();
