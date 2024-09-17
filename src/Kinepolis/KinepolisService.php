@@ -61,6 +61,8 @@ final class KinepolisService
 
     private LoggerInterface $logger;
 
+    private bool $trailersEnabled;
+
     public function __construct(
         CommandBus $commandBus,
         Repository $aggregateRepository,
@@ -72,7 +74,8 @@ final class KinepolisService
         UuidGeneratorInterface $uuidGenerator,
         TrailerRepository $trailerRepository,
         ProductionRepository $productionRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        bool $trailersEnabled = true
     ) {
         $this->commandBus = $commandBus;
         $this->aggregateRepository = $aggregateRepository;
@@ -153,10 +156,12 @@ final class KinepolisService
             // We do only 1 search by movieTitle for a trailer to avoid hitting the YouTube Rate limiting.
             $movieTitle = $movie['title'];
             $trailer = null;
-            try {
-                $trailer =  $this->trailerRepository->findMatchingTrailer($movieTitle);
-            } catch (Exception $exception) {
-                $this->logger->error('Problem with searching trailer for ' . $movieTitle . ':' . $exception->getMessage());
+            if ($this->trailersEnabled) {
+                try {
+                    $trailer = $this->trailerRepository->findMatchingTrailer($movieTitle);
+                } catch (Exception $exception) {
+                    $this->logger->error('Problem with searching trailer for ' . $movieTitle . ':' . $exception->getMessage());
+                }
             }
 
             foreach ($parsedMovies as $parsedMovie) {
