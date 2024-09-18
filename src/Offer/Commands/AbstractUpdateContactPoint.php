@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 
 abstract class AbstractUpdateContactPoint extends AbstractCommand
 {

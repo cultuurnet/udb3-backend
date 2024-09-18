@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -42,7 +43,11 @@ final class UpdateContactPointRequestHandler implements RequestHandlerInterface
                 )
             ),
             new DenormalizingRequestBodyParser(
-                new UpdateContactPointDenormalizer($offerType, $offerId),
+                new UpdateContactPointDenormalizer(
+                    $offerType,
+                    $offerId,
+                    new ContactPointDenormalizer()
+                ),
                 AbstractUpdateContactPoint::class,
             ),
         );

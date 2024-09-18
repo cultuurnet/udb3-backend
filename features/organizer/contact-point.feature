@@ -88,3 +88,17 @@ Feature: Test organizer contactPoint property
     """
     [ "http://www.testurl.be" ]
     """
+
+  Scenario: Clear organizer contact point information via contact-point endpoint
+    When I set the JSON request payload to:
+    """
+    {
+      "url": [],
+      "email": [],
+      "phone": []
+    }
+    """
+    And I send a PUT request to "%{organizerUrl}/contact-point"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response should not have contactPoint

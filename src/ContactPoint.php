@@ -7,8 +7,11 @@ namespace CultuurNet\UDB3;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint as Udb3ModelContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 
 /**
  * @deprecated
@@ -93,5 +96,35 @@ final class ContactPoint implements Serializable, JsonLdSerializableInterface
         );
 
         return new self($phones, $emails, $urls);
+    }
+
+    public function toUdb3ModelContactPoint(): Udb3ModelContactPoint
+    {
+        $phones = new TelephoneNumbers(...array_map(
+            function (string $phone) {
+                return new TelephoneNumber($phone);
+            },
+            $this->phones
+        ));
+
+        $emails = new EmailAddresses(...array_map(
+            function (string $email) {
+                return new EmailAddress($email);
+            },
+            $this->emails
+        ));
+
+        $urls = new Urls(...array_map(
+            function (string $url) {
+                return new Url($url);
+            },
+            $this->urls
+        ));
+
+        return new Udb3ModelContactPoint(
+            $phones,
+            $emails,
+            $urls
+        );
     }
 }

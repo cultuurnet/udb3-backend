@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
-use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\ContactPoint as LegacyContactPoint;
 use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Language as LegacyLanguage;
@@ -15,6 +15,9 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -23,7 +26,10 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionDeleted;
@@ -84,7 +90,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my favorite giphy gif'),
             new CopyrightHolder('Bert Ramakers'),
             new Url('http://foo.bar/media/my_favorite_giphy_gif.gif'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
     }
 
@@ -137,7 +143,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my updated pic'),
             new CopyrightHolder('Dirk Dirkingn updated'),
             new Url('http://foo.bar/media/my_pic.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $secondImage = new Image(
             new UUID('837bd340-e939-4210-8af9-e4baedd0d44e'),
@@ -145,7 +151,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my second pic'),
             new CopyrightHolder('Dirk Dirkingn again'),
             new Url('http://foo.bar/media/my_2nd_pic.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $updatedImageCollection = ImageCollection::fromArray([$updatedImage])->withMain($secondImage);
 
@@ -272,21 +278,30 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = 'c25e603a-19dd-48e4-94d9-893484402189';
 
         $contactPoint = new ContactPoint(
-            ['016/101010'],
-            ['test@2dotstwice.be', 'admin@2dotstwice.be'],
-            ['http://www.2dotstwice.be']
+            new TelephoneNumbers(new TelephoneNumber('016/101010')),
+            new EmailAddresses(
+                new EmailAddress('test@2dotstwice.be'),
+                new EmailAddress('admin@2dotstwice.be')
+            ),
+            new Urls(new Url('http://www.2dotstwice.be'))
         );
 
         $sameContactPoint = new ContactPoint(
-            ['016/101010'],
-            ['test@2dotstwice.be', 'admin@2dotstwice.be'],
-            ['http://www.2dotstwice.be']
+            new TelephoneNumbers(new TelephoneNumber('016/101010')),
+            new EmailAddresses(
+                new EmailAddress('test@2dotstwice.be'),
+                new EmailAddress('admin@2dotstwice.be')
+            ),
+            new Urls(new Url('http://www.2dotstwice.be'))
         );
 
         $otherContactPoint = new ContactPoint(
-            ['02/101010'],
-            ['admin@public.be', 'test@public.be'],
-            ['http://www.public.be']
+            new TelephoneNumbers(new TelephoneNumber('02/101010')),
+            new EmailAddresses(
+                new EmailAddress('admin@public.b'),
+                new EmailAddress('test@public.be')
+            ),
+            new Urls(new Url('http://www.publiq.be'))
         );
 
         $this->scenario
@@ -305,8 +320,8 @@ class OfferTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([
-                new ContactPointUpdated($itemId, $contactPoint),
-                new ContactPointUpdated($itemId, $otherContactPoint),
+                new ContactPointUpdated($itemId, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint)),
+                new ContactPointUpdated($itemId, LegacyContactPoint::fromUdb3ModelContactPoint($otherContactPoint)),
             ]);
     }
 
@@ -509,7 +524,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_best_selfie.gif'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $image = $this->image;
 
@@ -548,7 +563,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_best_selfie.gif'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $this->scenario
@@ -719,7 +734,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_best_selfie.gif'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $newerImage = new Image(
             new UUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
@@ -727,7 +742,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('pic'),
             new CopyrightHolder('Henk'),
             new Url('http://foo.bar/media/pic.jpeg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
         $originalMainImage = $this->image;
 
@@ -798,7 +813,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('pic'),
             new CopyrightHolder('Henk'),
             new Url('http://foo.bar/media/pic.jpeg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $this->scenario
@@ -2078,7 +2093,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('mijn favoriete wallpaper'),
             new CopyrightHolder('Dirk Dirkingn'),
             new Url('http://foo.bar/media/mijn_favoriete_wallpaper_<3.jpg'),
-            new LegacyLanguage('nl')
+            new Language('nl')
         );
 
         $udb2Images = ImageCollection::fromArray([
@@ -2088,7 +2103,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new Description('episch panorama'),
                 new CopyrightHolder('Dirk Dirkingn'),
                 new Url('http://foo.bar/media/episch_panorama.jpg'),
-                new LegacyLanguage('nl')
+                new Language('nl')
             ),
         ]);
 
@@ -2143,7 +2158,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkingn'),
             new Url('http://foo.bar/media/my_pic.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         return [

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media\Events;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 final class MediaObjectCreated implements Serializable
