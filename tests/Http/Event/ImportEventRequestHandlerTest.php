@@ -11,7 +11,6 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
@@ -44,6 +43,9 @@ use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -59,7 +61,10 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
@@ -678,18 +683,18 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateContactPoint(
                     $eventId,
                     new ContactPoint(
-                        [
-                            '016 12 34 56',
-                            '0497 11 22 33',
-                        ],
-                        [
-                            'info@publiq.be',
-                            'contact@publiq.be',
-                        ],
-                        [
-                            'https://www.publiq.be',
-                            'https://www.publiq.com',
-                        ]
+                        new TelephoneNumbers(
+                            new TelephoneNumber('016 12 34 56'),
+                            new TelephoneNumber('0497 11 22 33'),
+                        ),
+                        new EmailAddresses(
+                            new EmailAddress('info@publiq.be'),
+                            new EmailAddress('contact@publiq.be'),
+                        ),
+                        new Urls(
+                            new Url('https://www.publiq.be'),
+                            new Url('https://www.publiq.com'),
+                        )
                     )
                 ),
                 new UpdateDescription(
@@ -4381,7 +4386,14 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
-                new UpdateContactPoint($eventId, new ContactPoint([], ['info@publiq.be'], [])),
+                new UpdateContactPoint(
+                    $eventId,
+                    new ContactPoint(
+                        new TelephoneNumbers(),
+                        new EmailAddresses(new EmailAddress('info@publiq.be')),
+                        new Urls()
+                    )
+                ),
                 new DeleteTypicalAgeRange($eventId),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),

@@ -119,17 +119,4 @@ Feature: Test place contactPoint property
     And I send a PUT request to "%{placeUrl}/contact-point"
     Then the response status should be "204"
     When I get the place at "%{placeUrl}"
-    And the JSON response at "contactPoint" should be:
-    """
-    {
-      "email": [
-        ""
-      ],
-      "phone": [
-        ""
-      ],
-      "url": [
-        ""
-      ]
-    }
-    """
+    Then the JSON response should not have contactPoint
