@@ -99,7 +99,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $uploadImage->getDescription(),
             $uploadImage->getCopyrightHolder(),
             new Url($destinationIri),
-            $uploadImage->getLanguage()
+            LegacyLanguage::fromUdb3ModelLanguage($uploadImage->getLanguage())
         );
 
         $jobInfo = ['file_id' => $uploadImage->getFileId()->toString()];
