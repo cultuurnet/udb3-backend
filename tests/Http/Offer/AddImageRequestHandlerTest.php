@@ -14,12 +14,12 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Place\Commands\AddImage as PlaceAddImage;
@@ -84,7 +84,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     new Description('Uploaded image'),
                     new CopyrightHolder('madewithlove'),
                     new Url('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
-                    new LegacyLanguage('nl')
+                    new Language('nl')
                 )
             );
 

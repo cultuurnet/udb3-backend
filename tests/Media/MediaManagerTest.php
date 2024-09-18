@@ -155,7 +155,7 @@ final class MediaManagerTest extends TestCase
             $description,
             $copyrightHolder,
             $location,
-            LegacyLanguage::fromUdb3ModelLanguage($language)
+            $language
         );
 
         $this->repository

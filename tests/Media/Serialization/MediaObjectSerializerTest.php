@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media\Serialization;
 
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -79,7 +78,7 @@ final class MediaObjectSerializerTest extends TestCase
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_pic.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $this->iriGenerator
@@ -149,7 +148,7 @@ final class MediaObjectSerializerTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $this->expectException(UnsupportedException::class);

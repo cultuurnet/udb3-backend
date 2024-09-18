@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Media;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\MediaUrlMapping;
@@ -16,6 +15,7 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
