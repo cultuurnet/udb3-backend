@@ -9,7 +9,6 @@ use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Collection\Exception\CollectionItemNotFoundException;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
@@ -20,6 +19,7 @@ use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -445,7 +445,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyContactPointUpdated(AbstractContactPointUpdated $contactPointUpdated): void
     {
-        $this->contactPoint = $contactPointUpdated->getContactPoint();
+        $this->contactPoint = $contactPointUpdated->getContactPoint()->toUdb3ModelContactPoint();
     }
 
     public function updateGeoCoordinates(Coordinates $coordinates): void
