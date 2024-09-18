@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
@@ -44,6 +43,9 @@ use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -59,7 +61,10 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
@@ -872,9 +877,9 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new UpdateContactPoint(
                     $placeId,
                     new ContactPoint(
-                        ['016 10 20 30'],
-                        ['info@dehel.be'],
-                        ['https://www.dehel.be']
+                        new TelephoneNumbers(new TelephoneNumber('016 10 20 30')),
+                        new EmailAddresses(new EmailAddress('info@dehel.be')),
+                        new Urls(new Url('https://www.dehel.be'))
                     )
                 ),
                 new DeleteTypicalAgeRange($placeId),
@@ -3911,7 +3916,14 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateBookingInfo($placeId, new BookingInfo()),
-                new UpdateContactPoint($placeId, new ContactPoint([], ['info@publiq.be'], [])),
+                new UpdateContactPoint(
+                    $placeId,
+                    new ContactPoint(
+                        null,
+                        new EmailAddresses(new EmailAddress('info@publiq.be')),
+                        null
+                    )
+                ),
                 new DeleteTypicalAgeRange($placeId),
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),

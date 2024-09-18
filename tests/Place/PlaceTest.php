@@ -13,9 +13,16 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\ContactPoint as LegacyContactPoint;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
@@ -130,9 +137,12 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $placeId = $placeCreated->getPlaceId();
 
         $contactPoint = new ContactPoint(
-            ['016/101010'],
-            ['test@2dotstwice.be', 'admin@2dotstwice.be'],
-            ['http://www.2dotstwice.be']
+            new TelephoneNumbers(new TelephoneNumber('016/101010')),
+            new EmailAddresses(
+                new EmailAddress('test@2dotstwice.be'),
+                new EmailAddress('admin@2dotstwice.be')
+            ),
+            new Urls(new Url('http://www.2dotstwice.be'))
         );
 
         $cdbXml = $this->getCdbXML('/ReadModel/JSONLD/place_with_long_description.cdbxml.xml');
@@ -142,7 +152,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     $placeCreated,
-                    new ContactPointUpdated($placeId, $contactPoint),
+                    new ContactPointUpdated($placeId, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint)),
                     new PlaceUpdatedFromUDB2($placeId, $cdbXml, $cdbXmlNamespace),
                 ]
             )
@@ -153,7 +163,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new ContactPointUpdated($placeId, $contactPoint),
+                    new ContactPointUpdated($placeId, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint)),
                 ]
             );
     }

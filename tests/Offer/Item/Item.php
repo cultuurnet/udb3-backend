@@ -7,12 +7,13 @@ namespace CultuurNet\UDB3\Offer\Item;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\ContactPoint as LegacyContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -213,7 +214,7 @@ final class Item extends Offer
 
     protected function createContactPointUpdatedEvent(ContactPoint $contactPoint): ContactPointUpdated
     {
-        return new ContactPointUpdated($this->id, $contactPoint);
+        return new ContactPointUpdated($this->id, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint));
     }
 
     protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates): GeoCoordinatesUpdated
