@@ -1281,7 +1281,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $cdbXml = SampleFiles::read(
@@ -1328,7 +1328,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $this->scenario
@@ -1378,7 +1378,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $this->scenario

@@ -132,7 +132,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $mediaObject->getDescription(),
             $mediaObject->getCopyrightHolder(),
             $mediaObject->getSourceLocation(),
-            $mediaObject->getLanguage()
+            new \CultuurNet\UDB3\Model\ValueObject\Translation\Language($mediaObject->getLanguage()->toString())
         );
     }
 }

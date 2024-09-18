@@ -7,12 +7,13 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -68,7 +69,7 @@ final class MediaManagerTest extends TestCase
             new Description('description'),
             new CopyrightHolder('copyright'),
             '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $logger = $this->createMock(LoggerInterface::class);
@@ -111,7 +112,7 @@ final class MediaManagerTest extends TestCase
             new Description('description'),
             new CopyrightHolder('copyright'),
             '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $this->pathGenerator
@@ -154,7 +155,7 @@ final class MediaManagerTest extends TestCase
             $description,
             $copyrightHolder,
             $location,
-            $language
+            LegacyLanguage::fromUdb3ModelLanguage($language)
         );
 
         $this->repository

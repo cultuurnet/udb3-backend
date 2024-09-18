@@ -631,7 +631,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                     new Description('Een stapel pannenkoeken'),
                     new CopyrightHolder('© publiq vzw'),
                     new Url('https://io.uitdatabank.dev/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.png'),
-                    new LegacyLanguage('nl')
+                    new Language('nl')
                 )
             );
 

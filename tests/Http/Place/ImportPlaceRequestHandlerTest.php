@@ -784,7 +784,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         new Description('Feest in de Hel'),
                         new CopyrightHolder('De Hel'),
                         new Url('https://io.uitdatabank.be/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.jpeg'),
-                        new LegacyLanguage('nl')
+                        new Language('nl')
                     ))
             );
 
@@ -916,7 +916,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                             new Description('Feest in de Hel'),
                             new CopyrightHolder('De Hel'),
                             new Url('https://io.uitdatabank.be/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.jpeg'),
-                            new LegacyLanguage('nl')
+                            new Language('nl')
                         ))
                 ),
                 new ImportVideos(
