@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Console\Command\FetchMoviesFromKinepolisApi;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
+use CultuurNet\UDB3\Console\Command\ConvertClusterIdsToHashes;
 use CultuurNet\UDB3\Console\Command\GeocodeEventCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
@@ -89,6 +90,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.fire-projected-to-jsonld',
         'console.place:process-duplicates',
         'console.place:duplicate-places:import',
+        'console.place:duplicate-places:convert-cluster-ids-to-hashes',
         'console.event:bulk-remove-from-production',
         'console.event:reindex-offers-with-popularity',
         'console.place:reindex-offers-with-popularity',
@@ -272,6 +274,13 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('duplicate_place_repository'),
                     $container->get(DuplicatePlaceRemovedFromClusterRepository::class)
                 )
+            )
+        );
+
+        $container->addShared(
+            'console.place:duplicate-places:convert-cluster-ids-to-hashes',
+            fn () => new ConvertClusterIdsToHashes(
+                $container->get('dbal_connection'),
             )
         );
 
