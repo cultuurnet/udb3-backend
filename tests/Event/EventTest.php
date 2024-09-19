@@ -9,7 +9,6 @@ use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\ContactPoint as LegacyContactPoint;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
@@ -483,7 +482,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     $createEvent,
-                    new ContactPointUpdated($eventId, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint)),
+                    new ContactPointUpdated($eventId, $contactPoint),
                     new EventUpdatedFromUDB2($eventId, $xmlData, $xmlNamespace),
                 ]
             )
@@ -494,7 +493,7 @@ class EventTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new ContactPointUpdated($eventId, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint)),
+                    new ContactPointUpdated($eventId, $contactPoint),
                 ]
             );
     }

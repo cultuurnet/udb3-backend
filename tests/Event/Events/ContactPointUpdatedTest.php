@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use PHPUnit\Framework\TestCase;
 
 class ContactPointUpdatedTest extends TestCase
@@ -58,9 +64,9 @@ class ContactPointUpdatedTest extends TestCase
                 new ContactPointUpdated(
                     'foo',
                     new ContactPoint(
-                        ['0123456789'],
-                        ['foo@bar.com'],
-                        ['http://foo.bar']
+                        new TelephoneNumbers(new TelephoneNumber('0123456789')),
+                        new EmailAddresses(new EmailAddress('foo@bar.com')),
+                        new Urls(new Url('http://foo.bar'))
                     )
                 ),
             ],

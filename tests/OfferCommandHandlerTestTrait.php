@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
-use CultuurNet\UDB3\ContactPoint as LegacyContactPoint;
 use Broadway\Repository\Repository;
 use Broadway\CommandHandling\Testing\Scenario;
 use CultuurNet\UDB3\Language as LegacyLanguage;
@@ -97,7 +96,7 @@ trait OfferCommandHandlerTestTrait
             ->when(
                 new $commandClass($id, $contactPoint)
             )
-            ->then([new $eventClass($id, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint))]);
+            ->then([new $eventClass($id, $contactPoint)]);
     }
 
     /**

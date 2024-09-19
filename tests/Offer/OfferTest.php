@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
-use CultuurNet\UDB3\ContactPoint as LegacyContactPoint;
 use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Language as LegacyLanguage;
@@ -320,8 +319,8 @@ class OfferTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([
-                new ContactPointUpdated($itemId, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint)),
-                new ContactPointUpdated($itemId, LegacyContactPoint::fromUdb3ModelContactPoint($otherContactPoint)),
+                new ContactPointUpdated($itemId, $contactPoint),
+                new ContactPointUpdated($itemId, $otherContactPoint),
             ]);
     }
 
