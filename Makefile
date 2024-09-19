@@ -21,31 +21,31 @@ migrate:
 init: install migrate
 
 ci:
-	docker exec -it php.uitdatabank composer ci
+	docker-compose exec php composer ci
 
 stan:
-	docker exec -it php.uitdatabank composer phpstan
+	docker-compose exec php composer phpstan
 
 cs:
-	docker exec -it php.uitdatabank composer cs
+	docker-compose exec php composer cs
 
 cs-fix:
-	docker exec -it php.uitdatabank composer cs-fix
+	docker-compose exec php composer cs-fix
 
 test:
-	docker exec -it php.uitdatabank composer test
+	docker-compose exec php composer test
 
 test-filter:
-	docker exec -it php.uitdatabank composer test -- --filter=$(filter)
+	docker-compose exec php composer test -- --filter=$(filter)
 
 test-group:
-	docker exec -it php.uitdatabank composer test -- --group=$(group)
+	docker-compose exec php composer test -- --group=$(group)
 
 feature-init:
 	docker-compose exec php composer feature -- --tags @init
 
 feature-tag:
-	docker exec -it php.uitdatabank composer feature -- --tags $(tag)
+	docker-compose exec php composer feature -- --tags $(tag)
 
 feature:
 	docker-compose exec php composer feature -- --tags "~@init&&~@external"
