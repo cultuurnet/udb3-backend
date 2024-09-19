@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Model\Import\Offer;
 
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
@@ -40,8 +39,6 @@ interface LegacyOffer
     public function getPriceInfo(): ?PriceInfo;
 
     public function getBookingInfo(): ?BookingInfo;
-
-    public function getContactPoint(): ?ContactPoint;
 
     public function getAvailableFrom(\DateTimeImmutable $default): DateTimeImmutable;
 
