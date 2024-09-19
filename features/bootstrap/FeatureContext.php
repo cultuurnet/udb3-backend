@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\State\ResponseState;
@@ -71,6 +73,38 @@ final class FeatureContext implements Context
      */
     public static function beforeSuite(BeforeSuiteScope $scope): void
     {
+    }
+
+    /**
+     * @BeforeScenario @duplicate
+     */
+    public static function beforeScenario(BeforeScenarioScope $scope): void
+    {
+        $configFile = file_get_contents('config.php');
+
+        $configFile = str_replace(
+            "'prevent_duplicate_places_creation' => false",
+            "'prevent_duplicate_places_creation' => true",
+            $configFile
+        );
+
+        file_put_contents('config.php', $configFile);
+    }
+
+    /**
+     * @AfterScenario @duplicate
+     */
+    public static function afterScenario(AfterScenarioScope $scope): void
+    {
+        $configFile = file_get_contents('config.php');
+
+        $configFile = str_replace(
+            "'prevent_duplicate_places_creation' => true",
+            "'prevent_duplicate_places_creation' => false",
+            $configFile
+        );
+
+        file_put_contents('config.php', $configFile);
     }
 
     /**
