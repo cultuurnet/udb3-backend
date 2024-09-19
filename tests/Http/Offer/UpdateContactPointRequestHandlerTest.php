@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint as EventUpdateContactPoint;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
@@ -13,6 +12,13 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint as PlaceUpdateContactPoint;
 use Iterator;
@@ -141,9 +147,12 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                 'expectedCommand' => new $offerCommand(
                     self::OFFER_ID,
                     new ContactPoint(
-                        ['0475/123123', '02/123123'],
-                        [],
-                        ['https://www.publiq.be/']
+                        new TelephoneNumbers(
+                            new TelephoneNumber('0475/123123'),
+                            new TelephoneNumber('02/123123')
+                        ),
+                        new EmailAddresses(),
+                        new Urls(new Url('https://www.publiq.be/'))
                     )
                 ),
             ];
@@ -157,7 +166,7 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                 ],
                 'expectedCommand' => new $offerCommand(
                     self::OFFER_ID,
-                    new ContactPoint([], [], []),
+                    new ContactPoint(),
                 ),
             ];
 
@@ -170,7 +179,7 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                 ],
                 'expectedCommand' => new $offerCommand(
                     self::OFFER_ID,
-                    new ContactPoint([''], [''], ['']),
+                    new ContactPoint()
                 ),
             ];
 
@@ -184,9 +193,9 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                 'expectedCommand' => new $offerCommand(
                     self::OFFER_ID,
                     new ContactPoint(
-                        ['0475/123123'],
-                        ['info@publiq.be'],
-                        ['https://www.publiq.be/']
+                        new TelephoneNumbers(new TelephoneNumber('0475/123123')),
+                        new EmailAddresses(new EmailAddress('info@publiq.be')),
+                        new Urls(new Url('https://www.publiq.be/'))
                     )
                 ),
             ];
@@ -201,9 +210,18 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                 'expectedCommand' => new $offerCommand(
                     self::OFFER_ID,
                     new ContactPoint(
-                        ['0475/123123', '0473/123456'],
-                        ['info@publiq.be', 'info@madewithlove.com'],
-                        ['https://www.publiq.be/', 'https://madewithlove.com'],
+                        new TelephoneNumbers(
+                            new TelephoneNumber('0475/123123'),
+                            new TelephoneNumber('0473/123456')
+                        ),
+                        new EmailAddresses(
+                            new EmailAddress('info@publiq.be'),
+                            new EmailAddress('info@madewithlove.com')
+                        ),
+                        new Urls(
+                            new Url('https://www.publiq.be/'),
+                            new Url('https://madewithlove.com')
+                        )
                     )
                 ),
             ];

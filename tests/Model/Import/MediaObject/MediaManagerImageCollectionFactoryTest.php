@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\MediaObject;
 
-use CultuurNet\UDB3\Language as Udb3Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
@@ -52,7 +51,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new Udb3Description('Example description'),
                 new CopyrightHolder('Bob'),
                 new Url('https://io.uitdatabank.be/images/b170224d-a5c6-40e3-a622-c4bac3a68f3a.jpg'),
-                new Udb3Language('en')
+                new Language('en')
             ),
             // MOV file.
             '9bad84d7-8200-4a23-af86-ec4decb3fe86' => Udb3MediaObjectAggregate::create(
@@ -61,7 +60,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new Udb3Description('Filmpje'),
                 new CopyrightHolder('Bob'),
                 new Url('https://io.uitdatabank.be/images/9bad84d7-8200-4a23-af86-ec4decb3fe86.mov'),
-                new Udb3Language('en')
+                new Language('en')
             ),
             // MOV file.
             'a6a883ac-47c4-4a87-811d-cdb0bfc7e0eb' => Udb3MediaObjectAggregate::create(
@@ -70,7 +69,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new Udb3Description('Filmpje 2'),
                 new CopyrightHolder('Bob'),
                 new Url('https://io.uitdatabank.be/images/a6a883ac-47c4-4a87-811d-cdb0bfc7e0eb.mov'),
-                new Udb3Language('nl')
+                new Language('nl')
             ),
             // PNG image.
             '502c9436-02cd-4224-a690-04898b7c3a8d' => Udb3MediaObjectAggregate::create(
@@ -79,7 +78,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new Udb3Description('PNG Afbeelding'),
                 new CopyrightHolder('Bob'),
                 new Url('https://io.uitdatabank.be/images/502c9436-02cd-4224-a690-04898b7c3a8d.png'),
-                new Udb3Language('nl')
+                new Language('nl')
             ),
         ];
 
@@ -151,7 +150,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                     new Udb3Description('Voorbeeld beschrijving (aangepast)'),
                     new CopyrightHolder('Bobby'),
                     new Url('https://io.uitdatabank.be/images/b170224d-a5c6-40e3-a622-c4bac3a68f3a.jpg'),
-                    new Udb3Language('nl')
+                    new Language('nl')
                 ),
                 new Image(
                     new UUID('502c9436-02cd-4224-a690-04898b7c3a8d'),
@@ -159,7 +158,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                     new Udb3Description('PNG Afbeelding'),
                     new CopyrightHolder('Bob'),
                     new Url('https://io.uitdatabank.be/images/502c9436-02cd-4224-a690-04898b7c3a8d.png'),
-                    new Udb3Language('nl')
+                    new Language('nl')
                 ),
             ]
         );

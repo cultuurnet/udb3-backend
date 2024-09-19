@@ -30,11 +30,13 @@ use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 use Exception;
+use Google\Service\Exception as GoogleException;
 use Psr\Log\LoggerInterface;
 
 final class KinepolisService
@@ -154,8 +156,8 @@ final class KinepolisService
             $movieTitle = $movie['title'];
             $trailer = null;
             try {
-                $trailer =  $this->trailerRepository->findMatchingTrailer($movieTitle);
-            } catch (Exception $exception) {
+                $trailer = $this->trailerRepository->findMatchingTrailer($movieTitle);
+            } catch (GoogleException $exception) {
                 $this->logger->error('Problem with searching trailer for ' . $movieTitle . ':' . $exception->getMessage());
             }
 
@@ -245,7 +247,7 @@ final class KinepolisService
             $uploadedImage,
             new MediaDescription($parsedMovie->getTitle()->toString()),
             new CopyrightHolder('Kinepolis'),
-            new LegacyLanguage('nl')
+            new Language('nl')
         );
         return new AddImage($eventId, $imageId);
     }

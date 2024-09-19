@@ -228,8 +228,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $bookingInfo = $eventAdapter->getBookingInfo();
         $commands[] = new UpdateBookingInfo($eventId, $bookingInfo);
 
-        $contactPoint = $eventAdapter->getContactPoint();
-        $commands[] = new UpdateContactPoint($eventId, $contactPoint);
+        $commands[] = new UpdateContactPoint($eventId, $event->getContactPoint());
 
         $description = $eventAdapter->getDescription();
         if ($description) {
