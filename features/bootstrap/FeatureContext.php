@@ -68,11 +68,38 @@ final class FeatureContext implements Context
         );
     }
 
+    private static function disablePreventDuplicatePlaceCreation(): void
+    {
+        $configFile = file_get_contents('config.php');
+
+        $configFile = str_replace(
+            "'prevent_duplicate_places_creation' => true",
+            "'prevent_duplicate_places_creation' => false",
+            $configFile
+        );
+
+        file_put_contents('config.php', $configFile);
+    }
+
+    private static function enablePreventDuplicatePlaceCreation(): void
+    {
+        $configFile = file_get_contents('config.php');
+
+        $configFile = str_replace(
+            "'prevent_duplicate_places_creation' => false",
+            "'prevent_duplicate_places_creation' => true",
+            $configFile
+        );
+
+        file_put_contents('config.php', $configFile);
+    }
+
     /**
      * @BeforeSuite
      */
     public static function beforeSuite(BeforeSuiteScope $scope): void
     {
+        self::disablePreventDuplicatePlaceCreation();
     }
 
     /**
@@ -80,15 +107,7 @@ final class FeatureContext implements Context
      */
     public static function beforeScenario(BeforeScenarioScope $scope): void
     {
-        $configFile = file_get_contents('config.php');
-
-        $configFile = str_replace(
-            "'prevent_duplicate_places_creation' => false",
-            "'prevent_duplicate_places_creation' => true",
-            $configFile
-        );
-
-        file_put_contents('config.php', $configFile);
+        self::enablePreventDuplicatePlaceCreation();
     }
 
     /**
@@ -96,15 +115,7 @@ final class FeatureContext implements Context
      */
     public static function afterScenario(AfterScenarioScope $scope): void
     {
-        $configFile = file_get_contents('config.php');
-
-        $configFile = str_replace(
-            "'prevent_duplicate_places_creation' => true",
-            "'prevent_duplicate_places_creation' => false",
-            $configFile
-        );
-
-        file_put_contents('config.php', $configFile);
+        self::disablePreventDuplicatePlaceCreation();
     }
 
     /**
