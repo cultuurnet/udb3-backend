@@ -445,7 +445,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyContactPointUpdated(AbstractContactPointUpdated $contactPointUpdated): void
     {
-        $this->contactPoint = $contactPointUpdated->getContactPoint()->toUdb3ModelContactPoint();
+        $this->contactPoint = $contactPointUpdated->getContactPoint();
     }
 
     public function updateGeoCoordinates(Coordinates $coordinates): void
