@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
@@ -693,7 +694,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $document = $this->loadDocumentFromRepository($contactPointUpdated);
 
         $offerLd = $document->getBody();
-        $offerLd->contactPoint = $contactPointUpdated->getContactPoint()->toJsonLd();
+        $offerLd->contactPoint = (new ContactPointNormalizer())->normalize($contactPointUpdated->getContactPoint());
 
         return $document->withBody($offerLd);
     }
