@@ -13,10 +13,10 @@ config:
 	sh ./docker/config.sh
 
 install:
-	docker-compose exec -T php composer install
+	docker-compose exec php composer install
 
 migrate:
-	docker-compose exec -T php ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
+	docker-compose exec php ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
 
 init: install migrate
 
@@ -42,13 +42,13 @@ test-group:
 	docker exec -it php.uitdatabank composer test -- --group=$(group)
 
 feature-init:
-	docker-compose exec -T php composer feature -- --tags @init
+	docker-compose exec php composer feature -- --tags @init
 
 feature-tag:
 	docker exec -it php.uitdatabank composer feature -- --tags $(tag)
 
 feature:
-	docker-compose exec -T php composer feature -- --tags "~@init&&~@external"
+	docker-compose exec php composer feature -- --tags "~@init&&~@external"
 
 feature-filter:
-	docker exec -it php.uitdatabank composer feature -- $(path)
+	docker-compose exec php composer feature -- $(path)
