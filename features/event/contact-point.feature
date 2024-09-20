@@ -129,17 +129,4 @@ Feature: Test the UDB3 events API
     And I send a PUT request to "%{eventUrl}/contact-point"
     Then the response status should be "204"
     When I get the event at "%{eventUrl}"
-    And the JSON response at "contactPoint" should be:
-    """
-    {
-      "email": [
-        ""
-      ],
-      "phone": [
-        ""
-      ],
-      "url": [
-        ""
-      ]
-    }
-    """
+    Then the JSON response should not have contactPoint

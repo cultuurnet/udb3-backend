@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventRelationsRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsProjector;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\JSONLDMainLanguageQuery;
 
 final class EventReadServiceProvider extends AbstractServiceProvider
@@ -46,11 +46,9 @@ final class EventReadServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'event_main_language_query',
             function () use ($container): JSONLDMainLanguageQuery {
-                $fallbackLanguage = new Language('nl');
-
                 return new JSONLDMainLanguageQuery(
                     $container->get('event_jsonld_repository'),
-                    $fallbackLanguage
+                    new Language('nl')
                 );
             }
         );

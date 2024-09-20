@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
+use CultuurNet\UDB3\ContactPoint as LegacyContactPoint;
 use Broadway\Repository\Repository;
 use Broadway\CommandHandling\Testing\Scenario;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
@@ -75,7 +81,11 @@ trait OfferCommandHandlerTestTrait
     public function it_can_update_contact_point_of_an_offer(): void
     {
         $id = '1';
-        $contactPoint = new ContactPoint(['016102030']);
+        $contactPoint = new ContactPoint(
+            new TelephoneNumbers(new TelephoneNumber('016102030')),
+            null,
+            null
+        );
         $commandClass = $this->getCommandClass('UpdateContactPoint');
         $eventClass = $this->getEventClass('ContactPointUpdated');
 
@@ -87,7 +97,7 @@ trait OfferCommandHandlerTestTrait
             ->when(
                 new $commandClass($id, $contactPoint)
             )
-            ->then([new $eventClass($id, $contactPoint)]);
+            ->then([new $eventClass($id, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint))]);
     }
 
     /**
@@ -106,7 +116,7 @@ trait OfferCommandHandlerTestTrait
                 [$this->factorOfferCreated($id)]
             )
             ->when(
-                new $commandClass($id, new Language('nl'), $description)
+                new $commandClass($id, new LegacyLanguage('nl'), $description)
             )
             ->then([new $eventClass($id, $description)]);
     }

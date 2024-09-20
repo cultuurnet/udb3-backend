@@ -9,7 +9,7 @@ use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\ContactPoint as LegacyContactPoint;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
@@ -43,6 +43,9 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
@@ -54,7 +57,10 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
@@ -465,9 +471,9 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
 
         $contactPoint = new ContactPoint(
-            ['016/101010'],
-            ['test@2dotstwice.be', 'admin@2dotstwice.be'],
-            ['http://www.2dotstwice.be']
+            new TelephoneNumbers(new TelephoneNumber('016/101010')),
+            new EmailAddresses(new EmailAddress('test@2dotstwice.be'), new EmailAddress('admin@2dotstwice.be')),
+            new Urls(new Url('http://www.2dotstwice.be'))
         );
 
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
@@ -477,7 +483,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     $createEvent,
-                    new ContactPointUpdated($eventId, $contactPoint),
+                    new ContactPointUpdated($eventId, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint)),
                     new EventUpdatedFromUDB2($eventId, $xmlData, $xmlNamespace),
                 ]
             )
@@ -488,7 +494,7 @@ class EventTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new ContactPointUpdated($eventId, $contactPoint),
+                    new ContactPointUpdated($eventId, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint)),
                 ]
             );
     }
@@ -1281,7 +1287,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $cdbXml = SampleFiles::read(
@@ -1328,7 +1334,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $this->scenario
@@ -1378,7 +1384,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $this->scenario
