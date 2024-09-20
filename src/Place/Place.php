@@ -120,7 +120,7 @@ class Place extends Offer
         $place = new self();
         $place->apply(new PlaceCreated(
             $id,
-            $mainLanguage,
+            $mainLanguage->toUdb3ModelLanguage(),
             $title->toString(),
             $eventType,
             $address,
