@@ -10,7 +10,6 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Place\PlaceEvent;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
@@ -18,7 +17,7 @@ use DateTimeInterface;
 
 final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents, MainLanguageDefined
 {
-    private LegacyLanguage $mainLanguage;
+    private Language $mainLanguage;
     private string $title;
     private EventType $eventType;
     private Address $address;
@@ -27,7 +26,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
 
     public function __construct(
         string $placeId,
-        LegacyLanguage $mainLanguage,
+        Language $mainLanguage,
         string $title,
         EventType $eventType,
         Address $address,
@@ -46,7 +45,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
 
     public function getMainLanguage(): Language
     {
-        return $this->mainLanguage->toUdb3ModelLanguage();
+        return $this->mainLanguage;
     }
 
     public function getTitle(): string
@@ -108,7 +107,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
         }
         return new static(
             $data['place_id'],
-            new LegacyLanguage($data['main_language']),
+            new Language($data['main_language']),
             $data['title'],
             EventType::deserialize($data['event_type']),
             Address::deserialize($data['address']),
