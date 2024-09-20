@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\EventEvent;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Theme;
@@ -19,7 +18,7 @@ use DateTimeInterface;
 
 final class EventCreated extends EventEvent implements ConvertsToGranularEvents, MainLanguageDefined
 {
-    private LegacyLanguage $mainLanguage;
+    private Language $mainLanguage;
     private string $title;
     private EventType $eventType;
     private ?Theme $theme;
@@ -29,7 +28,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
 
     public function __construct(
         string $eventId,
-        LegacyLanguage $mainLanguage,
+        Language $mainLanguage,
         string $title,
         EventType $eventType,
         LocationId $location,
@@ -50,7 +49,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
 
     public function getMainLanguage(): Language
     {
-        return $this->mainLanguage->toUdb3ModelLanguage();
+        return $this->mainLanguage;
     }
 
     public function getTitle(): string
@@ -131,7 +130,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         }
         return new self(
             $data['event_id'],
-            new LegacyLanguage($data['main_language']),
+            new Language($data['main_language']),
             $data['title'],
             EventType::deserialize($data['event_type']),
             new LocationId($data['location']),
