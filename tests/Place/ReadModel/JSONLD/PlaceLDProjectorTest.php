@@ -28,10 +28,11 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\OfferLDProjectorTestBase;
@@ -455,7 +456,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 new Locality('Kessel-lo'),
                 new CountryCode('BE')
             ),
-            new Language('fr')
+            new LegacyLanguage('fr')
         );
 
         $body = $this->project(
@@ -508,7 +509,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $body = $this->project($place, $placeId);
 
-        $this->assertEquals((new Language('en'))->toString(), $body->mainLanguage);
+        $this->assertEquals((new LegacyLanguage('en'))->toString(), $body->mainLanguage);
     }
 
     /**

@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -27,7 +28,7 @@ use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -250,7 +251,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
         Address $originalAddress,
         Address $updatedAddress
     ): void {
-        $language = new Language('nl');
+        $language = new LegacyLanguage('nl');
 
         $this->scenario
             ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
@@ -303,13 +304,13 @@ class PlaceTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Place $place) use ($address, $translatedAddress): void {
-                    $place->updateAddress($address, new Language('nl'));
-                    $place->updateAddress($translatedAddress, new Language('en'));
-                    $place->updateAddress($translatedAddress, new Language('en'));
+                    $place->updateAddress($address, new LegacyLanguage('nl'));
+                    $place->updateAddress($translatedAddress, new LegacyLanguage('en'));
+                    $place->updateAddress($translatedAddress, new LegacyLanguage('en'));
                 }
             )
             ->then([
-                new AddressTranslated($placeId, $translatedAddress, new Language('en')),
+                new AddressTranslated($placeId, $translatedAddress, new LegacyLanguage('en')),
             ]);
     }
 
@@ -391,7 +392,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
 
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
-            new MultilingualString(new Language('nl'), 'Publiq'),
+            new MultilingualString(new LegacyLanguage('nl'), 'Publiq'),
             '02 123 45 67',
             'info@publiq.be'
         );
@@ -428,7 +429,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
         Address $originalAddress,
         Address $updatedAddress
     ): void {
-        $language = new Language('fr');
+        $language = new LegacyLanguage('fr');
 
         $this->scenario
             ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
@@ -550,7 +551,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Place $place): void {
                     $place->updateTitle(
-                        new Language('nl'),
+                        new LegacyLanguage('nl'),
                         new Title('Test place')
                     );
                 }
