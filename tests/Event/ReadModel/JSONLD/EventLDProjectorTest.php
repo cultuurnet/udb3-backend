@@ -53,7 +53,7 @@ use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -61,6 +61,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -203,7 +204,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $eventCreated = $this->createEventCreated($eventId, $calendar, null);
 
-        $jsonLD = $this->createJsonLD($eventId, new Language('en'));
+        $jsonLD = $this->createJsonLD($eventId, new LegacyLanguage('en'));
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
@@ -298,7 +299,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $eventCreated = $this->createEventCreated($eventId, $calendar, $theme);
 
-        $jsonLD = $this->createJsonLD($eventId, new Language('en'));
+        $jsonLD = $this->createJsonLD($eventId, new LegacyLanguage('en'));
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
@@ -346,7 +347,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $eventCreated = $this->createEventCreated($eventId, $calendar, $theme);
 
-        $jsonLD = $this->createJsonLD($eventId, new Language('en'));
+        $jsonLD = $this->createJsonLD($eventId, new LegacyLanguage('en'));
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
@@ -637,7 +638,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $eventCreated = $this->createEventCreated($eventId, $calendar, $theme);
 
-        $jsonLD = $this->createJsonLD($eventId, new Language('en'));
+        $jsonLD = $this->createJsonLD($eventId, new LegacyLanguage('en'));
         $jsonLD->calendarType = 'multiple';
         $jsonLD->startDate = '2015-01-26T13:25:21+01:00';
         $jsonLD->endDate = '2015-01-29T13:25:21+01:00';
@@ -733,7 +734,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $body = $this->project($event, $eventId);
 
-        $this->assertEquals((new Language('en'))->toString(), $body->mainLanguage);
+        $this->assertEquals((new LegacyLanguage('en'))->toString(), $body->mainLanguage);
     }
 
     /**
@@ -1917,7 +1918,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
     }
 
-    private function createJsonLD(string $eventId, Language $mainLanguage): stdClass
+    private function createJsonLD(string $eventId, LegacyLanguage $mainLanguage): stdClass
     {
         $jsonLD = new stdClass();
         $jsonLD->{'@id'} = 'http://example.com/entity/' . $eventId;

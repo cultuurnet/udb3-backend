@@ -269,7 +269,7 @@ class HistoryProjectorTest extends TestCase
 
         $eventCreated = new EventCreated(
             $eventId,
-            new LegacyLanguage('en'),
+            new Language('en'),
             'Faith no More',
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),

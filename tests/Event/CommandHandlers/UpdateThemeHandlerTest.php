@@ -15,8 +15,8 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Theme;
 
 class UpdateThemeHandlerTest extends CommandHandlerScenarioTestCase

@@ -16,8 +16,9 @@ use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -160,7 +161,7 @@ class CompositeDomainMessageEnricherTest extends TestCase
             new Metadata(),
             new PlaceCreated(
                 'fd9e986d-6a23-470c-bf0c-4ad40aa4515e',
-                new Language('nl'),
+                new LegacyLanguage('nl'),
                 'test title',
                 new EventType('0.0.1', 'label'),
                 new Address(
