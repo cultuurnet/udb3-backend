@@ -134,7 +134,7 @@ final class Event extends Offer
         $event->apply(
             new EventCreated(
                 $eventId,
-                $mainLanguage,
+                $mainLanguage->toUdb3ModelLanguage(),
                 $title->toString(),
                 $eventType,
                 $location,
