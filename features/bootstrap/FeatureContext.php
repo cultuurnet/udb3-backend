@@ -105,7 +105,7 @@ final class FeatureContext implements Context
     /**
      * @BeforeFeature @duplicate
      */
-    public static function beforeDuplicate(BeforeFeatureScope $scope): void
+    public static function beforeFeatureDuplicate(BeforeFeatureScope $scope): void
     {
         self::enablePreventDuplicatePlaceCreation();
     }
@@ -113,7 +113,7 @@ final class FeatureContext implements Context
     /**
      * @AfterFeature @duplicate
      */
-    public static function afterDuplicate(AfterFeatureScope $scope): void
+    public static function afterFeatureDuplicate(AfterFeatureScope $scope): void
     {
         self::disablePreventDuplicatePlaceCreation();
     }
