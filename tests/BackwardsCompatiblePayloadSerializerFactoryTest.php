@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializer;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -29,6 +30,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -445,7 +447,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
 
         $this->assertEquals(
-            new MultilingualString(new Language('nl'), 'Reserveer plaatsen'),
+            new MultilingualString(new LegacyLanguage('nl'), 'Reserveer plaatsen'),
             $bookingInfoUpdated->getBookingInfo()->getUrlLabel()
         );
     }
@@ -615,7 +617,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
             ->withExtraTariff(
                 new Tariff(
                     new MultilingualString(
-                        new Language('nl'),
+                        new LegacyLanguage('nl'),
                         'Senioren'
                     ),
                     new Money(1000, new Currency('EUR'))
@@ -624,7 +626,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
             ->withExtraTariff(
                 new Tariff(
                     new MultilingualString(
-                        new Language('nl'),
+                        new LegacyLanguage('nl'),
                         'Studenten'
                     ),
                     new Money(750, new Currency('EUR'))

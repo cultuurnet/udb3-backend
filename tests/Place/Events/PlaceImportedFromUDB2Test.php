@@ -9,8 +9,9 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
@@ -74,8 +75,8 @@ final class PlaceImportedFromUDB2Test extends TestCase
         $this->assertEquals(
             [
                 new TitleUpdated($placeId, 'CC Palethe'),
-                new TitleTranslated($placeId, new Language('fr'), 'Centre culturel Palethe'),
-                new TitleTranslated($placeId, new Language('de'), 'Kulturzentrum Palethe'),
+                new TitleTranslated($placeId, new LegacyLanguage('fr'), 'Centre culturel Palethe'),
+                new TitleTranslated($placeId, new LegacyLanguage('de'), 'Kulturzentrum Palethe'),
                 new AddressUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Address(
