@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
@@ -110,7 +110,7 @@ class Place extends Offer
 
     public static function create(
         string $id,
-        Language $mainLanguage,
+        LegacyLanguage $mainLanguage,
         Title $title,
         EventType $eventType,
         Address $address,
@@ -133,7 +133,7 @@ class Place extends Offer
 
     protected function applyPlaceCreated(PlaceCreated $placeCreated): void
     {
-        $this->mainLanguage = $placeCreated->getMainLanguage();
+        $this->mainLanguage = LegacyLanguage::fromUdb3ModelLanguage($placeCreated->getMainLanguage());
         $this->titles[$this->mainLanguage->getCode()] = $placeCreated->getTitle();
         $this->calendar = $placeCreated->getCalendar();
         $this->contactPoint = new ContactPoint();
@@ -167,7 +167,7 @@ class Place extends Offer
         $this->calendar = $majorInfoUpdated->getCalendar();
     }
 
-    public function updateAddress(Address $address, Language $language): void
+    public function updateAddress(Address $address, LegacyLanguage $language): void
     {
         if ($language->getCode() === $this->mainLanguage->getCode()) {
             $event = new AddressUpdated($this->placeId, $address);
@@ -198,7 +198,7 @@ class Place extends Offer
         return $this->duplicates;
     }
 
-    private function allowAddressUpdate(Address $address, Language $language): bool
+    private function allowAddressUpdate(Address $address, LegacyLanguage $language): bool
     {
         // No current address in the provided language so update with new address is allowed.
         if (!isset($this->addresses[$language->getCode()])) {
@@ -235,7 +235,7 @@ class Place extends Offer
         $this->placeId = $placeImported->getActorId();
 
         // When importing from UDB2 the default main language is always 'nl'.
-        $this->mainLanguage = new Language('nl');
+        $this->mainLanguage = new LegacyLanguage('nl');
 
         $udb2Actor = ActorItemFactory::createActorFromCdbXml(
             $placeImported->getCdbXmlNamespaceUri(),
@@ -393,7 +393,7 @@ class Place extends Offer
         return new VideoUpdated($this->placeId, $video);
     }
 
-    protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
+    protected function createTitleTranslatedEvent(LegacyLanguage $language, Title $title): TitleTranslated
     {
         return new TitleTranslated($this->placeId, $language, $title->toString());
     }
@@ -403,7 +403,7 @@ class Place extends Offer
         return new TitleUpdated($this->placeId, $title->toString());
     }
 
-    protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated
+    protected function createDescriptionTranslatedEvent(LegacyLanguage $language, Description $description): DescriptionTranslated
     {
         return new DescriptionTranslated($this->placeId, $language, $description);
     }

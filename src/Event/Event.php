@@ -217,7 +217,7 @@ final class Event extends Offer
         $this->typeId = $eventCreated->getEventType()->getId();
         $this->themeId = $eventCreated->getTheme() ? $eventCreated->getTheme()->getId() : null;
         $this->locationId = $eventCreated->getLocation();
-        $this->mainLanguage = $eventCreated->getMainLanguage();
+        $this->mainLanguage = LegacyLanguage::fromUdb3ModelLanguage($eventCreated->getMainLanguage());
         $this->workflowStatus = WorkflowStatus::DRAFT();
     }
 
