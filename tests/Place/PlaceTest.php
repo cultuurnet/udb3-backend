@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\ContactPoint as LegacyContactPoint;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -152,7 +151,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     $placeCreated,
-                    new ContactPointUpdated($placeId, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint)),
+                    new ContactPointUpdated($placeId, $contactPoint),
                     new PlaceUpdatedFromUDB2($placeId, $cdbXml, $cdbXmlNamespace),
                 ]
             )
@@ -163,7 +162,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new ContactPointUpdated($placeId, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint)),
+                    new ContactPointUpdated($placeId, $contactPoint),
                 ]
             );
     }

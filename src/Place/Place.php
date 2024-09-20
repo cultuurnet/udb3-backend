@@ -9,7 +9,6 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
-use CultuurNet\UDB3\ContactPoint as LegacyContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -446,7 +445,7 @@ class Place extends Offer
 
     protected function createContactPointUpdatedEvent(ContactPoint $contactPoint): ContactPointUpdated
     {
-        return new ContactPointUpdated($this->placeId, LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint));
+        return new ContactPointUpdated($this->placeId, $contactPoint);
     }
 
     protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates): GeoCoordinatesUpdated

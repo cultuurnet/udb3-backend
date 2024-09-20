@@ -13,10 +13,16 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint as Udb3ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -147,10 +153,11 @@ abstract class OfferLDProjectorTestBase extends TestCase
     public function it_projects_the_updating_of_contact_point(): void
     {
         $id = 'foo';
-        $phones = ['045', '046'];
-        $emails = ['test@test.be', 'test@test2.be'];
-        $urls = ['http://www.google.be', 'http://www.google2.be'];
-        $contactPoint = new ContactPoint($phones, $emails, $urls);
+        $contactPoint = new Udb3ContactPoint(
+            new TelephoneNumbers(new TelephoneNumber('045'), new TelephoneNumber('046')),
+            new EmailAddresses(new EmailAddress('test@test.be'), new EmailAddress('test@test2.be')),
+            new Urls(new Url('http://www.google.be'), new Url('http://www.google2.be'))
+        );
         $eventClass = $this->getEventClass('ContactPointUpdated');
         $contactPointUpdated = new $eventClass($id, $contactPoint);
 
@@ -161,9 +168,9 @@ abstract class OfferLDProjectorTestBase extends TestCase
 
         $expectedBody = (object)[
             'contactPoint' => (object)[
-                'phone' => $phones,
-                'email' => $emails,
-                'url' => $urls,
+                'phone' => $contactPoint->getTelephoneNumbers()->toStringArray(),
+                'email' => $contactPoint->getEmailAddresses()->toStringArray(),
+                'url' => $contactPoint->getUrls()->toStringArray(),
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
