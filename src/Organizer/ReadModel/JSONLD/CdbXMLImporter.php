@@ -9,9 +9,16 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use stdClass;
 
 /**
@@ -75,26 +82,26 @@ class CdbXMLImporter
                 }
             }
 
-            $emails = [];
-            $phones = [];
-            $urls = [];
+            $emails = new EmailAddresses();
+            $phones = new TelephoneNumbers();
+            $urls = new Urls();
 
             /* @var \CultureFeed_Cdb_Data_Mail[] $cdbEmails */
             $cdbEmails = $cdbContact->getMails();
             foreach ($cdbEmails as $mail) {
-                $emails[] = $mail->getMailAddress();
+                $emails = $emails->with(new EmailAddress($mail->getMailAddress()));
             }
 
             /* @var \CultureFeed_Cdb_Data_Phone[] $cdbPhones */
             $cdbPhones = $cdbContact->getPhones();
             foreach ($cdbPhones as $phone) {
-                $phones[] = $phone->getNumber();
+                $phones = $phones->with(new TelephoneNumber($phone->getNumber()));
             }
 
             /* @var \CultureFeed_Cdb_Data_Url[] $cdbUrls */
             $cdbUrls = $cdbContact->getUrls();
             foreach ($cdbUrls as $url) {
-                $urls[] = $url->getUrl();
+                $urls = $urls->with(new Url($url->getUrl()));
             }
 
             $this->labelImporter->importLabels($actor, $jsonLD);
@@ -102,7 +109,7 @@ class CdbXMLImporter
             $contactPoint = new ContactPoint($phones, $emails, $urls);
 
             if (!$contactPoint->sameAs(new ContactPoint())) {
-                $jsonLD->contactPoint = $contactPoint->toJsonLd();
+                $jsonLD->contactPoint = (new ContactPointNormalizer())->normalize($contactPoint);
             }
         }
 

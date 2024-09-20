@@ -360,30 +360,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_empty_contact_point_by_default(): void
-    {
-        $expected = new \CultuurNet\UDB3\ContactPoint();
-        $actual = $this->adapter->getContactPoint();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_contact_point_if_there_is_one(): void
-    {
-        $expected = new \CultuurNet\UDB3\ContactPoint(
-            ['044/444444', '055/555555'],
-            ['foo@publiq.be', 'bar@publiq.be'],
-            ['https://www.publiq.be', 'https://www.uitdatabank.be']
-        );
-        $actual = $this->completeAdapter->getContactPoint();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_return_default_available_from_if_there_is_none(): void
     {
         $now = new DateTimeImmutable();

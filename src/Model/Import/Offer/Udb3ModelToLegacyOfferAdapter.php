@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Model\Import\Offer;
 
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
@@ -124,12 +123,6 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
     {
         $bookingInfo = $this->offer->getBookingInfo();
         return BookingInfo::fromUdb3ModelBookingInfo($bookingInfo);
-    }
-
-    public function getContactPoint(): ?ContactPoint
-    {
-        $contactPoint = $this->offer->getContactPoint();
-        return ContactPoint::fromUdb3ModelContactPoint($contactPoint);
     }
 
     public function getAvailableFrom(DateTimeImmutable $default): DateTimeImmutable
