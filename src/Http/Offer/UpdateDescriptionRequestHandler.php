@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Serializers\DescriptionDenormalizer;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription as PlaceUpdateDescription;
@@ -35,7 +34,7 @@ final class UpdateDescriptionRequestHandler implements RequestHandlerInterface
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
         $offerType = $routeParameters->getOfferType();
-        $language = Language::fromUdb3ModelLanguage($routeParameters->getLanguage());
+        $language = $routeParameters->getLanguage();
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(

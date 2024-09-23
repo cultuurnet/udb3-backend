@@ -196,7 +196,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $description = $placeAdapter->getDescription();
         if ($description) {
-            $commands[] = new UpdateDescription($placeId, $mainLanguage, $description);
+            $commands[] = new UpdateDescription($placeId, $place->getMainLanguage(), $description);
         }
 
         $ageRange = $placeAdapter->getAgeRange();
@@ -219,7 +219,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         }
 
         foreach ($placeAdapter->getDescriptionTranslations() as $language => $description) {
-            $language = new LegacyLanguage($language);
+            $language = new Language($language);
             $commands[] = new UpdateDescription($placeId, $language, $description);
         }
 
