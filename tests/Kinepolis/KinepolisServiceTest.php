@@ -28,7 +28,6 @@ use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
 use CultuurNet\UDB3\Kinepolis\Trailer\TrailerRepository;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedMovie;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedPriceForATheater;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
@@ -534,7 +533,7 @@ final class KinepolisServiceTest extends TestCase
                 ),
                 new UpdateDescription(
                     $this->eventId,
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     new LegacyDescription('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')
                 ),
                 new UpdatePriceInfo(
@@ -712,7 +711,7 @@ final class KinepolisServiceTest extends TestCase
                 ),
                 new UpdateDescription(
                     $this->eventId,
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     new LegacyDescription('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')
                 ),
                 new UpdatePriceInfo(

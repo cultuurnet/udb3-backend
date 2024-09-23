@@ -114,14 +114,14 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $id = '1';
         $description = new Description('Lorem ipsum dolor si amet...');
-        $language = new LegacyLanguage('fr');
+        $language = new Language('fr');
         $this->scenario
             ->withAggregateId($id)
             ->given(
                 [$this->factorOfferCreated($id)]
             )
             ->when(new UpdateDescription($id, $language, $description))
-            ->then([new DescriptionTranslated($id, $language, $description)]);
+            ->then([new DescriptionTranslated($id, LegacyLanguage::fromUdb3ModelLanguage($language), $description)]);
     }
 
     /**
