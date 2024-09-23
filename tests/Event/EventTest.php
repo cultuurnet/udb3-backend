@@ -54,8 +54,8 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -101,7 +101,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         return new EventCreated(
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-            new LegacyLanguage('en'),
+            new Language('en'),
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
@@ -113,7 +113,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         return new EventCreated(
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-            new LegacyLanguage('en'),
+            new Language('en'),
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('59400d1e-6f98-4da9-ab08-f58adceb7204'),

@@ -10,7 +10,6 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Theme;
@@ -33,7 +32,7 @@ class EventCreatedTest extends TestCase
 
         $this->eventCreated = new EventCreated(
             'id',
-            new LegacyLanguage('es'),
+            new Language('es'),
             'title',
             new EventType('id', 'label'),
             $this->location,
@@ -52,7 +51,7 @@ class EventCreatedTest extends TestCase
 
         $eventWithTheme = new EventCreated(
             $eventId,
-            new LegacyLanguage('nl'),
+            new Language('nl'),
             'Example title',
             new EventType('0.50.4.0.0', 'Concert'),
             $this->location,
@@ -62,7 +61,7 @@ class EventCreatedTest extends TestCase
 
         $eventWithoutTheme = new EventCreated(
             $eventId,
-            new LegacyLanguage('nl'),
+            new Language('nl'),
             'Example title',
             new EventType('0.50.4.0.0', 'Concert'),
             $this->location,
@@ -97,7 +96,7 @@ class EventCreatedTest extends TestCase
     {
         $event = new EventCreated(
             '09994540-289f-4ab4-bf77-b83443d3d0fc',
-            new LegacyLanguage('fr'),
+            new Language('fr'),
             'Example title',
             new EventType('0.50.4.0.0', 'Concert'),
             $this->location,
@@ -219,7 +218,7 @@ class EventCreatedTest extends TestCase
                 ],
                 new EventCreated(
                     'test 456',
-                    new LegacyLanguage('es'),
+                    new Language('es'),
                     'title',
                     new EventType('bar_id', 'bar'),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
@@ -257,7 +256,7 @@ class EventCreatedTest extends TestCase
                 ],
                 new EventCreated(
                     'test 456',
-                    new LegacyLanguage('es'),
+                    new Language('es'),
                     'title',
                     new EventType('bar_id', 'bar'),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
@@ -292,7 +291,7 @@ class EventCreatedTest extends TestCase
                 ],
                 new EventCreated(
                     'test 456',
-                    new LegacyLanguage('es'),
+                    new Language('es'),
                     'title',
                     new EventType('bar_id', 'bar'),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),

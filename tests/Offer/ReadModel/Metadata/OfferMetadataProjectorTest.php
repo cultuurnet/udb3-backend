@@ -19,8 +19,9 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -208,7 +209,7 @@ class OfferMetadataProjectorTest extends TestCase
     {
         return new PlaceCreated(
             self::OFFER_ID,
-            new Language('en'),
+            new LegacyLanguage('en'),
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new Address(

@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
@@ -77,7 +76,7 @@ final class UpdatePriceInfoHandlerTest extends CommandHandlerScenarioTestCase
     {
         return new EventCreated(
             $id,
-            new LegacyLanguage('nl'),
+            new Language('nl'),
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),

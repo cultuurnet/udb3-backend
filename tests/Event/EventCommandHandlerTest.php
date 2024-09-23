@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
+use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Broadway\Repository\Repository;
@@ -11,7 +12,7 @@ use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
@@ -24,10 +25,10 @@ use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
@@ -88,7 +89,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $command = new CreateEvent(
             $id,
-            $language,
+            LegacyLanguage::fromUdb3ModelLanguage($language),
             $title,
             $type,
             $location,
@@ -113,7 +114,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $id = '1';
         $description = new Description('Lorem ipsum dolor si amet...');
-        $language = new Language('fr');
+        $language = new LegacyLanguage('fr');
         $this->scenario
             ->withAggregateId($id)
             ->given(
