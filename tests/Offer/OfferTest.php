@@ -1930,7 +1930,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->withAggregateId($itemId)
             ->given(
                 [
-                    new ItemCreated($itemId, LegacyLanguage::fromUdb3ModelLanguage($language)),
+                    new ItemCreated($itemId, $language),
                     new DescriptionUpdated('my-id', new LegacyDescription('test')),
                 ]
             )
@@ -1957,7 +1957,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->withAggregateId($itemId)
             ->given(
                 [
-                    new ItemCreated($itemId, LegacyLanguage::fromUdb3ModelLanguage($language)),
+                    new ItemCreated($itemId, $language),
                     new DescriptionUpdated('my-id', new LegacyDescription('test')),
                     new DescriptionTranslated(
                         'my-id',
@@ -1988,7 +1988,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->withAggregateId($itemId)
             ->given(
                 [
-                    new ItemCreated($itemId, LegacyLanguage::fromUdb3ModelLanguage($language)),
+                    new ItemCreated($itemId, $language),
                     new DescriptionUpdated('my-id', new LegacyDescription('test')),
                     new DescriptionTranslated(
                         'my-id',

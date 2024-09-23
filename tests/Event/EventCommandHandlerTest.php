@@ -89,7 +89,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $command = new CreateEvent(
             $id,
-            LegacyLanguage::fromUdb3ModelLanguage($language),
+            $language,
             $title,
             $type,
             $location,
