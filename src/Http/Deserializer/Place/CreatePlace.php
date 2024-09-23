@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Http\Deserializer\Place;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 class CreatePlace extends MajorInfo
 {
