@@ -507,8 +507,7 @@ class BackwardsCompatiblePayloadSerializerFactory
     private static function addDefaultMainLanguage(array $serializedObject): array
     {
         if (!isset($serializedObject['payload']['main_language'])) {
-            $mainLanguage = new Language('nl');
-            $serializedObject['payload']['main_language'] = $mainLanguage->getCode();
+            $serializedObject['payload']['main_language'] = 'nl';
         }
 
         return $serializedObject;
