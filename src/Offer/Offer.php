@@ -108,7 +108,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
      */
     protected array $descriptions;
 
-    protected LegacyLanguage $mainLanguage;
+    protected Language $mainLanguage;
 
     protected ?string $typeId = null;
 
