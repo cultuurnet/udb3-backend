@@ -174,7 +174,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         if (!$eventExists) {
             $eventAggregate = EventAggregate::create(
                 $eventId,
-                $mainLanguage,
+                $event->getMainLanguage(),
                 $title,
                 $type,
                 $location,

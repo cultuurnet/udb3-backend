@@ -160,7 +160,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
             $placeAggregate = PlaceAggregate::create(
                 $placeId,
-                $mainLanguage,
+                $place->getMainLanguage(),
                 $title,
                 $type,
                 $address,
