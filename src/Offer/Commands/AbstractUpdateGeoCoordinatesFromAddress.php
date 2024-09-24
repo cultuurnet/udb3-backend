@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 
 abstract class AbstractUpdateGeoCoordinatesFromAddress extends AbstractCommand
 {
