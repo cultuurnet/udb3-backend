@@ -581,7 +581,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $titleTranslated = new TitleTranslated(
             'foo',
-            new LegacyLanguage('en'),
+            new Language('en'),
             'English title'
         );
 
@@ -625,7 +625,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $descriptionTranslated = new DescriptionTranslated(
             'foo',
-            new LegacyLanguage('en'),
+            new Language('en'),
             new \CultuurNet\UDB3\Description('English description')
         );
 

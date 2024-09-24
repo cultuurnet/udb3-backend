@@ -1816,7 +1816,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = '36cecb1d-3482-4593-8195-83ae32ef4e5e';
         $title = new Title('The Title');
-        $language = new LegacyLanguage('en');
+        $language = new Language('en');
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1828,7 +1828,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item) use ($title, $language): void {
-                    $item->updateTitle($language, $title);
+                    $item->updateTitle(LegacyLanguage::fromUdb3ModelLanguage($language), $title);
                 }
             )
             ->then([
@@ -1843,7 +1843,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = 'a7f81946-2479-462c-93e1-43cbae959f79';
         $title = new Title('The Title');
-        $language = new LegacyLanguage('en');
+        $language = new Language('en');
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1855,8 +1855,8 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item) use ($title, $language): void {
-                    $item->updateTitle($language, $title);
-                    $item->updateTitle($language, $title);
+                    $item->updateTitle(LegacyLanguage::fromUdb3ModelLanguage($language), $title);
+                    $item->updateTitle(LegacyLanguage::fromUdb3ModelLanguage($language), $title);
                     $item->updateTitle(new LegacyLanguage('nl'), new Title('Een titel'));
                 }
             )
@@ -1896,7 +1896,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = '81598b26-68f3-424c-85e0-29293fd92723';
         $description = new LegacyDescription('La description');
-        $language = new LegacyLanguage('fr');
+        $language = new Language('fr');
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1908,7 +1908,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item) use ($description, $language): void {
-                    $item->updateDescription($description, $language);
+                    $item->updateDescription($description, LegacyLanguage::fromUdb3ModelLanguage($language));
                 }
             )
             ->then([
@@ -1961,7 +1961,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new DescriptionUpdated('my-id', new LegacyDescription('test')),
                     new DescriptionTranslated(
                         'my-id',
-                        LegacyLanguage::fromUdb3ModelLanguage($differentLanguage),
+                        $differentLanguage,
                         new LegacyDescription('test')
                     ),
                 ]
@@ -1992,7 +1992,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new DescriptionUpdated('my-id', new LegacyDescription('test')),
                     new DescriptionTranslated(
                         'my-id',
-                        LegacyLanguage::fromUdb3ModelLanguage($differentLanguage),
+                        $differentLanguage,
                         new LegacyDescription('test')
                     ),
                     new DescriptionDeleted($itemId, $differentLanguage),
