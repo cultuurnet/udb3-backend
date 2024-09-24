@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Address;
+namespace CultuurNet\UDB3\Address\CultureFeed;
 
-use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactoryInterface;
+use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Address\Locality;
+use CultuurNet\UDB3\Address\PostalCode;
+use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 
 class CultureFeedAddressFactory implements CultureFeedAddressFactoryInterface

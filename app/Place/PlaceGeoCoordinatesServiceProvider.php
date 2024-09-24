@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
+use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\Formatter\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Formatter\LocalityAddressFormatter;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
