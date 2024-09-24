@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Offer;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
+use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractGeoCoordinatesProcessManager implements EventListener
