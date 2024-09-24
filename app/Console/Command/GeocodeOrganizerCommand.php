@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Console\Command;
 
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressDenormalizer;
 use CultuurNet\UDB3\Organizer\Commands\UpdateGeoCoordinatesFromAddress;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -47,7 +48,7 @@ class GeocodeOrganizerCommand extends AbstractGeocodeCommand
         }
 
         try {
-            $address = Address::deserialize($jsonLd['address'][$addressLanguage]);
+            $address = (new AddressDenormalizer())->denormalize($jsonLd['address'][$addressLanguage], Address::class);
         } catch (\Exception $e) {
             $output->writeln("Skipping {$organizerId}. (JSON-LD address for {$addressLanguage} could not be parsed.)");
             return;
