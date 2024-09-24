@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\AfterFeatureScope;
+use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\State\ResponseState;
@@ -97,6 +99,23 @@ final class FeatureContext implements Context
      */
     public static function beforeSuite(BeforeSuiteScope $scope): void
     {
+        self::disablePreventDuplicatePlaceCreation();
+    }
+
+    /**
+     * @BeforeFeature @duplicate
+     */
+    public static function beforeFeatureDuplicate(BeforeFeatureScope $scope): void
+    {
+        self::enablePreventDuplicatePlaceCreation();
+    }
+
+    /**
+     * @AfterFeature @duplicate
+     */
+    public static function afterFeatureDuplicate(AfterFeatureScope $scope): void
+    {
+        self::disablePreventDuplicatePlaceCreation();
     }
 
     /**
