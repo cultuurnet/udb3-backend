@@ -393,7 +393,7 @@ class Place extends Offer
         return new VideoUpdated($this->placeId, $video);
     }
 
-    protected function createTitleTranslatedEvent(LegacyLanguage $language, Title $title): TitleTranslated
+    protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
     {
         return new TitleTranslated($this->placeId, $language, $title->toString());
     }
@@ -403,7 +403,7 @@ class Place extends Offer
         return new TitleUpdated($this->placeId, $title->toString());
     }
 
-    protected function createDescriptionTranslatedEvent(LegacyLanguage $language, Description $description): DescriptionTranslated
+    protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated
     {
         return new DescriptionTranslated($this->placeId, $language, $description);
     }
