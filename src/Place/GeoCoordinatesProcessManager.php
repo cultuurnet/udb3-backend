@@ -141,7 +141,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
         // a naive approach like this.
         $command = new UpdateGeoCoordinatesFromAddress(
             $actorImportedFromUDB2->getActorId(),
-            $address->toUdb3ModelAddress()
+            $address
         );
 
         $this->commandBus->dispatch($command);

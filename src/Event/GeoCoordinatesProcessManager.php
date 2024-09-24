@@ -78,7 +78,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
 
         $command = new UpdateGeoCoordinatesFromAddress(
             $eventId,
-            $address->toUdb3ModelAddress()
+            $address
         );
 
         $this->commandBus->dispatch($command);
