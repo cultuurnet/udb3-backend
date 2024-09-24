@@ -55,4 +55,3 @@ feature-filter:
 
 feature-random:
 	docker-compose exec php composer feature -- --order=random --tags "~@init&&~@external"
-
