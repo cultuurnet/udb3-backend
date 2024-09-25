@@ -14,7 +14,6 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
@@ -39,7 +38,7 @@ class PlaceCreatedTest extends TestCase
 
         $this->placeCreated = new PlaceCreated(
             'id',
-            new LegacyLanguage('es'),
+            new Language('es'),
             'title',
             new EventType('id', 'label'),
             $this->address,
@@ -181,7 +180,7 @@ class PlaceCreatedTest extends TestCase
                 ],
                 new PlaceCreated(
                     'test 456',
-                    new LegacyLanguage('es'),
+                    new Language('es'),
                     'title',
                     new EventType('bar_id', 'bar'),
                     new Address(
@@ -224,7 +223,7 @@ class PlaceCreatedTest extends TestCase
                 ],
                 new PlaceCreated(
                     'test 456',
-                    new LegacyLanguage('es'),
+                    new Language('es'),
                     'title',
                     new EventType('bar_id', 'bar'),
                     new Address(
@@ -267,7 +266,7 @@ class PlaceCreatedTest extends TestCase
                 ],
                 new PlaceCreated(
                     'test 456',
-                    new LegacyLanguage('es'),
+                    new Language('es'),
                     'title',
                     new EventType('bar_id', 'bar'),
                     new Address(

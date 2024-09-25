@@ -16,9 +16,10 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
@@ -54,7 +55,7 @@ class PlaceRepositoryTest extends TestCase
     {
         $place1 = Place::create(
             '41c94f16-9edf-4eaf-914a-cfc01336b66e',
-            new Language('nl'),
+            new LegacyLanguage('nl'),
             new Title('Test title 1'),
             new EventType('0.0.0.1', 'Fake event type'),
             new Address(
@@ -72,7 +73,7 @@ class PlaceRepositoryTest extends TestCase
 
         $place2 = Place::create(
             'aed3f3cd-e3de-4361-8e53-1099cce8fef6',
-            new Language('nl'),
+            new LegacyLanguage('nl'),
             new Title('Test title 2'),
             new EventType('0.0.0.1', 'Fake event type'),
             new Address(

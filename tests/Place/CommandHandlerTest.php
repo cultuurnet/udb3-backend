@@ -15,9 +15,10 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
@@ -72,7 +73,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([$this->factorOfferCreated($id)])
             ->when(
-                new UpdateAddress($id, $updatedAddress, new Language('nl'))
+                new UpdateAddress($id, $updatedAddress, new LegacyLanguage('nl'))
             )
             ->then([new AddressUpdated($id, $updatedAddress)]);
     }
@@ -91,9 +92,9 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([$this->factorOfferCreated($id)])
             ->when(
-                new UpdateAddress($id, $updatedAddress, new Language('fr'))
+                new UpdateAddress($id, $updatedAddress, new LegacyLanguage('fr'))
             )
-            ->then([new AddressTranslated($id, $updatedAddress, new Language('fr'))]);
+            ->then([new AddressTranslated($id, $updatedAddress, new LegacyLanguage('fr'))]);
     }
 
     public function updateAddressDataProvider(): array

@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -209,7 +208,7 @@ class OfferMetadataProjectorTest extends TestCase
     {
         return new PlaceCreated(
             self::OFFER_ID,
-            new LegacyLanguage('en'),
+            new Language('en'),
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new Address(
