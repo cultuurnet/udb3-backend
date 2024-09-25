@@ -67,7 +67,6 @@ use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
@@ -592,7 +591,7 @@ final class Event extends Offer
         return new VideoUpdated($this->eventId, $video);
     }
 
-    protected function createTitleTranslatedEvent(LegacyLanguage $language, Title $title): TitleTranslated
+    protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
     {
         return new TitleTranslated($this->eventId, $language, $title->toString());
     }
@@ -602,7 +601,7 @@ final class Event extends Offer
         return new TitleUpdated($this->eventId, $title->toString());
     }
 
-    protected function createDescriptionTranslatedEvent(LegacyLanguage $language, Description $description): DescriptionTranslated
+    protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated
     {
         return new DescriptionTranslated($this->eventId, $language, $description);
     }

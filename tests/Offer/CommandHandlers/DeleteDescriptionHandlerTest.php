@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\DeleteDescription;
 use CultuurNet\UDB3\Offer\OfferRepository;
@@ -49,7 +48,7 @@ class DeleteDescriptionHandlerTest extends CommandHandlerScenarioTestCase
                     $this->getEventCreated(self::OFFER_ID),
                     new DescriptionTranslated(
                         'id',
-                        LegacyLanguage::fromUdb3ModelLanguage(new Language('nl')),
+                        new Language('nl'),
                         new Description('test')
                     ),
                 ]

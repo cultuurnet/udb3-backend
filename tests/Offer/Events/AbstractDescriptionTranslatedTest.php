@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +24,11 @@ class AbstractDescriptionTranslatedTest extends TestCase
         $this->itemId = 'Foo';
         $this->language = new Language('en');
         $this->description = new Description('Description');
-        $this->descriptionTranslatedEvent = new DescriptionTranslated($this->itemId, $this->language, $this->description);
+        $this->descriptionTranslatedEvent = new DescriptionTranslated(
+            $this->itemId,
+            $this->language,
+            $this->description
+        );
     }
 
     /**

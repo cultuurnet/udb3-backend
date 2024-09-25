@@ -321,7 +321,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     {
         if ($this->isTitleChanged($title, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
-                $event = $this->createTitleTranslatedEvent($language, $title);
+                $event = $this->createTitleTranslatedEvent($language->toUdb3ModelLanguage(), $title);
             } else {
                 $event = $this->createTitleUpdatedEvent($title);
             }
@@ -344,7 +344,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     {
         if ($this->isDescriptionChanged($description, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
-                $event = $this->createDescriptionTranslatedEvent($language, $description);
+                $event = $this->createDescriptionTranslatedEvent($language->toUdb3ModelLanguage(), $description);
             } else {
                 $event = $this->createDescriptionUpdatedEvent($description);
             }
@@ -1042,12 +1042,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createLabelsImportedEvent(Labels $labels): AbstractLabelsImported;
 
     abstract protected function createTitleTranslatedEvent(
-        LegacyLanguage $language,
+        Language $language,
         Title $title
     ): AbstractTitleTranslated;
 
     abstract protected function createDescriptionTranslatedEvent(
-        LegacyLanguage $language,
+        Language $language,
         Description $description
     ): AbstractDescriptionTranslated;
 

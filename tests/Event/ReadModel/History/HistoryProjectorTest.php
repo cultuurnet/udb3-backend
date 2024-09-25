@@ -64,7 +64,6 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -348,7 +347,7 @@ class HistoryProjectorTest extends TestCase
     {
         $titleTranslated = new TitleTranslated(
             self::EVENT_ID_1,
-            new LegacyLanguage('fr'),
+            new Language('fr'),
             'Titre en français'
         );
 
@@ -383,7 +382,7 @@ class HistoryProjectorTest extends TestCase
     {
         $descriptionTranslated = new DescriptionTranslated(
             self::EVENT_ID_1,
-            new LegacyLanguage('fr'),
+            new Language('fr'),
             new Description('Signalement en français')
         );
 

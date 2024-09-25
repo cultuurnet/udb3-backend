@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
@@ -145,8 +144,8 @@ final class EventImportedFromUDB2Test extends TestCase
         $this->assertEquals(
             [
                 new TitleUpdated($eventId, 'Het evenement!'),
-                new TitleTranslated($eventId, new LegacyLanguage('fr'), 'L\'événement!'),
-                new TitleTranslated($eventId, new LegacyLanguage('de'), 'Das Ereignis!'),
+                new TitleTranslated($eventId, new Language('fr'), 'L\'événement!'),
+                new TitleTranslated($eventId, new Language('de'), 'Das Ereignis!'),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
                 new DummyLocationUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
@@ -195,8 +194,8 @@ final class EventImportedFromUDB2Test extends TestCase
         $this->assertEquals(
             [
                 new TitleUpdated($eventId, 'Het evenement!'),
-                new TitleTranslated($eventId, new LegacyLanguage('fr'), 'L\'événement!'),
-                new TitleTranslated($eventId, new LegacyLanguage('de'), 'Das Ereignis!'),
+                new TitleTranslated($eventId, new Language('fr'), 'L\'événement!'),
+                new TitleTranslated($eventId, new Language('de'), 'Das Ereignis!'),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
                 new LocationUpdated($eventId, new LocationId('28d2900d-f784-4d04-8d66-5b93900c6f9c')),
                 new CalendarUpdated(
@@ -233,8 +232,8 @@ final class EventImportedFromUDB2Test extends TestCase
         $this->assertEquals(
             [
                 new TitleUpdated($eventId, 'Het evenement!'),
-                new TitleTranslated($eventId, new LegacyLanguage('fr'), 'L\'événement!'),
-                new TitleTranslated($eventId, new LegacyLanguage('de'), 'Das Ereignis!'),
+                new TitleTranslated($eventId, new Language('fr'), 'L\'événement!'),
+                new TitleTranslated($eventId, new Language('de'), 'Das Ereignis!'),
                 new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
                 new ExternalIdLocationUpdated($eventId, 'SKB:9ccbf9c1-a5c5-4689-9687-9a7dd3c51aee'),
                 new CalendarUpdated(
@@ -289,8 +288,8 @@ final class EventImportedFromUDB2Test extends TestCase
         $this->assertEquals(
             [
                 new TitleUpdated($eventId, 'Oscar et la Dame Rose'),
-                new TitleTranslated($eventId, new LegacyLanguage('fr'), 'Oscar et la Dame Rose'),
-                new TitleTranslated($eventId, new LegacyLanguage('en'), 'Oscar et la Dame Rose'),
+                new TitleTranslated($eventId, new Language('fr'), 'Oscar et la Dame Rose'),
+                new TitleTranslated($eventId, new Language('en'), 'Oscar et la Dame Rose'),
                 new TypeUpdated($eventId, new EventType('0.55.0.0.0', 'Theatervoorstelling')),
                 new DummyLocationUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
