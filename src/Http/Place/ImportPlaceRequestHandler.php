@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Place\Udb3ModelToLegacyPlaceAdapter;
 use CultuurNet\UDB3\Model\Place\Place;
@@ -185,7 +184,11 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             );
 
             $commands[] = new UpdateType($placeId, $type->getId());
-            $commands[] = new UpdateAddress($placeId, $address, $mainLanguage);
+            $commands[] = new UpdateAddress(
+                $placeId,
+                $place->getAddress()->getTranslation($place->getMainLanguage()),
+                $place->getMainLanguage()
+            );
             $commands[] = new UpdateCalendar($placeId, $calendar);
         }
 
@@ -223,9 +226,12 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdateDescription($placeId, $language, $description);
         }
 
-        foreach ($placeAdapter->getAddressTranslations() as $language => $address) {
-            $language = new LegacyLanguage($language);
-            $commands[] = new UpdateAddress($placeId, $address, $language);
+        foreach ($place->getAddress()->getLanguagesWithoutOriginal() as $language) {
+            $commands[] = new UpdateAddress(
+                $placeId,
+                $place->getAddress()->getTranslation($language),
+                $language
+            );
         }
 
         $commands[] = new ImportLabels($placeId, $place->getLabels());
