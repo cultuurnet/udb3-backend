@@ -7,10 +7,6 @@ namespace CultuurNet\UDB3\Http\Place;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
@@ -46,7 +42,11 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -828,7 +828,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         new Locality('Leuven'),
                         new CountryCode('BE')
                     ),
-                    new LegacyLanguage('nl')
+                    new Language('nl')
                 ),
                 new UpdateCalendar(
                     $placeId,
@@ -1016,7 +1016,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         new Locality('Leuven'),
                         new CountryCode('BE')
                     ),
-                    new LegacyLanguage('nl')
+                    new Language('nl')
                 ),
                 new UpdateCalendar(
                     $placeId,
@@ -1233,7 +1233,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         new Locality('Leuven'),
                         new CountryCode('BE')
                     ),
-                    new LegacyLanguage('nl')
+                    new Language('nl')
                 ),
                 new UpdateCalendar(
                     $placeId,
@@ -1320,7 +1320,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         new Locality('Leuven'),
                         new CountryCode('BE')
                     ),
-                    new LegacyLanguage('nl')
+                    new Language('nl')
                 ),
                 new UpdateCalendar(
                     $placeId,
