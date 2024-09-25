@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\Completeness\Weights;
@@ -56,7 +57,8 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
                         $container->get('media_object_iri_generator')
                     ),
                     new CdbXMLImporter(
-                        $container->get(CdbXMLToJsonLDLabelImporter::class)
+                        $container->get(CdbXMLToJsonLDLabelImporter::class),
+                        new CultureFeedAddressFactory()
                     ),
                     new CompletenessFromWeights(
                         Weights::fromConfig($container->get('config')['completeness']['organizer'])
