@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription as PlaceUpdateDescription;
 use PHPUnit\Framework\TestCase;

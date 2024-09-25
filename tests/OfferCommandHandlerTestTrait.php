@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3;
 
 use Broadway\Repository\Repository;
 use Broadway\CommandHandling\Testing\Scenario;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
@@ -115,7 +114,7 @@ trait OfferCommandHandlerTestTrait
                 [$this->factorOfferCreated($id)]
             )
             ->when(
-                new $commandClass($id, new LegacyLanguage('nl'), $description)
+                new $commandClass($id, new Language('nl'), $description)
             )
             ->then([new $eventClass($id, $description)]);
     }

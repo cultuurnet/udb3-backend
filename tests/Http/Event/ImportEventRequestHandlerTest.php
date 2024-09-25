@@ -699,7 +699,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 ),
                 new UpdateDescription(
                     $eventId,
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     new LegacyDescription('Nederlandse beschrijving')
                 ),
                 new UpdateTypicalAgeRange($eventId, AgeRange::fromString('6-12')),
@@ -732,7 +732,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 ),
                 new UpdateDescription(
                     $eventId,
-                    new LegacyLanguage('en'),
+                    new Language('en'),
                     new LegacyDescription('English description')
                 ),
                 new ImportLabels(

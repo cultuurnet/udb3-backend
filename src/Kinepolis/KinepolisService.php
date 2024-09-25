@@ -25,7 +25,6 @@ use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
 use CultuurNet\UDB3\Kinepolis\Trailer\TrailerRepository;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedMovie;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedPriceForATheater;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -201,7 +200,7 @@ final class KinepolisService
         if ($parsedMovie->getDescription() !== null) {
             $updateDescription = new UpdateDescription(
                 $eventId,
-                new LegacyLanguage('nl'),
+                new Language('nl'),
                 Description::fromUdb3ModelDescription($parsedMovie->getDescription())
             );
             $commands[] = $updateDescription;

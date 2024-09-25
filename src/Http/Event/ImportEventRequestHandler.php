@@ -35,7 +35,6 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Import\Event\Udb3ModelToLegacyEventAdapter;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
@@ -232,7 +231,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         $description = $eventAdapter->getDescription();
         if ($description) {
-            $commands[] = new UpdateDescription($eventId, $mainLanguage, $description);
+            $commands[] = new UpdateDescription($eventId, $event->getMainLanguage(), $description);
         }
 
         $ageRange = $eventAdapter->getAgeRange();
@@ -255,7 +254,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         }
 
         foreach ($eventAdapter->getDescriptionTranslations() as $language => $description) {
-            $language = new LegacyLanguage($language);
+            $language = new Language($language);
             $commands[] = new UpdateDescription($eventId, $language, $description);
         }
 
