@@ -223,7 +223,7 @@ final class KinepolisService
         $eventId = $this->uuidGenerator->generate();
         $eventAggregate = EventAggregate::create(
             $eventId,
-            new LegacyLanguage('nl'),
+            new Language('nl'),
             $parsedMovie->getTitle(),
             new EventType('0.50.6.0.0', 'Film'),
             $parsedMovie->getLocationId(),

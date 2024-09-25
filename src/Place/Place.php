@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Offer;
@@ -73,7 +74,6 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3Language;
 
 class Place extends Offer
 {
@@ -110,7 +110,7 @@ class Place extends Offer
 
     public static function create(
         string $id,
-        LegacyLanguage $mainLanguage,
+        Language $mainLanguage,
         Title $title,
         EventType $eventType,
         Address $address,
@@ -120,7 +120,7 @@ class Place extends Offer
         $place = new self();
         $place->apply(new PlaceCreated(
             $id,
-            $mainLanguage->toUdb3ModelLanguage(),
+            $mainLanguage,
             $title->toString(),
             $eventType,
             $address,
@@ -133,7 +133,7 @@ class Place extends Offer
 
     protected function applyPlaceCreated(PlaceCreated $placeCreated): void
     {
-        $this->mainLanguage = LegacyLanguage::fromUdb3ModelLanguage($placeCreated->getMainLanguage());
+        $this->mainLanguage = $placeCreated->getMainLanguage();
         $this->titles[$this->mainLanguage->getCode()] = $placeCreated->getTitle();
         $this->calendar = $placeCreated->getCalendar();
         $this->contactPoint = new ContactPoint();
@@ -235,7 +235,7 @@ class Place extends Offer
         $this->placeId = $placeImported->getActorId();
 
         // When importing from UDB2 the default main language is always 'nl'.
-        $this->mainLanguage = new LegacyLanguage('nl');
+        $this->mainLanguage = new Language('nl');
 
         $udb2Actor = ActorItemFactory::createActorFromCdbXml(
             $placeImported->getCdbXmlNamespaceUri(),
@@ -413,7 +413,7 @@ class Place extends Offer
         return new DescriptionUpdated($this->placeId, $description);
     }
 
-    protected function createDescriptionDeletedEvent(Udb3Language $language): DescriptionDeleted
+    protected function createDescriptionDeletedEvent(Language $language): DescriptionDeleted
     {
         return new DescriptionDeleted($this->placeId, $language);
     }

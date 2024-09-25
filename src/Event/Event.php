@@ -121,7 +121,7 @@ final class Event extends Offer
 
     public static function create(
         string $eventId,
-        LegacyLanguage $mainLanguage,
+        Language $mainLanguage,
         Title $title,
         EventType $eventType,
         LocationId $location,
@@ -134,7 +134,7 @@ final class Event extends Offer
         $event->apply(
             new EventCreated(
                 $eventId,
-                $mainLanguage->toUdb3ModelLanguage(),
+                $mainLanguage,
                 $title->toString(),
                 $eventType,
                 $location,
@@ -217,7 +217,7 @@ final class Event extends Offer
         $this->typeId = $eventCreated->getEventType()->getId();
         $this->themeId = $eventCreated->getTheme() ? $eventCreated->getTheme()->getId() : null;
         $this->locationId = $eventCreated->getLocation();
-        $this->mainLanguage = LegacyLanguage::fromUdb3ModelLanguage($eventCreated->getMainLanguage());
+        $this->mainLanguage = $eventCreated->getMainLanguage();
         $this->workflowStatus = WorkflowStatus::DRAFT();
     }
 
@@ -233,7 +233,7 @@ final class Event extends Offer
     {
         $this->eventId = $eventImported->getEventId();
         // When importing from UDB2 the default main language is always 'nl'.
-        $this->mainLanguage = new LegacyLanguage('nl');
+        $this->mainLanguage = new Language('nl');
         $this->setUDB2Data($eventImported);
     }
 
