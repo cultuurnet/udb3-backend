@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\Place;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
+use CultuurNet\UDB3\Address\Locality as LegacyLocality;
+use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
+use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
@@ -17,7 +17,11 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -251,7 +255,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
         Address $originalAddress,
         Address $updatedAddress
     ): void {
-        $language = new LegacyLanguage('nl');
+        $language = new Language('nl');
 
         $this->scenario
             ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
@@ -262,7 +266,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                         new Language('nl'),
                         'Test place',
                         new EventType('0.1.1', 'Jeugdhuis'),
-                        $originalAddress,
+                        LegacyAddress::fromUdb3ModelAddress($originalAddress),
                         new Calendar(CalendarType::PERMANENT())
                     ),
                 ]
@@ -274,7 +278,10 @@ class PlaceTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new AddressUpdated('c5c1b435-0f3c-4b75-9f28-94d93be7078b', $updatedAddress),
+                    new AddressUpdated(
+                        'c5c1b435-0f3c-4b75-9f28-94d93be7078b',
+                        LegacyAddress::fromUdb3ModelAddress($updatedAddress)
+                    ),
                 ]
             );
     }
@@ -286,7 +293,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
-        $address = $placeCreated->getAddress();
+        $address = $placeCreated->getAddress()->toUdb3ModelAddress();
 
         $translatedAddress = new Address(
             new Street('One May Street'),
@@ -304,13 +311,17 @@ class PlaceTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Place $place) use ($address, $translatedAddress): void {
-                    $place->updateAddress($address, new LegacyLanguage('nl'));
-                    $place->updateAddress($translatedAddress, new LegacyLanguage('en'));
-                    $place->updateAddress($translatedAddress, new LegacyLanguage('en'));
+                    $place->updateAddress($address, new Language('nl'));
+                    $place->updateAddress($translatedAddress, new Language('en'));
+                    $place->updateAddress($translatedAddress, new Language('en'));
                 }
             )
             ->then([
-                new AddressTranslated($placeId, $translatedAddress, new LegacyLanguage('en')),
+                new AddressTranslated(
+                    $placeId,
+                    LegacyAddress::fromUdb3ModelAddress($translatedAddress),
+                    new LegacyLanguage('en')
+                ),
             ]);
     }
 
@@ -429,7 +440,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
         Address $originalAddress,
         Address $updatedAddress
     ): void {
-        $language = new LegacyLanguage('fr');
+        $language = new Language('fr');
 
         $this->scenario
             ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
@@ -440,7 +451,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                         new Language('nl'),
                         'Test place',
                         new EventType('0.1.1', 'Jeugdhuis'),
-                        $originalAddress,
+                        LegacyAddress::fromUdb3ModelAddress($originalAddress),
                         new Calendar(CalendarType::PERMANENT())
                     ),
                 ]
@@ -452,7 +463,11 @@ class PlaceTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new AddressTranslated('c5c1b435-0f3c-4b75-9f28-94d93be7078b', $updatedAddress, $language),
+                    new AddressTranslated(
+                        'c5c1b435-0f3c-4b75-9f28-94d93be7078b',
+                        LegacyAddress::fromUdb3ModelAddress($updatedAddress),
+                        LegacyLanguage::fromUdb3ModelLanguage($language)
+                    ),
                 ]
             );
     }
@@ -623,10 +638,10 @@ class PlaceTest extends AggregateRootScenarioTestCase
     {
         $placeId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
 
-        $address = new Address(
-            new Street('Eenmeilaan'),
-            new PostalCode('3010'),
-            new Locality('Kessel-Lo'),
+        $address = new LegacyAddress(
+            new LegacyStreet('Eenmeilaan'),
+            new LegacyPostalCode('3010'),
+            new LegacyLocality('Kessel-Lo'),
             new CountryCode('BE')
         );
 
