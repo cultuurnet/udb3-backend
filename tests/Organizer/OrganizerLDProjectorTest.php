@@ -11,6 +11,7 @@ use Broadway\Repository\Repository;
 use Broadway\Serializer\Serializable;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Actor\ActorEvent;
+use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
@@ -105,7 +106,8 @@ final class OrganizerLDProjectorTest extends TestCase
                 $iriGenerator
             ),
             new CdbXMLImporter(
-                new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class))
+                new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class)),
+                new CultureFeedAddressFactory()
             ),
             new CompletenessFromWeights(
                 Weights::fromConfig([
