@@ -9,7 +9,6 @@ use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Collection\Exception\CollectionItemNotFoundException;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Facility;
@@ -341,16 +340,13 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->titles[$this->mainLanguage->getCode()] = $titleUpdated->getTitle();
     }
 
-    public function updateDescription(LegacyDescription $description, LegacyLanguage $language): void
+    public function updateDescription(Description $description, Language $language): void
     {
-        if ($this->isDescriptionChanged($description->toUdb3ModelDescription(), $language->toUdb3ModelLanguage())) {
+        if ($this->isDescriptionChanged($description, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
-                $event = $this->createDescriptionTranslatedEvent(
-                    $language->toUdb3ModelLanguage(),
-                    $description->toUdb3ModelDescription()
-                );
+                $event = $this->createDescriptionTranslatedEvent($language, $description);
             } else {
-                $event = $this->createDescriptionUpdatedEvent($description->toUdb3ModelDescription());
+                $event = $this->createDescriptionUpdatedEvent($description);
             }
 
             $this->apply($event);
