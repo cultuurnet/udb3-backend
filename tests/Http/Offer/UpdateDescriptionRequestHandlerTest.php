@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateDescription;
+use CultuurNet\UDB3\Offer\Commands\DeleteDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription as PlaceUpdateDescription;
 use PHPUnit\Framework\TestCase;
 
@@ -45,11 +46,12 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
     /**
      * @test
      * @dataProvider validRequestsProvider
+     * @param AbstractUpdateDescription|DeleteDescription $descriptionCommand
      */
     public function it_handles_updating_the_description_of_an_offer(
         string $offerType,
         string $request,
-        AbstractUpdateDescription $updateDescription
+        $descriptionCommand
     ): void {
         $updateDescriptionRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
@@ -62,7 +64,7 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             [
-                $updateDescription,
+                $descriptionCommand,
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -97,19 +99,17 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
             [
                 'offerType' => 'events',
                 'request' => '{"description": ""}',
-                'updateDescription' => new EventUpdateDescription(
+                'updateDescription' => new DeleteDescription(
                     self::OFFER_ID,
-                    new Language('en'),
-                    new Description('')
+                    new Language('en')
                 ),
             ],
             [
                 'offerType' => 'places',
                 'request' => '{"description": ""}',
-                'updateDescription' => new PlaceUpdateDescription(
+                'updateDescription' => new DeleteDescription(
                     self::OFFER_ID,
-                    new Language('en'),
-                    new Description('')
+                    new Language('en')
                 ),
             ],
         ];
