@@ -7,18 +7,19 @@ namespace CultuurNet\UDB3\Place;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
@@ -110,12 +111,12 @@ class GeoCoordinatesProcessManagerTest extends TestCase
             new Metadata([]),
             new AddressTranslated(
                 '4b735422-2bf3-4241-aabb-d70609d2d1d3',
-                new Address(
+                LegacyAddress::fromUdb3ModelAddress(new Address(
                     new Street('Teststraat 1'),
                     new PostalCode('1000'),
                     new Locality('Bxl'),
                     new CountryCode('BE')
-                ),
+                )),
                 new LegacyLanguage('fr')
             )
         );
@@ -187,12 +188,12 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         new Language('es'),
                         'Het depot',
                         new EventType('mock.1', 'Mock'),
-                        new Address(
+                        LegacyAddress::fromUdb3ModelAddress(new Address(
                             new Street('Teststraat 1'),
                             new PostalCode('1000'),
                             new Locality('Bxl'),
                             new CountryCode('BE')
-                        ),
+                        )),
                         new Calendar(CalendarType::PERMANENT())
                     )
                 ),
@@ -215,12 +216,12 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         '4b735422-2bf3-4241-aabb-d70609d2d1d3',
                         'Het depot',
                         new EventType('mock.1', 'Mock'),
-                        new Address(
+                        LegacyAddress::fromUdb3ModelAddress(new Address(
                             new Street('Teststraat 1'),
                             new PostalCode('1000'),
                             new Locality('Bxl'),
                             new CountryCode('BE')
-                        ),
+                        )),
                         new Calendar(CalendarType::PERMANENT())
                     )
                 ),
@@ -241,12 +242,12 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Metadata([]),
                     new AddressUpdated(
                         '4b735422-2bf3-4241-aabb-d70609d2d1d3',
-                        new Address(
+                        LegacyAddress::fromUdb3ModelAddress(new Address(
                             new Street('Teststraat 1'),
                             new PostalCode('1000'),
                             new Locality('Bxl'),
                             new CountryCode('BE')
-                        )
+                        ))
                     )
                 ),
                 new UpdateGeoCoordinatesFromAddress(
