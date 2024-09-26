@@ -105,7 +105,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected array $titles;
 
     /**
-     * @var LegacyDescription[]
+     * @var Description[]
      */
     protected array $descriptions;
 
@@ -343,14 +343,14 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateDescription(LegacyDescription $description, LegacyLanguage $language): void
     {
-        if ($this->isDescriptionChanged($description, $language)) {
+        if ($this->isDescriptionChanged($description->toUdb3ModelDescription(), $language->toUdb3ModelLanguage())) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
                 $event = $this->createDescriptionTranslatedEvent(
                     $language->toUdb3ModelLanguage(),
                     $description->toUdb3ModelDescription()
                 );
             } else {
-                $event = $this->createDescriptionUpdatedEvent($description);
+                $event = $this->createDescriptionUpdatedEvent($description->toUdb3ModelDescription());
             }
 
             $this->apply($event);
@@ -873,7 +873,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             $title->toString() !== $this->titles[$languageCode];
     }
 
-    private function isDescriptionChanged(LegacyDescription $description, LegacyLanguage $language): bool
+    private function isDescriptionChanged(Description $description, Language $language): bool
     {
         $languageCode = $language->getCode();
 
@@ -1078,7 +1078,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createTitleUpdatedEvent(Title $title): AbstractTitleUpdated;
 
-    abstract protected function createDescriptionUpdatedEvent(LegacyDescription $description): AbstractDescriptionUpdated;
+    abstract protected function createDescriptionUpdatedEvent(Description $description): AbstractDescriptionUpdated;
 
     abstract protected function createDescriptionDeletedEvent(Language $language): AbstractDescriptionDeleted;
 
