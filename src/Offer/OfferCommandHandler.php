@@ -6,7 +6,8 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Description as LegacyDescription;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
@@ -159,8 +160,8 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer = $this->load($updateDescription->getItemId());
 
         $offer->updateDescription(
-            $updateDescription->getDescription(),
-            Language::fromUdb3ModelLanguage($updateDescription->getLanguage())
+            LegacyDescription::fromUdb3ModelDescription($updateDescription->getDescription()),
+            LegacyLanguage::fromUdb3ModelLanguage($updateDescription->getLanguage())
         );
 
         $this->offerRepository->save($offer);
