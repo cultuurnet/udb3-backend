@@ -13,8 +13,8 @@ class DescriptionTest extends TestCase
      */
     public function it_should_not_be_empty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Given string should not be empty.');
+        $this->expectException(DescriptionShouldNotBeEmpty::class);
+        $this->expectExceptionMessage('Description should not be empty.');
 
         new Description('');
     }
