@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Place;
 use Broadway\CommandHandling\CommandBus;
 use CultureFeed_Cdb_Data_Address;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
-use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
+use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactoryInterface;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
@@ -20,8 +20,8 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
-use Psr\Log\LoggerInterface;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use Psr\Log\LoggerInterface;
 
 class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
 {
@@ -141,7 +141,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
         // a naive approach like this.
         $command = new UpdateGeoCoordinatesFromAddress(
             $actorImportedFromUDB2->getActorId(),
-            $address->toUdb3ModelAddress()
+            $address
         );
 
         $this->commandBus->dispatch($command);

@@ -7,17 +7,17 @@ namespace CultuurNet\UDB3\Organizer\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Formatter\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Formatter\LocalityAddressFormatter;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Organizer\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
@@ -54,7 +54,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $organizerCreated = new OrganizerCreated(
             $organizerId,
             'some representative title',
-            $address->getStreetAddress()->toString(),
+            $address->getStreet()->toString(),
             $address->getPostalCode()->toString(),
             $address->getLocality()->toString(),
             $address->getCountryCode()->toString(),
@@ -96,7 +96,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $organizerCreated = new OrganizerCreated(
             $organizerId,
             'some representative title',
-            $address->getStreetAddress()->toString(),
+            $address->getStreet()->toString(),
             $address->getPostalCode()->toString(),
             $address->getLocality()->toString(),
             $address->getCountryCode()->toString(),
@@ -145,7 +145,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $organizerCreated = new OrganizerCreated(
             $organizerId,
             'some representative title',
-            $address->getStreetAddress()->toString(),
+            $address->getStreet()->toString(),
             $address->getPostalCode()->toString(),
             $address->getLocality()->toString(),
             $address->getCountryCode()->toString(),
