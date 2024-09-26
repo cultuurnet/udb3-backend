@@ -188,7 +188,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
      */
     public function it_projects_the_updating_of_description(): void
     {
-        $description = new Description('description');
+        $description = new \CultuurNet\UDB3\Model\ValueObject\Text\Description('description');
         $id = 'foo';
         $eventClass = $this->getEventClass('DescriptionUpdated');
         $descriptionUpdated = new $eventClass($id, $description);

@@ -715,7 +715,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_description_updated(): void
     {
-        $event = new DescriptionUpdated(self::EVENT_ID_1, new \CultuurNet\UDB3\Description('new'));
+        $event = new DescriptionUpdated(self::EVENT_ID_1, new Description('new'));
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

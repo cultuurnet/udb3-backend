@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
@@ -357,7 +356,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_DescriptionUpdated_event(): void
     {
-        $event = new DescriptionUpdated('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new LegacyDescription('new'));
+        $event = new DescriptionUpdated('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new Description('new'));
         $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
 
         $this->historyProjector->handle($domainMessage);
