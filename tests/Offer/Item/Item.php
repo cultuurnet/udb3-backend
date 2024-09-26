@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Offer\Item;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Description;
+use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
@@ -175,7 +176,7 @@ final class Item extends Offer
         return new DescriptionTranslated($this->id, $language, $description);
     }
 
-    protected function createDescriptionUpdatedEvent(Description $description): DescriptionUpdated
+    protected function createDescriptionUpdatedEvent(LegacyDescription $description): DescriptionUpdated
     {
         return new DescriptionUpdated($this->id, $description);
     }
