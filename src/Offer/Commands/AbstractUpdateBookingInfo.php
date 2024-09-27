@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 
 abstract class AbstractUpdateBookingInfo extends AbstractCommand
 {
