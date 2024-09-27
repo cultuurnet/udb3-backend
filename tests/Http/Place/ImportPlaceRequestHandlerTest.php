@@ -7,13 +7,13 @@ namespace CultuurNet\UDB3\Http\Place;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
@@ -39,6 +39,8 @@ use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -63,8 +65,11 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
@@ -85,7 +90,6 @@ use CultuurNet\UDB3\Place\Place;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
 use Money\Currency;
@@ -863,15 +867,16 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new UpdateBookingInfo(
                     $placeId,
                     new BookingInfo(
-                        'https://www.dehel.be/booking',
-                        new MultilingualString(
-                            new LegacyLanguage('nl'),
-                            'Bestel hier je tickets'
+                        new WebsiteLink(
+                            new Url('https://www.dehel.be/booking'),
+                            (new TranslatedWebsiteLabel(new Language('nl'), new WebsiteLabel('Bestel hier je tickets')))
                         ),
-                        '016 10 20 30',
-                        'booking@dehel.be',
-                        new DateTimeImmutable('2020-05-17T22:00:00+00:00'),
-                        new DateTimeImmutable('2028-05-17T22:00:00+00:00'),
+                        new TelephoneNumber('016 10 20 30'),
+                        new EmailAddress('booking@dehel.be'),
+                        new BookingAvailability(
+                            DateTimeFactory::fromAtom('2020-05-17T22:00:00+00:00'),
+                            DateTimeFactory::fromAtom('2028-05-17T22:00:00+00:00')
+                        )
                     )
                 ),
                 new UpdateContactPoint(

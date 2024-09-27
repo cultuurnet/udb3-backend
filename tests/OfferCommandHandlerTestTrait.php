@@ -19,7 +19,10 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -59,7 +62,15 @@ trait OfferCommandHandlerTestTrait
     public function it_can_update_booking_info_of_an_offer(): void
     {
         $id = '1';
-        $bookingInfo = new BookingInfo('https://www.publiq.be');
+        $bookingInfo = new \CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo(
+            new WebsiteLink(
+                new Url('https://www.publiq.be'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('publiq')
+                )
+            )
+        );
         $commandClass = $this->getCommandClass('UpdateBookingInfo');
         $eventClass = $this->getEventClass('BookingInfoUpdated');
 
@@ -71,7 +82,7 @@ trait OfferCommandHandlerTestTrait
             ->when(
                 new $commandClass($id, $bookingInfo)
             )
-            ->then([new $eventClass($id, $bookingInfo)]);
+            ->then([new $eventClass($id, BookingInfo::fromUdb3ModelBookingInfo($bookingInfo))]);
     }
 
     /**

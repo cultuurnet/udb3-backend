@@ -8,9 +8,9 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
@@ -33,7 +33,6 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
@@ -42,6 +41,8 @@ use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -63,8 +64,11 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
@@ -76,8 +80,6 @@ use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
-use DateTimeImmutable;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -671,13 +673,17 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateBookingInfo(
                     $eventId,
                     new BookingInfo(
-                        'https://www.publiq.be',
-                        (new MultilingualString(new LegacyLanguage('nl'), 'Nederlandse label'))
-                            ->withTranslation(new LegacyLanguage('en'), 'English label'),
-                        '016 12 34 56',
-                        'info@publiq.be',
-                        new DateTimeImmutable('2021-05-17T22:00:00+00:00'),
-                        new DateTimeImmutable('2021-05-21T22:00:00+00:00')
+                        new WebsiteLink(
+                            new Url('https://www.publiq.be'),
+                            (new TranslatedWebsiteLabel(new Language('nl'), new WebsiteLabel('Nederlandse label')))
+                                ->withTranslation(new Language('en'), new WebsiteLabel('English label'))
+                        ),
+                        new TelephoneNumber('016 12 34 56'),
+                        new EmailAddress('info@publiq.be'),
+                        new BookingAvailability(
+                            DateTimeFactory::fromAtom('2021-05-17T22:00:00+00:00'),
+                            DateTimeFactory::fromAtom('2021-05-21T22:00:00+00:00')
+                        )
                     )
                 ),
                 new UpdateContactPoint(
