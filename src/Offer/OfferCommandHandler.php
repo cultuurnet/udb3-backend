@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\Repository;
+use CultuurNet\UDB3\BookingInfo as LegacyBookingInfo;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -200,9 +201,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     {
         $offer = $this->load($updateBookingInfo->getItemId());
 
-        $offer->updateBookingInfo(
-            $updateBookingInfo->getBookingInfo()
-        );
+        $offer->updateBookingInfo(LegacyBookingInfo::fromUdb3ModelBookingInfo($updateBookingInfo->getBookingInfo()));
 
         $this->offerRepository->save($offer);
     }

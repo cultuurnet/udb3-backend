@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\BookingInfo as LegacyBookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo as EventUpdateBookingInfo;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -52,7 +51,6 @@ final class UpdateBookingInfoRequestHandler implements RequestHandlerInterface
 
         /** @var BookingInfo $bookingInfo */
         $bookingInfo = $request->getParsedBody();
-        $bookingInfo = LegacyBookingInfo::fromUdb3ModelBookingInfo($bookingInfo);
 
         if ($routeParameters->getOfferType()->sameAs(OfferType::event())) {
             $updateBookingInfo = new EventUpdateBookingInfo($offerId, $bookingInfo);

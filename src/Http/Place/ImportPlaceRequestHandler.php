@@ -192,8 +192,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdateCalendar($placeId, $calendar);
         }
 
-        $bookingInfo = $placeAdapter->getBookingInfo();
-        $commands[] = new UpdateBookingInfo($placeId, $bookingInfo);
+        $commands[] = new UpdateBookingInfo($placeId, $place->getBookingInfo());
 
         $commands[] = new UpdateContactPoint($placeId, $place->getContactPoint());
 
