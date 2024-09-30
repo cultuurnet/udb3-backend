@@ -14,7 +14,7 @@ parameters:
 	scanFiles:
 		- vendor/gridonic/princexml-php/lib/prince.php
 	excludePaths:
-	    - src/EventExport/Format/HTML/TransformingIteratorIterator.php
+		- src/EventExport/Format/HTML/TransformingIteratorIterator.php
 		- tests/Event/Productions/SimilarEventsRepositoryTest.php
 		- tests/Http/Productions/SuggestProductionRequestHandlerTest.php
 		- tests/Offer/Commands/Moderation/AbstractModerationCommandTestBase.php
