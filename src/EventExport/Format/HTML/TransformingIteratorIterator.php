@@ -23,7 +23,8 @@ class TransformingIteratorIterator extends IteratorIterator
         $this->function = $function;
     }
 
-    public function current(): int
+    // @todo return types for this function can only be added after we are on PHP 8
+    public function current()
     {
         $fn = $this->function;
         $current = parent::current();
