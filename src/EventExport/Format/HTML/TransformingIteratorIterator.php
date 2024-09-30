@@ -23,7 +23,7 @@ class TransformingIteratorIterator extends IteratorIterator
         $this->function = $function;
     }
 
-    public function current(): int
+    public function current()
     {
         $fn = $this->function;
         $current = parent::current();
