@@ -10,7 +10,7 @@ Feature: Test place images property
       | description     | logo |
       | copyrightHolder | me   |
       | language        | nl   |
-    When I upload "file" from path "images/UDB.jpg" to "/images/"
+    When I upload "file" from path "images/udb.jpg" to "/images/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "imageId" as "imageId1"
     And I keep the value of the JSON response at "@id" as "imageUrl1"
@@ -19,7 +19,7 @@ Feature: Test place images property
       | description     | logo2 |
       | copyrightHolder | me2   |
       | language        | nl   |
-    When I upload "file" from path "images/UDB.jpg" to "/images/"
+    When I upload "file" from path "images/udb.jpg" to "/images/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "imageId" as "imageId2"
     And I keep the value of the JSON response at "@id" as "imageUrl2"
