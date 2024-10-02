@@ -11,7 +11,7 @@ Feature: Test the UDB3 image API
         | description     | logo |
         | copyrightHolder | me   |
         | language        | nl   |
-     When I upload "file" from path "images/UDB.jpg" to "/images/"
+     When I upload "file" from path "images/udb.jpg" to "/images/"
      Then the response status should be "201"
      And I keep the value of the JSON response at "@id" as "image_@id"
      And I keep the value of the JSON response at "imageId" as "image_id"
@@ -55,7 +55,7 @@ Feature: Test the UDB3 image API
       | description     | logo |
       | copyrightHolder | me   |
       | language        | nl   |
-    When I upload "file" from path "images/UDB.jpg" to "/images"
+    When I upload "file" from path "images/udb.jpg" to "/images"
     Then the response status should be "201"
     And I keep the value of the JSON response at "@id" as "image_@id"
     And I keep the value of the JSON response at "imageId" as "image_id"
