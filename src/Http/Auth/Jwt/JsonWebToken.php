@@ -63,7 +63,7 @@ final class JsonWebToken
             return self::UIT_ID_V2_JWT_PROVIDER_TOKEN;
         }
 
-        // This is a check for Keycloak tokens, auth0 does not have this field
+        // Keycloak ID Tokens have a claim `typ` with a value of ID
         if ($this->token->claims()->get('typ', '') === 'ID') {
             return self::UIT_ID_V2_JWT_PROVIDER_TOKEN;
         }
