@@ -63,6 +63,11 @@ final class JsonWebToken
             return self::UIT_ID_V2_JWT_PROVIDER_TOKEN;
         }
 
+        // This is a check for Keycloak tokens, auth0 does not have this field
+        if ($this->token->claims()->get('typ', '') === 'ID') {
+            return self::UIT_ID_V2_JWT_PROVIDER_TOKEN;
+        }
+
         // V2 client access tokens are always requested using the client-credentials grant type (gty)
         // @see https://stackoverflow.com/questions/49492471/whats-the-meaning-of-the-gty-claim-in-a-jwt-token/49492971
         if ($this->token->claims()->get('gty', '') === 'client-credentials') {
