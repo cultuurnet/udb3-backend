@@ -134,6 +134,18 @@ class JsonWebTokenTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_v2_jwt_provider_token_type_when_typ_is_id(): void
+    {
+        $jwt = JsonWebTokenFactory::createWithClaims([
+            'azp' => 'mock-client',
+            'typ' => 'ID',
+        ]);
+        $this->assertEquals(JsonWebToken::UIT_ID_V2_JWT_PROVIDER_TOKEN, $jwt->getType());
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_v2_client_access_token_type_if_the_gty_claim_is_set_to_client_credentials(): void
     {
         $jwt = JsonWebTokenFactory::createWithClaims(
