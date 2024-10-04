@@ -2,8 +2,8 @@
 
 UPDATE_HOSTS=${HAS_SUDO:-true}
 
-if [ "$UPDATE_HOSTS" = "true" ] && ! grep -q "host.docker.internal" /etc/hosts; then
-  echo "host.docker.internal has to be in your hosts-file, to add you need sudo privileges"
+if [ "$UPDATE_HOSTS" = "true" ] && ! grep -q "io.uitdatabank.local" /etc/hosts; then
+  echo "io.uitdatabank.local has to be in your hosts-file, to add you need sudo privileges"
   sudo sh -c 'echo "127.0.0.1 host.docker.internal" >> /etc/hosts'
 fi
 
