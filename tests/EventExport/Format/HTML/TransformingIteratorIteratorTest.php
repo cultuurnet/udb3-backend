@@ -18,6 +18,11 @@ class TransformingIteratorIteratorTest extends TestCase
             0,
             10,
             6,
+            // @see https://jira.publiq.be/browse/III-6339
+            [
+                3,
+                7,
+            ],
             21,
         ];
 
