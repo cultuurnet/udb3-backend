@@ -25,10 +25,22 @@ use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 final class AMQPPublisherServiceProvider extends AbstractServiceProvider
 {
+    private AMQPStreamConnection $connection;
+    private ?JsonWebToken $jsonWebToken;
+
+    public function __construct()
+    {
+        $container = $this->getContainer();
+        $this->connection = $container->get(AMQPStreamConnection::class);
+        $this->jsonWebToken = $container->get(JsonWebToken::class);
+    }
+
+
     public function getProvidedServiceNames(): array
     {
         return [AMQPPublisher::class];
@@ -41,8 +53,7 @@ final class AMQPPublisherServiceProvider extends AbstractServiceProvider
         $container->addShared(
             AMQPPublisher::class,
             function () use ($container): ReplayFilteringEventListener {
-                $connection = $container->get('amqp.connection');
-                $channel = $connection->channel();
+                $channel = $this->connection->channel();
 
                 $contentTypeMapping = [
                     EventProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.event-projected-to-jsonld+json',
@@ -85,7 +96,7 @@ final class AMQPPublisherServiceProvider extends AbstractServiceProvider
                         // Check if the API key or Client ID is in the list of keys / ids that should have their
                         // messages routed to the "cli" queue to offload the API queue if the API key or Client ID is
                         // sending A LOT of requests. (Configured manually in config.yml)
-                        $jwt = $container->get(JsonWebToken::class);
+                        $jwt = $this->jsonWebToken;
                         $clientId = $jwt instanceof JsonWebToken ? $jwt->getClientId() : null;
                         $apiKey = $container->get(ApiKey::class);
                         $apiKey = $apiKey instanceof ApiKey ? $apiKey->toString() : null;
