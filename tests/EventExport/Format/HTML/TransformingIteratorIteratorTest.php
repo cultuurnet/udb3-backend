@@ -21,8 +21,12 @@ class TransformingIteratorIteratorTest extends TestCase
             21,
         ];
 
-        $increaseByOne = function ($i) {
-            return $i + 1;
+        $increaseByOne = function ($i) use (&$increaseByOne) {
+            if (is_array($i)) {
+                return array_map($increaseByOne, $i);
+            } else {
+                return $i + 1;
+            }
         };
 
         $iterator = new TransformingIteratorIterator(
@@ -38,6 +42,10 @@ class TransformingIteratorIteratorTest extends TestCase
                 1,
                 11,
                 7,
+                [
+                    4,
+                    8,
+                ],
                 22,
             ],
             $newItems
