@@ -9,7 +9,7 @@ return Publiq\PhpCsFixer\Config::fromFolders(
         'src/',
         'tests/',
         'web/',
-        'features/Bootstrap/',
+        'features/bootstrap/',
         'features/State/',
         'features/Steps/',
         'features/Support/',

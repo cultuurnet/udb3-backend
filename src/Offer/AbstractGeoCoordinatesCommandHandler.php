@@ -87,7 +87,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
         }
 
         if ($coordinates === null) {
-            $this->logger->debug('Could not find coordinates for fallback address for offer id ' . $offerId);
+            $this->logger->error('Could not find coordinates for fallback address for offer id ' . $offerId);
             return;
         }
 

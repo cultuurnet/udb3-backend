@@ -15,8 +15,8 @@ task :build_artifact do |task|
   FileUtils.mkdir_p('pkg')
   FileUtils.mkdir_p('cache')
   FileUtils.mkdir_p('session')
-  FileUtils.mkdir_p('log')
   FileUtils.touch('config.php')
+  FileUtils.rm('log/.gitignore')
   FileUtils.rm('web/downloads/.gitignore')
   FileUtils.rm('web/uploads/.gitignore')
 
