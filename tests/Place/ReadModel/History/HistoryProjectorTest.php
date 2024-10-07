@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
+use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
@@ -441,7 +442,7 @@ class HistoryProjectorTest extends TestCase
         $image = new Image(
             new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test.jpg'),
             new Language('en')
@@ -466,7 +467,7 @@ class HistoryProjectorTest extends TestCase
         $image = new Image(
             new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test.jpg'),
             new Language('en')
@@ -512,7 +513,7 @@ class HistoryProjectorTest extends TestCase
         $image1 = new Image(
             new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test1.jpg'),
             new Language('en')
@@ -521,7 +522,7 @@ class HistoryProjectorTest extends TestCase
         $image2 = new Image(
             new UUID('f1926870-136c-4b06-b2a1-1fab01590847'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test2.jpg'),
             new Language('en')
@@ -557,7 +558,7 @@ class HistoryProjectorTest extends TestCase
         $image1 = new Image(
             new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test1.jpg'),
             new Language('en')
@@ -566,7 +567,7 @@ class HistoryProjectorTest extends TestCase
         $image2 = new Image(
             new UUID('f1926870-136c-4b06-b2a1-1fab01590847'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test2.jpg'),
             new Language('en')
@@ -722,7 +723,7 @@ class HistoryProjectorTest extends TestCase
         $image = new Image(
             new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test.jpg'),
             new Language('en')

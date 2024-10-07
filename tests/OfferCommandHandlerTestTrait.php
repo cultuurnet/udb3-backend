@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -104,7 +105,7 @@ trait OfferCommandHandlerTestTrait
     public function it_can_update_description_of_an_offer(): void
     {
         $id = '1';
-        $description = new \CultuurNet\UDB3\Model\ValueObject\Text\Description('foo');
+        $description = new Description('foo');
         $commandClass = $this->getCommandClass('UpdateDescription');
         $eventClass = $this->getEventClass('DescriptionUpdated');
 

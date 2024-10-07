@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -188,7 +189,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
      */
     public function it_projects_the_updating_of_description(): void
     {
-        $description = new \CultuurNet\UDB3\Model\ValueObject\Text\Description('description');
+        $description = new Description('description');
         $id = 'foo';
         $eventClass = $this->getEventClass('DescriptionUpdated');
         $descriptionUpdated = new $eventClass($id, $description);
