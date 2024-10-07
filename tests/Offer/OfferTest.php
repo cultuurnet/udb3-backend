@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
@@ -1884,7 +1883,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item) use ($description): void {
-                    $item->updateDescription(LegacyDescription::fromUdb3ModelDescription($description), new LegacyLanguage('nl'));
+                    $item->updateDescription($description, new Language('nl'));
                 }
             )
             ->then([]);
@@ -1909,7 +1908,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item) use ($description, $language): void {
-                    $item->updateDescription(LegacyDescription::fromUdb3ModelDescription($description), LegacyLanguage::fromUdb3ModelLanguage($language));
+                    $item->updateDescription($description, $language);
                 }
             )
             ->then([
