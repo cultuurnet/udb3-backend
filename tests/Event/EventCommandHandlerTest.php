@@ -12,7 +12,6 @@ use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
@@ -121,7 +120,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
                 [$this->factorOfferCreated($id)]
             )
             ->when(new UpdateDescription($id, $language, $description))
-            ->then([new DescriptionTranslated($id, $language, LegacyDescription::fromUdb3ModelDescription($description))]);
+            ->then([new DescriptionTranslated($id, $language, $description)]);
     }
 
     /**
