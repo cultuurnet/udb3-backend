@@ -29,6 +29,7 @@ final class UitIdV2JwtValidator implements JwtValidator
 
         if ($tokenType === JsonWebToken::UIT_ID_V2_JWT_PROVIDER_TOKEN) {
             $this->validateIdTokenFromJwtProvider($token);
+            return;
         }
 
         if ($tokenType === JsonWebToken::UIT_ID_V2_USER_ACCESS_TOKEN ||

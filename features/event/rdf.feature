@@ -100,7 +100,7 @@ Feature: Test RDF projection of events
       | description     | logo |
       | copyrightHolder | me   |
       | language        | nl   |
-    When I upload "file" from path "images/UDB.jpg" to "/images/"
+    When I upload "file" from path "images/udb.jpg" to "/images/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "imageId" as "imageId"
     And I keep the value of the JSON response at "@id" as "imageUrl"
@@ -115,7 +115,7 @@ Feature: Test RDF projection of events
       | description     | logo |
       | copyrightHolder | me   |
       | language        | nl   |
-    When I upload "file" from path "images/UDB.jpg" to "/images/"
+    When I upload "file" from path "images/udb.jpg" to "/images/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "imageId" as "imageId"
     And I keep the value of the JSON response at "@id" as "imageUrl"
