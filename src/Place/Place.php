@@ -9,7 +9,6 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Language as LegacyLanguage;
@@ -413,7 +412,7 @@ class Place extends Offer
         return new DescriptionTranslated($this->placeId, $language, $description);
     }
 
-    protected function createDescriptionUpdatedEvent(LegacyDescription $description): DescriptionUpdated
+    protected function createDescriptionUpdatedEvent(Description $description): DescriptionUpdated
     {
         return new DescriptionUpdated($this->placeId, $description);
     }

@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3;
 
 use Broadway\Repository\Repository;
 use Broadway\CommandHandling\Testing\Scenario;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
@@ -117,7 +116,7 @@ trait OfferCommandHandlerTestTrait
             ->when(
                 new $commandClass($id, new Language('nl'), $description)
             )
-            ->then([new $eventClass($id, LegacyDescription::fromUdb3ModelDescription($description))]);
+            ->then([new $eventClass($id, $description)]);
     }
 
     /**
@@ -206,7 +205,7 @@ trait OfferCommandHandlerTestTrait
                     $this->factorOfferCreated($itemId),
                     new $imageAdded(
                         $itemId,
-                        $anotherImage = new Image(
+                        new Image(
                             $mediaObjectId,
                             new MIMEType('image/jpeg'),
                             new MediaDescription('my best selfie'),
