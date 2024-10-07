@@ -11,7 +11,6 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
@@ -37,7 +36,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Media\Properties\Description;
+use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
@@ -58,6 +57,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
@@ -633,7 +633,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new Image(
                     new UUID('85b04295-479c-40f5-b3dd-469dfb4387b3'),
                     MIMEType::fromSubtype('png'),
-                    new Description('Een stapel pannenkoeken'),
+                    new MediaDescription('Een stapel pannenkoeken'),
                     new CopyrightHolder('© publiq vzw'),
                     new Url('https://io.uitdatabank.dev/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.png'),
                     new Language('nl')
@@ -700,7 +700,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateDescription(
                     $eventId,
                     new Language('nl'),
-                    new LegacyDescription('Nederlandse beschrijving')
+                    new Description('Nederlandse beschrijving')
                 ),
                 new UpdateTypicalAgeRange($eventId, AgeRange::fromString('6-12')),
                 new UpdatePriceInfo(
@@ -733,7 +733,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateDescription(
                     $eventId,
                     new Language('en'),
-                    new LegacyDescription('English description')
+                    new Description('English description')
                 ),
                 new ImportLabels(
                     $eventId,

@@ -27,4 +27,9 @@ final class Description
     {
         return new self($udb3ModelDescription->toString());
     }
+
+    public function toUdb3ModelDescription(): Udb3ModelDescription
+    {
+        return new Udb3ModelDescription($this->toString());
+    }
 }

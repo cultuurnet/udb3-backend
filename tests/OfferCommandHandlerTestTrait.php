@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3;
 
 use Broadway\Repository\Repository;
 use Broadway\CommandHandling\Testing\Scenario;
+use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
@@ -104,7 +105,7 @@ trait OfferCommandHandlerTestTrait
     public function it_can_update_description_of_an_offer(): void
     {
         $id = '1';
-        $description = new Description('foo');
+        $description = new \CultuurNet\UDB3\Model\ValueObject\Text\Description('foo');
         $commandClass = $this->getCommandClass('UpdateDescription');
         $eventClass = $this->getEventClass('DescriptionUpdated');
 
@@ -116,7 +117,7 @@ trait OfferCommandHandlerTestTrait
             ->when(
                 new $commandClass($id, new Language('nl'), $description)
             )
-            ->then([new $eventClass($id, $description)]);
+            ->then([new $eventClass($id, LegacyDescription::fromUdb3ModelDescription($description))]);
     }
 
     /**
