@@ -32,7 +32,7 @@ services:
     networks:
       uitdatabank-backend:
         aliases:
-          - mysql.uitdatabank.dev
+          - mysql.uitdatabank.local
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
       start_period: 5s
