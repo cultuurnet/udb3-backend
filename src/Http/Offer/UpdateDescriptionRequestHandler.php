@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription as EventUpdateDescription;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -60,13 +59,13 @@ final class UpdateDescriptionRequestHandler implements RequestHandlerInterface
                 $updateDescription = new EventUpdateDescription(
                     $offerId,
                     $language,
-                    LegacyDescription::fromUdb3ModelDescription($description)
+                    $description
                 );
             } else {
                 $updateDescription = new PlaceUpdateDescription(
                     $offerId,
                     $language,
-                    LegacyDescription::fromUdb3ModelDescription($description)
+                    $description
                 );
             }
 

@@ -197,9 +197,13 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $commands[] = new UpdateContactPoint($placeId, $place->getContactPoint());
 
-        $description = $placeAdapter->getDescription();
+        $description = $place->getDescription();
         if ($description) {
-            $commands[] = new UpdateDescription($placeId, $place->getMainLanguage(), $description);
+            $commands[] = new UpdateDescription(
+                $placeId,
+                $place->getMainLanguage(),
+                $description->getTranslation($place->getMainLanguage())
+            );
         }
 
         $ageRange = $placeAdapter->getAgeRange();
@@ -221,9 +225,14 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             );
         }
 
-        foreach ($placeAdapter->getDescriptionTranslations() as $language => $description) {
-            $language = new Language($language);
-            $commands[] = new UpdateDescription($placeId, $language, $description);
+        if ($description) {
+            foreach ($description->getLanguagesWithoutOriginal() as $language) {
+                $commands[] = new UpdateDescription(
+                    $placeId,
+                    $language,
+                    $description->getTranslation($language)
+                );
+            }
         }
 
         foreach ($place->getAddress()->getLanguagesWithoutOriginal() as $language) {

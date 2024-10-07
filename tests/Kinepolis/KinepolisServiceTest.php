@@ -10,7 +10,6 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\Commands\AddImage;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
@@ -534,7 +533,7 @@ final class KinepolisServiceTest extends TestCase
                 new UpdateDescription(
                     $this->eventId,
                     new Language('nl'),
-                    new LegacyDescription('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')
+                    new Description('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')
                 ),
                 new UpdatePriceInfo(
                     $this->eventId,
@@ -712,7 +711,7 @@ final class KinepolisServiceTest extends TestCase
                 new UpdateDescription(
                     $this->eventId,
                     new Language('nl'),
-                    new LegacyDescription('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')
+                    new Description('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')
                 ),
                 new UpdatePriceInfo(
                     $this->eventId,
