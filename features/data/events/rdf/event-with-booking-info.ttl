@@ -10,16 +10,16 @@
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix schema: <https://schema.org/> .
 
-<http://host.docker.internal:8080/events/%{eventId}>
+<http://data.uitdatabank.local:80/events/%{eventId}>
   a cidoc:E7_Activity ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
-    skos:notation "http://host.docker.internal:8080/events/%{eventId}"^^xsd:anyURI ;
+    skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
     generiek:gestructureerdeIdentificator [
       a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "http://host.docker.internal:8080/events/" ;
+      generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
       generiek:lokaleIdentificator "%{eventId}"
     ]
   ] ;
@@ -28,7 +28,7 @@
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  prov:atLocation <http://host.docker.internal:8080/places/%{uuid_place}> ;
+  prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
   cpa:boeking [
     a cpa:Boekingsinfo ;
     schema:contactPoint [
