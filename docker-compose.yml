@@ -32,7 +32,7 @@ services:
     networks:
       uitdatabank-backend:
         aliases:
-          - mysql.uitdatabank.dev
+          - mysql.uitdatabank.local
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
       start_period: 5s
@@ -50,7 +50,7 @@ services:
     networks:
       uitdatabank-backend:
         aliases:
-          - redis.uitdatabank.dev
+          - redis.uitdatabank.local
     healthcheck:
       test: [ 'CMD', 'redis-cli', 'ping' ]
       retries: 3
@@ -66,7 +66,7 @@ services:
     networks:
       uitdatabank-backend:
         aliases:
-          - rabbitmq.uitdatabank.dev
+          - rabbitmq.uitdatabank.local
 
 networks:
   uitdatabank-backend:
