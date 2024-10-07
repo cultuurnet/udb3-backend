@@ -68,7 +68,7 @@ Feature: Test the UDB3 events API
       | description     | logo |
       | copyrightHolder | me   |
       | language        | nl   |
-    And I upload "file" from path "images/UDB.jpg" to "/images/"
+    And I upload "file" from path "images/udb.jpg" to "/images/"
     And the response status should be "201"
     And I keep the value of the JSON response at "imageId" as "image_id"
     And I create a place from "places/place.json" and save the "placeId" as "uuid_place"

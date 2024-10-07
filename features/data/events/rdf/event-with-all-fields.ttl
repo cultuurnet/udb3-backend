@@ -13,16 +13,16 @@
 @prefix labeltype: <https://data.cultuurparticipatie.be/id/concept/LabelType/> .
 @prefix cpp: <https://data.vlaanderen.be/ns/cultuurparticipatie#Prijsinfo.> .
 
-<http://host.docker.internal:8080/events/%{eventId}>
+<http://data.uitdatabank.local:80/events/%{eventId}>
   a cidoc:E7_Activity ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
   adms:identifier [
     a adms:Identifier ;
-    skos:notation "http://host.docker.internal:8080/events/%{eventId}"^^xsd:anyURI ;
+    skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
     generiek:gestructureerdeIdentificator [
       a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "http://host.docker.internal:8080/events/" ;
+      generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
       generiek:lokaleIdentificator "%{eventId}"
     ]
   ] ;
@@ -33,7 +33,7 @@
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   cp:ruimtetijd [
     a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection <http://host.docker.internal:8080/places/%{uuid_place}> ;
+    cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
     cidoc:P160_has_temporal_projection [
       a m8g:PeriodOfTime ;
       m8g:startTime ""^^xsd:dateTime ;
@@ -41,7 +41,7 @@
     ]
   ], [
     a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection <http://host.docker.internal:8080/places/%{uuid_place}> ;
+    cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
     cidoc:P160_has_temporal_projection [
       a m8g:PeriodOfTime ;
       m8g:startTime ""^^xsd:dateTime ;
