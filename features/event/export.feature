@@ -42,3 +42,17 @@ Feature: Test the UDB3 events export API
     Then the response status should be "200"
     And I keep the value of the JSON response at "commandId" as "id_pdf-map"
     And I wait for the command with id "%{id_pdf-map}" to complete
+
+  Scenario: Export events to a malformed email
+    Given I set the JSON request payload from "exports/event-export-faulty-email.json"
+    When I send a POST request to "/events/export/ooxml"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/body/invalid-data",
+      "title": "Invalid body data",
+      "status": 400,
+      "detail": "Given string is not a valid e-mail address."
+    }
+    """

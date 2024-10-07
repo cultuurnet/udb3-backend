@@ -8,9 +8,9 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\InvalidEmailAddress;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -30,7 +30,7 @@ final class GetUserByEmailRequestHandler implements RequestHandlerInterface
 
         try {
             $emailAddress = new EmailAddress($emailAddressString);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidEmailAddress $e) {
             throw ApiProblem::urlNotFound(
                 sprintf('"%s" is not a valid email address', $emailAddressString)
             );

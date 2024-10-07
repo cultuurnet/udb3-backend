@@ -13,7 +13,7 @@ class EmailAddress
     public function __construct(string $value)
     {
         if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
-            throw new \InvalidArgumentException('Given string is not a valid e-mail address.');
+            throw new InvalidEmailAddress('Given string is not a valid e-mail address.');
         }
 
         $this->setValue($value);
