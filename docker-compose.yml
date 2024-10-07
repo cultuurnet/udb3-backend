@@ -15,6 +15,10 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   mysql:
     image: 'bitnami/mysql:8.0'
@@ -67,6 +71,10 @@ services:
       uitdatabank-backend:
         aliases:
           - rabbitmq.uitdatabank.local
+    healthcheck:
+      test: [ 'CMD', 'rabbitmqctl', 'node_health_check' ]
+      retries: 3
+      timeout: 5s
 
 networks:
   uitdatabank-backend:
