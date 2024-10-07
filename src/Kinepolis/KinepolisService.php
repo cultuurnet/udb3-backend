@@ -35,6 +35,7 @@ use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 use Exception;
+use Google\Service\Exception as GoogleException;
 use Psr\Log\LoggerInterface;
 
 final class KinepolisService
@@ -154,8 +155,8 @@ final class KinepolisService
             $movieTitle = $movie['title'];
             $trailer = null;
             try {
-                $trailer =  $this->trailerRepository->findMatchingTrailer($movieTitle);
-            } catch (Exception $exception) {
+                $trailer = $this->trailerRepository->findMatchingTrailer($movieTitle);
+            } catch (GoogleException $exception) {
                 $this->logger->error('Problem with searching trailer for ' . $movieTitle . ':' . $exception->getMessage());
             }
 

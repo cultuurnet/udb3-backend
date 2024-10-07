@@ -63,6 +63,11 @@ final class JsonWebToken
             return self::UIT_ID_V2_JWT_PROVIDER_TOKEN;
         }
 
+        // Because ID tokens from Keycloak always have a `azp` claim the `typ` claim can be used to verify if a Keycloak ID token is passed. Note: this `typ` field is missing for Auth0, so we need to a check for Auth0 and a check for Keycloak.
+        if ($this->token->claims()->get('typ', '') === 'ID') {
+            return self::UIT_ID_V2_JWT_PROVIDER_TOKEN;
+        }
+
         // V2 client access tokens are always requested using the client-credentials grant type (gty)
         // @see https://stackoverflow.com/questions/49492471/whats-the-meaning-of-the-gty-claim-in-a-jwt-token/49492971
         if ($this->token->claims()->get('gty', '') === 'client-credentials') {
