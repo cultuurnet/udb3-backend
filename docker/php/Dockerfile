@@ -1,6 +1,7 @@
 FROM php:7.4-apache
 
-RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev zlib1g-dev libpng-dev libzip-dev supervisor
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git zip unzip libicu-dev libtidy-dev zlib1g-dev libpng-dev libzip-dev supervisor wget
 
 RUN docker-php-ext-install mysqli pdo_mysql bcmath tidy sockets
 
