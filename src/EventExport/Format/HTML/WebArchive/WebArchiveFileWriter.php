@@ -131,7 +131,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
         $formattedEvents = [];
 
         foreach ($events as $eventLocation => $event) {
-           $formattedEvents[]= $this->transform($event, $eventLocation, $formatter);
+            $formattedEvents[]= $this->transform($event, $eventLocation, $formatter);
         }
 
         $this->htmlFileWriter->write(
@@ -140,7 +140,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
         );
     }
 
-    private function transform($event, string $eventLocation, HTMLEventFormatter $formatter): array
+    private function transform(string $event, string $eventLocation, HTMLEventFormatter $formatter): array
     {
         $logFile = fopen('/var/www/html/debugLog.txt', 'w');
         fwrite($logFile, gettype($event));
