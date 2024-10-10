@@ -1,6 +1,7 @@
 FROM php:7.4-apache
 
-RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev zlib1g-dev libpng-dev libzip-dev supervisor
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git zip unzip libicu-dev libtidy-dev zlib1g-dev libpng-dev libzip-dev supervisor wget
 
 RUN docker-php-ext-install mysqli pdo_mysql bcmath tidy sockets
 
@@ -13,6 +14,10 @@ RUN docker-php-ext-configure pcntl --enable-pcntl && docker-php-ext-install pcnt
 RUN docker-php-ext-configure gd && docker-php-ext-install gd
 
 RUN pecl install -o -f redis &&  rm -rf /tmp/pear &&  docker-php-ext-enable redis
+
+RUN wget https://www.princexml.com/download/prince-15.4.1-linux-generic-aarch64.tar.gz \
+    && tar -xzf prince-15.4.1-linux-generic-aarch64.tar.gz \
+    && ./prince-15.4.1-linux-generic-aarch64/install.sh
 
 RUN curl https://getcomposer.org/download/2.6.6/composer.phar -o /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
