@@ -15,6 +15,10 @@ RUN docker-php-ext-configure gd && docker-php-ext-install gd
 
 RUN pecl install -o -f redis &&  rm -rf /tmp/pear &&  docker-php-ext-enable redis
 
+RUN wget https://www.princexml.com/download/prince-15.4.1-linux-generic-aarch64.tar.gz \
+    && tar -xzf prince-15.4.1-linux-generic-aarch64.tar.gz \
+    && ./prince-15.4.1-linux-generic-aarch64/install.sh
+
 RUN curl https://getcomposer.org/download/2.6.6/composer.phar -o /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
 RUN echo "memory_limit=4096M" > $PHP_INI_DIR/conf.d/memory-limit.ini
