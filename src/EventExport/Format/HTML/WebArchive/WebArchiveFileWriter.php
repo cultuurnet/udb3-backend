@@ -123,25 +123,32 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
         // TransformingIteratorIterator requires a Traversable,
         // so if $events is a regular array we need to wrap it
         // inside an ArrayIterator.
-        if (is_array($events)) {
-            $events = new \ArrayIterator($events);
+        if (!is_array($events)) {
+            return;
         }
 
         $formatter = new HTMLEventFormatter($this->uitpas, $this->calendarSummaryRepository);
 
-        $formattedEvents = new TransformingIteratorIterator(
-            $events,
-            function ($event, $eventLocation) use ($formatter) {
-                $urlParts = explode('/', $eventLocation);
-                $eventId = array_pop($urlParts);
-                return $formatter->formatEvent($eventId, $event);
-            }
-        );
+        $formattedEvents = [];
+
+        foreach ($events as $eventLocation => $event) {
+           $formattedEvents[]= $this->transform($event, $eventLocation, $formatter);
+        }
 
         $this->htmlFileWriter->write(
             $this->expandTmpPath($filePath),
-            $formattedEvents
+            new \ArrayIterator($formattedEvents)
         );
+    }
+
+    private function transform($event, string $eventLocation, HTMLEventFormatter $formatter): array
+    {
+        $logFile = fopen('/var/www/html/debugLog.txt', 'w');
+        fwrite($logFile, gettype($event));
+        fclose($logFile);
+        $urlParts = explode('/', $eventLocation);
+        $eventId = array_pop($urlParts);
+        return $formatter->formatEvent($eventId, $event);
     }
 
     abstract public function write(string $filePath, \Traversable $events): void;
