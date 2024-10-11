@@ -1,0 +1,41 @@
+{
+  "query": "_type:event AND creator:7a583ed3-cbc1-481d-93b1-d80fff0174dd AND workflowStatus:(\"APPROVED\" OR \"READY_FOR_VALIDATION\")",
+  "selection": [
+    "%{baseUrl}/event/%{uuid_testevent_export}"
+  ],
+  "order": {
+  },
+  "include": [
+    "name",
+    "description",
+    "labels",
+    "calendarSummary",
+    "image",
+    "videos",
+    "location",
+    "address",
+    "organizer",
+    "priceInfo",
+    "contactPoint",
+    "bookingInfo",
+    "status",
+    "bookingAvailability",
+    "attendance",
+    "creator",
+    "terms.theme",
+    "terms.eventtype",
+    "created",
+    "modified",
+    "available",
+    "endDate",
+    "startDate",
+    "calendarType",
+    "sameAs",
+    "typicalAgeRange",
+    "language",
+    "completeness"
+  ],
+  "perDay": false,
+  "customizations": {
+  }
+}
