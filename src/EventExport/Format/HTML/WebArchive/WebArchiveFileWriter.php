@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\EventExport\Format\HTML\WebArchive;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\Format\HTML\HTMLEventFormatter;
 use CultuurNet\UDB3\EventExport\Format\HTML\HTMLFileWriter;
-use CultuurNet\UDB3\EventExport\Format\HTML\TransformingIteratorIterator;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\FileWriterInterface;
 use League\Flysystem\Filesystem;
