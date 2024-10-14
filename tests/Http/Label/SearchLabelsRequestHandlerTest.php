@@ -69,7 +69,7 @@ final class SearchLabelsRequestHandlerTest extends TestCase
             ->willReturn(count($this->labels));
 
         $this->labelRepository->expects($this->once())
-            ->method('search')
+            ->method('searchByLevenshtein')
             ->with(new Query('label', '123', 5, 2))
             ->willReturn($this->labels);
 
