@@ -327,6 +327,52 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
+    public function it_gets_labels_alphabetically_by_default(): void
+    {
+        $search = new Query(
+            'wandel',
+            null,
+            null,
+            null,
+            true
+        );
+        $entities = $this->dbalReadRepository->search($search);
+        $this->assertEquals(
+            [
+                $this->entityByName,
+                $this->entityPrivateNoAccess,
+                $this->entityPrivateAccess,
+            ],
+            $entities
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_labels_levenshtein_distance(): void
+    {
+        $search = new Query(
+            'wandel',
+            null,
+            null,
+            null,
+            true
+        );
+        $entities = $this->dbalReadRepository->searchByLevenshtein($search);
+        $this->assertEquals(
+            [
+                $this->entityPrivateAccess,
+                $this->entityByName,
+                $this->entityPrivateNoAccess,
+            ],
+            $entities
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_get_total_items_of_search(): void
     {
         $search = new Query('lab');
