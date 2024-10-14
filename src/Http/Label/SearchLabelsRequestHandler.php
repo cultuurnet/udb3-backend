@@ -31,7 +31,7 @@ final class SearchLabelsRequestHandler implements RequestHandlerInterface
 
         $totalEntities = $this->labelRepository->searchTotalLabels($query);
 
-        $entities = $totalEntities > 0 ? $this->labelRepository->search($query) : [];
+        $entities = $totalEntities > 0 ? $this->labelRepository->searchByLevenshtein($query) : [];
 
         return new PagedCollectionResponse(
             $query->getLimit() ?? 0,
