@@ -16,5 +16,7 @@ interface ReadRepositoryInterface
 
     public function search(Query $query): array;
 
+    public function searchByLevenshtein(Query $query): array;
+
     public function searchTotalLabels(Query $query): int;
 }

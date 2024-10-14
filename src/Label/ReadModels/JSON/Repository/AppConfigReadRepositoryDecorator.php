@@ -56,6 +56,11 @@ final class AppConfigReadRepositoryDecorator implements ReadRepositoryInterface
         return $this->repository->search($query);
     }
 
+    public function searchByLevenshtein(Query $query): array
+    {
+        return $this->repository->searchByLevenshtein($query);
+    }
+
     public function searchTotalLabels(Query $query): int
     {
         return $this->repository->searchTotalLabels($query);
