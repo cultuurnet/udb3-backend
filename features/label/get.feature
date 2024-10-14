@@ -24,9 +24,9 @@ Feature: Test the UDB3 labels API
     And the response body should be valid JSON
     And the JSON response at "totalItems" should be 4
     And the JSON response at "member/0/name" should be "special_label"
-    And the JSON response at "member/1/name" should be "special_label*"
-    And the JSON response at "member/2/name" should be "special_label#"
-    And the JSON response at "member/3/name" should be "special-label"
+    And the JSON response at "member/1/name" should be "special-label"
+    And the JSON response at "member/2/name" should be "special_label*"
+    And the JSON response at "member/3/name" should be "special_label#"
 
   Scenario: Hide excluded labels if suggestion is true
     When I create a label with a random name of 10 characters
