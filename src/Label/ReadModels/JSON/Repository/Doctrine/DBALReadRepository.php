@@ -118,6 +118,24 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         return $this->getResults($queryBuilder);
     }
 
+    /**
+     * @return Entity[]
+     */
+    public function searchByLevenshtein(Query $query): array
+    {
+        $entities = $this->search($query);
+
+        $reference = $query->getValue();
+        usort($entities, function ($entityA, $entityB) use ($reference) {
+            $distanceA = levenshtein($reference, $entityA->getName());
+            $distanceB = levenshtein($reference, $entityB->getName());
+
+            return $distanceA - $distanceB;
+        });
+
+        return $entities;
+    }
+
     public function searchTotalLabels(Query $query): int
     {
         $queryBuilder = $this->createSearchQuery($query);
