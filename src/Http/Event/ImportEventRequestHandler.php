@@ -229,9 +229,13 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         $commands[] = new UpdateContactPoint($eventId, $event->getContactPoint());
 
-        $description = $eventAdapter->getDescription();
+        $description = $event->getDescription();
         if ($description) {
-            $commands[] = new UpdateDescription($eventId, $event->getMainLanguage(), $description);
+            $commands[] = new UpdateDescription(
+                $eventId,
+                $event->getMainLanguage(),
+                $description->getTranslation($event->getMainLanguage())
+            );
         }
 
         $ageRange = $eventAdapter->getAgeRange();
@@ -253,9 +257,14 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             );
         }
 
-        foreach ($eventAdapter->getDescriptionTranslations() as $language => $description) {
-            $language = new Language($language);
-            $commands[] = new UpdateDescription($eventId, $language, $description);
+        if ($description) {
+            foreach ($description->getLanguagesWithoutOriginal() as $language) {
+                $commands[] = new UpdateDescription(
+                    $eventId,
+                    $language,
+                    $description->getTranslation($language)
+                );
+            }
         }
 
         $commands[] = new ImportLabels($eventId, $event->getLabels());

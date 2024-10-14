@@ -18,13 +18,14 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Media\Properties\Description;
+use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
@@ -626,7 +627,7 @@ class OfferLDProjectorTest extends TestCase
         $descriptionTranslated = new DescriptionTranslated(
             'foo',
             new Language('en'),
-            new \CultuurNet\UDB3\Description('English description')
+            new Description('English description')
         );
 
         $initialDocument = new JsonDocument(
@@ -836,7 +837,7 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('The Gleaners'),
+            new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
@@ -904,7 +905,7 @@ class OfferLDProjectorTest extends TestCase
         $image1 = new Image(
             new UUID('de305d54-ddde-eddd-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('my best pokerface'),
+            new MediaDescription('my best pokerface'),
             new CopyrightHolder('Hans Langucci'),
             new Url('http://foo.bar/media/de305d54-ddde-eddd-adb2-eb6b9e546014.png'),
             new Language('en')
@@ -913,7 +914,7 @@ class OfferLDProjectorTest extends TestCase
         $image2 = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('The Gleaners'),
+            new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
@@ -1012,7 +1013,7 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('The Gleaners'),
+            new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
@@ -1050,7 +1051,7 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('aa39128e-b2ca-5629-a275-b380381df0f3'),
             new MIMEType('image/jpeg'),
-            new Description('The Gleaners'),
+            new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://images.uitdatabank.be/edcea9f6-756b-4935-9c8b-d7d9c262d041.jpeg'),
             new Language('en')
@@ -1090,7 +1091,7 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('The Gleaners'),
+            new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
@@ -1141,7 +1142,7 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('The Gleaners'),
+            new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
@@ -1180,7 +1181,7 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('The Gleaners'),
+            new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
@@ -1211,7 +1212,7 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('The Gleaners'),
+            new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
@@ -1262,7 +1263,7 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('7fba0270-9efa-5091-ac4a-381d6cc9394f'),
             new MIMEType('image/jpeg'),
-            new Description('THE FOX'),
+            new MediaDescription('THE FOX'),
             new CopyrightHolder('THE FOX'),
             new Url('https://images.uitdatabank.dev/20160606/THE_FOX.jpg'),
             new Language('en')
@@ -1314,7 +1315,7 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('5ae74e68-20a3-4cb1-b255-8e405aa01ab9'),
             new MIMEType('image/png'),
-            new Description('funny giphy image'),
+            new MediaDescription('funny giphy image'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/5ae74e68-20a3-4cb1-b255-8e405aa01ab9.png'),
             new Language('en')
@@ -1374,7 +1375,7 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('5ae74e68-20a3-4cb1-b255-8e405aa01ab9'),
             new MIMEType('image/jpeg'),
-            new Description('funny giphy image'),
+            new MediaDescription('funny giphy image'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('https://example.com/entity/5ae74e68-20a3-4cb1-b255-8e405aa01ab9'),
             new Language('en')
@@ -1425,7 +1426,7 @@ class OfferLDProjectorTest extends TestCase
         $selectedMainImage = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('The Gleaners'),
+            new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
@@ -2292,7 +2293,7 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('ED5B9B25-8C16-48E5-9899-27BB2D110C57'),
             new MIMEType('image/jpg'),
-            new Description('epische panorama foto'),
+            new MediaDescription('epische panorama foto'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/ED5B9B25-8C16-48E5-9899-27BB2D110C57.jpg'),
             new Language('nl')
@@ -2353,7 +2354,7 @@ class OfferLDProjectorTest extends TestCase
         $coverPicture = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/jpg'),
-            new Description('my pic'),
+            new MediaDescription('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
@@ -2362,7 +2363,7 @@ class OfferLDProjectorTest extends TestCase
         $selfie = new Image(
             new UUID('e56e8eb6-dcd7-47e7-8106-8a149f1d241b'),
             new MIMEType('image/jpg'),
-            new Description('my favorite selfie'),
+            new MediaDescription('my favorite selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/img_182.jpg'),
             new Language('en')

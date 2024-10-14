@@ -12,7 +12,7 @@ Feature: Test creating places
     Given I create a minimal place and save the "id" as "originalPlaceId" then I should get a "201" response code
     When I publish the place at "/places/%{originalPlaceId}"
     And I reject the place at "/places/%{originalPlaceId}" with reason "Rejected"
-    Then I wait for the place with url "/places/%{originalPlaceId}" to be indexed
+    And I wait 2 seconds
     And I create a minimal place then I should get a "201" response code
 
   Scenario: Be prevented from creating a new place if we already have one on that address

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription as EventUpdateDescription;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -13,6 +12,9 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Model\ValueObject\Text\DescriptionShouldNotBeEmpty;
+use CultuurNet\UDB3\Offer\Commands\DeleteDescription;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Serializers\DescriptionDenormalizer;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription as PlaceUpdateDescription;
@@ -47,26 +49,35 @@ final class UpdateDescriptionRequestHandler implements RequestHandlerInterface
             new DenormalizingRequestBodyParser(new DescriptionDenormalizer(), Description::class)
         );
 
-        $request = $requestBodyParser->parse($request);
+        try {
+            $request = $requestBodyParser->parse($request);
 
-        /** @var Description $description */
-        $description = $request->getParsedBody();
+            /** @var Description $description */
+            $description = $request->getParsedBody();
 
-        if ($offerType->sameAs(OfferType::event())) {
-            $updateDescription = new EventUpdateDescription(
+            if ($offerType->sameAs(OfferType::event())) {
+                $updateDescription = new EventUpdateDescription(
+                    $offerId,
+                    $language,
+                    $description
+                );
+            } else {
+                $updateDescription = new PlaceUpdateDescription(
+                    $offerId,
+                    $language,
+                    $description
+                );
+            }
+
+            $this->commandBus->dispatch($updateDescription);
+        } catch (DescriptionShouldNotBeEmpty $exception) {
+            $deleteDescription = new DeleteDescription(
                 $offerId,
                 $language,
-                $description
             );
-        } else {
-            $updateDescription = new PlaceUpdateDescription(
-                $offerId,
-                $language,
-                $description,
-            );
+            $this->commandBus->dispatch($deleteDescription);
         }
 
-        $this->commandBus->dispatch($updateDescription);
         return new NoContentResponse();
     }
 }

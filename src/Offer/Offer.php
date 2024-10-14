@@ -9,7 +9,6 @@ use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Collection\Exception\CollectionItemNotFoundException;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Facility;
@@ -29,6 +28,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
@@ -340,11 +340,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->titles[$this->mainLanguage->getCode()] = $titleUpdated->getTitle();
     }
 
-    public function updateDescription(Description $description, LegacyLanguage $language): void
+    public function updateDescription(Description $description, Language $language): void
     {
         if ($this->isDescriptionChanged($description, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
-                $event = $this->createDescriptionTranslatedEvent($language->toUdb3ModelLanguage(), $description);
+                $event = $this->createDescriptionTranslatedEvent($language, $description);
             } else {
                 $event = $this->createDescriptionUpdatedEvent($description);
             }
@@ -869,7 +869,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             $title->toString() !== $this->titles[$languageCode];
     }
 
-    private function isDescriptionChanged(Description $description, LegacyLanguage $language): bool
+    private function isDescriptionChanged(Description $description, Language $language): bool
     {
         $languageCode = $language->getCode();
 

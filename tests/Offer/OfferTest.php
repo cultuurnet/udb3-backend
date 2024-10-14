@@ -6,12 +6,11 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Media\Properties\Description;
+use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
@@ -24,6 +23,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -86,7 +86,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/gif'),
-            new Description('my favorite giphy gif'),
+            new MediaDescription('my favorite giphy gif'),
             new CopyrightHolder('Bert Ramakers'),
             new Url('http://foo.bar/media/my_favorite_giphy_gif.gif'),
             new Language('en')
@@ -139,7 +139,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $updatedImage = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/jpg'),
-            new Description('my updated pic'),
+            new MediaDescription('my updated pic'),
             new CopyrightHolder('Dirk Dirkingn updated'),
             new Url('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
@@ -147,7 +147,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $secondImage = new Image(
             new UUID('837bd340-e939-4210-8af9-e4baedd0d44e'),
             new MIMEType('image/jpg'),
-            new Description('my second pic'),
+            new MediaDescription('my second pic'),
             new CopyrightHolder('Dirk Dirkingn again'),
             new Url('http://foo.bar/media/my_2nd_pic.jpg'),
             new Language('en')
@@ -520,7 +520,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $anotherImage = new Image(
             new UUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
             new MIMEType('image/jpeg'),
-            new Description('my best selfie'),
+            new MediaDescription('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_best_selfie.gif'),
             new Language('en')
@@ -559,7 +559,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $anotherImage = new Image(
             new UUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
             new MIMEType('image/jpeg'),
-            new Description('my best selfie'),
+            new MediaDescription('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_best_selfie.gif'),
             new Language('en')
@@ -578,7 +578,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     $item->addImage($anotherImage);
                     $item->updateImage(
                         $anotherImage->getMediaObjectId(),
-                        new Description('new description'),
+                        new MediaDescription('new description'),
                         new CopyrightHolder('new copyright holder')
                     );
                     $item->selectMainImage($anotherImage);
@@ -617,13 +617,13 @@ class OfferTest extends AggregateRootScenarioTestCase
                     $item->removeImage($this->image);
                     $item->updateImage(
                         $this->image->getMediaObjectId(),
-                        new Description('my favorite cat'),
+                        new MediaDescription('my favorite cat'),
                         new CopyrightHolder('Jane Doe')
                     );
                     $item->addImage($this->image);
                     $item->updateImage(
                         $this->image->getMediaObjectId(),
-                        new Description('my favorite cat'),
+                        new MediaDescription('my favorite cat'),
                         new CopyrightHolder('Jane Doe')
                     );
                 }
@@ -665,12 +665,12 @@ class OfferTest extends AggregateRootScenarioTestCase
                     );
                     $item->updateImage(
                         $this->image->getMediaObjectId(),
-                        new Description('other description'),
+                        new MediaDescription('other description'),
                         $this->image->getCopyrightHolder()
                     );
                     $item->updateImage(
                         $this->image->getMediaObjectId(),
-                        new Description('other description'),
+                        new MediaDescription('other description'),
                         new CopyrightHolder('other copyright')
                     );
                 }
@@ -730,7 +730,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $oldestImage = new Image(
             new UUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
             new MIMEType('image/gif'),
-            new Description('my best selfie'),
+            new MediaDescription('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_best_selfie.gif'),
             new Language('en')
@@ -738,7 +738,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $newerImage = new Image(
             new UUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
             new MIMEType('image/jpeg'),
-            new Description('pic'),
+            new MediaDescription('pic'),
             new CopyrightHolder('Henk'),
             new Url('http://foo.bar/media/pic.jpeg'),
             new Language('en')
@@ -809,7 +809,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $newMainImage = new Image(
             new UUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
             new MIMEType('image/jpeg'),
-            new Description('pic'),
+            new MediaDescription('pic'),
             new CopyrightHolder('Henk'),
             new Url('http://foo.bar/media/pic.jpeg'),
             new Language('en')
@@ -1871,7 +1871,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_ignore_a_description_update_that_does_not_change_the_existing_descriptions(): void
     {
         $itemId = '169f0526-8754-4791-a33b-7a13275881b9';
-        $description = new LegacyDescription('Een beschrijving');
+        $description = new Description('Een beschrijving');
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1883,7 +1883,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item) use ($description): void {
-                    $item->updateDescription($description, new LegacyLanguage('nl'));
+                    $item->updateDescription($description, new Language('nl'));
                 }
             )
             ->then([]);
@@ -1895,7 +1895,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_translate_the_description_when_updating_with_a_foreign_language(): void
     {
         $itemId = '81598b26-68f3-424c-85e0-29293fd92723';
-        $description = new LegacyDescription('La description');
+        $description = new Description('La description');
         $language = new Language('fr');
 
         $this->scenario
@@ -1903,12 +1903,12 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId),
-                    new DescriptionUpdated($itemId, new LegacyDescription('Een beschrijving')),
+                    new DescriptionUpdated($itemId, new Description('Een beschrijving')),
                 ]
             )
             ->when(
                 function (Item $item) use ($description, $language): void {
-                    $item->updateDescription($description, LegacyLanguage::fromUdb3ModelLanguage($language));
+                    $item->updateDescription($description, $language);
                 }
             )
             ->then([
@@ -1931,7 +1931,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId, $language),
-                    new DescriptionUpdated('my-id', new LegacyDescription('test')),
+                    new DescriptionUpdated('my-id', new Description('test')),
                 ]
             )
             ->when(
@@ -1958,11 +1958,11 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId, $language),
-                    new DescriptionUpdated('my-id', new LegacyDescription('test')),
+                    new DescriptionUpdated('my-id', new Description('test')),
                     new DescriptionTranslated(
                         'my-id',
                         $differentLanguage,
-                        new LegacyDescription('test')
+                        new Description('test')
                     ),
                 ]
             )
@@ -1989,11 +1989,11 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId, $language),
-                    new DescriptionUpdated('my-id', new LegacyDescription('test')),
+                    new DescriptionUpdated('my-id', new Description('test')),
                     new DescriptionTranslated(
                         'my-id',
                         $differentLanguage,
-                        new LegacyDescription('test')
+                        new Description('test')
                     ),
                     new DescriptionDeleted($itemId, $differentLanguage),
                 ]
@@ -2089,7 +2089,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $dutchUdb3Image = new Image(
             new UUID('0773EB2A-54BE-49AD-B261-5D1099F319D4'),
             new MIMEType('image/jpg'),
-            new Description('mijn favoriete wallpaper'),
+            new MediaDescription('mijn favoriete wallpaper'),
             new CopyrightHolder('Dirk Dirkingn'),
             new Url('http://foo.bar/media/mijn_favoriete_wallpaper_<3.jpg'),
             new Language('nl')
@@ -2099,7 +2099,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Image(
                 new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
                 new MIMEType('image/jpg'),
-                new Description('episch panorama'),
+                new MediaDescription('episch panorama'),
                 new CopyrightHolder('Dirk Dirkingn'),
                 new Url('http://foo.bar/media/episch_panorama.jpg'),
                 new Language('nl')
@@ -2154,7 +2154,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/jpg'),
-            new Description('my pic'),
+            new MediaDescription('my pic'),
             new CopyrightHolder('Dirk Dirkingn'),
             new Url('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
