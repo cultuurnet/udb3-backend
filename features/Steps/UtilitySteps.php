@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use function PHPUnit\Framework\assertEquals;
+
 trait UtilitySteps
 {
     /**
@@ -44,5 +46,30 @@ trait UtilitySteps
     public function iWaitSeconds(int $seconds): void
     {
         sleep($seconds);
+    }
+
+    /**
+     * @Given I count the :type files
+     */
+    public function iCountTheFiles(string $type): void
+    {
+        $result = $this->countFilesByType($type);
+        $this->variableState->setVariable('count', (string) $result);
+    }
+
+    /**
+     * @Given I check if one :type file has been created
+     */
+    public function iCheckIfOneFileHasBeenCreated(string $type): void
+    {
+        $original = (int) $this->variableState->getVariable('count');
+        $result = $this->countFilesByType($type);
+        assertEquals($result, $original + 1);
+    }
+
+    private function countFilesByType(string $type): int
+    {
+        $downloadsFolder = $this->config['downloads_folder'];
+        return count(glob($downloadsFolder . '/*.' . $type));
     }
 }
