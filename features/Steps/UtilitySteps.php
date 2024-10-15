@@ -49,27 +49,27 @@ trait UtilitySteps
     }
 
     /**
-     * @Given I count the :type files
+     * @Given I count the :type files in the :folderName folder
      */
-    public function iCountTheFiles(string $type): void
+    public function iCountTheFilesInTheFolder(string $type, string $folderName): void
     {
-        $result = $this->countFilesByType($type);
+        $result = $this->countFilesByType($type, $folderName);
         $this->variableState->setVariable('count', (string) $result);
     }
 
     /**
-     * @Given I check if one :type file has been created
+     * @Given I check if one :type file has been created in the :folderName folder
      */
-    public function iCheckIfOneFileHasBeenCreated(string $type): void
+    public function iCheckIfOneFileHasBeenCreatedInTheFolder(string $type, string $folderName): void
     {
         $original = (int) $this->variableState->getVariable('count');
-        $result = $this->countFilesByType($type);
+        $result = $this->countFilesByType($type, $folderName);
         assertEquals($result, $original + 1);
     }
 
-    private function countFilesByType(string $type): int
+    private function countFilesByType(string $type, string $folder): int
     {
-        $downloadsFolder = $this->config['downloads_folder'];
+        $downloadsFolder = $this->config['folders'][$folder];
         return count(glob($downloadsFolder . '/*.' . $type));
     }
 }
