@@ -48,6 +48,15 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         );
     }
 
+    public function updateRoleId(string $id, ?UUID $roleId): void
+    {
+        $this->connection->update(
+            'ownership_search',
+            ['role_id' => $roleId ? $roleId->toString() : null],
+            ['id' => $id]
+        );
+    }
+
     public function getById(string $id): OwnershipItem
     {
         $ownershipSearchRow = $this->connection->createQueryBuilder()
