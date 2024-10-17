@@ -139,10 +139,6 @@ final class OwnershipPermissionProjector implements EventListener
             return null;
         }
 
-        if ($existingOwnerships->getFirst()->getRoleId() === null) {
-            return null;
-        }
-
         return $existingOwnerships->getFirst()->getRoleId();
     }
 
