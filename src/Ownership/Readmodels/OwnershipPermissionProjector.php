@@ -64,8 +64,28 @@ final class OwnershipPermissionProjector implements EventListener
 
         $this->commandBus->disableAuthorization();
 
-        $this->createOrganizationRole($ownershipItem);
-        $this->createEventRole($ownershipItem);
+        $roleId = $this->createRole($ownershipItem);
+
+        $this->commandBus->dispatch(
+            new AddConstraint(
+                $roleId,
+                new Query('(id:' . $ownershipItem->getItemId() . ' OR (organizer.id:' . $ownershipItem->getItemId() . ' AND _type:event))')
+            )
+        );
+
+        $this->commandBus->dispatch(
+            new AddPermission(
+                $roleId,
+                Permission::organisatiesBewerken()
+            )
+        );
+
+        $this->commandBus->dispatch(
+            new AddPermission(
+                $roleId,
+                Permission::aanbodBewerken()
+            )
+        );
 
         $this->commandBus->enableAuthorization();
     }
@@ -85,44 +105,6 @@ final class OwnershipPermissionProjector implements EventListener
         }
 
         $this->commandBus->enableAuthorization();
-    }
-
-    private function createOrganizationRole(OwnershipItem $ownershipItem): void
-    {
-        $roleId = $this->createRole($ownershipItem);
-
-        $this->commandBus->dispatch(
-            new AddConstraint(
-                $roleId,
-                new Query('id:' . $ownershipItem->getItemId())
-            )
-        );
-
-        $this->commandBus->dispatch(
-            new AddPermission(
-                $roleId,
-                Permission::organisatiesBewerken()
-            )
-        );
-    }
-
-    private function createEventRole(OwnershipItem $ownershipItem): void
-    {
-        $roleId = $this->createRole($ownershipItem);
-
-        $this->commandBus->dispatch(
-            new AddConstraint(
-                $roleId,
-                new Query('organizer.id:' . $ownershipItem->getItemId() . ' AND _type:event')
-            )
-        );
-
-        $this->commandBus->dispatch(
-            new AddPermission(
-                $roleId,
-                Permission::aanbodBewerken()
-            )
-        );
     }
 
     private function createRole(OwnershipItem $ownershipItem): UUID
