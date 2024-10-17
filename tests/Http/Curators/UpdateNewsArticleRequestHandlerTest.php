@@ -386,7 +386,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/image/url', 'The string should match pattern: ^http(s?):([/|.|\w|\s|-])*\.(?:jpeg|jpeg|gif|png)$')
+                new SchemaError('/image/url', 'The string should match pattern: ^http(s?):([/|.|\w|\s|-])*\.(?:jpeg|jpg|gif|png)$')
             ),
             fn () => $this->updateNewsArticleRequestHandler->handle($updateNewsArticleRequest)
         );

@@ -534,7 +534,7 @@ final class CreateNewsArticleRequestHandlerTest extends TestCase
                 ApiProblem::bodyInvalidData(
                     new SchemaError(
                         '/image/url',
-                        'The string should match pattern: ^http(s?):([/|.|\w|\s|-])*\.(?:jpeg|jpeg|gif|png)$'
+                        'The string should match pattern: ^http(s?):([/|.|\w|\s|-])*\.(?:jpeg|jpg|gif|png)$'
                     )
                 ),
             ],
