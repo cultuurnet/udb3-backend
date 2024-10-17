@@ -13,14 +13,14 @@ use CultuurNet\UDB3\User\UserIdentityResolver;
 
 class Sapi3FixedSavedSearchRepository implements SavedSearchesOwnedByCurrentUser
 {
-    private JsonWebToken $token;
+    private ?JsonWebToken $token;
 
     private UserIdentityResolver $userIdentityResolver;
 
     protected CreatedByQueryMode $createdByQueryMode;
 
     public function __construct(
-        JsonWebToken $token,
+        ?JsonWebToken $token,
         UserIdentityResolver $userIdentityResolver,
         CreatedByQueryMode $createdByQueryMode
     ) {

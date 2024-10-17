@@ -17,18 +17,18 @@ final class GetCurrentUserRequestHandler implements RequestHandlerInterface
 {
     private UserIdentityResolver $userIdentityResolver;
 
-    private JsonWebToken $jwt;
+    private ?JsonWebToken $jwt;
 
     public function __construct(
         UserIdentityResolver $userIdentityResolver,
-        JsonWebToken $jsonWebToken
+        ?JsonWebToken $jsonWebToken
     ) {
         $this->userIdentityResolver = $userIdentityResolver;
         $this->jwt = $jsonWebToken;
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if ($this->jwt->getType() === JsonWebToken::UIT_ID_V2_CLIENT_ACCESS_TOKEN) {
+        if ($this->jwt === null || $this->jwt->getType() === JsonWebToken::UIT_ID_V2_CLIENT_ACCESS_TOKEN) {
             throw ApiProblem::unauthorized(
                 'Client access tokens are not supported on this endpoint because a user is required to return user info.'
             );
