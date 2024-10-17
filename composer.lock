@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a0357d5e2415e7512da6b0f7bc17725",
+    "content-hash": "79fda9d664460977a01493450dc5e7ab",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -6041,7 +6041,7 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-6312-allow-jpg",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
@@ -6053,6 +6053,7 @@
                 "reference": "0d692b720c132bdb5844284e6a695657bad6c777",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
