@@ -38,7 +38,7 @@ Feature: Test the curator API
     }
     """
 
-  Scenario: Create a news article with an image
+  Scenario: Create a news article with a png image
     Given I set the JSON request payload to:
     """
     {
