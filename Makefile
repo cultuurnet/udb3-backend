@@ -47,6 +47,9 @@ feature-init:
 feature-tag:
 	docker-compose exec php composer feature -- --tags $(tag)
 
+feature-ci:
+	docker-compose exec php composer feature -- --tags "~@init&&~@external" -f pretty -o std -f junit -o output/junit
+
 feature:
 	docker-compose exec php composer feature -- --tags "~@init&&~@external"
 
