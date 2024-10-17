@@ -70,9 +70,7 @@ final class OwnershipPermissionProjector implements EventListener
                     $ownershipItem->getOwnerId()
                 )
             );
-        }
-
-        if ($roleId === null) {
+        } else {
             $roleId = $this->createRole($ownershipItem);
 
             $this->commandBus->dispatch(
