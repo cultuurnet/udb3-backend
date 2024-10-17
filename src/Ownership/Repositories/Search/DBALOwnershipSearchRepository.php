@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Ownership\Repositories\Search;
 
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
@@ -34,6 +35,7 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
             'item_type' => $ownershipSearchItem->getItemType(),
             'owner_id' => $ownershipSearchItem->getOwnerId(),
             'state' => $ownershipSearchItem->getState(),
+            'role_id' => $ownershipSearchItem->getRoleId() ? $ownershipSearchItem->getRoleId()->toString() : null,
         ]);
     }
 
@@ -42,6 +44,15 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         $this->connection->update(
             'ownership_search',
             ['state' => $state->toString()],
+            ['id' => $id]
+        );
+    }
+
+    public function updateRoleId(string $id, ?UUID $roleId): void
+    {
+        $this->connection->update(
+            'ownership_search',
+            ['role_id' => $roleId ? $roleId->toString() : null],
             ['id' => $id]
         );
     }
@@ -137,12 +148,18 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
 
     private function createOwnershipSearchItem(array $ownershipSearchRow): OwnershipItem
     {
-        return new OwnershipItem(
+        $ownershipItem = new OwnershipItem(
             $ownershipSearchRow['id'],
             $ownershipSearchRow['item_id'],
             $ownershipSearchRow['item_type'],
             $ownershipSearchRow['owner_id'],
             $ownershipSearchRow['state']
         );
+
+        if ($ownershipSearchRow['role_id']) {
+            $ownershipItem = $ownershipItem->withRoleId(new UUID($ownershipSearchRow['role_id']));
+        }
+
+        return $ownershipItem;
     }
 }
