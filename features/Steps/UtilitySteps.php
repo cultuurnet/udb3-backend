@@ -49,9 +49,9 @@ trait UtilitySteps
     }
 
     /**
-     * @Given I count the :type files in the :folderName folder
+     * @Given I store the count of the :type files in the :folderName folder
      */
-    public function iCountTheFilesInTheFolder(string $type, string $folderName): void
+    public function iStoreTheCountOfTheFilesInTheFolder(string $type, string $folderName): void
     {
         $result = $this->countFilesByType($type, $folderName);
         $this->variableState->setVariable('count', (string) $result);
