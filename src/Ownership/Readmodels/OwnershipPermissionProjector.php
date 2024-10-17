@@ -104,19 +104,20 @@ final class OwnershipPermissionProjector implements EventListener
 
     protected function applyOwnershipDeleted(OwnershipDeleted $ownershipDeleted): void
     {
-        $this->commandBus->disableAuthorization();
-
         $ownershipItem = $this->ownershipSearchRepository->getById($ownershipDeleted->getId());
 
-        if ($ownershipItem->getRoleId()) {
-            $this->commandBus->dispatch(
-                new RemoveUser(
-                    $ownershipItem->getRoleId(),
-                    $ownershipItem->getOwnerId()
-                )
-            );
+        if ($ownershipItem->getRoleId() === null) {
+            return;
         }
 
+        $this->commandBus->disableAuthorization();
+
+        $this->commandBus->dispatch(
+            new RemoveUser(
+                $ownershipItem->getRoleId(),
+                $ownershipItem->getOwnerId()
+            )
+        );
         $this->ownershipSearchRepository->updateRoleId($ownershipItem->getId(), null);
 
         $this->commandBus->enableAuthorization();
