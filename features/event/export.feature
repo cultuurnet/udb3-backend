@@ -16,43 +16,55 @@ Feature: Test the UDB3 events export API
     And I keep the value of the JSON response at "eventId" as "uuid_testevent_export"
 
   Scenario: Export events to OOXML - basic
-    Given I set the JSON request payload from "exports/event-export-ooxml-basic.json"
+    Given I store the count of the "xlsx" files in the "downloads" folder
+    And I set the JSON request payload from "exports/event-export-ooxml-basic.json"
     When I send a POST request to "/events/export/ooxml"
     Then the response status should be "200"
     And I keep the value of the JSON response at "commandId" as "id_ooxml-basic"
     And I wait for the command with id "%{id_ooxml-basic}" to complete
+    And I check if one "xlsx" file has been created in the "downloads" folder
 
   Scenario: Export events to OOXML - full
-    Given I set the JSON request payload from "exports/event-export-ooxml-full.json"
+    Given I store the count of the "xlsx" files in the "downloads" folder
+    And I set the JSON request payload from "exports/event-export-ooxml-full.json"
     When I send a POST request to "/events/export/ooxml"
     Then the response status should be "200"
     And I keep the value of the JSON response at "commandId" as "id_ooxml-full"
     And I wait for the command with id "%{id_ooxml-full}" to complete
+    And I check if one "xlsx" file has been created in the "downloads" folder
 
   Scenario: Export events to PDF - tipsrapport
-    Given I set the JSON request payload from "exports/event-export-pdf-tips.json"
+    Given I store the count of the "pdf" files in the "downloads" folder
+    And I set the JSON request payload from "exports/event-export-pdf-tips.json"
     When I send a POST request to "/events/export/pdf"
     Then the response status should be "200"
     And I keep the value of the JSON response at "commandId" as "id_pdf-tips"
     And I wait for the command with id "%{id_pdf-tips}" to complete
+    And I check if one "pdf" file has been created in the "downloads" folder
 
   Scenario: Export events to PDF - mapview
-    Given I set the JSON request payload from "exports/event-export-pdf-map.json"
+    Given I store the count of the "pdf" files in the "downloads" folder
+    And I set the JSON request payload from "exports/event-export-pdf-map.json"
     When I send a POST request to "/events/export/pdf"
     Then the response status should be "200"
     And I keep the value of the JSON response at "commandId" as "id_pdf-map"
     And I wait for the command with id "%{id_pdf-map}" to complete
+    And I check if one "pdf" file has been created in the "downloads" folder
 
   Scenario: Export events to JSON - basic
-    Given I set the JSON request payload from "exports/event-export-json-basic.json"
+    Given I store the count of the "json" files in the "downloads" folder
+    And I set the JSON request payload from "exports/event-export-json-basic.json"
     When I send a POST request to "/events/export/json"
     Then the response status should be "200"
     And I keep the value of the JSON response at "commandId" as "id_json-basic"
     And I wait for the command with id "%{id_json-basic}" to complete
+    And I check if one "json" file has been created in the "downloads" folder
 
   Scenario: Export events to JSON - full
-    Given I set the JSON request payload from "exports/event-export-json-full.json"
+    Given I store the count of the "json" files in the "downloads" folder
+    And I set the JSON request payload from "exports/event-export-json-full.json"
     When I send a POST request to "/events/export/json"
     Then the response status should be "200"
     And I keep the value of the JSON response at "commandId" as "id_json-full"
     And I wait for the command with id "%{id_json-full}" to complete
+    And I check if one "json" file has been created in the "downloads" folder
