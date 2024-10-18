@@ -241,25 +241,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_description_by_default(): void
-    {
-        $actual = $this->adapter->getDescription();
-        $this->assertNull($actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_description_if_there_is_one(): void
-    {
-        $expected = new \CultuurNet\UDB3\Description('Voorbeeld beschrijving');
-        $actual = $this->completeAdapter->getDescription();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_return_no_organizer_id_by_default(): void
     {
         $actual = $this->adapter->getOrganizerId();
@@ -399,28 +380,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
             'en' => new Title('Example title'),
         ];
         $actual = $this->adapter->getTitleTranslations();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_no_description_translations_by_default(): void
-    {
-        $expected = [];
-        $actual = $this->adapter->getDescriptionTranslations();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_description_translations_if_there_are_any(): void
-    {
-        $expected = [
-            'en' => new \CultuurNet\UDB3\Description('Example description'),
-        ];
-        $actual = $this->completeAdapter->getDescriptionTranslations();
         $this->assertEquals($expected, $actual);
     }
 }

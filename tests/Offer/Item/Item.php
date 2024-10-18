@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Offer\Item;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -176,7 +175,7 @@ final class Item extends Offer
         return new DescriptionTranslated($this->id, $language, $description);
     }
 
-    protected function createDescriptionUpdatedEvent(LegacyDescription $description): DescriptionUpdated
+    protected function createDescriptionUpdatedEvent(Description $description): DescriptionUpdated
     {
         return new DescriptionUpdated($this->id, $description);
     }

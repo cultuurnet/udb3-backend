@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
@@ -607,7 +606,7 @@ final class Event extends Offer
         return new DescriptionTranslated($this->eventId, $language, $description);
     }
 
-    protected function createDescriptionUpdatedEvent(LegacyDescription $description): DescriptionUpdated
+    protected function createDescriptionUpdatedEvent(Description $description): DescriptionUpdated
     {
         return new DescriptionUpdated($this->eventId, $description);
     }
