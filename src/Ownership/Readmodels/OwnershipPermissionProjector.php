@@ -8,6 +8,8 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBusInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
@@ -17,8 +19,7 @@ use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddPermission;
 use CultuurNet\UDB3\Role\Commands\AddUser;
 use CultuurNet\UDB3\Role\Commands\CreateRole;
-use CultuurNet\UDB3\Role\Commands\DeleteRole;
-use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
+use CultuurNet\UDB3\Role\Commands\RemoveUser;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use Ramsey\Uuid\UuidFactoryInterface;
@@ -32,18 +33,15 @@ final class OwnershipPermissionProjector implements EventListener
     private AuthorizedCommandBusInterface $commandBus;
     private OwnershipSearchRepository $ownershipSearchRepository;
     private UuidFactoryInterface $uuidFactory;
-    private RepositoryInterface $roleSearchRepository;
 
     public function __construct(
         AuthorizedCommandBusInterface $commandBus,
         OwnershipSearchRepository $ownershipSearchRepository,
-        UuidFactoryInterface $uuidFactory,
-        RepositoryInterface $roleSearchRepository
+        UuidFactoryInterface $uuidFactory
     ) {
         $this->commandBus = $commandBus;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->uuidFactory = $uuidFactory;
-        $this->roleSearchRepository = $roleSearchRepository;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -60,69 +58,86 @@ final class OwnershipPermissionProjector implements EventListener
 
     protected function applyOwnershipApproved(OwnershipApproved $ownershipApproved): void
     {
-        $ownershipItem = $this->ownershipSearchRepository->getById($ownershipApproved->getId());
-
         $this->commandBus->disableAuthorization();
 
-        $this->createOrganizationRole($ownershipItem);
-        $this->createEventRole($ownershipItem);
+        $ownershipItem = $this->ownershipSearchRepository->getById($ownershipApproved->getId());
+        $roleId = $this->getExistingRoleId($ownershipItem->getItemId());
+
+        if ($roleId !== null) {
+            $this->commandBus->dispatch(
+                new AddUser(
+                    $roleId,
+                    $ownershipItem->getOwnerId()
+                )
+            );
+        } else {
+            $roleId = $this->createRole($ownershipItem);
+
+            $this->commandBus->dispatch(
+                new AddConstraint(
+                    $roleId,
+                    new Query('(id:' . $ownershipItem->getItemId() . ' OR (organizer.id:' . $ownershipItem->getItemId() . ' AND _type:event))')
+                )
+            );
+
+            $this->commandBus->dispatch(
+                new AddPermission(
+                    $roleId,
+                    Permission::organisatiesBewerken()
+                )
+            );
+
+            $this->commandBus->dispatch(
+                new AddPermission(
+                    $roleId,
+                    Permission::aanbodBewerken()
+                )
+            );
+        }
+
+        $this->ownershipSearchRepository->updateRoleId($ownershipItem->getId(), $roleId);
 
         $this->commandBus->enableAuthorization();
     }
 
     protected function applyOwnershipDeleted(OwnershipDeleted $ownershipDeleted): void
     {
+        $ownershipItem = $this->ownershipSearchRepository->getById($ownershipDeleted->getId());
+
+        if ($ownershipItem->getRoleId() === null) {
+            return;
+        }
+
         $this->commandBus->disableAuthorization();
 
-        $roles = $this->roleSearchRepository->search(
-            $this->createRoleName($ownershipDeleted->getId())
+        $this->commandBus->dispatch(
+            new RemoveUser(
+                $ownershipItem->getRoleId(),
+                $ownershipItem->getOwnerId()
+            )
         );
-
-        foreach ($roles->getMember() as $role) {
-            $this->commandBus->dispatch(
-                new DeleteRole(new UUID($role['uuid']))
-            );
-        }
+        $this->ownershipSearchRepository->updateRoleId($ownershipItem->getId(), null);
 
         $this->commandBus->enableAuthorization();
     }
 
-    private function createOrganizationRole(OwnershipItem $ownershipItem): void
+    private function getExistingRoleId(string $itemId): ?UUID
     {
-        $roleId = $this->createRole($ownershipItem);
-
-        $this->commandBus->dispatch(
-            new AddConstraint(
-                $roleId,
-                new Query('id:' . $ownershipItem->getItemId())
+        $existingOwnerships = $this->ownershipSearchRepository->search(
+            new SearchQuery(
+                [
+                    new SearchParameter('itemId', $itemId),
+                ],
+                0,
+                1
             )
         );
 
-        $this->commandBus->dispatch(
-            new AddPermission(
-                $roleId,
-                Permission::organisatiesBewerken()
-            )
-        );
-    }
+        if ($existingOwnerships->count() < 1) {
+            return null;
+        }
 
-    private function createEventRole(OwnershipItem $ownershipItem): void
-    {
-        $roleId = $this->createRole($ownershipItem);
-
-        $this->commandBus->dispatch(
-            new AddConstraint(
-                $roleId,
-                new Query('organizer.id:' . $ownershipItem->getItemId() . ' AND _type:event')
-            )
-        );
-
-        $this->commandBus->dispatch(
-            new AddPermission(
-                $roleId,
-                Permission::aanbodBewerken()
-            )
-        );
+        return $existingOwnerships->getFirst()->getRoleId();
     }
 
     private function createRole(OwnershipItem $ownershipItem): UUID
