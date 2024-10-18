@@ -11,7 +11,7 @@ final class AMQPConnectionServiceProvider extends AbstractServiceProvider
 {
     protected function getProvidedServiceNames(): array
     {
-        return ['amqp.connection'];
+        return [AMQPStreamConnection::class];
     }
 
     public function register(): void
@@ -19,7 +19,7 @@ final class AMQPConnectionServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->addShared(
-            'amqp.connection',
+            AMQPStreamConnection::class,
             function () use ($container): AMQPStreamConnection {
                 return new AMQPStreamConnection(
                     $container->get('config')['amqp']['host'],

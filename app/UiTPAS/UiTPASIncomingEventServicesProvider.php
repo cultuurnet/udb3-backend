@@ -14,10 +14,19 @@ use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\Event\PricesUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
 use CultuurNet\UDB3\UiTPAS\Label\InMemoryUiTPASLabelsRepository;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Ramsey\Uuid\UuidFactory;
 
 final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
 {
+    private AMQPStreamConnection $connection;
+
+    public function __construct()
+    {
+        $container = $this->getContainer();
+        $this->connection = $container->get(AMQPStreamConnection::class);
+    }
+
     protected function getProvidedServiceNames(): array
     {
         return [
@@ -45,7 +54,7 @@ final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
 
                 $consumerFactory = new EventBusForwardingConsumerFactory(
                     0,
-                    $container->get('amqp.connection'),
+                    $this->connection,
                     LoggerFactory::create($container, LoggerName::forAmqpWorker('uitpas')),
                     $uitpasDeserializerLocator,
                     $container->get(EventBus::class),
