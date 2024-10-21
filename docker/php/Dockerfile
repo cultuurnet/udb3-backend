@@ -21,13 +21,7 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then \
       tar -xzf /root/prince-15.4.1-linux-generic-aarch64.tar.gz -C /root && \
       cd /root/prince-15.4.1-linux-generic-aarch64 && \
       ./install.sh </dev/null; \
-    else \
-      curl https://www.princexml.com/download/prince-20241011-linux-generic-x86_64.tar.gz -o /root/prince-20241011-linux-generic-x86_64.tar.gz && \
-      tar -xzf /root/prince-20241011-linux-generic-x86_64.tar.gz -C /root && \
-      cd /root/prince-20241011-linux-generic-x86_64 && \
-      ./install.sh </dev/null; \
     fi
-
 
 RUN echo "memory_limit=4096M" > $PHP_INI_DIR/conf.d/memory-limit.ini
 RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" > $PHP_INI_DIR/conf.d/error_reporting.ini
