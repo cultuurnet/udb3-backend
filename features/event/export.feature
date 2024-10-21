@@ -1,6 +1,8 @@
 Feature: Test the UDB3 events export API
 
   Background:
+    Given I check the export functionality
+    And I check the config functionality
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider v1 user "centraal_beheerder"

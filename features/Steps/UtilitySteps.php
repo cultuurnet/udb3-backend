@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertStringContainsString;
 
 trait UtilitySteps
 {
@@ -71,5 +73,25 @@ trait UtilitySteps
     {
         $downloadsFolder = $this->config['folders'][$folder];
         return count(glob($downloadsFolder . '/*.' . $type));
+    }
+
+    /**
+     * @Given I check the export functionality
+     */
+    public function iCheckTheExportFunctionality(): void
+    {
+        assertEquals(
+            1,
+             count(glob('/usr/local/bin/prince'))
+        );
+    }
+
+    /**
+     * @Given I check the config functionality
+     */
+    public function iCheckTheConfigFunctionality(): void
+    {
+        $configFile = file_get_contents('config.php');
+        assertStringContainsString('\'binary\' => \'/usr/local/bin/prince\',', $configFile);
     }
 }
