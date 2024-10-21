@@ -33,6 +33,7 @@ Feature: Test the UDB3 events export API
     And I wait for the command with id "%{id_ooxml-full}" to complete
     And I check if one "xlsx" file has been created in the "downloads" folder
 
+  @pdf
   Scenario: Export events to PDF - tipsrapport
     Given I store the count of the "pdf" files in the "downloads" folder
     And I set the JSON request payload from "exports/event-export-pdf-tips.json"
@@ -42,6 +43,7 @@ Feature: Test the UDB3 events export API
     And I wait for the command with id "%{id_pdf-tips}" to complete
     And I check if one "pdf" file has been created in the "downloads" folder
 
+  @pdf
   Scenario: Export events to PDF - mapview
     Given I store the count of the "pdf" files in the "downloads" folder
     And I set the JSON request payload from "exports/event-export-pdf-map.json"
