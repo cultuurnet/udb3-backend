@@ -44,11 +44,14 @@ test-group:
 feature-init:
 	docker-compose exec php composer feature -- --tags @init
 
+feature-pdf:
+	docker-compose exec php composer feature -- --tags @pdf
+
 feature-tag:
 	docker-compose exec php composer feature -- --tags $(tag)
 
 feature-ci:
-	docker-compose exec php composer feature -- --tags "~@init&&~@external" -f pretty -o std -f junit -o output/junit
+	docker-compose exec php composer feature -- --tags "~@init&&~@external&&~@pdf" -f pretty -o std -f junit -o output/junit
 
 feature:
 	docker-compose exec php composer feature -- --tags "~@init&&~@external"
