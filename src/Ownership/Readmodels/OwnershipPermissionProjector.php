@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
+use CultuurNet\UDB3\Ownership\Readmodels\Name\ItemNameResolver;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
@@ -33,15 +34,18 @@ final class OwnershipPermissionProjector implements EventListener
     private AuthorizedCommandBusInterface $commandBus;
     private OwnershipSearchRepository $ownershipSearchRepository;
     private UuidFactoryInterface $uuidFactory;
+    private ItemNameResolver $itemNameResolver;
 
     public function __construct(
         AuthorizedCommandBusInterface $commandBus,
         OwnershipSearchRepository $ownershipSearchRepository,
-        UuidFactoryInterface $uuidFactory
+        UuidFactoryInterface $uuidFactory,
+        ItemNameResolver $itemNameResolver
     ) {
         $this->commandBus = $commandBus;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->uuidFactory = $uuidFactory;
+        $this->itemNameResolver = $itemNameResolver;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -147,7 +151,7 @@ final class OwnershipPermissionProjector implements EventListener
         $this->commandBus->dispatch(
             new CreateRole(
                 $roleId,
-                $this->createRoleName($ownershipItem->getId())
+                'Beheerders ' . $this->itemNameResolver->resolve($ownershipItem->getItemId())
             )
         );
 
@@ -159,10 +163,5 @@ final class OwnershipPermissionProjector implements EventListener
         );
 
         return $roleId;
-    }
-
-    private function createRoleName(string $ownershipId): string
-    {
-        return 'Ownership ' . $ownershipId;
     }
 }
