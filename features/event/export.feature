@@ -68,6 +68,3 @@ Feature: Test the UDB3 events export API
     And I keep the value of the JSON response at "commandId" as "id_json-full"
     And I wait for the command with id "%{id_json-full}" to complete
     And I check if one "json" file has been created in the "downloads" folder
-
-  Scenario: debug
-    Given I check the export functionality

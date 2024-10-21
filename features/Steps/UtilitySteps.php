@@ -72,16 +72,4 @@ trait UtilitySteps
         $downloadsFolder = $this->config['folders'][$folder];
         return count(glob($downloadsFolder . '/*.' . $type));
     }
-
-    /**
-     * @Given I check the export functionality
-     */
-    public function iCheckTheExportFunctionality(): void
-    {
-        $output = null;
-        $returnValue = null;
-        exec('/usr/local/bin/prince --version', $output, $returnValue);
-        assertEquals(0, $returnValue);
-        assertEquals('Prince 15.4.1Copyright 2002-2023 YesLogic Pty. Ltd.Non-commercial License', implode($output));
-    }
 }
