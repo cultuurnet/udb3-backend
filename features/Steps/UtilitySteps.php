@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Steps;
 
 use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertStringContainsString;
 
 trait UtilitySteps
 {
