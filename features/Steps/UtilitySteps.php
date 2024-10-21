@@ -80,7 +80,7 @@ trait UtilitySteps
     {
         $output = null;
         $returnValue = null;
-        exec('prince --version', $output, $returnValue);
+        exec('/usr/local/bin/prince --version', $output, $returnValue);
         assertEquals(0, $returnValue);
         assertEquals('Prince 15.4.1Copyright 2002-2023 YesLogic Pty. Ltd.Non-commercial License', implode($output));
     }
