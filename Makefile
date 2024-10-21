@@ -44,9 +44,6 @@ test-group:
 feature-init:
 	docker-compose exec php composer feature -- --tags @init
 
-feature-pdf:
-	docker-compose exec php composer feature -- --tags @pdf
-
 feature-tag:
 	docker-compose exec php composer feature -- --tags $(tag)
 
