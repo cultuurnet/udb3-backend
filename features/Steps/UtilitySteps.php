@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
-use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertStringContainsString;
 
@@ -80,18 +79,10 @@ trait UtilitySteps
      */
     public function iCheckTheExportFunctionality(): void
     {
-        assertEquals(
-            1,
-             count(glob('/usr/local/bin/prince'))
-        );
-    }
-
-    /**
-     * @Given I check the config functionality
-     */
-    public function iCheckTheConfigFunctionality(): void
-    {
-        $configFile = file_get_contents('config.php');
-        assertStringContainsString('\'binary\' => \'/usr/local/bin/prince\',', $configFile);
+        $output = null;
+        $returnValue = null;
+        exec('prince --version', $output, $returnValue);
+        assertEquals(0, $returnValue);
+        assertEquals('Prince 15.4.1Copyright 2002-2023 YesLogic Pty. Ltd.Non-commercial License', implode($output));
     }
 }
