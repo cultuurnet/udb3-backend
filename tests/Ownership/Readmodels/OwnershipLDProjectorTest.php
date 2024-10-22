@@ -15,6 +15,8 @@ use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\RecordedOn;
+use CultuurNet\UDB3\User\UserIdentityDetails;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\TestCase;
 
 class OwnershipLDProjectorTest extends TestCase
@@ -29,7 +31,19 @@ class OwnershipLDProjectorTest extends TestCase
 
         $this->ownershipRepository = new InMemoryDocumentRepository();
 
-        $this->ownershipLDProjector = new OwnershipLDProjector($this->ownershipRepository);
+        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
+        $userIdentityResolver->expects($this->any())
+            ->method('getUserById')
+            ->willReturn(new UserIdentityDetails(
+                'auth0|63e22626e39a8ca1264bd29b',
+                'dev+e2e',
+                'dev+e2e@publiq.be'
+            ));
+
+        $this->ownershipLDProjector = new OwnershipLDProjector(
+            $this->ownershipRepository,
+            $userIdentityResolver
+        );
     }
 
     /**
@@ -200,6 +214,7 @@ class OwnershipLDProjectorTest extends TestCase
         $jsonLD->{'itemId'} = '9e68dafc-01d8-4c1c-9612-599c918b981d';
         $jsonLD->{'itemType'} = 'organizer';
         $jsonLD->{'ownerId'} = 'auth0|63e22626e39a8ca1264bd29b';
+        $jsonLD->{'ownerEmail'} = 'dev+e2e@publiq.be';
         $jsonLD->{'requesterId'} = 'google-oauth2|102486314601596809843';
         $jsonLD->{'state'} = $state->toString();
         $jsonLD->{'created'} = $recordedOn->toString();
