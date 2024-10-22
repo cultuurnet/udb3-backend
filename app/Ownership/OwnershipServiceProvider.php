@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Ownership\Readmodels\OwnershipPermissionProjector;
 use CultuurNet\UDB3\Ownership\Readmodels\OwnershipSearchProjector;
 use CultuurNet\UDB3\Ownership\Repositories\Search\DBALOwnershipSearchRepository;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use Ramsey\Uuid\UuidFactory;
 
 final class OwnershipServiceProvider extends AbstractServiceProvider
@@ -56,7 +57,8 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
         $container->addShared(
             OwnershipLDProjector::class,
             fn () => new OwnershipLDProjector(
-                $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY)
+                $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY),
+                $container->get(UserIdentityResolver::class)
             )
         );
 
