@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
 use CultuurNet\UDB3\Ownership\OwnershipState;
+use CultuurNet\UDB3\Ownership\Readmodels\Name\ItemNameResolver;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
@@ -50,11 +51,17 @@ class OwnershipPermissionProjectorTest extends TestCase
 
         $this->uuidFactory = $this->createMock(UuidFactory::class);
 
+        $itemNameResolver = $this->createMock(ItemNameResolver::class);
+        $itemNameResolver->expects($this->any())
+            ->method('resolve')
+            ->with('9e68dafc-01d8-4c1c-9612-599c918b981d')
+            ->willReturn('publiq vzw');
 
         $this->ownershipPermissionProjector = new OwnershipPermissionProjector(
             $this->commandBus,
             $this->ownershipSearchRepository,
-            $this->uuidFactory
+            $this->uuidFactory,
+            $itemNameResolver
         );
     }
 
@@ -118,7 +125,7 @@ class OwnershipPermissionProjectorTest extends TestCase
             [
                 new CreateRole(
                     $roleId,
-                    'Ownership ' . $ownershipId
+                    'Beheerders organisatie publiq vzw'
                 ),
                 new AddUser(
                     $roleId,
