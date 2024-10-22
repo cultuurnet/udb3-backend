@@ -151,7 +151,7 @@ final class OwnershipPermissionProjector implements EventListener
         $this->commandBus->dispatch(
             new CreateRole(
                 $roleId,
-                'Beheerders ' . $this->itemNameResolver->resolve($ownershipItem->getItemId())
+                'Beheerders organisatie ' . $this->itemNameResolver->resolve($ownershipItem->getItemId())
             )
         );
 

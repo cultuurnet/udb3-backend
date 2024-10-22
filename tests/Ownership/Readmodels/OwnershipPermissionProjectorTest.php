@@ -125,7 +125,7 @@ class OwnershipPermissionProjectorTest extends TestCase
             [
                 new CreateRole(
                     $roleId,
-                    'Beheerders publiq vzw'
+                    'Beheerders organisatie publiq vzw'
                 ),
                 new AddUser(
                     $roleId,
