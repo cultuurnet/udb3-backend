@@ -31,6 +31,9 @@ class CleanPlaceName
         // the goal is to remove as much HTML as we can, if strip_tags misses a tag, we decode the html chars
         $title = htmlspecialchars_decode(strip_tags($title));
 
+        // Double Quotes cause problems with the Geocode
+        $title = str_replace('"', '', $title);
+
         // Decode the unicode characters
         return Json::decode('"' . $title . '"');
     }
