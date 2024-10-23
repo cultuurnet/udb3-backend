@@ -17,6 +17,19 @@ Feature: Test requesting ownership
     And the JSON response at "requesterId" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
     And the JSON response at "state" should be "requested"
 
+  Scenario: Requesting ownership of an organizer via email
+    Given I create a minimal organizer and save the "id" as "organizerId"
+    And I request ownership for email "dev+e2etest@publiq.be" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    When I get the ownership with ownershipId "%{ownershipId}"
+    Then the JSON response at "id" should be "%{ownershipId}"
+    And the JSON response at "itemId" should be "%{organizerId}"
+    And the JSON response at "itemType" should be "organizer"
+    And the JSON response at "ownerId" should be "auth0|64089494e980aedd96740212"
+    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "requesterId" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
+    And the JSON response at "state" should be "requested"
+
+
   Scenario: Requesting the same ownership of an organizer is not allowed
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
