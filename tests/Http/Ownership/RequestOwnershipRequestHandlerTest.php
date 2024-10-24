@@ -39,7 +39,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     /** @var OwnershipSearchRepository&MockObject */
     private $ownerShipSearchRepository;
 
-    /** @var UserIdentityResolver */
+    /** @var UserIdentityResolver&MockObject */
     private $identityResolver;
 
     private RequestOwnershipRequestHandler $requestOwnershipRequestHandler;
