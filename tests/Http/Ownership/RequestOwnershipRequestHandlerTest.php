@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\User\CurrentUser;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid as Uuidv4;
@@ -38,6 +39,9 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     /** @var OwnershipSearchRepository&MockObject */
     private $ownerShipSearchRepository;
 
+    /** @var UserIdentityResolver */
+    private $identityResolver;
+
     private RequestOwnershipRequestHandler $requestOwnershipRequestHandler;
 
     protected function setUp(): void
@@ -50,6 +54,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
 
         $this->ownerShipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
+        $this->identityResolver = $this->createMock(UserIdentityResolver::class);
 
         $organizerRepository = new InMemoryDocumentRepository();
         $organizerRepository->save(new JsonDocument('9e68dafc-01d8-4c1c-9612-599c918b981d'));
@@ -59,7 +64,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             $this->uuidFactory,
             new CurrentUser('auth0|63e22626e39a8ca1264bd29b'),
             $this->ownerShipSearchRepository,
-            $organizerRepository
+            $organizerRepository,
+            $this->identityResolver
         );
     }
 

@@ -30,6 +30,27 @@ trait OwnershipSteps
     }
 
     /**
+     * @When I request ownership for email :ownerEmail on the organizer with organizerId :organizerId and save the :jsonPath as :variableName
+     */
+    public function iRequestOwnershipForEmailOnTheOrganizerWithOrganizerIdAndSaveTheAs(
+        string $ownerEmail,
+        string $organizerId,
+        string $jsonPath,
+        string $variableName
+    ): void {
+        $this->requestOwnership(
+            '/ownerships',
+            $this->variableState->replaceVariables(Json::encode([
+                'itemId' => $organizerId,
+                'itemType' => 'organizer',
+                'ownerEmail' => $ownerEmail,
+            ])),
+            $jsonPath,
+            $variableName
+        );
+    }
+
+    /**
      * @When I approve the ownership with ownershipId :ownershipId
      */
     public function iApproveTheOwnershipWithOwnershipId(string $ownershipId): void
