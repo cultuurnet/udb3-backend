@@ -20,6 +20,7 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
     private const URL_PARAMETER_TO_COLUMN = [
         'itemId' => 'item_id',
         'state' => 'state',
+        'ownerId' => 'owner_id',
     ];
 
     public function __construct(Connection $connection)

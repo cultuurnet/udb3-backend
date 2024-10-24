@@ -193,6 +193,91 @@ class SearchOwnershipRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_searching_ownerships_by_owner_id(): void
+    {
+        $getOwnershipRequest = (new Psr7RequestBuilder())
+            ->withUriFromString('?ownerId=auth0|63e22626e39a8ca1264bd29b')
+            ->build('GET');
+
+        $ownershipForOtherUser = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29a',
+            OwnershipState::approved()->toString()
+        );
+
+        $ownershipForSameUser = new OwnershipItem(
+            '5c7dd3bb-fa44-4c84-b499-303ecc01cba1',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::rejected()->toString()
+        );
+
+        $anotherOwnershipForSameUser = new OwnershipItem(
+            '4db19a63-44d3-4626-93fe-c53ccbe32762',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::approved()->toString()
+        );
+
+        $ownershipCollection = new OwnershipItemCollection(
+            $ownershipForOtherUser,
+            $ownershipForSameUser,
+            $anotherOwnershipForSameUser
+        );
+
+        $jsonDocuments = [];
+        /** @var OwnershipItem $ownership */
+        foreach ($ownershipCollection as $ownership) {
+            $jsonDocument = new JsonDocument(
+                $ownership->getId(),
+                Json::encode([
+                    'id' => $ownership->getId(),
+                    'itemId' => $ownership->getItemId(),
+                    'ownerId' => $ownership->getOwnerId(),
+                    'ownerType' => $ownership->getItemType(),
+                    'status' => $ownership->getState(),
+                ])
+            );
+            if ($ownership->getOwnerId() === 'auth0|63e22626e39a8ca1264bd29b') {
+                $jsonDocuments[] = $jsonDocument->getAssocBody();
+            }
+            $this->ownershipRepository->save($jsonDocument);
+        }
+
+        $searchQuery = new SearchQuery([new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b')]);
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with($searchQuery)
+            ->willReturn(new OwnershipItemCollection($ownershipForSameUser, $anotherOwnershipForSameUser));
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('searchTotal')
+            ->with($searchQuery)
+            ->willReturn(2);
+
+        $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+                '@type' => 'PagedCollection',
+                'itemsPerPage' => 2,
+                'totalItems' => 2,
+                'member' => $jsonDocuments,
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_searching_ownerships_with_offset_and_limit(): void
     {
         $getOwnershipRequest = (new Psr7RequestBuilder())
