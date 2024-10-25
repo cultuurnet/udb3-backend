@@ -412,7 +412,7 @@ class BackwardsCompatiblePayloadSerializerFactory
                     if (isset($serializedObject['payload']['url'])) {
                         $serializedObject['payload']['url'] = array_map('trim', $serializedObject['payload']['url']);
                     }
-                    if ($contactPointUpdatedEvent instanceof EventContactPointUpdated::class) {
+                    if ($contactPointUpdatedEvent === EventContactPointUpdated::class) {
                         return self::replaceEventIdWithItemId($serializedObject);
                     }
                     return self::replacePlaceIdWithItemId($serializedObject);
