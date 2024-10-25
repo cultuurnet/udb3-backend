@@ -328,7 +328,6 @@ class BackwardsCompatiblePayloadSerializerFactory
         $refactoredEventEvents = [
             EventTypicalAgeRangeDeleted::class,
             EventTypicalAgeRangeUpdated::class,
-            EventContactPointUpdated::class,
             EventOrganizerUpdated::class,
             EventOrganizerDeleted::class,
             EventDescriptionUpdated::class,
@@ -352,7 +351,6 @@ class BackwardsCompatiblePayloadSerializerFactory
             PlaceOrganizerDeleted::class,
             PlaceTypicalAgeRangeDeleted::class,
             PlaceTypicalAgeRangeUpdated::class,
-            PlaceContactPointUpdated::class,
             PlaceDescriptionUpdated::class,
             PlaceDeleted::class,
         ];
