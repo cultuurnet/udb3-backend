@@ -396,6 +396,31 @@ class BackwardsCompatiblePayloadSerializerFactory
         }
 
         /**
+         * ContactPointUpdated Events
+         */
+        $contactPointUpdatedEvents = [
+            EventContactPointUpdated::class,
+            PlaceContactPointUpdated::class,
+        ];
+        foreach ($contactPointUpdatedEvents as $contactPointUpdatedEvent) {
+            $payloadManipulatingSerializer->manipulateEventsOfClass(
+                $contactPointUpdatedEvent,
+                function (array $serializedObject) use ($contactPointUpdatedEvent) {
+                    if (isset($serializedObject['payload']['email'])) {
+                        $serializedObject['payload']['email'] = array_map('trim', $serializedObject['payload']['email']);
+                    }
+                    if (isset($serializedObject['payload']['url'])) {
+                        $serializedObject['payload']['url'] = array_map('trim', $serializedObject['payload']['url']);
+                    }
+                    if ($contactPointUpdatedEvent instanceof EventContactPointUpdated::class) {
+                        return self::replaceEventIdWithItemId($serializedObject);
+                    }
+                    return self::replacePlaceIdWithItemId($serializedObject);
+                }
+            );
+        }
+
+        /**
          * Roles
          */
         $payloadManipulatingSerializer->manipulateEventsOfClass(
