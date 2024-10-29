@@ -6045,12 +6045,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "d7338e8ce5a354f41adf4b6f47fa8b6c2e2eccfb"
+                "reference": "99ad4aa385a31079d45ee8fc5ff04c9174e3d0b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/d7338e8ce5a354f41adf4b6f47fa8b6c2e2eccfb",
-                "reference": "d7338e8ce5a354f41adf4b6f47fa8b6c2e2eccfb",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/99ad4aa385a31079d45ee8fc5ff04c9174e3d0b7",
+                "reference": "99ad4aa385a31079d45ee8fc5ff04c9174e3d0b7",
                 "shasum": ""
             },
             "type": "library",
@@ -6069,7 +6069,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6368-email-url-validation"
             },
-            "time": "2024-10-29T12:18:35+00:00"
+            "time": "2024-10-29T12:43:49+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
