@@ -154,15 +154,11 @@ Feature: Test the UDB3 events API
     {
       "schemaErrors": [
         {
-          "error": "Minimum string length is 1, found 0",
-          "jsonPointer": "/phone/0"
-        },
-        {
-          "error": "The data must match the 'email' format",
+          "error": "The string should match pattern: ^(|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$",
           "jsonPointer": "/email/0"
         },
         {
-          "error": "The data must match the 'uri' format",
+          "error": "The string should match pattern: ^http[s]?:\\/\\/\\w|^$",
           "jsonPointer": "/url/0"
         }
       ],
