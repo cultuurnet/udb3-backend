@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "628083fb007ddc6e9dc5a57b356fee9a",
+    "content-hash": "79fda9d664460977a01493450dc5e7ab",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -6041,18 +6041,19 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-6368-email-url-validation",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "8ace6315196bf7179031f24dd7e4e1842fa8caf0"
+                "reference": "950ca558cf7c4a52593db51129f8ee1b2c1529c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/8ace6315196bf7179031f24dd7e4e1842fa8caf0",
-                "reference": "8ace6315196bf7179031f24dd7e4e1842fa8caf0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/950ca558cf7c4a52593db51129f8ee1b2c1529c6",
+                "reference": "950ca558cf7c4a52593db51129f8ee1b2c1529c6",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6069,7 +6070,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6368-email-url-validation"
             },
-            "time": "2024-10-29T13:31:41+00:00"
+            "time": "2024-10-30T08:50:32+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
