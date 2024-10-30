@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializer;
+use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
@@ -21,7 +22,14 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -656,6 +664,31 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $constraintAdded = $this->serializer->deserialize($decoded);
 
         $this->assertInstanceOf(ConstraintAdded::class, $constraintAdded);
+    }
+
+    /**
+     * @test
+     */
+    public function it_trims_contact_points(): void
+    {
+        $sampleFile = $this->sampleDir . 'serialized_event_contact_point_updated_class_with_spaces.json';
+
+        $serialized = SampleFiles::read($sampleFile);
+        $decoded = Json::decodeAssociatively($serialized);
+
+        $expectedContactPoint = new ContactPoint(
+            new TelephoneNumbers(new TelephoneNumber('0474888888')),
+            new EmailAddresses(new EmailAddress('willem@willem.com')),
+            new Urls(new Url('http://test.com'))
+        );
+        /**
+         * @var ContactPointUpdated $event
+         */
+        $event = $this->serializer->deserialize($decoded);
+
+        $actualContactPoint = $event->getContactPoint();
+
+        $this->assertEquals($expectedContactPoint, $actualContactPoint);
     }
 
     private function assertEventIdReplacedWithItemId(string $sampleFile): void

@@ -406,11 +406,11 @@ class BackwardsCompatiblePayloadSerializerFactory
             $payloadManipulatingSerializer->manipulateEventsOfClass(
                 $contactPointUpdatedEvent,
                 function (array $serializedObject) use ($contactPointUpdatedEvent) {
-                    if (isset($serializedObject['payload']['email'])) {
-                        $serializedObject['payload']['email'] = array_map('trim', $serializedObject['payload']['email']);
+                    if (isset($serializedObject['payload']['contactPoint']['email'])) {
+                        $serializedObject['payload']['contactPoint']['email'] = array_map('trim', $serializedObject['payload']['contactPoint']['email']);
                     }
-                    if (isset($serializedObject['payload']['url'])) {
-                        $serializedObject['payload']['url'] = array_map('trim', $serializedObject['payload']['url']);
+                    if (isset($serializedObject['payload']['contactPoint']['url'])) {
+                        $serializedObject['payload']['contactPoint']['url'] = array_map('trim', $serializedObject['payload']['contactPoint']['url']);
                     }
                     if ($contactPointUpdatedEvent === EventContactPointUpdated::class) {
                         return self::replaceEventIdWithItemId($serializedObject);

@@ -214,6 +214,39 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_can_search_ownership_items_by_owner_id(): void
+    {
+        $ownershipItem = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::requested()->toString()
+        );
+        $this->ownershipSearchRepository->save($ownershipItem);
+
+        $anotherOwnershipItem = new OwnershipItem(
+            '672265b6-d4d0-416e-9b0b-c29de7d18125',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'a75aa571-8131-4fd6-ab9b-59c7672095e5',
+            OwnershipState::approved()->toString()
+        );
+        $this->ownershipSearchRepository->save($anotherOwnershipItem);
+
+        $this->assertEquals(
+            new OwnershipItemCollection($ownershipItem),
+            $this->ownershipSearchRepository->search(
+                new SearchQuery([
+                    new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                ])
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_takes_into_account_offset_when_searching(): void
     {
         $ownershipItem = new OwnershipItem(
