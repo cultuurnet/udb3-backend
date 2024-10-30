@@ -25,6 +25,19 @@ final class OwnershipStatusGuard
         $this->permissionVoter = $permissionVoter;
     }
 
+    public function isAllowedToRequest(string $itemId, string $requesterId, CurrentUser $currentUser): void
+    {
+        $isOwner = $this->permissionVoter->isAllowed(
+            Permission::organisatiesBeheren(),
+            $itemId,
+            $currentUser->getId()
+        );
+
+        if (!$isOwner && $currentUser->getId() !== $requesterId) {
+            throw ApiProblem::forbidden('You are not allowed to request ownership for this item');
+        }
+    }
+
     public function isAllowedToApprove(string $ownershipId, CurrentUser $currentUser): void
     {
         $this->isAllowed($ownershipId, $currentUser, 'approve');
