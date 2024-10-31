@@ -21,13 +21,13 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
     protected function getProvidedServiceNames(): array
     {
         return [
+            OwnershipStatusGuard::class,
             RequestOwnershipRequestHandler::class,
             GetOwnershipRequestHandler::class,
             SearchOwnershipRequestHandler::class,
             ApproveOwnershipRequestHandler::class,
             RejectOwnershipRequestHandler::class,
             DeleteOwnershipRequestHandler::class,
-            OwnershipStatusGuard::class,
         ];
     }
 
@@ -36,13 +36,22 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
         $container = $this->getContainer();
 
         $container->addShared(
+            OwnershipStatusGuard::class,
+            fn () => new OwnershipStatusGuard(
+                $container->get(OwnershipSearchRepository::class),
+                $container->get('organizer_permission_voter')
+            )
+        );
+
+        $container->addShared(
             RequestOwnershipRequestHandler::class,
             fn () => new RequestOwnershipRequestHandler(
                 $container->get('event_command_bus'),
                 new UuidFactory(),
                 $container->get(CurrentUser::class),
                 $container->get(OwnershipSearchRepository::class),
-                $container->get('organizer_jsonld_repository')
+                $container->get('organizer_jsonld_repository'),
+                $container->get(OwnershipStatusGuard::class)
             )
         );
 
@@ -58,14 +67,6 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             fn () => new SearchOwnershipRequestHandler(
                 $container->get(OwnershipSearchRepository::class),
                 $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY)
-            )
-        );
-
-        $container->addShared(
-            OwnershipStatusGuard::class,
-            fn () => new OwnershipStatusGuard(
-                $container->get(OwnershipSearchRepository::class),
-                $container->get('organizer_permission_voter')
             )
         );
 

@@ -32,19 +32,22 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
     private CurrentUser $currentUser;
     private OwnershipSearchRepository $ownershipSearchRepository;
     private DocumentRepository $organizerRepository;
+    private OwnershipStatusGuard $ownershipStatusGuard;
 
     public function __construct(
         CommandBus $commandBus,
         UuidFactoryInterface $uuidFactory,
         CurrentUser $currentUser,
         OwnershipSearchRepository $ownershipSearchRepository,
-        DocumentRepository $organizerRepository
+        DocumentRepository $organizerRepository,
+        OwnershipStatusGuard $ownershipStatusGuard
     ) {
         $this->commandBus = $commandBus;
         $this->uuidFactory = $uuidFactory;
         $this->currentUser = $currentUser;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->organizerRepository = $organizerRepository;
+        $this->ownershipStatusGuard = $ownershipStatusGuard;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -85,10 +88,11 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
             }
         }
 
-        // Make sure the current user has access to the owner
-        if (!$this->currentUser->isGodUser() && $this->currentUser->getId() !== $requestOwnership->getOwnerId()->toString()) {
-            throw ApiProblem::forbidden('You are not allowed to request ownership for another owner');
-        }
+        $this->ownershipStatusGuard->isAllowedToRequest(
+            $requestOwnership->getItemId()->toString(),
+            $requestOwnership->getOwnerId()->toString(),
+            $this->currentUser
+        );
 
         $this->commandBus->dispatch($requestOwnership);
 
