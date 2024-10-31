@@ -130,3 +130,41 @@ Feature: Test the UDB3 events API
     Then the response status should be "204"
     When I get the event at "%{eventUrl}"
     Then the JSON response should not have contactPoint
+
+  Scenario: Update with faulty contactpoints
+    Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "email": [
+        "This is not a email"
+      ],
+      "phone": [
+        ""
+      ],
+      "url": [
+        "This is not a url"
+      ]
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/contact-point"
+    Then the response status should be "400"
+    Then the JSON response should be:
+    """
+    {
+      "schemaErrors": [
+        {
+          "error": "The string should match pattern: ^(|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$",
+          "jsonPointer": "/email/0"
+        },
+        {
+          "error": "The string should match pattern: ^http[s]?:\\/\\/\\w|^$",
+          "jsonPointer": "/url/0"
+        }
+      ],
+      "status": 400,
+      "title": "Invalid body data",
+      "type": "https://api.publiq.be/probs/body/invalid-data"
+    }
+    """
+

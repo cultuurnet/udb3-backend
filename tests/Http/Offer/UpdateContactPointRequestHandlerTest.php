@@ -124,6 +124,43 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                     new SchemaError('/url', 'The data (string) must match the type: array'),
                 ),
             ];
+
+            yield 'Urls are invalid' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'phone' => ['0475/123123'],
+                    'email' => ['info@publiq.be'],
+                    'url' => ['ftp://www.publiq.be/'],
+                ],
+                'expectedProblem' => ApiProblem::bodyInvalidData(
+                    new SchemaError('/url/0', 'The string should match pattern: ^http[s]?:\/\/\w|^$'),
+                ),
+            ];
+
+            yield 'E-mails are invalid' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'phone' => ['0475/123123'],
+                    'email' => ['info_at_publiq.be'],
+                    'url' => ['https://www.publiq.be/'],
+                ],
+                'expectedProblem' => ApiProblem::bodyInvalidData(
+                    new SchemaError('/email/0', 'The string should match pattern: ^(|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$'),
+                ),
+            ];
+
+            yield 'Mix of valid & invalid E-mails & urls' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'phone' => ['0475/123123'],
+                    'email' => ['info_at_publiq.be', 'info@museumpassmusees.be'],
+                    'url' => ['https://www.publiq.be/', 'ftp://www.museumpassmusees.be/'],
+                ],
+                'expectedProblem' => ApiProblem::bodyInvalidData(
+                    new SchemaError('/email/0', 'The string should match pattern: ^(|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$'),
+                    new SchemaError('/url/1', 'The string should match pattern: ^http[s]?:\/\/\w|^$'),
+                ),
+            ];
         }
     }
 
