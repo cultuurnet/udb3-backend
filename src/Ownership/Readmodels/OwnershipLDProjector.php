@@ -56,6 +56,7 @@ final class OwnershipLDProjector implements EventListener
     public function applyOwnershipRequested(OwnershipRequested $ownershipRequested, DomainMessage $domainMessage): JsonDocument
     {
         $ownerDetails = $this->userIdentityResolver->getUserById($ownershipRequested->getOwnerId());
+        $requesterDetails = $this->userIdentityResolver->getUserById($ownershipRequested->getRequesterId());
 
         $jsonDocument = new JsonDocument($ownershipRequested->getId());
 
@@ -67,6 +68,7 @@ final class OwnershipLDProjector implements EventListener
         $body->ownerId = $ownershipRequested->getOwnerId();
         $body->ownerEmail = $ownerDetails !== null ? $ownerDetails->getEmailAddress() : null;
         $body->requesterId = $ownershipRequested->getRequesterId();
+        $body->requesterEmail = $requesterDetails !== null ? $requesterDetails->getEmailAddress() : null;
         $body->state = OwnershipState::requested()->toString();
 
         $body->created = DateTimeFactory::fromFormat(

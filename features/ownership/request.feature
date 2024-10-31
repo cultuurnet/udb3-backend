@@ -15,6 +15,7 @@ Feature: Test requesting ownership
     And the JSON response at "ownerId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "d759fd36-fb28-4fe3-8ec6-b4aaf990371d"
+    And the JSON response at "requesterEmail" should be "dev+udbtestinvoerder@publiq.be"
     And the JSON response at "state" should be "requested"
 
   Scenario: Requesting ownership of an organizer for yourself

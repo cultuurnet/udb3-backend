@@ -34,11 +34,17 @@ class OwnershipLDProjectorTest extends TestCase
         $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
         $userIdentityResolver->expects($this->any())
             ->method('getUserById')
-            ->willReturn(new UserIdentityDetails(
-                'auth0|63e22626e39a8ca1264bd29b',
-                'dev+e2e',
-                'dev+e2e@publiq.be'
-            ));
+            ->willReturnCallback(
+                function (string $userId): ?UserIdentityDetails {
+                    if ($userId === 'auth0|63e22626e39a8ca1264bd29b') {
+                        return new UserIdentityDetails($userId, 'dev', 'dev+e2e@publiq.be');
+                    }
+                    if ($userId === 'google-oauth2|102486314601596809843') {
+                        return new UserIdentityDetails($userId, 'google', 'info@google.be');
+                    }
+                    return null;
+                }
+            );
 
         $this->ownershipLDProjector = new OwnershipLDProjector(
             $this->ownershipRepository,
@@ -216,6 +222,7 @@ class OwnershipLDProjectorTest extends TestCase
         $jsonLD->{'ownerId'} = 'auth0|63e22626e39a8ca1264bd29b';
         $jsonLD->{'ownerEmail'} = 'dev+e2e@publiq.be';
         $jsonLD->{'requesterId'} = 'google-oauth2|102486314601596809843';
+        $jsonLD->{'requesterEmail'} = 'info@google.be';
         $jsonLD->{'state'} = $state->toString();
         $jsonLD->{'created'} = $recordedOn->toString();
         $jsonLD->{'modified'} = $recordedOn->toString();
