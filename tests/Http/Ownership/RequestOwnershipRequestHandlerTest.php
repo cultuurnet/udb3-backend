@@ -188,6 +188,64 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_requesting_ownership_with_email(): void
+    {
+        CurrentUser::configureGodUserIds([]);
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'itemType' => 'organizer',
+                'ownerEmail' => 'dev+e2etest@publiq.be',
+            ])
+            ->build('POST');
+
+        $this->uuidFactory->expects($this->once())
+            ->method('uuid4')
+            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('getByItemIdAndOwnerId')
+            ->with(
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willThrowException(OwnershipItemNotFound::byItemIdAndOwnerId(
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            ));
+
+        $response = $this->requestOwnershipRequestHandler->handle($request);
+
+        $this->assertEquals(
+            [
+                'id' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            ],
+            Json::decodeAssociatively((string) $response->getBody())
+        );
+
+        $this->assertEquals(
+            201,
+            $response->getStatusCode()
+        );
+
+        $this->assertEquals(
+            [
+                new RequestOwnership(
+                    new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new UUID('9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    ItemType::organizer(),
+                    new UserId('auth0|63e22626e39a8ca1264bd29b'),
+                    new UserId('auth0|63e22626e39a8ca1264bd29b')
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_prevents_requesting_ownership_for_other_user(): void
     {
         CurrentUser::configureGodUserIds([]);
