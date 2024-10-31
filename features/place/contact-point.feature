@@ -120,3 +120,39 @@ Feature: Test place contactPoint property
     Then the response status should be "204"
     When I get the place at "%{placeUrl}"
     Then the JSON response should not have contactPoint
+
+  Scenario: Update with faulty contactpoints
+    When I set the JSON request payload to:
+    """
+    {
+      "email": [
+        "This is not a email"
+      ],
+      "phone": [
+        ""
+      ],
+      "url": [
+        "This is not a url"
+      ]
+    }
+    """
+    And I send a PUT request to "%{placeUrl}/contact-point"
+    Then the response status should be "400"
+    Then the JSON response should be:
+    """
+    {
+      "schemaErrors": [
+        {
+          "error": "The string should match pattern: ^(|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$",
+          "jsonPointer": "/email/0"
+        },
+        {
+          "error": "The string should match pattern: ^http[s]?:\\/\\/\\w|^$",
+          "jsonPointer": "/url/0"
+        }
+      ],
+      "status": 400,
+      "title": "Invalid body data",
+      "type": "https://api.publiq.be/probs/body/invalid-data"
+    }
+    """

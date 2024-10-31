@@ -20,6 +20,8 @@ use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\User\CurrentUser;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -42,6 +44,9 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     /** @var UserIdentityResolver&MockObject */
     private $identityResolver;
 
+    /** @var PermissionVoter&MockObject */
+    private $permissionVoter;
+
     private RequestOwnershipRequestHandler $requestOwnershipRequestHandler;
 
     protected function setUp(): void
@@ -59,12 +64,18 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $organizerRepository = new InMemoryDocumentRepository();
         $organizerRepository->save(new JsonDocument('9e68dafc-01d8-4c1c-9612-599c918b981d'));
 
+        $this->permissionVoter = $this->createMock(PermissionVoter::class);
+
         $this->requestOwnershipRequestHandler = new RequestOwnershipRequestHandler(
             $this->commandBus,
             $this->uuidFactory,
             new CurrentUser('auth0|63e22626e39a8ca1264bd29b'),
             $this->ownerShipSearchRepository,
             $organizerRepository,
+            new OwnershipStatusGuard(
+                $this->ownerShipSearchRepository,
+                $this->permissionVoter
+            ),
             $this->identityResolver
         );
     }
@@ -74,8 +85,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
      */
     public function it_handles_requesting_ownership(): void
     {
-        CurrentUser::configureGodUserIds([]);
-
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray([
                 'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
@@ -98,6 +107,15 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'auth0|63e22626e39a8ca1264bd29b'
             ));
+
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBeheren(),
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willReturn(true);
 
         $response = $this->requestOwnershipRequestHandler->handle($request);
 
@@ -130,9 +148,9 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_requesting_ownership_as_admin(): void
+    public function it_prevents_requesting_ownership_when_no_permission(): void
     {
-        CurrentUser::configureGodUserIds(['auth0|63e22626e39a8ca1264bd29b']);
+        CurrentUser::configureGodUserIds([]);
 
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray([
@@ -157,32 +175,21 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'google-oauth2|102486314601596809843'
             ));
 
-        $response = $this->requestOwnershipRequestHandler->handle($request);
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBeheren(),
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willReturn(false);
 
-        $this->assertEquals(
-            [
-                'id' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-            ],
-            Json::decodeAssociatively((string) $response->getBody())
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::forbidden('You are not allowed to request ownership for this item'),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
 
-        $this->assertEquals(
-            201,
-            $response->getStatusCode()
-        );
-
-        $this->assertEquals(
-            [
-                new RequestOwnership(
-                    new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
-                    new UUID('9e68dafc-01d8-4c1c-9612-599c918b981d'),
-                    ItemType::organizer(),
-                    new UserId('google-oauth2|102486314601596809843'),
-                    new UserId('auth0|63e22626e39a8ca1264bd29b')
-                ),
-            ],
-            $this->commandBus->getRecordedCommands()
-        );
+        $this->assertEquals([], $this->commandBus->getRecordedCommands());
     }
 
     /**
@@ -246,7 +253,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_prevents_requesting_ownership_for_other_user(): void
+    public function it_allows_requesting_ownership_for_yourself_even_without_permission(): void
     {
         CurrentUser::configureGodUserIds([]);
 
@@ -254,7 +261,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray([
                 'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'itemType' => 'organizer',
-                'ownerId' => 'google-oauth2|102486314601596809843',
+                'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
             ])
             ->build('POST');
 
@@ -266,19 +273,41 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ->method('getByItemIdAndOwnerId')
             ->with(
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'google-oauth2|102486314601596809843'
+                'auth0|63e22626e39a8ca1264bd29b'
             )
             ->willThrowException(OwnershipItemNotFound::byItemIdAndOwnerId(
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'google-oauth2|102486314601596809843'
+                'auth0|63e22626e39a8ca1264bd29b'
             ));
 
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::forbidden('You are not allowed to request ownership for another owner'),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBeheren(),
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willReturn(false);
+
+        $response = $this->requestOwnershipRequestHandler->handle($request);
+
+        $this->assertEquals(
+            201,
+            $response->getStatusCode()
         );
 
-        $this->assertEquals([], $this->commandBus->getRecordedCommands());
+        $this->assertEquals(
+            [
+                new RequestOwnership(
+                    new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new UUID('9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    ItemType::organizer(),
+                    new UserId('auth0|63e22626e39a8ca1264bd29b'),
+                    new UserId('auth0|63e22626e39a8ca1264bd29b')
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     /**

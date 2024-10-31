@@ -22,19 +22,27 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
     protected function getProvidedServiceNames(): array
     {
         return [
+            OwnershipStatusGuard::class,
             RequestOwnershipRequestHandler::class,
             GetOwnershipRequestHandler::class,
             SearchOwnershipRequestHandler::class,
             ApproveOwnershipRequestHandler::class,
             RejectOwnershipRequestHandler::class,
             DeleteOwnershipRequestHandler::class,
-            OwnershipStatusGuard::class,
         ];
     }
 
     public function register(): void
     {
         $container = $this->getContainer();
+
+        $container->addShared(
+            OwnershipStatusGuard::class,
+            fn () => new OwnershipStatusGuard(
+                $container->get(OwnershipSearchRepository::class),
+                $container->get('organizer_permission_voter')
+            )
+        );
 
         $container->addShared(
             RequestOwnershipRequestHandler::class,
@@ -44,6 +52,7 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
                 $container->get(CurrentUser::class),
                 $container->get(OwnershipSearchRepository::class),
                 $container->get('organizer_jsonld_repository'),
+                $container->get(OwnershipStatusGuard::class),
                 $container->get(UserIdentityResolver::class)
             )
         );
@@ -60,14 +69,6 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             fn () => new SearchOwnershipRequestHandler(
                 $container->get(OwnershipSearchRepository::class),
                 $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY)
-            )
-        );
-
-        $container->addShared(
-            OwnershipStatusGuard::class,
-            fn () => new OwnershipStatusGuard(
-                $container->get(OwnershipSearchRepository::class),
-                $container->get('organizer_permission_voter')
             )
         );
 
