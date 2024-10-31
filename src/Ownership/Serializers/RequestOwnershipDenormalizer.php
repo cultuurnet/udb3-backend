@@ -33,7 +33,7 @@ final class RequestOwnershipDenormalizer implements DenormalizerInterface
         if ($email = $data['ownerEmail'] ?? null) {
             $user = $this->identityResolver->getUserByEmail(new EmailAddress($email));
             if (!$user) {
-                throw ApiProblem::bodyInvalidDataWithDetail('No user with email '.$email. ' was found in our system.');
+                throw ApiProblem::bodyInvalidDataWithDetail('No user with email ' . $email . ' was found in our system.');
             }
 
             $data['ownerId'] = $user->getUserId();

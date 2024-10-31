@@ -188,7 +188,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::forbidden('You are not allowed to request ownership for this item'),
-            fn() => $this->requestOwnershipRequestHandler->handle($request)
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
@@ -364,7 +364,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::ownerShipAlreadyExists(
                 'An ownership request for this item and owner already exists with id e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'
             ),
-            fn() => $this->requestOwnershipRequestHandler->handle($request)
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
@@ -400,7 +400,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::organizerNotFound('fc93ceb0-e170-4d92-b496-846b2a194f1c'),
-            fn() => $this->requestOwnershipRequestHandler->handle($request)
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
@@ -416,7 +416,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyMissing(),
-            fn() => $this->requestOwnershipRequestHandler->handle($request)
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -436,10 +436,10 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/',
-                    'The required properties (itemId) are missing'
+                    'The data should match exactly one schema'
                 ),
             ),
-            fn() => $this->requestOwnershipRequestHandler->handle($request)
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -459,10 +459,10 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/',
-                    'The required properties (itemType) are missing'
+                    'The data should match exactly one schema'
                 ),
             ),
-            fn() => $this->requestOwnershipRequestHandler->handle($request)
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -482,10 +482,10 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/',
-                    'The required properties (ownerId) are missing'
+                    'The data should match exactly one schema'
                 ),
             ),
-            fn() => $this->requestOwnershipRequestHandler->handle($request)
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -509,7 +509,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                     'The string should match pattern: [0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12}'
                 ),
             ),
-            fn() => $this->requestOwnershipRequestHandler->handle($request)
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -533,7 +533,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                     'The data should match one item from enum'
                 ),
             ),
-            fn() => $this->requestOwnershipRequestHandler->handle($request)
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -557,7 +557,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                     'Minimum string length is 1, found 0'
                 ),
             ),
-            fn() => $this->requestOwnershipRequestHandler->handle($request)
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -581,7 +581,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                     'The data (integer) must match the type: string'
                 ),
             ),
-            fn() => $this->requestOwnershipRequestHandler->handle($request)
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 }

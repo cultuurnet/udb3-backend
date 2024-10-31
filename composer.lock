@@ -6045,12 +6045,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "950ca558cf7c4a52593db51129f8ee1b2c1529c6"
+                "reference": "e5a840e87769c39d22fef7c51e4b003eff9edc6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/950ca558cf7c4a52593db51129f8ee1b2c1529c6",
-                "reference": "950ca558cf7c4a52593db51129f8ee1b2c1529c6",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/e5a840e87769c39d22fef7c51e4b003eff9edc6a",
+                "reference": "e5a840e87769c39d22fef7c51e4b003eff9edc6a",
                 "shasum": ""
             },
             "default-branch": true,
@@ -6068,9 +6068,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6368-email-url-validation"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
-            "time": "2024-10-30T08:50:32+00:00"
+            "time": "2024-10-31T08:48:40+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
