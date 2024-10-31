@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
@@ -23,6 +24,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\User\CurrentUser;
+use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -123,7 +125,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             [
                 'id' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             ],
-            Json::decodeAssociatively((string) $response->getBody())
+            Json::decodeAssociatively((string)$response->getBody())
         );
 
         $this->assertEquals(
@@ -186,7 +188,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::forbidden('You are not allowed to request ownership for this item'),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
+            fn() => $this->requestOwnershipRequestHandler->handle($request)
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
@@ -199,6 +201,15 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     {
         CurrentUser::configureGodUserIds([]);
 
+        $this->identityResolver->expects($this->once())
+            ->method('getUserByEmail')
+            ->with(new EmailAddress('dev+e2etest@publiq.be'))
+            ->willReturn(new UserIdentityDetails(
+                'auth0|63e22626e39a8ca1264bd29b',
+                'e2e',
+                'dev+e2etest@publiq.be'
+            ));
+
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray([
                 'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
@@ -206,7 +217,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'ownerEmail' => 'dev+e2etest@publiq.be',
             ])
             ->build('POST');
-
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
@@ -222,13 +232,22 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'auth0|63e22626e39a8ca1264bd29b'
             ));
 
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBeheren(),
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willReturn(true);
+
         $response = $this->requestOwnershipRequestHandler->handle($request);
 
         $this->assertEquals(
             [
                 'id' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             ],
-            Json::decodeAssociatively((string) $response->getBody())
+            Json::decodeAssociatively((string)$response->getBody())
         );
 
         $this->assertEquals(
@@ -345,7 +364,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::ownerShipAlreadyExists(
                 'An ownership request for this item and owner already exists with id e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'
             ),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
+            fn() => $this->requestOwnershipRequestHandler->handle($request)
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
@@ -381,7 +400,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::organizerNotFound('fc93ceb0-e170-4d92-b496-846b2a194f1c'),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
+            fn() => $this->requestOwnershipRequestHandler->handle($request)
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
@@ -397,7 +416,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyMissing(),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
+            fn() => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -420,7 +439,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                     'The required properties (itemId) are missing'
                 ),
             ),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
+            fn() => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -443,7 +462,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                     'The required properties (itemType) are missing'
                 ),
             ),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
+            fn() => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -466,7 +485,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                     'The required properties (ownerId) are missing'
                 ),
             ),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
+            fn() => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -490,7 +509,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                     'The string should match pattern: [0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12}'
                 ),
             ),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
+            fn() => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -514,7 +533,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                     'The data should match one item from enum'
                 ),
             ),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
+            fn() => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -538,7 +557,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                     'Minimum string length is 1, found 0'
                 ),
             ),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
+            fn() => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 
@@ -562,7 +581,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                     'The data (integer) must match the type: string'
                 ),
             ),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
+            fn() => $this->requestOwnershipRequestHandler->handle($request)
         );
     }
 }
