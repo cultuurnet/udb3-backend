@@ -8,7 +8,7 @@ use Broadway\Domain\DomainMessage;
 
 trait ReplayDetectorTrait
 {
-    protected function isReplayed(DomainMessage $domainMessage)
+    protected function isReplayed(DomainMessage $domainMessage): bool
     {
         return (new DomainMessageIsReplayed())->isSatisfiedBy($domainMessage);
     }

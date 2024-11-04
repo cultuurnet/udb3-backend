@@ -48,7 +48,7 @@ final class RemoveNullPropertiesRequestBodyParser implements RequestBodyParser
     private function removeNullValuesFromArray(array $data): array
     {
         $data = array_filter($data, fn ($value) => $value !== null);
-        $data = array_map(
+        return array_map(
             function ($value) {
                 if ($value instanceof stdClass) {
                     return $this->removeNullPropertiesFromObject($value);
@@ -60,6 +60,5 @@ final class RemoveNullPropertiesRequestBodyParser implements RequestBodyParser
             },
             $data
         );
-        return $data;
     }
 }

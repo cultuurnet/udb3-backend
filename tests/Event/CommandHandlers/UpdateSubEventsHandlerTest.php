@@ -48,7 +48,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
     {
         $permanentEventCreated = new EventCreated(
             '1',
-            new LegacyLanguage('nl'),
+            new Language('nl'),
             'Permanent Event',
             new LegacyEventType('0.50.4.0.0', 'concert'),
             new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -71,7 +71,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
     {
         $periodicEventCreated = new EventCreated(
             '1',
-            new LegacyLanguage('nl'),
+            new Language('nl'),
             'Periodic Event',
             new LegacyEventType('0.50.4.0.0', 'concert'),
             new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -98,7 +98,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
     {
         $singleEventCreated = new EventCreated(
             '1',
-            new LegacyLanguage('nl'),
+            new Language('nl'),
             'Single Event',
             new LegacyEventType('0.50.4.0.0', 'concert'),
             new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -144,7 +144,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update start date on 1 sub event' => [
                 new EventCreated(
                     '1',
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     'Multiple Event',
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -190,7 +190,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update start date and end date on 1 sub event' => [
                 new EventCreated(
                     '1',
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     'Multiple Event',
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -238,7 +238,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update start date on 2 sub events' => [
                 new EventCreated(
                     '1',
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     'Multiple Event',
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -285,7 +285,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update start date and end date on 2 sub events' => [
                 new EventCreated(
                     '1',
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     'Multiple Event',
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -336,7 +336,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update status on 1 sub event' => [
                new EventCreated(
                    '1',
-                   new LegacyLanguage('nl'),
+                   new Language('nl'),
                    'Multiple Event',
                    new LegacyEventType('0.50.4.0.0', 'concert'),
                    new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -395,7 +395,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update status on 2 sub events' => [
                 new EventCreated(
                     '1',
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     'Multiple Event',
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -468,7 +468,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update booking availability on 1 sub event' => [
                 new EventCreated(
                     '1',
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     'Multiple Event',
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -518,7 +518,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update booking availability on 2 sub events' => [
                 new EventCreated(
                     '1',
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     'Multiple Event',
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -573,7 +573,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update status and booking on 1 sub event' => [
                 new EventCreated(
                     '1',
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     'Multiple Event',
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -638,7 +638,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update booking and status on 2 sub events' => [
                 new EventCreated(
                     '1',
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     'Multiple Event',
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),

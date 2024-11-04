@@ -15,10 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 class TranslatedAddressDenormalizer extends TranslatedValueObjectDenormalizer
 {
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === TranslatedAddress::class;
     }
@@ -26,7 +23,7 @@ class TranslatedAddressDenormalizer extends TranslatedValueObjectDenormalizer
     /**
      * @inheritdoc
      */
-    protected function createTranslatedValueObject(Language $originalLanguage, $originalValue)
+    protected function createTranslatedValueObject(Language $originalLanguage, object $originalValue)
     {
         return new TranslatedAddress($originalLanguage, $originalValue);
     }

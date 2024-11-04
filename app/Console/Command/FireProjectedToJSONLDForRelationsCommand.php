@@ -13,10 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJSONLDCommand
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(EventBus $eventBus, Connection $connection, DocumentEventFactory $organizerEventFactory, DocumentEventFactory $placeEventFactory)
     {
@@ -31,7 +28,7 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
             ->setDescription('Fires JSONLD projected events for organizers and places having relations');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $connection = $this->connection;
 

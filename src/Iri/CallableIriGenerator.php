@@ -28,10 +28,7 @@ class CallableIriGenerator implements IriGeneratorInterface
         $this->callback = $callback;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function iri($item)
+    public function iri(string $item): string
     {
         $callback = $this->callback;
         return $callback($item);

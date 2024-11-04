@@ -15,8 +15,6 @@ use Doctrine\Common\Cache\Cache;
 
 class CachedGeocodingServiceTest extends TestCase
 {
-    private ArrayCache $cache;
-
     /**
      * @var GeocodingService&MockObject
      */
@@ -26,9 +24,8 @@ class CachedGeocodingServiceTest extends TestCase
 
     public function setUp(): void
     {
-        $this->cache = new ArrayCache();
         $this->decoratee = $this->createMock(GeocodingService::class);
-        $this->service = new CachedGeocodingService($this->decoratee, $this->cache);
+        $this->service = new CachedGeocodingService($this->decoratee, new ArrayCache());
     }
 
     /**

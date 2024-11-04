@@ -37,21 +37,10 @@ class CdbXMLImporter
         $this->cdbXmlLabelImporter = $cdbXmlLabelImporter;
     }
 
-    /**
-     * Imports a UDB2 organizer actor into a UDB3 JSON-LD document.
-     *
-     * @param \stdClass                   $base
-     *   The JSON-LD document object to start from.
-     * @param \CultureFeed_Cdb_Item_Actor $item
-     *   The event/actor data from UDB2 to import.
-     *
-     * @return \stdClass
-     *   A new JSON-LD document object with the UDB2 actor data merged in.
-     */
     public function documentWithCdbXML(
-        $base,
+        \stdClass $base,
         \CultureFeed_Cdb_Item_Actor $item
-    ) {
+    ): \stdClass {
         $jsonLD = clone $base;
 
         $detail = null;
@@ -152,10 +141,7 @@ class CdbXMLImporter
         return $jsonLD;
     }
 
-    /**
-     * @param \stdClass $jsonLD
-     */
-    private function importTerms(\CultureFeed_Cdb_Item_Base $actor, $jsonLD): void
+    private function importTerms(\CultureFeed_Cdb_Item_Base $actor, \stdClass $jsonLD): void
     {
         $themeBlacklist = [];
         $categories = [];

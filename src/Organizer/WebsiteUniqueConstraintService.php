@@ -13,10 +13,7 @@ use InvalidArgumentException;
 
 class WebsiteUniqueConstraintService implements UniqueConstraintService
 {
-    /**
-     * @var WebsiteNormalizer
-     */
-    private $websiteNormalizer;
+    private WebsiteNormalizer $websiteNormalizer;
 
     public function __construct(WebsiteNormalizer $websiteNormalizer)
     {

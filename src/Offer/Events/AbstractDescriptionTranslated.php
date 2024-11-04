@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 class AbstractDescriptionTranslated extends AbstractPropertyTranslatedEvent
 {
-    /**
-     * @var Description
-     */
-    protected $description;
+    protected Description $description;
 
     final public function __construct(string $itemId, Language $language, Description $description)
     {

@@ -8,10 +8,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 
 abstract class AbstractPriceInfoUpdated extends AbstractEvent
 {
-    /**
-     * @var PriceInfo
-     */
-    protected $priceInfo;
+    protected PriceInfo $priceInfo;
 
     final public function __construct(string $itemId, PriceInfo $priceInfo)
     {

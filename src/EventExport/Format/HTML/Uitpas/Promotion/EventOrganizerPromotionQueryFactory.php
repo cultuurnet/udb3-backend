@@ -11,10 +11,7 @@ use CultuurNet\UDB3\Clock\Clock;
 
 class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterface
 {
-    /**
-     * @var Clock
-     */
-    private $clock;
+    private Clock $clock;
 
 
     public function __construct(Clock $clock)
@@ -22,12 +19,9 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
         $this->clock = $clock;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function createForEvent(
         CultureFeed_Uitpas_Event_CultureEvent $event
-    ) {
+    ): \CultureFeed_Uitpas_Passholder_Query_SearchPromotionPointsOptions {
         /** @var CultureFeed_Uitpas_Calendar | null $eventCalendar */
         $eventCalendar = $event->calendar;
         if ($eventCalendar) {
@@ -49,10 +43,7 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
         return $promotionsQuery;
     }
 
-    /**
-     * @return CultureFeed_Uitpas_Calendar_Period
-     */
-    private function getDateRangeFromUitpasCalendar(CultureFeed_Uitpas_Calendar $uitpasCalendar)
+    private function getDateRangeFromUitpasCalendar(CultureFeed_Uitpas_Calendar $uitpasCalendar): CultureFeed_Uitpas_Calendar_Period
     {
         $dateRange = new CultureFeed_Uitpas_Calendar_Period();
 

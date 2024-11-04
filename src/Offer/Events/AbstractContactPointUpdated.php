@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 
 abstract class AbstractContactPointUpdated extends AbstractEvent
 {
-    /**
-     * @var ContactPoint
-     */
-    protected $contactPoint;
+    protected ContactPoint $contactPoint;
 
     final public function __construct(string $id, ContactPoint $contactPoint)
     {
@@ -27,12 +26,15 @@ abstract class AbstractContactPointUpdated extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'contactPoint' => $this->contactPoint->serialize(),
+            'contactPoint' => (new ContactPointNormalizer())->normalize($this->contactPoint),
         ];
     }
 
     public static function deserialize(array $data): AbstractContactPointUpdated
     {
-        return new static($data['item_id'], ContactPoint::deserialize($data['contactPoint']));
+        return new static(
+            $data['item_id'],
+            (new ContactPointDenormalizer())->denormalize($data['contactPoint'], ContactPoint::class)
+        );
     }
 }

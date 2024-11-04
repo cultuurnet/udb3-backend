@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ContactPointDataValidatorTest extends TestCase
 {
-    /**
-     * @var ContactPointDataValidator
-     */
-    private $validator;
+    private ContactPointDataValidator $validator;
 
     public function setUp(): void
     {

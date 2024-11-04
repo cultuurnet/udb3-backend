@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint as EventUpdateContactPoint;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
@@ -13,6 +12,13 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint as PlaceUpdateContactPoint;
 use Iterator;
@@ -118,6 +124,43 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                     new SchemaError('/url', 'The data (string) must match the type: array'),
                 ),
             ];
+
+            yield 'Urls are invalid' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'phone' => ['0475/123123'],
+                    'email' => ['info@publiq.be'],
+                    'url' => ['ftp://www.publiq.be/'],
+                ],
+                'expectedProblem' => ApiProblem::bodyInvalidData(
+                    new SchemaError('/url/0', 'The string should match pattern: ^http[s]?:\/\/\w|^$'),
+                ),
+            ];
+
+            yield 'E-mails are invalid' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'phone' => ['0475/123123'],
+                    'email' => ['info_at_publiq.be'],
+                    'url' => ['https://www.publiq.be/'],
+                ],
+                'expectedProblem' => ApiProblem::bodyInvalidData(
+                    new SchemaError('/email/0', 'The string should match pattern: ^(|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$'),
+                ),
+            ];
+
+            yield 'Mix of valid & invalid E-mails & urls' . $offerType => [
+                'offerType' => $offerType,
+                'request' => [
+                    'phone' => ['0475/123123'],
+                    'email' => ['info_at_publiq.be', 'info@museumpassmusees.be'],
+                    'url' => ['https://www.publiq.be/', 'ftp://www.museumpassmusees.be/'],
+                ],
+                'expectedProblem' => ApiProblem::bodyInvalidData(
+                    new SchemaError('/email/0', 'The string should match pattern: ^(|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$'),
+                    new SchemaError('/url/1', 'The string should match pattern: ^http[s]?:\/\/\w|^$'),
+                ),
+            ];
         }
     }
 
@@ -141,9 +184,12 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                 'expectedCommand' => new $offerCommand(
                     self::OFFER_ID,
                     new ContactPoint(
-                        ['0475/123123', '02/123123'],
-                        [],
-                        ['https://www.publiq.be/']
+                        new TelephoneNumbers(
+                            new TelephoneNumber('0475/123123'),
+                            new TelephoneNumber('02/123123')
+                        ),
+                        new EmailAddresses(),
+                        new Urls(new Url('https://www.publiq.be/'))
                     )
                 ),
             ];
@@ -157,7 +203,7 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                 ],
                 'expectedCommand' => new $offerCommand(
                     self::OFFER_ID,
-                    new ContactPoint([], [], []),
+                    new ContactPoint(),
                 ),
             ];
 
@@ -170,7 +216,7 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                 ],
                 'expectedCommand' => new $offerCommand(
                     self::OFFER_ID,
-                    new ContactPoint([''], [''], ['']),
+                    new ContactPoint()
                 ),
             ];
 
@@ -184,9 +230,9 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                 'expectedCommand' => new $offerCommand(
                     self::OFFER_ID,
                     new ContactPoint(
-                        ['0475/123123'],
-                        ['info@publiq.be'],
-                        ['https://www.publiq.be/']
+                        new TelephoneNumbers(new TelephoneNumber('0475/123123')),
+                        new EmailAddresses(new EmailAddress('info@publiq.be')),
+                        new Urls(new Url('https://www.publiq.be/'))
                     )
                 ),
             ];
@@ -201,9 +247,18 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
                 'expectedCommand' => new $offerCommand(
                     self::OFFER_ID,
                     new ContactPoint(
-                        ['0475/123123', '0473/123456'],
-                        ['info@publiq.be', 'info@madewithlove.com'],
-                        ['https://www.publiq.be/', 'https://madewithlove.com'],
+                        new TelephoneNumbers(
+                            new TelephoneNumber('0475/123123'),
+                            new TelephoneNumber('0473/123456')
+                        ),
+                        new EmailAddresses(
+                            new EmailAddress('info@publiq.be'),
+                            new EmailAddress('info@madewithlove.com')
+                        ),
+                        new Urls(
+                            new Url('https://www.publiq.be/'),
+                            new Url('https://madewithlove.com')
+                        )
                     )
                 ),
             ];

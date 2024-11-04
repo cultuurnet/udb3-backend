@@ -60,20 +60,16 @@ class LabelRolesProjector extends RoleProjector
     /**
      * @return Entity[]
      */
-    private function getRoleDetails(JsonDocument $document)
+    private function getRoleDetails(JsonDocument $document): array
     {
         return Json::decodeAssociatively($document->getRawBody());
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function createNewDocument(UUID $uuid)
+    private function createNewDocument(UUID $uuid): JsonDocument
     {
-        $document = new JsonDocument(
+        return new JsonDocument(
             $uuid->toString(),
             Json::encode([])
         );
-        return $document;
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -16,20 +16,11 @@ class AbstractUpdateDescriptionTest extends TestCase
      */
     protected $updateDescriptionCommand;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var Description
-     */
-    protected $description;
+    protected Description $description;
 
-    /**
-     * @var Language
-     */
-    protected $language;
+    protected Language $language;
 
     public function setUp(): void
     {

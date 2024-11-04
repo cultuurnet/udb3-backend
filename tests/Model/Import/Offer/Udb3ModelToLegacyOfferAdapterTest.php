@@ -64,15 +64,9 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
      */
     private $completeOffer;
 
-    /**
-     * @var Udb3ModelToLegacyOfferAdapter
-     */
-    private $adapter;
+    private Udb3ModelToLegacyOfferAdapter $adapter;
 
-    /**
-     * @var Udb3ModelToLegacyOfferAdapter
-     */
-    private $completeAdapter;
+    private Udb3ModelToLegacyOfferAdapter $completeAdapter;
 
     public function setUp(): void
     {
@@ -247,25 +241,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_description_by_default(): void
-    {
-        $actual = $this->adapter->getDescription();
-        $this->assertNull($actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_description_if_there_is_one(): void
-    {
-        $expected = new \CultuurNet\UDB3\Description('Voorbeeld beschrijving');
-        $actual = $this->completeAdapter->getDescription();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_return_no_organizer_id_by_default(): void
     {
         $actual = $this->adapter->getOrganizerId();
@@ -366,30 +341,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_empty_contact_point_by_default(): void
-    {
-        $expected = new \CultuurNet\UDB3\ContactPoint();
-        $actual = $this->adapter->getContactPoint();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_contact_point_if_there_is_one(): void
-    {
-        $expected = new \CultuurNet\UDB3\ContactPoint(
-            ['044/444444', '055/555555'],
-            ['foo@publiq.be', 'bar@publiq.be'],
-            ['https://www.publiq.be', 'https://www.uitdatabank.be']
-        );
-        $actual = $this->completeAdapter->getContactPoint();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_return_default_available_from_if_there_is_none(): void
     {
         $now = new DateTimeImmutable();
@@ -429,28 +380,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
             'en' => new Title('Example title'),
         ];
         $actual = $this->adapter->getTitleTranslations();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_no_description_translations_by_default(): void
-    {
-        $expected = [];
-        $actual = $this->adapter->getDescriptionTranslations();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_description_translations_if_there_are_any(): void
-    {
-        $expected = [
-            'en' => new \CultuurNet\UDB3\Description('Example description'),
-        ];
-        $actual = $this->completeAdapter->getDescriptionTranslations();
         $this->assertEquals($expected, $actual);
     }
 }

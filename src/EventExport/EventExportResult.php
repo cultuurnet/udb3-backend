@@ -6,31 +6,19 @@ namespace CultuurNet\UDB3\EventExport;
 
 class EventExportResult
 {
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
-    /**
-     * @param string $url
-     */
-    public function __construct($url)
+    public function __construct(string $url)
     {
         $this->setUrl($url);
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @param string $url
-     */
-    private function setUrl($url): void
+    private function setUrl(string $url): void
     {
         $this->url = $url;
     }

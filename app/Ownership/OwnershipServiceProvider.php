@@ -8,11 +8,13 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Ownership\Readmodels\Name\DocumentItemNameResolver;
 use CultuurNet\UDB3\Ownership\Readmodels\OwnershipLDProjector;
 use CultuurNet\UDB3\Ownership\Readmodels\OwnershipPermissionProjector;
 use CultuurNet\UDB3\Ownership\Readmodels\OwnershipSearchProjector;
 use CultuurNet\UDB3\Ownership\Repositories\Search\DBALOwnershipSearchRepository;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use Ramsey\Uuid\UuidFactory;
 
 final class OwnershipServiceProvider extends AbstractServiceProvider
@@ -56,7 +58,8 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
         $container->addShared(
             OwnershipLDProjector::class,
             fn () => new OwnershipLDProjector(
-                $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY)
+                $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY),
+                $container->get(UserIdentityResolver::class)
             )
         );
 
@@ -78,7 +81,7 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
                 $container->get('authorized_command_bus'),
                 $container->get(OwnershipSearchRepository::class),
                 new UuidFactory(),
-                $container->get('role_search_v3_repository')
+                new DocumentItemNameResolver($container->get('organizer_jsonld_repository'))
             )
         );
     }

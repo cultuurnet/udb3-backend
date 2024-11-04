@@ -11,8 +11,6 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
@@ -38,12 +36,15 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Media\Properties\Description;
+use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -56,10 +57,14 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
@@ -628,10 +633,10 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new Image(
                     new UUID('85b04295-479c-40f5-b3dd-469dfb4387b3'),
                     MIMEType::fromSubtype('png'),
-                    new Description('Een stapel pannenkoeken'),
+                    new MediaDescription('Een stapel pannenkoeken'),
                     new CopyrightHolder('© publiq vzw'),
                     new Url('https://io.uitdatabank.dev/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.png'),
-                    new LegacyLanguage('nl')
+                    new Language('nl')
                 )
             );
 
@@ -678,24 +683,24 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateContactPoint(
                     $eventId,
                     new ContactPoint(
-                        [
-                            '016 12 34 56',
-                            '0497 11 22 33',
-                        ],
-                        [
-                            'info@publiq.be',
-                            'contact@publiq.be',
-                        ],
-                        [
-                            'https://www.publiq.be',
-                            'https://www.publiq.com',
-                        ]
+                        new TelephoneNumbers(
+                            new TelephoneNumber('016 12 34 56'),
+                            new TelephoneNumber('0497 11 22 33'),
+                        ),
+                        new EmailAddresses(
+                            new EmailAddress('info@publiq.be'),
+                            new EmailAddress('contact@publiq.be'),
+                        ),
+                        new Urls(
+                            new Url('https://www.publiq.be'),
+                            new Url('https://www.publiq.com'),
+                        )
                     )
                 ),
                 new UpdateDescription(
                     $eventId,
-                    new LegacyLanguage('nl'),
-                    new LegacyDescription('Nederlandse beschrijving')
+                    new Language('nl'),
+                    new Description('Nederlandse beschrijving')
                 ),
                 new UpdateTypicalAgeRange($eventId, AgeRange::fromString('6-12')),
                 new UpdatePriceInfo(
@@ -727,8 +732,8 @@ final class ImportEventRequestHandlerTest extends TestCase
                 ),
                 new UpdateDescription(
                     $eventId,
-                    new LegacyLanguage('en'),
-                    new LegacyDescription('English description')
+                    new Language('en'),
+                    new Description('English description')
                 ),
                 new ImportLabels(
                     $eventId,
@@ -4381,7 +4386,14 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
-                new UpdateContactPoint($eventId, new ContactPoint([], ['info@publiq.be'], [])),
+                new UpdateContactPoint(
+                    $eventId,
+                    new ContactPoint(
+                        new TelephoneNumbers(),
+                        new EmailAddresses(new EmailAddress('info@publiq.be')),
+                        new Urls()
+                    )
+                ),
                 new DeleteTypicalAgeRange($eventId),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),

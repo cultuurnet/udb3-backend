@@ -96,26 +96,9 @@ pipeline {
                 APPLICATION_ENVIRONMENT = 'testing'
             }
 
-            stages {
-                stage('Publish snapshot') {
-                    steps {
-                        publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'xenial'
-                    }
-                }
-                stage('Deploy') {
-                    parallel {
-                        stage('Deploy to first node') {
-                            steps {
-                                triggerDeployment nodeName: 'udb3-web-test03'
-                            }
-                        }
-                        stage('Deploy to second node') {
-                            steps {
-                                triggerDeployment nodeName: 'udb3-web-test04'
-                            }
-                        }
-                    }
-                }
+            steps {
+                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'xenial'
+                triggerDeployment nodeName: 'udb3-web-test03'
             }
             post {
                 always {
@@ -132,26 +115,9 @@ pipeline {
                 APPLICATION_ENVIRONMENT = 'production'
             }
 
-            stages {
-                stage('Publish snapshot') {
-                    steps {
-                        publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'xenial'
-                    }
-                }
-                stage('Deploy') {
-                    parallel {
-                        stage('Deploy to first node') {
-                            steps {
-                                triggerDeployment nodeName: 'udb3-web-prod03'
-                            }
-                        }
-                        stage('Deploy to second node') {
-                            steps {
-                                triggerDeployment nodeName: 'udb3-web-prod04'
-                            }
-                        }
-                    }
-                }
+            steps {
+                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'xenial'
+                triggerDeployment nodeName: 'udb3-web-prod03'
             }
             post {
                 always {
@@ -164,7 +130,7 @@ pipeline {
         }
 
         stage('Tag release') {
-            agent { label 'ubuntu && 16.04' }
+            agent any
             steps {
                 copyArtifacts filter: 'pkg/*.deb', projectName: env.JOB_NAME, flatten: true, selector: specific(env.BUILD_NUMBER)
                 tagRelease commitHash: artifact.metadata(artifactFilter: '*.deb', field: 'git-ref')

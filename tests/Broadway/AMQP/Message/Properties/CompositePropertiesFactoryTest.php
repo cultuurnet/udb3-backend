@@ -22,10 +22,7 @@ class CompositePropertiesFactoryTest extends TestCase
      */
     private $mockFactory2;
 
-    /**
-     * @var CompositePropertiesFactory
-     */
-    private $compositeFactory;
+    private CompositePropertiesFactory $compositeFactory;
 
     public function setUp(): void
     {

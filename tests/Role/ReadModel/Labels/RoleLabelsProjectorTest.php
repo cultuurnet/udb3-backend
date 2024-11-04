@@ -36,10 +36,7 @@ class RoleLabelsProjectorTest extends TestCase
      */
     private $labelRolesRepository;
 
-    /**
-     * @var RoleLabelsProjector
-     */
-    private $roleLabelsProjector;
+    private RoleLabelsProjector $roleLabelsProjector;
 
     /**
      * @var DocumentRepository&MockObject
@@ -246,10 +243,7 @@ class RoleLabelsProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function createEmptyJsonDocument(UUID $uuid)
+    private function createEmptyJsonDocument(UUID $uuid): JsonDocument
     {
         return new JsonDocument(
             $uuid->toString(),
@@ -257,10 +251,7 @@ class RoleLabelsProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @return JsonDocument
-     */
-    public function createJsonDocument(UUID $uuid, UUID $labelId)
+    public function createJsonDocument(UUID $uuid, UUID $labelId): JsonDocument
     {
         return new JsonDocument(
             $uuid->toString(),
@@ -268,10 +259,7 @@ class RoleLabelsProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @return Entity
-     */
-    public function createLabelEntity(UUID $uuid)
+    public function createLabelEntity(UUID $uuid): Entity
     {
         return new Entity(
             new UUID($uuid->toString()),

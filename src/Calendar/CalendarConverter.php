@@ -227,11 +227,9 @@ class CalendarConverter implements CalendarConverterInterface
             throw new InvalidArgumentException('The CDB time index should not be higher than 59!');
         }
 
-        $time = is_int($index)
+        return is_int($index)
             ? $timestamp->format('H:i') . ':' . str_pad((string) $index, 2, '0', STR_PAD_LEFT)
             : $timestamp->format('H:i:s');
-
-        return $time;
     }
 
     private function createIndexedTimeString(int $index): string

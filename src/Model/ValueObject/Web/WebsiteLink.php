@@ -6,15 +6,9 @@ namespace CultuurNet\UDB3\Model\ValueObject\Web;
 
 class WebsiteLink
 {
-    /**
-     * @var Url
-     */
-    private $url;
+    private Url $url;
 
-    /**
-     * @var TranslatedWebsiteLabel
-     */
-    private $label;
+    private TranslatedWebsiteLabel $label;
 
 
     public function __construct(Url $url, TranslatedWebsiteLabel $label)
@@ -23,36 +17,24 @@ class WebsiteLink
         $this->label = $label;
     }
 
-    /**
-     * @return Url
-     */
-    public function getUrl()
+    public function getUrl(): Url
     {
         return $this->url;
     }
 
-    /**
-     * @return WebsiteLink
-     */
-    public function withUrl(Url $url)
+    public function withUrl(Url $url): WebsiteLink
     {
         $c = clone $this;
         $c->url = $url;
         return $c;
     }
 
-    /**
-     * @return TranslatedWebsiteLabel
-     */
-    public function getLabel()
+    public function getLabel(): TranslatedWebsiteLabel
     {
         return $this->label;
     }
 
-    /**
-     * @return WebsiteLink
-     */
-    public function withLabel(TranslatedWebsiteLabel $label)
+    public function withLabel(TranslatedWebsiteLabel $label): WebsiteLink
     {
         $c = clone $this;
         $c->label = $label;

@@ -17,12 +17,9 @@ final class PayloadManipulatingSerializer implements Serializer
     /**
      * @var callable[]
      */
-    private $manipulations;
+    private array $manipulations;
 
-    /**
-     * @var SimpleInterfaceSerializer
-     */
-    private $serializer;
+    private SimpleInterfaceSerializer $serializer;
 
     public function __construct(SimpleInterfaceSerializer $serializer)
     {

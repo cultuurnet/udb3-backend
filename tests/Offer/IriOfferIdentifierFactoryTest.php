@@ -11,21 +11,12 @@ use RuntimeException;
 
 class IriOfferIdentifierFactoryTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $regex;
-
-    /**
-     * @var IriOfferIdentifierFactory
-     */
-    private $iriOfferIdentifierFactory;
+    private IriOfferIdentifierFactory $iriOfferIdentifierFactory;
 
     public function setUp(): void
     {
-        $this->regex = 'https?://foo\.bar/(?<offertype>[event|place]+)/(?<offerid>[a-zA-Z0-9\-]+)';
         $this->iriOfferIdentifierFactory = new IriOfferIdentifierFactory(
-            $this->regex
+            'https?://foo\.bar/(?<offertype>[event|place]+)/(?<offerid>[a-zA-Z0-9\-]+)'
         );
     }
 

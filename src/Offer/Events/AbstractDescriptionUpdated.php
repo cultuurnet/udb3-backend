@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\Description;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 
 abstract class AbstractDescriptionUpdated extends AbstractEvent
 {
-    /**
-     * @var Description
-     */
-    protected $description;
+    protected Description $description;
 
     final public function __construct(string $id, Description $description)
     {

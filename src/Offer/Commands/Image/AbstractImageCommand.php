@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
 abstract class AbstractImageCommand extends AbstractCommand
 {
-    /**
-     * @var Image
-     */
-    protected $image;
+    protected Image $image;
 
     public function __construct(string $itemId, Image $image)
     {

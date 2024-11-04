@@ -12,8 +12,13 @@ use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
@@ -36,25 +41,13 @@ trait OfferCommandHandlerTestTrait
      */
     protected $mediaManager;
 
-    /**
-     * Get the namespaced classname of the command to create.
-     * @param string $className
-     *   Name of the class
-     * @return string
-     */
-    private function getCommandClass($className)
+    private function getCommandClass(string $className): string
     {
         $reflection = new ReflectionObject($this);
         return $reflection->getNamespaceName() . '\\Commands\\' . $className;
     }
 
-    /**
-     * Get the namespaced classname of the event to create.
-     * @param string $className
-     *   Name of the class
-     * @return string
-     */
-    private function getEventClass($className)
+    private function getEventClass(string $className): string
     {
         $reflection = new ReflectionObject($this);
         return $reflection->getNamespaceName() . '\\Events\\' . $className;
@@ -87,7 +80,11 @@ trait OfferCommandHandlerTestTrait
     public function it_can_update_contact_point_of_an_offer(): void
     {
         $id = '1';
-        $contactPoint = new ContactPoint(['016102030']);
+        $contactPoint = new ContactPoint(
+            new TelephoneNumbers(new TelephoneNumber('016102030')),
+            null,
+            null
+        );
         $commandClass = $this->getCommandClass('UpdateContactPoint');
         $eventClass = $this->getEventClass('ContactPointUpdated');
 
@@ -209,7 +206,7 @@ trait OfferCommandHandlerTestTrait
                     $this->factorOfferCreated($itemId),
                     new $imageAdded(
                         $itemId,
-                        $anotherImage = new Image(
+                        new Image(
                             $mediaObjectId,
                             new MIMEType('image/jpeg'),
                             new MediaDescription('my best selfie'),

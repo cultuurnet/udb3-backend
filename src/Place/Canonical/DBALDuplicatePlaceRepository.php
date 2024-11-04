@@ -80,18 +80,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return count($duplicates) > 0 ? $duplicates : null;
     }
 
-    public function getPlacesNoLongerInCluster(): array
-    {
-        // All places that do not exist in duplicate_places_import
-        $statement = $this->connection->createQueryBuilder()
-            ->select('DISTINCT dp.place_uuid')
-            ->from('duplicate_places', 'dp')
-            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.place_uuid = dpi.place_uuid')
-            ->where('dpi.place_uuid IS NULL')
-            ->execute();
 
-        return $statement->fetchFirstColumn();
-    }
 
     public function getClustersToBeRemoved(): array
     {
@@ -122,6 +111,32 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return array_map(static function (array $row) {
             return new PlaceWithCluster($row['cluster_id'], $row['place_uuid']);
         }, $statement->fetchAllAssociative());
+    }
+
+    public function howManyPlacesAreToBeImported(): int
+    {
+        // COUNT from `duplicate_places_import` not present in `duplicate_places`
+        $result = $this->connection->createQueryBuilder()
+            ->select('COUNT(*) AS not_in_duplicate')
+            ->from('duplicate_places_import', 'dpi')
+            ->leftJoin('dpi', 'duplicate_places', 'dp', 'dpi.cluster_id = dp.cluster_id AND dpi.place_uuid = dp.place_uuid')
+            ->where('dp.cluster_id IS NULL')
+            ->execute();
+
+        return (int)($result->fetchOne() ?? 0);
+    }
+
+    public function getPlacesNoLongerInCluster(): array
+    {
+        // All places that do not exist in duplicate_places_import
+        $statement = $this->connection->createQueryBuilder()
+            ->select('DISTINCT dp.place_uuid')
+            ->from('duplicate_places', 'dp')
+            ->leftJoin('dp', 'duplicate_places_import', 'dpi', 'dp.place_uuid = dpi.place_uuid')
+            ->where('dpi.place_uuid IS NULL')
+            ->execute();
+
+        return $statement->fetchFirstColumn();
     }
 
     public function deleteCluster(string $clusterId): void

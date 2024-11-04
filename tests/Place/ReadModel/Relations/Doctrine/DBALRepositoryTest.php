@@ -13,15 +13,9 @@ class DBALRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var DBALPlaceRelationsRepository
-     */
-    private $repository;
+    private DBALPlaceRelationsRepository $repository;
 
-    /**
-     * @var string
-     */
-    private $tableName;
+    private string $tableName;
 
     protected function setUp(): void
     {
@@ -76,10 +70,7 @@ class DBALRepositoryTest extends TestCase
         $this->assertEquals($expectedPlaces, $actualPlaces);
     }
 
-    /**
-     * @return array
-     */
-    private function seedPlaceRelations(PlaceRelationsRepository $repository)
+    private function seedPlaceRelations(PlaceRelationsRepository $repository): array
     {
         $relations = [
             ['place' => 'placeId1', 'organizer' => 'organizerId1'],

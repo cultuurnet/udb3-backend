@@ -12,10 +12,7 @@ class DBALPopularityRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var DBALPopularityRepository
-     */
-    private $dbalPopularityRepository;
+    private DBALPopularityRepository $dbalPopularityRepository;
 
     protected function setUp(): void
     {

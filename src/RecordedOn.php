@@ -9,10 +9,7 @@ use Broadway\Domain\DateTime;
 
 class RecordedOn
 {
-    /**
-     * @var DateTime
-     */
-    private $recorded;
+    private DateTime $recorded;
 
     /**
      * ModifiedDateTime constructor.
@@ -22,34 +19,22 @@ class RecordedOn
         $this->recorded = $recorded;
     }
 
-    /**
-     * @return RecordedOn
-     */
-    public static function fromDomainMessage(DomainMessage $domainMessage)
+    public static function fromDomainMessage(DomainMessage $domainMessage): RecordedOn
     {
         return new self($domainMessage->getRecordedOn());
     }
 
-    /**
-     * @return RecordedOn
-     */
-    public static function fromBroadwayDateTime(DateTime $dateTime)
+    public static function fromBroadwayDateTime(DateTime $dateTime): RecordedOn
     {
         return new self($dateTime);
     }
 
-    /**
-     * @return DateTime
-     */
-    public function toBroadwayDateTime()
+    public function toBroadwayDateTime(): DateTime
     {
         return $this->recorded;
     }
 
-    /**
-     * @return string
-     */
-    public function toString()
+    public function toString(): string
     {
         return DateTimeFactory::fromFormat(
             DateTime::FORMAT_STRING,

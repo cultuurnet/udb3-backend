@@ -7,48 +7,54 @@ down:
 	docker-compose down
 
 bash:
-	docker exec -it php.uitdatabank bash
+	docker-compose exec php bash
 
 config:
 	sh ./docker/config.sh
 
 install:
-	docker exec -it php.uitdatabank composer install
+	docker-compose exec php composer install
 
 migrate:
-	docker exec -it php.uitdatabank ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
+	docker-compose exec php ./vendor/bin/doctrine-dbal migrations:migrate --no-interaction
 
 init: install migrate
 
 ci:
-	docker exec -it php.uitdatabank composer ci
+	docker-compose exec php composer ci
 
 stan:
-	docker exec -it php.uitdatabank composer phpstan
+	docker-compose exec php composer phpstan
 
 cs:
-	docker exec -it php.uitdatabank composer cs
+	docker-compose exec php composer cs
 
 cs-fix:
-	docker exec -it php.uitdatabank composer cs-fix
+	docker-compose exec php composer cs-fix
 
 test:
-	docker exec -it php.uitdatabank composer test
+	docker-compose exec php composer test
 
 test-filter:
-	docker exec -it php.uitdatabank composer test -- --filter=$(filter)
+	docker-compose exec php composer test -- --filter=$(filter)
 
 test-group:
-	docker exec -it php.uitdatabank composer test -- --group=$(group)
+	docker-compose exec php composer test -- --group=$(group)
 
 feature-init:
-	docker exec -it php.uitdatabank composer feature -- --tags @init
+	docker-compose exec php composer feature -- --tags @init
 
 feature-tag:
-	docker exec -it php.uitdatabank composer feature -- --tags $(tag)
+	docker-compose exec php composer feature -- --tags $(tag)
+
+feature-ci:
+	docker-compose exec php composer feature -- --tags "~@init&&~@external&&~@pdf" -f pretty -o std -f junit -o output/junit
 
 feature:
-	docker exec -it php.uitdatabank composer feature -- --tags "~@init&&~@external"
+	docker-compose exec php composer feature -- --tags "~@init&&~@external"
 
 feature-filter:
-	docker exec -it php.uitdatabank composer feature -- $(path)
+	docker-compose exec php composer feature -- $(path)
+
+feature-random:
+	docker-compose exec php composer feature -- --order=random --tags "~@init&&~@external"

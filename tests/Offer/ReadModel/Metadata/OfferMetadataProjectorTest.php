@@ -19,8 +19,8 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -39,10 +39,7 @@ class OfferMetadataProjectorTest extends TestCase
      */
     private $repository;
 
-    /**
-     * @var OfferMetadataProjector
-     */
-    private $projector;
+    private OfferMetadataProjector $projector;
 
     protected function setUp(): void
     {
@@ -153,10 +150,7 @@ class OfferMetadataProjectorTest extends TestCase
         $this->project($this->createPlaceImportedFromUdb2(), $metadata);
     }
 
-    /**
-     * @return array
-     */
-    public function createdByApiConsumerDataProvider()
+    public function createdByApiConsumerDataProvider(): array
     {
         return [
             'without api key' => [

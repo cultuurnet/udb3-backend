@@ -6,8 +6,6 @@ namespace CultuurNet\UDB3\Model\Import\Offer;
 
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Offer\Offer;
@@ -40,18 +38,6 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         return Language::fromUdb3ModelLanguage(
             $this->offer->getMainLanguage()
         );
-    }
-
-    public function getDescription(): ?Description
-    {
-        $translatedDescription = $this->offer->getDescription();
-
-        if ($translatedDescription) {
-            $description = $translatedDescription->getTranslation($translatedDescription->getOriginalLanguage());
-            return Description::fromUdb3ModelDescription($description);
-        }
-
-        return null;
     }
 
     public function getType(): EventType
@@ -126,12 +112,6 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         return BookingInfo::fromUdb3ModelBookingInfo($bookingInfo);
     }
 
-    public function getContactPoint(): ?ContactPoint
-    {
-        $contactPoint = $this->offer->getContactPoint();
-        return ContactPoint::fromUdb3ModelContactPoint($contactPoint);
-    }
-
     public function getAvailableFrom(DateTimeImmutable $default): DateTimeImmutable
     {
         $availableFrom = $this->offer->getAvailableFrom();
@@ -152,25 +132,5 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         }
 
         return $titles;
-    }
-
-    public function getDescriptionTranslations(): array
-    {
-        $descriptions = [];
-
-        /* @var \CultuurNet\UDB3\Model\ValueObject\Translation\Language $language */
-        $translatedDescription = $this->offer->getDescription();
-
-        if (!$translatedDescription) {
-            return [];
-        }
-
-        foreach ($translatedDescription->getLanguagesWithoutOriginal() as $language) {
-            $descriptions[$language->toString()] = Description::fromUdb3ModelDescription(
-                $translatedDescription->getTranslation($language)
-            );
-        }
-
-        return $descriptions;
     }
 }

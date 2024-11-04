@@ -20,7 +20,7 @@ use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateAvailableFrom;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;

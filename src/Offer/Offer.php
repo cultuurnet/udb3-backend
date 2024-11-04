@@ -9,8 +9,6 @@ use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Collection\Exception\CollectionItemNotFoundException;
-use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Facility;
@@ -20,6 +18,7 @@ use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -29,6 +28,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
@@ -108,7 +108,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
      */
     protected array $descriptions;
 
-    protected LegacyLanguage $mainLanguage;
+    protected Language $mainLanguage;
 
     protected ?string $typeId = null;
 
@@ -321,7 +321,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     {
         if ($this->isTitleChanged($title, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
-                $event = $this->createTitleTranslatedEvent($language, $title);
+                $event = $this->createTitleTranslatedEvent($language->toUdb3ModelLanguage(), $title);
             } else {
                 $event = $this->createTitleUpdatedEvent($title);
             }
@@ -340,7 +340,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->titles[$this->mainLanguage->getCode()] = $titleUpdated->getTitle();
     }
 
-    public function updateDescription(Description $description, LegacyLanguage $language): void
+    public function updateDescription(Description $description, Language $language): void
     {
         if ($this->isDescriptionChanged($description, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
@@ -869,7 +869,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             $title->toString() !== $this->titles[$languageCode];
     }
 
-    private function isDescriptionChanged(Description $description, LegacyLanguage $language): bool
+    private function isDescriptionChanged(Description $description, Language $language): bool
     {
         $languageCode = $language->getCode();
 
@@ -1042,12 +1042,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createLabelsImportedEvent(Labels $labels): AbstractLabelsImported;
 
     abstract protected function createTitleTranslatedEvent(
-        LegacyLanguage $language,
+        Language $language,
         Title $title
     ): AbstractTitleTranslated;
 
     abstract protected function createDescriptionTranslatedEvent(
-        LegacyLanguage $language,
+        Language $language,
         Description $description
     ): AbstractDescriptionTranslated;
 

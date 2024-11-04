@@ -10,10 +10,7 @@ abstract class AbstractLabelEvent extends AbstractEvent
 {
     public const LABEL_ID = 'labelId';
 
-    /**
-     * @var UUID
-     */
-    private $labelId;
+    private UUID $labelId;
 
     final public function __construct(
         UUID $uuid,

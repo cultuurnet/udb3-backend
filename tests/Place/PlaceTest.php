@@ -6,22 +6,33 @@ namespace CultuurNet\UDB3\Place;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
+use CultuurNet\UDB3\Address\Locality as LegacyLocality;
+use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
+use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -130,9 +141,12 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $placeId = $placeCreated->getPlaceId();
 
         $contactPoint = new ContactPoint(
-            ['016/101010'],
-            ['test@2dotstwice.be', 'admin@2dotstwice.be'],
-            ['http://www.2dotstwice.be']
+            new TelephoneNumbers(new TelephoneNumber('016/101010')),
+            new EmailAddresses(
+                new EmailAddress('test@2dotstwice.be'),
+                new EmailAddress('admin@2dotstwice.be')
+            ),
+            new Urls(new Url('http://www.2dotstwice.be'))
         );
 
         $cdbXml = $this->getCdbXML('/ReadModel/JSONLD/place_with_long_description.cdbxml.xml');
@@ -252,7 +266,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                         new Language('nl'),
                         'Test place',
                         new EventType('0.1.1', 'Jeugdhuis'),
-                        $originalAddress,
+                        LegacyAddress::fromUdb3ModelAddress($originalAddress),
                         new Calendar(CalendarType::PERMANENT())
                     ),
                 ]
@@ -264,7 +278,10 @@ class PlaceTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new AddressUpdated('c5c1b435-0f3c-4b75-9f28-94d93be7078b', $updatedAddress),
+                    new AddressUpdated(
+                        'c5c1b435-0f3c-4b75-9f28-94d93be7078b',
+                        LegacyAddress::fromUdb3ModelAddress($updatedAddress)
+                    ),
                 ]
             );
     }
@@ -276,7 +293,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
-        $address = $placeCreated->getAddress();
+        $address = $placeCreated->getAddress()->toUdb3ModelAddress();
 
         $translatedAddress = new Address(
             new Street('One May Street'),
@@ -300,7 +317,11 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([
-                new AddressTranslated($placeId, $translatedAddress, new Language('en')),
+                new AddressTranslated(
+                    $placeId,
+                    LegacyAddress::fromUdb3ModelAddress($translatedAddress),
+                    new LegacyLanguage('en')
+                ),
             ]);
     }
 
@@ -382,7 +403,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
 
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
-            new MultilingualString(new Language('nl'), 'Publiq'),
+            new MultilingualString(new LegacyLanguage('nl'), 'Publiq'),
             '02 123 45 67',
             'info@publiq.be'
         );
@@ -430,7 +451,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                         new Language('nl'),
                         'Test place',
                         new EventType('0.1.1', 'Jeugdhuis'),
-                        $originalAddress,
+                        LegacyAddress::fromUdb3ModelAddress($originalAddress),
                         new Calendar(CalendarType::PERMANENT())
                     ),
                 ]
@@ -442,7 +463,11 @@ class PlaceTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new AddressTranslated('c5c1b435-0f3c-4b75-9f28-94d93be7078b', $updatedAddress, $language),
+                    new AddressTranslated(
+                        'c5c1b435-0f3c-4b75-9f28-94d93be7078b',
+                        LegacyAddress::fromUdb3ModelAddress($updatedAddress),
+                        LegacyLanguage::fromUdb3ModelLanguage($language)
+                    ),
                 ]
             );
     }
@@ -541,7 +566,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Place $place): void {
                     $place->updateTitle(
-                        new Language('nl'),
+                        new LegacyLanguage('nl'),
                         new Title('Test place')
                     );
                 }
@@ -613,10 +638,10 @@ class PlaceTest extends AggregateRootScenarioTestCase
     {
         $placeId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
 
-        $address = new Address(
-            new Street('Eenmeilaan'),
-            new PostalCode('3010'),
-            new Locality('Kessel-Lo'),
+        $address = new LegacyAddress(
+            new LegacyStreet('Eenmeilaan'),
+            new LegacyPostalCode('3010'),
+            new LegacyLocality('Kessel-Lo'),
             new CountryCode('BE')
         );
 

@@ -8,10 +8,7 @@ use Broadway\Domain\DomainMessage;
 
 class DomainMessageIsNot implements DomainMessageSpecificationInterface
 {
-    /**
-     * @var DomainMessageSpecificationInterface
-     */
-    private $domainMessageSpecification;
+    private DomainMessageSpecificationInterface $domainMessageSpecification;
 
 
     public function __construct(DomainMessageSpecificationInterface $domainMessageSpecification)
@@ -19,10 +16,7 @@ class DomainMessageIsNot implements DomainMessageSpecificationInterface
         $this->domainMessageSpecification = $domainMessageSpecification;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSatisfiedBy(DomainMessage $domainMessage)
+    public function isSatisfiedBy(DomainMessage $domainMessage): bool
     {
         return !$this->domainMessageSpecification->isSatisfiedBy($domainMessage);
     }

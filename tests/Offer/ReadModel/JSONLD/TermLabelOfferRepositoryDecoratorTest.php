@@ -34,10 +34,7 @@ class TermLabelOfferRepositoryDecoratorTest extends TestCase
         ],
     ];
 
-    /**
-     * @var TermLabelOfferRepositoryDecorator
-     */
-    private $termLabelDecorator;
+    private TermLabelOfferRepositoryDecorator $termLabelDecorator;
 
     protected function setUp(): void
     {

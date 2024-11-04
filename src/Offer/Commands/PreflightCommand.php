@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 class PreflightCommand extends AbstractCommand
 {
-    /**
-     * @var Permission
-     */
-    private $permission;
+    private Permission $permission;
 
     public function __construct(string $itemId, Permission $permission)
     {

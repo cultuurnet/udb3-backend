@@ -4,24 +4,26 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
-use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Offer;
@@ -73,14 +75,13 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3Language;
 
 class Place extends Offer
 {
     private string $placeId;
 
     /**
-     * @var Address[]
+     * @var LegacyAddress[]
      */
     private array $addresses;
 
@@ -113,7 +114,7 @@ class Place extends Offer
         Language $mainLanguage,
         Title $title,
         EventType $eventType,
-        Address $address,
+        LegacyAddress $address,
         Calendar $calendar,
         DateTimeImmutable $publicationDate = null
     ): self {
@@ -147,7 +148,7 @@ class Place extends Offer
     public function updateMajorInfo(
         Title $title,
         EventType $eventType,
-        Address $address,
+        LegacyAddress $address,
         Calendar $calendar
     ): void {
         $this->apply(
@@ -169,13 +170,16 @@ class Place extends Offer
 
     public function updateAddress(Address $address, Language $language): void
     {
+        $legacyAddress = LegacyAddress::fromUdb3ModelAddress($address);
+        $legacyLanguage = LegacyLanguage::fromUdb3ModelLanguage($language);
+
         if ($language->getCode() === $this->mainLanguage->getCode()) {
-            $event = new AddressUpdated($this->placeId, $address);
+            $event = new AddressUpdated($this->placeId, $legacyAddress);
         } else {
-            $event = new AddressTranslated($this->placeId, $address, $language);
+            $event = new AddressTranslated($this->placeId, $legacyAddress, $legacyLanguage);
         }
 
-        if ($this->allowAddressUpdate($address, $language)) {
+        if ($this->allowAddressUpdate($legacyAddress, $legacyLanguage)) {
             $this->apply($event);
         }
     }
@@ -198,7 +202,7 @@ class Place extends Offer
         return $this->duplicates;
     }
 
-    private function allowAddressUpdate(Address $address, Language $language): bool
+    private function allowAddressUpdate(LegacyAddress $address, LegacyLanguage $language): bool
     {
         // No current address in the provided language so update with new address is allowed.
         if (!isset($this->addresses[$language->getCode()])) {
@@ -413,7 +417,7 @@ class Place extends Offer
         return new DescriptionUpdated($this->placeId, $description);
     }
 
-    protected function createDescriptionDeletedEvent(Udb3Language $language): DescriptionDeleted
+    protected function createDescriptionDeletedEvent(Language $language): DescriptionDeleted
     {
         return new DescriptionDeleted($this->placeId, $language);
     }

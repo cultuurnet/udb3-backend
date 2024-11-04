@@ -23,9 +23,11 @@ use CultuurNet\UDB3\Console\Command\FetchMoviesFromKinepolisApi;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
+use CultuurNet\UDB3\Console\Command\ConvertClusterIdsToHashes;
 use CultuurNet\UDB3\Console\Command\GeocodeEventCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
+use CultuurNet\UDB3\Console\Command\ImportDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Console\Command\IncludeLabel;
 use CultuurNet\UDB3\Console\Command\KeycloakCommand;
@@ -59,6 +61,7 @@ use CultuurNet\UDB3\Kinepolis\Parser\KinepolisPriceParser;
 use CultuurNet\UDB3\Kinepolis\Trailer\YoutubeTrailerRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
+use CultuurNet\UDB3\Place\Canonical\ImportDuplicatePlacesProcessor;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
@@ -86,6 +89,8 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.fire-projected-to-jsonld-for-relations',
         'console.fire-projected-to-jsonld',
         'console.place:process-duplicates',
+        'console.place:duplicate-places:import',
+        'console.place:duplicate-places:convert-cluster-ids-to-hashes',
         'console.event:bulk-remove-from-production',
         'console.event:reindex-offers-with-popularity',
         'console.place:reindex-offers-with-popularity',
@@ -258,6 +263,24 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get(EventBus::class),
                 $container->get('place_jsonld_projected_event_factory'),
                 $container->get(EventRelationsRepository::class),
+            )
+        );
+
+        $container->addShared(
+            'console.place:duplicate-places:import',
+            fn () => new ImportDuplicatePlaces(
+                $container->get('duplicate_place_repository'),
+                new ImportDuplicatePlacesProcessor(
+                    $container->get('duplicate_place_repository'),
+                    $container->get(DuplicatePlaceRemovedFromClusterRepository::class)
+                )
+            )
+        );
+
+        $container->addShared(
+            'console.place:duplicate-places:convert-cluster-ids-to-hashes',
+            fn () => new ConvertClusterIdsToHashes(
+                $container->get('dbal_connection'),
             )
         );
 
@@ -485,7 +508,8 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                             )
                         ),
                         $container->get('config')['kinepolis']['trailers']['channel_id'],
-                        new Version4Generator()
+                        new Version4Generator(),
+                        $container->get('config')['kinepolis']['trailers']['enabled'] ??  true,
                     ),
                     $container->get(ProductionRepository::class),
                     LoggerFactory::create(

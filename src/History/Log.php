@@ -77,9 +77,6 @@ class Log implements JsonSerializable
         return $log;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function jsonSerialize(): array
     {
         $log = [

@@ -5,43 +5,37 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\ReadModel\JSONLD;
 
 use CultureFeed_Cdb_Data_Address_PhysicalAddress;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactoryInterface;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
-use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use stdClass;
 
-/**
- * Takes care of importing actors in the CdbXML format (UDB2) that represent
- * an organizer, into a UDB3 JSON-LD document.
- */
 class CdbXMLImporter
 {
     private CdbXMLToJsonLDLabelImporter $labelImporter;
 
-    public function __construct(CdbXMLToJsonLDLabelImporter $labelImporter)
-    {
+    private CultureFeedAddressFactoryInterface $addressFactory;
+
+    public function __construct(
+        CdbXMLToJsonLDLabelImporter $labelImporter,
+        CultureFeedAddressFactoryInterface $addressFactory
+    ) {
         $this->labelImporter = $labelImporter;
+        $this->addressFactory = $addressFactory;
     }
 
-    /**
-     * Imports a UDB2 organizer actor into a UDB3 JSON-LD document.
-     *
-     * @param stdClass $base
-     *   The JSON-LD document object to start from.
-     * @param \CultureFeed_Cdb_Item_Actor $actor
-     *   The actor data from UDB2 to import.
-     *
-     * @return stdClass
-     *   A new JSON-LD document object with the UDB2 actor data merged in.
-     */
     public function documentWithCdbXML(
-        $base,
+        stdClass $base,
         \CultureFeed_Cdb_Item_Actor $actor
-    ) {
+    ): stdClass {
         $jsonLD = clone $base;
 
         $detail = null;
@@ -75,37 +69,31 @@ class CdbXMLImporter
                 $physicalAddress = $address->getPhysicalAddress();
 
                 if ($physicalAddress) {
-                    $physicalAddress = new Address(
-                        new Street($physicalAddress->getStreet() . ' ' . $physicalAddress->getHouseNumber()),
-                        new PostalCode($physicalAddress->getZip()),
-                        new Locality($physicalAddress->getCity()),
-                        new CountryCode($physicalAddress->getCountry())
-                    );
-
-                    $jsonLD->address->{$jsonLD->mainLanguage} = $physicalAddress->toJsonLd();
+                    $physicalAddress = $this->addressFactory->fromCdbAddress($physicalAddress);
+                    $jsonLD->address->{$jsonLD->mainLanguage} = (new AddressNormalizer())->normalize($physicalAddress);
                 }
             }
 
-            $emails = [];
-            $phones = [];
-            $urls = [];
+            $emails = new EmailAddresses();
+            $phones = new TelephoneNumbers();
+            $urls = new Urls();
 
             /* @var \CultureFeed_Cdb_Data_Mail[] $cdbEmails */
             $cdbEmails = $cdbContact->getMails();
             foreach ($cdbEmails as $mail) {
-                $emails[] = $mail->getMailAddress();
+                $emails = $emails->with(new EmailAddress($mail->getMailAddress()));
             }
 
             /* @var \CultureFeed_Cdb_Data_Phone[] $cdbPhones */
             $cdbPhones = $cdbContact->getPhones();
             foreach ($cdbPhones as $phone) {
-                $phones[] = $phone->getNumber();
+                $phones = $phones->with(new TelephoneNumber($phone->getNumber()));
             }
 
             /* @var \CultureFeed_Cdb_Data_Url[] $cdbUrls */
             $cdbUrls = $cdbContact->getUrls();
             foreach ($cdbUrls as $url) {
-                $urls[] = $url->getUrl();
+                $urls = $urls->with(new Url($url->getUrl()));
             }
 
             $this->labelImporter->importLabels($actor, $jsonLD);
@@ -113,7 +101,7 @@ class CdbXMLImporter
             $contactPoint = new ContactPoint($phones, $emails, $urls);
 
             if (!$contactPoint->sameAs(new ContactPoint())) {
-                $jsonLD->contactPoint = $contactPoint->toJsonLd();
+                $jsonLD->contactPoint = (new ContactPointNormalizer())->normalize($contactPoint);
             }
         }
 

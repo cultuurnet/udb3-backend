@@ -4,9 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use function PHPUnit\Framework\assertEquals;
+
 trait UtilitySteps
 {
-    private bool $initialPreventDuplicatePlaceCreationValue;
+    /**
+     * @Given /^I create a name that includes special characters of elastic search and keep it as "([^"]*)"$/
+     */
+    public function iCreateANameThatIncludesSpecialCharactersOfElasticSearchAndKeepItAs(string $variableName): void
+    {
+        $this->variableState->setVariable($variableName, '(a)![a]' . uniqid('', true));
+    }
 
     /**
      * @Given I create a random name of :nrOfCharacters characters
@@ -41,42 +49,27 @@ trait UtilitySteps
     }
 
     /**
-     * @Given /^I prevent duplicate place creation$/
+     * @Given I store the count of the :type files in the :folderName folder
      */
-    public function iPreventDuplicatePlaceCreation(): void
+    public function iStoreTheCountOfTheFilesInTheFolder(string $type, string $folderName): void
     {
-        $configFile = file_get_contents('config.php');
-
-        if (str_contains($configFile, "'prevent_duplicate_places_creation' => true")) {
-            // The config was already on true, so no further changes are required
-            $this->initialPreventDuplicatePlaceCreationValue = true;
-            return;
-        }
-
-        $configFile = str_replace(
-            "'prevent_duplicate_places_creation' => false",
-            "'prevent_duplicate_places_creation' => true",
-            $configFile
-        );
-
-        file_put_contents('config.php', $configFile);
-
-        $this->initialPreventDuplicatePlaceCreationValue = false;
+        $result = $this->countFilesByType($type, $folderName);
+        $this->variableState->setVariable('count', (string) $result);
     }
 
     /**
-     * @Then /^I restore the duplicate configuration/
+     * @Given I check if one :type file has been created in the :folderName folder
      */
-    public function iRestoreTheDuplicateConfigurationOption(): void
+    public function iCheckIfOneFileHasBeenCreatedInTheFolder(string $type, string $folderName): void
     {
-        $configFile = file_get_contents('config.php');
+        $original = (int) $this->variableState->getVariable('count');
+        $result = $this->countFilesByType($type, $folderName);
+        assertEquals($result, $original + 1);
+    }
 
-        $configFile = str_replace(
-            "'prevent_duplicate_places_creation' => true",
-            "'prevent_duplicate_places_creation' => " . ($this->initialPreventDuplicatePlaceCreationValue ? 'true' : 'false'),
-            $configFile
-        );
-
-        file_put_contents('config.php', $configFile);
+    private function countFilesByType(string $type, string $folder): int
+    {
+        $downloadsFolder = $this->config['folders'][$folder];
+        return count(glob($downloadsFolder . '/*.' . $type));
     }
 }

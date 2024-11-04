@@ -13,10 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class AnyOfTest extends TestCase
 {
-    /**
-     * @var AnyOf
-     */
-    private $anyOf;
+    private AnyOf $anyOf;
 
     protected function setUp(): void
     {

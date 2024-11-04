@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
@@ -128,7 +128,7 @@ class DeleteOfferHandlerTest extends CommandHandlerScenarioTestCase
     {
         return new EventCreated(
             $eventId,
-            new LegacyLanguage('nl'),
+            new Language('nl'),
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),

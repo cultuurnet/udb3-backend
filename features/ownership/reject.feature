@@ -16,6 +16,7 @@ Feature: Test rejecting ownership
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "auth0|64089494e980aedd96740212"
+    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "state" should be "rejected"
 
@@ -29,6 +30,7 @@ Feature: Test rejecting ownership
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "auth0|64089494e980aedd96740212"
+    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "state" should be "rejected"
 

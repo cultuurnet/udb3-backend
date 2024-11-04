@@ -7,10 +7,6 @@ namespace CultuurNet\UDB3\Http\Place;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
@@ -18,7 +14,6 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
@@ -44,7 +39,14 @@ use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -59,7 +61,10 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
@@ -111,8 +116,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
     private ImportPlaceRequestHandler $importPlaceRequestHandler;
 
-    private InMemoryDocumentRepository $organizerRepository;
-
     private function getSimplePlace(): array
     {
         return [
@@ -146,8 +149,8 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
-        $this->organizerRepository = new InMemoryDocumentRepository();
-        $this->organizerRepository->save(new JsonDocument('5cf42d51-3a4f-46f0-a8af-1cf672be8c84', '{}'));
+        $organizerRepository = new InMemoryDocumentRepository();
+        $organizerRepository->save(new JsonDocument('5cf42d51-3a4f-46f0-a8af-1cf672be8c84', '{}'));
 
         $this->importPlaceRequestHandler = new ImportPlaceRequestHandler(
             $this->aggregateRepository,
@@ -159,7 +162,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             $this->imageCollectionFactory,
             true,
             $this->createMock(LookupDuplicatePlace::class),
-            $this->organizerRepository
+            $organizerRepository
         );
 
         $this->commandBus->record();
@@ -786,7 +789,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         new Description('Feest in de Hel'),
                         new CopyrightHolder('De Hel'),
                         new Url('https://io.uitdatabank.be/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.jpeg'),
-                        new LegacyLanguage('nl')
+                        new Language('nl')
                     ))
             );
 
@@ -825,7 +828,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         new Locality('Leuven'),
                         new CountryCode('BE')
                     ),
-                    new LegacyLanguage('nl')
+                    new Language('nl')
                 ),
                 new UpdateCalendar(
                     $placeId,
@@ -874,9 +877,9 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new UpdateContactPoint(
                     $placeId,
                     new ContactPoint(
-                        ['016 10 20 30'],
-                        ['info@dehel.be'],
-                        ['https://www.dehel.be']
+                        new TelephoneNumbers(new TelephoneNumber('016 10 20 30')),
+                        new EmailAddresses(new EmailAddress('info@dehel.be')),
+                        new Urls(new Url('https://www.dehel.be'))
                     )
                 ),
                 new DeleteTypicalAgeRange($placeId),
@@ -918,7 +921,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                             new Description('Feest in de Hel'),
                             new CopyrightHolder('De Hel'),
                             new Url('https://io.uitdatabank.be/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.jpeg'),
-                            new LegacyLanguage('nl')
+                            new Language('nl')
                         ))
                 ),
                 new ImportVideos(
@@ -1013,7 +1016,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         new Locality('Leuven'),
                         new CountryCode('BE')
                     ),
-                    new LegacyLanguage('nl')
+                    new Language('nl')
                 ),
                 new UpdateCalendar(
                     $placeId,
@@ -1230,7 +1233,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         new Locality('Leuven'),
                         new CountryCode('BE')
                     ),
-                    new LegacyLanguage('nl')
+                    new Language('nl')
                 ),
                 new UpdateCalendar(
                     $placeId,
@@ -1317,7 +1320,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         new Locality('Leuven'),
                         new CountryCode('BE')
                     ),
-                    new LegacyLanguage('nl')
+                    new Language('nl')
                 ),
                 new UpdateCalendar(
                     $placeId,
@@ -3913,7 +3916,14 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateBookingInfo($placeId, new BookingInfo()),
-                new UpdateContactPoint($placeId, new ContactPoint([], ['info@publiq.be'], [])),
+                new UpdateContactPoint(
+                    $placeId,
+                    new ContactPoint(
+                        null,
+                        new EmailAddresses(new EmailAddress('info@publiq.be')),
+                        null
+                    )
+                ),
                 new DeleteTypicalAgeRange($placeId),
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),

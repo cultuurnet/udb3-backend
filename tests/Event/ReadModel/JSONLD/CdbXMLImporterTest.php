@@ -84,15 +84,13 @@ class CdbXMLImporterTest extends TestCase
     {
         $event = $this->createEventFromCdbXml($fileName, $version);
 
-        $jsonEvent = $this->importer->documentWithCdbXML(
+        return $this->importer->documentWithCdbXML(
             new \stdClass(),
             $event,
             $this->placeManager,
             $this->organizerManager,
             $this->slugger
         );
-
-        return $jsonEvent;
     }
 
     private function createJsonEventFromCdbXmlWithAgeRange(?int $ageFrom = null, ?int $ageTo = null): \stdClass
@@ -104,15 +102,13 @@ class CdbXMLImporterTest extends TestCase
         $event->setAgeFrom($ageFrom);
         $event->setAgeTo($ageTo);
 
-        $jsonEvent = $this->importer->documentWithCdbXML(
+        return $this->importer->documentWithCdbXML(
             new \stdClass(),
             $event,
             $this->placeManager,
             $this->organizerManager,
             $this->slugger
         );
-
-        return $jsonEvent;
     }
 
     private function createJsonEventFromCdbXmlWithoutAgeFrom(): \stdClass
@@ -133,15 +129,13 @@ class CdbXMLImporterTest extends TestCase
             $cdbXml
         );
 
-        $jsonEvent = $this->importer->documentWithCdbXML(
+        return $this->importer->documentWithCdbXML(
             new \stdClass(),
             $event,
             $this->placeManager,
             $this->organizerManager,
             $this->slugger
         );
-
-        return $jsonEvent;
     }
 
     /**
@@ -1156,15 +1150,11 @@ class CdbXMLImporterTest extends TestCase
      * @group issue-III-165
      * @group issue-III-1715
      * @dataProvider descriptionsProvider
-     *
-     * @param string $cdbxmlFile
-     * @param string $expectedDescriptionFile
-     * @param string $schemaVersion
      */
     public function it_combines_long_and_short_description_to_one_description(
-        $cdbxmlFile,
-        $expectedDescriptionFile,
-        $schemaVersion = '3.2'
+        string $cdbxmlFile,
+        string $expectedDescriptionFile,
+        string $schemaVersion = '3.2'
     ): void {
         $jsonEvent = $this->createJsonEventFromCdbXml($cdbxmlFile, $schemaVersion);
 
@@ -1178,11 +1168,8 @@ class CdbXMLImporterTest extends TestCase
      * @test
      * @group issue-III-1706
      * @dataProvider audienceProvider
-     *
-     * @param string $cdbxmlFile
-     * @param array $expectedAudience
      */
-    public function it_should_import_audience($cdbxmlFile, $expectedAudience): void
+    public function it_should_import_audience(string $cdbxmlFile, array $expectedAudience): void
     {
         $jsonEvent = $this->createJsonEventFromCdbXml($cdbxmlFile, '3.3');
         $this->assertEquals($expectedAudience, $jsonEvent->audience);

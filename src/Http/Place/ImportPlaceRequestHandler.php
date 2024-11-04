@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Place\Udb3ModelToLegacyPlaceAdapter;
 use CultuurNet\UDB3\Model\Place\Place;
@@ -160,7 +159,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
             $placeAggregate = PlaceAggregate::create(
                 $placeId,
-                $mainLanguage,
+                $place->getMainLanguage(),
                 $title,
                 $type,
                 $address,
@@ -185,19 +184,26 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             );
 
             $commands[] = new UpdateType($placeId, $type->getId());
-            $commands[] = new UpdateAddress($placeId, $address, $mainLanguage);
+            $commands[] = new UpdateAddress(
+                $placeId,
+                $place->getAddress()->getTranslation($place->getMainLanguage()),
+                $place->getMainLanguage()
+            );
             $commands[] = new UpdateCalendar($placeId, $calendar);
         }
 
         $bookingInfo = $placeAdapter->getBookingInfo();
         $commands[] = new UpdateBookingInfo($placeId, $bookingInfo);
 
-        $contactPoint = $placeAdapter->getContactPoint();
-        $commands[] = new UpdateContactPoint($placeId, $contactPoint);
+        $commands[] = new UpdateContactPoint($placeId, $place->getContactPoint());
 
-        $description = $placeAdapter->getDescription();
+        $description = $place->getDescription();
         if ($description) {
-            $commands[] = new UpdateDescription($placeId, $mainLanguage, $description);
+            $commands[] = new UpdateDescription(
+                $placeId,
+                $place->getMainLanguage(),
+                $description->getTranslation($place->getMainLanguage())
+            );
         }
 
         $ageRange = $placeAdapter->getAgeRange();
@@ -219,14 +225,22 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             );
         }
 
-        foreach ($placeAdapter->getDescriptionTranslations() as $language => $description) {
-            $language = new LegacyLanguage($language);
-            $commands[] = new UpdateDescription($placeId, $language, $description);
+        if ($description) {
+            foreach ($description->getLanguagesWithoutOriginal() as $language) {
+                $commands[] = new UpdateDescription(
+                    $placeId,
+                    $language,
+                    $description->getTranslation($language)
+                );
+            }
         }
 
-        foreach ($placeAdapter->getAddressTranslations() as $language => $address) {
-            $language = new LegacyLanguage($language);
-            $commands[] = new UpdateAddress($placeId, $address, $language);
+        foreach ($place->getAddress()->getLanguagesWithoutOriginal() as $language) {
+            $commands[] = new UpdateAddress(
+                $placeId,
+                $place->getAddress()->getTranslation($language),
+                $language
+            );
         }
 
         $commands[] = new ImportLabels($placeId, $place->getLabels());

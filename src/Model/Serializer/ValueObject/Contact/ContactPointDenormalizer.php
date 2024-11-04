@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\InvalidUrl;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
@@ -46,20 +47,30 @@ class ContactPointDenormalizer implements DenormalizerInterface
         if (isset($data['email'])) {
             $emails = array_map(
                 function ($value) {
-                    return new EmailAddress($value);
+                    try {
+                        return new EmailAddress($value);
+                    } catch (\InvalidArgumentException $e) {
+                        return null;
+                    }
                 },
                 array_filter($data['email'])
             );
+            $emails = array_filter($emails);
             $emails = count($emails) > 0 ? new EmailAddresses(...$emails) : null;
         }
 
         if (isset($data['url'])) {
             $urls = array_map(
                 function ($value) {
-                    return new Url($value);
+                    try {
+                        return new Url($value);
+                    } catch (InvalidUrl $e) {
+                        return null;
+                    }
                 },
                 array_filter($data['url'])
             );
+            $urls = array_filter($urls);
             $urls = count($urls) > 0 ? new Urls(...$urls) : null;
         }
 
@@ -70,10 +81,7 @@ class ContactPointDenormalizer implements DenormalizerInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === ContactPoint::class;
     }

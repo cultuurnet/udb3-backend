@@ -9,14 +9,13 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\DeleteDescription;
 use CultuurNet\UDB3\Offer\OfferRepository;
@@ -49,7 +48,7 @@ class DeleteDescriptionHandlerTest extends CommandHandlerScenarioTestCase
                     $this->getEventCreated(self::OFFER_ID),
                     new DescriptionTranslated(
                         'id',
-                        LegacyLanguage::fromUdb3ModelLanguage(new Language('nl')),
+                        new Language('nl'),
                         new Description('test')
                     ),
                 ]
@@ -83,7 +82,7 @@ class DeleteDescriptionHandlerTest extends CommandHandlerScenarioTestCase
     {
         return new EventCreated(
             $eventId,
-            new LegacyLanguage('nl'),
+            new Language('nl'),
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),

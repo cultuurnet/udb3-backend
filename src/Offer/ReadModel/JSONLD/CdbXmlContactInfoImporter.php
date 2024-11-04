@@ -10,9 +10,6 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
 {
     use MultilingualJsonLDProjectorTrait;
 
-    /**
-     * @inheritdoc
-     */
     public function importBookingInfo(
         \stdClass $jsonLD,
         \CultureFeed_Cdb_Data_ContactInfo $contactInfo,
@@ -77,9 +74,6 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     public function importContactPoint(
         \stdClass $jsonLD,
         \CultureFeed_Cdb_Data_ContactInfo $contactInfo
@@ -133,17 +127,11 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
         }
     }
 
-    /**
-     * @param int $unixTime
-     * @return \DateTime
-     */
-    private function dateFromUdb2UnixTime($unixTime)
+    private function dateFromUdb2UnixTime(int $unixTime): \DateTime
     {
-        $dateTime = new \DateTime(
+        return new \DateTime(
             '@' . $unixTime,
             new \DateTimeZone('Europe/Brussels')
         );
-
-        return $dateTime;
     }
 }

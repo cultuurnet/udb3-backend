@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class PlaceIDParserTest extends TestCase
 {
-    /**
-     * @var PlaceIDParser
-     */
-    private $parser;
+    private PlaceIDParser $parser;
 
     public function setUp(): void
     {
@@ -23,11 +20,8 @@ class PlaceIDParserTest extends TestCase
     /**
      * @test
      * @dataProvider placeUrlDataProvider
-     *
-     * @param string $url
-     * @param string $uuid
      */
-    public function it_should_return_a_place_id_from_the_given_place_url($url, $uuid): void
+    public function it_should_return_a_place_id_from_the_given_place_url(string $url, string $uuid): void
     {
         $url = new Url($url);
         $expected = new UUID($uuid);
@@ -35,10 +29,7 @@ class PlaceIDParserTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function placeUrlDataProvider()
+    public function placeUrlDataProvider(): array
     {
         return [
             'regular' => [

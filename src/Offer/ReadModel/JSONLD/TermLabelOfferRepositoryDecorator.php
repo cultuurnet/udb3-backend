@@ -12,10 +12,7 @@ use CultuurNet\UDB3\Term\TermRepository;
 
 final class TermLabelOfferRepositoryDecorator extends DocumentRepositoryDecorator
 {
-    /**
-     * @var TermRepository
-     */
-    private $termRepository;
+    private TermRepository $termRepository;
 
     public function __construct(DocumentRepository $repository, TermRepository $termRepository)
     {
@@ -26,7 +23,7 @@ final class TermLabelOfferRepositoryDecorator extends DocumentRepositoryDecorato
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
     {
         $document = parent::fetch($id, $includeMetadata);
-        $document = $document->applyAssoc(
+        return $document->applyAssoc(
             function (array $json) {
                 if (!isset($json['terms']) || !is_array($json['terms'])) {
                     // JSON is not formatted as expected, continue without trying to fix it.
@@ -63,6 +60,5 @@ final class TermLabelOfferRepositoryDecorator extends DocumentRepositoryDecorato
                 return $json;
             }
         );
-        return $document;
     }
 }

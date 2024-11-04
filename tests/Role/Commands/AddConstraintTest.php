@@ -10,20 +10,11 @@ use CultuurNet\UDB3\Role\ValueObjects\Query;
 
 class AddConstraintTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
-    /**
-     * @var Query
-     */
-    protected $query;
+    protected Query $query;
 
-    /**
-     * @var AddConstraint
-     */
-    protected $addConstraint;
+    protected AddConstraint $addConstraint;
 
     protected function setUp(): void
     {

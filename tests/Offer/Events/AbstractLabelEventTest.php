@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractLabelEventTest extends TestCase
 {
-    /**
-     * @var LabelAdded
-     */
-    protected $labelEvent;
+    protected LabelAdded $labelEvent;
 
     protected string $itemId;
 

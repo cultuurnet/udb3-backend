@@ -8,16 +8,21 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Broadway\Repository\Repository;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
+use CultuurNet\UDB3\Address\Locality as LegacyLocality;
+use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
+use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
@@ -39,10 +44,10 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         $id = '1';
         $title = new Title('foo');
         $eventType = new EventType('0.50.4.0.0', 'concert');
-        $address = new Address(
-            new Street('Kerkstraat 69'),
-            new PostalCode('3000'),
-            new Locality('Leuven'),
+        $address = new LegacyAddress(
+            new LegacyStreet('Kerkstraat 69'),
+            new LegacyPostalCode('3000'),
+            new LegacyLocality('Leuven'),
             new CountryCode('BE')
         );
         $calendar = new Calendar(CalendarType::PERMANENT());
@@ -74,7 +79,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new UpdateAddress($id, $updatedAddress, new Language('nl'))
             )
-            ->then([new AddressUpdated($id, $updatedAddress)]);
+            ->then([new AddressUpdated($id, LegacyAddress::fromUdb3ModelAddress($updatedAddress))]);
     }
 
     /**
@@ -93,13 +98,10 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new UpdateAddress($id, $updatedAddress, new Language('fr'))
             )
-            ->then([new AddressTranslated($id, $updatedAddress, new Language('fr'))]);
+            ->then([new AddressTranslated($id, LegacyAddress::fromUdb3ModelAddress($updatedAddress), new LegacyLanguage('fr'))]);
     }
 
-    /**
-     * @return array
-     */
-    public function updateAddressDataProvider()
+    public function updateAddressDataProvider(): array
     {
         return [
             [
@@ -140,10 +142,10 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             new Language('nl'),
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
-            new Address(
-                new Street('Kerkstraat 69'),
-                new PostalCode('3000'),
-                new Locality('Leuven'),
+            new LegacyAddress(
+                new LegacyStreet('Kerkstraat 69'),
+                new LegacyPostalCode('3000'),
+                new LegacyLocality('Leuven'),
                 new CountryCode('BE')
             ),
             new Calendar(CalendarType::PERMANENT())

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\ProcessManager;
 
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
-use Broadway\CommandHandling\CommandBus;
 use CultureFeed_Cdb_Data_Address;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
-use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactoryInterface;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Organizer\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -60,7 +60,7 @@ class GeoCoordinatesProcessManager implements EventListener
         $this->commandBus->dispatch(
             new UpdateGeoCoordinatesFromAddress(
                 $event->getOrganizerId(),
-                new LegacyAddress(
+                new Address(
                     new Street($event->getStreetAddress()),
                     new PostalCode($event->getPostalCode()),
                     new Locality($event->getLocality()),

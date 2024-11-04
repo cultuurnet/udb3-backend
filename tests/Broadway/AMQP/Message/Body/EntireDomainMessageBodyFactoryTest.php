@@ -14,10 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class EntireDomainMessageBodyFactoryTest extends TestCase
 {
-    /**
-     * @var EntireDomainMessageBodyFactory
-     */
-    private $entireDomainMessageBodyFactory;
+    private EntireDomainMessageBodyFactory $entireDomainMessageBodyFactory;
 
     protected function setUp(): void
     {

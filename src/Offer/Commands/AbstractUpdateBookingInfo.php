@@ -8,25 +8,15 @@ use CultuurNet\UDB3\BookingInfo;
 
 abstract class AbstractUpdateBookingInfo extends AbstractCommand
 {
-    /**
-     * The bookingInfo entry
-     * @var BookingInfo
-     */
-    protected $bookingInfo;
+    protected BookingInfo $bookingInfo;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, BookingInfo $bookingInfo)
+    public function __construct(string $itemId, BookingInfo $bookingInfo)
     {
         parent::__construct($itemId);
         $this->bookingInfo = $bookingInfo;
     }
 
-    /**
-     * @return BookingInfo
-     */
-    public function getBookingInfo()
+    public function getBookingInfo(): BookingInfo
     {
         return $this->bookingInfo;
     }

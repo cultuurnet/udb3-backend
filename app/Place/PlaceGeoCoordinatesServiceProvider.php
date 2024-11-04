@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
+use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\Formatter\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Formatter\LocalityAddressFormatter;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
@@ -36,8 +36,7 @@ final class PlaceGeoCoordinatesServiceProvider extends AbstractServiceProvider
                     new FullAddressFormatter(),
                     new LocalityAddressFormatter(),
                     $container->get(GeocodingService::class),
-                    $container->get('place_jsonld_repository'),
-                    $container->get('config')['add_location_name_to_coordinates_lookup'] ?? false
+                    $container->get('place_jsonld_repository')
                 );
 
                 $handler->setLogger(LoggerFactory::create($container, LoggerName::forService('geo-coordinates', 'place')));

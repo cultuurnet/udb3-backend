@@ -12,20 +12,11 @@ use PHPUnit\Framework\TestCase;
 
 class PopularityEnrichedOfferRepositoryTest extends TestCase
 {
-    /**
-     * @var InMemoryPopularityRepository
-     */
-    private $popularityRepository;
+    private InMemoryPopularityRepository $popularityRepository;
 
-    /**
-     * @var InMemoryDocumentRepository
-     */
-    private $decoratedRepository;
+    private InMemoryDocumentRepository $decoratedRepository;
 
-    /**
-     * @var PopularityEnrichedOfferRepository
-     */
-    private $popularityEnrichedOfferRepository;
+    private PopularityEnrichedOfferRepository $popularityEnrichedOfferRepository;
 
     protected function setUp(): void
     {

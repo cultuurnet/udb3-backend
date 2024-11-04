@@ -9,24 +9,15 @@ use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
 class AbstractImportImages extends AbstractCommand
 {
-    /**
-     * @var ImageCollection
-     */
-    private $imageCollection;
+    private ImageCollection $imageCollection;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, ImageCollection $imageCollection)
+    public function __construct(string $itemId, ImageCollection $imageCollection)
     {
         parent::__construct($itemId);
         $this->imageCollection = $imageCollection;
     }
 
-    /**
-     * @return ImageCollection
-     */
-    public function getImages()
+    public function getImages(): ImageCollection
     {
         return $this->imageCollection;
     }

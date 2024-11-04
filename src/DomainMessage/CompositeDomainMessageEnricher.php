@@ -11,27 +11,21 @@ class CompositeDomainMessageEnricher implements DomainMessageEnricherInterface
     /**
      * @var DomainMessageEnricherInterface[]
      */
-    private $enrichers;
+    private array $enrichers;
 
     public function __construct()
     {
         $this->enrichers = [];
     }
 
-    /**
-     * @return CompositeDomainMessageEnricher
-     */
-    public function withEnricher(DomainMessageEnricherInterface $domainMessageEnricher)
+    public function withEnricher(DomainMessageEnricherInterface $domainMessageEnricher): CompositeDomainMessageEnricher
     {
         $c = clone $this;
         $c->enrichers[] = $domainMessageEnricher;
         return $c;
     }
 
-    /**
-     * @return bool
-     */
-    public function supports(DomainMessage $domainMessage)
+    public function supports(DomainMessage $domainMessage): bool
     {
         $supports = false;
 
@@ -45,10 +39,7 @@ class CompositeDomainMessageEnricher implements DomainMessageEnricherInterface
         return $supports;
     }
 
-    /**
-     * @return DomainMessage
-     */
-    public function enrich(DomainMessage $domainMessage)
+    public function enrich(DomainMessage $domainMessage): DomainMessage
     {
         foreach ($this->enrichers as $enricher) {
             if ($enricher->supports($domainMessage)) {

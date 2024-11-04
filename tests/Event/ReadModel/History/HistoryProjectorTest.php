@@ -22,8 +22,6 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
@@ -65,14 +63,16 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
+use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -269,7 +269,7 @@ class HistoryProjectorTest extends TestCase
 
         $eventCreated = new EventCreated(
             $eventId,
-            new LegacyLanguage('en'),
+            new Language('en'),
             'Faith no More',
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),
@@ -348,7 +348,7 @@ class HistoryProjectorTest extends TestCase
     {
         $titleTranslated = new TitleTranslated(
             self::EVENT_ID_1,
-            new LegacyLanguage('fr'),
+            new Language('fr'),
             'Titre en français'
         );
 
@@ -383,7 +383,7 @@ class HistoryProjectorTest extends TestCase
     {
         $descriptionTranslated = new DescriptionTranslated(
             self::EVENT_ID_1,
-            new LegacyLanguage('fr'),
+            new Language('fr'),
             new Description('Signalement en français')
         );
 
@@ -899,10 +899,10 @@ class HistoryProjectorTest extends TestCase
         $image = new Image(
             new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $event = new ImageAdded(self::EVENT_ID_1, $image);
@@ -937,10 +937,10 @@ class HistoryProjectorTest extends TestCase
         $image = new Image(
             new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $event = new ImageRemoved(self::EVENT_ID_1, $image);
@@ -1009,19 +1009,19 @@ class HistoryProjectorTest extends TestCase
         $image1 = new Image(
             new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test1.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $image2 = new Image(
             new UUID('f1926870-136c-4b06-b2a1-1fab01590847'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test2.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $event = new ImagesImportedFromUDB2(
@@ -1066,19 +1066,19 @@ class HistoryProjectorTest extends TestCase
         $image1 = new Image(
             new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test1.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $image2 = new Image(
             new UUID('f1926870-136c-4b06-b2a1-1fab01590847'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test2.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $event = new ImagesUpdatedFromUDB2(
@@ -1285,10 +1285,10 @@ class HistoryProjectorTest extends TestCase
         $image = new Image(
             new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
             new Url('https://io.uitdatabank.be/media/test.jpg'),
-            new LegacyLanguage('en')
+            new Language('en')
         );
 
         $event = new MainImageSelected(self::EVENT_ID_1, $image);

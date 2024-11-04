@@ -35,7 +35,6 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Import\Event\Udb3ModelToLegacyEventAdapter;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
@@ -174,7 +173,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         if (!$eventExists) {
             $eventAggregate = EventAggregate::create(
                 $eventId,
-                $mainLanguage,
+                $event->getMainLanguage(),
                 $title,
                 $type,
                 $location,
@@ -228,12 +227,15 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $bookingInfo = $eventAdapter->getBookingInfo();
         $commands[] = new UpdateBookingInfo($eventId, $bookingInfo);
 
-        $contactPoint = $eventAdapter->getContactPoint();
-        $commands[] = new UpdateContactPoint($eventId, $contactPoint);
+        $commands[] = new UpdateContactPoint($eventId, $event->getContactPoint());
 
-        $description = $eventAdapter->getDescription();
+        $description = $event->getDescription();
         if ($description) {
-            $commands[] = new UpdateDescription($eventId, $mainLanguage, $description);
+            $commands[] = new UpdateDescription(
+                $eventId,
+                $event->getMainLanguage(),
+                $description->getTranslation($event->getMainLanguage())
+            );
         }
 
         $ageRange = $eventAdapter->getAgeRange();
@@ -255,9 +257,14 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             );
         }
 
-        foreach ($eventAdapter->getDescriptionTranslations() as $language => $description) {
-            $language = new LegacyLanguage($language);
-            $commands[] = new UpdateDescription($eventId, $language, $description);
+        if ($description) {
+            foreach ($description->getLanguagesWithoutOriginal() as $language) {
+                $commands[] = new UpdateDescription(
+                    $eventId,
+                    $language,
+                    $description->getTranslation($language)
+                );
+            }
         }
 
         $commands[] = new ImportLabels($eventId, $event->getLabels());

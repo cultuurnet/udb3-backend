@@ -11,36 +11,17 @@ namespace CultuurNet\UDB3;
  */
 class CulturefeedSlugger implements SluggerInterface
 {
-    /**
-     * The maximum length the slug can have.
-     *
-     * @var int
-     */
-    protected $length;
+    protected int $length;
 
-    /**
-     * The separator that will be used instead of whitespaces.
-     *
-     * @var string
-     */
-    protected $separator;
+    protected string $separator;
 
-    /**
-     * @param int $length
-     *   The maximum length the slug can have.
-     * @param string $separator
-     *   The separator that will be used instead of whitespaces.
-     */
-    public function __construct($length = 50, $separator = '-')
+    public function __construct(int $length = 50, string $separator = '-')
     {
         $this->length = $length;
         $this->separator = $separator;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function slug($string)
+    public function slug(string $string): string
     {
         // transliterate
         $string = $this->transliterate($string);
@@ -69,13 +50,11 @@ class CulturefeedSlugger implements SluggerInterface
             '',
             $string
         );
-        $string = preg_replace(
+        return preg_replace(
             '/^' . preg_quote($this->separator) . '/',
             '',
             $string
         );
-
-        return $string;
     }
 
     private function transliterate(string $string): string

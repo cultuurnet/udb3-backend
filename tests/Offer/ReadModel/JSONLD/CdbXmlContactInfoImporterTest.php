@@ -8,15 +8,9 @@ use PHPUnit\Framework\TestCase;
 
 class CdbXmlContactInfoImporterTest extends TestCase
 {
-    /**
-     * @var CdbXmlContactInfoImporter
-     */
-    private $cdbXmlContactInfoImporter;
+    private CdbXmlContactInfoImporter $cdbXmlContactInfoImporter;
 
-    /**
-     * @var \CultureFeed_Cdb_Data_ContactInfo
-     */
-    private $cdbContactInfo;
+    private \CultureFeed_Cdb_Data_ContactInfo $cdbContactInfo;
 
     protected function setUp(): void
     {
@@ -115,10 +109,7 @@ class CdbXmlContactInfoImporterTest extends TestCase
         $this->assertEquals($expectedContactPoint, $jsonLd->contactPoint);
     }
 
-    /**
-     * @return \CultureFeed_Cdb_Data_ContactInfo
-     */
-    private function createCdbContactInfo()
+    private function createCdbContactInfo(): \CultureFeed_Cdb_Data_ContactInfo
     {
         $contactInfo = new \CultureFeed_Cdb_Data_ContactInfo();
 

@@ -4,34 +4,31 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
 use PHPUnit\Framework\TestCase;
 
 class AbstractContactPointUpdatedTest extends TestCase
 {
-    /**
-     * @var AbstractContactPointUpdated
-     */
-    protected $contactPointUpdated;
+    protected AbstractContactPointUpdated $contactPointUpdated;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var ContactPoint
-     */
-    protected $contactPoint;
+    protected ContactPoint $contactPoint;
 
     public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->contactPoint = new ContactPoint(
-            ['0123456789'],
-            ['foo@bar.com'],
-            ['http://foo.bar']
+            new TelephoneNumbers(new TelephoneNumber('0123456789')),
+            new EmailAddresses(new EmailAddress('foo@bar.com')),
+            new Urls(new Url('http://foo.bar'))
         );
         $this->contactPointUpdated = new ContactPointUpdated($this->itemId, $this->contactPoint);
     }
@@ -43,9 +40,9 @@ class AbstractContactPointUpdatedTest extends TestCase
     {
         $expectedItemId = 'Foo';
         $expectedContactPoint = new ContactPoint(
-            ['0123456789'],
-            ['foo@bar.com'],
-            ['http://foo.bar']
+            new TelephoneNumbers(new TelephoneNumber('0123456789')),
+            new EmailAddresses(new EmailAddress('foo@bar.com')),
+            new Urls(new Url('http://foo.bar'))
         );
         $expectedContactPointUpdated = new ContactPointUpdated(
             $expectedItemId,
@@ -62,9 +59,9 @@ class AbstractContactPointUpdatedTest extends TestCase
     {
         $expectedItemId = 'Foo';
         $expectedContactPoint = new ContactPoint(
-            ['0123456789'],
-            ['foo@bar.com'],
-            ['http://foo.bar']
+            new TelephoneNumbers(new TelephoneNumber('0123456789')),
+            new EmailAddresses(new EmailAddress('foo@bar.com')),
+            new Urls(new Url('http://foo.bar'))
         );
 
         $itemId = $this->contactPointUpdated->getItemId();
@@ -102,10 +99,7 @@ class AbstractContactPointUpdatedTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractContactPointUpdated' => [
@@ -126,9 +120,9 @@ class AbstractContactPointUpdatedTest extends TestCase
                 new ContactPointUpdated(
                     'madId',
                     new ContactPoint(
-                        ['0123456789'],
-                        ['foo@bar.com'],
-                        ['http://foo.bar']
+                        new TelephoneNumbers(new TelephoneNumber('0123456789')),
+                        new EmailAddresses(new EmailAddress('foo@bar.com')),
+                        new Urls(new Url('http://foo.bar'))
                     )
                 ),
             ],

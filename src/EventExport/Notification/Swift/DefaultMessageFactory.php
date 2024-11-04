@@ -11,41 +11,22 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 class DefaultMessageFactory implements MessageFactoryInterface
 {
-    /**
-     * @var BodyFactoryInterface
-     */
-    private $plainTextBodyFactory;
+    private BodyFactoryInterface $plainTextBodyFactory;
 
-    /**
-     * @var BodyFactoryInterface
-     */
-    private $htmlBodyFactory;
+    private BodyFactoryInterface $htmlBodyFactory;
 
-    /**
-     * @var SubjectFactoryInterface
-     */
-    private $subjectFactory;
+    private SubjectFactoryInterface $subjectFactory;
 
-    /**
-     * @var string
-     */
-    private $senderAddress;
+    private string $senderAddress;
 
-    /**
-     * @var string
-     */
-    private $senderName;
+    private string $senderName;
 
-    /**
-     * @param string                  $senderAddress
-     * @param string                  $senderName
-     */
     public function __construct(
         BodyFactoryInterface $plainTextBodyFactory,
         BodyFactoryInterface $htmlBodyFactory,
         SubjectFactoryInterface $subjectFactory,
-        $senderAddress,
-        $senderName
+        string $senderAddress,
+        string $senderName
     ) {
         $this->plainTextBodyFactory = $plainTextBodyFactory;
         $this->htmlBodyFactory = $htmlBodyFactory;
@@ -54,10 +35,7 @@ class DefaultMessageFactory implements MessageFactoryInterface
         $this->subjectFactory = $subjectFactory;
     }
 
-    /**
-     * @return \Swift_Message
-     */
-    public function createMessageFor(EmailAddress $address, EventExportResult $eventExportResult)
+    public function createMessageFor(EmailAddress $address, EventExportResult $eventExportResult): \Swift_Message
     {
         $message = new \Swift_Message($this->subjectFactory->getSubjectFor($eventExportResult));
         $message->setBody(

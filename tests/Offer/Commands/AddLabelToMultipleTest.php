@@ -14,15 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class AddLabelToMultipleTest extends TestCase
 {
-    /**
-     * @var AddLabelToMultiple
-     */
-    protected $labelMultiple;
+    protected AddLabelToMultiple $labelMultiple;
 
-    /**
-     * @var OfferIdentifierCollection
-     */
-    protected $offerIdentifiers;
+    protected OfferIdentifierCollection $offerIdentifiers;
 
     protected Label $label;
 

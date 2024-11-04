@@ -9,20 +9,14 @@ class IsTrimmedTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider trimDataProvider
-     *
-     * @param string $original
-     * @param string $expected
      */
-    public function it_should_trim_both_sides($original, $expected): void
+    public function it_should_trim_both_sides(string $original, string $expected): void
     {
         $trimmed = new MockTrimmed($original);
         $this->assertEquals($expected, $trimmed->toString());
     }
 
-    /**
-     * @return array
-     */
-    public function trimDataProvider()
+    public function trimDataProvider(): array
     {
         return [
             'unmodified' => [
@@ -51,20 +45,14 @@ class IsTrimmedTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider trimLeftToRightDataProvider
-     *
-     * @param string $original
-     * @param string $expected
      */
-    public function it_should_trim_left_to_right($original, $expected): void
+    public function it_should_trim_left_to_right(string $original, string $expected): void
     {
         $trimmed = new MockTrimmedLeft($original);
         $this->assertEquals($expected, $trimmed->toString());
     }
 
-    /**
-     * @return array
-     */
-    public function trimLeftToRightDataProvider()
+    public function trimLeftToRightDataProvider(): array
     {
         return [
             'unmodified' => [
@@ -93,20 +81,14 @@ class IsTrimmedTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider trimRightToLeftDataProvider
-     *
-     * @param string $original
-     * @param string $expected
      */
-    public function it_should_trim_right_to_left($original, $expected): void
+    public function it_should_trim_right_to_left(string $original, string $expected): void
     {
         $trimmed = new MockTrimmedRight($original);
         $this->assertEquals($expected, $trimmed->toString());
     }
 
-    /**
-     * @return array
-     */
-    public function trimRightToLeftDataProvider()
+    public function trimRightToLeftDataProvider(): array
     {
         return [
             'unmodified' => [

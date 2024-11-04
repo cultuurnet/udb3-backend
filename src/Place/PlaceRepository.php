@@ -17,20 +17,14 @@ class PlaceRepository extends EventSourcingRepository
 {
     private const AGGREGATE_CLASS = Place::class;
 
-    /**
-     * @var EventStore
-     */
-    protected $protectedEventStore;
+    protected EventStore $protectedEventStore;
+
+    protected EventBus $protectedEventBus;
 
     /**
-     * @var EventBus
+     * @var EventStreamDecorator[]
      */
-    protected $protectedEventBus;
-
-    /**
-     * @var array|EventStreamDecorator[]
-     */
-    protected $protectedEventStreamDecorators;
+    protected array $protectedEventStreamDecorators;
 
     public function __construct(
         EventStore $eventStore,

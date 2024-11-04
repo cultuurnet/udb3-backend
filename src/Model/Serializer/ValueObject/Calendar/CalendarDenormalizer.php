@@ -111,19 +111,15 @@ class CalendarDenormalizer implements DenormalizerInterface
         return $calendar;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === Calendar::class;
     }
 
     /**
      * @todo Extract to a separate OpeningHoursDenormalizer
-     * @return OpeningHours
      */
-    private function denormalizeOpeningHours(array $openingHoursData)
+    private function denormalizeOpeningHours(array $openingHoursData): OpeningHours
     {
         $openingHours = array_map([$this, 'denormalizeOpeningHour'], $openingHoursData);
         return new OpeningHours(...$openingHours);
@@ -131,9 +127,8 @@ class CalendarDenormalizer implements DenormalizerInterface
 
     /**
      * @todo Extract to a separate OpeningHourDenormalizer
-     * @return OpeningHour
      */
-    private function denormalizeOpeningHour(array $openingHourData)
+    private function denormalizeOpeningHour(array $openingHourData): OpeningHour
     {
         $days = $this->denormalizeDays($openingHourData['dayOfWeek']);
         $opens = $this->denormalizeTime($openingHourData['opens']);
@@ -143,9 +138,8 @@ class CalendarDenormalizer implements DenormalizerInterface
 
     /**
      * @todo Extract to a separate DaysDenormalizer
-     * @return Days
      */
-    private function denormalizeDays(array $daysData)
+    private function denormalizeDays(array $daysData): Days
     {
         $days = array_map(
             function ($day) {
@@ -157,11 +151,9 @@ class CalendarDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @todo Extract to a separate TimeDenormalizer
-     * @param string $timeString
-     * @return Time
+     *@todo Extract to a separate TimeDenormalizer
      */
-    private function denormalizeTime($timeString)
+    private function denormalizeTime(string $timeString): Time
     {
         $dateTime = DateTimeFactory::fromFormat('H:i', $timeString);
         $hour = new Hour((int) $dateTime->format('H'));

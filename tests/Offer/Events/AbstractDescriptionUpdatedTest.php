@@ -4,26 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\Description;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionUpdated;
 use PHPUnit\Framework\TestCase;
 
 class AbstractDescriptionUpdatedTest extends TestCase
 {
-    /**
-     * @var AbstractDescriptionUpdated
-     */
-    protected $descriptionUpdated;
+    protected AbstractDescriptionUpdated $descriptionUpdated;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var Description
-     */
-    protected $description;
+    protected Description $description;
 
     public function setUp(): void
     {
@@ -90,10 +81,7 @@ class AbstractDescriptionUpdatedTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractDescriptionUpdated' => [

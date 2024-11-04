@@ -13,8 +13,6 @@ use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
-use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
@@ -68,13 +66,13 @@ use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -83,6 +81,7 @@ use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -121,7 +120,7 @@ final class Event extends Offer
 
     public static function create(
         string $eventId,
-        LegacyLanguage $mainLanguage,
+        Language $mainLanguage,
         Title $title,
         EventType $eventType,
         LocationId $location,
@@ -233,7 +232,7 @@ final class Event extends Offer
     {
         $this->eventId = $eventImported->getEventId();
         // When importing from UDB2 the default main language is always 'nl'.
-        $this->mainLanguage = new LegacyLanguage('nl');
+        $this->mainLanguage = new Language('nl');
         $this->setUDB2Data($eventImported);
     }
 
@@ -592,7 +591,7 @@ final class Event extends Offer
         return new VideoUpdated($this->eventId, $video);
     }
 
-    protected function createTitleTranslatedEvent(LegacyLanguage $language, Title $title): TitleTranslated
+    protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
     {
         return new TitleTranslated($this->eventId, $language, $title->toString());
     }
@@ -602,7 +601,7 @@ final class Event extends Offer
         return new TitleUpdated($this->eventId, $title->toString());
     }
 
-    protected function createDescriptionTranslatedEvent(LegacyLanguage $language, Description $description): DescriptionTranslated
+    protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated
     {
         return new DescriptionTranslated($this->eventId, $language, $description);
     }

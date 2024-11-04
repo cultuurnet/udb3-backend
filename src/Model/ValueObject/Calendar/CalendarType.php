@@ -14,9 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
  */
 class CalendarType extends Enum
 {
-    /**
-     * @inheritdoc
-     */
     public static function getAllowedValues(): array
     {
         return [

@@ -28,10 +28,11 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\OfferLDProjectorTestBase;
@@ -455,7 +456,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 new Locality('Kessel-lo'),
                 new CountryCode('BE')
             ),
-            new Language('fr')
+            new LegacyLanguage('fr')
         );
 
         $body = $this->project(
@@ -508,7 +509,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $body = $this->project($place, $placeId);
 
-        $this->assertEquals((new Language('en'))->toString(), $body->mainLanguage);
+        $this->assertEquals((new LegacyLanguage('en'))->toString(), $body->mainLanguage);
     }
 
     /**
@@ -526,13 +527,11 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
     public function descriptionSamplesProvider(): array
     {
-        $samples = [
+        return [
             ['place_with_short_description.cdbxml.xml', 'Korte beschrijving.'],
             ['place_with_long_description.cdbxml.xml', 'Lange beschrijving.'],
             ['place_with_short_and_long_description.cdbxml.xml', "Korte beschrijving.\n\nLange beschrijving."],
         ];
-
-        return $samples;
     }
 
     /**
@@ -997,13 +996,11 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $cdbXml = SampleFiles::read(
             __DIR__ . '/' . $fileName
         );
-        $event = new PlaceImportedFromUDB2(
+        return new PlaceImportedFromUDB2(
             'someId',
             $cdbXml,
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
-
-        return $event;
     }
 
     private function placeUpdatedFromUDB2(string $fileName): PlaceUpdatedFromUDB2
@@ -1011,12 +1008,10 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $cdbXml = SampleFiles::read(
             __DIR__ . '/' . $fileName
         );
-        $event = new PlaceUpdatedFromUDB2(
+        return new PlaceUpdatedFromUDB2(
             'someId',
             $cdbXml,
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
-
-        return $event;
     }
 }

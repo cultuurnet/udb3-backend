@@ -34,4 +34,9 @@ class Language
     {
         return new self($language->toString());
     }
+
+    public function toUdb3ModelLanguage(): Udb3ModelLanguage
+    {
+        return new Udb3ModelLanguage($this->toString());
+    }
 }

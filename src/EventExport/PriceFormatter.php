@@ -6,42 +6,21 @@ namespace CultuurNet\UDB3\EventExport;
 
 class PriceFormatter
 {
-    /**
-     * @var int
-     */
-    protected $significantDecimals = 2;
+    protected int $significantDecimals = 2;
 
-    /**
-     * @var string
-     */
-    protected $decimalPoint = '.';
+    protected string $decimalPoint = '.';
 
-    /**
-     * @var string
-     */
-    protected $thousandsSeparator = ',';
+    protected string $thousandsSeparator = ',';
 
-    /**
-     * @var string
-     */
-    protected $freeLabel = '';
+    protected string $freeLabel = '';
 
-    /**
-     * @var bool
-     */
-    protected $useFreeLabel = false;
+    protected bool $useFreeLabel = false;
 
-    /**
-     * @param int          $significantDecimals
-     * @param string       $decimalPoint
-     * @param string       $thousandsSeparator
-     * @param string|false $freeLabel
-     */
     public function __construct(
-        $significantDecimals = 2,
-        $decimalPoint = '.',
-        $thousandsSeparator = ',',
-        $freeLabel = ''
+        int $significantDecimals = 2,
+        string $decimalPoint = '.',
+        string $thousandsSeparator = ',',
+        string $freeLabel = ''
     ) {
         $this->setSignificantDecimals($significantDecimals);
         $this->setDecimalPoint($decimalPoint);
@@ -54,9 +33,8 @@ class PriceFormatter
 
     /**
      * @param float|int $price
-     * @return string $price
      */
-    public function format($price)
+    public function format($price): string
     {
         // Limit the number of decimals, and set the decimal point and thousands separator.
         $price = number_format(
@@ -82,48 +60,31 @@ class PriceFormatter
 
         // Trim the decimal point if there were only zeroes after the decimal point. Don't do this in the same trim as
         // above, as that would format 50,00 as 5.
-        $price = trim($price, $this->decimalPoint);
-
-        return $price;
+        return trim($price, $this->decimalPoint);
     }
 
-    /**
-     * @param int $significantDecimals
-     */
-    public function setSignificantDecimals($significantDecimals): void
+    public function setSignificantDecimals(int $significantDecimals): void
     {
         $this->significantDecimals = $significantDecimals;
     }
 
-    /**
-     * @param string $decimalPoint
-     */
-    public function setDecimalPoint($decimalPoint): void
+    public function setDecimalPoint(string $decimalPoint): void
     {
         $this->decimalPoint = $decimalPoint;
     }
 
-    /**
-     * @param string $thousandsSeparator
-     */
-    public function setThousandsSeparator($thousandsSeparator): void
+    public function setThousandsSeparator(string $thousandsSeparator): void
     {
         $this->thousandsSeparator = $thousandsSeparator;
     }
 
-    /**
-     * @param string $freeLabel
-     */
-    public function useFreeLabel($freeLabel): void
+    public function useFreeLabel(string $freeLabel): void
     {
         $this->setFreeLabel($freeLabel);
         $this->enableFreeLabel();
     }
 
-    /**
-     * @param string $freeLabel
-     */
-    public function setFreeLabel($freeLabel): void
+    public function setFreeLabel(string $freeLabel): void
     {
         $this->freeLabel = $freeLabel;
     }

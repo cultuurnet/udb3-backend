@@ -10,20 +10,11 @@ use PHPUnit\Framework\TestCase;
 
 class UpdateLocationTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $eventId;
+    private string $eventId;
 
-    /**
-     * @var LocationId
-     */
-    private $locationId;
+    private LocationId $locationId;
 
-    /**
-     * @var UpdateLocation
-     */
-    private $updateLocation;
+    private UpdateLocation $updateLocation;
 
     protected function setUp(): void
     {

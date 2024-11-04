@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\EventEvent;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\HasCdbXmlTrait;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 final class EventImportedFromUDB2 extends EventEvent implements EventCdbXMLInterface, MainLanguageDefined, ConvertsToGranularEvents
 {

@@ -57,9 +57,6 @@ final class CommandHandlerTest extends CommandHandlerScenarioTestCase
         parent::setUp();
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function createCommandHandler(
         EventStore $eventStore,
         EventBus $eventBus

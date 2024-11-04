@@ -11,27 +11,21 @@ class CompositePropertiesFactory implements PropertiesFactoryInterface
     /**
      * @var PropertiesFactoryInterface[]
      */
-    private $factories;
+    private array $factories;
 
     public function __construct()
     {
         $this->factories = [];
     }
 
-    /**
-     * @return CompositePropertiesFactory
-     */
-    public function with(PropertiesFactoryInterface $factory)
+    public function with(PropertiesFactoryInterface $factory): CompositePropertiesFactory
     {
         $c = clone $this;
         $c->factories[] = $factory;
         return $c;
     }
 
-    /**
-     * @return array
-     */
-    public function createProperties(DomainMessage $domainMessage)
+    public function createProperties(DomainMessage $domainMessage): array
     {
         $properties = [];
 

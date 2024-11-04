@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\Place;
 
 class CanonicalPlaceRepository
 {
-    /**
-     * @var PlaceRepository
-     */
-    private $repository;
+    private PlaceRepository $repository;
 
     public function __construct(PlaceRepository $repository)
     {

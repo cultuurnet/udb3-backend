@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\ReadModel\MainLanguage;
 
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 interface MainLanguageQueryInterface
 {
     /**
-     * @param string $cdbid
-     * @return Language
      * @throws EntityNotFoundException
      */
-    public function execute($cdbid);
+    public function execute(string $cdbid): Language;
 }

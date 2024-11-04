@@ -11,15 +11,11 @@ class MergedDescriptionTest extends TestCase
     /**
      * @test
      * @dataProvider shortAndLongDescriptionDataProvider
-     *
-     * @param string $shortDescription
-     * @param string $longDescription
-     * @param string $expectedMergedDescription
      */
     public function it_should_merge_short_and_long_description_if_short_description_is_not_included_in_long_description(
-        $shortDescription,
-        $longDescription,
-        $expectedMergedDescription
+        string $shortDescription,
+        string $longDescription,
+        string $expectedMergedDescription
     ): void {
         $shortDescription = new ShortDescription($shortDescription);
         $longDescription = new LongDescription($longDescription);
@@ -30,10 +26,7 @@ class MergedDescriptionTest extends TestCase
         $this->assertEquals($expectedMergedDescription, $actualMergedDescription);
     }
 
-    /**
-     * @return array
-     */
-    public function shortAndLongDescriptionDataProvider()
+    public function shortAndLongDescriptionDataProvider(): array
     {
         /* @codingStandardsIgnoreStart */
         return [

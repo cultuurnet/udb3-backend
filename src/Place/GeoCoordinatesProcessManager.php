@@ -7,8 +7,10 @@ namespace CultuurNet\UDB3\Place;
 use Broadway\CommandHandling\CommandBus;
 use CultureFeed_Cdb_Data_Address;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
-use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
+use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactoryInterface;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Offer\AbstractGeoCoordinatesProcessManager;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
@@ -18,9 +20,8 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
-use Psr\Log\LoggerInterface;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\Address\Address;
+use Psr\Log\LoggerInterface;
 
 class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
 {
@@ -53,7 +54,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
     {
         $command = new UpdateGeoCoordinatesFromAddress(
             $placeCreated->getPlaceId(),
-            $placeCreated->getAddress()
+            $placeCreated->getAddress()->toUdb3ModelAddress()
         );
 
         $this->commandBus->dispatch($command);
@@ -67,7 +68,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
         // approach like this.
         $command = new UpdateGeoCoordinatesFromAddress(
             $majorInfoUpdated->getPlaceId(),
-            $majorInfoUpdated->getAddress()
+            $majorInfoUpdated->getAddress()->toUdb3ModelAddress()
         );
 
         $this->commandBus->dispatch($command);
@@ -77,7 +78,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
     {
         $command = new UpdateGeoCoordinatesFromAddress(
             $addressUpdated->getPlaceId(),
-            $addressUpdated->getAddress()
+            $addressUpdated->getAddress()->toUdb3ModelAddress()
         );
 
         $this->commandBus->dispatch($command);
@@ -160,7 +161,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
 
         $command = new UpdateGeoCoordinatesFromAddress(
             $titleUpdated->getItemId(),
-            Address::deserialize($body['address'][$language])
+            (new AddressDenormalizer())->denormalize($body['address'][$language], Address::class)
         );
 
         $this->commandBus->dispatch($command);

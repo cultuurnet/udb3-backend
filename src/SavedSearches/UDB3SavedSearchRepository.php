@@ -99,9 +99,6 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
         $queryBuilder->execute();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function ownedByCurrentUser(): array
     {
         $queryBuilder = $this->connection->createQueryBuilder()

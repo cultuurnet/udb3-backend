@@ -17,7 +17,6 @@ use stdClass;
 class InvokableRequestHandlerContainerTest extends TestCase
 {
     private array $services;
-    private MockObject $container;
     private MockObject $requestHandler;
     private RequestHandlerInterface $alreadyCallableRequestHandler;
     private InvokableRequestHandlerContainer $invokableRequestHandlerContainer;
@@ -44,15 +43,15 @@ class InvokableRequestHandlerContainerTest extends TestCase
             'mock_request_handler_callable' => $this->alreadyCallableRequestHandler,
         ];
 
-        $this->container = $this->createMock(ContainerInterface::class);
-        $this->container->expects($this->any())
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects($this->any())
             ->method('get')
             ->willReturnCallback(
                 function (string $id) {
                     return $this->services[$id] ?? null;
                 }
             );
-        $this->container->expects($this->any())
+        $container->expects($this->any())
             ->method('has')
             ->willReturnCallback(
                 function (string $id) {
@@ -60,7 +59,7 @@ class InvokableRequestHandlerContainerTest extends TestCase
                 }
             );
 
-        $this->invokableRequestHandlerContainer = new InvokableRequestHandlerContainer($this->container);
+        $this->invokableRequestHandlerContainer = new InvokableRequestHandlerContainer($container);
     }
 
     /**

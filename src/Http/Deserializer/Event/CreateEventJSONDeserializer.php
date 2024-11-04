@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Deserializer\Event;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 /**
  * @deprecated

@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\Calendar;
 
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
-use CultuurNet\UDB3\Cdb\DateTimeFactory;
+use CultuurNet\UDB3\DateTimeFactory;
 use DateTimeInterface;
 
-class CalendarFactory implements CalendarFactoryInterface
+final class CalendarFactory implements CalendarFactoryInterface
 {
     public function createFromCdbCalendar(\CultureFeed_Cdb_Data_Calendar $cdbCalendar): Calendar
     {
@@ -32,7 +32,7 @@ class CalendarFactory implements CalendarFactoryInterface
                 $startDateString = $timestamp->getDate() . 'T00:00:00';
             }
         }
-        $startDate = !empty($startDateString) ? DateTimeFactory::dateTimeFromDateString($startDateString) : null;
+        $startDate = !empty($startDateString) ? DateTimeFactory::fromCdbFormat($startDateString) : null;
 
         //
         // Get the end day.
@@ -55,7 +55,7 @@ class CalendarFactory implements CalendarFactoryInterface
                 $endDateString = $timestamp->getDate() . 'T' . $endTime;
             }
         }
-        $endDate = !empty($endDateString) ? DateTimeFactory::dateTimeFromDateString($endDateString) : null;
+        $endDate = !empty($endDateString) ? DateTimeFactory::fromCdbFormat($endDateString) : null;
 
         //
         // Get the time stamps.
@@ -196,7 +196,7 @@ class CalendarFactory implements CalendarFactoryInterface
                 }
 
                 foreach ($openingTimes as $openingTime) {
-                    $opens = \CultuurNet\UDB3\DateTimeFactory::fromFormat(
+                    $opens = DateTimeFactory::fromFormat(
                         'H:i:s',
                         $openingTime->getOpenFrom()
                     );
@@ -243,8 +243,8 @@ class CalendarFactory implements CalendarFactoryInterface
         string $startDateString,
         string $endDateString
     ): Timestamp {
-        $startDate = DateTimeFactory::dateTimeFromDateString($startDateString);
-        $endDate = DateTimeFactory::dateTimeFromDateString($endDateString);
+        $startDate = DateTimeFactory::fromCdbFormat($startDateString);
+        $endDate = DateTimeFactory::fromCdbFormat($endDateString);
 
         return $this->createChronologicalTimestamp($startDate, $endDate);
     }

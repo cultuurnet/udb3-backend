@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Commands\AddImage;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
@@ -25,16 +24,17 @@ use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
 use CultuurNet\UDB3\Kinepolis\Trailer\TrailerRepository;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedMovie;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedPriceForATheater;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 use Exception;
+use Google\Service\Exception as GoogleException;
 use Psr\Log\LoggerInterface;
 
 final class KinepolisService
@@ -154,8 +154,8 @@ final class KinepolisService
             $movieTitle = $movie['title'];
             $trailer = null;
             try {
-                $trailer =  $this->trailerRepository->findMatchingTrailer($movieTitle);
-            } catch (Exception $exception) {
+                $trailer = $this->trailerRepository->findMatchingTrailer($movieTitle);
+            } catch (GoogleException $exception) {
                 $this->logger->error('Problem with searching trailer for ' . $movieTitle . ':' . $exception->getMessage());
             }
 
@@ -199,8 +199,8 @@ final class KinepolisService
         if ($parsedMovie->getDescription() !== null) {
             $updateDescription = new UpdateDescription(
                 $eventId,
-                new LegacyLanguage('nl'),
-                Description::fromUdb3ModelDescription($parsedMovie->getDescription())
+                new Language('nl'),
+                $parsedMovie->getDescription()
             );
             $commands[] = $updateDescription;
         }
@@ -221,7 +221,7 @@ final class KinepolisService
         $eventId = $this->uuidGenerator->generate();
         $eventAggregate = EventAggregate::create(
             $eventId,
-            new LegacyLanguage('nl'),
+            new Language('nl'),
             $parsedMovie->getTitle(),
             new EventType('0.50.6.0.0', 'Film'),
             $parsedMovie->getLocationId(),
@@ -245,7 +245,7 @@ final class KinepolisService
             $uploadedImage,
             new MediaDescription($parsedMovie->getTitle()->toString()),
             new CopyrightHolder('Kinepolis'),
-            new LegacyLanguage('nl')
+            new Language('nl')
         );
         return new AddImage($eventId, $imageId);
     }

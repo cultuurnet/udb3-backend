@@ -8,9 +8,23 @@ services:
     ports:
       - '8000:80'
     networks:
-      uitdatabank:
+      uitdatabank-backend:
         aliases:
-          - php.uitdatabank.dev
+          - io.uitdatabank.local
+          - data.uitdatabank.local
+    healthcheck:
+      test: curl http://127.0.0.1:80/
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   mysql:
     image: 'bitnami/mysql:8.0'
@@ -26,9 +40,15 @@ services:
     ports:
       - '3306:3306'
     networks:
-      uitdatabank:
+      uitdatabank-backend:
         aliases:
-          - mysql.uitdatabank.dev
+          - mysql.uitdatabank.local
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   redis:
     image: 'redis:alpine'
@@ -38,7 +58,9 @@ services:
     volumes:
       - 'udb3-redis:/data'
     networks:
-      - uitdatabank
+      uitdatabank-backend:
+        aliases:
+          - redis.uitdatabank.local
     healthcheck:
       test: [ 'CMD', 'redis-cli', 'ping' ]
       retries: 3
@@ -52,10 +74,17 @@ services:
       - 5672:5672
       - 15672:15672
     networks:
-      - uitdatabank
+      uitdatabank-backend:
+        aliases:
+          - rabbitmq.uitdatabank.local
+    healthcheck:
+      test: [ 'CMD', 'rabbitmqctl', 'node_health_check' ]
+      retries: 3
+      timeout: 5s
 
 networks:
-  uitdatabank:
+  uitdatabank-backend:
+    name: uitdatabank
     driver: bridge
 
 volumes:

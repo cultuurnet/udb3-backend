@@ -12,10 +12,7 @@ use CultuurNet\UDB3\Deserializer\DataValidationException;
  */
 class NotEmptyPropertiesDataValidator implements DataValidatorInterface
 {
-    /**
-     * @var string[]
-     */
-    private $requiredFields;
+    private array $requiredFields;
 
     /**
      * @param string[] $requiredFields

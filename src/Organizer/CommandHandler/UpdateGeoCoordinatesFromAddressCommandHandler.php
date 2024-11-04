@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\CommandHandler;
 
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\Formatter\AddressFormatter;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
@@ -37,14 +38,14 @@ class UpdateGeoCoordinatesFromAddressCommandHandler extends Udb3CommandHandler
     {
         $coordinates = $this->geocodingService->getCoordinates(
             $this->defaultAddressFormatter->format(
-                $updateGeoCoordinates->address()
+                LegacyAddress::fromUdb3ModelAddress($updateGeoCoordinates->address())
             )
         );
 
         if ($coordinates === null) {
             $coordinates = $this->geocodingService->getCoordinates(
                 $this->fallbackAddressFormatter->format(
-                    $updateGeoCoordinates->address()
+                    LegacyAddress::fromUdb3ModelAddress($updateGeoCoordinates->address())
                 )
             );
         }

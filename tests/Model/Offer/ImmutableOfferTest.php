@@ -592,26 +592,17 @@ class ImmutableOfferTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return UUID
-     */
-    private function getId()
+    private function getId(): UUID
     {
         return new UUID('aadcee95-6180-4924-a8eb-ed829d4957a2');
     }
 
-    /**
-     * @return Language
-     */
-    private function getMainLanguage()
+    private function getMainLanguage(): Language
     {
         return new Language('nl');
     }
 
-    /**
-     * @return TranslatedTitle
-     */
-    private function getTitle()
+    private function getTitle(): TranslatedTitle
     {
         return new TranslatedTitle(
             $this->getMainLanguage(),
@@ -636,10 +627,7 @@ class ImmutableOfferTest extends TestCase
         );
     }
 
-    /**
-     * @return Categories
-     */
-    private function getTerms()
+    private function getTerms(): Categories
     {
         return new Categories(
             new Category(

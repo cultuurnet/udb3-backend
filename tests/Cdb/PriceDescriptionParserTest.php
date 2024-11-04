@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class PriceDescriptionParserTest extends TestCase
 {
-    /**
-     * @var PriceDescriptionParser
-     */
-    private $parser;
+    private PriceDescriptionParser $parser;
 
     public function setUp(): void
     {

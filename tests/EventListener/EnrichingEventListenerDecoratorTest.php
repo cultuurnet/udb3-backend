@@ -18,8 +18,8 @@ use CultuurNet\UDB3\DomainMessage\DomainMessageEnricherInterface;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -37,10 +37,7 @@ class EnrichingEventListenerDecoratorTest extends TestCase
      */
     private $decoratee;
 
-    /**
-     * @var EnrichingEventListenerDecorator
-     */
-    private $enrichingDecorator;
+    private EnrichingEventListenerDecorator $enrichingDecorator;
 
     public function setUp(): void
     {

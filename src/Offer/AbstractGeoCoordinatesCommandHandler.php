@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\Repository;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\Formatter\AddressFormatter;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
@@ -31,22 +32,18 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
 
     private DocumentRepository $documentRepository;
 
-    private bool $addLocationNameToCoordinatesLookup;
-
     public function __construct(
         Repository $placeRepository,
         AddressFormatter $defaultAddressFormatter,
         AddressFormatter $fallbackAddressFormatter,
         GeocodingService $geocodingService,
-        DocumentRepository $documentRepository,
-        bool $addLocationNameToCoordinatesLookup
+        DocumentRepository $documentRepository
     ) {
         $this->offerRepository = $placeRepository;
         $this->defaultAddressFormatter = $defaultAddressFormatter;
         $this->fallbackAddressFormatter = $fallbackAddressFormatter;
         $this->geocodingService = $geocodingService;
         $this->documentRepository = $documentRepository;
-        $this->addLocationNameToCoordinatesLookup = $addLocationNameToCoordinatesLookup;
         $this->logger = new NullLogger();
     }
 
@@ -56,19 +53,19 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
         $offerId = $updateGeoCoordinates->getItemId();
 
         $locationName = CleanPlaceName::transform(
-            $updateGeoCoordinates->getAddress()->toUdb3ModelAddress(),
+            $updateGeoCoordinates->getAddress(),
             $this->fetchOfferName($offerId)
         );
 
         $exactAddress = $this->defaultAddressFormatter->format(
-            $updateGeoCoordinates->getAddress()
+            LegacyAddress::fromUdb3ModelAddress($updateGeoCoordinates->getAddress())
         );
 
         $coordinates = $this->geocodingService->getCoordinates($exactAddress, $locationName);
 
         if ($coordinates === null) {
             $fallbackAddress = $this->fallbackAddressFormatter->format(
-                $updateGeoCoordinates->getAddress()
+                LegacyAddress::fromUdb3ModelAddress($updateGeoCoordinates->getAddress())
             );
 
             $this->logger->debug(
@@ -90,7 +87,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
         }
 
         if ($coordinates === null) {
-            $this->logger->debug('Could not find coordinates for fallback address for offer id ' . $offerId);
+            $this->logger->error('Could not find coordinates for fallback address for offer id ' . $offerId);
             return;
         }
 
@@ -102,10 +99,6 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
 
     private function fetchOfferName(string $offerId): string
     {
-        if (! $this->addLocationNameToCoordinatesLookup) {
-            return '';
-        }
-
         try {
             return ExtractOfferName::extract($this->documentRepository->fetch($offerId)->getAssocBody());
         } catch (DocumentDoesNotExist|JsonException $e) {

@@ -7,19 +7,18 @@ namespace CultuurNet\UDB3\Offer\Item;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3Language;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Item\Events\AvailableFromUpdated;
@@ -181,7 +180,7 @@ final class Item extends Offer
         return new DescriptionUpdated($this->id, $description);
     }
 
-    protected function createDescriptionDeletedEvent(Udb3Language $language): DescriptionDeleted
+    protected function createDescriptionDeletedEvent(Language $language): DescriptionDeleted
     {
         return new DescriptionDeleted($this->id, $language);
     }

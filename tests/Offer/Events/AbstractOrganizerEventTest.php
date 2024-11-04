@@ -8,20 +8,11 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractOrganizerEventTest extends TestCase
 {
-    /**
-     * @var AbstractOrganizerEvent
-     */
-    protected $abstractOrganizerEvent;
+    protected AbstractOrganizerEvent $abstractOrganizerEvent;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var string
-     */
-    protected $organizerId;
+    protected string $organizerId;
 
     public function setUp(): void
     {
@@ -92,10 +83,7 @@ class AbstractOrganizerEventTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractOrganizerEvent' => [

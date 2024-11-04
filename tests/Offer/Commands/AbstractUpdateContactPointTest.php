@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -15,23 +21,17 @@ class AbstractUpdateContactPointTest extends TestCase
      */
     protected $updateContactPoint;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var ContactPoint
-     */
-    protected $contactPoint;
+    protected ContactPoint $contactPoint;
 
     public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->contactPoint = new ContactPoint(
-            ['0123456789'],
-            ['foo@bar.com'],
-            ['http://foo.bar']
+            new TelephoneNumbers(new TelephoneNumber('0123456789')),
+            new EmailAddresses(new EmailAddress('foo@bar.com')),
+            new Urls(new Url('http://foo.bar'))
         );
 
         $this->updateContactPoint = $this->getMockForAbstractClass(
@@ -47,9 +47,9 @@ class AbstractUpdateContactPointTest extends TestCase
     {
         $contactPoint = $this->updateContactPoint->getContactPoint();
         $expectedContactPoint = new ContactPoint(
-            ['0123456789'],
-            ['foo@bar.com'],
-            ['http://foo.bar']
+            new TelephoneNumbers(new TelephoneNumber('0123456789')),
+            new EmailAddresses(new EmailAddress('foo@bar.com')),
+            new Urls(new Url('http://foo.bar'))
         );
 
         $this->assertEquals($expectedContactPoint, $contactPoint);

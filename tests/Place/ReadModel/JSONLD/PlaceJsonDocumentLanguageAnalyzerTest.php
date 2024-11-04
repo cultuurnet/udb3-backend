@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class PlaceJsonDocumentLanguageAnalyzerTest extends TestCase
 {
-    /**
-     * @var PlaceJsonDocumentLanguageAnalyzer
-     */
-    private $analyzer;
+    private PlaceJsonDocumentLanguageAnalyzer $analyzer;
 
     public function setUp(): void
     {

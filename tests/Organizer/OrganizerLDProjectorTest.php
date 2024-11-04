@@ -11,6 +11,7 @@ use Broadway\Repository\Repository;
 use Broadway\Serializer\Serializable;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Actor\ActorEvent;
+use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
@@ -20,7 +21,6 @@ use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
@@ -105,7 +106,8 @@ final class OrganizerLDProjectorTest extends TestCase
                 $iriGenerator
             ),
             new CdbXMLImporter(
-                new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class))
+                new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class)),
+                new CultureFeedAddressFactory()
             ),
             new CompletenessFromWeights(
                 Weights::fromConfig([
@@ -130,13 +132,11 @@ final class OrganizerLDProjectorTest extends TestCase
             __DIR__ . '/Samples/' . $fileName
         );
 
-        $event = new OrganizerImportedFromUDB2(
+        return new OrganizerImportedFromUDB2(
             'someId',
             $cdbXml,
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
-
-        return $event;
     }
 
     private function organizerUpdatedFromUDB2(string $fileName): OrganizerUpdatedFromUDB2

@@ -59,7 +59,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @inheritdoc
      */
-    public function withoutKey($key)
+    public function withoutKey(string $key)
     {
         if (!isset($this->items[$key])) {
             throw new CollectionKeyNotFoundException($key);

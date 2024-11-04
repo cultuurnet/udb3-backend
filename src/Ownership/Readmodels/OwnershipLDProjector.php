@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\RecordedOn;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 
 final class OwnershipLDProjector implements EventListener
 {
@@ -25,10 +26,14 @@ final class OwnershipLDProjector implements EventListener
     }
 
     private DocumentRepository $repository;
+    private UserIdentityResolver $userIdentityResolver;
 
-    public function __construct(DocumentRepository $repository)
-    {
+    public function __construct(
+        DocumentRepository $repository,
+        UserIdentityResolver $userIdentityResolver
+    ) {
         $this->repository = $repository;
+        $this->userIdentityResolver = $userIdentityResolver;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -50,6 +55,9 @@ final class OwnershipLDProjector implements EventListener
 
     public function applyOwnershipRequested(OwnershipRequested $ownershipRequested, DomainMessage $domainMessage): JsonDocument
     {
+        $ownerDetails = $this->userIdentityResolver->getUserById($ownershipRequested->getOwnerId());
+        $requesterDetails = $this->userIdentityResolver->getUserById($ownershipRequested->getRequesterId());
+
         $jsonDocument = new JsonDocument($ownershipRequested->getId());
 
         $body = $jsonDocument->getBody();
@@ -58,7 +66,9 @@ final class OwnershipLDProjector implements EventListener
         $body->itemId = $ownershipRequested->getItemId();
         $body->itemType = $ownershipRequested->getItemType();
         $body->ownerId = $ownershipRequested->getOwnerId();
+        $body->ownerEmail = $ownerDetails !== null ? $ownerDetails->getEmailAddress() : null;
         $body->requesterId = $ownershipRequested->getRequesterId();
+        $body->requesterEmail = $requesterDetails !== null ? $requesterDetails->getEmailAddress() : null;
         $body->state = OwnershipState::requested()->toString();
 
         $body->created = DateTimeFactory::fromFormat(

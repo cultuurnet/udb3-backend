@@ -11,15 +11,9 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class DelegatingAMQPMessageFactory implements AMQPMessageFactoryInterface
 {
-    /**
-     * @var BodyFactoryInterface
-     */
-    private $bodyFactory;
+    private BodyFactoryInterface $bodyFactory;
 
-    /**
-     * @var PropertiesFactoryInterface
-     */
-    private $propertiesFactory;
+    private PropertiesFactoryInterface $propertiesFactory;
 
 
     public function __construct(
@@ -30,10 +24,7 @@ class DelegatingAMQPMessageFactory implements AMQPMessageFactoryInterface
         $this->propertiesFactory = $propertiesFactory;
     }
 
-    /**
-     * @return AMQPMessage
-     */
-    public function createAMQPMessage(DomainMessage $domainMessage)
+    public function createAMQPMessage(DomainMessage $domainMessage): AMQPMessage
     {
         return new AMQPMessage(
             $this->bodyFactory->createBody($domainMessage),

@@ -4,29 +4,19 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 
 abstract class AbstractUpdateContactPoint extends AbstractCommand
 {
-    /**
-     * The contactPoint entry
-     * @var ContactPoint
-     */
-    protected $contactPoint;
+    protected ContactPoint $contactPoint;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, ContactPoint $contactPoint)
+    public function __construct(string $itemId, ContactPoint $contactPoint)
     {
         parent::__construct($itemId);
         $this->contactPoint = $contactPoint;
     }
 
-    /**
-     * @return ContactPoint
-     */
-    public function getContactPoint()
+    public function getContactPoint(): ContactPoint
     {
         return $this->contactPoint;
     }
