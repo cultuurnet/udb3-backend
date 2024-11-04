@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
@@ -23,6 +24,8 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\User\CurrentUser;
+use CultuurNet\UDB3\User\UserIdentityDetails;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid as Uuidv4;
@@ -40,6 +43,9 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     /** @var OwnershipSearchRepository&MockObject */
     private $ownerShipSearchRepository;
 
+    /** @var UserIdentityResolver&MockObject */
+    private $identityResolver;
+
     /** @var PermissionVoter&MockObject */
     private $permissionVoter;
 
@@ -55,6 +61,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
 
         $this->ownerShipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
+        $this->identityResolver = $this->createMock(UserIdentityResolver::class);
 
         $organizerRepository = new InMemoryDocumentRepository();
         $organizerRepository->save(new JsonDocument('9e68dafc-01d8-4c1c-9612-599c918b981d'));
@@ -70,7 +77,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             new OwnershipStatusGuard(
                 $this->ownerShipSearchRepository,
                 $this->permissionVoter
-            )
+            ),
+            $this->identityResolver
         );
     }
 
@@ -117,7 +125,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             [
                 'id' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             ],
-            Json::decodeAssociatively((string) $response->getBody())
+            Json::decodeAssociatively((string)$response->getBody())
         );
 
         $this->assertEquals(
@@ -184,6 +192,81 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_requesting_ownership_with_email(): void
+    {
+        CurrentUser::configureGodUserIds([]);
+
+        $this->identityResolver->expects($this->once())
+            ->method('getUserByEmail')
+            ->with(new EmailAddress('dev+e2etest@publiq.be'))
+            ->willReturn(new UserIdentityDetails(
+                'auth0|63e22626e39a8ca1264bd29b',
+                'e2e',
+                'dev+e2etest@publiq.be'
+            ));
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'itemType' => 'organizer',
+                'ownerEmail' => 'dev+e2etest@publiq.be',
+            ])
+            ->build('POST');
+        $this->uuidFactory->expects($this->once())
+            ->method('uuid4')
+            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('getByItemIdAndOwnerId')
+            ->with(
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willThrowException(OwnershipItemNotFound::byItemIdAndOwnerId(
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            ));
+
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBeheren(),
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willReturn(true);
+
+        $response = $this->requestOwnershipRequestHandler->handle($request);
+
+        $this->assertEquals(
+            [
+                'id' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            ],
+            Json::decodeAssociatively((string)$response->getBody())
+        );
+
+        $this->assertEquals(
+            201,
+            $response->getStatusCode()
+        );
+
+        $this->assertEquals(
+            [
+                new RequestOwnership(
+                    new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new UUID('9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    ItemType::organizer(),
+                    new UserId('auth0|63e22626e39a8ca1264bd29b'),
+                    new UserId('auth0|63e22626e39a8ca1264bd29b')
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     /**
@@ -353,7 +436,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/',
-                    'The required properties (itemId) are missing'
+                    'The data should match exactly one schema'
                 ),
             ),
             fn () => $this->requestOwnershipRequestHandler->handle($request)
@@ -376,7 +459,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/',
-                    'The required properties (itemType) are missing'
+                    'The data should match exactly one schema'
                 ),
             ),
             fn () => $this->requestOwnershipRequestHandler->handle($request)
@@ -399,7 +482,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/',
-                    'The required properties (ownerId) are missing'
+                    'The data should match exactly one schema'
                 ),
             ),
             fn () => $this->requestOwnershipRequestHandler->handle($request)

@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Ownership\Serializers\RequestOwnershipDenormalizer;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\User\CurrentUser;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -33,6 +34,7 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
     private OwnershipSearchRepository $ownershipSearchRepository;
     private DocumentRepository $organizerRepository;
     private OwnershipStatusGuard $ownershipStatusGuard;
+    private UserIdentityResolver $identityResolver;
 
     public function __construct(
         CommandBus $commandBus,
@@ -40,7 +42,8 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
         CurrentUser $currentUser,
         OwnershipSearchRepository $ownershipSearchRepository,
         DocumentRepository $organizerRepository,
-        OwnershipStatusGuard $ownershipStatusGuard
+        OwnershipStatusGuard $ownershipStatusGuard,
+        UserIdentityResolver $identityResolver
     ) {
         $this->commandBus = $commandBus;
         $this->uuidFactory = $uuidFactory;
@@ -48,6 +51,7 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->organizerRepository = $organizerRepository;
         $this->ownershipStatusGuard = $ownershipStatusGuard;
+        $this->identityResolver = $identityResolver;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -57,6 +61,7 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
             new DenormalizingRequestBodyParser(
                 new RequestOwnershipDenormalizer(
                     $this->uuidFactory,
+                    $this->identityResolver,
                     $this->currentUser
                 ),
                 RequestOwnership::class
@@ -79,7 +84,7 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
         } catch (OwnershipItemNotFound $e) {
         }
 
-        // Make sure the organizer does exists
+        // Make sure the organizer does exist
         if ($requestOwnership->getItemType()->sameAs(ItemType::organizer())) {
             try {
                 $this->organizerRepository->fetch($requestOwnership->getItemId()->toString());

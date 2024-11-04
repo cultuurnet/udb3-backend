@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Http\Ownership\RequestOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\SearchOwnershipRequestHandler;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\User\CurrentUser;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use Ramsey\Uuid\UuidFactory;
 
 final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvider
@@ -51,7 +52,8 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
                 $container->get(CurrentUser::class),
                 $container->get(OwnershipSearchRepository::class),
                 $container->get('organizer_jsonld_repository'),
-                $container->get(OwnershipStatusGuard::class)
+                $container->get(OwnershipStatusGuard::class),
+                $container->get(UserIdentityResolver::class)
             )
         );
 
