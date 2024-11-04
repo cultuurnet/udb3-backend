@@ -6,9 +6,9 @@ namespace CultuurNet\UDB3\Model\ValueObject\Web;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\ConvertsToApiProblem;
-use Exception;
+use InvalidArgumentException;
 
-final class InvalidEmailAddress extends Exception implements ConvertsToApiProblem
+final class InvalidEmailAddress extends InvalidArgumentException implements ConvertsToApiProblem
 {
     public function toApiProblem(): ApiProblem
     {
