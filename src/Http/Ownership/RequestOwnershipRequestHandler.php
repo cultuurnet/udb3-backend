@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Ownership\Serializers\RequestOwnershipDenormalizer;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\User\CurrentUser;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -32,19 +33,25 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
     private CurrentUser $currentUser;
     private OwnershipSearchRepository $ownershipSearchRepository;
     private DocumentRepository $organizerRepository;
+    private OwnershipStatusGuard $ownershipStatusGuard;
+    private UserIdentityResolver $identityResolver;
 
     public function __construct(
         CommandBus $commandBus,
         UuidFactoryInterface $uuidFactory,
         CurrentUser $currentUser,
         OwnershipSearchRepository $ownershipSearchRepository,
-        DocumentRepository $organizerRepository
+        DocumentRepository $organizerRepository,
+        OwnershipStatusGuard $ownershipStatusGuard,
+        UserIdentityResolver $identityResolver
     ) {
         $this->commandBus = $commandBus;
         $this->uuidFactory = $uuidFactory;
         $this->currentUser = $currentUser;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->organizerRepository = $organizerRepository;
+        $this->ownershipStatusGuard = $ownershipStatusGuard;
+        $this->identityResolver = $identityResolver;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -54,6 +61,7 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
             new DenormalizingRequestBodyParser(
                 new RequestOwnershipDenormalizer(
                     $this->uuidFactory,
+                    $this->identityResolver,
                     $this->currentUser
                 ),
                 RequestOwnership::class
@@ -76,7 +84,7 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
         } catch (OwnershipItemNotFound $e) {
         }
 
-        // Make sure the organizer does exists
+        // Make sure the organizer does exist
         if ($requestOwnership->getItemType()->sameAs(ItemType::organizer())) {
             try {
                 $this->organizerRepository->fetch($requestOwnership->getItemId()->toString());
@@ -85,10 +93,11 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
             }
         }
 
-        // Make sure the current user has access to the owner
-        if (!$this->currentUser->isGodUser() && $this->currentUser->getId() !== $requestOwnership->getOwnerId()->toString()) {
-            throw ApiProblem::forbidden('You are not allowed to request ownership for another owner');
-        }
+        $this->ownershipStatusGuard->isAllowedToRequest(
+            $requestOwnership->getItemId()->toString(),
+            $requestOwnership->getOwnerId()->toString(),
+            $this->currentUser
+        );
 
         $this->commandBus->dispatch($requestOwnership);
 

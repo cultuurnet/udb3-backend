@@ -328,7 +328,6 @@ class BackwardsCompatiblePayloadSerializerFactory
         $refactoredEventEvents = [
             EventTypicalAgeRangeDeleted::class,
             EventTypicalAgeRangeUpdated::class,
-            EventContactPointUpdated::class,
             EventOrganizerUpdated::class,
             EventOrganizerDeleted::class,
             EventDescriptionUpdated::class,
@@ -352,7 +351,6 @@ class BackwardsCompatiblePayloadSerializerFactory
             PlaceOrganizerDeleted::class,
             PlaceTypicalAgeRangeDeleted::class,
             PlaceTypicalAgeRangeUpdated::class,
-            PlaceContactPointUpdated::class,
             PlaceDescriptionUpdated::class,
             PlaceDeleted::class,
         ];
@@ -393,6 +391,31 @@ class BackwardsCompatiblePayloadSerializerFactory
                     );
                     $priceInfo['tariffs'] = $tariffs;
                     return $serializedObject;
+                }
+            );
+        }
+
+        /**
+         * ContactPointUpdated Events
+         */
+        $contactPointUpdatedEvents = [
+            EventContactPointUpdated::class,
+            PlaceContactPointUpdated::class,
+        ];
+        foreach ($contactPointUpdatedEvents as $contactPointUpdatedEvent) {
+            $payloadManipulatingSerializer->manipulateEventsOfClass(
+                $contactPointUpdatedEvent,
+                function (array $serializedObject) use ($contactPointUpdatedEvent) {
+                    if (isset($serializedObject['payload']['contactPoint']['email'])) {
+                        $serializedObject['payload']['contactPoint']['email'] = array_map('trim', $serializedObject['payload']['contactPoint']['email']);
+                    }
+                    if (isset($serializedObject['payload']['contactPoint']['url'])) {
+                        $serializedObject['payload']['contactPoint']['url'] = array_map('trim', $serializedObject['payload']['contactPoint']['url']);
+                    }
+                    if ($contactPointUpdatedEvent === EventContactPointUpdated::class) {
+                        return self::replaceEventIdWithItemId($serializedObject);
+                    }
+                    return self::replacePlaceIdWithItemId($serializedObject);
                 }
             );
         }
