@@ -70,3 +70,17 @@ Feature: Test the UDB3 events export API
     And I keep the value of the JSON response at "commandId" as "id_json-full"
     And I wait for the command with id "%{id_json-full}" to complete
     And I check if one "json" file has been created in the "downloads" folder
+
+  Scenario: Export events to an invalid email
+    Given I set the JSON request payload from "exports/event-export-invalid-email.json"
+    When I send a POST request to "/events/export/ooxml"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/body/invalid-data",
+      "title": "Invalid body data",
+      "status": 400,
+      "detail": "Given string is not a valid e-mail address."
+    }
+    """

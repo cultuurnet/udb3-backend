@@ -33,7 +33,7 @@ class EmailAddressTest extends TestCase
      */
     public function it_should_reject_an_invalid_email_address(string $email): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidEmailAddress::class);
         $this->expectExceptionMessage('Given string is not a valid e-mail address.');
 
         new EmailAddress($email);
