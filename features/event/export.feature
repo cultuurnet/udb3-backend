@@ -71,8 +71,8 @@ Feature: Test the UDB3 events export API
     And I wait for the command with id "%{id_json-full}" to complete
     And I check if one "json" file has been created in the "downloads" folder
 
-  Scenario: Export events to a malformed email
-    Given I set the JSON request payload from "exports/event-export-faulty-email.json"
+  Scenario: Export events to an invalid email
+    Given I set the JSON request payload from "exports/event-export-invalid-email.json"
     When I send a POST request to "/events/export/ooxml"
     Then the response status should be "400"
     And the JSON response should be:
