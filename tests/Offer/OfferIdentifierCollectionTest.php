@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 class OfferIdentifierCollectionTest extends TestCase
 {
@@ -25,10 +25,9 @@ class OfferIdentifierCollectionTest extends TestCase
             )
         );
 
-        $this->assertEquals(1, $collection->length());
+        $this->assertEquals(1, $collection->count());
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected instance of CultuurNet\UDB3\Offer\IriOfferIdentifier, found stdClass instead.');
+        $this->expectException(TypeError::class);
 
         $collection->with(new \stdClass());
     }
