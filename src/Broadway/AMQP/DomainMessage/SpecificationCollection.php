@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Broadway\AMQP\DomainMessage;
 
-use CultuurNet\UDB3\Collection\AbstractCollection;
+use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
-class SpecificationCollection extends AbstractCollection
+class SpecificationCollection extends Collection
 {
-    protected function getValidObjectType(): string
+    public function __construct(SpecificationInterface ...$specifications)
     {
-        return SpecificationInterface::class;
+        parent::__construct(...$specifications);
     }
 }

@@ -8,7 +8,6 @@ use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Collection\Exception\CollectionItemNotFoundException;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Facility;
@@ -959,10 +958,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyImageRemoved(AbstractImageRemoved $imageRemoved): void
     {
-        try {
-            $this->images = $this->images->without($imageRemoved->getImage());
-        } catch (CollectionItemNotFoundException $exception) {
-        }
+        $this->images = $this->images->without($imageRemoved->getImage());
     }
 
     protected function applyMainImageSelected(AbstractMainImageSelected $mainImageSelected): void
