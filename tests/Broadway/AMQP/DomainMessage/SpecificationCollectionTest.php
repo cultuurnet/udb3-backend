@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Broadway\AMQP\DomainMessage;
 
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 class SpecificationCollectionTest extends TestCase
 {
@@ -39,18 +40,9 @@ class SpecificationCollectionTest extends TestCase
      */
     public function it_does_throws_invalid_argument_exception_for_wrong_types(): void
     {
-        $wrongSpecification = $this->createMock(\JsonSerializable::class);
-
-        $message = sprintf(
-            'Expected instance of %s, found %s instead.',
-            SpecificationInterface::class,
-            get_class($wrongSpecification)
-        );
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage($message);
+        $this->expectException(TypeError::class);
 
         $specifications = new SpecificationCollection();
-        $specifications->with($wrongSpecification);
+        $specifications->with($this->createMock(\JsonSerializable::class));
     }
 }
