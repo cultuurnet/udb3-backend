@@ -275,4 +275,25 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedSecond, $second->toArray());
         $this->assertEquals($expectedThird, $third->toArray());
     }
+
+    public function it_can_remove_an_item(): void
+    {
+        $values = [
+            new MockString('foo'),
+            new MockString('lorem'),
+            new MockString('bar'),
+        ];
+
+        $collection = new MockCollection(...$values);
+
+        $this->assertTrue($collection->contains(new MockString('foo')));
+        $this->assertTrue($collection->contains(new MockString('lorem')));
+        $this->assertTrue($collection->contains(new MockString('bar')));
+
+        $collection = $collection->without(new MockString('lorem'));
+
+        $this->assertTrue($collection->contains(new MockString('foo')));
+        $this->assertFalse($collection->contains(new MockString('lorem')));
+        $this->assertTrue($collection->contains(new MockString('bar')));
+    }
 }
