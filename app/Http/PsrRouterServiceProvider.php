@@ -69,6 +69,7 @@ use CultuurNet\UDB3\Http\Organizer\DeleteEducationalDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateEducationalDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\ApproveOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\DeleteOwnershipRequestHandler;
+use CultuurNet\UDB3\Http\Ownership\GetCreatorOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\GetOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\RejectOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\RequestOwnershipRequestHandler;
@@ -381,6 +382,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->get('{ownershipId}/', GetOwnershipRequestHandler::class);
 
             $routeGroup->post('', RequestOwnershipRequestHandler::class);
+
+            $routeGroup->get('{ownershipId}/creator/', GetCreatorOwnershipRequestHandler::class);
 
             $routeGroup->post('{ownershipId}/approve/', ApproveOwnershipRequestHandler::class);
             $routeGroup->post('{ownershipId}/reject/', RejectOwnershipRequestHandler::class);
