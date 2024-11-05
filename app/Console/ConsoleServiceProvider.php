@@ -469,6 +469,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('event_command_bus'),
                 $container->get(EventRelationsRepository::class),
                 $container->get('place_jsonld_repository'),
+                $container->get('config')['uitpas']['labels']
             )
         );
 

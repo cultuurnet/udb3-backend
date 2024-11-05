@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,15 +30,18 @@ class DeletePlace extends AbstractCommand
     private EventRelationsRepository $eventRelationsRepository;
 
     private DocumentRepository $placeDocumentRepository;
+    private array $UiTPASLabels;
 
     public function __construct(
         CommandBus $commandBus,
         EventRelationsRepository $eventRelationsRepository,
-        DocumentRepository $placeDocumentRepository
+        DocumentRepository $placeDocumentRepository,
+        array $UiTPASLabels
     ) {
         parent::__construct($commandBus);
         $this->eventRelationsRepository = $eventRelationsRepository;
         $this->placeDocumentRepository = $placeDocumentRepository;
+        $this->UiTPASLabels = $UiTPASLabels;
     }
 
     public function configure(): void
@@ -76,19 +80,43 @@ class DeletePlace extends AbstractCommand
 
         if ($placeUuid === null || $canonicalUuid === null) {
             $output->writeln('<error>Missing argument, the correct syntax is: place:delete place_uuid_to_delete canonical_place_uuid</error>');
-            return 0;
+            return self::SUCCESS;
         }
 
         try {
-            $this->placeDocumentRepository->fetch($placeUuid);
             $this->placeDocumentRepository->fetch($canonicalUuid);
         } catch (DocumentDoesNotExist $e) {
-            $output->writeln($e->getMessage());
-            return 0;
+            $output->writeln('Canonical place does not exist');
+            return self::SUCCESS;
+        }
+
+        try {
+            $place = $this->placeDocumentRepository->fetch($placeUuid);
+        } catch (DocumentDoesNotExist $e) {
+            $output->writeln('Place does not exist');
+            return self::SUCCESS;
+        }
+
+        if ($this->isUitPasPlace($place)) {
+            if (!($this
+                ->getHelper('question')
+                ->ask(
+                    $input,
+                    $output,
+                    new ConfirmationQuestion(
+                        sprintf(
+                            'Place %s is an UiTPAS balie! Please check first with the colleagues of UiTPAS if this place can be deleted. Do you still want to delete this place? [y/N] ',
+                            $place->getId()
+                        ),
+                        false
+                    )
+                ))) {
+                return self::SUCCESS;
+            }
         }
 
         if (!$this->askConfirmation($input, $output)) {
-            return 0;
+            return self::SUCCESS;
         }
 
         foreach ($this->eventRelationsRepository->getEventsLocatedAtPlace($placeUuid) as $eventLocatedAtPlace) {
@@ -105,11 +133,13 @@ class DeletePlace extends AbstractCommand
             $this->commandBus->dispatch(new DeleteOffer($placeUuid));
         }
 
-        return 1;
+        return self::SUCCESS;
     }
 
-    private function askConfirmation(InputInterface $input, OutputInterface $output): bool
-    {
+    private function askConfirmation(
+        InputInterface $input,
+        OutputInterface $output
+    ): bool {
         if ($input->getOption(self::FORCE)) {
             return true;
         }
@@ -124,5 +154,22 @@ class DeletePlace extends AbstractCommand
                     true
                 )
             );
+    }
+
+    private function isUitPasPlace(JsonDocument $place): bool
+    {
+        if (!isset($place->getAssocBody()['hiddenLabels'])) {
+            return false;
+        }
+
+        foreach ($place->getAssocBody()['hiddenLabels'] as $label) {
+            if (!in_array($label, $this->UiTPASLabels, true)) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
