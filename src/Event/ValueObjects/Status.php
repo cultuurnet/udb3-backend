@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ValueObjects;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use InvalidArgumentException;
 
@@ -38,7 +39,7 @@ final class Status implements Serializable
 
     public function getType(): StatusType
     {
-        return StatusType::fromNative($this->value);
+        return new StatusType($this->value);
     }
 
     public function getReason(): array
@@ -59,7 +60,7 @@ final class Status implements Serializable
         }
 
         return new Status(
-            StatusType::fromNative($data['type']),
+            new StatusType($data['type']),
             $statusReasons
         );
     }
@@ -98,7 +99,6 @@ final class Status implements Serializable
 
     public static function fromUdb3ModelStatus(Udb3ModelStatus $udb3ModelStatus): self
     {
-        $type = StatusType::fromNative($udb3ModelStatus->getType()->toString());
         $reasons = [];
 
         $udb3ModelReason = $udb3ModelStatus->getReason();
@@ -109,6 +109,6 @@ final class Status implements Serializable
             $reasons[] = new StatusReason(new Language($language->getCode()), $translation->toString());
         }
 
-        return new self($type, $reasons);
+        return new self(new StatusType($udb3ModelStatus->getType()->toString()), $reasons);
     }
 }
