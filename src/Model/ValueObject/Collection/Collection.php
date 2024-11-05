@@ -43,6 +43,21 @@ abstract class Collection implements \IteratorAggregate, \Countable
 
     /**
      * @return static
+     */
+    public function without($value) // @phpstan-ignore-line
+    {
+        $values = $this->values;
+        $index = array_search($value, $values);
+
+        if (is_int($index)) {
+            unset($values[$index]);
+        }
+        /** @phpstan-ignore-next-line */
+        return new static(...$values);
+    }
+
+    /**
+     * @return static
      * @see array_filter
      */
     public function filter(callable $callback)
