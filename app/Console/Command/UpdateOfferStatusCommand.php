@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Console\Command;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
-use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Search\ResultsGenerator;
@@ -113,13 +113,13 @@ class UpdateOfferStatusCommand extends AbstractCommand
         $question =  new ChoiceQuestion(
             'What should be the new status?',
             [
-                StatusType::available()->toString(),
-                StatusType::temporarilyUnavailable()->toString(),
-                StatusType::unavailable()->toString(),
+                StatusType::Available()->toString(),
+                StatusType::TemporarilyUnavailable()->toString(),
+                StatusType::Unavailable()->toString(),
             ]
         );
         $question->setErrorMessage('Invalid status: %s');
-        return StatusType::fromNative($this->getHelper('question')->ask($input, $output, $question));
+        return new StatusType($this->getHelper('question')->ask($input, $output, $question));
     }
 
     /**
