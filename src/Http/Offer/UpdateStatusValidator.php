@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use InvalidArgumentException;
 
 /**
@@ -37,7 +37,7 @@ class UpdateStatusValidator implements DataValidatorInterface
         }
 
         try {
-            StatusType::fromNative($data['type']);
+            new StatusType($data['type']);
         } catch (InvalidArgumentException $e) {
             return [
                 'type' => 'Invalid type provided',

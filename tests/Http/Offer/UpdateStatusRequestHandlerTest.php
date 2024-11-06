@@ -7,13 +7,13 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
-use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use PHPUnit\Framework\TestCase;
 
@@ -63,7 +63,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
                     ],
                     'expected_command' => new UpdateStatus(
                         self::OFFER_ID,
-                        new Status(StatusType::available(), [])
+                        new Status(StatusType::Available(), [])
                     ),
                 ],
                 'type_unavailable' => [
@@ -73,7 +73,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
                     ],
                     'expected_command' => new UpdateStatus(
                         self::OFFER_ID,
-                        new Status(StatusType::unavailable(), [])
+                        new Status(StatusType::Unavailable(), [])
                     ),
                 ],
                 'type_temporarily_unavailable' => [
@@ -83,7 +83,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
                     ],
                     'expected_command' => new UpdateStatus(
                         self::OFFER_ID,
-                        new Status(StatusType::temporarilyUnavailable(), [])
+                        new Status(StatusType::TemporarilyUnavailable(), [])
                     ),
                 ],
                 'type_available_with_reason' => [
@@ -98,7 +98,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
                     'expected_command' => new UpdateStatus(
                         self::OFFER_ID,
                         new Status(
-                            StatusType::available(),
+                            StatusType::Available(),
                             [
                                 new StatusReason(new Language('nl'), 'Corona'),
                                 new StatusReason(new Language('en'), 'Covid'),
@@ -115,7 +115,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
                     'expected_command' => new UpdateStatus(
                         self::OFFER_ID,
                         new Status(
-                            StatusType::available(),
+                            StatusType::Available(),
                             [
                             ]
                         )
@@ -133,7 +133,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
                     'expected_command' => new UpdateStatus(
                         self::OFFER_ID,
                         new Status(
-                            StatusType::unavailable(),
+                            StatusType::Unavailable(),
                             [
                                 new StatusReason(new Language('nl'), 'Corona'),
                                 new StatusReason(new Language('en'), 'Covid'),
@@ -153,7 +153,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
                     'expected_command' => new UpdateStatus(
                         self::OFFER_ID,
                         new Status(
-                            StatusType::temporarilyUnavailable(),
+                            StatusType::TemporarilyUnavailable(),
                             [
                                 new StatusReason(new Language('nl'), 'Corona'),
                                 new StatusReason(new Language('en'), 'Covid'),
@@ -174,7 +174,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
                     'expected_command' => new UpdateStatus(
                         self::OFFER_ID,
                         new Status(
-                            StatusType::unavailable(),
+                            StatusType::Unavailable(),
                             [
                                 new StatusReason(new Language('nl'), 'Corona'),
                                 new StatusReason(new Language('en'), 'Covid'),

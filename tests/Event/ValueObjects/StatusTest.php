@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event\ValueObjects;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason as Udb3ModelStatusReason;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType as Udb3ModelStatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3ModelLanguage;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +20,7 @@ class StatusTest extends TestCase
     public function it_can_be_serialized(): void
     {
         $status = new Status(
-            StatusType::unavailable(),
+            StatusType::Unavailable(),
             [
                 new StatusReason(new Language('nl'), 'Het concert van 10/11 is afgelast'),
                 new StatusReason(new Language('fr'), 'Le concert de 10/11 a été annulé'),
@@ -56,7 +56,7 @@ class StatusTest extends TestCase
 
         $this->assertEquals(
             new Status(
-                StatusType::unavailable(),
+                StatusType::Unavailable(),
                 [
                     new StatusReason(new Language('nl'), 'Het concert van 10/11 is afgelast'),
                     new StatusReason(new Language('fr'), 'Le concert de 10/11 a été annulé'),
@@ -73,7 +73,7 @@ class StatusTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         new Status(
-            StatusType::unavailable(),
+            StatusType::Unavailable(),
             [
                 new StatusReason(new Language('nl'), 'Het concert van 10/11 is afgelast'),
                 new StatusReason(new Language('nl'), 'Het concert van 10/11 is stiekem toch niet afgelast'),
@@ -87,7 +87,7 @@ class StatusTest extends TestCase
     public function it_can_construct_from_an_udb3_model_status(): void
     {
         $udb3ModelStatus = new Udb3ModelStatus(
-            Udb3ModelStatusType::Unavailable(),
+            StatusType::Unavailable(),
             new TranslatedStatusReason(
                 new Udb3ModelLanguage('nl'),
                 new Udb3ModelStatusReason('Nederlandse reden')
@@ -95,7 +95,7 @@ class StatusTest extends TestCase
         );
 
         $expected = new Status(
-            StatusType::unavailable(),
+            StatusType::Unavailable(),
             [
                 new StatusReason(new Language('nl'), 'Nederlandse reden'),
             ]
