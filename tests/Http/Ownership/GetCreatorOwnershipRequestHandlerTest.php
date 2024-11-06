@@ -9,7 +9,8 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
-use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
@@ -25,7 +26,10 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
     use AssertApiProblemTrait;
 
     private GetCreatorOwnershipRequestHandler $getCreatorOwnershipRequestHandler;
-    private InMemoryDocumentRepository $organizerRepository;
+    /**
+     * @var DocumentRepository&MockObject
+     */
+    private $organizerRepository;
     /**
      * @var UserIdentityResolver&MockObject
      */
@@ -45,7 +49,7 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
     {
         parent::setUp();
 
-        $this->organizerRepository = new InMemoryDocumentRepository();
+        $this->organizerRepository = $this->createMock(DocumentRepository::class);
         $this->userIdentityResolver = $this->createMock(UserIdentityResolver::class);
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
         $this->permissionVoter = $this->createMock(PermissionVoter::class);
@@ -90,9 +94,12 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
             )
             ->willReturn(true);
 
-        $this->organizerRepository->save(
-            new JsonDocument($ownershipId, Json::encode(['creator' => $creatorId]))
-        );
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
+            ->with($ownershipId)
+            ->willReturn(
+                new JsonDocument($ownershipId, Json::encode(['creator' => $creatorId]))
+            );
 
         $this->userIdentityResolver->expects($this->once())
             ->method('getUserById')
@@ -131,9 +138,12 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
             )
             ->willReturn(true);
 
-        $this->organizerRepository->save(
-            new JsonDocument($ownershipId, Json::encode(['creator' => $creatorId]))
-        );
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
+            ->with($ownershipId)
+            ->willReturn(
+                new JsonDocument($ownershipId, Json::encode(['creator' => $creatorId]))
+            );
 
         $this->userIdentityResolver->expects($this->once())
             ->method('getUserById')
@@ -165,6 +175,11 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
                 $this->currentUser->getId()
             )
             ->willReturn(true);
+
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
+            ->with($ownershipId)
+            ->willThrowException(new DocumentDoesNotExist());
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::resourceNotFound('Organizer', $ownershipId),
@@ -198,10 +213,6 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
                 $this->currentUser->getId()
             )
             ->willReturn(false);
-
-        $this->organizerRepository->save(
-            new JsonDocument($ownershipId, Json::encode(['creator' => $creatorId]))
-        );
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::forbidden('You are not allowed to get creator for this item'),
