@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\User\CurrentUser;
 use CultuurNet\UDB3\User\UserIdentityDetails;
@@ -74,6 +75,11 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
 
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBeheren(),
+                $ownershipId,
+                $this->currentUser->getId()
+            )
             ->willReturn(true);
 
         $this->organizerRepository->save(
@@ -92,6 +98,7 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
             'email' => 'john@doe.com',
         ]);
 
+        $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals($expected, $response->getBody()->getContents());
     }
 
@@ -109,6 +116,11 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
 
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBeheren(),
+                $ownershipId,
+                $this->currentUser->getId()
+            )
             ->willReturn(true);
 
         $this->organizerRepository->save(
@@ -139,6 +151,11 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
 
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBeheren(),
+                $ownershipId,
+                $this->currentUser->getId()
+            )
             ->willReturn(true);
 
         $this->assertCallableThrowsApiProblem(
@@ -167,16 +184,16 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
 
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBeheren(),
+                $ownershipId,
+                $this->currentUser->getId()
+            )
             ->willReturn(false);
 
         $this->organizerRepository->save(
             new JsonDocument($ownershipId, Json::encode(['creator' => $creatorId]))
         );
-
-        $this->userIdentityResolver->expects($this->once())
-            ->method('getUserById')
-            ->with($creatorId)
-            ->willReturn($creator);
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::forbidden('You are not allowed to get creator for this item'),
