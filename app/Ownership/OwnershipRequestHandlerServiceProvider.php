@@ -70,7 +70,9 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             GetCreatorOwnershipRequestHandler::class,
             fn () => new GetCreatorOwnershipRequestHandler(
                 $container->get('organizer_jsonld_repository'),
-                $container->get(UserIdentityResolver::class)
+                $container->get(UserIdentityResolver::class),
+                $container->get(OwnershipStatusGuard::class),
+                $container->get(CurrentUser::class)
             )
         );
 
