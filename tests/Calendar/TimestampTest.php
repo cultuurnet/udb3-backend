@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
-use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use PHPUnit\Framework\TestCase;
@@ -74,7 +74,7 @@ class TimestampTest extends TestCase
         );
 
         $this->assertEquals(
-            new Status(StatusType::available(), []),
+            new Status(StatusType::Available(), []),
             $timestamp->getStatus()
         );
     }
@@ -101,7 +101,7 @@ class TimestampTest extends TestCase
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
             new Status(
-                StatusType::unavailable(),
+                StatusType::Unavailable(),
                 [
                     new StatusReason(new Language('nl'), 'Vanavond niet, schat'),
                 ]
@@ -113,7 +113,7 @@ class TimestampTest extends TestCase
             'startDate' => self::START_DATE,
             'endDate' => self::END_DATE,
             'status' => [
-                'type' => StatusType::unavailable()->toString(),
+                'type' => StatusType::Unavailable()->toString(),
                 'reason' => [
                     'nl' => 'Vanavond niet, schat',
                 ],
@@ -135,11 +135,11 @@ class TimestampTest extends TestCase
         $timestamp = new Timestamp(
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
-            new Status(StatusType::available(), [])
+            new Status(StatusType::Available(), [])
         );
 
         $newStatus = new Status(
-            StatusType::unavailable(),
+            StatusType::Unavailable(),
             [
                 new StatusReason(new Language('nl'), 'Het mag niet van de afgevaardigde van de eerste minister'),
             ]
@@ -173,7 +173,7 @@ class TimestampTest extends TestCase
             new Timestamp(
                 DateTimeFactory::fromAtom(self::START_DATE),
                 DateTimeFactory::fromAtom(self::END_DATE),
-                new Status(StatusType::available(), []),
+                new Status(StatusType::Available(), []),
                 BookingAvailability::unavailable()
             ),
             $updatedTimestamp
@@ -188,7 +188,7 @@ class TimestampTest extends TestCase
         $expected = new Timestamp(
             DateTimeFactory::fromAtom(self::END_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
-            new Status(StatusType::available(), [])
+            new Status(StatusType::Available(), [])
         );
 
         $serialized = [

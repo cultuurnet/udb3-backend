@@ -11,11 +11,11 @@ use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
-use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\SampleFiles;
@@ -101,7 +101,7 @@ class CalendarJSONParserTest extends TestCase
     public function it_can_get_the_status(): void
     {
         $status = new Status(
-            StatusType::temporarilyUnavailable(),
+            StatusType::TemporarilyUnavailable(),
             [
                 new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
                 new StatusReason(new Language('fr'), 'Reason in het Frans'),
@@ -142,7 +142,7 @@ class CalendarJSONParserTest extends TestCase
                 $endDatePeriod1
             ))->withStatus(
                 new Status(
-                    StatusType::temporarilyUnavailable(),
+                    StatusType::TemporarilyUnavailable(),
                     [
                         new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
                         new StatusReason(new Language('fr'), 'Reason in het Frans'),
@@ -154,7 +154,7 @@ class CalendarJSONParserTest extends TestCase
                 $endDatePeriod2
             ))->withStatus(
                 new Status(
-                    StatusType::unavailable(),
+                    StatusType::Unavailable(),
                     [
                         new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
                         new StatusReason(new Language('fr'), 'Reason in het Frans'),

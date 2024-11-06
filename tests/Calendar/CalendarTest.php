@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
-use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType as Udb3ModelBookingAvailabilityType;
@@ -24,6 +23,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType as Udb3ModelStatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
@@ -369,7 +369,7 @@ class CalendarTest extends TestCase
                 'startDate' => '2016-03-06T10:00:00+01:00',
                 'endDate' => '2016-03-13T12:00:00+01:00',
                 'status' => [
-                    'type' => StatusType::available()->toString(),
+                    'type' => StatusType::Available()->toString(),
                 ],
                 'bookingAvailability' => [
                     'type' => BookingAvailabilityType::available()->toString(),
@@ -379,7 +379,7 @@ class CalendarTest extends TestCase
                         'startDate' => self::TIMESTAMP_1_START_DATE,
                         'endDate' => self::TIMESTAMP_1_END_DATE,
                         'status' => [
-                            'type' => StatusType::available()->toString(),
+                            'type' => StatusType::Available()->toString(),
                         ],
                         'bookingAvailability' => [
                             'type' => BookingAvailabilityType::available()->toString(),
@@ -389,7 +389,7 @@ class CalendarTest extends TestCase
                         'startDate' => self::TIMESTAMP_2_START_DATE,
                         'endDate' => self::TIMESTAMP_2_END_DATE,
                         'status' => [
-                            'type' => StatusType::available()->toString(),
+                            'type' => StatusType::Available()->toString(),
                         ],
                         'bookingAvailability' => [
                             'type' => BookingAvailabilityType::available()->toString(),
@@ -447,14 +447,14 @@ class CalendarTest extends TestCase
                     'startDate' => self::TIMESTAMP_1_START_DATE,
                     'endDate' => self::TIMESTAMP_1_END_DATE,
                     'status' => [
-                        'type' => StatusType::available()->toString(),
+                        'type' => StatusType::Available()->toString(),
                     ],
                 ],
                 [
                     'startDate' => self::TIMESTAMP_2_START_DATE,
                     'endDate' => self::TIMESTAMP_2_END_DATE,
                     'status' => [
-                        'type' => StatusType::available()->toString(),
+                        'type' => StatusType::Available()->toString(),
                     ],
                 ],
             ],
@@ -501,7 +501,7 @@ class CalendarTest extends TestCase
     public function it_can_deserialize_with_explicit_status(): void
     {
         $status = new Status(
-            StatusType::temporarilyUnavailable(),
+            StatusType::TemporarilyUnavailable(),
             [
                 new StatusReason(new Language('nl'), 'Jammer genoeg uitgesteld.'),
                 new StatusReason(new Language('fr'), 'Malheureusement reporté.'),
@@ -585,7 +585,7 @@ class CalendarTest extends TestCase
             DateTimeFactory::fromAtom(self::TIMESTAMP_1_START_DATE),
             DateTimeFactory::fromAtom(self::TIMESTAMP_1_END_DATE),
             new Status(
-                StatusType::unavailable(),
+                StatusType::Unavailable(),
                 [
                     new StatusReason(new Language('nl'), 'Jammer genoeg geannuleerd.'),
                 ]
@@ -596,7 +596,7 @@ class CalendarTest extends TestCase
             DateTimeFactory::fromAtom(self::TIMESTAMP_2_START_DATE),
             DateTimeFactory::fromAtom(self::TIMESTAMP_2_END_DATE),
             new Status(
-                StatusType::temporarilyUnavailable(),
+                StatusType::TemporarilyUnavailable(),
                 [
                     new StatusReason(new Language('nl'), 'Jammer genoeg uitgesteld.'),
                 ]
@@ -616,9 +616,9 @@ class CalendarTest extends TestCase
         $actual = Calendar::deserialize($expected->serialize());
 
         $this->assertEquals($expected, $actual);
-        $this->assertEquals(StatusType::temporarilyUnavailable(), $actual->getStatus()->getType());
-        $this->assertEquals(StatusType::unavailable(), $actual->getTimestamps()[0]->getStatus()->getType());
-        $this->assertEquals(StatusType::temporarilyUnavailable(), $actual->getTimestamps()[1]->getStatus()->getType());
+        $this->assertEquals(StatusType::TemporarilyUnavailable(), $actual->getStatus()->getType());
+        $this->assertEquals(StatusType::Unavailable(), $actual->getTimestamps()[0]->getStatus()->getType());
+        $this->assertEquals(StatusType::TemporarilyUnavailable(), $actual->getTimestamps()[1]->getStatus()->getType());
     }
 
     /**
@@ -685,7 +685,7 @@ class CalendarTest extends TestCase
                     'startDate' => '2016-03-06T10:00:00+01:00',
                     'endDate' => '2016-03-13T12:00:00+01:00',
                     'status' => [
-                        'type' => StatusType::available()->toString(),
+                        'type' => StatusType::Available()->toString(),
                     ],
                     'bookingAvailability' => [
                         'type' => BookingAvailabilityType::available()->toString(),
@@ -697,7 +697,7 @@ class CalendarTest extends TestCase
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::available()->toString(),
+                                'type' => StatusType::Available()->toString(),
                             ],
                             'bookingAvailability' => [
                                 'type' => BookingAvailabilityType::available()->toString(),
@@ -716,7 +716,7 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             new Status(
-                                StatusType::temporarilyUnavailable(),
+                                StatusType::TemporarilyUnavailable(),
                                 [
                                     new StatusReason(new Language('nl'), 'Jammer genoeg uitgesteld.'),
                                     new StatusReason(new Language('fr'), 'Malheureusement reporté.'),
@@ -780,7 +780,7 @@ class CalendarTest extends TestCase
                     'startDate' => '2016-03-06T10:00:00+01:00',
                     'endDate' => '2020-03-13T12:00:00+01:00',
                     'status' => [
-                        'type' => StatusType::available()->toString(),
+                        'type' => StatusType::Available()->toString(),
                     ],
                     'bookingAvailability' => [
                         'type' => BookingAvailabilityType::available()->toString(),
@@ -792,7 +792,7 @@ class CalendarTest extends TestCase
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::available()->toString(),
+                                'type' => StatusType::Available()->toString(),
                             ],
                             'bookingAvailability' => [
                                 'type' => BookingAvailabilityType::available()->toString(),
@@ -804,7 +804,7 @@ class CalendarTest extends TestCase
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::available()->toString(),
+                                'type' => StatusType::Available()->toString(),
                             ],
                             'bookingAvailability' => [
                                 'type' => BookingAvailabilityType::available()->toString(),
@@ -823,7 +823,7 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             new Status(
-                                StatusType::temporarilyUnavailable(),
+                                StatusType::TemporarilyUnavailable(),
                                 [
                                     new StatusReason(new Language('nl'), 'Jammer genoeg uitgesteld.'),
                                     new StatusReason(new Language('fr'), 'Malheureusement reporté.'),
@@ -834,7 +834,7 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             new Status(
-                                StatusType::available(),
+                                StatusType::Available(),
                                 [
                                     new StatusReason(new Language('nl'), 'Gelukkig gaat het door.'),
                                     new StatusReason(new Language('fr'), 'Heureusement, ça continue.'),
@@ -848,7 +848,7 @@ class CalendarTest extends TestCase
                     'startDate' => '2016-03-06T10:00:00+01:00',
                     'endDate' => '2020-03-13T12:00:00+01:00',
                     'status' => [
-                        'type' => StatusType::available()->toString(),
+                        'type' => StatusType::Available()->toString(),
                     ],
                     'bookingAvailability' => [
                         'type' => BookingAvailabilityType::available()->toString(),
@@ -876,7 +876,7 @@ class CalendarTest extends TestCase
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::available()->toString(),
+                                'type' => StatusType::Available()->toString(),
                                 'reason' => [
                                     'nl' => 'Gelukkig gaat het door.',
                                     'fr' => 'Heureusement, ça continue.',
@@ -899,7 +899,7 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             new Status(
-                                StatusType::temporarilyUnavailable(),
+                                StatusType::TemporarilyUnavailable(),
                                 [
                                     new StatusReason(new Language('nl'), 'Jammer genoeg uitgesteld.'),
                                     new StatusReason(new Language('fr'), 'Malheureusement reporté.'),
@@ -910,7 +910,7 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             new Status(
-                                StatusType::unavailable(),
+                                StatusType::Unavailable(),
                                 [
                                     new StatusReason(new Language('nl'), 'Nog erger, het is afgelast.'),
                                     new StatusReason(new Language('fr'), 'Pire encore, il a été annulé.'),
@@ -952,7 +952,7 @@ class CalendarTest extends TestCase
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::unavailable()->toString(),
+                                'type' => StatusType::Unavailable()->toString(),
                                 'reason' => [
                                     'nl' => 'Nog erger, het is afgelast.',
                                     'fr' => 'Pire encore, il a été annulé.',
@@ -975,7 +975,7 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             new Status(
-                                StatusType::unavailable(),
+                                StatusType::Unavailable(),
                                 [
                                     new StatusReason(new Language('nl'), 'Het is afgelast.'),
                                     new StatusReason(new Language('fr'), 'Il a été annulé.'),
@@ -986,7 +986,7 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             new Status(
-                                StatusType::unavailable(),
+                                StatusType::Unavailable(),
                                 [
                                     new StatusReason(new Language('nl'), 'Nog erger, het is afgelast.'),
                                     new StatusReason(new Language('fr'), 'Pire encore, il a été annulé.'),
@@ -1012,7 +1012,7 @@ class CalendarTest extends TestCase
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::unavailable()->toString(),
+                                'type' => StatusType::Unavailable()->toString(),
                                 'reason' => [
                                     'nl' => 'Het is afgelast.',
                                     'fr' => 'Il a été annulé.',
@@ -1028,7 +1028,7 @@ class CalendarTest extends TestCase
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::unavailable()->toString(),
+                                'type' => StatusType::Unavailable()->toString(),
                                 'reason' => [
                                     'nl' => 'Nog erger, het is afgelast.',
                                     'fr' => 'Pire encore, il a été annulé.',
@@ -1051,7 +1051,7 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             new Status(
-                                StatusType::unavailable(),
+                                StatusType::Unavailable(),
                                 [
                                     new StatusReason(new Language('nl'), 'Het is afgelast.'),
                                     new StatusReason(new Language('fr'), 'Il a été annulé.'),
@@ -1062,7 +1062,7 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             new Status(
-                                StatusType::unavailable(),
+                                StatusType::Unavailable(),
                                 [
                                     new StatusReason(new Language('nl'), 'Nog erger, het is afgelast.'),
                                     new StatusReason(new Language('fr'), 'Pire encore, il a été annulé.'),
@@ -1072,7 +1072,7 @@ class CalendarTest extends TestCase
                     ]
                 ))->withStatus(
                     new Status(
-                        StatusType::available(),
+                        StatusType::Available(),
                         [
                             new StatusReason(new Language('nl'), 'Alles goed'),
                             new StatusReason(new Language('en'), 'All good'),
@@ -1096,7 +1096,7 @@ class CalendarTest extends TestCase
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::unavailable()->toString(),
+                                'type' => StatusType::Unavailable()->toString(),
                                 'reason' => [
                                     'nl' => 'Het is afgelast.',
                                     'fr' => 'Il a été annulé.',
@@ -1112,7 +1112,7 @@ class CalendarTest extends TestCase
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::unavailable()->toString(),
+                                'type' => StatusType::Unavailable()->toString(),
                                 'reason' => [
                                     'nl' => 'Nog erger, het is afgelast.',
                                     'fr' => 'Pire encore, il a été annulé.',
@@ -1150,7 +1150,7 @@ class CalendarTest extends TestCase
                     'startDate' => '2016-03-06T10:00:00+01:00',
                     'endDate' => '2020-03-13T12:00:00+01:00',
                     'status' => [
-                        'type' => StatusType::available()->toString(),
+                        'type' => StatusType::Available()->toString(),
                     ],
                     'bookingAvailability' => [
                         'type' => BookingAvailabilityType::unavailable()->toString(),
@@ -1162,7 +1162,7 @@ class CalendarTest extends TestCase
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::available()->toString(),
+                                'type' => StatusType::Available()->toString(),
                             ],
                             'bookingAvailability' => [
                                 'type' => BookingAvailabilityType::unavailable()->toString(),
@@ -1174,7 +1174,7 @@ class CalendarTest extends TestCase
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
-                                'type' => StatusType::available()->toString(),
+                                'type' => StatusType::Available()->toString(),
                             ],
                             'bookingAvailability' => [
                                 'type' => BookingAvailabilityType::unavailable()->toString(),
@@ -1194,7 +1194,7 @@ class CalendarTest extends TestCase
                     'startDate' => '2016-03-06T10:00:00+01:00',
                     'endDate' => '2016-03-13T12:00:00+01:00',
                     'status' => [
-                        'type' => StatusType::available()->toString(),
+                        'type' => StatusType::Available()->toString(),
                     ],
                     'bookingAvailability' => [
                         'type' => BookingAvailabilityType::available()->toString(),
@@ -1208,7 +1208,7 @@ class CalendarTest extends TestCase
                 'jsonld' => [
                     'calendarType' => 'permanent',
                     'status' => [
-                        'type' => StatusType::available()->toString(),
+                        'type' => StatusType::Available()->toString(),
                     ],
                     'bookingAvailability' => [
                         'type' => BookingAvailabilityType::available()->toString(),
@@ -1220,7 +1220,7 @@ class CalendarTest extends TestCase
                     CalendarType::PERMANENT()
                 ))->withStatus(
                     new Status(
-                        StatusType::temporarilyUnavailable(),
+                        StatusType::TemporarilyUnavailable(),
                         [
                             new StatusReason(new Language('nl'), 'We zijn in volle verbouwing'),
                         ]
@@ -1229,7 +1229,7 @@ class CalendarTest extends TestCase
                 'jsonld' => [
                     'calendarType' => 'permanent',
                     'status' => [
-                        'type' => StatusType::temporarilyUnavailable()->toString(),
+                        'type' => StatusType::TemporarilyUnavailable()->toString(),
                         'reason' => [
                             'nl' => 'We zijn in volle verbouwing',
                         ],
@@ -1476,12 +1476,12 @@ class CalendarTest extends TestCase
                 new Timestamp(
                     DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                     DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
-                    new Status(StatusType::unavailable(), []),
+                    new Status(StatusType::Unavailable(), []),
                     BookingAvailability::unavailable()
                 ),
             ],
             []
-        ))->withStatus(new Status(StatusType::unavailable(), []))
+        ))->withStatus(new Status(StatusType::Unavailable(), []))
             ->withBookingAvailability(BookingAvailability::unavailable());
 
         $actual = Calendar::fromUdb3ModelCalendar($udb3ModelCalendar);
@@ -1525,18 +1525,18 @@ class CalendarTest extends TestCase
                 new Timestamp(
                     DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                     DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
-                    new Status(StatusType::unavailable(), []),
+                    new Status(StatusType::Unavailable(), []),
                     BookingAvailability::unavailable()
                 ),
                 new Timestamp(
                     DateTimeFactory::fromAtom('2016-03-09T10:00:00+01:00'),
                     DateTimeFactory::fromAtom('2016-03-10T10:00:00+01:00'),
-                    new Status(StatusType::unavailable(), []),
+                    new Status(StatusType::Unavailable(), []),
                     BookingAvailability::unavailable()
                 ),
             ],
             []
-        ))->withStatus(new Status(StatusType::unavailable(), []))
+        ))->withStatus(new Status(StatusType::Unavailable(), []))
             ->withBookingAvailability(BookingAvailability::unavailable());
 
         $actual = Calendar::fromUdb3ModelCalendar($udb3ModelCalendar);
@@ -1842,12 +1842,12 @@ class CalendarTest extends TestCase
         );
 
         $this->assertEquals(
-            new Status(StatusType::available(), []),
+            new Status(StatusType::Available(), []),
             $calendar->getStatus()
         );
 
         $newStatus = new Status(
-            StatusType::unavailable(),
+            StatusType::Unavailable(),
             [
                 new StatusReason(new Language('nl'), 'Het mag niet van de afgevaardigde van de eerste minister'),
             ]
@@ -1889,12 +1889,12 @@ class CalendarTest extends TestCase
         );
 
         $this->assertEquals(
-            new Status(StatusType::available(), []),
+            new Status(StatusType::Available(), []),
             $calendar->getStatus()
         );
 
         $newStatus = new Status(
-            StatusType::unavailable(),
+            StatusType::Unavailable(),
             [
                 new StatusReason(new Language('nl'), 'Het mag niet van de afgevaardigde van de eerste minister'),
             ]

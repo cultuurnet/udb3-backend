@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
-use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
@@ -98,7 +98,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 
         if (!isset($json['status'])) {
             $json['status'] = [
-                'type' => StatusType::available()->toString(),
+                'type' => StatusType::Available()->toString(),
             ];
         }
 
@@ -144,7 +144,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                     [
                         'id' => $index,
                         'status' => [
-                            'type' => StatusType::available()->toString(),
+                            'type' => StatusType::Available()->toString(),
                         ],
                         'bookingAvailability' => BookingAvailability::available()->serialize(),
                     ],
@@ -172,7 +172,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 
         if (!isset($json['location']['status'])) {
             $json['location']['status'] = [
-                'type' => StatusType::available()->toString(),
+                'type' => StatusType::Available()->toString(),
             ];
         }
 

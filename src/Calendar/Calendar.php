@@ -6,13 +6,13 @@ namespace CultuurNet\UDB3\Calendar;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\JsonLdSerializableInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar as Udb3ModelCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
@@ -464,28 +464,28 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     private function deriveStatusTypeFromSubEvents(): StatusType
     {
         $statusTypeCounts = [];
-        $statusTypeCounts[StatusType::available()->toString()] = 0;
-        $statusTypeCounts[StatusType::temporarilyUnavailable()->toString()] = 0;
-        $statusTypeCounts[StatusType::unavailable()->toString()] = 0;
+        $statusTypeCounts[StatusType::Available()->toString()] = 0;
+        $statusTypeCounts[StatusType::TemporarilyUnavailable()->toString()] = 0;
+        $statusTypeCounts[StatusType::Unavailable()->toString()] = 0;
 
         foreach ($this->timestamps as $timestamp) {
             ++$statusTypeCounts[$timestamp->getStatus()->getType()->toString()];
         }
 
-        if ($statusTypeCounts[StatusType::available()->toString()] > 0) {
-            return StatusType::available();
+        if ($statusTypeCounts[StatusType::Available()->toString()] > 0) {
+            return StatusType::Available();
         }
 
-        if ($statusTypeCounts[StatusType::temporarilyUnavailable()->toString()] > 0) {
-            return StatusType::temporarilyUnavailable();
+        if ($statusTypeCounts[StatusType::TemporarilyUnavailable()->toString()] > 0) {
+            return StatusType::TemporarilyUnavailable();
         }
 
-        if ($statusTypeCounts[StatusType::unavailable()->toString()] > 0) {
-            return StatusType::unavailable();
+        if ($statusTypeCounts[StatusType::Unavailable()->toString()] > 0) {
+            return StatusType::Unavailable();
         }
 
         // This extra return is needed for events with calendar type of permanent or periodic.
-        return StatusType::available();
+        return StatusType::Available();
     }
 
     /**
@@ -507,7 +507,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         // If the calendar has subEvents, the top level status is valid if it is the same type as the type derived from
         // the subEvents. In that case return $this->status so we include the top-level reason (if it has one).
         $expectedStatusType = $this->deriveStatusTypeFromSubEvents();
-        if ($this->status->getType()->sameAs($expectedStatusType)) {
+        if ($this->status->getType()->toString() === $expectedStatusType->toString()) {
             // Also make sure to include the reason of a sub event when there is no reason on the top level.
             if (count($this->timestamps) === 1 && count($this->status->getReason()) === 0) {
                 return $this->timestamps[0]->getStatus();
