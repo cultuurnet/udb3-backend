@@ -26,6 +26,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
     private Entity $excluded;
 
+    private Entity $similarEntity;
+
     private string $labelRolesTableName;
 
     private string $userRolesTableName;
@@ -72,6 +74,13 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             Privacy::PRIVACY_PRIVATE()
         );
 
+        $this->similarEntity = new Entity(
+            new UUID('22ce5549-4546-4a08-b036-a2c07ca4929c'),
+            'wandel',
+            Visibility::VISIBLE(),
+            Privacy::PRIVACY_PUBLIC()
+        );
+
         $this->excluded = new Entity(
             new UUID('67dcd2a0-5301-4747-a956-3741420efd52'),
             'excluded',
@@ -81,7 +90,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         );
 
         /** @var Entity[] $entities */
-        $entities = [$this->excluded, $this->entityPrivateAccess, $this->entityPrivateNoAccess, $this->entityByUuid, $this->entityByName];
+        $entities = [$this->excluded, $this->entityPrivateAccess, $this->entityPrivateNoAccess, $this->entityByUuid, $this->entityByName, $this->similarEntity];
         foreach ($entities as $entity) {
             $this->saveEntity($entity);
         }
@@ -322,6 +331,27 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         );
         $entities = $this->dbalReadRepository->search($search);
         $this->assertEquals([], $entities);
+    }
+
+    /**
+     * @test
+     */
+    public function it_sorts_labels_by_similarity(): void
+    {
+        $search = new Query(
+            'wandel',
+            null,
+            null,
+            6
+        );
+
+        $entities = $this->dbalReadRepository->search($search);
+
+        $this->assertCount(4, $entities);
+        $this->assertEquals('wandel', $entities[0]->getName());
+        $this->assertEquals('wandeltocht', $entities[1]->getName());
+        $this->assertEquals('boswandeling', $entities[1]->getName());
+        $this->assertEquals('stadswandeling', $entities[1]->getName());
     }
 
     /**
