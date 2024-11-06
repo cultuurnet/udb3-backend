@@ -32,6 +32,14 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
     private $userIdentityResolver;
     private OwnershipStatusGuard $ownershipStatusGuard;
     private CurrentUser $currentUser;
+    /**
+     * @var OwnershipSearchRepository&MockObject
+     */
+    private $ownershipSearchRepository;
+    /**
+     * @var PermissionVoter&MockObject
+     */
+    private $permissionVoter;
 
     protected function setUp(): void
     {
