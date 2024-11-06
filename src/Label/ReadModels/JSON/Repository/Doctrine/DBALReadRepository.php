@@ -103,7 +103,18 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
         $aliases = $this->getAliases();
         $queryBuilder->select($aliases)
-            ->orderBy(ColumnNames::NAME_COLUMN);
+            ->addSelect(
+                '(CASE 
+           WHEN :name = :exactMatch THEN 1
+           WHEN :name LIKE :startMatch THEN 2
+           WHEN :name LIKE :partialMatch THEN 3
+           ELSE 4
+       END) AS sorted'
+            )
+            ->setParameter('exactMatch', $query->getValue())
+            ->setParameter('startMatch', $query->getValue() . '%')
+            ->setParameter('partialMatch', $this->createLikeParameter($query))
+            ->orderBy('sorted', 'ASC');
 
         if ($query->getOffset()) {
             $queryBuilder
