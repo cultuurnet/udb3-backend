@@ -26,6 +26,7 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
     use AssertApiProblemTrait;
 
     private GetCreatorOwnershipRequestHandler $getCreatorOwnershipRequestHandler;
+
     /**
      * @var DocumentRepository&MockObject
      */
@@ -193,13 +194,6 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
     public function it_throws_an_api_problem_when_user_is_not_owner(): void
     {
         $ownershipId = Uuid::uuid4()->toString();
-        $creatorId = Uuid::uuid4()->toString();
-
-        $creator = new UserIdentityDetails(
-            $creatorId,
-            'John Doe',
-            'john@doe.com',
-        );
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('ownershipId', $ownershipId)
