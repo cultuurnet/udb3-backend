@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79fda9d664460977a01493450dc5e7ab",
+    "content-hash": "1851bb69f66f19085cae039c262ef346",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -6041,19 +6041,18 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-main",
+            "version": "dev-III-6312-allow-encoded-space",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "e5a840e87769c39d22fef7c51e4b003eff9edc6a"
+                "reference": "15e2a28a2c63d46823613cb7a4dc8e86dfe7dffe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/e5a840e87769c39d22fef7c51e4b003eff9edc6a",
-                "reference": "e5a840e87769c39d22fef7c51e4b003eff9edc6a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/15e2a28a2c63d46823613cb7a4dc8e86dfe7dffe",
+                "reference": "15e2a28a2c63d46823613cb7a4dc8e86dfe7dffe",
                 "shasum": ""
             },
-            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6068,9 +6067,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6312-allow-encoded-space"
             },
-            "time": "2024-10-31T08:48:40+00:00"
+            "time": "2024-11-06T13:09:26+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
