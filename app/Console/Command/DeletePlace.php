@@ -98,21 +98,9 @@ class DeletePlace extends AbstractCommand
         }
 
         if ($this->isUitPasPlace($place)) {
-            if (!($this
-                ->getHelper('question')
-                ->ask(
-                    $input,
-                    $output,
-                    new ConfirmationQuestion(
-                        sprintf(
-                            'Place %s is an UiTPAS balie! Please check first with the colleagues of UiTPAS if this place can be deleted. Do you still want to delete this place? [y/N] ',
-                            $place->getId()
-                        ),
-                        false
-                    )
-                ))) {
-                return self::SUCCESS;
-            }
+            $output->writeln(sprintf('Place %s is an UiTPAS balie! Please check first with the colleagues of UiTPAS if this place can be deleted.', $place->getId()));
+            $output->writeln('You still want to delete this place you can remove the UiTPAS label in the admin.');
+            return self::SUCCESS;
         }
 
         if (!$this->askConfirmation($input, $output)) {

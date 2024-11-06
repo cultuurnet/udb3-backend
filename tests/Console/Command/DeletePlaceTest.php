@@ -125,7 +125,8 @@ class DeletePlaceTest extends TestCase
         ]);
 
         $output = $this->commandTester->getDisplay();
-        $this->assertStringContainsString(sprintf('Place %s is an UiTPAS balie! Please check first with the colleagues of UiTPAS if this place can be deleted. Do you still want to delete this place? [y/N]', $placeUuid), $output);
+        $this->assertStringContainsString(sprintf('Place %s is an UiTPAS balie! Please check first with the colleagues of UiTPAS if this place can be deleted.', $placeUuid), $output);
+        $this->assertStringContainsString('You still want to delete this place you can remove the UiTPAS label in the admin.', $output);
     }
 
     public function test_execute_successfully_dispatches_commands(): void
