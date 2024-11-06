@@ -32,7 +32,6 @@ final class GetCreatorOwnershipRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-
         $routeParameters = new RouteParameters($request);
         $ownershipId = $routeParameters->getOwnershipId();
 

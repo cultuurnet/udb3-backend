@@ -44,7 +44,7 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->organizerRepository = new InMemoryDocumentRepository();
         $this->userIdentityResolver = $this->createMock(UserIdentityResolver::class);
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
