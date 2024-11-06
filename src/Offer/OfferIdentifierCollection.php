@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer;
 
-use CultuurNet\UDB3\Collection\AbstractCollection;
+use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
-/**
- * @method OfferIdentifierCollection with($item)
- * @method IriOfferIdentifier[] toArray()
- */
-class OfferIdentifierCollection extends AbstractCollection
+class OfferIdentifierCollection extends Collection
 {
-    protected function getValidObjectType(): string
+    public function __construct(IriOfferIdentifier ...$offerIdentifiers)
     {
-        return IriOfferIdentifier::class;
+        parent::__construct(...$offerIdentifiers);
     }
 }

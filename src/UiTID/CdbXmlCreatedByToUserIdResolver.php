@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\UiTID;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\InvalidEmailAddress;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Exception;
@@ -54,7 +55,7 @@ class CdbXmlCreatedByToUserIdResolver implements LoggerAwareInterface, CreatedBy
             try {
                 $email = new EmailAddress($createdByIdentifier);
                 $user = $this->users->getUserByEmail($email);
-            } catch (InvalidArgumentException $e) {
+            } catch (InvalidEmailAddress $e) {
                 $user = $this->users->getUserByNick($createdByIdentifier);
             }
             if ($user instanceof UserIdentityDetails) {
