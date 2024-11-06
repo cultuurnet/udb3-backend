@@ -226,8 +226,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $this->assertEquals(
             [
                 $this->similarEntity,
-                $this->entityByName,
                 $this->entityPrivateAccess,
+                $this->entityByName,
             ],
             $entities
         );
