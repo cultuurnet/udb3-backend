@@ -120,6 +120,47 @@ Feature: Test the curator API
     }
     """
 
+  Scenario: Create a news article with an image with a space in it's url
+    Given I set the JSON request payload to:
+    """
+    {
+      "headline": "publiq wint API award",
+      "inLanguage": "nl",
+      "text": "Op 10 januari 2020 wint publiq de API award",
+      "about": "17284745-7bcf-461a-aad0-d3ad54880e75",
+      "publisher": "BILL",
+      "publisherLogo": "https://www.bill.be/img/favicon.png",
+      "url": "https://www.publiq.be/blog/%{name}",
+      "image": {
+        "url": "https://www.uitinvlaanderen.be/img%20small.png",
+        "copyrightHolder": "publiq vzw"
+      }
+    }
+    """
+    When I send a POST request to "/news-articles"
+    Then the response status should be "201"
+    And the response body should be valid JSON
+    And I keep the value of the JSON response at "id" as "articleId"
+    When I send a GET request to "/news-articles/%{articleId}"
+    Then the response status should be "200"
+    And the JSON response should be:
+    """
+    {
+      "headline": "publiq wint API award",
+      "inLanguage": "nl",
+      "text": "Op 10 januari 2020 wint publiq de API award",
+      "about": "17284745-7bcf-461a-aad0-d3ad54880e75",
+      "publisher": "BILL",
+      "publisherLogo": "https://www.bill.be/img/favicon.png",
+      "url": "https://www.publiq.be/blog/%{name}",
+      "image": {
+        "url": "https://www.uitinvlaanderen.be/img%20small.png",
+        "copyrightHolder": "publiq vzw"
+      },
+      "id": "%{articleId}"
+    }
+    """
+
   Scenario: Create a news article with url that should have been encoded
     Given I set the JSON request payload to:
     """
