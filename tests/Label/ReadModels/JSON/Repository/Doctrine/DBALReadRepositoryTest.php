@@ -26,6 +26,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
     private Entity $excluded;
 
+    private Entity $similarEntity;
+
     private string $labelRolesTableName;
 
     private string $userRolesTableName;
@@ -72,7 +74,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             Privacy::PRIVACY_PRIVATE()
         );
 
-        $similarEntity = new Entity(
+        $this->similarEntity = new Entity(
             new UUID('22ce5549-4546-4a08-b036-a2c07ca4929c'),
             'wandel',
             Visibility::VISIBLE(),
@@ -88,7 +90,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         );
 
         /** @var Entity[] $entities */
-        $entities = [$this->excluded, $this->entityPrivateAccess, $this->entityPrivateNoAccess, $this->entityByUuid, $this->entityByName, $similarEntity];
+        $entities = [$this->excluded, $this->entityPrivateAccess, $this->entityPrivateNoAccess, $this->entityByUuid, $this->entityByName, $this->similarEntity];
         foreach ($entities as $entity) {
             $this->saveEntity($entity);
         }
@@ -223,6 +225,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $this->assertEquals(
             [
+                $this->similarEntity,
                 $this->entityByName,
                 $this->entityPrivateAccess,
             ],
@@ -230,7 +233,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         );
 
         $count = $this->dbalReadRepository->searchTotalLabels($search);
-        $this->assertEquals(2, $count);
+        $this->assertEquals(3, $count);
     }
 
     /**
