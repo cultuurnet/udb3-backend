@@ -323,7 +323,7 @@ Feature: Test the curator API
     {
       "schemaErrors": [
         {
-          "error": "The string should match pattern: ^http(s?):([/|.|\\w|\\s|-])*\\.(?:jpeg|jpg|gif|png)$",
+          "error": "The string should match pattern: ^http(s?):([/|.|\\w|%20|-])*\\.(?:jpeg|jpg|gif|png)$",
           "jsonPointer": "/image/url"
         }
       ],
