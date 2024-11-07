@@ -114,7 +114,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             ->setParameter('exactMatch', $query->getValue())
             ->setParameter('startMatch', $query->getValue() . '%')
             ->setParameter('partialMatch', $this->createLikeParameter($query))
-            ->orderBy('sorted', 'ASC');
+            ->add('orderBy', 'sorted ASC, ' . ColumnNames::NAME_COLUMN . ' ASC');
 
         if ($query->getOffset()) {
             $queryBuilder
