@@ -23,10 +23,10 @@ Feature: Test the UDB3 labels API
     Then the response status should be "200"
     And the response body should be valid JSON
     And the JSON response at "totalItems" should be 4
-    And the JSON response at "member/0/name" should be "special-label"
-    And the JSON response at "member/1/name" should be "special_label"
-    And the JSON response at "member/2/name" should be "special_label*"
-    And the JSON response at "member/3/name" should be "special_label#"
+    And the JSON response at "member/0/name" should be "special_label"
+    And the JSON response at "member/1/name" should be "special_label*"
+    And the JSON response at "member/2/name" should be "special_label#"
+    And the JSON response at "member/3/name" should be "special-label"
 
   Scenario: Hide excluded labels if suggestion is true
     When I create a label with a random name of 10 characters
@@ -64,8 +64,8 @@ Feature: Test the UDB3 labels API
     And the JSON response at "totalItems" should be 4
     And the JSON response at "member/0/name" should be "walk"
     And the JSON response at "member/1/name" should be "walking tour"
-    And the JSON response at "member/2/name" should be "forest walk"
-    And the JSON response at "member/3/name" should be "city walk"
+    And the JSON response at "member/2/name" should be "city walk"
+    And the JSON response at "member/3/name" should be "forest walk"
 
   @bugfix # https://jira.uitdatabank.be/browse/III-4734
   Scenario: Search labels as suggestions
