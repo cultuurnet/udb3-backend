@@ -10,12 +10,13 @@ use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\SampleFiles;
@@ -102,10 +103,13 @@ class CalendarJSONParserTest extends TestCase
     {
         $status = new Status(
             StatusType::TemporarilyUnavailable(),
-            [
-                new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
-                new StatusReason(new Language('fr'), 'Reason in het Frans'),
-            ]
+            (new TranslatedStatusReason(
+                new Language('nl'),
+                new StatusReason('Reason in het Nederlands')
+            ))->withTranslation(
+                new Language('fr'),
+                new StatusReason('Reason in het Frans')
+            )
         );
 
         $this->assertEquals(
@@ -143,10 +147,13 @@ class CalendarJSONParserTest extends TestCase
             ))->withStatus(
                 new Status(
                     StatusType::TemporarilyUnavailable(),
-                    [
-                        new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
-                        new StatusReason(new Language('fr'), 'Reason in het Frans'),
-                    ]
+                    (new TranslatedStatusReason(
+                        new Language('nl'),
+                        new StatusReason('Reason in het Nederlands')
+                    ))->withTranslation(
+                        new Language('fr'),
+                        new StatusReason('Reason in het Frans')
+                    )
                 )
             )->withBookingAvailability(BookingAvailability::unavailable()),
             (new Timestamp(
@@ -155,10 +162,13 @@ class CalendarJSONParserTest extends TestCase
             ))->withStatus(
                 new Status(
                     StatusType::Unavailable(),
-                    [
-                        new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
-                        new StatusReason(new Language('fr'), 'Reason in het Frans'),
-                    ]
+                    (new TranslatedStatusReason(
+                        new Language('nl'),
+                        new StatusReason('Reason in het Nederlands')
+                    ))->withTranslation(
+                        new Language('fr'),
+                        new StatusReason('Reason in het Frans')
+                    )
                 )
             )->withBookingAvailability(BookingAvailability::unavailable()),
         ];
