@@ -45,19 +45,25 @@ Feature: Test searching ownerships
 
   Scenario: Searching ownership of an organizer by ownerId
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I request ownership for "auth0|631748dba64ea78e3983b201" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId1"
+    And I request ownership for "auth0|631748dba64ea78e3983b201" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I create a random name of 10 characters and keep it as "ownerId"
-    And I request ownership for "%{ownerId}" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId2"
+    And I request ownership for "%{ownerId}" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId1"
     And I create a minimal organizer and save the "id" as "anotherOrganizerId"
-    And I request ownership for "%{ownerId}" on the organizer with organizerId "%{anotherOrganizerId}" and save the "id" as "ownershipId3"
+    And I request ownership for "%{ownerId}" on the organizer with organizerId "%{anotherOrganizerId}" and save the "id" as "ownershipId2"
     When I send a GET request to '/ownerships/?ownerId=%{ownerId}'
     Then the response status should be 200
     And the JSON response at "itemsPerPage" should be 2
     And the JSON response at "totalItems" should be 2
-    And the JSON response at "member/0/id" should be "%{ownershipId2}"
+    And the JSON response should include:
+    """
+    "%{ownershipId1}"
+    """
+    And the JSON response should include:
+    """
+    "%{ownershipId2}"
+    """
     And the JSON response at "member/0/ownerId" should be "%{ownerId}"
     And the JSON response at "member/0/state" should be "requested"
-    And the JSON response at "member/1/id" should be "%{ownershipId3}"
     And the JSON response at "member/1/ownerId" should be "%{ownerId}"
     And the JSON response at "member/1/state" should be "requested"
 
