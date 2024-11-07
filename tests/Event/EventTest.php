@@ -35,7 +35,6 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -1784,7 +1783,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Event $event): void {
                     $event->updateTitle(
-                        new LegacyLanguage('en'),
+                        new Language('en'),
                         new Title('some representative title')
                     );
                 }

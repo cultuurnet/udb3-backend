@@ -183,7 +183,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
      */
     public function it_should_return_a_main_language(): void
     {
-        $expected = new \CultuurNet\UDB3\Language('nl');
+        $expected = new Language('nl');
         $actual = $this->adapter->getMainLanguage();
         $this->assertEquals($expected, $actual);
     }

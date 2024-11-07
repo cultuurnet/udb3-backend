@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Offer;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
@@ -1803,7 +1802,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item) use ($title): void {
-                    $item->updateTitle(new LegacyLanguage('nl'), $title);
+                    $item->updateTitle(new Language('nl'), $title);
                 }
             )
             ->then([]);
@@ -1828,7 +1827,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item) use ($title, $language): void {
-                    $item->updateTitle(LegacyLanguage::fromUdb3ModelLanguage($language), $title);
+                    $item->updateTitle($language, $title);
                 }
             )
             ->then([
@@ -1855,9 +1854,9 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item) use ($title, $language): void {
-                    $item->updateTitle(LegacyLanguage::fromUdb3ModelLanguage($language), $title);
-                    $item->updateTitle(LegacyLanguage::fromUdb3ModelLanguage($language), $title);
-                    $item->updateTitle(new LegacyLanguage('nl'), new Title('Een titel'));
+                    $item->updateTitle($language, $title);
+                    $item->updateTitle($language, $title);
+                    $item->updateTitle(new Language('nl'), new Title('Een titel'));
                 }
             )
             ->then([
