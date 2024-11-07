@@ -11,10 +11,11 @@ use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\ValueObjects\Status;
+use CultuurNet\UDB3\Event\ValueObjects\Status as LegacyStatus;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
@@ -114,7 +115,7 @@ class CalendarJSONDeserializerTest extends TestCase
         );
 
         $expectedCalendar = $expectedCalendar->withStatus(
-            new Status(
+            new LegacyStatus(
                 StatusType::Unavailable(),
                 (new TranslatedStatusReason(
                     new Language('nl'),
@@ -221,7 +222,7 @@ class CalendarJSONDeserializerTest extends TestCase
         );
 
         $expectedCalendar = $expectedCalendar->withStatus(
-            new Status(
+            new LegacyStatus(
                 StatusType::TemporarilyUnavailable(),
                 (new TranslatedStatusReason(
                     new Language('nl'),

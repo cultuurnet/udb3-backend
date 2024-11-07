@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\ValueObjects\Status;
+use CultuurNet\UDB3\Event\ValueObjects\Status as LegacyStatus;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType as Udb3ModelBookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -20,7 +20,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType as Udb3ModelStatusType;
@@ -501,7 +501,7 @@ class CalendarTest extends TestCase
      */
     public function it_can_deserialize_with_explicit_status(): void
     {
-        $status = new Status(
+        $status = new LegacyStatus(
             StatusType::TemporarilyUnavailable(),
             (new TranslatedStatusReason(
                 new Language('nl'),
@@ -1059,7 +1059,7 @@ class CalendarTest extends TestCase
                         ),
                     ]
                 ))->withStatus(
-                    new Status(
+                    new LegacyStatus(
                         StatusType::Available(),
                         (new TranslatedStatusReason(new Language('nl'), new StatusReason('Alles goed')))
                             ->withTranslation(new Language('fr'), new StatusReason('All good'))
@@ -1205,7 +1205,7 @@ class CalendarTest extends TestCase
                 'calendar' => (new Calendar(
                     CalendarType::PERMANENT()
                 ))->withStatus(
-                    new Status(
+                    new LegacyStatus(
                         StatusType::TemporarilyUnavailable(),
                         new TranslatedStatusReason(new Language('nl'), new StatusReason('We zijn in volle verbouwing'))
                     )
@@ -1444,12 +1444,12 @@ class CalendarTest extends TestCase
                 DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                 DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00')
             ),
-            new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()),
+            new Status(Udb3ModelStatusType::Unavailable()),
             new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
         );
 
         $udb3ModelCalendar = (new SingleSubEventCalendar($subEvent))
-            ->withStatus(new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()))
+            ->withStatus(new Status(Udb3ModelStatusType::Unavailable()))
             ->withBookingAvailability(new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable()));
 
         $expected = (new Calendar(
@@ -1465,7 +1465,7 @@ class CalendarTest extends TestCase
                 ),
             ],
             []
-        ))->withStatus(new Status(StatusType::Unavailable(), null))
+        ))->withStatus(new LegacyStatus(StatusType::Unavailable(), null))
             ->withBookingAvailability(BookingAvailability::unavailable());
 
         $actual = Calendar::fromUdb3ModelCalendar($udb3ModelCalendar);
@@ -1484,7 +1484,7 @@ class CalendarTest extends TestCase
                     DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                     DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00')
                 ),
-                new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()),
+                new Status(Udb3ModelStatusType::Unavailable()),
                 new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
             ),
             new SubEvent(
@@ -1492,13 +1492,13 @@ class CalendarTest extends TestCase
                     DateTimeFactory::fromAtom('2016-03-09T10:00:00+01:00'),
                     DateTimeFactory::fromAtom('2016-03-10T10:00:00+01:00')
                 ),
-                new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()),
+                new Status(Udb3ModelStatusType::Unavailable()),
                 new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
             )
         );
 
         $udb3ModelCalendar = (new MultipleSubEventsCalendar($subEvents))
-            ->withStatus(new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()))
+            ->withStatus(new Status(Udb3ModelStatusType::Unavailable()))
             ->withBookingAvailability(new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable()));
 
         $expected = (new Calendar(
@@ -1520,7 +1520,7 @@ class CalendarTest extends TestCase
                 ),
             ],
             []
-        ))->withStatus(new Status(StatusType::Unavailable(), null))
+        ))->withStatus(new LegacyStatus(StatusType::Unavailable(), null))
             ->withBookingAvailability(BookingAvailability::unavailable());
 
         $actual = Calendar::fromUdb3ModelCalendar($udb3ModelCalendar);
@@ -1826,11 +1826,11 @@ class CalendarTest extends TestCase
         );
 
         $this->assertEquals(
-            new Status(StatusType::Available(), null),
+            new LegacyStatus(StatusType::Available(), null),
             $calendar->getStatus()
         );
 
-        $newStatus = new Status(
+        $newStatus = new LegacyStatus(
             StatusType::Unavailable(),
             new TranslatedStatusReason(new Language('nl'), new StatusReason('Het mag niet van de afgevaardigde van de eerste minister'))
         );
@@ -1871,7 +1871,7 @@ class CalendarTest extends TestCase
         );
 
         $this->assertEquals(
-            new Status(StatusType::Available(), null),
+            new LegacyStatus(StatusType::Available(), null),
             $calendar->getStatus()
         );
 
@@ -1881,10 +1881,10 @@ class CalendarTest extends TestCase
         );
 
         $updatedCalendar = $calendar
-            ->withStatus($newStatus)
+            ->withStatus(LegacyStatus::fromUdb3ModelStatus($newStatus))
             ->withStatusOnTimestamps($newStatus);
 
-        $this->assertEquals($newStatus, $updatedCalendar->getStatus());
+        $this->assertEquals(LegacyStatus::fromUdb3ModelStatus($newStatus), $updatedCalendar->getStatus());
 
         foreach ($updatedCalendar->getTimestamps() as $timestamp) {
             $this->assertEquals($newStatus, $timestamp->getStatus());
