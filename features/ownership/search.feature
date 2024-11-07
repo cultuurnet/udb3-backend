@@ -51,7 +51,6 @@ Feature: Test searching ownerships
     And I create a minimal organizer and save the "id" as "anotherOrganizerId"
     And I request ownership for "%{ownerId}" on the organizer with organizerId "%{anotherOrganizerId}" and save the "id" as "ownershipId2"
     When I send a GET request to '/ownerships/?ownerId=%{ownerId}'
-    And show me the unparsed response
     Then the response status should be 200
     And the JSON response at "itemsPerPage" should be 2
     And the JSON response at "totalItems" should be 2
