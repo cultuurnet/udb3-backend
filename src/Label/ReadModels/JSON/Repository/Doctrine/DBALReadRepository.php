@@ -104,12 +104,12 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         $aliases = $this->getAliases();
         $queryBuilder->select($aliases)
             ->addSelect(
-                '(CASE 
-           WHEN name = :exactMatch THEN 1
-           WHEN name LIKE :startMatch THEN 2
-           WHEN name LIKE :partialMatch THEN 3
-           ELSE 4
-       END) AS sorted'
+               '(CASE 
+               WHEN name = :exactMatch THEN 1
+               WHEN name LIKE :startMatch THEN 2
+               WHEN name LIKE :partialMatch THEN 3
+               ELSE 4
+               END) AS sorted'
             )
             ->setParameter('exactMatch', $query->getValue())
             ->setParameter('startMatch', $query->getValue() . '%')
