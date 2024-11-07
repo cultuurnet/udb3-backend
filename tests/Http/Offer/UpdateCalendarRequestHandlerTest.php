@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\ValueObjects\Status as LegacyStatus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -220,7 +219,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                     )
                                 )
                                 ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::unavailable())),
-                            new LegacyStatus(
+                            new Status(
                                 StatusType::TemporarilyUnavailable(),
                                 new TranslatedStatusReason(
                                     new Language('nl'),
@@ -359,7 +358,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                         DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
                         DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         [],
-                        new LegacyStatus(
+                        new Status(
                             StatusType::TemporarilyUnavailable(),
                             new TranslatedStatusReason(
                                 new Language('nl'),
@@ -441,7 +440,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     self::EVENT_ID,
                     Calendar::permanent(
                         [],
-                        new LegacyStatus(
+                        new Status(
                             StatusType::TemporarilyUnavailable(),
                             new TranslatedStatusReason(
                                 new Language('nl'),
@@ -826,7 +825,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                         DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
                         DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         [],
-                        new LegacyStatus(
+                        new Status(
                             StatusType::TemporarilyUnavailable(),
                             new TranslatedStatusReason(
                                 new Language('nl'),
@@ -908,7 +907,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     self::PLACE_ID,
                     Calendar::permanent(
                         [],
-                        new LegacyStatus(
+                        new Status(
                             StatusType::TemporarilyUnavailable(),
                             new TranslatedStatusReason(
                                 new Language('nl'),

@@ -47,10 +47,10 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
         $id = '1';
         $initialCalendar = new Calendar(CalendarType::PERMANENT());
 
-        $newStatus = new LegacyStatus(StatusType::TemporarilyUnavailable(), null);
+        $newStatus = new Status(StatusType::TemporarilyUnavailable(), null);
         $expectedCalendar = (new Calendar(CalendarType::PERMANENT()))->withStatus($newStatus);
 
-        $command = new UpdateStatus($id, $newStatus);
+        $command = new UpdateStatus($id, LegacyStatus::fromUdb3ModelStatus($newStatus));
 
         $expectedEvent = new CalendarUpdated(
             $id,
@@ -76,12 +76,12 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
         $initialTimestamps = [new Timestamp($startDate, $endDate)];
         $initialCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $initialTimestamps);
 
-        $newStatus = new LegacyStatus(StatusType::Unavailable(), null);
+        $newStatus = new Status(StatusType::Unavailable(), null);
 
         $expectedTimestamps = [new Timestamp($startDate, $endDate, new Status(StatusType::Unavailable(), null))];
         $expectedCalendar = (new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $expectedTimestamps, []))->withStatus($newStatus);
 
-        $command = new UpdateStatus($id, $newStatus);
+        $command = new UpdateStatus($id, LegacyStatus::fromUdb3ModelStatus($newStatus));
 
         $expectedEvent = new CalendarUpdated(
             $id,
