@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\ValueObject;
 
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
 
 /**
@@ -136,7 +136,7 @@ class MultilingualString
         }
 
         $string = new MultilingualString(
-            Language::fromUdb3ModelLanguage($originalLanguage),
+            $originalLanguage,
             $originalValue->toString()
         );
 
