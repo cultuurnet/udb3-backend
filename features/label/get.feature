@@ -54,7 +54,7 @@ Feature: Test the UDB3 labels API
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
 
-  Scenario: Show the labels in sorted by closest match
+  Scenario: Show the labels sorted by closest match
     When I send a GET request to "/labels/" with parameters:
       | limit      | 10      |
       | query      | walk    |
