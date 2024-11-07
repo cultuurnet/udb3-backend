@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Calendar;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Event\ValueObjects\Status as LegacyStatus;
 use CultuurNet\UDB3\JsonLdSerializableInterface;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar as Udb3ModelCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
@@ -42,7 +43,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     private array $openingHours ;
 
-    private LegacyStatus $status;
+    private Status $status;
 
     private BookingAvailability $bookingAvailability;
 
@@ -88,12 +89,12 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $this->timestamps = $timestamps;
 
-        $this->status = new LegacyStatus($this->deriveStatusTypeFromSubEvents(), null);
+        $this->status = new Status($this->deriveStatusTypeFromSubEvents(), null);
 
         $this->bookingAvailability = $this->deriveBookingAvailabilityFromSubEvents();
     }
 
-    public function withStatus(LegacyStatus $status): self
+    public function withStatus(Status $status): self
     {
         $clone = clone $this;
         $clone->status = $status;
@@ -199,7 +200,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $this->timestamps;
     }
 
-    public function getStatus(): LegacyStatus
+    public function getStatus(): Status
     {
         return $this->status;
     }
@@ -227,7 +228,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $calendar = [
             'type' => $this->type,
-            'status' => $this->status->serialize(),
+            'status' => (new StatusNormalizer())->normalize($this->status),
             'bookingAvailability' => $this->bookingAvailability->serialize(),
         ];
 
@@ -277,7 +278,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         );
 
         if (!empty($data['status'])) {
-            $calendar->status = LegacyStatus::deserialize($data['status']);
+            $calendar->status = (new StatusDenormalizer())->denormalize($data['status'], Status::class);
         }
 
         if (!empty($data['bookingAvailability'])) {
@@ -322,7 +323,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             $jsonLd['endDate'] = $endDate->format(DateTimeInterface::ATOM);
         }
 
-        $jsonLd['status'] = $this->determineCorrectTopStatusForProjection()->serialize();
+        $jsonLd['status'] = (new StatusNormalizer())->normalize($this->determineCorrectTopStatusForProjection());
 
         $jsonLd['bookingAvailability'] = $this->determineCorrectTopBookingAvailabilityForProjection()->serialize();
 
@@ -352,7 +353,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     public static function single(
         Timestamp $timestamp,
-        ?LegacyStatus $status = null,
+        ?Status $status = null,
         ?BookingAvailability $bookingAvailability = null
     ): self {
         $calendar = new self(CalendarType::SINGLE(), null, null, [$timestamp]);
@@ -370,7 +371,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
      */
     public static function multiple(
         array $timestamps,
-        ?LegacyStatus $status = null,
+        ?Status $status = null,
         ?BookingAvailability $bookingAvailability = null
     ): self {
         $calendar = new self(CalendarType::MULTIPLE(), null, null, $timestamps);
@@ -387,7 +388,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         DateTimeInterface $startDate,
         DateTimeInterface $endDate,
         array $openingHours = [],
-        ?LegacyStatus $status = null
+        ?Status $status = null
     ): self {
         $calendar = new self(CalendarType::PERIODIC(), $startDate, $endDate, [], $openingHours);
         if ($status) {
@@ -398,7 +399,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     public static function permanent(
         array $openingHours = [],
-        ?LegacyStatus $status = null
+        ?Status $status = null
     ): self {
         $calendar = new self(CalendarType::PERMANENT(), null, null, [], $openingHours);
         if ($status) {
@@ -441,7 +442,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $calendar = new self($type, $startDate, $endDate, $timestamps, $openingHours);
 
-        $topStatus = LegacyStatus::fromUdb3ModelStatus($udb3Calendar->getStatus());
+        $topStatus = $udb3Calendar->getStatus();
         $topBookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
             $udb3Calendar->getBookingAvailability()
         );
@@ -498,7 +499,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
      * So we accept the top status as-is, and correct it during projection.
      * That way if the correction is bugged, we can always fix it and replay it with the original data.
      */
-    private function determineCorrectTopStatusForProjection(): LegacyStatus
+    private function determineCorrectTopStatusForProjection(): Status
     {
         // If the calendar has no subEvents, the top level status is always valid.
         if (empty($this->timestamps)) {
@@ -511,7 +512,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         if ($this->status->getType()->toString() === $expectedStatusType->toString()) {
             // Also make sure to include the reason of a sub event when there is no reason on the top level.
             if (count($this->timestamps) === 1 && $this->status->getReason() === null) {
-                return LegacyStatus::fromUdb3ModelStatus($this->timestamps[0]->getStatus());
+                return $this->timestamps[0]->getStatus();
             }
 
             return $this->status;
@@ -520,7 +521,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         // If the top-level status is invalid compared to the status type derived from the subEvents, return the
         // expected status type without any reason. (If the top level status had a reason it's probably not applicable
         // for the new status type.)
-        return new LegacyStatus($expectedStatusType, null);
+        return new Status($expectedStatusType, null);
     }
 
     /**
