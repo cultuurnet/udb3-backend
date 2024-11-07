@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3ModelLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -24,7 +25,7 @@ class BookingInfoTest extends TestCase
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
             new MultilingualString(
-                new Language('nl'),
+                new Udb3ModelLanguage('nl'),
                 'publiq'
             ),
             '02 123 45 67',
@@ -34,7 +35,7 @@ class BookingInfoTest extends TestCase
         $sameBookingInfo = new BookingInfo(
             'www.publiq.be',
             new MultilingualString(
-                new Language('nl'),
+                new Udb3ModelLanguage('nl'),
                 'publiq'
             ),
             '02 123 45 67',
@@ -44,7 +45,7 @@ class BookingInfoTest extends TestCase
         $otherBookingInfo = new BookingInfo(
             'www.2dotstwice.be',
             new MultilingualString(
-                new Language('nl'),
+                new Udb3ModelLanguage('nl'),
                 '2dotstwice'
             ),
             '016 12 34 56',
@@ -64,7 +65,7 @@ class BookingInfoTest extends TestCase
             new WebsiteLink(
                 new Url('https://publiq.be'),
                 new TranslatedWebsiteLabel(
-                    new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('nl'),
+                    new Udb3ModelLanguage('nl'),
                     new WebsiteLabel('publiq')
                 )
             ),
@@ -79,7 +80,7 @@ class BookingInfoTest extends TestCase
         $expected = new BookingInfo(
             'https://publiq.be',
             new MultilingualString(
-                new Language('nl'),
+                new Udb3ModelLanguage('nl'),
                 'publiq'
             ),
             '044/444444',
@@ -205,7 +206,7 @@ class BookingInfoTest extends TestCase
         $expected = new BookingInfo(
             'https://www.publiq.be',
             new MultilingualString(
-                new Language('nl'),
+                new Udb3ModelLanguage('nl'),
                 'publiq'
             ),
             '044/444444',

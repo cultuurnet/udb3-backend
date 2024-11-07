@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
@@ -115,7 +114,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     {
         $id = 'foo';
         $url = 'http://www.google.be';
-        $urlLabel = new MultilingualString(new LegacyLanguage('nl'), 'Google');
+        $urlLabel = new MultilingualString(new Language('nl'), 'Google');
         $phone = '045';
         $email = 'test@test.com';
         $availabilityStarts = DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00');
