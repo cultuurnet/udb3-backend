@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\Events;
 
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\PlaceEvent;
 
 final class AddressTranslated extends PlaceEvent
