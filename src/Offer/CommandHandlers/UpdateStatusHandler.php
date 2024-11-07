@@ -24,7 +24,7 @@ class UpdateStatusHandler implements CommandHandler
         }
 
         $offer = $this->offerRepository->load($command->getItemId());
-        $offer->updateAllStatuses($command->getStatus());
+        $offer->updateAllStatuses($command->getStatus()->toUdb3ModelStatus());
         $this->offerRepository->save($offer);
     }
 }
