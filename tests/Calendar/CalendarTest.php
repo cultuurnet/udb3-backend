@@ -28,7 +28,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
@@ -108,7 +107,7 @@ class CalendarTest extends TestCase
      */
     public function it_determines_booking_availability_from_sub_events(
         Calendar $calendar,
-        LegacyBookingAvailability $expectedBookingAvailability
+        BookingAvailability $expectedBookingAvailability
     ): void {
         $this->assertEquals($expectedBookingAvailability, $calendar->getBookingAvailability());
     }
@@ -130,7 +129,7 @@ class CalendarTest extends TestCase
                         ),
                     ]
                 ),
-                LegacyBookingAvailability::available(),
+                BookingAvailability::Available(),
             ],
             'single unavailable' => [
                 new Calendar(
@@ -146,7 +145,7 @@ class CalendarTest extends TestCase
                         ),
                     ]
                 ),
-                LegacyBookingAvailability::unavailable(),
+                BookingAvailability::Unavailable(),
             ],
             'multiple available' => [
                 new Calendar(
@@ -168,7 +167,7 @@ class CalendarTest extends TestCase
                         ),
                     ]
                 ),
-                LegacyBookingAvailability::available(),
+                BookingAvailability::Available(),
             ],
             'multiple unavailable' => [
                 new Calendar(
@@ -190,7 +189,7 @@ class CalendarTest extends TestCase
                         ),
                     ]
                 ),
-                LegacyBookingAvailability::unavailable(),
+                BookingAvailability::Unavailable(),
             ],
         ];
     }
@@ -212,9 +211,9 @@ class CalendarTest extends TestCase
             ]
         );
 
-        $singleCalendar = $singleCalendar->withBookingAvailability(LegacyBookingAvailability::unavailable());
+        $singleCalendar = $singleCalendar->withBookingAvailability(BookingAvailability::Unavailable());
 
-        $this->assertEquals(LegacyBookingAvailability::unavailable(), $singleCalendar->getBookingAvailability());
+        $this->assertEquals(BookingAvailability::Unavailable(), $singleCalendar->getBookingAvailability());
     }
 
     /**
@@ -238,9 +237,9 @@ class CalendarTest extends TestCase
             ]
         );
 
-        $multipleCalendar = $multipleCalendar->withBookingAvailability(LegacyBookingAvailability::unavailable());
+        $multipleCalendar = $multipleCalendar->withBookingAvailability(BookingAvailability::Unavailable());
 
-        $this->assertEquals(LegacyBookingAvailability::unavailable(), $multipleCalendar->getBookingAvailability());
+        $this->assertEquals(BookingAvailability::Unavailable(), $multipleCalendar->getBookingAvailability());
     }
 
     /**
@@ -252,7 +251,7 @@ class CalendarTest extends TestCase
 
         $this->expectException(CalendarTypeNotSupported::class);
 
-        $permanentCalendar->withBookingAvailability(LegacyBookingAvailability::unavailable());
+        $permanentCalendar->withBookingAvailability(BookingAvailability::Unavailable());
     }
 
     /**
@@ -268,7 +267,7 @@ class CalendarTest extends TestCase
 
         $this->expectException(CalendarTypeNotSupported::class);
 
-        $periodicCalendar->withBookingAvailability(LegacyBookingAvailability::unavailable());
+        $periodicCalendar->withBookingAvailability(BookingAvailability::Unavailable());
     }
 
     /**
@@ -288,7 +287,7 @@ class CalendarTest extends TestCase
             ]
         );
 
-        $singleCalendar = $singleCalendar->withBookingAvailabilityOnTimestamps(LegacyBookingAvailability::unavailable());
+        $singleCalendar = $singleCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::Unavailable());
 
         $this->assertEquals(
             BookingAvailability::Unavailable(),
@@ -317,7 +316,7 @@ class CalendarTest extends TestCase
             ]
         );
 
-        $multipleCalendar = $multipleCalendar->withBookingAvailabilityOnTimestamps(LegacyBookingAvailability::unavailable());
+        $multipleCalendar = $multipleCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::Unavailable());
 
         $this->assertEquals(
             BookingAvailability::Unavailable(),
@@ -338,7 +337,7 @@ class CalendarTest extends TestCase
 
         $this->expectException(CalendarTypeNotSupported::class);
 
-        $permanentCalendar->withBookingAvailabilityOnTimestamps(LegacyBookingAvailability::unavailable());
+        $permanentCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::Unavailable());
     }
 
     /**
@@ -354,7 +353,7 @@ class CalendarTest extends TestCase
 
         $this->expectException(CalendarTypeNotSupported::class);
 
-        $periodicCalendar->withBookingAvailabilityOnTimestamps(LegacyBookingAvailability::unavailable());
+        $periodicCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::Unavailable());
     }
 
     /**
@@ -555,7 +554,7 @@ class CalendarTest extends TestCase
         );
 
         $this->assertEquals(
-            $calendar->withBookingAvailability(LegacyBookingAvailability::unavailable()),
+            $calendar->withBookingAvailability(BookingAvailability::Unavailable()),
             Calendar::deserialize(
                 [
                     'type' => 'single',
@@ -1128,7 +1127,7 @@ class CalendarTest extends TestCase
                             BookingAvailability::Unavailable()
                         ),
                     ]
-                ))->withBookingAvailability(LegacyBookingAvailability::available()),
+                ))->withBookingAvailability(BookingAvailability::Available()),
                 'jsonld' => [
                     'calendarType' => 'multiple',
                     'startDate' => '2016-03-06T10:00:00+01:00',
@@ -1464,7 +1463,7 @@ class CalendarTest extends TestCase
             ],
             []
         ))->withStatus(new Status(StatusType::Unavailable(), null))
-            ->withBookingAvailability(LegacyBookingAvailability::unavailable());
+            ->withBookingAvailability(BookingAvailability::Unavailable());
 
         $actual = Calendar::fromUdb3ModelCalendar($udb3ModelCalendar);
 
@@ -1519,7 +1518,7 @@ class CalendarTest extends TestCase
             ],
             []
         ))->withStatus(new Status(StatusType::Unavailable(), null))
-            ->withBookingAvailability(LegacyBookingAvailability::unavailable());
+            ->withBookingAvailability(BookingAvailability::Unavailable());
 
         $actual = Calendar::fromUdb3ModelCalendar($udb3ModelCalendar);
 

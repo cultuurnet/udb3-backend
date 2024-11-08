@@ -130,7 +130,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                                 new DateTime('2020-01-01 12:00:00')
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
-                    ))->withBookingAvailability(LegacyBookingAvailability::unavailable())
+                    ))->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ]);
     }
@@ -186,7 +186,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                                 new DateTime('2020-01-03 12:00:00')
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
-                    ))->withBookingAvailability(LegacyBookingAvailability::unavailable())
+                    ))->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ]);
     }

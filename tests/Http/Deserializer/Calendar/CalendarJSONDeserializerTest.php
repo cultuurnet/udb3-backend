@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -155,7 +154,7 @@ class CalendarJSONDeserializerTest extends TestCase
                     DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00')
                 ))->withBookingAvailability(BookingAvailability::Unavailable()),
             ]
-        ))->withBookingAvailability(LegacyBookingAvailability::unavailable());
+        ))->withBookingAvailability(BookingAvailability::Unavailable());
 
         $this->assertEquals(
             $expectedCalendar,
@@ -274,7 +273,7 @@ class CalendarJSONDeserializerTest extends TestCase
             null,
             null,
             $timestamps
-        ))->withBookingAvailability(LegacyBookingAvailability::unavailable());
+        ))->withBookingAvailability(BookingAvailability::Unavailable());
 
         $this->assertEquals(
             $expectedCalendar,
