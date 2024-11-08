@@ -6,9 +6,9 @@ namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Search\ResultsGenerator;
@@ -55,7 +55,22 @@ class UpdateOfferStatusCommand extends AbstractCommand
         $statusType = $this->askForStatusType($input, $output);
         $reasons = $this->askForReasons($input, $output);
 
-        $status = new Status($statusType, $reasons);
+        $translatedReasons = null;
+        foreach ($reasons as $reason) {
+            if ($translatedReasons === null) {
+                $translatedReasons = new TranslatedStatusReason(
+                    $reason->getOriginalLanguage(),
+                    $reason->getOriginalValue()
+                );
+            } else {
+                $translatedReasons = $translatedReasons->withTranslation(
+                    $reason->getOriginalLanguage(),
+                    $reason->getOriginalValue()
+                );
+            }
+        }
+
+        $status = new Status($statusType, $translatedReasons);
 
         if ($count <= 0) {
             $output->writeln('Query found 0 ' . $this->getPluralOfferType() . ' to update');
@@ -123,7 +138,7 @@ class UpdateOfferStatusCommand extends AbstractCommand
     }
 
     /**
-     * @return StatusReason[]
+     * @return TranslatedStatusReason[]
      */
     private function askForReasons(InputInterface $input, OutputInterface $output): array
     {
@@ -140,12 +155,10 @@ class UpdateOfferStatusCommand extends AbstractCommand
         return $reasons;
     }
 
-    private function askForReason(InputInterface $input, OutputInterface $output): StatusReason
+    private function askForReason(InputInterface $input, OutputInterface $output): TranslatedStatusReason
     {
         $languageQuestion = new Question("Language code (e.g. nl, fr, en) \n");
-        $languageQuestion->setValidator(function ($answer) {
-            return new Language($answer);
-        });
+        $languageQuestion->setValidator(fn ($answer) => new Language($answer));
         $languageQuestion->setMaxAttempts(2);
 
         /** @var Language $language */
@@ -154,7 +167,7 @@ class UpdateOfferStatusCommand extends AbstractCommand
         $reasonQuestion = new Question("Describe reason for language: {$language->getCode()}\n");
         $reason = $this->getHelper('question')->ask($input, $output, $reasonQuestion);
 
-        return new StatusReason($language, $reason);
+        return new TranslatedStatusReason($language, $reason);
     }
 
     private function getSingularOfferType(): string

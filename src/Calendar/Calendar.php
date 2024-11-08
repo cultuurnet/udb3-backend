@@ -87,7 +87,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $this->timestamps = $timestamps;
 
-        $this->status = new Status($this->deriveStatusTypeFromSubEvents(), []);
+        $this->status = new Status($this->deriveStatusTypeFromSubEvents(), null);
 
         $this->bookingAvailability = $this->deriveBookingAvailabilityFromSubEvents();
     }
@@ -509,7 +509,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $expectedStatusType = $this->deriveStatusTypeFromSubEvents();
         if ($this->status->getType()->toString() === $expectedStatusType->toString()) {
             // Also make sure to include the reason of a sub event when there is no reason on the top level.
-            if (count($this->timestamps) === 1 && count($this->status->getReason()) === 0) {
+            if (count($this->timestamps) === 1 && $this->status->getReason() === null) {
                 return $this->timestamps[0]->getStatus();
             }
 
@@ -519,7 +519,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         // If the top-level status is invalid compared to the status type derived from the subEvents, return the
         // expected status type without any reason. (If the top level status had a reason it's probably not applicable
         // for the new status type.)
-        return new Status($expectedStatusType, []);
+        return new Status($expectedStatusType, null);
     }
 
     /**

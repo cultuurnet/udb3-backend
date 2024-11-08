@@ -12,15 +12,16 @@ use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
@@ -143,7 +144,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                             )
                         )
-                            ->withStatus(new Status(StatusType::Unavailable(), []))
+                            ->withStatus(new Status(StatusType::Unavailable(), null))
                             ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::unavailable()))
                     )
                 ),
@@ -174,7 +175,10 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                             ->withStatus(
                                 new Status(
                                     StatusType::TemporarilyUnavailable(),
-                                    [new StatusReason(new Language('nl'), 'Covid')]
+                                    new TranslatedStatusReason(
+                                        new Language('nl'),
+                                        new StatusReason('Covid')
+                                    )
                                 )
                             )
                     )
@@ -208,13 +212,19 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 ->withStatus(
                                     new Status(
                                         StatusType::TemporarilyUnavailable(),
-                                        [new StatusReason(new Language('nl'), 'Covid')]
+                                        new TranslatedStatusReason(
+                                            new Language('nl'),
+                                            new StatusReason('Covid')
+                                        )
                                     )
                                 )
                                 ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::unavailable())),
                             new Status(
                                 StatusType::TemporarilyUnavailable(),
-                                [new StatusReason(new Language('nl'), 'Covid')]
+                                new TranslatedStatusReason(
+                                    new Language('nl'),
+                                    new StatusReason('Covid')
+                                )
                             ),
                             new BookingAvailability(BookingAvailabilityType::unavailable())
                         )
@@ -350,7 +360,10 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                         [],
                         new Status(
                             StatusType::TemporarilyUnavailable(),
-                            [new StatusReason(new Language('nl'), 'Covid')]
+                            new TranslatedStatusReason(
+                                new Language('nl'),
+                                new StatusReason('Covid')
+                            )
                         )
                     )
                 ),
@@ -429,7 +442,10 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                         [],
                         new Status(
                             StatusType::TemporarilyUnavailable(),
-                            [new StatusReason(new Language('nl'), 'Covid')]
+                            new TranslatedStatusReason(
+                                new Language('nl'),
+                                new StatusReason('Covid')
+                            )
                         )
                     )
                 ),
@@ -811,7 +827,10 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                         [],
                         new Status(
                             StatusType::TemporarilyUnavailable(),
-                            [new StatusReason(new Language('nl'), 'Covid')]
+                            new TranslatedStatusReason(
+                                new Language('nl'),
+                                new StatusReason('Covid')
+                            )
                         )
                     )
                 ),
@@ -890,7 +909,10 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                         [],
                         new Status(
                             StatusType::TemporarilyUnavailable(),
-                            [new StatusReason(new Language('nl'), 'Covid')]
+                            new TranslatedStatusReason(
+                                new Language('nl'),
+                                new StatusReason('Covid')
+                            )
                         )
                     )
                 ),

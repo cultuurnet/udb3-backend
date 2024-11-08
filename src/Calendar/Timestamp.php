@@ -38,7 +38,7 @@ final class Timestamp implements Serializable
 
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->status = $status ?? new Status(StatusType::Available(), []);
+        $this->status = $status ?? new Status(StatusType::Available(), null);
         $this->bookingAvailability = $bookingAvailability ?? BookingAvailability::available();
     }
 
