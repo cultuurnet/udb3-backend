@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Event\ValueObjects\Status as LegacyStatus;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Calendar\Timestamp;
@@ -50,7 +49,7 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
         $newStatus = new Status(StatusType::TemporarilyUnavailable(), null);
         $expectedCalendar = (new Calendar(CalendarType::PERMANENT()))->withStatus($newStatus);
 
-        $command = new UpdateStatus($id, LegacyStatus::fromUdb3ModelStatus($newStatus));
+        $command = new UpdateStatus($id, $newStatus);
 
         $expectedEvent = new CalendarUpdated(
             $id,
@@ -81,7 +80,7 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
         $expectedTimestamps = [new Timestamp($startDate, $endDate, new Status(StatusType::Unavailable(), null))];
         $expectedCalendar = (new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $expectedTimestamps, []))->withStatus($newStatus);
 
-        $command = new UpdateStatus($id, LegacyStatus::fromUdb3ModelStatus($newStatus));
+        $command = new UpdateStatus($id, $newStatus);
 
         $expectedEvent = new CalendarUpdated(
             $id,
