@@ -75,7 +75,7 @@ class CalendarJSONParser
             $bookingAvailability = isset($timeSpan['bookingAvailability']) ?
                 BookingAvailability::deserialize($timeSpan['bookingAvailability']) : $this->getBookingAvailability($data);
             if ($bookingAvailability) {
-                $timestamp = $timestamp->withBookingAvailability($bookingAvailability);
+                $timestamp = $timestamp->withBookingAvailability($bookingAvailability->toUdb3ModelBookingAvailability());
             }
 
             $timestamps[] = $timestamp;
