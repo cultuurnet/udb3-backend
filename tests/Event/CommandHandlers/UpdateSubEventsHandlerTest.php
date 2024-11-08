@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType as LegacyEventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId as LegacyLocationId;
-use CultuurNet\UDB3\Event\ValueObjects\Status as LegacyStatus;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
@@ -380,7 +379,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                new DateTime('2020-01-03 10:00:00'),
                                new DateTime('2020-01-03 12:00:00')
                            ))->withStatus(
-                               new LegacyStatus(
+                               new Status(
                                    StatusType::Unavailable(),
                                    new TranslatedStatusReason(
                                        new Language('nl'),
@@ -447,7 +446,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
                             ))->withStatus(
-                                new LegacyStatus(
+                                new Status(
                                     StatusType::Unavailable(),
                                     new TranslatedStatusReason(
                                         new Language('nl'),
@@ -459,7 +458,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
                             ))->withStatus(
-                                new LegacyStatus(
+                                new Status(
                                     StatusType::TemporarilyUnavailable(),
                                     new TranslatedStatusReason(
                                         new Language('nl'),
@@ -632,7 +631,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
                             ))->withStatus(
-                                new LegacyStatus(
+                                new Status(
                                     StatusType::Unavailable(),
                                     new TranslatedStatusReason(
                                         new Language('nl'),
@@ -711,7 +710,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
                             ))->withStatus(
-                                new LegacyStatus(
+                                new Status(
                                     StatusType::Unavailable(),
                                     new TranslatedStatusReason(
                                         new Language('nl'),
@@ -723,7 +722,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
                             ))->withStatus(
-                                new LegacyStatus(
+                                new Status(
                                     StatusType::TemporarilyUnavailable(),
                                     new TranslatedStatusReason(
                                         new Language('nl'),

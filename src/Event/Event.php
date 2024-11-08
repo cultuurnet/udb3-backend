@@ -377,7 +377,7 @@ final class Event extends Offer
 
             $timestamp = $timestamps[$index];
 
-            $subEventStatus = $subEventUpdate->getStatus() ? Status::fromUdb3ModelStatus($subEventUpdate->getStatus()) : null;
+            $subEventStatus = $subEventUpdate->getStatus() ?: null;
             $subEventBookingAvailability = $subEventUpdate->getBookingAvailability() ? BookingAvailability::fromUdb3ModelBookingAvailability($subEventUpdate->getBookingAvailability()) : null;
 
             $updatedTimestamp = new Timestamp(
