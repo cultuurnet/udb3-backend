@@ -28,7 +28,7 @@ final class OwnershipStatusGuard
     public function isAllowedToGetCreator(string $itemId, CurrentUser $currentUser): void
     {
         $isAllowed = $this->permissionVoter->isAllowed(
-            Permission::organisatiesBeheren(),
+            Permission::organisatiesBewerken(),
             $itemId,
             $currentUser->getId()
         );
@@ -41,7 +41,7 @@ final class OwnershipStatusGuard
     public function isAllowedToRequest(string $itemId, string $requesterId, CurrentUser $currentUser): void
     {
         $isOwner = $this->permissionVoter->isAllowed(
-            Permission::organisatiesBeheren(),
+            Permission::organisatiesBewerken(),
             $itemId,
             $currentUser->getId()
         );
