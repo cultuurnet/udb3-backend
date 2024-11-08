@@ -72,7 +72,8 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
                 $container->get('organizer_jsonld_repository'),
                 $container->get(UserIdentityResolver::class),
                 $container->get(OwnershipStatusGuard::class),
-                $container->get(CurrentUser::class)
+                $container->get(CurrentUser::class),
+                $container->get(OwnershipSearchRepository::class)
             )
         );
 
