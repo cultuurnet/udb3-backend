@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
@@ -763,7 +762,7 @@ class OfferLDProjectorTest extends TestCase
         $priceInfo = $priceInfo->withExtraTariff(
             new Tariff(
                 new MultilingualString(
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     'Tarief inwoners'
                 ),
                 new Money(950, new Currency('EUR'))
@@ -773,7 +772,7 @@ class OfferLDProjectorTest extends TestCase
         $priceInfo = $priceInfo->withExtraUiTPASTariff(
             new Tariff(
                 new MultilingualString(
-                    new LegacyLanguage('nl'),
+                    new Language('nl'),
                     'UiTPAS tarief'
                 ),
                 new Money(650, new Currency('EUR'))
@@ -2468,7 +2467,7 @@ class OfferLDProjectorTest extends TestCase
 
         $event = new BookingInfoUpdated($id, new BookingInfo(
             'http://www.google.be',
-            new MultilingualString(new LegacyLanguage('nl'), 'Dit is een booking info event'),
+            new MultilingualString(new Language('nl'), 'Dit is een booking info event'),
             '0471123456',
             'test@test.be'
         ));

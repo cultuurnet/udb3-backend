@@ -25,7 +25,6 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -864,7 +863,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     new BookingInfo(
                         'https://www.dehel.be/booking',
                         new MultilingualString(
-                            new LegacyLanguage('nl'),
+                            new Language('nl'),
                             'Bestel hier je tickets'
                         ),
                         '016 10 20 30',
