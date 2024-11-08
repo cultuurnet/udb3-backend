@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use PHPUnit\Framework\TestCase;
 
 class TimestampTest extends TestCase
@@ -121,7 +121,7 @@ class TimestampTest extends TestCase
                 ],
             ],
             'bookingAvailability' => [
-                'type' => BookingAvailabilityType::unavailable()->toString(),
+                'type' => BookingAvailabilityType::Unavailable()->toString(),
             ],
         ];
 

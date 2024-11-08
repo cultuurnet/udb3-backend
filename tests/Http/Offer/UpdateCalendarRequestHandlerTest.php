@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
@@ -24,7 +25,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use PHPUnit\Framework\TestCase;
 
@@ -145,7 +145,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                             )
                         )
                             ->withStatus(new Status(StatusType::Unavailable(), null))
-                            ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::unavailable()))
+                            ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable()))
                     )
                 ),
             ],
@@ -218,7 +218,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                         )
                                     )
                                 )
-                                ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::unavailable())),
+                                ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable())),
                             new Status(
                                 StatusType::TemporarilyUnavailable(),
                                 new TranslatedStatusReason(
@@ -226,7 +226,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                     new StatusReason('Covid')
                                 )
                             ),
-                            new BookingAvailability(BookingAvailabilityType::unavailable())
+                            new BookingAvailability(BookingAvailabilityType::Unavailable())
                         )
                     )
                 ),
