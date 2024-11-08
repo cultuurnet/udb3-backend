@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Calendar;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTimeInterface;
@@ -38,7 +38,7 @@ final class Timestamp implements Serializable
 
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->status = $status ?? new Status(StatusType::available(), []);
+        $this->status = $status ?? new Status(StatusType::Available(), []);
         $this->bookingAvailability = $bookingAvailability ?? BookingAvailability::available();
     }
 
