@@ -9,7 +9,6 @@ use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ValueObjects\Status as LegacyStatus;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
@@ -184,7 +183,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function updateAllStatuses(LegacyStatus $status): void
+    public function updateAllStatuses(Status $status): void
     {
         $this->updateCalendar(
             $this->calendar

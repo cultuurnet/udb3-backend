@@ -86,4 +86,9 @@ final class Status implements Serializable
     {
         return new self($udb3ModelStatus->getType(), $udb3ModelStatus->getReason());
     }
+
+    public function toUdb3ModelStatus(): Udb3ModelStatus
+    {
+        return new Udb3ModelStatus($this->getType(), $this->getReason());
+    }
 }
