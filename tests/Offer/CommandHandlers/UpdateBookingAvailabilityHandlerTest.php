@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use DateTime;
@@ -56,7 +55,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
         $this->scenario
             ->withAggregateId('1')
             ->given([$permanentEventCreated])
-            ->when(new UpdateBookingAvailability('1', LegacyBookingAvailability::unavailable()))
+            ->when(new UpdateBookingAvailability('1', BookingAvailability::Unavailable()))
             ->then([]);
     }
 
@@ -83,7 +82,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
         $this->scenario
             ->withAggregateId('1')
             ->given([$periodicEventCreated])
-            ->when(new UpdateBookingAvailability('1', LegacyBookingAvailability::unavailable()))
+            ->when(new UpdateBookingAvailability('1', BookingAvailability::Unavailable()))
             ->then([]);
     }
 
@@ -111,7 +110,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             )
         );
 
-        $updateBookingAvailability = new UpdateBookingAvailability('1', LegacyBookingAvailability::unavailable());
+        $updateBookingAvailability = new UpdateBookingAvailability('1', BookingAvailability::Unavailable());
 
         $this->scenario
             ->withAggregateId('1')
@@ -163,7 +162,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             )
         );
 
-        $updateBookingAvailability = new UpdateBookingAvailability('1', LegacyBookingAvailability::unavailable());
+        $updateBookingAvailability = new UpdateBookingAvailability('1', BookingAvailability::Unavailable());
 
         $this->scenario
             ->withAggregateId('1')
