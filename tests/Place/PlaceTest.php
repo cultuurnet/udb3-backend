@@ -32,7 +32,6 @@ use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -320,7 +319,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 new AddressTranslated(
                     $placeId,
                     LegacyAddress::fromUdb3ModelAddress($translatedAddress),
-                    new LegacyLanguage('en')
+                    new Language('en')
                 ),
             ]);
     }
@@ -466,7 +465,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                     new AddressTranslated(
                         'c5c1b435-0f3c-4b75-9f28-94d93be7078b',
                         LegacyAddress::fromUdb3ModelAddress($updatedAddress),
-                        LegacyLanguage::fromUdb3ModelLanguage($language)
+                        $language
                     ),
                 ]
             );
@@ -566,7 +565,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Place $place): void {
                     $place->updateTitle(
-                        new LegacyLanguage('nl'),
+                        new Language('nl'),
                         new Title('Test place')
                     );
                 }

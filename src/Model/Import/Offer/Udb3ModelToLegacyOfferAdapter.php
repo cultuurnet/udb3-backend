@@ -7,10 +7,10 @@ namespace CultuurNet\UDB3\Model\Import\Offer;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Offer\Offer;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
@@ -35,9 +35,7 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
 
     public function getMainLanguage(): Language
     {
-        return Language::fromUdb3ModelLanguage(
-            $this->offer->getMainLanguage()
-        );
+        return $this->offer->getMainLanguage();
     }
 
     public function getType(): EventType
