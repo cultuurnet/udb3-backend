@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Offer\ValueObjects;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 
 /**
@@ -29,17 +30,17 @@ final class BookingAvailability implements Serializable
 
     public static function available(): BookingAvailability
     {
-        return new BookingAvailability(BookingAvailabilityType::available());
+        return new BookingAvailability(BookingAvailabilityType::Available());
     }
 
     public static function unavailable(): BookingAvailability
     {
-        return new BookingAvailability(BookingAvailabilityType::unavailable());
+        return new BookingAvailability(BookingAvailabilityType::Unavailable());
     }
 
     public function getType(): BookingAvailabilityType
     {
-        return BookingAvailabilityType::fromNative($this->value);
+        return new BookingAvailabilityType($this->value);
     }
 
     public function equals(BookingAvailability $bookingAvailability): bool
@@ -49,7 +50,7 @@ final class BookingAvailability implements Serializable
 
     public static function deserialize(array $data): BookingAvailability
     {
-        return new BookingAvailability(BookingAvailabilityType::fromNative($data['type']));
+        return new BookingAvailability(new BookingAvailabilityType($data['type']));
     }
 
     public function serialize(): array
@@ -62,8 +63,6 @@ final class BookingAvailability implements Serializable
     public static function fromUdb3ModelBookingAvailability(
         Udb3ModelBookingAvailability $udb3ModelBookingAvailability
     ): self {
-        return new BookingAvailability(BookingAvailabilityType::fromNative(
-            $udb3ModelBookingAvailability->getType()->toString()
-        ));
+        return new BookingAvailability($udb3ModelBookingAvailability->getType());
     }
 }
