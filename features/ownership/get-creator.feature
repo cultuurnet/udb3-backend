@@ -22,7 +22,6 @@ Feature: Test getting creator ownership
 
         When I am authorized as JWT provider v2 user "invoerder"
         And I send a GET request to "/ownerships/%{ownershipId}/creator"
-        And show me the unparsed response
         Then the response status should be 200
         And the JSON response at "userId" should be "auth0|64089494e980aedd96740212"
         And the JSON response at "email" should be "dev+e2etest@publiq.be"
