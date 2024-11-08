@@ -18,11 +18,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class GetCreatorOwnershipRequestHandler implements RequestHandlerInterface
 {
-    private CurrentUser $currentUser;
     private DocumentRepository $organizerRepository;
-    private OwnershipSearchRepository $ownershipSearchRepository;
     private UserIdentityResolver $userIdentityResolver;
     private OwnershipStatusGuard $ownershipStatusGuard;
+    private CurrentUser $currentUser;
+    private OwnershipSearchRepository $ownershipSearchRepository;
 
     public function __construct(DocumentRepository $organizerRepository, UserIdentityResolver $userIdentityResolver, OwnershipStatusGuard $ownershipStatusGuard, CurrentUser $currentUser, OwnershipSearchRepository $ownershipSearchRepository)
     {
