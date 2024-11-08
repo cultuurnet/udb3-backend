@@ -7,9 +7,10 @@ namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp;
 
 class CalendarJSONParser
@@ -47,7 +48,7 @@ class CalendarJSONParser
             return null;
         }
 
-        return BookingAvailability::deserialize($data['bookingAvailability']);
+        return (new BookingAvailabilityDenormalizer())->denormalize($data['bookingAvailability'], BookingAvailability::class);
     }
 
     /**
@@ -60,7 +61,7 @@ class CalendarJSONParser
         }
 
         $timestamps = [];
-        foreach ($data['timeSpans'] as $index => $timeSpan) {
+        foreach ($data['timeSpans'] as $timeSpan) {
             if (empty($timeSpan['start']) || empty($timeSpan['end'])) {
                 continue;
             }
@@ -73,9 +74,9 @@ class CalendarJSONParser
             }
 
             $bookingAvailability = isset($timeSpan['bookingAvailability']) ?
-                BookingAvailability::deserialize($timeSpan['bookingAvailability']) : $this->getBookingAvailability($data);
+                (new BookingAvailabilityDenormalizer())->denormalize($timeSpan['bookingAvailability'], BookingAvailability::class) : $this->getBookingAvailability($data);
             if ($bookingAvailability) {
-                $timestamp = $timestamp->withBookingAvailability($bookingAvailability->toUdb3ModelBookingAvailability());
+                $timestamp = $timestamp->withBookingAvailability($bookingAvailability);
             }
 
             $timestamps[] = $timestamp;
