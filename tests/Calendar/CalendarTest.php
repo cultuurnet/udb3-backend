@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -28,7 +28,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
@@ -108,7 +108,7 @@ class CalendarTest extends TestCase
      */
     public function it_determines_booking_availability_from_sub_events(
         Calendar $calendar,
-        BookingAvailability $expectedBookingAvailability
+        LegacyBookingAvailability $expectedBookingAvailability
     ): void {
         $this->assertEquals($expectedBookingAvailability, $calendar->getBookingAvailability());
     }
@@ -126,11 +126,11 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             null,
-                            BookingAvailability::available()
+                            BookingAvailability::Available()
                         ),
                     ]
                 ),
-                BookingAvailability::available(),
+                LegacyBookingAvailability::available(),
             ],
             'single unavailable' => [
                 new Calendar(
@@ -142,11 +142,11 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             null,
-                            BookingAvailability::unavailable()
+                            BookingAvailability::Unavailable()
                         ),
                     ]
                 ),
-                BookingAvailability::unavailable(),
+                LegacyBookingAvailability::unavailable(),
             ],
             'multiple available' => [
                 new Calendar(
@@ -158,17 +158,17 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             null,
-                            BookingAvailability::unavailable()
+                            BookingAvailability::Unavailable()
                         ),
                         new Timestamp(
                             DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             null,
-                            BookingAvailability::available()
+                            BookingAvailability::Available()
                         ),
                     ]
                 ),
-                BookingAvailability::available(),
+                LegacyBookingAvailability::available(),
             ],
             'multiple unavailable' => [
                 new Calendar(
@@ -180,17 +180,17 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             null,
-                            BookingAvailability::unavailable()
+                            BookingAvailability::Unavailable()
                         ),
                         new Timestamp(
                             DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             null,
-                            BookingAvailability::unavailable()
+                            BookingAvailability::Unavailable()
                         ),
                     ]
                 ),
-                BookingAvailability::unavailable(),
+                LegacyBookingAvailability::unavailable(),
             ],
         ];
     }
@@ -212,9 +212,9 @@ class CalendarTest extends TestCase
             ]
         );
 
-        $singleCalendar = $singleCalendar->withBookingAvailability(BookingAvailability::unavailable());
+        $singleCalendar = $singleCalendar->withBookingAvailability(LegacyBookingAvailability::unavailable());
 
-        $this->assertEquals(BookingAvailability::unavailable(), $singleCalendar->getBookingAvailability());
+        $this->assertEquals(LegacyBookingAvailability::unavailable(), $singleCalendar->getBookingAvailability());
     }
 
     /**
@@ -238,9 +238,9 @@ class CalendarTest extends TestCase
             ]
         );
 
-        $multipleCalendar = $multipleCalendar->withBookingAvailability(BookingAvailability::unavailable());
+        $multipleCalendar = $multipleCalendar->withBookingAvailability(LegacyBookingAvailability::unavailable());
 
-        $this->assertEquals(BookingAvailability::unavailable(), $multipleCalendar->getBookingAvailability());
+        $this->assertEquals(LegacyBookingAvailability::unavailable(), $multipleCalendar->getBookingAvailability());
     }
 
     /**
@@ -252,7 +252,7 @@ class CalendarTest extends TestCase
 
         $this->expectException(CalendarTypeNotSupported::class);
 
-        $permanentCalendar->withBookingAvailability(BookingAvailability::unavailable());
+        $permanentCalendar->withBookingAvailability(LegacyBookingAvailability::unavailable());
     }
 
     /**
@@ -268,7 +268,7 @@ class CalendarTest extends TestCase
 
         $this->expectException(CalendarTypeNotSupported::class);
 
-        $periodicCalendar->withBookingAvailability(BookingAvailability::unavailable());
+        $periodicCalendar->withBookingAvailability(LegacyBookingAvailability::unavailable());
     }
 
     /**
@@ -288,10 +288,10 @@ class CalendarTest extends TestCase
             ]
         );
 
-        $singleCalendar = $singleCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
+        $singleCalendar = $singleCalendar->withBookingAvailabilityOnTimestamps(LegacyBookingAvailability::unavailable());
 
         $this->assertEquals(
-            BookingAvailability::unavailable(),
+            BookingAvailability::Unavailable(),
             $singleCalendar->getTimestamps()[0]->getBookingAvailability()
         );
     }
@@ -317,14 +317,14 @@ class CalendarTest extends TestCase
             ]
         );
 
-        $multipleCalendar = $multipleCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
+        $multipleCalendar = $multipleCalendar->withBookingAvailabilityOnTimestamps(LegacyBookingAvailability::unavailable());
 
         $this->assertEquals(
-            BookingAvailability::unavailable(),
+            BookingAvailability::Unavailable(),
             $multipleCalendar->getTimestamps()[0]->getBookingAvailability()
         );
         $this->assertEquals(
-            BookingAvailability::unavailable(),
+            BookingAvailability::Unavailable(),
             $multipleCalendar->getTimestamps()[1]->getBookingAvailability()
         );
     }
@@ -338,7 +338,7 @@ class CalendarTest extends TestCase
 
         $this->expectException(CalendarTypeNotSupported::class);
 
-        $permanentCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
+        $permanentCalendar->withBookingAvailabilityOnTimestamps(LegacyBookingAvailability::unavailable());
     }
 
     /**
@@ -354,7 +354,7 @@ class CalendarTest extends TestCase
 
         $this->expectException(CalendarTypeNotSupported::class);
 
-        $periodicCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
+        $periodicCalendar->withBookingAvailabilityOnTimestamps(LegacyBookingAvailability::unavailable());
     }
 
     /**
@@ -549,13 +549,13 @@ class CalendarTest extends TestCase
                     DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
                     DateTimeFactory::fromAtom('2021-03-18T16:00:00+01:00'),
                     null,
-                    BookingAvailability::unavailable()
+                    BookingAvailability::Unavailable()
                 ),
             ]
         );
 
         $this->assertEquals(
-            $calendar->withBookingAvailability(BookingAvailability::unavailable()),
+            $calendar->withBookingAvailability(LegacyBookingAvailability::unavailable()),
             Calendar::deserialize(
                 [
                     'type' => 'single',
@@ -1119,16 +1119,16 @@ class CalendarTest extends TestCase
                             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
                             null,
-                            BookingAvailability::unavailable()
+                            BookingAvailability::Unavailable()
                         ),
                         new Timestamp(
                             DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
                             DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
                             null,
-                            BookingAvailability::unavailable()
+                            BookingAvailability::Unavailable()
                         ),
                     ]
-                ))->withBookingAvailability(BookingAvailability::available()),
+                ))->withBookingAvailability(LegacyBookingAvailability::available()),
                 'jsonld' => [
                     'calendarType' => 'multiple',
                     'startDate' => '2016-03-06T10:00:00+01:00',
@@ -1443,12 +1443,12 @@ class CalendarTest extends TestCase
                 DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00')
             ),
             new Status(Udb3ModelStatusType::Unavailable()),
-            new Udb3ModelBookingAvailability(BookingAvailabilityType::Unavailable())
+            new BookingAvailability(BookingAvailabilityType::Unavailable())
         );
 
         $udb3ModelCalendar = (new SingleSubEventCalendar($subEvent))
             ->withStatus(new Status(Udb3ModelStatusType::Unavailable()))
-            ->withBookingAvailability(new Udb3ModelBookingAvailability(BookingAvailabilityType::Unavailable()));
+            ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable()));
 
         $expected = (new Calendar(
             CalendarType::SINGLE(),
@@ -1459,12 +1459,12 @@ class CalendarTest extends TestCase
                     DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                     DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
                     new Status(StatusType::Unavailable(), null),
-                    BookingAvailability::unavailable()
+                    BookingAvailability::Unavailable()
                 ),
             ],
             []
         ))->withStatus(new Status(StatusType::Unavailable(), null))
-            ->withBookingAvailability(BookingAvailability::unavailable());
+            ->withBookingAvailability(LegacyBookingAvailability::unavailable());
 
         $actual = Calendar::fromUdb3ModelCalendar($udb3ModelCalendar);
 
@@ -1483,7 +1483,7 @@ class CalendarTest extends TestCase
                     DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00')
                 ),
                 new Status(Udb3ModelStatusType::Unavailable()),
-                new Udb3ModelBookingAvailability(BookingAvailabilityType::Unavailable())
+                new BookingAvailability(BookingAvailabilityType::Unavailable())
             ),
             new SubEvent(
                 new DateRange(
@@ -1491,13 +1491,13 @@ class CalendarTest extends TestCase
                     DateTimeFactory::fromAtom('2016-03-10T10:00:00+01:00')
                 ),
                 new Status(Udb3ModelStatusType::Unavailable()),
-                new Udb3ModelBookingAvailability(BookingAvailabilityType::Unavailable())
+                new BookingAvailability(BookingAvailabilityType::Unavailable())
             )
         );
 
         $udb3ModelCalendar = (new MultipleSubEventsCalendar($subEvents))
             ->withStatus(new Status(Udb3ModelStatusType::Unavailable()))
-            ->withBookingAvailability(new Udb3ModelBookingAvailability(BookingAvailabilityType::Unavailable()));
+            ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable()));
 
         $expected = (new Calendar(
             CalendarType::MULTIPLE(),
@@ -1508,18 +1508,18 @@ class CalendarTest extends TestCase
                     DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
                     DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
                     new Status(StatusType::Unavailable(), null),
-                    BookingAvailability::unavailable()
+                    BookingAvailability::Unavailable()
                 ),
                 new Timestamp(
                     DateTimeFactory::fromAtom('2016-03-09T10:00:00+01:00'),
                     DateTimeFactory::fromAtom('2016-03-10T10:00:00+01:00'),
                     new Status(StatusType::Unavailable(), null),
-                    BookingAvailability::unavailable()
+                    BookingAvailability::Unavailable()
                 ),
             ],
             []
         ))->withStatus(new Status(StatusType::Unavailable(), null))
-            ->withBookingAvailability(BookingAvailability::unavailable());
+            ->withBookingAvailability(LegacyBookingAvailability::unavailable());
 
         $actual = Calendar::fromUdb3ModelCalendar($udb3ModelCalendar);
 
