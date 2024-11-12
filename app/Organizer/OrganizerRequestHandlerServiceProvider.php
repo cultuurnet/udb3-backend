@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetContributorsRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetCreatorRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
@@ -36,6 +37,7 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Organizer\ReadModel\RDF\OrganizerJsonToTurtleConverter;
 use CultuurNet\UDB3\User\CurrentUser;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 
 final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvider
 {
@@ -44,6 +46,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
         return [
             ImportOrganizerRequestHandler::class,
             GetOrganizerRequestHandler::class,
+            GetCreatorRequestHandler::class,
             DeleteOrganizerRequestHandler::class,
             UpdateTitleRequestHandler::class,
             UpdateDescriptionRequestHandler::class,
@@ -101,6 +104,16 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
                     )
                 );
             }
+        );
+
+        $container->addShared(
+            GetCreatorRequestHandler::class,
+            fn () => new GetCreatorRequestHandler(
+                $container->get('organizer_jsonld_repository'),
+                $container->get(UserIdentityResolver::class),
+                $container->get('organizer_permission_voter'),
+                $container->get(CurrentUser::class),
+            )
         );
 
         $container->addShared(

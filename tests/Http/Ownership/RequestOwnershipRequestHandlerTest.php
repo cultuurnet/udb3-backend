@@ -113,7 +113,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
             ->with(
-                Permission::organisatiesBeheren(),
+                Permission::organisatiesBewerken(),
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'auth0|63e22626e39a8ca1264bd29b'
             )
@@ -180,7 +180,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
             ->with(
-                Permission::organisatiesBeheren(),
+                Permission::organisatiesBewerken(),
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'auth0|63e22626e39a8ca1264bd29b'
             )
@@ -235,7 +235,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
             ->with(
-                Permission::organisatiesBeheren(),
+                Permission::organisatiesBewerken(),
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'auth0|63e22626e39a8ca1264bd29b'
             )
@@ -302,7 +302,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
             ->with(
-                Permission::organisatiesBeheren(),
+                Permission::organisatiesBewerken(),
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'auth0|63e22626e39a8ca1264bd29b'
             )
