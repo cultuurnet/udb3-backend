@@ -9,11 +9,11 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
 use CultuurNet\UDB3\Place\Place;
@@ -63,7 +63,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
                 'Faith no More',
                 new EventType('0.50.4.0.0', 'Concert'),
                 $locationId,
-                new Calendar(CalendarType::PERMANENT()),
+                new Calendar(CalendarType::permanent()),
                 new Theme('1.8.1.0.0', 'Rock')
             )
         );
@@ -91,7 +91,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
                 'Faith no More',
                 new EventType('0.50.4.0.0', 'Concert'),
                 $locationId,
-                new Calendar(CalendarType::PERMANENT()),
+                new Calendar(CalendarType::permanent()),
                 new Theme('1.8.1.0.0', 'Rock')
             )
         );

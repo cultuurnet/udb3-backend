@@ -18,12 +18,12 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -326,7 +326,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_CalendarUpdated_event(): void
     {
-        $event = new CalendarUpdated('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new Calendar(CalendarType::PERMANENT()));
+        $event = new CalendarUpdated('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new Calendar(CalendarType::permanent()));
         $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
 
         $this->historyProjector->handle($domainMessage);
@@ -754,7 +754,7 @@ class HistoryProjectorTest extends TestCase
                 new Locality('Leuven'),
                 new CountryCode('BE')
             ),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $domainMessage = $this->aDomainMessageForEvent($event->getPlaceId(), $event);
@@ -995,7 +995,7 @@ class HistoryProjectorTest extends TestCase
                 new CountryCode('BE')
             ),
             new Calendar(
-                CalendarType::PERMANENT()
+                CalendarType::permanent()
             )
         );
     }

@@ -8,7 +8,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
@@ -41,6 +40,7 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -92,7 +92,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d70f5d94-7072-423d-9144-9354cb794c62'),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
     }
 
@@ -104,7 +104,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
     }
 
@@ -116,7 +116,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('59400d1e-6f98-4da9-ab08-f58adceb7204'),
-            new Calendar(CalendarType::PERMANENT()),
+            new Calendar(CalendarType::permanent()),
             new Theme('1.8.3.1.0', 'Pop en rock')
         );
     }
@@ -281,7 +281,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new Title('foo'),
                         new EventType('0.50.4.0.0', 'concert'),
                         new LocationId('00000000-0000-0000-0000-000000000000'),
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     );
                     $event->updateAttendanceMode(AttendanceMode::online());
                 }
@@ -292,7 +292,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'foo',
                     new EventType('0.50.4.0.0', 'concert'),
                     new LocationId('00000000-0000-0000-0000-000000000000'),
-                    new Calendar(CalendarType::PERMANENT())
+                    new Calendar(CalendarType::permanent())
                 ),
             ]);
     }
@@ -313,7 +313,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new Title('foo'),
                         new EventType('0.50.4.0.0', 'concert'),
                         new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     );
                     $event->updateAttendanceMode(AttendanceMode::mixed());
                 }
@@ -324,7 +324,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'foo',
                     new EventType('0.50.4.0.0', 'concert'),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new Calendar(CalendarType::PERMANENT())
+                    new Calendar(CalendarType::permanent())
                 ),
             ]);
     }
@@ -345,7 +345,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new Title('foo'),
                         new EventType('0.50.4.0.0', 'concert'),
                         new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     );
                     $event->updateAttendanceMode(AttendanceMode::offline());
                 }
@@ -356,7 +356,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'foo',
                     new EventType('0.50.4.0.0', 'concert'),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new Calendar(CalendarType::PERMANENT())
+                    new Calendar(CalendarType::permanent())
                 ),
             ]);
     }
@@ -376,7 +376,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId($locationUuid),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $expectedEvent = new AudienceUpdated($eventUuid, new Audience(AudienceType::education()));
@@ -399,7 +399,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
-            CalendarType::PERMANENT()
+            CalendarType::permanent()
         );
 
         $event = $this->event;
@@ -506,7 +506,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
 
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
@@ -1636,7 +1636,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $event->copy(
             'e49430ca-5729-4768-8364-02ddb385517a',
             new Calendar(
-                CalendarType::PERMANENT()
+                CalendarType::permanent()
             )
         );
     }
@@ -1649,7 +1649,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
-            CalendarType::PERMANENT()
+            CalendarType::permanent()
         );
         $label = new Label(new LabelName('ABC'));
 
@@ -1693,7 +1693,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
-            CalendarType::PERMANENT()
+            CalendarType::permanent()
         );
         $audience = new Audience(AudienceType::education());
 
@@ -1732,7 +1732,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
-            CalendarType::PERMANENT()
+            CalendarType::permanent()
         );
 
         $publicationDate = new \DateTimeImmutable();
@@ -1804,7 +1804,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Event $event): void {
                     $event->updateCalendar(
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     );
                 }
             )

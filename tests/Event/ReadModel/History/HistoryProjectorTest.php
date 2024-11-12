@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
@@ -68,6 +67,7 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -273,7 +273,7 @@ class HistoryProjectorTest extends TestCase
             'Faith no More',
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),
-            new Calendar(CalendarType::PERMANENT()),
+            new Calendar(CalendarType::permanent()),
             new Theme('1.8.1.0.0', 'Rock')
         );
 
@@ -314,7 +314,7 @@ class HistoryProjectorTest extends TestCase
         $eventCopied = new EventCopied(
             $eventId,
             $originalEventId,
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $now = new \DateTime();
@@ -658,7 +658,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_calendar_updated(): void
     {
-        $event = new CalendarUpdated(self::EVENT_ID_1, new Calendar(CalendarType::PERMANENT()));
+        $event = new CalendarUpdated(self::EVENT_ID_1, new Calendar(CalendarType::permanent()));
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),
@@ -1325,7 +1325,7 @@ class HistoryProjectorTest extends TestCase
             'title',
             new EventType('0.0.0.0', 'event type'),
             new LocationId('a0c6c66e-d933-4817-a335-2a5a51df1fa7'),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $domainMessage = new DomainMessage(

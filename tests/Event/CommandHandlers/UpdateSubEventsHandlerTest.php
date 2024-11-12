@@ -9,7 +9,6 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
-use CultuurNet\UDB3\Calendar\CalendarType as LegacyCalendarType;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
@@ -18,6 +17,7 @@ use CultuurNet\UDB3\Event\EventType as LegacyEventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId as LegacyLocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
@@ -47,7 +47,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Permanent Event',
             new LegacyEventType('0.50.4.0.0', 'concert'),
             new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new LegacyCalendar(LegacyCalendarType::PERMANENT())
+            new LegacyCalendar(CalendarType::permanent())
         );
 
         $this->expectException(CalendarTypeNotSupported::class);
@@ -71,7 +71,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             new LegacyEventType('0.50.4.0.0', 'concert'),
             new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new LegacyCalendar(
-                LegacyCalendarType::PERIODIC(),
+                CalendarType::periodic(),
                 new DateTime('2020-01-01 10:00:00'),
                 new DateTime('2020-01-01 12:00:00')
             )
@@ -98,7 +98,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             new LegacyEventType('0.50.4.0.0', 'concert'),
             new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new LegacyCalendar(
-                LegacyCalendarType::SINGLE(),
+                CalendarType::single(),
                 null,
                 null,
                 [
@@ -144,7 +144,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -166,7 +166,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new CalendarUpdated(
                     '1',
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -190,7 +190,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -214,7 +214,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new CalendarUpdated(
                     '1',
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -238,7 +238,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -261,7 +261,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new CalendarUpdated(
                     '1',
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -285,7 +285,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -312,7 +312,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new CalendarUpdated(
                     '1',
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -336,7 +336,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                    new LegacyEventType('0.50.4.0.0', 'concert'),
                    new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                    new LegacyCalendar(
-                       LegacyCalendarType::MULTIPLE(),
+                       CalendarType::multiple(),
                        null,
                        null,
                        [
@@ -366,7 +366,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                new CalendarUpdated(
                    '1',
                    new LegacyCalendar(
-                       LegacyCalendarType::MULTIPLE(),
+                       CalendarType::multiple(),
                        null,
                        null,
                        [
@@ -398,7 +398,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -437,7 +437,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new CalendarUpdated(
                     '1',
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -477,7 +477,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -503,7 +503,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new CalendarUpdated(
                     '1',
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -527,7 +527,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -558,7 +558,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new CalendarUpdated(
                     '1',
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -582,7 +582,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -618,7 +618,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new CalendarUpdated(
                     '1',
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -650,7 +650,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     new LegacyEventType('0.50.4.0.0', 'concert'),
                     new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -701,7 +701,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 new CalendarUpdated(
                     '1',
                     new LegacyCalendar(
-                        LegacyCalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [

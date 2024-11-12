@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use PHPUnit\Framework\TestCase;
 
 class CalendarUpdatedTest extends TestCase
@@ -24,7 +24,7 @@ class CalendarUpdatedTest extends TestCase
         $this->placeId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
 
         $this->calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );

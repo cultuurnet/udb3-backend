@@ -9,12 +9,12 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\OfferRepository;
@@ -42,10 +42,10 @@ class UpdateCalendarHandlerTest extends CommandHandlerScenarioTestCase
     {
         $id = '1ba6bafc-4368-4947-b3a4-48ea71bfe1a4';
 
-        $initialCalendar = new Calendar(CalendarType::PERMANENT());
+        $initialCalendar = new Calendar(CalendarType::permanent());
 
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             new DateTimeImmutable(),
             new DateTimeImmutable()
         );

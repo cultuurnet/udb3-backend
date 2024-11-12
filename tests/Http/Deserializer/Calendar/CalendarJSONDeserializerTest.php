@@ -9,10 +9,10 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
@@ -82,7 +82,7 @@ class CalendarJSONDeserializerTest extends TestCase
         ];
 
         $expectedCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-26T09:00:00+01:00'),
             DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00'),
             [],
@@ -108,7 +108,7 @@ class CalendarJSONDeserializerTest extends TestCase
         );
 
         $expectedCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-26T09:00:00+01:00'),
             DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00')
         );
@@ -145,7 +145,7 @@ class CalendarJSONDeserializerTest extends TestCase
         );
 
         $expectedCalendar = (new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             null,
             null,
             [
@@ -214,7 +214,7 @@ class CalendarJSONDeserializerTest extends TestCase
         ];
 
         $expectedCalendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             null,
             null,
             $timestamps
@@ -269,7 +269,7 @@ class CalendarJSONDeserializerTest extends TestCase
         ];
 
         $expectedCalendar = (new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             null,
             null,
             $timestamps
@@ -306,23 +306,23 @@ class CalendarJSONDeserializerTest extends TestCase
         return [
             'calendar_of_type_PERMANENT_when_json_only_contains_opening_hours' => [
                 'calendarData' => SampleFiles::read(__DIR__ . '/samples/calendar_with_opening_hours.json'),
-                'expectedCalendarType' => CalendarType::PERMANENT(),
+                'expectedCalendarType' => CalendarType::permanent(),
             ],
             'calendar_of_type_PERMANENT_when_json_is_empty' => [
                 'calendarData' => SampleFiles::read(__DIR__ . '/samples/empty_calendar.json'),
-                'expectedCalendarType' => CalendarType::PERMANENT(),
+                'expectedCalendarType' => CalendarType::permanent(),
             ],
             'calendar_of_type_SINGLE_when_json_contains_a_single_time_span' => [
                 'calendarData' => SampleFiles::read(__DIR__ . '/samples/calendar_with_single_time_span.json'),
-                'expectedCalendarType' => CalendarType::SINGLE(),
+                'expectedCalendarType' => CalendarType::single(),
             ],
             'calendar_of_type_MULTIPLE_when_json_contains_multiple_time_spans' => [
                 'calendarData' => SampleFiles::read(__DIR__ . '/samples/calendar_with_multiple_time_spans.json'),
-                'expectedCalendarType' => CalendarType::MULTIPLE(),
+                'expectedCalendarType' => CalendarType::multiple(),
             ],
             'calendar_of_type_PERIODIC_when_json_contains_start_and_end_date' => [
                 'calendarData' => SampleFiles::read(__DIR__ . '/samples/calendar_with_start_and_end_date.json'),
-                'expectedCalendarType' => CalendarType::PERIODIC(),
+                'expectedCalendarType' => CalendarType::periodic(),
             ],
         ];
     }

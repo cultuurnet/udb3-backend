@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -26,7 +26,7 @@ class CreateEventTest extends TestCase
         $title = new Title('some representative title');
         $type = new EventType('0.50.4.0.0', 'concert');
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
-        $calendar = new Calendar(CalendarType::PERMANENT());
+        $calendar = new Calendar(CalendarType::permanent());
         $theme = new Theme('0.1.0.1.0.1', 'blues');
 
         $publicationDate = new DateTimeImmutable('2019-02-14');
@@ -56,7 +56,7 @@ class CreateEventTest extends TestCase
         $title = new Title('some representative title');
         $type = new EventType('0.50.4.0.0', 'concert');
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
-        $calendar = new Calendar(CalendarType::PERMANENT());
+        $calendar = new Calendar(CalendarType::permanent());
         $theme = new Theme('0.1.0.1.0.1', 'blues');
 
         $command = new CreateEvent(

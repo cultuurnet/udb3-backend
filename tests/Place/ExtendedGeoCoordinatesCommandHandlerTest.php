@@ -9,8 +9,8 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -61,7 +61,7 @@ class ExtendedGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTes
             'Some place',
             new EventType('01.01', 'Some category'),
             LegacyAddress::fromUdb3ModelAddress($address),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $command = new UpdateGeoCoordinatesFromAddress(self::PLACE_ID, $address);

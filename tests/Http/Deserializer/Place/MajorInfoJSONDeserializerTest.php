@@ -9,8 +9,8 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\SampleFiles;
@@ -39,6 +39,6 @@ final class MajorInfoJSONDeserializerTest extends TestCase
         $this->assertEquals(new Title('Test place'), $majorInfo->getTitle());
         $this->assertEquals(new EventType('3CuHvenJ+EGkcvhXLg9Ykg', 'Archeologische Site'), $majorInfo->getType());
         $this->assertEquals($expectedAddress, $majorInfo->getAddress());
-        $this->assertEquals(new Calendar(CalendarType::PERMANENT()), $majorInfo->getCalendar());
+        $this->assertEquals(new Calendar(CalendarType::permanent()), $majorInfo->getCalendar());
     }
 }

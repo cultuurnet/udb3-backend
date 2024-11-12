@@ -9,7 +9,6 @@ use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
@@ -33,6 +32,7 @@ use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
@@ -833,7 +833,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new UpdateCalendar(
                     $placeId,
                     (new Calendar(
-                        CalendarType::PERMANENT(),
+                        CalendarType::permanent(),
                         null,
                         null,
                         [],
@@ -1018,7 +1018,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateCalendar(
                     $placeId,
-                    new Calendar(CalendarType::PERMANENT())
+                    new Calendar(CalendarType::permanent())
                 ),
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
@@ -1235,7 +1235,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateCalendar(
                     $placeId,
-                    new Calendar(CalendarType::PERMANENT())
+                    new Calendar(CalendarType::permanent())
                 ),
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
@@ -1322,7 +1322,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateCalendar(
                     $placeId,
-                    new Calendar(CalendarType::PERMANENT())
+                    new Calendar(CalendarType::permanent())
                 ),
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),

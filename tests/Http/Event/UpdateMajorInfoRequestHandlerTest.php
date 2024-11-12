@@ -6,11 +6,11 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use PHPUnit\Framework\TestCase;
 
@@ -53,7 +53,7 @@ class UpdateMajorInfoRequestHandlerTest extends TestCase
                 new Title('Updated title'),
                 new EventType('0.17.0.0.0', 'Route'),
                 new LocationId('place_id'),
-                new Calendar(CalendarType::PERMANENT())
+                new Calendar(CalendarType::permanent())
             )],
             $commandBus->getRecordedCommands()
         );

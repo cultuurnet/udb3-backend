@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Event\ReadModel\Permission;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -15,6 +14,7 @@ use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
@@ -129,7 +129,7 @@ final class ProjectorTest extends TestCase
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(
-                CalendarType::PERMANENT()
+                CalendarType::permanent()
             )
         );
 
@@ -164,7 +164,7 @@ final class ProjectorTest extends TestCase
         $payload = new EventCopied(
             $eventId,
             $originalEventId,
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $msg = DomainMessage::recordNow(

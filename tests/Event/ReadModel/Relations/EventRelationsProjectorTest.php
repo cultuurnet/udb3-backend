@@ -8,7 +8,6 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
@@ -19,6 +18,7 @@ use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -238,7 +238,7 @@ class EventRelationsProjectorTest extends TestCase
         $eventCopied = new EventCopied(
             $eventId,
             $originalEventId,
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $domainMessage = new DomainMessage(
@@ -293,7 +293,7 @@ class EventRelationsProjectorTest extends TestCase
             new EventType('0.1.1.1', 'Test label'),
             new LocationId($locationId),
             new Calendar(
-                CalendarType::PERMANENT()
+                CalendarType::permanent()
             )
         );
 
