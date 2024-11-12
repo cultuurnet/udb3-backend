@@ -37,7 +37,6 @@ final class GetCreatorRequestHandler implements RequestHandlerInterface
         try {
             $routeParameters = new RouteParameters($request);
             $organizerId = $routeParameters->getOrganizerId();
-            $organizer = $this->organizerRepository->fetch($organizerId);
 
             $isAllowed = $this->permissionVoter->isAllowed(
                 Permission::organisatiesBewerken(),
@@ -48,6 +47,8 @@ final class GetCreatorRequestHandler implements RequestHandlerInterface
             if (!$isAllowed) {
                 throw ApiProblem::forbidden('You are not allowed to get creator for this item');
             }
+
+            $organizer = $this->organizerRepository->fetch($organizerId);
 
             $creatorId = $organizer->getBody()->creator;
             $creator = $this->userIdentityResolver->getUserById($creatorId);

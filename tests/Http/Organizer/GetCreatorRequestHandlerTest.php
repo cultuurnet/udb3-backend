@@ -156,6 +156,15 @@ class GetCreatorRequestHandlerTest extends TestCase
             ->withRouteParameter('organizerId', $organizerId)
             ->build('GET');
 
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBewerken(),
+                $organizerId,
+                $this->currentUser->getId()
+            )
+            ->willReturn(true);
+
         $this->organizerRepository->expects($this->once())
             ->method('fetch')
             ->with($organizerId)
@@ -178,13 +187,6 @@ class GetCreatorRequestHandlerTest extends TestCase
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', $organizerId)
             ->build('GET');
-
-        $this->organizerRepository->expects($this->once())
-            ->method('fetch')
-            ->with($organizerId)
-            ->willReturn(
-                new JsonDocument($organizerId, Json::encode(['creator' => $creatorId]))
-            );
 
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
