@@ -82,6 +82,7 @@ use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispat
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
+use CultuurNet\UDB3\Offer\Validator\PreventDeleteUitpasPlace;
 use CultuurNet\UDB3\Place\ReadModel\RDF\PlaceJsonToTurtleConverter;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -342,7 +343,18 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             DeleteOfferHandler::class,
-            fn () => new DeleteOfferHandler($container->get(OfferRepository::class))
+            fn () => new DeleteOfferHandler(
+                $container->get(OfferRepository::class),
+                $container->get(PreventDeleteUitpasPlace::class)
+            )
+        );
+
+        $container->addShared(
+            PreventDeleteUitpasPlace::class,
+            fn () => new PreventDeleteUitpasPlace(
+                $container->get('place_jsonld_repository'),
+                $container->get('config')['uitpas']['labels']
+            )
         );
 
         $container->addShared(
