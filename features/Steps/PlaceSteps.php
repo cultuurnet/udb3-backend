@@ -153,6 +153,18 @@ trait PlaceSteps
     }
 
     /**
+     * @When I delete the place at :url then the response status should be :responseStatus
+     */
+    public function iDeleteThePlaceAtThenTheResponseStatusShouldBe(string $url, int $responseStatus): void
+    {
+        $this->responseState->setResponse(
+            $this->getHttpClient()->delete($url)
+        );
+
+        $this->theResponseStatusShouldBe($responseStatus);
+    }
+
+    /**
      * @When I publish the place at :url
      */
     public function iPublishThePlaceAt(string $url): void

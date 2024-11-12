@@ -25,6 +25,14 @@ trait UtilitySteps
     }
 
     /**
+     * @Given I set the name at value :value
+     */
+    public function iSetTheNameAtValue(string $value): void
+    {
+        $this->variableState->setVariable('name', $value);
+    }
+
+    /**
      * @Given I create a random name of :nrOfCharacters characters and keep it as :variableName
      */
     public function iCreateARandomNameOfCharactersAndKeepItAs(int $nrOfCharacters, string $variableName): void
