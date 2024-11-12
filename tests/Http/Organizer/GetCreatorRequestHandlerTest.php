@@ -6,12 +6,8 @@ namespace CultuurNet\UDB3\Http\Organizer;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
-use CultuurNet\UDB3\Http\Ownership\OwnershipStatusGuard;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Ownership\OwnershipState;
-use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
-use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -38,12 +34,7 @@ class GetCreatorRequestHandlerTest extends TestCase
      * @var UserIdentityResolver&MockObject
      */
     private $userIdentityResolver;
-    private OwnershipStatusGuard $ownershipStatusGuard;
     private CurrentUser $currentUser;
-    /**
-     * @var OwnershipSearchRepository&MockObject
-     */
-    private $ownershipSearchRepository;
     /**
      * @var PermissionVoter&MockObject
      */
@@ -55,20 +46,13 @@ class GetCreatorRequestHandlerTest extends TestCase
 
         $this->organizerRepository = $this->createMock(DocumentRepository::class);
         $this->userIdentityResolver = $this->createMock(UserIdentityResolver::class);
-        $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
         $this->permissionVoter = $this->createMock(PermissionVoter::class);
-        $this->ownershipStatusGuard = new OwnershipStatusGuard(
-            $this->ownershipSearchRepository,
-            $this->permissionVoter
-        );
         $this->currentUser = new CurrentUser(Uuid::uuid4()->toString());
-
         $this->getCreatorRequestHandler = new GetCreatorRequestHandler(
             $this->organizerRepository,
             $this->userIdentityResolver,
-            $this->ownershipStatusGuard,
+            $this->permissionVoter,
             $this->currentUser,
-            $this->ownershipSearchRepository
         );
     }
 
@@ -77,7 +61,6 @@ class GetCreatorRequestHandlerTest extends TestCase
      */
     public function it_handles_getting_the_creator_details(): void
     {
-        $ownershipId = Uuid::uuid4()->toString();
         $creatorId = Uuid::uuid4()->toString();
         $organizerId = Uuid::uuid4()->toString();
 
@@ -88,19 +71,8 @@ class GetCreatorRequestHandlerTest extends TestCase
         );
 
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('ownershipId', $ownershipId)
+            ->withRouteParameter('organizerId', $organizerId)
             ->build('GET');
-
-        $this->ownershipSearchRepository->expects($this->once())
-            ->method('getById')
-            ->with($ownershipId)
-            ->willReturn(new OwnershipItem(
-                $ownershipId,
-                $organizerId,
-                'organizer',
-                'auth0|63e22626e39a8ca1264bd29b',
-                OwnershipState::approved()->toString()
-            ));
 
         $this->organizerRepository->expects($this->once())
             ->method('fetch')
@@ -139,24 +111,12 @@ class GetCreatorRequestHandlerTest extends TestCase
      */
     public function it_throws_an_api_problem_when_creator_is_not_found(): void
     {
-        $ownershipId = Uuid::uuid4()->toString();
         $creatorId = Uuid::uuid4()->toString();
         $organizerId = Uuid::uuid4()->toString();
 
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('ownershipId', $ownershipId)
+            ->withRouteParameter('organizerId', $organizerId)
             ->build('GET');
-
-        $this->ownershipSearchRepository->expects($this->once())
-            ->method('getById')
-            ->with($ownershipId)
-            ->willReturn(new OwnershipItem(
-                $ownershipId,
-                $organizerId,
-                'organizer',
-                'auth0|63e22626e39a8ca1264bd29b',
-                OwnershipState::approved()->toString()
-            ));
 
         $this->organizerRepository->expects($this->once())
             ->method('fetch')
@@ -190,23 +150,11 @@ class GetCreatorRequestHandlerTest extends TestCase
      */
     public function it_throws_an_api_problem_when_organizer_is_not_found(): void
     {
-        $ownershipId = Uuid::uuid4()->toString();
         $organizerId = Uuid::uuid4()->toString();
 
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('ownershipId', $ownershipId)
+            ->withRouteParameter('organizerId', $organizerId)
             ->build('GET');
-
-        $this->ownershipSearchRepository->expects($this->once())
-            ->method('getById')
-            ->with($ownershipId)
-            ->willReturn(new OwnershipItem(
-                $ownershipId,
-                $organizerId,
-                'organizer',
-                'auth0|63e22626e39a8ca1264bd29b',
-                OwnershipState::approved()->toString()
-            ));
 
         $this->organizerRepository->expects($this->once())
             ->method('fetch')
@@ -224,24 +172,12 @@ class GetCreatorRequestHandlerTest extends TestCase
      */
     public function it_throws_an_api_problem_when_user_is_not_owner(): void
     {
-        $ownershipId = Uuid::uuid4()->toString();
         $organizerId = Uuid::uuid4()->toString();
         $creatorId = Uuid::uuid4()->toString();
 
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('ownershipId', $ownershipId)
+            ->withRouteParameter('organizerId', $organizerId)
             ->build('GET');
-
-        $this->ownershipSearchRepository->expects($this->once())
-            ->method('getById')
-            ->with($ownershipId)
-            ->willReturn(new OwnershipItem(
-                $ownershipId,
-                $organizerId,
-                'organizer',
-                'auth0|63e22626e39a8ca1264bd29b',
-                OwnershipState::approved()->toString()
-            ));
 
         $this->organizerRepository->expects($this->once())
             ->method('fetch')

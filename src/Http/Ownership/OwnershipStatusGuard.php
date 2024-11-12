@@ -25,19 +25,6 @@ final class OwnershipStatusGuard
         $this->permissionVoter = $permissionVoter;
     }
 
-    public function isAllowedToGetCreator(string $itemId, CurrentUser $currentUser): void
-    {
-        $isAllowed = $this->permissionVoter->isAllowed(
-            Permission::organisatiesBewerken(),
-            $itemId,
-            $currentUser->getId()
-        );
-
-        if (!$isAllowed) {
-            throw ApiProblem::forbidden('You are not allowed to get creator for this item');
-        }
-    }
-
     public function isAllowedToRequest(string $itemId, string $requesterId, CurrentUser $currentUser): void
     {
         $isOwner = $this->permissionVoter->isAllowed(

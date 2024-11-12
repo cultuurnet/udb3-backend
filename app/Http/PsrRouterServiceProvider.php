@@ -355,7 +355,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->put('{organizerId}/address/{language}/', UpdateOrganizerAddressRequestHandler::class);
             $routeGroup->delete('{organizerId}/address/', DeleteAddressRequestHandler::class);
 
-            $routeGroup->put('{organizerId}/creator/', GetCreatorRequestHandler::class);
+            $routeGroup->get('{organizerId}/creator/', GetCreatorRequestHandler::class);
 
             $routeGroup->put('{organizerId}/url/', UpdateUrlRequestHandler::class);
 
@@ -384,8 +384,6 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->get('{ownershipId}/', GetOwnershipRequestHandler::class);
 
             $routeGroup->post('', RequestOwnershipRequestHandler::class);
-
-            $routeGroup->get('{ownershipId}/creator/', GetCreatorRequestHandler::class);
 
             $routeGroup->post('{ownershipId}/approve/', ApproveOwnershipRequestHandler::class);
             $routeGroup->post('{ownershipId}/reject/', RejectOwnershipRequestHandler::class);

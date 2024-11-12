@@ -71,9 +71,8 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             fn () => new GetCreatorRequestHandler(
                 $container->get('organizer_jsonld_repository'),
                 $container->get(UserIdentityResolver::class),
-                $container->get(OwnershipStatusGuard::class),
+                $container->get('organizer_permission_voter'),
                 $container->get(CurrentUser::class),
-                $container->get(OwnershipSearchRepository::class)
             )
         );
 
