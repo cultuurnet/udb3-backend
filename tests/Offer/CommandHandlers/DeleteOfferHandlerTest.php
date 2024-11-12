@@ -16,21 +16,39 @@ use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\OfferRepository;
+use CultuurNet\UDB3\Offer\Validator\OfferCommandValidator;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use DateTimeImmutable;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class DeleteOfferHandlerTest extends CommandHandlerScenarioTestCase
 {
+    private const EVENT_ID = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
+
+    /**
+     * @var OfferCommandValidator&MockObject
+     */
+    private $validator;
+
+    public function setUp(): void
+    {
+        $this->validator = $this->createMock(OfferCommandValidator::class);
+
+        parent::setUp();
+    }
+
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): DeleteOfferHandler
     {
         return new DeleteOfferHandler(
             new OfferRepository(
                 new EventRepository($eventStore, $eventBus),
                 new PlaceRepository($eventStore, $eventBus)
-            )
+            ),
+            $this->validator
         );
     }
 
@@ -39,7 +57,12 @@ class DeleteOfferHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_handles_delete_of_a_draft_offer(): void
     {
-        $eventId = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
+        $this->validator->expects($this->once())
+            ->method('isValid')
+            ->with(self::EVENT_ID)
+            ->willReturn(true);
+
+        $eventId = self::EVENT_ID;
 
         $this->scenario
             ->withAggregateId($eventId)
@@ -61,7 +84,12 @@ class DeleteOfferHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_handles_delete_of_a_ready_for_validation_offer(): void
     {
-        $eventId = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
+        $this->validator->expects($this->once())
+            ->method('isValid')
+            ->with(self::EVENT_ID)
+            ->willReturn(true);
+
+        $eventId = self::EVENT_ID;
 
         $this->scenario
             ->withAggregateId($eventId)
@@ -84,7 +112,12 @@ class DeleteOfferHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_handles_delete_of_an_approved_offer(): void
     {
-        $eventId = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
+        $this->validator->expects($this->once())
+            ->method('isValid')
+            ->with(self::EVENT_ID)
+            ->willReturn(true);
+
+        $eventId = self::EVENT_ID;
 
         $this->scenario
             ->withAggregateId($eventId)
@@ -108,7 +141,12 @@ class DeleteOfferHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_does_not_delete_a_deleted_offer_again(): void
     {
-        $eventId = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
+        $this->validator->expects($this->once())
+            ->method('isValid')
+            ->with(self::EVENT_ID)
+            ->willReturn(true);
+
+        $eventId = self::EVENT_ID;
 
         $this->scenario
             ->withAggregateId($eventId)
@@ -122,6 +160,34 @@ class DeleteOfferHandlerTest extends CommandHandlerScenarioTestCase
             )
             ->when(new DeleteOffer($eventId))
             ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_deletion_when_validator_fails(): void
+    {
+        $this->validator->expects($this->once())
+            ->method('isValid')
+            ->with(self::EVENT_ID)
+            ->willReturn(false);
+
+        $this->validator->expects($this->once())
+            ->method('getApiProblem')
+            ->willReturn(ApiProblem::cannotDeleteUitpasPlace());
+
+        $eventId = self::EVENT_ID;
+
+        $this->expectException(ApiProblem::class);
+
+        $this->scenario
+            ->withAggregateId($eventId)
+            ->given(
+                [
+                    $this->getEventCreated($eventId),
+                ]
+            )
+            ->when(new DeleteOffer($eventId));
     }
 
     private function getEventCreated(string $eventId): EventCreated
