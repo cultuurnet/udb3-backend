@@ -24,7 +24,7 @@ Feature: Test getting creator of organizer
         And the JSON response at "userId" should be "auth0|64089494e980aedd96740212"
         And the JSON response at "email" should be "dev+e2etest@publiq.be"
 
-    Scenario: Getting the creator of an ownership that you're not an owner of is not allowed
+    Scenario: Getting the creator of an organizer that you're not an owner of is not allowed
         And I create a minimal organizer and save the "id" as "organizerId"
         And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
 
