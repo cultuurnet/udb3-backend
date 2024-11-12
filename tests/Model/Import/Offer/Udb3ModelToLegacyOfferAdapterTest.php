@@ -183,7 +183,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
      */
     public function it_should_return_a_main_language(): void
     {
-        $expected = new \CultuurNet\UDB3\Language('nl');
+        $expected = new Language('nl');
         $actual = $this->adapter->getMainLanguage();
         $this->assertEquals($expected, $actual);
     }
@@ -300,7 +300,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
         );
         $expected = $expected->withExtraTariff(
             new \CultuurNet\UDB3\PriceInfo\Tariff(
-                new MultilingualString(new \CultuurNet\UDB3\Language('nl'), 'Senioren'),
+                new MultilingualString(new Language('nl'), 'Senioren'),
                 new Money(1050, new Currency('EUR'))
             )
         );
@@ -326,7 +326,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
         $expected = new \CultuurNet\UDB3\BookingInfo(
             'https://www.publiq.be',
             new MultilingualString(
-                new \CultuurNet\UDB3\Language('nl'),
+                new Language('nl'),
                 'Publiq'
             ),
             '044/444444',

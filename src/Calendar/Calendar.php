@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Calendar;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\JsonLdSerializableInterface;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar as Udb3ModelCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
@@ -87,7 +89,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $this->timestamps = $timestamps;
 
-        $this->status = new Status($this->deriveStatusTypeFromSubEvents(), []);
+        $this->status = new Status($this->deriveStatusTypeFromSubEvents(), null);
 
         $this->bookingAvailability = $this->deriveBookingAvailabilityFromSubEvents();
     }
@@ -226,7 +228,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $calendar = [
             'type' => $this->type,
-            'status' => $this->status->serialize(),
+            'status' => (new StatusNormalizer())->normalize($this->status),
             'bookingAvailability' => $this->bookingAvailability->serialize(),
         ];
 
@@ -276,7 +278,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         );
 
         if (!empty($data['status'])) {
-            $calendar->status = Status::deserialize($data['status']);
+            $calendar->status = (new StatusDenormalizer())->denormalize($data['status'], Status::class);
         }
 
         if (!empty($data['bookingAvailability'])) {
@@ -321,7 +323,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             $jsonLd['endDate'] = $endDate->format(DateTimeInterface::ATOM);
         }
 
-        $jsonLd['status'] = $this->determineCorrectTopStatusForProjection()->serialize();
+        $jsonLd['status'] = (new StatusNormalizer())->normalize($this->determineCorrectTopStatusForProjection());
 
         $jsonLd['bookingAvailability'] = $this->determineCorrectTopBookingAvailabilityForProjection()->serialize();
 
@@ -440,7 +442,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $calendar = new self($type, $startDate, $endDate, $timestamps, $openingHours);
 
-        $topStatus = Status::fromUdb3ModelStatus($udb3Calendar->getStatus());
+        $topStatus = $udb3Calendar->getStatus();
         $topBookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
             $udb3Calendar->getBookingAvailability()
         );
@@ -509,7 +511,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $expectedStatusType = $this->deriveStatusTypeFromSubEvents();
         if ($this->status->getType()->toString() === $expectedStatusType->toString()) {
             // Also make sure to include the reason of a sub event when there is no reason on the top level.
-            if (count($this->timestamps) === 1 && count($this->status->getReason()) === 0) {
+            if (count($this->timestamps) === 1 && $this->status->getReason() === null) {
                 return $this->timestamps[0]->getStatus();
             }
 
@@ -519,7 +521,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         // If the top-level status is invalid compared to the status type derived from the subEvents, return the
         // expected status type without any reason. (If the top level status had a reason it's probably not applicable
         // for the new status type.)
-        return new Status($expectedStatusType, []);
+        return new Status($expectedStatusType, null);
     }
 
     /**

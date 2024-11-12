@@ -9,14 +9,13 @@ use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -188,7 +187,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->updateCalendar(
             $this->calendar
                 ->withStatus($status)
-                ->withStatusOnTimestamps($status)
+                ->withStatusOnTimestamps(new Status($status->getType(), $status->getReason()))
         );
     }
 
@@ -316,11 +315,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function updateTitle(LegacyLanguage $language, Title $title): void
+    public function updateTitle(Language $language, Title $title): void
     {
         if ($this->isTitleChanged($title, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
-                $event = $this->createTitleTranslatedEvent($language->toUdb3ModelLanguage(), $title);
+                $event = $this->createTitleTranslatedEvent($language, $title);
             } else {
                 $event = $this->createTitleUpdatedEvent($title);
             }
@@ -860,7 +859,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         return false;
     }
 
-    private function isTitleChanged(Title $title, LegacyLanguage $language): bool
+    private function isTitleChanged(Title $title, Language $language): bool
     {
         $languageCode = $language->getCode();
 
