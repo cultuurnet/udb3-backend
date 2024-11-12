@@ -11,6 +11,7 @@ use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
@@ -19,7 +20,6 @@ use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Calendar\Timestamp;
@@ -46,7 +46,7 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
         $id = '1';
         $initialCalendar = new Calendar(CalendarType::PERMANENT());
 
-        $newStatus = new Status(StatusType::TemporarilyUnavailable(), []);
+        $newStatus = new Status(StatusType::TemporarilyUnavailable(), null);
         $expectedCalendar = (new Calendar(CalendarType::PERMANENT()))->withStatus($newStatus);
 
         $command = new UpdateStatus($id, $newStatus);
@@ -75,9 +75,9 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
         $initialTimestamps = [new Timestamp($startDate, $endDate)];
         $initialCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $initialTimestamps);
 
-        $newStatus = new Status(StatusType::Unavailable(), []);
+        $newStatus = new Status(StatusType::Unavailable(), null);
 
-        $expectedTimestamps = [new Timestamp($startDate, $endDate, new Status(StatusType::Unavailable(), []))];
+        $expectedTimestamps = [new Timestamp($startDate, $endDate, new Status(StatusType::Unavailable(), null))];
         $expectedCalendar = (new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $expectedTimestamps, []))->withStatus($newStatus);
 
         $command = new UpdateStatus($id, $newStatus);

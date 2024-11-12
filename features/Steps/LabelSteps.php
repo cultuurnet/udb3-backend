@@ -122,6 +122,24 @@ trait LabelSteps
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('special_label*', true, true);
         }
+
+        // Create labels for sorting by match
+        $this->getLabel('walk');
+        if ($this->responseState->getStatusCode() === 404) {
+            $this->createLabel('walk', true, true);
+        }
+        $this->getLabel('walking tour');
+        if ($this->responseState->getStatusCode() === 404) {
+            $this->createLabel('walking tour', true, true);
+        }
+        $this->getLabel('city walk');
+        if ($this->responseState->getStatusCode() === 404) {
+            $this->createLabel('city walk', true, true);
+        }
+        $this->getLabel('forest walk');
+        if ($this->responseState->getStatusCode() === 404) {
+            $this->createLabel('forest walk', true, true);
+        }
     }
 
     private function createLabel(string $name, bool $visible, bool $public): void

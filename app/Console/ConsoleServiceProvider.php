@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Console\Command\AddLabelToItems;
 use CultuurNet\UDB3\Console\Command\BulkRemoveFromProduction;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
+use CultuurNet\UDB3\Console\Command\ChangeOrganizerOnOffer;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
@@ -64,6 +65,7 @@ use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Place\Canonical\ImportDuplicatePlacesProcessor;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
+use CultuurNet\UDB3\Search\OffersSapi3SearchService;
 use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
 use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
@@ -101,6 +103,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.event:attendanceMode:update',
         'console.offer:change-owner',
         'console.offer:change-owner-bulk',
+        'console.offer:change-organizer',
         'console.organizer:change-owner',
         'console.organizer:change-owner-bulk',
         'console.label:add-label-to-items',
@@ -362,6 +365,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new ChangeOfferOwnerInBulk(
                 $container->get('event_command_bus'),
                 $container->get('offer_owner_query')
+            )
+        );
+
+        $container->addShared(
+            'console.offer:change-organizer',
+            fn () => new ChangeOrganizerOnOffer(
+                $container->get('event_command_bus'),
+                $container->get(OffersSapi3SearchService::class)
             )
         );
 

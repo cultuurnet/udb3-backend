@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use PHPUnit\Framework\TestCase;
 
 class TimestampTest extends TestCase
@@ -74,7 +75,7 @@ class TimestampTest extends TestCase
         );
 
         $this->assertEquals(
-            new Status(StatusType::Available(), []),
+            new Status(StatusType::Available(), null),
             $timestamp->getStatus()
         );
     }
@@ -102,9 +103,10 @@ class TimestampTest extends TestCase
             DateTimeFactory::fromAtom(self::END_DATE),
             new Status(
                 StatusType::Unavailable(),
-                [
-                    new StatusReason(new Language('nl'), 'Vanavond niet, schat'),
-                ]
+                new TranslatedStatusReason(
+                    new Language('nl'),
+                    new StatusReason('Vanavond niet, schat')
+                )
             ),
             BookingAvailability::unavailable()
         );
@@ -119,7 +121,7 @@ class TimestampTest extends TestCase
                 ],
             ],
             'bookingAvailability' => [
-                'type' => BookingAvailabilityType::unavailable()->toString(),
+                'type' => BookingAvailabilityType::Unavailable()->toString(),
             ],
         ];
 
@@ -135,14 +137,15 @@ class TimestampTest extends TestCase
         $timestamp = new Timestamp(
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
-            new Status(StatusType::Available(), [])
+            new Status(StatusType::Available(), null)
         );
 
         $newStatus = new Status(
             StatusType::Unavailable(),
-            [
-                new StatusReason(new Language('nl'), 'Het mag niet van de afgevaardigde van de eerste minister'),
-            ]
+            new TranslatedStatusReason(
+                new Language('nl'),
+                new StatusReason('Het mag niet van de afgevaardigde van de eerste minister')
+            )
         );
 
         $expected = new Timestamp(
@@ -173,7 +176,7 @@ class TimestampTest extends TestCase
             new Timestamp(
                 DateTimeFactory::fromAtom(self::START_DATE),
                 DateTimeFactory::fromAtom(self::END_DATE),
-                new Status(StatusType::Available(), []),
+                new Status(StatusType::Available(), null),
                 BookingAvailability::unavailable()
             ),
             $updatedTimestamp
@@ -188,7 +191,7 @@ class TimestampTest extends TestCase
         $expected = new Timestamp(
             DateTimeFactory::fromAtom(self::END_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
-            new Status(StatusType::Available(), [])
+            new Status(StatusType::Available(), null)
         );
 
         $serialized = [

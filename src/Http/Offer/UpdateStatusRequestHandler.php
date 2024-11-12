@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\ValueObjects\Status as LegacyStatus;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -49,7 +48,7 @@ class UpdateStatusRequestHandler implements RequestHandlerInterface
         $status = $parser->parse($request)->getParsedBody();
 
         $this->commandBus->dispatch(
-            new UpdateStatus($offerId, LegacyStatus::fromUdb3ModelStatus($status))
+            new UpdateStatus($offerId, $status)
         );
 
         return new NoContentResponse();

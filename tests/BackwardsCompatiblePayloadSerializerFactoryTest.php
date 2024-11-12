@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializer;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -455,7 +454,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
 
         $this->assertEquals(
-            new MultilingualString(new LegacyLanguage('nl'), 'Reserveer plaatsen'),
+            new MultilingualString(new Language('nl'), 'Reserveer plaatsen'),
             $bookingInfoUpdated->getBookingInfo()->getUrlLabel()
         );
     }
@@ -625,7 +624,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
             ->withExtraTariff(
                 new Tariff(
                     new MultilingualString(
-                        new LegacyLanguage('nl'),
+                        new Language('nl'),
                         'Senioren'
                     ),
                     new Money(1000, new Currency('EUR'))
@@ -634,7 +633,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
             ->withExtraTariff(
                 new Tariff(
                     new MultilingualString(
-                        new LegacyLanguage('nl'),
+                        new Language('nl'),
                         'Studenten'
                     ),
                     new Money(750, new Currency('EUR'))

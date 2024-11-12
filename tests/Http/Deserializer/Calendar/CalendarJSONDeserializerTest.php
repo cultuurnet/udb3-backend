@@ -11,13 +11,14 @@ use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\SampleFiles;
@@ -115,10 +116,13 @@ class CalendarJSONDeserializerTest extends TestCase
         $expectedCalendar = $expectedCalendar->withStatus(
             new Status(
                 StatusType::Unavailable(),
-                [
-                    new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
-                    new StatusReason(new Language('fr'), 'Reason in het Frans'),
-                ]
+                (new TranslatedStatusReason(
+                    new Language('nl'),
+                    new StatusReason('Reason in het Nederlands')
+                ))->withTranslation(
+                    new Language('fr'),
+                    new StatusReason('Reason in het Frans')
+                )
             )
         );
 
@@ -183,10 +187,13 @@ class CalendarJSONDeserializerTest extends TestCase
             ))->withStatus(
                 new Status(
                     StatusType::TemporarilyUnavailable(),
-                    [
-                        new StatusReason(new Language('nl'), 'TemporarilyUnavailable in het Nederlands'),
-                        new StatusReason(new Language('fr'), 'TemporarilyUnavailable in het Frans'),
-                    ]
+                    (new TranslatedStatusReason(
+                        new Language('nl'),
+                        new StatusReason('TemporarilyUnavailable in het Nederlands')
+                    ))->withTranslation(
+                        new Language('fr'),
+                        new StatusReason('TemporarilyUnavailable in het Frans')
+                    )
                 )
             ),
             (new Timestamp(
@@ -195,10 +202,13 @@ class CalendarJSONDeserializerTest extends TestCase
             ))->withStatus(
                 new Status(
                     StatusType::Unavailable(),
-                    [
-                        new StatusReason(new Language('nl'), 'Unavailable in het Nederlands'),
-                        new StatusReason(new Language('fr'), 'Unavailable in het Frans'),
-                    ]
+                    (new TranslatedStatusReason(
+                        new Language('nl'),
+                        new StatusReason('Unavailable in het Nederlands')
+                    ))->withTranslation(
+                        new Language('fr'),
+                        new StatusReason('Unavailable in het Frans')
+                    )
                 )
             ),
         ];
@@ -213,10 +223,13 @@ class CalendarJSONDeserializerTest extends TestCase
         $expectedCalendar = $expectedCalendar->withStatus(
             new Status(
                 StatusType::TemporarilyUnavailable(),
-                [
-                    new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
-                    new StatusReason(new Language('fr'), 'Reason in het Frans'),
-                ]
+                (new TranslatedStatusReason(
+                    new Language('nl'),
+                    new StatusReason('Reason in het Nederlands')
+                ))->withTranslation(
+                    new Language('fr'),
+                    new StatusReason('Reason in het Frans')
+                )
             )
         );
 

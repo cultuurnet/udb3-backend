@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\ReadModel\JSONLD;
 
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\ReadModel\ConfigurableJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
@@ -26,7 +27,7 @@ class OrganizerJsonDocumentLanguageAnalyzer extends ConfigurableJsonDocumentLang
      * @replay_i18n
      * @see https://jira.uitdatabank.be/browse/III-2201
      *
-     * @return \CultuurNet\UDB3\Language[]
+     * @return Language[]
      */
     public function determineAvailableLanguages(JsonDocument $jsonDocument): array
     {
@@ -39,7 +40,7 @@ class OrganizerJsonDocumentLanguageAnalyzer extends ConfigurableJsonDocumentLang
      * @replay_i18n
      * @see https://jira.uitdatabank.be/browse/III-2201
      *
-     * @return \CultuurNet\UDB3\Language[]
+     * @return Language[]
      */
     public function determineCompletedLanguages(JsonDocument $jsonDocument): array
     {
