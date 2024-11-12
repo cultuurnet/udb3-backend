@@ -6,7 +6,6 @@ Feature: Test getting creator of organizer
         And I send and accept "application/json"
 
     Scenario: Getting the creator of an organizer as creator
-
         And I create a minimal organizer and save the "id" as "organizerId"
         When I send a GET request to "/organizers/%{organizerId}/creator"
         Then the response status should be 200
