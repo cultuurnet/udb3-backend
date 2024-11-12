@@ -35,14 +35,10 @@ class DeletePlaceTest extends TestCase
         $this->eventRelationsRepository = $this->createMock(EventRelationsRepository::class);
         $this->placeDocumentRepository = $this->createMock(DocumentRepository::class);
 
-        // UiTPAS labels for testing
-        $uiTPASLabels = ['UiTPAS-label'];
-
         $command = new DeletePlace(
             $this->commandBus,
             $this->eventRelationsRepository,
-            $this->placeDocumentRepository,
-            $uiTPASLabels
+            $this->placeDocumentRepository
         );
 
         $application = new Application();
@@ -105,28 +101,6 @@ class DeletePlaceTest extends TestCase
 
         $output = $this->commandTester->getDisplay();
         $this->assertStringContainsString('Canonical place does not exist', $output);
-    }
-
-    public function test_execute_place_with_ui_tpas_label(): void
-    {
-        $placeUuid = Uuid::uuid4()->toString();
-        $this->placeDocumentRepository
-            ->method('fetch')
-            ->willReturnCallback(function ($id) use ($placeUuid) {
-                if ($id === $placeUuid) {
-                    return new JsonDocument($id, json_encode(['hiddenLabels' => ['UiTPAS-label']]));
-                }
-                return new JsonDocument($placeUuid, json_encode([]));
-            });
-
-        $this->commandTester->execute([
-            'place-uuid' => $placeUuid,
-            'canonical-uuid' => Uuid::uuid4()->toString(),
-        ]);
-
-        $output = $this->commandTester->getDisplay();
-        $this->assertStringContainsString(sprintf('Place %s is an UiTPAS balie! Please check first with the colleagues of UiTPAS if this place can be deleted.', $placeUuid), $output);
-        $this->assertStringContainsString('You still want to delete this place you can remove the UiTPAS label in the admin.', $output);
     }
 
     public function test_execute_successfully_dispatches_commands(): void

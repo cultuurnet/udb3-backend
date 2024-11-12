@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,18 +29,15 @@ class DeletePlace extends AbstractCommand
     private EventRelationsRepository $eventRelationsRepository;
 
     private DocumentRepository $placeDocumentRepository;
-    private array $UiTPASLabels;
 
     public function __construct(
         CommandBus $commandBus,
         EventRelationsRepository $eventRelationsRepository,
-        DocumentRepository $placeDocumentRepository,
-        array $UiTPASLabels
+        DocumentRepository $placeDocumentRepository
     ) {
         parent::__construct($commandBus);
         $this->eventRelationsRepository = $eventRelationsRepository;
         $this->placeDocumentRepository = $placeDocumentRepository;
-        $this->UiTPASLabels = $UiTPASLabels;
     }
 
     public function configure(): void
@@ -91,15 +87,9 @@ class DeletePlace extends AbstractCommand
         }
 
         try {
-            $place = $this->placeDocumentRepository->fetch($placeUuid);
+            $this->placeDocumentRepository->fetch($placeUuid);
         } catch (DocumentDoesNotExist $e) {
             $output->writeln('Place does not exist');
-            return self::SUCCESS;
-        }
-
-        if ($this->isUitPasPlace($place)) {
-            $output->writeln(sprintf('Place %s is an UiTPAS balie! Please check first with the colleagues of UiTPAS if this place can be deleted.', $place->getId()));
-            $output->writeln('You still want to delete this place you can remove the UiTPAS label in the admin.');
             return self::SUCCESS;
         }
 
@@ -142,22 +132,5 @@ class DeletePlace extends AbstractCommand
                     true
                 )
             );
-    }
-
-    private function isUitPasPlace(JsonDocument $place): bool
-    {
-        if (!isset($place->getAssocBody()['hiddenLabels'])) {
-            return false;
-        }
-
-        foreach ($place->getAssocBody()['hiddenLabels'] as $label) {
-            if (!in_array($label, $this->UiTPASLabels, true)) {
-                continue;
-            }
-
-            return true;
-        }
-
-        return false;
     }
 }
