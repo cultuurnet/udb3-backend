@@ -24,7 +24,6 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
@@ -55,6 +54,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
@@ -1984,7 +1984,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 new OpeningHour(
                     new OpeningTime(new Hour(8), new Minute(0)),
                     new OpeningTime(new Hour(12), new Minute(59)),
-                    new DayOfWeekCollection(
+                    new Days(
                         Day::monday(),
                         Day::tuesday()
                     )
@@ -1992,7 +1992,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 new OpeningHour(
                     new OpeningTime(new Hour(10), new Minute(0)),
                     new OpeningTime(new Hour(14), new Minute(0)),
-                    new DayOfWeekCollection(
+                    new Days(
                         Day::saturday()
                     )
                 ),

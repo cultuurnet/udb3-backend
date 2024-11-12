@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +16,7 @@ class OpeningHourTest extends TestCase
 
     private OpeningTime $closes;
 
-    private DayOfWeekCollection $dayOfWeekCollection;
+    private Days $dayOfWeekCollection;
 
     private array $openingHourAsArray;
 
@@ -27,7 +28,7 @@ class OpeningHourTest extends TestCase
 
         $this->closes = new OpeningTime(new Hour(17), new Minute(0));
 
-        $this->dayOfWeekCollection = new DayOfWeekCollection(
+        $this->dayOfWeekCollection = new Days(
             new Day('monday'),
             new Day('tuesday'),
             new Day('wednesday'),
@@ -84,13 +85,13 @@ class OpeningHourTest extends TestCase
         $sameOpeningHour = new OpeningHour(
             new OpeningTime(new Hour(9), new Minute(30)),
             new OpeningTime(new Hour(17), new Minute(0)),
-            new DayOfWeekCollection(Day::monday())
+            new Days(Day::monday())
         );
 
         $differentOpeningHour = new OpeningHour(
             new OpeningTime(new Hour(10), new Minute(30)),
             new OpeningTime(new Hour(17), new Minute(0)),
-            new DayOfWeekCollection(Day::monday())
+            new Days(Day::monday())
         );
 
         $this->assertTrue(
@@ -108,7 +109,7 @@ class OpeningHourTest extends TestCase
     {
         $this->assertEquals(
             $this->dayOfWeekCollection,
-            $this->openingHour->getDayOfWeekCollection()
+            $this->openingHour->getDays()
         );
     }
 

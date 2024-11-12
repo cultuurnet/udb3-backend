@@ -57,12 +57,12 @@ class CalendarTest extends TestCase
             DateTimeFactory::fromAtom(self::TIMESTAMP_2_END_DATE)
         );
 
-        $weekDays = (new DayOfWeekCollection())
-            ->addDayOfWeek(Day::monday())
-            ->addDayOfWeek(Day::tuesday())
-            ->addDayOfWeek(Day::wednesday())
-            ->addDayOfWeek(Day::thursday())
-            ->addDayOfWeek(Day::friday());
+        $weekDays = (new Days())
+            ->with(Day::monday())
+            ->with(Day::tuesday())
+            ->with(Day::wednesday())
+            ->with(Day::thursday())
+            ->with(Day::friday());
 
         $openingHour1 = new OpeningHour(
             new OpeningTime(new Hour(9), new Minute(0)),
@@ -76,9 +76,9 @@ class CalendarTest extends TestCase
             $weekDays
         );
 
-        $weekendDays = (new DayOfWeekCollection())
-            ->addDayOfWeek(Day::saturday())
-            ->addDayOfWeek(Day::sunday());
+        $weekendDays = (new Days())
+            ->with(Day::saturday())
+            ->with(Day::sunday());
 
         $openingHour3 = new OpeningHour(
             new OpeningTime(new Hour(10), new Minute(0)),
@@ -1604,7 +1604,7 @@ class CalendarTest extends TestCase
                 new OpeningHour(
                     new OpeningTime(new Hour(8), new Minute(0)),
                     new OpeningTime(new Hour(12), new Minute(59)),
-                    new DayOfWeekCollection(
+                    new Days(
                         Day::monday(),
                         Day::tuesday()
                     )
@@ -1612,7 +1612,7 @@ class CalendarTest extends TestCase
                 new OpeningHour(
                     new OpeningTime(new Hour(10), new Minute(0)),
                     new OpeningTime(new Hour(14), new Minute(0)),
-                    new DayOfWeekCollection(
+                    new Days(
                         Day::saturday()
                     )
                 ),
@@ -1691,7 +1691,7 @@ class CalendarTest extends TestCase
                 new OpeningHour(
                     new OpeningTime(new Hour(8), new Minute(0)),
                     new OpeningTime(new Hour(12), new Minute(59)),
-                    new DayOfWeekCollection(
+                    new Days(
                         Day::monday(),
                         Day::tuesday()
                     )
@@ -1699,7 +1699,7 @@ class CalendarTest extends TestCase
                 new OpeningHour(
                     new OpeningTime(new Hour(10), new Minute(0)),
                     new OpeningTime(new Hour(14), new Minute(0)),
-                    new DayOfWeekCollection(
+                    new Days(
                         Day::saturday()
                     )
                 ),
