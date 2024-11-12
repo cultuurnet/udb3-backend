@@ -6,10 +6,11 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -117,7 +118,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
     private function polyfillBookingAvailability(array $json): array
     {
         if (!isset($json['bookingAvailability'])) {
-            $json['bookingAvailability'] = BookingAvailability::available()->serialize();
+            $json['bookingAvailability'] = (new BookingAvailabilityNormalizer())->normalize(BookingAvailability::Available());
         }
 
         return $json;
@@ -146,7 +147,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                         'status' => [
                             'type' => StatusType::Available()->toString(),
                         ],
-                        'bookingAvailability' => BookingAvailability::available()->serialize(),
+                        'bookingAvailability' => (new BookingAvailabilityNormalizer())->normalize(BookingAvailability::Available()),
                     ],
                     $subEvent
                 );
@@ -186,7 +187,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         }
 
         if (!isset($json['location']['bookingAvailability'])) {
-            $json['location']['bookingAvailability'] = BookingAvailability::available()->serialize();
+            $json['location']['bookingAvailability'] = (new BookingAvailabilityNormalizer())->normalize(BookingAvailability::Available());
         }
 
         return $json;

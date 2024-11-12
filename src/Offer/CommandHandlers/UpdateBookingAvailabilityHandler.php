@@ -24,7 +24,7 @@ class UpdateBookingAvailabilityHandler implements CommandHandler
         }
 
         $offer = $this->offerRepository->load($command->getItemId());
-        $offer->updateBookingAvailability($command->getBookingAvailability()->toUdb3ModelBookingAvailability());
+        $offer->updateBookingAvailability($command->getBookingAvailability());
         $this->offerRepository->save($offer);
     }
 }
