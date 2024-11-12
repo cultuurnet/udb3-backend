@@ -35,7 +35,6 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -609,7 +608,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
-            new MultilingualString(new LegacyLanguage('nl'), 'publiq'),
+            new MultilingualString(new Language('nl'), 'publiq'),
             '02 123 45 67',
             'info@publiq.be'
         );
@@ -661,7 +660,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         ->withUiTPASTariffs([
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Tariff 1'
                                 ),
                                 new Money(
@@ -691,7 +690,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         ->withUiTPASTariffs([
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Tariff 1'
                                 ),
                                 new Money(
@@ -729,7 +728,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         ->withUiTPASTariffs([
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Tariff 1'
                                 ),
                                 new Money(
@@ -752,7 +751,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     ))->withUiTPASTariffs([
                         new \CultuurNet\UDB3\PriceInfo\Tariff(
                             new MultilingualString(
-                                new LegacyLanguage('nl'),
+                                new Language('nl'),
                                 'Tariff 1'
                             ),
                             new Money(
@@ -770,7 +769,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         ->withUiTPASTariffs([
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Tariff 1'
                                 ),
                                 new Money(
@@ -808,7 +807,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         ->withUiTPASTariffs([
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Tariff 1'
                                 ),
                                 new Money(
@@ -859,7 +858,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         ->withUiTPASTariffs([
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Tariff 1'
                                 ),
                                 new Money(
@@ -883,7 +882,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     )->withUiTPASTariffs([
                         new \CultuurNet\UDB3\PriceInfo\Tariff(
                             new MultilingualString(
-                                new LegacyLanguage('nl'),
+                                new Language('nl'),
                                 'Tariff 1'
                             ),
                             new Money(
@@ -951,7 +950,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         ->withTariffs([
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Met kinderen'
                                 ),
                                 new Money(2000, new Currency('EUR'))
@@ -965,7 +964,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         ->withTariffs([
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Met kinderen'
                                 ),
                                 new Money(1499, new Currency('EUR'))
@@ -980,7 +979,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         ->withTariffs([
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Met kinderen'
                                 ),
                                 new Money(1499, new Currency('EUR'))
@@ -1784,7 +1783,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Event $event): void {
                     $event->updateTitle(
-                        new LegacyLanguage('en'),
+                        new Language('en'),
                         new Title('some representative title')
                     );
                 }
@@ -1926,7 +1925,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         ->withUiTPASTariffs([
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Tariff 1'
                                 ),
                                 new Money(
@@ -1936,7 +1935,7 @@ class EventTest extends AggregateRootScenarioTestCase
                             ),
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Tariff 2'
                                 ),
                                 new Money(
@@ -2027,7 +2026,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         ->withUiTPASTariffs([
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Tariff 1'
                                 ),
                                 new Money(
@@ -2037,7 +2036,7 @@ class EventTest extends AggregateRootScenarioTestCase
                             ),
                             new \CultuurNet\UDB3\PriceInfo\Tariff(
                                 new MultilingualString(
-                                    new LegacyLanguage('nl'),
+                                    new Language('nl'),
                                     'Tariff 2'
                                 ),
                                 new Money(

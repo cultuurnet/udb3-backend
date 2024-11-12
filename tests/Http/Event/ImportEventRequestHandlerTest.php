@@ -33,7 +33,6 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
@@ -672,8 +671,8 @@ final class ImportEventRequestHandlerTest extends TestCase
                     $eventId,
                     new BookingInfo(
                         'https://www.publiq.be',
-                        (new MultilingualString(new LegacyLanguage('nl'), 'Nederlandse label'))
-                            ->withTranslation(new LegacyLanguage('en'), 'English label'),
+                        (new MultilingualString(new Language('nl'), 'Nederlandse label'))
+                            ->withTranslation(new Language('en'), 'English label'),
                         '016 12 34 56',
                         'info@publiq.be',
                         new DateTimeImmutable('2021-05-17T22:00:00+00:00'),

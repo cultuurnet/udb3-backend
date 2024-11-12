@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\ValueObjects;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType as Udb3ModelBookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use PHPUnit\Framework\TestCase;
 
 final class BookingAvailabilityTest extends TestCase
@@ -32,12 +32,12 @@ final class BookingAvailabilityTest extends TestCase
     public function it_can_be_deserialized(): void
     {
         $this->assertEquals(
-            new BookingAvailability(BookingAvailabilityType::fromNative('Available')),
+            new BookingAvailability(new BookingAvailabilityType('Available')),
             BookingAvailability::deserialize(['type' => 'Available'])
         );
 
         $this->assertEquals(
-            new BookingAvailability(BookingAvailabilityType::fromNative('Unavailable')),
+            new BookingAvailability(new BookingAvailabilityType('Unavailable')),
             BookingAvailability::deserialize(['type' => 'Unavailable'])
         );
     }
@@ -49,25 +49,25 @@ final class BookingAvailabilityTest extends TestCase
     {
         $this->assertTrue(
             BookingAvailability::available()->equals(
-                new BookingAvailability(BookingAvailabilityType::available())
+                new BookingAvailability(BookingAvailabilityType::Available())
             )
         );
 
         $this->assertTrue(
             BookingAvailability::unavailable()->equals(
-                new BookingAvailability(BookingAvailabilityType::unavailable())
+                new BookingAvailability(BookingAvailabilityType::Unavailable())
             )
         );
 
         $this->assertFalse(
             BookingAvailability::available()->equals(
-                new BookingAvailability(BookingAvailabilityType::unavailable())
+                new BookingAvailability(BookingAvailabilityType::Unavailable())
             )
         );
 
         $this->assertFalse(
             BookingAvailability::unavailable()->equals(
-                new BookingAvailability(BookingAvailabilityType::available())
+                new BookingAvailability(BookingAvailabilityType::Available())
             )
         );
     }
@@ -78,7 +78,7 @@ final class BookingAvailabilityTest extends TestCase
     public function it_can_be_created_from_an_imported_udb3_model_value(): void
     {
         $bookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
-            new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
+            new Udb3ModelBookingAvailability(BookingAvailabilityType::Unavailable())
         );
 
         $this->assertTrue(BookingAvailability::unavailable()->equals($bookingAvailability));

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use CultuurNet\UDB3\Search\Sorting;
@@ -56,12 +56,12 @@ class UpdateBookingAvailabilityCommand extends AbstractCommand
         $bookingQuestion =  new ChoiceQuestion(
             'Provide the new booking availability?',
             [
-                BookingAvailabilityType::available()->toString(),
-                BookingAvailabilityType::unavailable()->toString(),
+                BookingAvailabilityType::Available()->toString(),
+                BookingAvailabilityType::Unavailable()->toString(),
             ]
         );
         $bookingQuestion->setErrorMessage('Invalid booking availability: %s');
-        $bookingAvailability = BookingAvailabilityType::fromNative(
+        $bookingAvailability = new BookingAvailabilityType(
             $this->getHelper('question')->ask($input, $output, $bookingQuestion)
         );
 

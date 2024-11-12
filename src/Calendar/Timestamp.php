@@ -6,7 +6,9 @@ namespace CultuurNet\UDB3\Calendar;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\ValueObjects\Status;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
@@ -38,7 +40,7 @@ final class Timestamp implements Serializable
 
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->status = $status ?? new Status(StatusType::Available(), []);
+        $this->status = $status ?? new Status(StatusType::Available(), null);
         $this->bookingAvailability = $bookingAvailability ?? BookingAvailability::available();
     }
 
@@ -80,7 +82,7 @@ final class Timestamp implements Serializable
     {
         $status = null;
         if (isset($data['status'])) {
-            $status = Status::deserialize($data['status']);
+            $status =  (new StatusDenormalizer())->denormalize($data['status'], Status::class);
         }
 
         $bookingAvailability = null;
@@ -103,7 +105,7 @@ final class Timestamp implements Serializable
         return [
             'startDate' => $this->startDate->format(DateTimeInterface::ATOM),
             'endDate' => $this->endDate->format(DateTimeInterface::ATOM),
-            'status' => $this->status->serialize(),
+            'status' => (new StatusNormalizer())->normalize($this->status),
             'bookingAvailability' => $this->bookingAvailability->serialize(),
         ];
     }
@@ -121,7 +123,7 @@ final class Timestamp implements Serializable
         return new Timestamp(
             $subEvent->getDateRange()->getFrom(),
             $subEvent->getDateRange()->getTo(),
-            Status::fromUdb3ModelStatus($subEvent->getStatus()),
+            $subEvent->getStatus(),
             BookingAvailability::fromUdb3ModelBookingAvailability($subEvent->getBookingAvailability())
         );
     }

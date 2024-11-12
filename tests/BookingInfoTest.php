@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -64,7 +65,7 @@ class BookingInfoTest extends TestCase
             new WebsiteLink(
                 new Url('https://publiq.be'),
                 new TranslatedWebsiteLabel(
-                    new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('nl'),
+                    new Language('nl'),
                     new WebsiteLabel('publiq')
                 )
             ),

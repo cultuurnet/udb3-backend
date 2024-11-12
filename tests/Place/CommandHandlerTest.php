@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
@@ -98,7 +97,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new UpdateAddress($id, $updatedAddress, new Language('fr'))
             )
-            ->then([new AddressTranslated($id, LegacyAddress::fromUdb3ModelAddress($updatedAddress), new LegacyLanguage('fr'))]);
+            ->then([new AddressTranslated($id, LegacyAddress::fromUdb3ModelAddress($updatedAddress), new Language('fr'))]);
     }
 
     public function updateAddressDataProvider(): array

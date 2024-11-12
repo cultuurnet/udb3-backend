@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
@@ -171,15 +170,14 @@ class Place extends Offer
     public function updateAddress(Address $address, Language $language): void
     {
         $legacyAddress = LegacyAddress::fromUdb3ModelAddress($address);
-        $legacyLanguage = LegacyLanguage::fromUdb3ModelLanguage($language);
 
         if ($language->getCode() === $this->mainLanguage->getCode()) {
             $event = new AddressUpdated($this->placeId, $legacyAddress);
         } else {
-            $event = new AddressTranslated($this->placeId, $legacyAddress, $legacyLanguage);
+            $event = new AddressTranslated($this->placeId, $legacyAddress, $language);
         }
 
-        if ($this->allowAddressUpdate($legacyAddress, $legacyLanguage)) {
+        if ($this->allowAddressUpdate($legacyAddress, $language)) {
             $this->apply($event);
         }
     }
@@ -202,7 +200,7 @@ class Place extends Offer
         return $this->duplicates;
     }
 
-    private function allowAddressUpdate(LegacyAddress $address, LegacyLanguage $language): bool
+    private function allowAddressUpdate(LegacyAddress $address, Language $language): bool
     {
         // No current address in the provided language so update with new address is allowed.
         if (!isset($this->addresses[$language->getCode()])) {
