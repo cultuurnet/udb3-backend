@@ -9,6 +9,7 @@ use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use DateTimeInterface;
 
 final class CalendarFactory implements CalendarFactoryInterface
@@ -210,7 +211,7 @@ final class CalendarFactory implements CalendarFactoryInterface
                     $openingHour = new OpeningHour(
                         OpeningTime::fromNativeDateTime($opens),
                         $closes ? OpeningTime::fromNativeDateTime($closes) : OpeningTime::fromNativeDateTime($opens),
-                        new DayOfWeekCollection(new Day($day->getDayName()))
+                        new Days(new Day($day->getDayName()))
                     );
 
                     $openingHours = $this->addToOpeningHours($openingHour, ...$openingHours);
@@ -230,8 +231,8 @@ final class CalendarFactory implements CalendarFactoryInterface
     ): array {
         foreach ($openingHours as $openingHour) {
             if ($openingHour->hasEqualHours($newOpeningHour)) {
-                $openingHour->addDayOfWeekCollection(
-                    $newOpeningHour->getDayOfWeekCollection()
+                $openingHour->addDays(
+                    $newOpeningHour->getDays()
                 );
                 return $openingHours;
             }
