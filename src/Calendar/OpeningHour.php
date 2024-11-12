@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\DaysDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\DaysNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 
 /**
  * @deprecated
@@ -16,15 +17,15 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3M
  */
 final class OpeningHour implements Serializable
 {
-    private OpeningTime $opens;
+    private Time $opens;
 
-    private OpeningTime $closes;
+    private Time $closes;
 
     private Days $dayOfWeekCollection;
 
     public function __construct(
-        OpeningTime $opens,
-        OpeningTime $closes,
+        Time $opens,
+        Time $closes,
         Days $dayOfWeekCollection
     ) {
         $this->dayOfWeekCollection = $dayOfWeekCollection;
@@ -32,12 +33,12 @@ final class OpeningHour implements Serializable
         $this->closes = $closes;
     }
 
-    public function getOpens(): OpeningTime
+    public function getOpens(): Time
     {
         return $this->opens;
     }
 
-    public function getCloses(): OpeningTime
+    public function getCloses(): Time
     {
         return $this->closes;
     }
@@ -56,15 +57,15 @@ final class OpeningHour implements Serializable
 
     public function hasEqualHours(OpeningHour $otherOpeningHour): bool
     {
-        return $otherOpeningHour->getOpens()->sameValueAs($this->getOpens()) &&
-            $otherOpeningHour->getCloses()->sameValueAs($this->getCloses());
+        return $otherOpeningHour->getOpens()->sameAs($this->getOpens()) &&
+            $otherOpeningHour->getCloses()->sameAs($this->getCloses());
     }
 
     public static function deserialize(array $data): OpeningHour
     {
         return new static(
-            OpeningTime::fromNativeString($data['opens']),
-            OpeningTime::fromNativeString($data['closes']),
+            Time::fromString($data['opens']),
+            Time::fromString($data['closes']),
             (new DaysDenormalizer())->denormalize($data['dayOfWeek'], Days::class)
         );
     }
@@ -72,8 +73,8 @@ final class OpeningHour implements Serializable
     public function serialize(): array
     {
         return [
-            'opens' => $this->opens->toNativeString(),
-            'closes' => $this->closes->toNativeString(),
+            'opens' => $this->opens->toString(),
+            'closes' => $this->closes->toString(),
             'dayOfWeek' => (new DaysNormalizer())->normalize($this->dayOfWeekCollection),
         ];
     }
@@ -81,8 +82,8 @@ final class OpeningHour implements Serializable
     public static function fromUdb3ModelOpeningHour(Udb3ModelOpeningHour $openingHour): OpeningHour
     {
         return new self(
-            OpeningTime::fromUdb3ModelTime($openingHour->getOpeningTime()),
-            OpeningTime::fromUdb3ModelTime($openingHour->getClosingTime()),
+            $openingHour->getOpeningTime(),
+            $openingHour->getClosingTime(),
             $openingHour->getDays()
         );
     }

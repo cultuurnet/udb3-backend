@@ -126,8 +126,8 @@ class CalendarConverter implements CalendarConverterInterface
                 /** @var Day $day */
                 foreach ($openingHour->getDays()->getIterator() as $day) {
                     $openingTimesPerDay[$day->toString()][] = new CultureFeed_Cdb_Data_Calendar_OpeningTime(
-                        $openingHour->getOpens()->toNativeString() . ':00',
-                        $openingHour->getCloses()->toNativeString() . ':00'
+                        $openingHour->getOpens()->toString() . ':00',
+                        $openingHour->getCloses()->toString() . ':00'
                     );
                 }
             }

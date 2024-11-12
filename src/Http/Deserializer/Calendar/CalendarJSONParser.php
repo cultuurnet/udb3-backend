@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\UDB3\Calendar\OpeningHour;
-use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\DaysDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Calendar\Timestamp;
 
@@ -104,8 +104,8 @@ class CalendarJSONParser
             }
 
             $openingHours[] = new OpeningHour(
-                OpeningTime::fromNativeString($openingHour['opens']),
-                OpeningTime::fromNativeString($openingHour['closes']),
+                Time::fromString($openingHour['opens']),
+                Time::fromString($openingHour['closes']),
                 (new DaysDenormalizer())->denormalize($openingHour['dayOfWeek'], Days::class)
             );
         }
