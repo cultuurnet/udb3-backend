@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\OpeningHour;
-use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
@@ -20,6 +19,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -312,38 +312,38 @@ final class EventImportedFromUDB2Test extends TestCase
                         [],
                         [
                             0 => new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(18), new Minute(0)),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0)),
                                 new Days(Day::monday())
                             ),
                             1 => new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(18), new Minute(0)),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0)),
                                 new Days(Day::tuesday())
                             ),
                             2 => new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(18), new Minute(0)),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0)),
                                 new Days(Day::wednesday())
                             ),
                             3 => new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(18), new Minute(0)),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0)),
                                 new Days(Day::thursday())
                             ),
                             4 => new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(18), new Minute(0)),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0)),
                                 new Days(Day::friday())
                             ),
                             5 => new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(18), new Minute(0)),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0)),
                                 new Days(Day::saturday())
                             ),
                             6 => new OpeningHour(
-                                new OpeningTime(new Hour(8), new Minute(0)),
-                                new OpeningTime(new Hour(12), new Minute(0)),
+                                new Time(new Hour(8), new Minute(0)),
+                                new Time(new Hour(12), new Minute(0)),
                                 new Days(Day::sunday())
                             ),
                         ]
@@ -395,18 +395,18 @@ final class EventImportedFromUDB2Test extends TestCase
                         [],
                         [
                             0 => new OpeningHour(
-                                new OpeningTime(new Hour(9), new Minute(30)),
-                                new OpeningTime(new Hour(11), new Minute(30)),
+                                new Time(new Hour(9), new Minute(30)),
+                                new Time(new Hour(11), new Minute(30)),
                                 new Days(Day::wednesday())
                             ),
                             1 => new OpeningHour(
-                                new OpeningTime(new Hour(9), new Minute(0)),
-                                new OpeningTime(new Hour(17), new Minute(0)),
+                                new Time(new Hour(9), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0)),
                                 new Days(Day::thursday())
                             ),
                             2 => new OpeningHour(
-                                new OpeningTime(new Hour(9), new Minute(30)),
-                                new OpeningTime(new Hour(11), new Minute(30)),
+                                new Time(new Hour(9), new Minute(30)),
+                                new Time(new Hour(11), new Minute(30)),
                                 new Days(Day::saturday())
                             ),
                         ]

@@ -65,14 +65,14 @@ class CalendarTest extends TestCase
             ->with(Day::friday());
 
         $openingHour1 = new OpeningHour(
-            new OpeningTime(new Hour(9), new Minute(0)),
-            new OpeningTime(new Hour(12), new Minute(0)),
+            new Time(new Hour(9), new Minute(0)),
+            new Time(new Hour(12), new Minute(0)),
             $weekDays
         );
 
         $openingHour2 = new OpeningHour(
-            new OpeningTime(new Hour(13), new Minute(0)),
-            new OpeningTime(new Hour(17), new Minute(0)),
+            new Time(new Hour(13), new Minute(0)),
+            new Time(new Hour(17), new Minute(0)),
             $weekDays
         );
 
@@ -81,8 +81,8 @@ class CalendarTest extends TestCase
             ->with(Day::sunday());
 
         $openingHour3 = new OpeningHour(
-            new OpeningTime(new Hour(10), new Minute(0)),
-            new OpeningTime(new Hour(16), new Minute(0)),
+            new Time(new Hour(10), new Minute(0)),
+            new Time(new Hour(16), new Minute(0)),
             $weekendDays
         );
 
@@ -1602,16 +1602,16 @@ class CalendarTest extends TestCase
             [],
             [
                 new OpeningHour(
-                    new OpeningTime(new Hour(8), new Minute(0)),
-                    new OpeningTime(new Hour(12), new Minute(59)),
+                    new Time(new Hour(8), new Minute(0)),
+                    new Time(new Hour(12), new Minute(59)),
                     new Days(
                         Day::monday(),
                         Day::tuesday()
                     )
                 ),
                 new OpeningHour(
-                    new OpeningTime(new Hour(10), new Minute(0)),
-                    new OpeningTime(new Hour(14), new Minute(0)),
+                    new Time(new Hour(10), new Minute(0)),
+                    new Time(new Hour(14), new Minute(0)),
                     new Days(
                         Day::saturday()
                     )
@@ -1689,16 +1689,16 @@ class CalendarTest extends TestCase
             [],
             [
                 new OpeningHour(
-                    new OpeningTime(new Hour(8), new Minute(0)),
-                    new OpeningTime(new Hour(12), new Minute(59)),
+                    new Time(new Hour(8), new Minute(0)),
+                    new Time(new Hour(12), new Minute(59)),
                     new Days(
                         Day::monday(),
                         Day::tuesday()
                     )
                 ),
                 new OpeningHour(
-                    new OpeningTime(new Hour(10), new Minute(0)),
-                    new OpeningTime(new Hour(14), new Minute(0)),
+                    new Time(new Hour(10), new Minute(0)),
+                    new Time(new Hour(14), new Minute(0)),
                     new Days(
                         Day::saturday()
                     )

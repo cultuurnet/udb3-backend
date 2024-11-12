@@ -8,13 +8,14 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use PHPUnit\Framework\TestCase;
 
 class OpeningHourTest extends TestCase
 {
-    private OpeningTime $opens;
+    private Time $opens;
 
-    private OpeningTime $closes;
+    private Time $closes;
 
     private Days $dayOfWeekCollection;
 
@@ -24,9 +25,9 @@ class OpeningHourTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->opens = new OpeningTime(new Hour(9), new Minute(30));
+        $this->opens = new Time(new Hour(9), new Minute(30));
 
-        $this->closes = new OpeningTime(new Hour(17), new Minute(0));
+        $this->closes = new Time(new Hour(17), new Minute(0));
 
         $this->dayOfWeekCollection = new Days(
             new Day('monday'),
@@ -83,14 +84,14 @@ class OpeningHourTest extends TestCase
     public function it_can_compare_on_hours(): void
     {
         $sameOpeningHour = new OpeningHour(
-            new OpeningTime(new Hour(9), new Minute(30)),
-            new OpeningTime(new Hour(17), new Minute(0)),
+            new Time(new Hour(9), new Minute(30)),
+            new Time(new Hour(17), new Minute(0)),
             new Days(Day::monday())
         );
 
         $differentOpeningHour = new OpeningHour(
-            new OpeningTime(new Hour(10), new Minute(30)),
-            new OpeningTime(new Hour(17), new Minute(0)),
+            new Time(new Hour(10), new Minute(30)),
+            new Time(new Hour(17), new Minute(0)),
             new Days(Day::monday())
         );
 
