@@ -58,11 +58,11 @@ class CalendarTest extends TestCase
         );
 
         $weekDays = (new DayOfWeekCollection())
-            ->addDayOfWeek(DayOfWeek::MONDAY())
-            ->addDayOfWeek(DayOfWeek::TUESDAY())
-            ->addDayOfWeek(DayOfWeek::WEDNESDAY())
-            ->addDayOfWeek(DayOfWeek::THURSDAY())
-            ->addDayOfWeek(DayOfWeek::FRIDAY());
+            ->addDayOfWeek(Day::monday())
+            ->addDayOfWeek(Day::tuesday())
+            ->addDayOfWeek(Day::wednesday())
+            ->addDayOfWeek(Day::thursday())
+            ->addDayOfWeek(Day::friday());
 
         $openingHour1 = new OpeningHour(
             new OpeningTime(new Hour(9), new Minute(0)),
@@ -77,8 +77,8 @@ class CalendarTest extends TestCase
         );
 
         $weekendDays = (new DayOfWeekCollection())
-            ->addDayOfWeek(DayOfWeek::SATURDAY())
-            ->addDayOfWeek(DayOfWeek::SUNDAY());
+            ->addDayOfWeek(Day::saturday())
+            ->addDayOfWeek(Day::sunday());
 
         $openingHour3 = new OpeningHour(
             new OpeningTime(new Hour(10), new Minute(0)),
@@ -1605,15 +1605,15 @@ class CalendarTest extends TestCase
                     new OpeningTime(new Hour(8), new Minute(0)),
                     new OpeningTime(new Hour(12), new Minute(59)),
                     new DayOfWeekCollection(
-                        DayOfWeek::MONDAY(),
-                        DayOfWeek::TUESDAY()
+                        Day::monday(),
+                        Day::tuesday()
                     )
                 ),
                 new OpeningHour(
                     new OpeningTime(new Hour(10), new Minute(0)),
                     new OpeningTime(new Hour(14), new Minute(0)),
                     new DayOfWeekCollection(
-                        DayOfWeek::SATURDAY()
+                        Day::saturday()
                     )
                 ),
             ]
@@ -1692,15 +1692,15 @@ class CalendarTest extends TestCase
                     new OpeningTime(new Hour(8), new Minute(0)),
                     new OpeningTime(new Hour(12), new Minute(59)),
                     new DayOfWeekCollection(
-                        DayOfWeek::MONDAY(),
-                        DayOfWeek::TUESDAY()
+                        Day::monday(),
+                        Day::tuesday()
                     )
                 ),
                 new OpeningHour(
                     new OpeningTime(new Hour(10), new Minute(0)),
                     new OpeningTime(new Hour(14), new Minute(0)),
                     new DayOfWeekCollection(
-                        DayOfWeek::SATURDAY()
+                        Day::saturday()
                     )
                 ),
             ]

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Calendar;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultureFeed_Cdb_Data_Calendar_TimestampList;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\SampleFiles;
@@ -67,16 +68,16 @@ class CalendarFactoryTest extends TestCase
     public function it_can_create_a_calendar_from_a_weekscheme(): void
     {
         $weekDays = new DayOfWeekCollection(
-            DayOfWeek::MONDAY(),
-            DayOfWeek::TUESDAY(),
-            DayOfWeek::WEDNESDAY(),
-            DayOfWeek::THURSDAY(),
-            DayOfWeek::FRIDAY()
+            Day::monday(),
+            Day::tuesday(),
+            Day::wednesday(),
+            Day::thursday(),
+            Day::friday()
         );
 
         $weekendDays = new DayOfWeekCollection(
-            DayOfWeek::SATURDAY(),
-            DayOfWeek::SUNDAY()
+            Day::saturday(),
+            Day::sunday()
         );
 
         $expectedCalendar = new Calendar(
@@ -891,17 +892,17 @@ class CalendarFactoryTest extends TestCase
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new DayOfWeekCollection(
-                                DayOfWeek::MONDAY(),
-                                DayOfWeek::THURSDAY(),
-                                DayOfWeek::FRIDAY(),
-                                DayOfWeek::SATURDAY()
+                                Day::monday(),
+                                Day::thursday(),
+                                Day::friday(),
+                                Day::saturday()
                             )
                         ),
                         new OpeningHour(
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new DayOfWeekCollection(
-                                DayOfWeek::SUNDAY()
+                                Day::sunday()
                             )
                         ),
                     ]
@@ -921,17 +922,17 @@ class CalendarFactoryTest extends TestCase
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new OpeningTime(new Hour(22), new Minute(30)),
                             new DayOfWeekCollection(
-                                DayOfWeek::MONDAY(),
-                                DayOfWeek::THURSDAY(),
-                                DayOfWeek::FRIDAY(),
-                                DayOfWeek::SATURDAY()
+                                Day::monday(),
+                                Day::thursday(),
+                                Day::friday(),
+                                Day::saturday()
                             )
                         ),
                         new OpeningHour(
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new OpeningTime(new Hour(20), new Minute(0)),
                             new DayOfWeekCollection(
-                                DayOfWeek::SUNDAY()
+                                Day::sunday()
                             )
                         ),
                     ]
@@ -951,17 +952,17 @@ class CalendarFactoryTest extends TestCase
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new OpeningTime(new Hour(22), new Minute(30)),
                             new DayOfWeekCollection(
-                                DayOfWeek::MONDAY(),
-                                DayOfWeek::THURSDAY(),
-                                DayOfWeek::FRIDAY(),
-                                DayOfWeek::SATURDAY()
+                                Day::monday(),
+                                Day::thursday(),
+                                Day::friday(),
+                                Day::saturday()
                             )
                         ),
                         new OpeningHour(
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new DayOfWeekCollection(
-                                DayOfWeek::SUNDAY()
+                                Day::sunday()
                             )
                         ),
                     ]
@@ -1012,17 +1013,17 @@ class CalendarFactoryTest extends TestCase
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new DayOfWeekCollection(
-                                DayOfWeek::MONDAY(),
-                                DayOfWeek::THURSDAY(),
-                                DayOfWeek::FRIDAY(),
-                                DayOfWeek::SATURDAY()
+                                Day::monday(),
+                                Day::thursday(),
+                                Day::friday(),
+                                Day::saturday()
                             )
                         ),
                         new OpeningHour(
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new DayOfWeekCollection(
-                                DayOfWeek::SUNDAY()
+                                Day::sunday()
                             )
                         ),
                     ]
@@ -1042,17 +1043,17 @@ class CalendarFactoryTest extends TestCase
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new OpeningTime(new Hour(22), new Minute(30)),
                             new DayOfWeekCollection(
-                                DayOfWeek::MONDAY(),
-                                DayOfWeek::THURSDAY(),
-                                DayOfWeek::FRIDAY(),
-                                DayOfWeek::SATURDAY()
+                                Day::monday(),
+                                Day::thursday(),
+                                Day::friday(),
+                                Day::saturday()
                             )
                         ),
                         new OpeningHour(
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new OpeningTime(new Hour(20), new Minute(0)),
                             new DayOfWeekCollection(
-                                DayOfWeek::SUNDAY()
+                                Day::sunday()
                             )
                         ),
                     ]
@@ -1072,17 +1073,17 @@ class CalendarFactoryTest extends TestCase
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new OpeningTime(new Hour(22), new Minute(30)),
                             new DayOfWeekCollection(
-                                DayOfWeek::MONDAY(),
-                                DayOfWeek::THURSDAY(),
-                                DayOfWeek::FRIDAY(),
-                                DayOfWeek::SATURDAY()
+                                Day::monday(),
+                                Day::thursday(),
+                                Day::friday(),
+                                Day::saturday()
                             )
                         ),
                         new OpeningHour(
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new DayOfWeekCollection(
-                                DayOfWeek::SUNDAY()
+                                Day::sunday()
                             )
                         ),
                     ]

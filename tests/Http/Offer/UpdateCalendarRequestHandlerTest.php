@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
@@ -17,6 +16,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
@@ -402,16 +402,16 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 new OpeningTime(new Hour(10), new Minute(0)),
                                 new OpeningTime(new Hour(17), new Minute(0)),
                                 new DayOfWeekCollection(
-                                    DayOfWeek::MONDAY(),
-                                    DayOfWeek::WEDNESDAY()
+                                    Day::monday(),
+                                    Day::wednesday()
                                 )
                             ),
                             new OpeningHour(
                                 new OpeningTime(new Hour(8), new Minute(30)),
                                 new OpeningTime(new Hour(9), new Minute(0)),
                                 new DayOfWeekCollection(
-                                    DayOfWeek::TUESDAY(),
-                                    DayOfWeek::THURSDAY()
+                                    Day::tuesday(),
+                                    Day::thursday()
                                 )
                             ),
                         ]
@@ -480,16 +480,16 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 new OpeningTime(new Hour(10), new Minute(0)),
                                 new OpeningTime(new Hour(17), new Minute(0)),
                                 new DayOfWeekCollection(
-                                    DayOfWeek::MONDAY(),
-                                    DayOfWeek::WEDNESDAY()
+                                    Day::monday(),
+                                    Day::wednesday()
                                 )
                             ),
                             new OpeningHour(
                                 new OpeningTime(new Hour(8), new Minute(30)),
                                 new OpeningTime(new Hour(9), new Minute(0)),
                                 new DayOfWeekCollection(
-                                    DayOfWeek::TUESDAY(),
-                                    DayOfWeek::THURSDAY()
+                                    Day::tuesday(),
+                                    Day::thursday()
                                 )
                             ),
                         ]
@@ -869,16 +869,16 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 new OpeningTime(new Hour(10), new Minute(0)),
                                 new OpeningTime(new Hour(17), new Minute(0)),
                                 new DayOfWeekCollection(
-                                    DayOfWeek::MONDAY(),
-                                    DayOfWeek::WEDNESDAY()
+                                    Day::monday(),
+                                    Day::wednesday()
                                 )
                             ),
                             new OpeningHour(
                                 new OpeningTime(new Hour(8), new Minute(30)),
                                 new OpeningTime(new Hour(9), new Minute(0)),
                                 new DayOfWeekCollection(
-                                    DayOfWeek::TUESDAY(),
-                                    DayOfWeek::THURSDAY()
+                                    Day::tuesday(),
+                                    Day::thursday()
                                 )
                             ),
                         ]
@@ -947,16 +947,16 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 new OpeningTime(new Hour(10), new Minute(0)),
                                 new OpeningTime(new Hour(17), new Minute(0)),
                                 new DayOfWeekCollection(
-                                    DayOfWeek::MONDAY(),
-                                    DayOfWeek::WEDNESDAY()
+                                    Day::monday(),
+                                    Day::wednesday()
                                 )
                             ),
                             new OpeningHour(
                                 new OpeningTime(new Hour(8), new Minute(30)),
                                 new OpeningTime(new Hour(9), new Minute(0)),
                                 new DayOfWeekCollection(
-                                    DayOfWeek::TUESDAY(),
-                                    DayOfWeek::THURSDAY()
+                                    Day::tuesday(),
+                                    Day::thursday()
                                 )
                             ),
                         ]

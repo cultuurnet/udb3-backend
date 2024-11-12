@@ -9,6 +9,7 @@ use CultureFeed_Cdb_Data_Calendar_PeriodList;
 use CultureFeed_Cdb_Data_Calendar_Permanent;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use DateTime;
@@ -164,16 +165,16 @@ class CalendarConverterTest extends TestCase
     public function it_converts_permanent_calendar_with_weekscheme_as_a_cdb_calendar_object(): void
     {
         $weekDays = new DayOfWeekCollection(
-            DayOfWeek::MONDAY(),
-            DayOfWeek::TUESDAY(),
-            DayOfWeek::WEDNESDAY(),
-            DayOfWeek::THURSDAY(),
-            DayOfWeek::FRIDAY()
+            Day::monday(),
+            Day::tuesday(),
+            Day::wednesday(),
+            Day::thursday(),
+            Day::friday()
         );
 
         $weekendDays = new DayOfWeekCollection(
-            DayOfWeek::SATURDAY(),
-            DayOfWeek::SUNDAY()
+            Day::saturday(),
+            Day::sunday()
         );
 
         $calendar = new Calendar(
@@ -219,16 +220,16 @@ class CalendarConverterTest extends TestCase
     public function it_converts_periodic_calendar_with_weekscheme_as_a_cdb_calendar_object(): void
     {
         $weekDays = new DayOfWeekCollection(
-            DayOfWeek::MONDAY(),
-            DayOfWeek::TUESDAY(),
-            DayOfWeek::WEDNESDAY(),
-            DayOfWeek::THURSDAY(),
-            DayOfWeek::FRIDAY()
+            Day::monday(),
+            Day::tuesday(),
+            Day::wednesday(),
+            Day::thursday(),
+            Day::friday()
         );
 
         $weekendDays = new DayOfWeekCollection(
-            DayOfWeek::SATURDAY(),
-            DayOfWeek::SUNDAY()
+            Day::saturday(),
+            Day::sunday()
         );
 
         $calendar = new Calendar(
@@ -286,7 +287,7 @@ class CalendarConverterTest extends TestCase
                     new OpeningTime(new Hour(9), new Minute(0)),
                     new OpeningTime(new Hour(17), new Minute(0)),
                     new DayOfWeekCollection(
-                        DayOfWeek::MONDAY()
+                        Day::monday()
                     )
                 ),
             ]
