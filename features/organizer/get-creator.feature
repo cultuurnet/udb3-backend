@@ -1,4 +1,3 @@
-@current
 Feature: Test getting creator of organizer
     Background:
         Given I am using the UDB3 base URL
