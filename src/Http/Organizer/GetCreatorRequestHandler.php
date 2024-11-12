@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Http\Ownership;
+namespace CultuurNet\UDB3\Http\Organizer;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Ownership\OwnershipStatusGuard;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
@@ -16,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class GetCreatorOwnershipRequestHandler implements RequestHandlerInterface
+final class GetCreatorRequestHandler implements RequestHandlerInterface
 {
     private DocumentRepository $organizerRepository;
     private UserIdentityResolver $userIdentityResolver;

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Ownership;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Http\Organizer\GetCreatorRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\ApproveOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\DeleteOwnershipRequestHandler;
-use CultuurNet\UDB3\Http\Ownership\GetCreatorOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\GetOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\OwnershipStatusGuard;
 use CultuurNet\UDB3\Http\Ownership\RejectOwnershipRequestHandler;
@@ -26,7 +26,7 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             OwnershipStatusGuard::class,
             RequestOwnershipRequestHandler::class,
             GetOwnershipRequestHandler::class,
-            GetCreatorOwnershipRequestHandler::class,
+            GetCreatorRequestHandler::class,
             SearchOwnershipRequestHandler::class,
             ApproveOwnershipRequestHandler::class,
             RejectOwnershipRequestHandler::class,
@@ -67,8 +67,8 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
         );
 
         $container->addShared(
-            GetCreatorOwnershipRequestHandler::class,
-            fn () => new GetCreatorOwnershipRequestHandler(
+            GetCreatorRequestHandler::class,
+            fn () => new GetCreatorRequestHandler(
                 $container->get('organizer_jsonld_repository'),
                 $container->get(UserIdentityResolver::class),
                 $container->get(OwnershipStatusGuard::class),

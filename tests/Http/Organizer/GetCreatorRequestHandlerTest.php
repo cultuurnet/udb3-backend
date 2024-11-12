@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Http\Ownership;
+namespace CultuurNet\UDB3\Http\Organizer;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\Ownership\OwnershipStatusGuard;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Ownership\OwnershipState;
@@ -23,11 +24,11 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class GetCreatorOwnershipRequestHandlerTest extends TestCase
+class GetCreatorRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    private GetCreatorOwnershipRequestHandler $getCreatorOwnershipRequestHandler;
+    private GetCreatorRequestHandler $getCreatorRequestHandler;
 
     /**
      * @var DocumentRepository&MockObject
@@ -62,7 +63,7 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
         );
         $this->currentUser = new CurrentUser(Uuid::uuid4()->toString());
 
-        $this->getCreatorOwnershipRequestHandler = new GetCreatorOwnershipRequestHandler(
+        $this->getCreatorRequestHandler = new GetCreatorRequestHandler(
             $this->organizerRepository,
             $this->userIdentityResolver,
             $this->ownershipStatusGuard,
@@ -122,7 +123,7 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
             ->with($creatorId)
             ->willReturn($creator);
 
-        $response = $this->getCreatorOwnershipRequestHandler->handle($request);
+        $response = $this->getCreatorRequestHandler->handle($request);
 
         $expected = Json::encode([
             'userId' => $creatorId,
@@ -180,7 +181,7 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::resourceNotFound('Creator', $creatorId),
-            fn () => $this->getCreatorOwnershipRequestHandler->handle($request)
+            fn () => $this->getCreatorRequestHandler->handle($request)
         );
     }
 
@@ -214,7 +215,7 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::resourceNotFound('Organizer', $organizerId),
-            fn () => $this->getCreatorOwnershipRequestHandler->handle($request)
+            fn () => $this->getCreatorRequestHandler->handle($request)
         );
     }
 
@@ -260,7 +261,7 @@ class GetCreatorOwnershipRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::forbidden('You are not allowed to get creator for this item'),
-            fn () => $this->getCreatorOwnershipRequestHandler->handle($request)
+            fn () => $this->getCreatorRequestHandler->handle($request)
         );
     }
 }
