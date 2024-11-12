@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use DateTimeInterface;
 
 /**

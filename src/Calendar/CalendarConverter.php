@@ -13,6 +13,7 @@ use CultureFeed_Cdb_Data_Calendar_SchemeDay;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultureFeed_Cdb_Data_Calendar_TimestampList;
 use CultureFeed_Cdb_Data_Calendar_Weekscheme;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use DateInterval;
 use DateTimeInterface;
 use InvalidArgumentException;
@@ -34,10 +35,10 @@ class CalendarConverter implements CalendarConverterInterface
     public function toCdbCalendar(CalendarInterface $calendar): \CultureFeed_Cdb_Data_Calendar
     {
         $weekScheme = $this->getWeekScheme($calendar);
-        $calendarType = (string) $calendar->getType();
+        $calendarType = $calendar->getType()->toString();
 
         switch ($calendarType) {
-            case CalendarType::MULTIPLE:
+            case CalendarType::multiple()->toString():
                 $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                 $index = 1;
                 foreach ($calendar->getTimestamps() as $timestamp) {
@@ -54,7 +55,7 @@ class CalendarConverter implements CalendarConverterInterface
                     }
                 }
                 break;
-            case CalendarType::SINGLE:
+            case CalendarType::single()->toString():
                 $cdbCalendar = $this->createTimestampCalendar(
                     $this->configureCdbTimezone($calendar->getStartDate()),
                     $this->configureCdbTimezone($calendar->getEndDate()),
@@ -62,7 +63,7 @@ class CalendarConverter implements CalendarConverterInterface
                     1
                 );
                 break;
-            case CalendarType::PERIODIC:
+            case CalendarType::periodic()->toString():
                 $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_PeriodList();
 
                 $startDate = $this->configureCdbTimezone($calendar->getStartDate())->format('Y-m-d');
@@ -74,7 +75,7 @@ class CalendarConverter implements CalendarConverterInterface
                 }
                 $cdbCalendar->add($period);
                 break;
-            case CalendarType::PERMANENT:
+            case CalendarType::permanent()->toString():
                 $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_Permanent();
                 if (!empty($weekScheme)) {
                     $cdbCalendar->setWeekScheme($weekScheme);

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Calendar;
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use DateTimeInterface;
 
 final class CalendarFactory implements CalendarFactoryInterface
@@ -133,13 +134,13 @@ final class CalendarFactory implements CalendarFactoryInterface
         //
         $calendarType = null;
         if ($cdbCalendar instanceof \CultureFeed_Cdb_Data_Calendar_Permanent) {
-            $calendarType = CalendarType::PERMANENT();
+            $calendarType = CalendarType::permanent();
         } elseif ($cdbCalendar instanceof \CultureFeed_Cdb_Data_Calendar_PeriodList) {
-            $calendarType = CalendarType::PERIODIC();
+            $calendarType = CalendarType::periodic();
         } elseif ($cdbCalendar instanceof \CultureFeed_Cdb_Data_Calendar_TimestampList) {
-            $calendarType = CalendarType::SINGLE();
+            $calendarType = CalendarType::single();
             if (count($timestamps) > 1) {
-                $calendarType = CalendarType::MULTIPLE();
+                $calendarType = CalendarType::multiple();
             }
         }
 
@@ -165,7 +166,7 @@ final class CalendarFactory implements CalendarFactoryInterface
         }
 
         return new Calendar(
-            CalendarType::PERMANENT(),
+            CalendarType::permanent(),
             null,
             null,
             [],
