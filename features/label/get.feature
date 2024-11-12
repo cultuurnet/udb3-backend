@@ -54,6 +54,19 @@ Feature: Test the UDB3 labels API
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
 
+  Scenario: Show the labels sorted by closest match
+    When I send a GET request to "/labels/" with parameters:
+      | limit      | 10      |
+      | query      | walk    |
+      | suggestion | true    |
+    Then the response status should be "200"
+    And the response body should be valid JSON
+    And the JSON response at "totalItems" should be 4
+    And the JSON response at "member/0/name" should be "walk"
+    And the JSON response at "member/1/name" should be "walking tour"
+    And the JSON response at "member/2/name" should be "city walk"
+    And the JSON response at "member/3/name" should be "forest walk"
+
   @bugfix # https://jira.uitdatabank.be/browse/III-4734
   Scenario: Search labels as suggestions
     When I send a GET request to "/labels/" with parameters:
