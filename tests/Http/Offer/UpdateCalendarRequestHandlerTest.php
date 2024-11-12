@@ -25,7 +25,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use PHPUnit\Framework\TestCase;
 
@@ -227,7 +226,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                     new StatusReason('Covid')
                                 )
                             ),
-                            new LegacyBookingAvailability(BookingAvailabilityType::Unavailable())
+                            BookingAvailability::Unavailable()
                         )
                     )
                 ),
