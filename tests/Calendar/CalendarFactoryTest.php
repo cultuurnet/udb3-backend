@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\SampleFiles;
 use DateTimeImmutable;
@@ -89,19 +90,19 @@ class CalendarFactoryTest extends TestCase
             [],
             [
                 new OpeningHour(
+                    $weekDays,
                     new Time(new Hour(9), new Minute(0)),
-                    new Time(new Hour(12), new Minute(0)),
-                    $weekDays
+                    new Time(new Hour(12), new Minute(0))
                 ),
                 new OpeningHour(
+                    $weekDays,
                     new Time(new Hour(13), new Minute(0)),
-                    new Time(new Hour(17), new Minute(0)),
-                    $weekDays
+                    new Time(new Hour(17), new Minute(0))
                 ),
                 new OpeningHour(
+                    $weekendDays,
                     new Time(new Hour(10), new Minute(0)),
-                    new Time(new Hour(16), new Minute(0)),
-                    $weekendDays
+                    new Time(new Hour(16), new Minute(0))
                 ),
             ]
         );
@@ -891,21 +892,21 @@ class CalendarFactoryTest extends TestCase
                     [],
                     [
                         new OpeningHour(
-                            new Time(new Hour(20), new Minute(30)),
-                            new Time(new Hour(20), new Minute(30)),
                             new Days(
                                 Day::monday(),
                                 Day::thursday(),
                                 Day::friday(),
                                 Day::saturday()
-                            )
+                            ),
+                            new Time(new Hour(20), new Minute(30)),
+                            new Time(new Hour(20), new Minute(30))
                         ),
                         new OpeningHour(
-                            new Time(new Hour(16), new Minute(0)),
-                            new Time(new Hour(16), new Minute(0)),
                             new Days(
                                 Day::sunday()
-                            )
+                            ),
+                            new Time(new Hour(16), new Minute(0)),
+                            new Time(new Hour(16), new Minute(0))
                         ),
                     ]
                 ),
@@ -921,21 +922,21 @@ class CalendarFactoryTest extends TestCase
                     [],
                     [
                         new OpeningHour(
-                            new Time(new Hour(20), new Minute(30)),
-                            new Time(new Hour(22), new Minute(30)),
                             new Days(
                                 Day::monday(),
                                 Day::thursday(),
                                 Day::friday(),
                                 Day::saturday()
-                            )
+                            ),
+                            new Time(new Hour(20), new Minute(30)),
+                            new Time(new Hour(22), new Minute(30))
                         ),
                         new OpeningHour(
-                            new Time(new Hour(16), new Minute(0)),
-                            new Time(new Hour(20), new Minute(0)),
                             new Days(
                                 Day::sunday()
-                            )
+                            ),
+                            new Time(new Hour(16), new Minute(0)),
+                            new Time(new Hour(20), new Minute(0))
                         ),
                     ]
                 ),
@@ -951,21 +952,21 @@ class CalendarFactoryTest extends TestCase
                     [],
                     [
                         new OpeningHour(
-                            new Time(new Hour(20), new Minute(30)),
-                            new Time(new Hour(22), new Minute(30)),
                             new Days(
                                 Day::monday(),
                                 Day::thursday(),
                                 Day::friday(),
                                 Day::saturday()
-                            )
+                            ),
+                            new Time(new Hour(20), new Minute(30)),
+                            new Time(new Hour(22), new Minute(30))
                         ),
                         new OpeningHour(
-                            new Time(new Hour(16), new Minute(0)),
-                            new Time(new Hour(16), new Minute(0)),
                             new Days(
                                 Day::sunday()
-                            )
+                            ),
+                            new Time(new Hour(16), new Minute(0)),
+                            new Time(new Hour(16), new Minute(0))
                         ),
                     ]
                 ),
@@ -1012,21 +1013,21 @@ class CalendarFactoryTest extends TestCase
                     [],
                     [
                         new OpeningHour(
-                            new Time(new Hour(20), new Minute(30)),
-                            new Time(new Hour(20), new Minute(30)),
                             new Days(
                                 Day::monday(),
                                 Day::thursday(),
                                 Day::friday(),
                                 Day::saturday()
-                            )
+                            ),
+                            new Time(new Hour(20), new Minute(30)),
+                            new Time(new Hour(20), new Minute(30))
                         ),
                         new OpeningHour(
-                            new Time(new Hour(16), new Minute(0)),
-                            new Time(new Hour(16), new Minute(0)),
                             new Days(
                                 Day::sunday()
-                            )
+                            ),
+                            new Time(new Hour(16), new Minute(0)),
+                            new Time(new Hour(16), new Minute(0))
                         ),
                     ]
                 ),
@@ -1042,21 +1043,21 @@ class CalendarFactoryTest extends TestCase
                     [],
                     [
                         new OpeningHour(
-                            new Time(new Hour(20), new Minute(30)),
-                            new Time(new Hour(22), new Minute(30)),
                             new Days(
                                 Day::monday(),
                                 Day::thursday(),
                                 Day::friday(),
                                 Day::saturday()
-                            )
+                            ),
+                            new Time(new Hour(20), new Minute(30)),
+                            new Time(new Hour(22), new Minute(30))
                         ),
                         new OpeningHour(
-                            new Time(new Hour(16), new Minute(0)),
-                            new Time(new Hour(20), new Minute(0)),
                             new Days(
                                 Day::sunday()
-                            )
+                            ),
+                            new Time(new Hour(16), new Minute(0)),
+                            new Time(new Hour(20), new Minute(0))
                         ),
                     ]
                 ),
@@ -1072,21 +1073,21 @@ class CalendarFactoryTest extends TestCase
                     [],
                     [
                         new OpeningHour(
-                            new Time(new Hour(20), new Minute(30)),
-                            new Time(new Hour(22), new Minute(30)),
                             new Days(
                                 Day::monday(),
                                 Day::thursday(),
                                 Day::friday(),
                                 Day::saturday()
-                            )
+                            ),
+                            new Time(new Hour(20), new Minute(30)),
+                            new Time(new Hour(22), new Minute(30))
                         ),
                         new OpeningHour(
-                            new Time(new Hour(16), new Minute(0)),
-                            new Time(new Hour(16), new Minute(0)),
                             new Days(
                                 Day::sunday()
-                            )
+                            ),
+                            new Time(new Hour(16), new Minute(0)),
+                            new Time(new Hour(16), new Minute(0))
                         ),
                     ]
                 ),

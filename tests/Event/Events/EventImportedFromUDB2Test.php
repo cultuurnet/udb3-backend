@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
@@ -19,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
@@ -312,39 +312,39 @@ final class EventImportedFromUDB2Test extends TestCase
                         [],
                         [
                             0 => new OpeningHour(
+                                new Days(Day::monday()),
                                 new Time(new Hour(10), new Minute(0)),
-                                new Time(new Hour(18), new Minute(0)),
-                                new Days(Day::monday())
+                                new Time(new Hour(18), new Minute(0))
                             ),
                             1 => new OpeningHour(
+                                new Days(Day::tuesday()),
                                 new Time(new Hour(10), new Minute(0)),
-                                new Time(new Hour(18), new Minute(0)),
-                                new Days(Day::tuesday())
+                                new Time(new Hour(18), new Minute(0))
                             ),
                             2 => new OpeningHour(
+                                new Days(Day::wednesday()),
                                 new Time(new Hour(10), new Minute(0)),
-                                new Time(new Hour(18), new Minute(0)),
-                                new Days(Day::wednesday())
+                                new Time(new Hour(18), new Minute(0))
                             ),
                             3 => new OpeningHour(
+                                new Days(Day::thursday()),
                                 new Time(new Hour(10), new Minute(0)),
-                                new Time(new Hour(18), new Minute(0)),
-                                new Days(Day::thursday())
+                                new Time(new Hour(18), new Minute(0))
                             ),
                             4 => new OpeningHour(
+                                new Days(Day::friday()),
                                 new Time(new Hour(10), new Minute(0)),
-                                new Time(new Hour(18), new Minute(0)),
-                                new Days(Day::friday())
+                                new Time(new Hour(18), new Minute(0))
                             ),
                             5 => new OpeningHour(
+                                new Days(Day::saturday()),
                                 new Time(new Hour(10), new Minute(0)),
-                                new Time(new Hour(18), new Minute(0)),
-                                new Days(Day::saturday())
+                                new Time(new Hour(18), new Minute(0))
                             ),
                             6 => new OpeningHour(
+                                new Days(Day::sunday()),
                                 new Time(new Hour(8), new Minute(0)),
-                                new Time(new Hour(12), new Minute(0)),
-                                new Days(Day::sunday())
+                                new Time(new Hour(12), new Minute(0))
                             ),
                         ]
                     )
@@ -395,19 +395,19 @@ final class EventImportedFromUDB2Test extends TestCase
                         [],
                         [
                             0 => new OpeningHour(
+                                new Days(Day::wednesday()),
                                 new Time(new Hour(9), new Minute(30)),
-                                new Time(new Hour(11), new Minute(30)),
-                                new Days(Day::wednesday())
+                                new Time(new Hour(11), new Minute(30))
                             ),
                             1 => new OpeningHour(
+                                new Days(Day::thursday()),
                                 new Time(new Hour(9), new Minute(0)),
-                                new Time(new Hour(17), new Minute(0)),
-                                new Days(Day::thursday())
+                                new Time(new Hour(17), new Minute(0))
                             ),
                             2 => new OpeningHour(
+                                new Days(Day::saturday()),
                                 new Time(new Hour(9), new Minute(30)),
-                                new Time(new Hour(11), new Minute(30)),
-                                new Days(Day::saturday())
+                                new Time(new Hour(11), new Minute(30))
                             ),
                         ]
                     )
