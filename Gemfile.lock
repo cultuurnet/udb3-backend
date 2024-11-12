@@ -30,7 +30,7 @@ GEM
       stud
     rake (13.0.6)
     rchardet (1.8.0)
-    rexml (3.3.9)
+    rexml (3.2.5)
     stud (0.0.23)
 
 PLATFORMS
