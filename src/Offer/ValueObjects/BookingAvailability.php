@@ -65,4 +65,9 @@ final class BookingAvailability implements Serializable
     ): self {
         return new BookingAvailability($udb3ModelBookingAvailability->getType());
     }
+
+    public function toUdb3ModelBookingAvailability(): Udb3ModelBookingAvailability
+    {
+        return new Udb3ModelBookingAvailability($this->getType());
+    }
 }

@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
@@ -19,7 +20,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -152,9 +153,9 @@ class CalendarJSONDeserializerTest extends TestCase
                 (new TimeStamp(
                     DateTimeFactory::fromAtom('2020-02-03T09:00:00+01:00'),
                     DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00')
-                ))->withBookingAvailability(BookingAvailability::unavailable()),
+                ))->withBookingAvailability(BookingAvailability::Unavailable()),
             ]
-        ))->withBookingAvailability(BookingAvailability::unavailable());
+        ))->withBookingAvailability(LegacyBookingAvailability::unavailable());
 
         $this->assertEquals(
             $expectedCalendar,
@@ -261,11 +262,11 @@ class CalendarJSONDeserializerTest extends TestCase
             (new Timestamp(
                 $startDate1,
                 $endDate1
-            ))->withBookingAvailability(BookingAvailability::unavailable()),
+            ))->withBookingAvailability(BookingAvailability::Unavailable()),
             (new Timestamp(
                 $startDate2,
                 $endDate2
-            ))->withBookingAvailability(BookingAvailability::unavailable()),
+            ))->withBookingAvailability(BookingAvailability::Unavailable()),
         ];
 
         $expectedCalendar = (new Calendar(
@@ -273,7 +274,7 @@ class CalendarJSONDeserializerTest extends TestCase
             null,
             null,
             $timestamps
-        ))->withBookingAvailability(BookingAvailability::unavailable());
+        ))->withBookingAvailability(LegacyBookingAvailability::unavailable());
 
         $this->assertEquals(
             $expectedCalendar,

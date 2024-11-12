@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
@@ -17,7 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
@@ -124,7 +125,7 @@ class CalendarJSONParserTest extends TestCase
     public function it_can_get_the_booking_availability(): void
     {
         $this->assertEquals(
-            BookingAvailability::unavailable(),
+            LegacyBookingAvailability::unavailable(),
             $this->calendarJSONParser->getBookingAvailability($this->updateCalendarAsArray)
         );
     }
@@ -155,7 +156,7 @@ class CalendarJSONParserTest extends TestCase
                         new StatusReason('Reason in het Frans')
                     )
                 )
-            )->withBookingAvailability(BookingAvailability::unavailable()),
+            )->withBookingAvailability(BookingAvailability::Unavailable()),
             (new Timestamp(
                 $startDatePeriod2,
                 $endDatePeriod2
@@ -170,7 +171,7 @@ class CalendarJSONParserTest extends TestCase
                         new StatusReason('Reason in het Frans')
                     )
                 )
-            )->withBookingAvailability(BookingAvailability::unavailable()),
+            )->withBookingAvailability(BookingAvailability::Unavailable()),
         ];
 
         $this->assertEquals(

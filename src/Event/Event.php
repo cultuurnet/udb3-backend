@@ -90,7 +90,6 @@ use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\Theme;
@@ -378,7 +377,7 @@ final class Event extends Offer
             $timestamp = $timestamps[$index];
 
             $subEventStatus = $subEventUpdate->getStatus() ?: null;
-            $subEventBookingAvailability = $subEventUpdate->getBookingAvailability() ? BookingAvailability::fromUdb3ModelBookingAvailability($subEventUpdate->getBookingAvailability()) : null;
+            $subEventBookingAvailability = $subEventUpdate->getBookingAvailability() ?: null;
 
             $updatedTimestamp = new Timestamp(
                 $subEventUpdate->getStartDate() ?: $timestamp->getStartDate(),

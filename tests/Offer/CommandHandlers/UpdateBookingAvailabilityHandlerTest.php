@@ -15,11 +15,12 @@ use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Calendar\Timestamp;
 use DateTime;
@@ -55,7 +56,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
         $this->scenario
             ->withAggregateId('1')
             ->given([$permanentEventCreated])
-            ->when(new UpdateBookingAvailability('1', BookingAvailability::unavailable()))
+            ->when(new UpdateBookingAvailability('1', LegacyBookingAvailability::unavailable()))
             ->then([]);
     }
 
@@ -82,7 +83,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
         $this->scenario
             ->withAggregateId('1')
             ->given([$periodicEventCreated])
-            ->when(new UpdateBookingAvailability('1', BookingAvailability::unavailable()))
+            ->when(new UpdateBookingAvailability('1', LegacyBookingAvailability::unavailable()))
             ->then([]);
     }
 
@@ -110,7 +111,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             )
         );
 
-        $updateBookingAvailability = new UpdateBookingAvailability('1', BookingAvailability::unavailable());
+        $updateBookingAvailability = new UpdateBookingAvailability('1', LegacyBookingAvailability::unavailable());
 
         $this->scenario
             ->withAggregateId('1')
@@ -127,9 +128,9 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                             (new Timestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
-                            ))->withBookingAvailability(BookingAvailability::unavailable()),
+                            ))->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
-                    ))->withBookingAvailability(BookingAvailability::unavailable())
+                    ))->withBookingAvailability(LegacyBookingAvailability::unavailable())
                 ),
             ]);
     }
@@ -162,7 +163,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             )
         );
 
-        $updateBookingAvailability = new UpdateBookingAvailability('1', BookingAvailability::unavailable());
+        $updateBookingAvailability = new UpdateBookingAvailability('1', LegacyBookingAvailability::unavailable());
 
         $this->scenario
             ->withAggregateId('1')
@@ -179,13 +180,13 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                             (new Timestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
-                            ))->withBookingAvailability(BookingAvailability::unavailable()),
+                            ))->withBookingAvailability(BookingAvailability::Unavailable()),
                             (new Timestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
-                            ))->withBookingAvailability(BookingAvailability::unavailable()),
+                            ))->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
-                    ))->withBookingAvailability(BookingAvailability::unavailable())
+                    ))->withBookingAvailability(LegacyBookingAvailability::unavailable())
                 ),
             ]);
     }

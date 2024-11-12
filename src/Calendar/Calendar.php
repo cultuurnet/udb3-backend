@@ -8,6 +8,7 @@ use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\JsonLdSerializableInterface;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar as Udb3ModelCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
@@ -17,7 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
@@ -45,7 +46,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     private Status $status;
 
-    private BookingAvailability $bookingAvailability;
+    private LegacyBookingAvailability $bookingAvailability;
 
     /**
      * @param Timestamp[] $timestamps
@@ -108,7 +109,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         }
     }
 
-    public function withBookingAvailability(BookingAvailability $bookingAvailability): self
+    public function withBookingAvailability(LegacyBookingAvailability $bookingAvailability): self
     {
         $this->guardUpdatingBookingAvailability();
 
@@ -129,14 +130,14 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $clone;
     }
 
-    public function withBookingAvailabilityOnTimestamps(BookingAvailability $bookingAvailability): self
+    public function withBookingAvailabilityOnTimestamps(LegacyBookingAvailability $bookingAvailability): self
     {
         $this->guardUpdatingBookingAvailability();
 
         $clone = clone $this;
         $clone->timestamps = \array_map(
             function (Timestamp $timestamp) use ($bookingAvailability): Timestamp {
-                return $timestamp->withBookingAvailability($bookingAvailability);
+                return $timestamp->withBookingAvailability($bookingAvailability->toUdb3ModelBookingAvailability());
             },
             $clone->getTimestamps()
         );
@@ -205,7 +206,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $this->status;
     }
 
-    public function getBookingAvailability(): BookingAvailability
+    public function getBookingAvailability(): LegacyBookingAvailability
     {
         return $this->bookingAvailability;
     }
@@ -282,7 +283,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         }
 
         if (!empty($data['bookingAvailability'])) {
-            $calendar->bookingAvailability = BookingAvailability::deserialize($data['bookingAvailability']);
+            $calendar->bookingAvailability = LegacyBookingAvailability::deserialize($data['bookingAvailability']);
         }
 
         return $calendar;
@@ -354,7 +355,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     public static function single(
         Timestamp $timestamp,
         ?Status $status = null,
-        ?BookingAvailability $bookingAvailability = null
+        ?LegacyBookingAvailability $bookingAvailability = null
     ): self {
         $calendar = new self(CalendarType::SINGLE(), null, null, [$timestamp]);
         if ($status) {
@@ -372,7 +373,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     public static function multiple(
         array $timestamps,
         ?Status $status = null,
-        ?BookingAvailability $bookingAvailability = null
+        ?LegacyBookingAvailability $bookingAvailability = null
     ): self {
         $calendar = new self(CalendarType::MULTIPLE(), null, null, $timestamps);
         if ($status) {
@@ -443,7 +444,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $calendar = new self($type, $startDate, $endDate, $timestamps, $openingHours);
 
         $topStatus = $udb3Calendar->getStatus();
-        $topBookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
+        $topBookingAvailability = LegacyBookingAvailability::fromUdb3ModelBookingAvailability(
             $udb3Calendar->getBookingAvailability()
         );
 
@@ -530,19 +531,19 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
      * - If one of the timestamps is available then the top level is available
      * - If all of the timestamps are unavailable the top level is also unavailable
      */
-    private function deriveBookingAvailabilityFromSubEvents(): BookingAvailability
+    private function deriveBookingAvailabilityFromSubEvents(): LegacyBookingAvailability
     {
         if (empty($this->timestamps)) {
-            return BookingAvailability::available();
+            return LegacyBookingAvailability::available();
         }
 
         foreach ($this->timestamps as $timestamp) {
-            if ($timestamp->getBookingAvailability()->equals(BookingAvailability::available())) {
-                return BookingAvailability::available();
+            if ($timestamp->getBookingAvailability()->getType()->sameAs(BookingAvailabilityType::Available())) {
+                return LegacyBookingAvailability::available();
             }
         }
 
-        return BookingAvailability::unavailable();
+        return LegacyBookingAvailability::unavailable();
     }
 
     /**
@@ -550,10 +551,10 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
      * - For a periodic or permanent calendar this is always available
      * - If there are timestamps the top level status is calculated
      */
-    private function determineCorrectTopBookingAvailabilityForProjection(): BookingAvailability
+    private function determineCorrectTopBookingAvailabilityForProjection(): LegacyBookingAvailability
     {
         if (empty($this->timestamps)) {
-            return BookingAvailability::available();
+            return LegacyBookingAvailability::available();
         }
 
         return $this->deriveBookingAvailabilityFromSubEvents();
