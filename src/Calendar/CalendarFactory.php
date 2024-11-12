@@ -10,6 +10,7 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use DateTimeInterface;
 
@@ -210,9 +211,9 @@ final class CalendarFactory implements CalendarFactoryInterface
                     );
 
                     $openingHour = new OpeningHour(
+                        new Days(new Day($day->getDayName())),
                         Time::fromDateTime($opens),
-                        $closes ? Time::fromDateTime($closes) : Time::fromDateTime($opens),
-                        new Days(new Day($day->getDayName()))
+                        $closes ? Time::fromDateTime($closes) : Time::fromDateTime($opens)
                     );
 
                     $openingHours = $this->addToOpeningHours($openingHour, ...$openingHours);
@@ -232,9 +233,7 @@ final class CalendarFactory implements CalendarFactoryInterface
     ): array {
         foreach ($openingHours as $openingHour) {
             if ($openingHour->hasEqualHours($newOpeningHour)) {
-                $openingHour->addDays(
-                    $newOpeningHour->getDays()
-                );
+                $openingHour->addDays($newOpeningHour->getDays());
                 return $openingHours;
             }
         }
