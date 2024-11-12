@@ -6,12 +6,14 @@ namespace CultuurNet\UDB3\Calendar;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTimeInterface;
 
 /**
@@ -41,7 +43,7 @@ final class Timestamp implements Serializable
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->status = $status ?? new Status(StatusType::Available(), null);
-        $this->bookingAvailability = $bookingAvailability ?? BookingAvailability::available();
+        $this->bookingAvailability = $bookingAvailability ?? BookingAvailability::Available();
     }
 
     public function withStatus(Status $status): self
@@ -87,7 +89,7 @@ final class Timestamp implements Serializable
 
         $bookingAvailability = null;
         if (isset($data['bookingAvailability'])) {
-            $bookingAvailability = BookingAvailability::deserialize($data['bookingAvailability']);
+            $bookingAvailability = (new BookingAvailabilityDenormalizer())->denormalize($data['bookingAvailability'], BookingAvailability::class);
         }
 
         $startDate = DateTimeFactory::fromAtom($data['startDate']);
@@ -106,7 +108,7 @@ final class Timestamp implements Serializable
             'startDate' => $this->startDate->format(DateTimeInterface::ATOM),
             'endDate' => $this->endDate->format(DateTimeInterface::ATOM),
             'status' => (new StatusNormalizer())->normalize($this->status),
-            'bookingAvailability' => $this->bookingAvailability->serialize(),
+            'bookingAvailability' => (new BookingAvailabilityNormalizer())->normalize($this->bookingAvailability),
         ];
     }
 
@@ -124,7 +126,7 @@ final class Timestamp implements Serializable
             $subEvent->getDateRange()->getFrom(),
             $subEvent->getDateRange()->getTo(),
             $subEvent->getStatus(),
-            BookingAvailability::fromUdb3ModelBookingAvailability($subEvent->getBookingAvailability())
+            $subEvent->getBookingAvailability()
         );
     }
 }
