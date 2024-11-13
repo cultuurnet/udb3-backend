@@ -25,7 +25,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use CultuurNet\UDB3\Calendar\Timestamp as LegacyTimestamp;
 use DateTime;
 use DateTimeImmutable;
@@ -515,7 +514,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                             (new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
-                            ))->withBookingAvailability(LegacyBookingAvailability::unavailable()),
+                            ))->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
                     )
                 ),
@@ -566,11 +565,11 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                             (new LegacyTimestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
-                            ))->withBookingAvailability(LegacyBookingAvailability::unavailable()),
+                            ))->withBookingAvailability(BookingAvailability::Unavailable()),
                             (new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
-                            ))->withBookingAvailability(LegacyBookingAvailability::unavailable()),
+                            ))->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
                     )
                 ),
@@ -638,7 +637,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                         new StatusReason('Niet beschikbaar')
                                     )
                                 )
-                            )->withBookingAvailability(LegacyBookingAvailability::unavailable()),
+                            )->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
                     )
                 ),
@@ -717,7 +716,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                         new StatusReason('Niet beschikbaar')
                                     )
                                 )
-                            )->withBookingAvailability(LegacyBookingAvailability::unavailable()),
+                            )->withBookingAvailability(BookingAvailability::Unavailable()),
                             (new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
@@ -729,7 +728,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                         new StatusReason('Tijdelijk niet beschikbaar')
                                     )
                                 )
-                            )->withBookingAvailability(LegacyBookingAvailability::unavailable()),
+                            )->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
                     )
                 ),

@@ -17,4 +17,14 @@ final class BookingAvailability
     {
         return $this->type;
     }
+
+    public static function Available(): self
+    {
+        return new self(BookingAvailabilityType::Available());
+    }
+
+    public static function Unavailable(): self
+    {
+        return new self(BookingAvailabilityType::Unavailable());
+    }
 }

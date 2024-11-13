@@ -6,8 +6,12 @@ namespace CultuurNet\UDB3\Calendar;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\JsonLdSerializableInterface;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar as Udb3ModelCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
@@ -17,7 +21,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
@@ -229,7 +232,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $calendar = [
             'type' => $this->type,
             'status' => (new StatusNormalizer())->normalize($this->status),
-            'bookingAvailability' => $this->bookingAvailability->serialize(),
+            'bookingAvailability' => (new BookingAvailabilityNormalizer())->normalize($this->bookingAvailability),
         ];
 
         empty($this->startDate) ?: $calendar['startDate'] = $this->startDate->format(DateTimeInterface::ATOM);
@@ -282,7 +285,10 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         }
 
         if (!empty($data['bookingAvailability'])) {
-            $calendar->bookingAvailability = BookingAvailability::deserialize($data['bookingAvailability']);
+            $calendar->bookingAvailability = (new BookingAvailabilityDenormalizer())->denormalize(
+                $data['bookingAvailability'],
+                BookingAvailability::class
+            );
         }
 
         return $calendar;
@@ -325,7 +331,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $jsonLd['status'] = (new StatusNormalizer())->normalize($this->determineCorrectTopStatusForProjection());
 
-        $jsonLd['bookingAvailability'] = $this->determineCorrectTopBookingAvailabilityForProjection()->serialize();
+        $jsonLd['bookingAvailability'] = (new BookingAvailabilityNormalizer())->normalize($this->determineCorrectTopBookingAvailabilityForProjection());
 
         $timestamps = array_values($this->getTimestamps());
         if (!empty($timestamps)) {
@@ -443,9 +449,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $calendar = new self($type, $startDate, $endDate, $timestamps, $openingHours);
 
         $topStatus = $udb3Calendar->getStatus();
-        $topBookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
-            $udb3Calendar->getBookingAvailability()
-        );
+        $topBookingAvailability = $udb3Calendar->getBookingAvailability();
 
         if ($type->sameAs(CalendarType::PERIODIC()) || $type->sameAs(CalendarType::PERMANENT())) {
             // If there are no subEvents, set the top status and top bookingAvailability.
@@ -533,16 +537,16 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     private function deriveBookingAvailabilityFromSubEvents(): BookingAvailability
     {
         if (empty($this->timestamps)) {
-            return BookingAvailability::available();
+            return BookingAvailability::Available();
         }
 
         foreach ($this->timestamps as $timestamp) {
-            if ($timestamp->getBookingAvailability()->equals(BookingAvailability::available())) {
-                return BookingAvailability::available();
+            if ($timestamp->getBookingAvailability()->getType()->sameAs(BookingAvailabilityType::Available())) {
+                return BookingAvailability::Available();
             }
         }
 
-        return BookingAvailability::unavailable();
+        return BookingAvailability::Unavailable();
     }
 
     /**
@@ -553,7 +557,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     private function determineCorrectTopBookingAvailabilityForProjection(): BookingAvailability
     {
         if (empty($this->timestamps)) {
-            return BookingAvailability::available();
+            return BookingAvailability::Available();
         }
 
         return $this->deriveBookingAvailabilityFromSubEvents();

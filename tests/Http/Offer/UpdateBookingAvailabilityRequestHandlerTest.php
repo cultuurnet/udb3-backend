@@ -9,8 +9,8 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use PHPUnit\Framework\TestCase;
 
 class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
@@ -49,7 +49,7 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
             [
                 new UpdateBookingAvailability(
                     '609a8214-51c9-48c0-903f-840a4f38852f',
-                    BookingAvailability::available()
+                    BookingAvailability::Available()
                 ),
             ],
             $this->commandBus->getRecordedCommands()
