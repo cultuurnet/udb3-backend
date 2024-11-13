@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Offer\Validator;
+namespace CultuurNet\UDB3\Security\Permission;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-class PreventDeleteUitpasPlace implements OfferCommandValidator
+class DeleteUiTPASPlaceVoter implements PermissionVoter
 {
     private DocumentRepository $placeRepository;
     private array $UiTPASLabels;
@@ -19,21 +19,23 @@ class PreventDeleteUitpasPlace implements OfferCommandValidator
         $this->UiTPASLabels = $UiTPASLabels;
     }
 
-    public function isValid(string $offerId): bool
-    {
+    public function isAllowed(
+        Permission $permission,
+        string $itemId,
+        string $userId
+    ): bool {
+        if (!Permission::aanbodVerwijderen()->sameAs($permission)) {
+            return true;
+        }
+
         try {
-            $place = $this->placeRepository->fetch($offerId);
+            $place = $this->placeRepository->fetch($itemId);
 
             return !$this->isUitPasPlace($place->getAssocBody());
         } catch (DocumentDoesNotExist $e) {
             // Just continue, the offer is an event
             return true;
         }
-    }
-
-    public function getApiProblem(): ApiProblem
-    {
-        return ApiProblem::cannotDeleteUitpasPlace();
     }
 
     private function isUitPasPlace(array $body): bool

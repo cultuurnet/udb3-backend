@@ -7,22 +7,25 @@ namespace CultuurNet\UDB3\Offer\CommandHandlers;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\OfferRepository;
-use CultuurNet\UDB3\Offer\Validator\OfferCommandValidator;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\Permission\CannotDeleteUiTPASPlace;
+use CultuurNet\UDB3\Security\Permission\DeleteUiTPASPlaceVoter;
 
 final class DeleteOfferHandler implements CommandHandler
 {
     private OfferRepository $offerRepository;
-    private OfferCommandValidator $validator;
+    private DeleteUiTPASPlaceVoter $voter;
+    private string $currentUserId;
 
-    public function __construct(OfferRepository $offerRepository, OfferCommandValidator $validator)
+    public function __construct(OfferRepository $offerRepository, DeleteUiTPASPlaceVoter $voter, string $currentUserId)
     {
         $this->offerRepository = $offerRepository;
-        $this->validator = $validator;
+        $this->voter = $voter;
+        $this->currentUserId = $currentUserId;
     }
 
     /**
-     * @throws ApiProblem
+     * @throws CannotDeleteUiTPASPlace
      */
     public function handle($command): void
     {
@@ -30,8 +33,8 @@ final class DeleteOfferHandler implements CommandHandler
             return;
         }
 
-        if (!$this->validator->isValid($command->getItemId())) {
-            throw $this->validator->getApiProblem();
+        if (! $this->voter->isAllowed(Permission::aanbodVerwijderen(), $command->getItemId(), $this->currentUserId)) {
+            throw new CannotDeleteUiTPASPlace();
         }
 
         $offer = $this->offerRepository->load($command->getItemId());

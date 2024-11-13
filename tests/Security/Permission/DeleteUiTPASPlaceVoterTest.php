@@ -2,24 +2,28 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Offer\Validator;
+namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
-class PreventDeleteUitpasPlaceTest extends TestCase
+class DeleteUiTPASPlaceVoterTest extends TestCase
 {
     /** @var DocumentRepository&MockObject */
     private $documentRepository;
     private array $uitpasLabels;
+    private string $userId;
 
     protected function setUp(): void
     {
         $this->documentRepository = $this->createMock(DocumentRepository::class);
         $this->uitpasLabels = ['UiTPAS', 'Paspartoe'];
+        $this->userId = Uuid::uuid4()->toString();
     }
 
     public function test_is_valid_success(): void
@@ -32,9 +36,9 @@ class PreventDeleteUitpasPlaceTest extends TestCase
                 'hiddenLabels' => ['not-an-UiTPAS-label'],
             ], JSON_THROW_ON_ERROR)));
 
-        $validator = new PreventDeleteUitpasPlace($this->documentRepository, $this->uitpasLabels);
+        $validator = new DeleteUiTPASPlaceVoter($this->documentRepository, $this->uitpasLabels);
 
-        $result = $validator->isValid($offerId);
+        $result = $validator->isAllowed(Permission::aanbodVerwijderen(), $offerId, $this->userId);
 
         $this->assertTrue($result);
     }
@@ -50,9 +54,9 @@ class PreventDeleteUitpasPlaceTest extends TestCase
                 'hiddenLabels' => ['UiTPAS'],
             ], JSON_THROW_ON_ERROR)));
 
-        $validator = new PreventDeleteUitpasPlace($this->documentRepository, $this->uitpasLabels);
+        $validator = new DeleteUiTPASPlaceVoter($this->documentRepository, $this->uitpasLabels);
 
-        $result = $validator->isValid($offerId);
+        $result = $validator->isAllowed(Permission::aanbodVerwijderen(), $offerId, $this->userId);
 
         $this->assertFalse($result);
     }
@@ -66,9 +70,9 @@ class PreventDeleteUitpasPlaceTest extends TestCase
             ->with($offerId)
             ->willThrowException(new DocumentDoesNotExist());
 
-        $validator = new PreventDeleteUitpasPlace($this->documentRepository, $this->uitpasLabels);
+        $validator = new DeleteUiTPASPlaceVoter($this->documentRepository, $this->uitpasLabels);
 
-        $result = $validator->isValid($offerId);
+        $result = $validator->isAllowed(Permission::aanbodVerwijderen(), $offerId, $this->userId);
 
         $this->assertTrue($result);
     }

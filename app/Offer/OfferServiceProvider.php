@@ -10,6 +10,8 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Contributor\ContributorRepository;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\RDF\EventJsonToTurtleConverter;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
@@ -54,6 +56,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateWorkflowStatusRequestHandler;
 use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\LabelJSONDeserializer;
+use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
@@ -82,13 +85,10 @@ use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispat
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
-use CultuurNet\UDB3\Offer\Validator\PreventDeleteUitpasPlace;
 use CultuurNet\UDB3\Place\ReadModel\RDF\PlaceJsonToTurtleConverter;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Error\LoggerFactory;
-use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Security\Permission\DeleteUiTPASPlaceVoter;
 use CultuurNet\UDB3\UiTPAS\Validation\EventHasTicketSalesGuard;
 use CultuurNet\UDB3\User\CurrentUser;
 use Ramsey\Uuid\UuidFactory;
@@ -345,15 +345,8 @@ final class OfferServiceProvider extends AbstractServiceProvider
             DeleteOfferHandler::class,
             fn () => new DeleteOfferHandler(
                 $container->get(OfferRepository::class),
-                $container->get(PreventDeleteUitpasPlace::class)
-            )
-        );
-
-        $container->addShared(
-            PreventDeleteUitpasPlace::class,
-            fn () => new PreventDeleteUitpasPlace(
-                $container->get('place_jsonld_repository'),
-                $container->get('config')['uitpas']['labels']
+                $container->get(DeleteUiTPASPlaceVoter::class),
+                $container->get(CurrentUser::class)->getId()
             )
         );
 
