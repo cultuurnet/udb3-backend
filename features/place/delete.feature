@@ -27,3 +27,17 @@ Feature: Test deleting places
         "detail": "Place is an UiTPAS counter. UiTPAS places cannot be deleted."
     }
     """
+
+    Scenario: An admin creates a place, a normal users tries to delete this place, this should fail
+        Given I am authorized as JWT provider v1 user "centraal_beheerder"
+        When I create a minimal place and save the "url" as "placeUrl"
+        Given I am authorized as JWT provider v2 user "invoerder"
+        And I send a DELETE request to "%{placeUrl}"
+        Then the response status should be "403"
+
+    Scenario: A normal user creates a place, this users tries to delete this place, this should work
+        Given I am authorized as JWT provider v2 user "invoerder"
+        When I create a minimal place and save the "url" as "placeUrl"
+        And I delete the place at "%{placeUrl}"
+        And I get the place at "%{placeUrl}"
+        Then the JSON response at "workflowStatus" should be "DELETED"
