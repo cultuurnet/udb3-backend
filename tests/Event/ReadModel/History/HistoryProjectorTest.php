@@ -60,7 +60,6 @@ use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -513,7 +512,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_audience_updated(): void
     {
-        $event = new AudienceUpdated(self::EVENT_ID_1, new Audience(AudienceType::education()));
+        $event = new AudienceUpdated(self::EVENT_ID_1, AudienceType::education());
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

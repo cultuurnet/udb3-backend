@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
@@ -169,7 +168,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->then(
                 [
                     new MajorInfoUpdated($id, $title->toString(), $eventType, $location, $calendar),
-                    new AudienceUpdated($id, new Audience(AudienceType::education())),
+                    new AudienceUpdated($id, AudienceType::education()),
                 ]
             );
     }
