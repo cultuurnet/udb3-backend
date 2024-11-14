@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Console\Command;
 
-use Broadway\CommandHandling\CommandBus;
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -20,8 +20,8 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class DeletePlaceTest extends TestCase
 {
-    /** @var CommandBus|MockObject */
-    private $commandBus;
+    private TraceableCommandBus $commandBus;
+
     /** @var EventRelationsRepository|MockObject */
     private $eventRelationsRepository;
     /** @var DocumentRepository|MockObject */
@@ -31,7 +31,9 @@ class DeletePlaceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->commandBus = $this->createMock(CommandBus::class);
+        $this->commandBus = new TraceableCommandBus();
+        $this->commandBus->record();
+
         $this->eventRelationsRepository = $this->createMock(EventRelationsRepository::class);
         $this->placeDocumentRepository = $this->createMock(DocumentRepository::class);
 
@@ -118,12 +120,6 @@ class DeletePlaceTest extends TestCase
             ->method('getEventsLocatedAtPlace')
             ->willReturn([$eventId1, $eventId2]);
 
-        $dispatchedCommands = [];
-        $this->commandBus
-            ->method('dispatch')
-            ->willReturnCallback(function ($command) use (&$dispatchedCommands) {
-                $dispatchedCommands[] = $command;
-            });
 
         $this->commandTester->execute([
             'place-uuid' => $placeUuidToDelete,
@@ -131,10 +127,11 @@ class DeletePlaceTest extends TestCase
             '--force' => true,
         ]);
 
-        $this->assertCount(3, $dispatchedCommands);
-        $this->assertContainsEquals(new UpdateLocation($eventId1, $canonicalUuid), $dispatchedCommands);
-        $this->assertContainsEquals(new UpdateLocation($eventId2, $canonicalUuid), $dispatchedCommands);
-        $this->assertContainsEquals(new DeleteOffer($placeUuidToDelete), $dispatchedCommands);
+        $this->assertEquals([
+            new UpdateLocation($eventId1, $canonicalUuid),
+            new UpdateLocation($eventId2, $canonicalUuid),
+            new DeleteOffer($placeUuidToDelete),
+        ], $this->commandBus->getRecordedCommands());
 
         $output = $this->commandTester->getDisplay();
         $this->assertStringContainsString('Dispatching UpdateLocation for event with id ' . $eventId1, $output);
