@@ -50,7 +50,10 @@ class DeletePlaceTest extends TestCase
         $this->commandTester = new CommandTester($command);
     }
 
-    public function test_execute_missing_arguments(): void
+    /**
+     * @test
+     */
+    public function it_should_give_warning_when_missing_arguments(): void
     {
         $this->commandTester->execute([
             'place-uuid' => null,
@@ -61,7 +64,10 @@ class DeletePlaceTest extends TestCase
         $this->assertStringContainsString('Missing argument, the correct syntax is', $output);
     }
 
-    public function test_execute_place_does_not_exist(): void
+    /**
+     * @test
+     */
+    public function it_should_give_warning_when_the_place_does_not_exist(): void
     {
         $placeUuid = Uuid::uuid4()->toString();
         $canonicalUuid = Uuid::uuid4()->toString();
@@ -87,7 +93,10 @@ class DeletePlaceTest extends TestCase
         $this->assertStringContainsString('Place does not exist', $output);
     }
 
-    public function test_execute_canonical_does_not_exist(): void
+    /**
+     * @test
+     */
+    public function it_should_give_warning_when_canonical_does_not_exist(): void
     {
         $placeUuid = Uuid::uuid4()->toString();
         $canonicalUuid = Uuid::uuid4()->toString();
@@ -105,7 +114,10 @@ class DeletePlaceTest extends TestCase
         $this->assertStringContainsString('Canonical place does not exist', $output);
     }
 
-    public function test_execute_successfully_dispatches_commands(): void
+    /**
+     * @test
+     */
+    public function it_should_execute_successfully_dispatched_commands(): void
     {
         $eventId1 = Uuid::uuid4()->toString();
         $eventId2 = Uuid::uuid4()->toString();
@@ -119,7 +131,6 @@ class DeletePlaceTest extends TestCase
         $this->eventRelationsRepository
             ->method('getEventsLocatedAtPlace')
             ->willReturn([$eventId1, $eventId2]);
-
 
         $this->commandTester->execute([
             'place-uuid' => $placeUuidToDelete,

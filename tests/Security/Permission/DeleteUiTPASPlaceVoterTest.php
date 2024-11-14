@@ -26,7 +26,10 @@ class DeleteUiTPASPlaceVoterTest extends TestCase
         $this->userId = Uuid::uuid4()->toString();
     }
 
-    public function test_deleting_a_place_without_UiTPAS_label_should_be_allowed(): void
+    /**
+     * @test
+     */
+    public function it_should_allow_deleting_a_place_without_UiTPAS_label(): void
     {
         $offerId = 'test-offer-id';
         $this->documentRepository
@@ -43,7 +46,10 @@ class DeleteUiTPASPlaceVoterTest extends TestCase
         $this->assertTrue($result);
     }
 
-    public function test_deleting_a_place_with_an_UiTPAS_label_is_not_allowed(): void
+    /**
+     * @test
+     */
+    public function it_should_not_allow_to_delete_a_place_with_an_UiTPAS_label(): void
     {
         $offerId = 'test-offer-id';
 
@@ -61,7 +67,10 @@ class DeleteUiTPASPlaceVoterTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function test_should_be_valid_when_place_does_not_exist(): void
+    /**
+     * @test
+     */
+    public function it_should_return_true_when_place_does_not_exist(): void
     {
         $offerId = 'non-existent-offer-id';
 
