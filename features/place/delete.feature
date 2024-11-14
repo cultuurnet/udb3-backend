@@ -23,6 +23,6 @@ Feature: Test deleting places
         "type": "https://api.publiq.be/probs/uitdatabank/cannot-delete-uitpas-place",
         "title": "Cannot delete UiTPAS place",
         "status": 403,
-        "detail": "Place is an UiTPAS balie. UiTPAS locations cannot be deleted."
+        "detail": "Place is an UiTPAS counter. UiTPAS places cannot be deleted."
     }
     """

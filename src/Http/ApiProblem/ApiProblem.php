@@ -569,7 +569,7 @@ final class ApiProblem extends Exception
             'https://api.publiq.be/probs/uitdatabank/cannot-delete-uitpas-place',
             'Cannot delete UiTPAS place',
             StatusCodeInterface::STATUS_FORBIDDEN,
-            'Place is an UiTPAS balie. UiTPAS locations cannot be deleted.'
+            'Place is an UiTPAS counter. UiTPAS places cannot be deleted.'
         );
     }
 }
