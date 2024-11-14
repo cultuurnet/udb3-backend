@@ -16,13 +16,15 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Calendar\Timestamp;
 use DateTime;
+use DateTimeImmutable;
 
 final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -102,9 +104,11 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                 null,
                 null,
                 [
-                    new Timestamp(
-                        new DateTime('2020-01-01 10:00:00'),
-                        new DateTime('2020-01-01 12:00:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            new DateTimeImmutable('2020-01-01 10:00:00'),
+                            new DateTimeImmutable('2020-01-01 12:00:00')
+                        )
                     ),
                 ]
             )
@@ -124,9 +128,11 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                         null,
                         null,
                         [
-                            (new Timestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
                     ))->withBookingAvailability(BookingAvailability::Unavailable())
@@ -150,13 +156,17 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                 null,
                 null,
                 [
-                    new Timestamp(
-                        new DateTime('2020-01-01 10:00:00'),
-                        new DateTime('2020-01-01 12:00:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            new DateTimeImmutable('2020-01-01 10:00:00'),
+                            new DateTimeImmutable('2020-01-01 12:00:00')
+                        )
                     ),
-                    new Timestamp(
-                        new DateTime('2020-01-03 10:00:00'),
-                        new DateTime('2020-01-03 12:00:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            new DateTimeImmutable('2020-01-03 10:00:00'),
+                            new DateTimeImmutable('2020-01-03 12:00:00')
+                        )
                     ),
                 ]
             )
@@ -176,13 +186,17 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                         null,
                         null,
                         [
-                            (new Timestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
-                            (new Timestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
                     ))->withBookingAvailability(BookingAvailability::Unavailable())

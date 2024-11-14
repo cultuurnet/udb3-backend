@@ -9,6 +9,7 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -18,9 +19,9 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -149,9 +150,11 @@ class CalendarJSONDeserializerTest extends TestCase
             null,
             null,
             [
-                (new TimeStamp(
-                    DateTimeFactory::fromAtom('2020-02-03T09:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00')
+                (SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2020-02-03T09:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00')
+                    )
                 ))->withBookingAvailability(BookingAvailability::Unavailable()),
             ]
         ))->withBookingAvailability(BookingAvailability::Unavailable());
@@ -180,10 +183,12 @@ class CalendarJSONDeserializerTest extends TestCase
         $startDate2 = DateTimeFactory::fromAtom('2020-02-03T09:00:00+01:00');
         $endDate2 = DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00');
 
-        $timestamps = [
-            (new Timestamp(
-                $startDate1,
-                $endDate1
+        $subEvents = [
+            (SubEvent::createAvailable(
+                new DateRange(
+                    $startDate1,
+                    $endDate1
+                )
             ))->withStatus(
                 new Status(
                     StatusType::TemporarilyUnavailable(),
@@ -196,9 +201,11 @@ class CalendarJSONDeserializerTest extends TestCase
                     )
                 )
             ),
-            (new Timestamp(
-                $startDate2,
-                $endDate2
+            (SubEvent::createAvailable(
+                new DateRange(
+                    $startDate2,
+                    $endDate2
+                )
             ))->withStatus(
                 new Status(
                     StatusType::Unavailable(),
@@ -217,7 +224,7 @@ class CalendarJSONDeserializerTest extends TestCase
             CalendarType::multiple(),
             null,
             null,
-            $timestamps
+            $subEvents
         );
 
         $expectedCalendar = $expectedCalendar->withStatus(
@@ -257,14 +264,18 @@ class CalendarJSONDeserializerTest extends TestCase
         $startDate2 = DateTimeFactory::fromAtom('2020-02-03T09:00:00+01:00');
         $endDate2 = DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00');
 
-        $timestamps = [
-            (new Timestamp(
-                $startDate1,
-                $endDate1
+        $subEvents = [
+            (SubEvent::createAvailable(
+                new DateRange(
+                    $startDate1,
+                    $endDate1
+                )
             ))->withBookingAvailability(BookingAvailability::Unavailable()),
-            (new Timestamp(
-                $startDate2,
-                $endDate2
+            (SubEvent::createAvailable(
+                new DateRange(
+                    $startDate2,
+                    $endDate2
+                )
             ))->withBookingAvailability(BookingAvailability::Unavailable()),
         ];
 
@@ -272,7 +283,7 @@ class CalendarJSONDeserializerTest extends TestCase
             CalendarType::multiple(),
             null,
             null,
-            $timestamps
+            $subEvents
         ))->withBookingAvailability(BookingAvailability::Unavailable());
 
         $this->assertEquals(
