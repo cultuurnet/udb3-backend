@@ -29,7 +29,6 @@ Feature: Test deleting places
     """
 
     Scenario: An admin creates a place, a normal users tries to delete this place, this should fail
-        Given I am authorized as JWT provider v1 user "centraal_beheerder"
         When I create a minimal place and save the "url" as "placeUrl"
         Given I am authorized as JWT provider v2 user "invoerder"
         And I send a DELETE request to "%{placeUrl}"
