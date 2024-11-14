@@ -12,12 +12,15 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHourDenormalize
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHourNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\SubEventDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\SubEventNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar as Udb3ModelCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
@@ -45,7 +48,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     private ?DateTimeInterface $endDate;
 
-    private array $timestamps ;
+    private array $subEvents ;
 
     private array $openingHours ;
 
@@ -54,27 +57,27 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     private BookingAvailability $bookingAvailability;
 
     /**
-     * @param Timestamp[] $timestamps
+     * @param SubEvent[] $subEvents
      * @param OpeningHour[] $openingHours
      */
     public function __construct(
         CalendarType $type,
         ?DateTimeInterface $startDate = null,
         ?DateTimeInterface $endDate = null,
-        array $timestamps = [],
+        array $subEvents = [],
         array $openingHours = []
     ) {
-        if (empty($timestamps) && ($type->sameAs(CalendarType::single()) || $type->sameAs(CalendarType::multiple()))) {
-            throw new \UnexpectedValueException('A single or multiple calendar should have timestamps.');
+        if (empty($subEvents) && ($type->sameAs(CalendarType::single()) || $type->sameAs(CalendarType::multiple()))) {
+            throw new \UnexpectedValueException('A single or multiple calendar should have sub events.');
         }
 
         if (($startDate === null || $endDate === null) && $type->sameAs(CalendarType::periodic())) {
             throw new \UnexpectedValueException('A period should have a start- and end-date.');
         }
 
-        foreach ($timestamps as $timestamp) {
-            if (!is_a($timestamp, Timestamp::class)) {
-                throw new \InvalidArgumentException('Timestamps should have type TimeStamp.');
+        foreach ($subEvents as $subEvent) {
+            if (!is_a($subEvent, SubEvent::class)) {
+                throw new \InvalidArgumentException('SubEvents should have type SubEvent.');
             }
         }
 
@@ -89,11 +92,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $this->endDate = $endDate;
         $this->openingHours = $openingHours;
 
-        usort($timestamps, function (Timestamp $timestamp, Timestamp $otherTimestamp) {
-            return $timestamp->getStartDate() <=> $otherTimestamp->getStartDate();
+        usort($subEvents, function (SubEvent $subEvent, SubEvent $otherSubEvent) {
+            return $subEvent->getDateRange()->getFrom() <=> $otherSubEvent->getDateRange()->getFrom();
         });
 
-        $this->timestamps = $timestamps;
+        $this->subEvents = $subEvents;
 
         $this->status = new Status($this->deriveStatusTypeFromSubEvents(), null);
 
@@ -123,28 +126,28 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $clone;
     }
 
-    public function withStatusOnTimestamps(Status $status): self
+    public function withStatusOnSubEvents(Status $status): self
     {
         $clone = clone $this;
-        $clone->timestamps = \array_map(
-            function (Timestamp $timestamp) use ($status): Timestamp {
-                return $timestamp->withStatus($status);
+        $clone->subEvents = \array_map(
+            function (SubEvent $subEvent) use ($status): SubEvent {
+                return $subEvent->withStatus($status);
             },
-            $clone->getTimestamps()
+            $clone->getSubEvents()
         );
         return $clone;
     }
 
-    public function withBookingAvailabilityOnTimestamps(BookingAvailability $bookingAvailability): self
+    public function withBookingAvailabilityOnSubEvents(BookingAvailability $bookingAvailability): self
     {
         $this->guardUpdatingBookingAvailability();
 
         $clone = clone $this;
-        $clone->timestamps = \array_map(
-            function (Timestamp $timestamp) use ($bookingAvailability): Timestamp {
-                return $timestamp->withBookingAvailability($bookingAvailability);
+        $clone->subEvents = \array_map(
+            function (SubEvent $subEvent) use ($bookingAvailability): SubEvent {
+                return $subEvent->withBookingAvailability($bookingAvailability);
             },
-            $clone->getTimestamps()
+            $clone->getSubEvents()
         );
         return $clone;
     }
@@ -156,16 +159,16 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     public function getStartDate(): ?DateTimeInterface
     {
-        $timestamps = $this->getTimestamps();
+        $subEvents = $this->getSubEvents();
 
-        if (empty($timestamps)) {
+        if (empty($subEvents)) {
             return $this->startDate;
         }
 
         $startDate = null;
-        foreach ($timestamps as $timestamp) {
-            if ($startDate === null || $timestamp->getStartDate() < $startDate) {
-                $startDate = $timestamp->getStartDate();
+        foreach ($subEvents as $subEvent) {
+            if ($startDate === null || $subEvent->getDateRange()->getFrom() < $startDate) {
+                $startDate = $subEvent->getDateRange()->getFrom();
             }
         }
 
@@ -174,16 +177,16 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     public function getEndDate(): ?DateTimeInterface
     {
-        $timestamps = $this->getTimestamps();
+        $subEvents = $this->getSubEvents();
 
-        if (empty($timestamps)) {
+        if (empty($subEvents)) {
             return $this->endDate;
         }
 
         $endDate = null;
-        foreach ($this->getTimestamps() as $timestamp) {
-            if ($endDate === null || $timestamp->getEndDate() > $endDate) {
-                $endDate = $timestamp->getEndDate();
+        foreach ($this->getSubEvents() as $subEvent) {
+            if ($endDate === null || $subEvent->getDateRange()->getTo() > $endDate) {
+                $endDate = $subEvent->getDateRange()->getTo();
             }
         }
 
@@ -199,11 +202,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     }
 
     /**
-     * @return array|Timestamp[]
+     * @return array|SubEvent[]
      */
-    public function getTimestamps(): array
+    public function getSubEvents(): array
     {
-        return $this->timestamps;
+        return $this->subEvents;
     }
 
     public function getStatus(): Status
@@ -218,11 +221,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     public function serialize(): array
     {
-        $serializedTimestamps = array_map(
-            function (Timestamp $timestamp) {
-                return $timestamp->serialize();
+        $serializedSubEvents = array_map(
+            function (SubEvent $subEvent) {
+                return (new SubEventNormalizer())->normalize($subEvent);
             },
-            $this->timestamps
+            $this->subEvents
         );
 
         $serializedOpeningHours = array_map(
@@ -240,7 +243,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         empty($this->startDate) ?: $calendar['startDate'] = $this->startDate->format(DateTimeInterface::ATOM);
         empty($this->endDate) ?: $calendar['endDate'] = $this->endDate->format(DateTimeInterface::ATOM);
-        empty($serializedTimestamps) ?: $calendar['timestamps'] = $serializedTimestamps;
+        empty($serializedSubEvents) ?: $calendar['timestamps'] = $serializedSubEvents;
         empty($serializedOpeningHours) ?: $calendar['openingHours'] = $serializedOpeningHours;
 
         return $calendar;
@@ -258,11 +261,20 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             $endDate = $startDate;
         }
 
-        // Backwards compatibility for serialized single or multiple calendar types that are missing timestamps but do
+        // Backwards compatibility for serialized single or multiple calendar types that are missing sub events but do
         // have a start and end date.
-        $defaultTimeStamps = [];
+        $defaultSubEvents = [];
         if ($calendarType->sameAs(CalendarType::single()) || $calendarType->sameAs(CalendarType::multiple())) {
-            $defaultTimeStamps = $startDate ? [new Timestamp($startDate, $endDate ?: $startDate)] : [];
+            if ($startDate) {
+                $defaultSubEvents[] = new SubEvent(
+                    new DateRange(
+                        \DateTimeImmutable::createFromMutable($startDate),
+                        $endDate ? \DateTimeImmutable::createFromMutable($endDate) : \DateTimeImmutable::createFromMutable($startDate)
+                    ),
+                    new Status(StatusType::Available()),
+                    new BookingAvailability(BookingAvailabilityType::Available())
+                );
+            }
         }
 
         $calendar = new self(
@@ -270,11 +282,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             $startDate,
             $endDate,
             !empty($data['timestamps']) ? array_map(
-                function ($timestamp) {
-                    return Timestamp::deserialize($timestamp);
+                function ($subEvent) {
+                    return (new SubEventDenormalizer())->denormalize($subEvent, SubEvent::class);
                 },
                 $data['timestamps']
-            ) : $defaultTimeStamps,
+            ) : $defaultSubEvents,
             !empty($data['openingHours']) ? array_map(
                 function ($openingHour) {
                     return (new OpeningHourDenormalizer())->denormalize($openingHour, OpeningHour::class);
@@ -336,11 +348,14 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $jsonLd['bookingAvailability'] = (new BookingAvailabilityNormalizer())->normalize($this->determineCorrectTopBookingAvailabilityForProjection());
 
-        $timestamps = array_values($this->getTimestamps());
-        if (!empty($timestamps)) {
+        $subEvents = array_values($this->getSubEvents());
+        if (!empty($subEvents)) {
             $jsonLd['subEvent'] = [];
-            foreach ($timestamps as $id => $timestamp) {
-                $jsonLd['subEvent'][] = ['id' => $id] + $timestamp->toJsonLd();
+            foreach ($subEvents as $id => $subEvent) {
+                $jsonLdSubEvent = (new SubEventNormalizer())->normalize($subEvent);
+                $jsonLdSubEvent['@type'] = 'Event';
+
+                $jsonLd['subEvent'][] = ['id' => $id] + $jsonLdSubEvent;
             }
         }
 
@@ -361,11 +376,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     }
 
     public static function single(
-        Timestamp $timestamp,
+        SubEvent $subEvent,
         ?Status $status = null,
         ?BookingAvailability $bookingAvailability = null
     ): self {
-        $calendar = new self(CalendarType::single(), null, null, [$timestamp]);
+        $calendar = new self(CalendarType::single(), null, null, [$subEvent]);
         if ($status) {
             $calendar = $calendar->withStatus($status);
         }
@@ -376,14 +391,14 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     }
 
     /**
-     * @param Timestamp[] $timestamps
+     * @param SubEvent[] $subEvents
      */
     public static function multiple(
-        array $timestamps,
+        array $subEvents,
         ?Status $status = null,
         ?BookingAvailability $bookingAvailability = null
     ): self {
-        $calendar = new self(CalendarType::multiple(), null, null, $timestamps);
+        $calendar = new self(CalendarType::multiple(), null, null, $subEvents);
         if ($status) {
             $calendar = $calendar->withStatus($status);
         }
@@ -423,7 +438,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $startDate = null;
         $endDate = null;
-        $timestamps = [];
+        $subEvents = [];
         $openingHours = [];
 
         if ($udb3Calendar instanceof PeriodicCalendar) {
@@ -432,19 +447,14 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         }
 
         if ($udb3Calendar instanceof CalendarWithSubEvents) {
-            $timestamps = array_map(
-                function (SubEvent $subEvent) {
-                    return Timestamp::fromUdb3ModelSubEvent($subEvent);
-                },
-                $udb3Calendar->getSubEvents()->toArray()
-            );
+            $subEvents = $udb3Calendar->getSubEvents()->toArray();
         }
 
         if ($udb3Calendar instanceof CalendarWithOpeningHours) {
             $openingHours = $udb3Calendar->getOpeningHours()->toArray();
         }
 
-        $calendar = new self($type, $startDate, $endDate, $timestamps, $openingHours);
+        $calendar = new self($type, $startDate, $endDate, $subEvents, $openingHours);
 
         $topStatus = $udb3Calendar->getStatus();
         $topBookingAvailability = $udb3Calendar->getBookingAvailability();
@@ -472,8 +482,8 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $statusTypeCounts[StatusType::TemporarilyUnavailable()->toString()] = 0;
         $statusTypeCounts[StatusType::Unavailable()->toString()] = 0;
 
-        foreach ($this->timestamps as $timestamp) {
-            ++$statusTypeCounts[$timestamp->getStatus()->getType()->toString()];
+        foreach ($this->subEvents as $subEvent) {
+            ++$statusTypeCounts[$subEvent->getStatus()->getType()->toString()];
         }
 
         if ($statusTypeCounts[StatusType::Available()->toString()] > 0) {
@@ -493,7 +503,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     }
 
     /**
-     * If the calendar has subEvents (timestamps), and a status manually set through an import or full calendar update
+     * If the calendar has subEvents and a status manually set through an import or full calendar update
      * through the API, the top status might be incorrect.
      * For example the top status can not be Available if all the subEvents are Unavailable or TemporarilyUnavailable.
      * However we want to be flexible in what we accept from API clients since otherwise they will have to implement a
@@ -504,7 +514,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     private function determineCorrectTopStatusForProjection(): Status
     {
         // If the calendar has no subEvents, the top level status is always valid.
-        if (empty($this->timestamps)) {
+        if (empty($this->subEvents)) {
             return $this->status;
         }
 
@@ -513,8 +523,8 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $expectedStatusType = $this->deriveStatusTypeFromSubEvents();
         if ($this->status->getType()->toString() === $expectedStatusType->toString()) {
             // Also make sure to include the reason of a sub event when there is no reason on the top level.
-            if (count($this->timestamps) === 1 && $this->status->getReason() === null) {
-                return $this->timestamps[0]->getStatus();
+            if (count($this->subEvents) === 1 && $this->status->getReason() === null) {
+                return $this->subEvents[0]->getStatus();
             }
 
             return $this->status;
@@ -527,19 +537,19 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     }
 
     /**
-     * This method can determine the top level booking availability from the sub events aka timestamps
+     * This method can determine the top level booking availability from the sub events
      * - For a periodic or permanent calendar this is always available
-     * - If one of the timestamps is available then the top level is available
-     * - If all of the timestamps are unavailable the top level is also unavailable
+     * - If one of the sub events is available then the top level is available
+     * - If all of the sub events are unavailable the top level is also unavailable
      */
     private function deriveBookingAvailabilityFromSubEvents(): BookingAvailability
     {
-        if (empty($this->timestamps)) {
+        if (empty($this->subEvents)) {
             return BookingAvailability::Available();
         }
 
-        foreach ($this->timestamps as $timestamp) {
-            if ($timestamp->getBookingAvailability()->getType()->sameAs(BookingAvailabilityType::Available())) {
+        foreach ($this->subEvents as $subEvent) {
+            if ($subEvent->getBookingAvailability()->getType()->sameAs(BookingAvailabilityType::Available())) {
                 return BookingAvailability::Available();
             }
         }
@@ -550,11 +560,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     /**
      * A projection can require a potential fix:
      * - For a periodic or permanent calendar this is always available
-     * - If there are timestamps the top level status is calculated
+     * - If there are sub events the top level status is calculated
      */
     private function determineCorrectTopBookingAvailabilityForProjection(): BookingAvailability
     {
-        if (empty($this->timestamps)) {
+        if (empty($this->subEvents)) {
             return BookingAvailability::Available();
         }
 

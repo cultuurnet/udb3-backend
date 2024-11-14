@@ -55,7 +55,7 @@ class CalendarJSONDeserializer extends JSONDeserializer
             $this->getCalendarType($data),
             $this->getStartDate($data),
             $this->getEndDate($data),
-            $this->calendarJSONParser->getTimestamps($data),
+            $this->calendarJSONParser->getSubEvents($data),
             $this->calendarJSONParser->getOpeningHours($data)
         );
 
@@ -74,11 +74,11 @@ class CalendarJSONDeserializer extends JSONDeserializer
 
     private function getCalendarType(array $data): CalendarType
     {
-        if (count($this->calendarJSONParser->getTimestamps($data)) > 1) {
+        if (count($this->calendarJSONParser->getSubEvents($data)) > 1) {
             return CalendarType::multiple();
         }
 
-        if (count($this->calendarJSONParser->getTimestamps($data)) == 1) {
+        if (count($this->calendarJSONParser->getSubEvents($data)) == 1) {
             return CalendarType::single();
         }
 
@@ -92,8 +92,8 @@ class CalendarJSONDeserializer extends JSONDeserializer
 
     private function getStartDate(array $data): ?\DateTimeInterface
     {
-        $timestamps = $this->calendarJSONParser->getTimestamps($data);
-        if (count($timestamps)) {
+        $subEvents = $this->calendarJSONParser->getSubEvents($data);
+        if (count($subEvents)) {
             return null;
         }
 
@@ -106,8 +106,8 @@ class CalendarJSONDeserializer extends JSONDeserializer
 
     private function getEndDate(array $data): ?\DateTimeInterface
     {
-        $timestamps = $this->calendarJSONParser->getTimestamps($data);
-        if (count($timestamps)) {
+        $subEvents = $this->calendarJSONParser->getSubEvents($data);
+        if (count($subEvents)) {
             return null;
         }
 

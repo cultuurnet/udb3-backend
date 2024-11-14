@@ -43,11 +43,11 @@ class CalendarConverter implements CalendarConverterInterface
             case CalendarType::multiple()->toString():
                 $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                 $index = 1;
-                foreach ($calendar->getTimestamps() as $timestamp) {
+                foreach ($calendar->getSubEvents() as $subEvent) {
                     $currentCount = $this->countTimestamps($cdbCalendar);
                     $cdbCalendar = $this->createTimestampCalendar(
-                        $this->configureCdbTimezone($timestamp->getStartDate()),
-                        $this->configureCdbTimezone($timestamp->getEndDate()),
+                        $this->configureCdbTimezone($subEvent->getDateRange()->getFrom()),
+                        $this->configureCdbTimezone($subEvent->getDateRange()->getTo()),
                         $cdbCalendar,
                         $index
                     );

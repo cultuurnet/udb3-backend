@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use DateTimeInterface;
 
 /**
@@ -22,7 +23,7 @@ interface CalendarInterface
     public function getOpeningHours(): array;
 
     /**
-     * @return Timestamp[]
+     * @return SubEvent[]
      */
-    public function getTimestamps(): array;
+    public function getSubEvents(): array;
 }

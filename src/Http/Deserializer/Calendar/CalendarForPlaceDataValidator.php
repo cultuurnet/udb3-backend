@@ -29,12 +29,12 @@ class CalendarForPlaceDataValidator implements DataValidatorInterface
         $calendarJSONParser = new CalendarJSONParser();
 
         // For a place the following specific rules apply:
-        // - Never timestamps
+        // - Never sub events
         // - If a status on the top level this should be in the correct format
         // - If a start date is given then an end date is also needed
         // - If an end date is given then a start date is also needed
 
-        if ($calendarJSONParser->getTimestamps($data)) {
+        if ($calendarJSONParser->getSubEvents($data)) {
             $messages['time_spans'] = 'No time spans allowed for place calendar.';
         }
 
