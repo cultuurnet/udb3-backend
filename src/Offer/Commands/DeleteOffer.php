@@ -10,6 +10,6 @@ final class DeleteOffer extends AbstractCommand
 {
     public function getPermission(): Permission
     {
-        return Permission::aanbodVerwijderen();
+        return Permission::aanbodBewerken();
     }
 }
