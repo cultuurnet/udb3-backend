@@ -25,7 +25,7 @@ trait UtilitySteps
     }
 
     /**
-     * @Given I set the value of name to value :value
+     * @Given I set the value of name to :value
      */
     public function iSetTheValueOfNameToValue(string $value): void
     {
