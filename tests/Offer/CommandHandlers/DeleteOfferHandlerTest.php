@@ -170,7 +170,7 @@ class DeleteOfferHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_prevents_deletion_when_validator_fails(): void
+    public function it_prevents_deletion_when_voter_fails(): void
     {
         $this->validator->expects($this->once())
             ->method('isAllowed')
