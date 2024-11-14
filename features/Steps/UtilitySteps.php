@@ -25,9 +25,9 @@ trait UtilitySteps
     }
 
     /**
-     * @Given I set the name at value :value
+     * @Given I set the value of name to value :value
      */
-    public function iSetTheNameAtValue(string $value): void
+    public function iSetTheValueOfNameToValue(string $value): void
     {
         $this->variableState->setVariable('name', $value);
     }

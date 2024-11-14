@@ -13,9 +13,10 @@ Feature: Test deleting places
     Then the JSON response at "workflowStatus" should be "DELETED"
 
    Scenario: Prevent deletion of UiTPAS place
-    Given I set the name at value "UiTPAS"
+    Given I set the value of name to value "UiTPAS"
     And I create a place from "places/labels/place-with-new-invisible-label.json" and save the "url" as "placeUrl"
-    When I delete the place at "%{placeUrl}" then the response status should be "403"
+    And I send a DELETE request to "%{placeUrl}"
+    Then the response status should be "403"
     And the response body should be valid JSON
     And the JSON response should be:
     """
