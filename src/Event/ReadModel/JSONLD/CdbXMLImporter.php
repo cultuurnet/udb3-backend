@@ -8,8 +8,8 @@ use CultureFeed_Cdb_Data_PerformerList;
 use CultuurNet\UDB3\Calendar\CalendarFactoryInterface;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractorInterface;
 use CultuurNet\UDB3\Cdb\Description\MergedDescription;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AudienceTypeNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporterInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -329,8 +329,7 @@ class CdbXMLImporter
         $eventTargetsEducation = $eventIsPrivate && $event->getCategories()->hasCategory('2.1.3.0.0');
 
         $audienceType = $eventTargetsEducation ? 'education' : ($eventIsPrivate ? 'members' : 'everyone');
-        $audience = new Audience(new AudienceType($audienceType));
 
-        $jsonLD->audience = $audience->serialize();
+        $jsonLD->audience = (new AudienceTypeNormalizer())->normalize(new AudienceType($audienceType));
     }
 }
