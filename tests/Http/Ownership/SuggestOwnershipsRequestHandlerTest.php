@@ -55,6 +55,10 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
     private $ownershipSearchRepository;
     private SuggestOwnershipsRequestHandler $suggestOwnershipsRequestHandler;
     private string $expectedQuery;
+    /**
+     * @var UserPermissionsReadRepository&MockObject
+     */
+    private $userPermissionRepository;
 
     protected function setUp(): void
     {

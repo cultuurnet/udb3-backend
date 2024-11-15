@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Http\Ownership\SuggestOwnershipsRequestHandler;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
-use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsReadRepository;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Search\OffersSapi3SearchService;
 use CultuurNet\UDB3\User\CurrentUser;
