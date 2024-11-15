@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
-use CultuurNet\UDB3\Organizer\Organizer;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
@@ -80,7 +79,7 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
 
         /**
          * A map to deduplicate returned organizers
-         * @var array<string, Organizer> $idToOrganizerMap
+         * @var array<string, array> $idToOrganizerMap
          */
         $idToOrganizerMap = [];
 
