@@ -79,13 +79,13 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         foreach ($subEvents as $subEvent) {
             if (!is_a($subEvent, SubEvent::class)) {
-                throw new \InvalidArgumentException('SubEvents should have type SubEvent.');
+                throw new \InvalidArgumentException('SubEvents should have type ' . SubEvent::class);
             }
         }
 
         foreach ($openingHours as $openingHour) {
             if (!is_a($openingHour, OpeningHour::class)) {
-                throw new \InvalidArgumentException('OpeningHours should have type OpeningHour.');
+                throw new \InvalidArgumentException('OpeningHours should have type ' . OpeningHour::class);
             }
         }
 

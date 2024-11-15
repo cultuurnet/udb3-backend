@@ -2014,7 +2014,7 @@ class CalendarTest extends TestCase
     public function sub_events_need_to_have_type_sub_event(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('SubEvents should have type SubEvent.');
+        $this->expectExceptionMessage('SubEvents should have type ' . SubEvent::class);
 
         new Calendar(
             CalendarType::single(),
@@ -2030,7 +2030,7 @@ class CalendarTest extends TestCase
     public function opening_hours_need_to_have_type_opening_hour(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('OpeningHours should have type OpeningHour.');
+        $this->expectExceptionMessage('OpeningHours should have type ' . OpeningHour::class);
 
         new Calendar(
             CalendarType::periodic(),
