@@ -48,8 +48,10 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     private ?DateTimeInterface $endDate;
 
+    /** @var SubEvent[] */
     private array $subEvents ;
 
+    /** @var OpeningHour[] */
     private array $openingHours ;
 
     private Status $status;
