@@ -241,7 +241,9 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             'bookingAvailability' => (new BookingAvailabilityNormalizer())->normalize($this->bookingAvailability),
         ];
 
-        empty($this->startDate) ?: $calendar['startDate'] = $this->startDate->format(DateTimeInterface::ATOM);
+        if (!empty($this->startDate)) {
+            $calendar['startDate'] = $this->startDate->format(DateTimeInterface::ATOM);
+        }
         empty($this->endDate) ?: $calendar['endDate'] = $this->endDate->format(DateTimeInterface::ATOM);
         empty($serializedSubEvents) ?: $calendar['timestamps'] = $serializedSubEvents;
         empty($serializedOpeningHours) ?: $calendar['openingHours'] = $serializedOpeningHours;
