@@ -76,10 +76,7 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
             ->search(new SearchQuery([
                 new SearchParameter('ownerId', $user->getUserId()),
             ]))
-            ->filter(function (OwnershipItem $item) {
-                $state = new OwnershipState($item->getState());
-                return OwnershipState::requested()->sameAs($state) || OwnershipState::approved()->sameAs($state);
-            });
+            ->filter(self::activeOwnerships());
 
         /**
          * A map to deduplicate returned organizers
@@ -116,5 +113,13 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
         }
 
         return new JsonLdResponse(array_values($idToOrganizerMap));
+    }
+
+    private static function activeOwnerships(): callable
+    {
+        return function (OwnershipItem $item): bool {
+            $state = new OwnershipState($item->getState());
+            return OwnershipState::requested()->sameAs($state) || OwnershipState::approved()->sameAs($state);
+        };
     }
 }
