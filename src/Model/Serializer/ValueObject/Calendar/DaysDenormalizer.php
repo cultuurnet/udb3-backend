@@ -12,12 +12,7 @@ final class DaysDenormalizer implements DenormalizerInterface
 {
     public function denormalize($data, $class, $format = null, array $context = []): Days
     {
-        $days = [];
-        foreach ($data as $day) {
-            $days[] = new Day($day);
-        }
-
-        return new Days(...$days);
+        return new Days(...array_map(fn($day) => new Day($day), $data));
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool
