@@ -50,4 +50,12 @@ final class QueryParameters
             throw ApiProblem::queryParameterInvalidValue($parameterName, $value, $allowedValues);
         }
     }
+
+    public function guardRequiredEnum(string $parameterName, array $allowedValues): void
+    {
+        $value = $this->get($parameterName);
+        if ($value === null || !in_array($value, $allowedValues, true)) {
+            throw ApiProblem::queryParameterInvalidValue($parameterName, $value ?? 'null', $allowedValues);
+        }
+    }
 }

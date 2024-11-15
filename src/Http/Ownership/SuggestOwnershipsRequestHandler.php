@@ -4,12 +4,26 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Ownership;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
+use CultuurNet\UDB3\Http\Ownership\Suggestions\SuggestOwnershipsSapiQuery;
+use CultuurNet\UDB3\Http\Request\QueryParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
+use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
-use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
+use CultuurNet\UDB3\Organizer\Organizer;
+use CultuurNet\UDB3\Ownership\OwnershipState;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
+use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
+use CultuurNet\UDB3\Search\SearchServiceInterface;
+use CultuurNet\UDB3\Search\Sorting;
 use CultuurNet\UDB3\User\CurrentUser;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Psr\Http\Message\ResponseInterface;
@@ -19,55 +33,86 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
 {
     private ResultsGeneratorInterface $resultsGenerator;
-    private DocumentRepository $offerRepository;
+    private OfferJsonDocumentReadRepository $offerRepository;
     private CurrentUser $currentUser;
     private UserIdentityResolver $userIdentityResolver;
+    private DocumentRepository $organizerRepository;
+    private OwnershipSearchRepository $ownershipSearchRepository;
 
-    public function __construct(ResultsGeneratorInterface $resultsGenerator, DocumentRepository $offerRepository, CurrentUser $currentUser, UserIdentityResolver $userIdentityResolver)
-    {
-        $this->resultsGenerator = $resultsGenerator;
+    public function __construct(
+        SearchServiceInterface $searchService,
+        OfferJsonDocumentReadRepository $offerRepository,
+        CurrentUser $currentUser,
+        UserIdentityResolver $userIdentityResolver,
+        DocumentRepository $organizerRepository,
+        OwnershipSearchRepository $ownershipSearchRepository
+    ) {
+        $this->resultsGenerator = new ResultsGenerator(
+            $searchService,
+            new Sorting('modified', 'desc')
+        );
         $this->offerRepository = $offerRepository;
         $this->currentUser = $currentUser;
         $this->userIdentityResolver = $userIdentityResolver;
+        $this->organizerRepository = $organizerRepository;
+        $this->ownershipSearchRepository = $ownershipSearchRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $itemType = $request->getQueryParams()['itemType'] ?? '';
+        $queryParams = new QueryParameters($request);
 
-        if (empty($itemType)) {
-            throw ApiProblem::queryParameterMissing('itemType');
-        }
-
-        $statuses = implode(
-            ',',
-            array_map(fn (WorkflowStatus $status) => $status->toString(), [WorkflowStatus::DRAFT(), WorkflowStatus::READY_FOR_VALIDATION(), WorkflowStatus::APPROVED()])
-        );
+        $queryParams->guardRequiredEnum('itemType', [ItemType::organizer()->toString()]);
 
         $id = $this->currentUser->getId();
         $user = $this->userIdentityResolver->getUserById($id);
-        $ids = ["auth0|{$id}", $id];
-        $email = $user->getEmailAddress();
-        $creatorQuery = 'creator:(' . implode(' OR ', [...$ids, $email]) . ')';
 
-        $queryParts = [
-            '_exists_organizer.id',
-            'addressCountry=*',
-            "workflowStatus={$statuses}",
-            $creatorQuery,
-        ];
+        $query = (new SuggestOwnershipsSapiQuery($user))->toString();
 
-        $query = implode('&', $queryParts);
+        $activeOwnerships = $this->ownershipSearchRepository
+            ->search(new SearchQuery([
+                new SearchParameter('ownerId', $user->getUserId()),
+            ]))
+            ->filter(function (OwnershipItem $item) {
+                $state = new OwnershipState($item->getState());
+                return OwnershipState::requested()->sameAs($state) || OwnershipState::approved()->sameAs($state);
+            });
 
-        $results = [];
+        /**
+         * A map to deduplicate returned organizers
+         * @var array<string, Organizer> $idToOrganizerMap
+         */
+        $idToOrganizerMap = [];
 
         /**
          * @var ItemIdentifier $result
          */
         foreach ($this->resultsGenerator->search($query) as $result) {
-            $results[] = $this->offerRepository->fetch($result->getId())->getAssocBody();
+            $type = OfferType::fromCaseInsensitiveValue($result->getItemType()->toString());
+            $id = $result->getId();
+
+            $offer = $this->offerRepository->fetch($type, $id)->getAssocBody();
+
+            $parser = new OrganizerIDParser();
+            $organizerId = $parser->fromUrl(new Url($offer['organizer']['@id']))->toString();
+
+            $ownershipsForOrganizer = $activeOwnerships->filter(fn (OwnershipItem $item) => $item->getItemId() === $organizerId);
+
+            // don't suggest item that already has active ownership
+            if (!$ownershipsForOrganizer->isEmpty()) {
+                continue;
+            }
+
+            // don't suggest duplicate items
+            if (isset($idToOrganizerMap[$organizerId])) {
+                continue;
+            }
+
+            $organizer = $this->organizerRepository->fetch($organizerId)->getAssocBody();
+
+            $idToOrganizerMap[$organizerId] = $organizer;
         }
 
-        return new JsonLdResponse($results);
+        return new JsonLdResponse(array_values($idToOrganizerMap));
     }
 }

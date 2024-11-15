@@ -382,14 +382,15 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
     {
         $router->group('ownerships', function (RouteGroup $routeGroup): void {
             $routeGroup->get('', SearchOwnershipRequestHandler::class);
+
+            $routeGroup->get('suggestions/', SuggestOwnershipsRequestHandler::class);
+
             $routeGroup->get('{ownershipId}/', GetOwnershipRequestHandler::class);
 
             $routeGroup->post('', RequestOwnershipRequestHandler::class);
 
             $routeGroup->post('{ownershipId}/approve/', ApproveOwnershipRequestHandler::class);
             $routeGroup->post('{ownershipId}/reject/', RejectOwnershipRequestHandler::class);
-
-            $routeGroup->get('/ownerships/suggestions', SuggestOwnershipsRequestHandler::class);
 
             $routeGroup->delete('{ownershipId}/', DeleteOwnershipRequestHandler::class);
         });
