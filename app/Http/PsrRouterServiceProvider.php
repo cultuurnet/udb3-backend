@@ -66,6 +66,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateWorkflowStatusRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteEducationalDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetCreatorRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateEducationalDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\ApproveOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\DeleteOwnershipRequestHandler;
@@ -354,6 +355,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->put('{organizerId}/address/', UpdateOrganizerAddressRequestHandler::class);
             $routeGroup->put('{organizerId}/address/{language}/', UpdateOrganizerAddressRequestHandler::class);
             $routeGroup->delete('{organizerId}/address/', DeleteAddressRequestHandler::class);
+
+            $routeGroup->get('{organizerId}/creator/', GetCreatorRequestHandler::class);
 
             $routeGroup->put('{organizerId}/url/', UpdateUrlRequestHandler::class);
 

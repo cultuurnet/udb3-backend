@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use CultuurNet\UDB3\Search\Sorting;
@@ -61,7 +61,7 @@ class UpdateBookingAvailabilityCommand extends AbstractCommand
             ]
         );
         $bookingQuestion->setErrorMessage('Invalid booking availability: %s');
-        $bookingAvailability = new BookingAvailabilityType(
+        $bookingAvailability = new BookingAvailability(
             $this->getHelper('question')->ask($input, $output, $bookingQuestion)
         );
 
@@ -71,7 +71,7 @@ class UpdateBookingAvailabilityCommand extends AbstractCommand
             $input,
             $output,
             new ConfirmationQuestion(
-                "This action will update the status of $count events to {$bookingAvailability->toString()}, continue? [y/N] ",
+                "This action will update the status of $count events to {$bookingAvailability->getType()->toString()}, continue? [y/N] ",
                 false
             )
         );
@@ -86,7 +86,7 @@ class UpdateBookingAvailabilityCommand extends AbstractCommand
         foreach ($offers as $id => $offer) {
             try {
                 $this->commandBus->dispatch(
-                    new UpdateBookingAvailability($id, new BookingAvailability($bookingAvailability))
+                    new UpdateBookingAvailability($id, $bookingAvailability)
                 );
             } catch (Exception $exception) {
                 $exceptions[$id] = 'Event with id: ' . $id . ' caused an exception: ' . $exception->getMessage();
