@@ -38,6 +38,7 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
     private UserIdentityResolver $userIdentityResolver;
     private DocumentRepository $organizerRepository;
     private OwnershipSearchRepository $ownershipSearchRepository;
+    private OrganizerIDParser $organizerIDParser;
 
     public function __construct(
         SearchServiceInterface $searchService,
@@ -45,7 +46,8 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
         CurrentUser $currentUser,
         UserIdentityResolver $userIdentityResolver,
         DocumentRepository $organizerRepository,
-        OwnershipSearchRepository $ownershipSearchRepository
+        OwnershipSearchRepository $ownershipSearchRepository,
+        OrganizerIDParser $organizerIDParser
     ) {
         $this->resultsGenerator = new ResultsGenerator(
             $searchService,
@@ -56,6 +58,7 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
         $this->userIdentityResolver = $userIdentityResolver;
         $this->organizerRepository = $organizerRepository;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
+        $this->organizerIDParser = $organizerIDParser;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -93,8 +96,7 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
 
             $offer = $this->offerRepository->fetch($offerType, $id)->getAssocBody();
 
-            $parser = new OrganizerIDParser();
-            $organizerId = $parser->fromUrl(new Url($offer['organizer']['@id']))->toString();
+            $organizerId = $this->organizerIDParser->fromUrl(new Url($offer['organizer']['@id']))->toString();
 
             $ownershipsForOrganizer = $activeOwnerships->filter(fn (OwnershipItem $item) => $item->getItemId() === $organizerId);
 

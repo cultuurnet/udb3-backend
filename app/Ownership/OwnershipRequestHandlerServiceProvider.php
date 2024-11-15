@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Http\Ownership\RejectOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\RequestOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\SearchOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\SuggestOwnershipsRequestHandler;
+use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\Search\OffersSapi3SearchService;
@@ -84,7 +85,8 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
                 $container->get(CurrentUser::class),
                 $container->get(UserIdentityResolver::class),
                 $container->get('organizer_jsonld_repository'),
-                $container->get(OwnershipSearchRepository::class)
+                $container->get(OwnershipSearchRepository::class),
+                $container->get(OrganizerIDParser::class)
             )
         );
 

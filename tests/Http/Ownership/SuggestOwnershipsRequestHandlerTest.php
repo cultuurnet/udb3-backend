@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
@@ -78,7 +79,8 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             $this->currentUser,
             $this->userIdentityResolver,
             $this->organizerRepository,
-            $this->ownershipSearchRepository
+            $this->ownershipSearchRepository,
+            new OrganizerIDParser()
         );
     }
 
