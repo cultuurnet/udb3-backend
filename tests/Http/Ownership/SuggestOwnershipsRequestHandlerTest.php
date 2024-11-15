@@ -52,6 +52,7 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
      */
     private $ownershipSearchRepository;
     private SuggestOwnershipsRequestHandler $suggestOwnershipsRequestHandler;
+    private string $expectedQuery;
 
     protected function setUp(): void
     {
@@ -69,6 +70,7 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
         );
         $this->organizerRepository = $this->createMock(DocumentRepository::class);
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
+        $this->expectedQuery = "_exists_:organizer.id AND address.\*.addressCountry:* AND workflowStatus:(DRAFT OR READY_FOR_VALIDATION OR APPROVED) AND creator:(auth0|{$this->user->getUserId()} OR {$this->user->getUserId()} OR {$this->user->getEmailAddress()})";
 
         $this->suggestOwnershipsRequestHandler = new SuggestOwnershipsRequestHandler(
             $this->searchService,
@@ -89,7 +91,6 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             ->withUriFromString('?itemType=organizer')
             ->build('GET');
 
-        $expectedQuery = "_exists_:organizer.id AND address.\*.addressCountry:* AND workflowStatus:(DRAFT OR READY_FOR_VALIDATION OR APPROVED) AND creator:(auth0|{$this->user->getUserId()} OR {$this->user->getUserId()} OR {$this->user->getEmailAddress()})";
 
         $this->userIdentityResolver->expects($this->once())
             ->method('getUserById')
@@ -101,7 +102,7 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
 
         $this->searchService->expects($this->once())
             ->method('search')
-            ->with($expectedQuery, 10, 0, ['modified' => 'desc'])
+            ->with($this->expectedQuery, 10, 0, ['modified' => 'desc'])
             ->willReturn(new Results(
                 new ItemIdentifiers(
                     new ItemIdentifier(new Url($event['body']['@id']), $event['id'], ItemType::event()),
@@ -139,23 +140,19 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             ->withUriFromString('?itemType=organizer')
             ->build('GET');
 
-        $expectedQuery = "_exists_:organizer.id AND address.\*.addressCountry:* AND workflowStatus:(DRAFT OR READY_FOR_VALIDATION OR APPROVED) AND creator:(auth0|{$this->user->getUserId()} OR {$this->user->getUserId()} OR {$this->user->getEmailAddress()})";
-
         $this->userIdentityResolver->expects($this->once())
             ->method('getUserById')
             ->with($this->currentUser->getId())
             ->willReturn($this->user);
 
         $organizer = $this->givenThereIsAnOrganizer();
-        $place = $this->givenThereIsAnPlaceWithOrganizer($organizer);
         $event = $this->givenThereIsAnEventWithOrganizer($organizer);
 
         $this->searchService->expects($this->once())
             ->method('search')
-            ->with($expectedQuery, 10, 0, ['modified' => 'desc'])
+            ->with($this->expectedQuery, 10, 0, ['modified' => 'desc'])
             ->willReturn(new Results(
                 new ItemIdentifiers(
-                    new ItemIdentifier(new Url($place['body']['@id']), $place['id'], ItemType::place()),
                     new ItemIdentifier(new Url($event['body']['@id']), $event['id'], ItemType::event()),
                 ),
                 2
@@ -186,40 +183,22 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             ->withUriFromString('?itemType=organizer')
             ->build('GET');
 
-        $expectedQuery = "_exists_:organizer.id AND address.\*.addressCountry:* AND workflowStatus:(DRAFT OR READY_FOR_VALIDATION OR APPROVED) AND creator:(auth0|{$this->user->getUserId()} OR {$this->user->getUserId()} OR {$this->user->getEmailAddress()})";
-
         $this->userIdentityResolver->expects($this->once())
             ->method('getUserById')
             ->with($this->currentUser->getId())
             ->willReturn($this->user);
 
-        $organizerId = Uuid::uuid4()->toString();
-        $organizer = [
-            '@id' => 'https://mock.io.uitdatabank.be/organizers/' . $organizerId,
-        ];
-
-        $placeId = Uuid::uuid4()->toString();
-        $place = [
-            '@id' => 'https://mock.io.uitdatabank.be/places/' . $placeId,
-            'organizer' => $organizer,
-        ];
-
-        $eventId = Uuid::uuid4()->toString();
-        $event = [
-            '@id' => 'https://mock.io.uitdatabank.be/events/' . $eventId,
-            'organizer' => $organizer,
-        ];
-
-        $this->offerRepositoryFactory->expectPlaceDocument(new JsonDocument($placeId, Json::encode($place)));
-        $this->offerRepositoryFactory->expectEventDocument(new JsonDocument($eventId, Json::encode($event)));
+        $organizer = $this->givenThereIsAnOrganizer();
+        $place = $this->givenThereIsAnPlaceWithOrganizer($organizer);
+        $event = $this->givenThereIsAnEventWithOrganizer($organizer);
 
         $this->searchService->expects($this->once())
             ->method('search')
-            ->with($expectedQuery, 10, 0, ['modified' => 'desc'])
+            ->with($this->expectedQuery, 10, 0, ['modified' => 'desc'])
             ->willReturn(new Results(
                 new ItemIdentifiers(
-                    new ItemIdentifier(new Url($place['@id']), $placeId, ItemType::place()),
-                    new ItemIdentifier(new Url($event['@id']), $eventId, ItemType::event()),
+                    new ItemIdentifier(new Url($place['body']['@id']), $place['id'], ItemType::place()),
+                    new ItemIdentifier(new Url($event['body']['@id']), $event['id'], ItemType::event()),
                 ),
                 2
             ));
@@ -233,8 +212,8 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
 
         $this->organizerRepository->expects($this->once())
             ->method('fetch')
-            ->with($organizerId)
-            ->willReturn(new JsonDocument($organizerId, Json::encode($organizer)));
+            ->with($organizer['id'])
+            ->willReturn(new JsonDocument($organizer['id'], Json::encode($organizer)));
 
         $response = $this->suggestOwnershipsRequestHandler->handle($request);
 
