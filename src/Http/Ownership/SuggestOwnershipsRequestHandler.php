@@ -88,10 +88,10 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
          * @var ItemIdentifier $result
          */
         foreach ($this->resultsGenerator->search($query) as $result) {
-            $type = OfferType::fromCaseInsensitiveValue($result->getItemType()->toString());
+            $offerType = OfferType::fromCaseInsensitiveValue($result->getItemType()->toString());
             $id = $result->getId();
 
-            $offer = $this->offerRepository->fetch($type, $id)->getAssocBody();
+            $offer = $this->offerRepository->fetch($offerType, $id)->getAssocBody();
 
             $parser = new OrganizerIDParser();
             $organizerId = $parser->fromUrl(new Url($offer['organizer']['@id']))->toString();

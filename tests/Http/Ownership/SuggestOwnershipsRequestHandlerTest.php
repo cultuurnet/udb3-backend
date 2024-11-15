@@ -91,7 +91,6 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             ->withUriFromString('?itemType=organizer')
             ->build('GET');
 
-
         $this->userIdentityResolver->expects($this->once())
             ->method('getUserById')
             ->with($this->currentUser->getId())
