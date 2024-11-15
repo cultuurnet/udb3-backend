@@ -19,7 +19,7 @@ final class AddressEditor
 
     private const PROPERTY_ADRES_STRAATNAAM = 'locn:thoroughfare';
     private const PROPERTY_ADRES_HUISNUMMER = 'locn:locatorDesignator';
-    private const PROPERTY_ADRES_POSTCODE = 'locn:postcode';
+    private const PROPERTY_ADRES_POSTCODE = 'locn:postCode';
     private const PROPERTY_ADRES_GEMEENTENAAM = 'locn:postName';
     private const PROPERTY_ADRES_LAND = 'locn:adminUnitL1';
     private const PROPERTY_ADRES_VOLLEDIG_ADRES = 'locn:fullAddress';

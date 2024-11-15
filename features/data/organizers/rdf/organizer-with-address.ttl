@@ -32,7 +32,7 @@
     locn:postName "Brussel"@nl, "Bruxelles"@fr ;
     locn:thoroughfare "Quai du Hainaut"@nl, "Quai du Hainaut"@fr ;
     locn:adminUnitL1 "BE" ;
-    locn:postcode "1080" ;
+    locn:postCode "1080" ;
     locn:locatorDesignator "41"
   ] ;
   locn:geometry [

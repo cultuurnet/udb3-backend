@@ -29,7 +29,7 @@
   locn:address [
     a locn:Address ;
     locn:adminUnitL1 "BE" ;
-    locn:postcode "3271" ;
+    locn:postCode "3271" ;
     locn:locatorDesignator "1" ;
     locn:fullAddress "Kerkstraat 1, 3271 Zichem (Scherpenheuvel-Zichem), BE"@nl ;
     locn:postName "Zichem (Scherpenheuvel-Zichem)"@nl ;
