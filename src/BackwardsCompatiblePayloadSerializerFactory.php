@@ -418,8 +418,24 @@ class BackwardsCompatiblePayloadSerializerFactory
             );
         }
 
-        self::fillDescriptions($payloadManipulatingSerializer);
+        $updateDescriptionEvents = [
+            EventDescriptionUpdated::class,
+            PlaceDescriptionUpdated::class,
+        ];
 
+        foreach ($updateDescriptionEvents as $descriptionUpdatedEvent) {
+            $payloadManipulatingSerializer->manipulateEventsOfClass(
+                $descriptionUpdatedEvent,
+                function (array $serializedObject) use ($descriptionUpdatedEvent) {
+                    $serializedObject = self::fillDescriptions($serializedObject);
+
+                    if ($descriptionUpdatedEvent === EventDescriptionUpdated::class) {
+                        return self::replaceEventIdWithItemId($serializedObject);
+                    }
+                    return self::replacePlaceIdWithItemId($serializedObject);
+                }
+            );
+        }
 
         /**
          * Roles
@@ -537,27 +553,11 @@ class BackwardsCompatiblePayloadSerializerFactory
         return $serializedObject;
     }
 
-    private static function fillDescriptions(PayloadManipulatingSerializer $payloadManipulatingSerializer): void
+    private static function fillDescriptions(array $serializedObject): array
     {
-        $updateDescriptionEvents = [
-            EventDescriptionUpdated::class,
-            PlaceDescriptionUpdated::class,
-        ];
-
-        foreach ($updateDescriptionEvents as $descriptionUpdatedEvent) {
-            $payloadManipulatingSerializer->manipulateEventsOfClass(
-                $descriptionUpdatedEvent,
-                function (array $serializedObject) use ($descriptionUpdatedEvent) {
-                    if (empty(trim($serializedObject['payload']['description']))) {
-                        $serializedObject['payload']['description'] = '---';
-                    }
-
-                    if ($descriptionUpdatedEvent === EventDescriptionUpdated::class) {
-                        return self::replaceEventIdWithItemId($serializedObject);
-                    }
-                    return self::replacePlaceIdWithItemId($serializedObject);
-                }
-            );
+        if (empty(trim($serializedObject['payload']['description']))) {
+            $serializedObject['payload']['description'] = '---';
         }
+        return $serializedObject;
     }
 }
