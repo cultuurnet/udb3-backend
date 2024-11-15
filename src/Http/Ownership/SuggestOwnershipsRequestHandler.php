@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Ownership;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Http\Ownership\Suggestions\SuggestOwnershipsSapiQuery;
@@ -19,6 +20,8 @@ use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
@@ -38,6 +41,7 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
     private DocumentRepository $organizerRepository;
     private OwnershipSearchRepository $ownershipSearchRepository;
     private OrganizerIDParser $organizerIDParser;
+    private UserPermissionsReadRepositoryInterface $userPermissionsRepository;
 
     public function __construct(
         SearchServiceInterface $searchService,
@@ -46,7 +50,8 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
         UserIdentityResolver $userIdentityResolver,
         DocumentRepository $organizerRepository,
         OwnershipSearchRepository $ownershipSearchRepository,
-        OrganizerIDParser $organizerIDParser
+        OrganizerIDParser $organizerIDParser,
+        UserPermissionsReadRepositoryInterface $userPermissionsRepository
     ) {
         $this->resultsGenerator = new ResultsGenerator(
             $searchService,
@@ -58,10 +63,13 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
         $this->organizerRepository = $organizerRepository;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->organizerIDParser = $organizerIDParser;
+        $this->userPermissionsRepository = $userPermissionsRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $this->guardAccess();
+
         $queryParams = new QueryParameters($request);
 
         $queryParams->guardRequiredEnum('itemType', [ItemType::organizer()->toString()]);
@@ -120,5 +128,21 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
             $state = new OwnershipState($item->getState());
             return OwnershipState::requested()->sameAs($state) || OwnershipState::approved()->sameAs($state);
         };
+    }
+
+    private function guardAccess(): void
+    {
+        if ($this->currentUser->isGodUser()) {
+            return;
+        }
+
+        $isAllowed = $this->userPermissionsRepository->hasPermission(
+            $this->currentUser->getId(),
+            Permission::organisatiesBewerken()
+        );
+
+        if (!$isAllowed) {
+            throw ApiProblem::forbidden('You are not allowed to fetch ownership suggestions');
+        }
     }
 }
