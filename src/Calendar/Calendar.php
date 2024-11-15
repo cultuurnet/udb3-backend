@@ -196,7 +196,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     }
 
     /**
-     * @return array|OpeningHour[]
+     * @return OpeningHour[]
      */
     public function getOpeningHours(): array
     {
@@ -204,7 +204,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     }
 
     /**
-     * @return array|SubEvent[]
+     * @return SubEvent[]
      */
     public function getSubEvents(): array
     {
