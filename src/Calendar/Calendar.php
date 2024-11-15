@@ -481,24 +481,28 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     private function deriveStatusTypeFromSubEvents(): StatusType
     {
-        $statusTypeCounts = [];
-        $statusTypeCounts[StatusType::Available()->toString()] = 0;
-        $statusTypeCounts[StatusType::TemporarilyUnavailable()->toString()] = 0;
-        $statusTypeCounts[StatusType::Unavailable()->toString()] = 0;
+        $temporarilyUnavailablePresent = false;
+        $unavailablePresent = false;
 
         foreach ($this->subEvents as $subEvent) {
-            ++$statusTypeCounts[$subEvent->getStatus()->getType()->toString()];
+            if ($subEvent->getStatus()->getType()->sameAs(StatusType::Available())) {
+                return StatusType::Available();
+            }
+
+            if ($subEvent->getStatus()->getType()->sameAs(StatusType::TemporarilyUnavailable())) {
+                $temporarilyUnavailablePresent = true;
+            }
+
+            if ($subEvent->getStatus()->getType()->sameAs(StatusType::Unavailable())) {
+                $unavailablePresent = true;
+            }
         }
 
-        if ($statusTypeCounts[StatusType::Available()->toString()] > 0) {
-            return StatusType::Available();
-        }
-
-        if ($statusTypeCounts[StatusType::TemporarilyUnavailable()->toString()] > 0) {
+        if ($temporarilyUnavailablePresent) {
             return StatusType::TemporarilyUnavailable();
         }
 
-        if ($statusTypeCounts[StatusType::Unavailable()->toString()] > 0) {
+        if ($unavailablePresent) {
             return StatusType::Unavailable();
         }
 
