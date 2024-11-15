@@ -9,7 +9,6 @@ use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated as EventBookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated as EventContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
-use CultuurNet\UDB3\Event\Events\DescriptionUpdated as EventDescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
@@ -27,6 +26,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated as PlaceBookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated as PlaceContactPointUpdated;
+use CultuurNet\UDB3\Event\Events\DescriptionUpdated as EventDescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated as PlaceDescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\OrganizerDeleted as PlaceOrganizerDeleted;
 use CultuurNet\UDB3\Place\Events\OrganizerUpdated as PlaceOrganizerUpdated;
@@ -330,7 +330,6 @@ class BackwardsCompatiblePayloadSerializerFactory
             EventTypicalAgeRangeUpdated::class,
             EventOrganizerUpdated::class,
             EventOrganizerDeleted::class,
-            EventDescriptionUpdated::class,
             EventDeleted::class,
         ];
 
@@ -351,7 +350,6 @@ class BackwardsCompatiblePayloadSerializerFactory
             PlaceOrganizerDeleted::class,
             PlaceTypicalAgeRangeDeleted::class,
             PlaceTypicalAgeRangeUpdated::class,
-            PlaceDescriptionUpdated::class,
             PlaceDeleted::class,
         ];
 
@@ -419,6 +417,9 @@ class BackwardsCompatiblePayloadSerializerFactory
                 }
             );
         }
+
+        self::fillDescriptions($payloadManipulatingSerializer);
+
 
         /**
          * Roles
@@ -534,5 +535,29 @@ class BackwardsCompatiblePayloadSerializerFactory
         }
 
         return $serializedObject;
+    }
+
+    private static function fillDescriptions(PayloadManipulatingSerializer $payloadManipulatingSerializer): void
+    {
+        $updateDescriptionEvents = [
+            EventDescriptionUpdated::class,
+            PlaceDescriptionUpdated::class,
+        ];
+
+        foreach ($updateDescriptionEvents as $descriptionUpdatedEvent) {
+            $payloadManipulatingSerializer->manipulateEventsOfClass(
+                $descriptionUpdatedEvent,
+                function (array $serializedObject) use ($descriptionUpdatedEvent) {
+                    if (empty(trim($serializedObject['payload']['description']))) {
+                        $serializedObject['payload']['description'] = '---';
+                    }
+
+                    if ($descriptionUpdatedEvent === EventDescriptionUpdated::class) {
+                        return self::replaceEventIdWithItemId($serializedObject);
+                    }
+                    return self::replacePlaceIdWithItemId($serializedObject);
+                }
+            );
+        }
     }
 }
