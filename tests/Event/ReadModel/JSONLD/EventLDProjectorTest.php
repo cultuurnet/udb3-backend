@@ -44,7 +44,6 @@ use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
@@ -1479,7 +1478,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $audienceUpdated = new AudienceUpdated(
             $eventId,
-            new Audience(AudienceType::education())
+            AudienceType::education()
         );
 
         $body = $this->project($audienceUpdated, $eventId, null, $this->recordedOn->toBroadwayDateTime());

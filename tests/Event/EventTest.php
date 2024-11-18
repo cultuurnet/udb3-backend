@@ -32,7 +32,6 @@ use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
@@ -379,7 +378,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Calendar(CalendarType::permanent())
         );
 
-        $expectedEvent = new AudienceUpdated($eventUuid, new Audience(AudienceType::education()));
+        $expectedEvent = new AudienceUpdated($eventUuid, AudienceType::education());
 
         $actualEvents = array_map(
             function (DomainMessage $domainMessage) {
@@ -1519,7 +1518,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new LocationUpdated($eventId, $newLocationId),
-                    new AudienceUpdated($eventId, new Audience(AudienceType::education())),
+                    new AudienceUpdated($eventId, AudienceType::education()),
                 ]
             );
     }
@@ -1527,11 +1526,11 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      * @dataProvider audienceDataProvider
-     * @param Audience[] $audiences
+     * @param AudienceType[] $audienceTypes
      * @param AudienceUpdated[] $audienceUpdatedEvents
      */
     public function it_applies_the_audience_type(
-        array $audiences,
+        array $audienceTypes,
         array $audienceUpdatedEvents
     ): void {
         $this->scenario
@@ -1539,9 +1538,9 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
             ])
             ->when(
-                function (Event $event) use ($audiences): void {
-                    foreach ($audiences as $audience) {
-                        $event->updateAudience($audience);
+                function (Event $event) use ($audienceTypes): void {
+                    foreach ($audienceTypes as $audienceType) {
+                        $event->updateAudience($audienceType);
                     }
                 }
             )
@@ -1558,42 +1557,42 @@ class EventTest extends AggregateRootScenarioTestCase
             'single audience type' =>
                 [
                     [
-                        new Audience(AudienceType::members()),
+                        AudienceType::members(),
                     ],
                     [
                         new AudienceUpdated(
                             $eventId,
-                            new Audience(AudienceType::members())
+                            AudienceType::members()
                         ),
                     ],
                 ],
             'multiple audience types' =>
                 [
                     [
-                        new Audience(AudienceType::members()),
-                        new Audience(AudienceType::everyone()),
+                        AudienceType::members(),
+                        AudienceType::everyone(),
                     ],
                     [
                         new AudienceUpdated(
                             $eventId,
-                            new Audience(AudienceType::members())
+                            AudienceType::members()
                         ),
                         new AudienceUpdated(
                             $eventId,
-                            new Audience(AudienceType::everyone())
+                            AudienceType::everyone()
                         ),
                     ],
                 ],
             'equal audience types' =>
                 [
                     [
-                        new Audience(AudienceType::members()),
-                        new Audience(AudienceType::members()),
+                        AudienceType::members(),
+                        AudienceType::members(),
                     ],
                     [
                         new AudienceUpdated(
                             $eventId,
-                            new Audience(AudienceType::members())
+                            AudienceType::members()
                         ),
                     ],
                 ],
@@ -1612,12 +1611,12 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new AudienceUpdated($eventId, new Audience(AudienceType::education())),
+                new AudienceUpdated($eventId, AudienceType::education()),
                 new LocationUpdated($eventId, new LocationId($dummyLocationId)),
             ])
             ->when(
                 function (Event $event): void {
-                    $event->updateAudience(new Audience(AudienceType::everyone()));
+                    $event->updateAudience(AudienceType::everyone());
                 }
             )
             ->then([]);
@@ -1695,7 +1694,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $calendar = new Calendar(
             CalendarType::permanent()
         );
-        $audience = new Audience(AudienceType::education());
+        $audience = AudienceType::education();
 
         $event = $this->event;
         $event->updateAudience($audience);
@@ -1824,7 +1823,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Event $event): void {
                     $event->updateAudience(
-                        new Audience(AudienceType::everyone())
+                        AudienceType::everyone()
                     );
                 }
             )

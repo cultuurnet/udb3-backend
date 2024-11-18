@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use PHPUnit\Framework\TestCase;
 
@@ -12,7 +11,7 @@ class AudienceUpdatedTest extends TestCase
 {
     private string $itemId;
 
-    private Audience $audience;
+    private AudienceType $audienceType;
 
     private AudienceUpdated $audienceUpdated;
 
@@ -20,13 +19,11 @@ class AudienceUpdatedTest extends TestCase
     {
         $this->itemId = '6eaaa9b6-d0d2-11e6-bf26-cec0c932ce01';
 
-        $this->audience = new Audience(
-            AudienceType::members()
-        );
+        $this->audienceType = AudienceType::members();
 
         $this->audienceUpdated = new AudienceUpdated(
             $this->itemId,
-            $this->audience
+            $this->audienceType
         );
     }
 
@@ -44,8 +41,8 @@ class AudienceUpdatedTest extends TestCase
     public function it_stores_an_audience(): void
     {
         $this->assertEquals(
-            $this->audience,
-            $this->audienceUpdated->getAudience()
+            $this->audienceType,
+            $this->audienceUpdated->getAudienceType()
         );
     }
 
@@ -57,7 +54,7 @@ class AudienceUpdatedTest extends TestCase
         $this->assertEquals(
             [
                 'item_id' => $this->itemId,
-                'audience' => $this->audience->serialize(),
+                'audience' => ['audienceType' => 'members'],
             ],
             $this->audienceUpdated->serialize()
         );
@@ -71,7 +68,7 @@ class AudienceUpdatedTest extends TestCase
         $audienceUpdated = AudienceUpdated::deserialize(
             [
                 'item_id' => $this->itemId,
-                'audience' => $this->audience->serialize(),
+                'audience' => ['audienceType' => 'members'],
             ]
         );
 

@@ -61,13 +61,13 @@ use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\Events\VideoUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AudienceTypeNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
@@ -286,8 +286,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->typicalAgeRange = '-';
 
-        $defaultAudience = new Audience(AudienceType::everyone());
-        $jsonLD->audience = $defaultAudience->serialize();
+        $jsonLD->audience = (new AudienceTypeNormalizer())->normalize(AudienceType::everyone());
 
         return $document->withBody($jsonLD);
     }
@@ -530,7 +529,7 @@ final class EventLDProjector extends OfferLDProjector implements
         $document = $this->loadDocumentFromRepository($audienceUpdated);
         $jsonLD = $document->getBody();
 
-        $jsonLD->audience = $audienceUpdated->getAudience()->serialize();
+        $jsonLD->audience = (new AudienceTypeNormalizer())->normalize($audienceUpdated->getAudienceType());
 
         return $document->withBody($jsonLD);
     }

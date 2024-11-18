@@ -62,7 +62,6 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\Events\VideoUpdated;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Media\Image;
@@ -106,7 +105,7 @@ final class Event extends Offer
 
     private string $onlineUrl = '';
 
-    private ?Audience $audience = null;
+    private ?AudienceType $audienceType = null;
 
     private ?LocationId $locationId = null;
 
@@ -146,7 +145,7 @@ final class Event extends Offer
             // Bookable education events should get education as their audience type. We record this explicitly so we
             // don't have to handle this edge case in every read model projector.
             $event->apply(
-                new AudienceUpdated($eventId, new Audience(AudienceType::education()))
+                new AudienceUpdated($eventId, AudienceType::education())
             );
         }
 
@@ -209,7 +208,7 @@ final class Event extends Offer
         $this->eventId = $eventCreated->getEventId();
         $this->titles[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
         $this->calendar = $eventCreated->getCalendar();
-        $this->audience = new Audience(AudienceType::everyone());
+        $this->audienceType = AudienceType::everyone();
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
         $this->typeId = $eventCreated->getEventType()->getId();
@@ -307,7 +306,7 @@ final class Event extends Offer
             // Bookable education events should get education as their audience type. We record this explicitly so we
             // don't have to handle this edge case in every read model projector.
             $this->apply(
-                new AudienceUpdated($this->eventId, new Audience(AudienceType::education()))
+                new AudienceUpdated($this->eventId, AudienceType::education())
             );
         }
     }
@@ -348,7 +347,7 @@ final class Event extends Offer
             // Bookable education events should get education as their audience type. We record this explicitly so we
             // don't have to handle this edge case in every read model projector.
             $this->apply(
-                new AudienceUpdated($this->eventId, new Audience(AudienceType::education()))
+                new AudienceUpdated($this->eventId, AudienceType::education())
             );
         }
     }
@@ -450,9 +449,8 @@ final class Event extends Offer
         $this->onlineUrl = '';
     }
 
-    public function updateAudience(Audience $audience): void
+    public function updateAudience(AudienceType $audienceType): void
     {
-        $audienceType = $audience->getAudienceType();
         if ($this->locationId &&
             $this->locationId->isDummyPlaceForEducation() &&
             !$audienceType->sameAs(AudienceType::education())
@@ -460,11 +458,11 @@ final class Event extends Offer
             throw IncompatibleAudienceType::forEvent($this->eventId, $audienceType);
         }
 
-        if (is_null($this->audience) || !$this->audience->equals($audience)) {
+        if (is_null($this->audienceType) || !$this->audienceType->sameAs($audienceType)) {
             $this->apply(
                 new AudienceUpdated(
                     $this->eventId,
-                    $audience
+                    $audienceType
                 )
             );
         }
@@ -472,7 +470,7 @@ final class Event extends Offer
 
     public function applyAudienceUpdated(AudienceUpdated $audienceUpdated): void
     {
-        $this->audience = $audienceUpdated->getAudience();
+        $this->audienceType = $audienceUpdated->getAudienceType();
     }
 
     public function updateTheme(Category $category): void
