@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use PHPUnit\Framework\TestCase;
 
 class DayOfWeekCollectionTest extends TestCase
@@ -13,7 +14,7 @@ class DayOfWeekCollectionTest extends TestCase
     protected function setUp(): void
     {
         $this->dayOfWeekCollection = new DayOfWeekCollection(
-            DayOfWeek::WEDNESDAY()
+            Day::wednesday()
         );
     }
 
@@ -33,12 +34,12 @@ class DayOfWeekCollectionTest extends TestCase
     public function it_can_be_constructed_with_a_single_day_of_the_week(): void
     {
         $daysOfWeekCollection = new DayOfWeekCollection(
-            DayOfWeek::WEDNESDAY()
+            Day::wednesday()
         );
 
         $this->assertEquals(
             [
-                DayOfWeek::WEDNESDAY(),
+                Day::wednesday(),
             ],
             $daysOfWeekCollection->getDaysOfWeek()
         );
@@ -50,14 +51,14 @@ class DayOfWeekCollectionTest extends TestCase
     public function it_can_be_constructed_with_a_multiple_day_of_the_week(): void
     {
         $daysOfWeekCollection = new DayOfWeekCollection(
-            DayOfWeek::WEDNESDAY(),
-            DayOfWeek::FRIDAY()
+            Day::wednesday(),
+            Day::friday()
         );
 
         $this->assertEquals(
             [
-                DayOfWeek::WEDNESDAY(),
-                DayOfWeek::FRIDAY(),
+                Day::wednesday(),
+                Day::friday(),
             ],
             $daysOfWeekCollection->getDaysOfWeek()
         );
@@ -68,12 +69,12 @@ class DayOfWeekCollectionTest extends TestCase
      */
     public function it_allows_adding_more_days_of_the_week(): void
     {
-        $this->dayOfWeekCollection->addDayOfWeek(DayOfWeek::FRIDAY());
+        $this->dayOfWeekCollection->addDayOfWeek(Day::friday());
 
         $this->assertEquals(
             [
-                DayOfWeek::WEDNESDAY(),
-                DayOfWeek::FRIDAY(),
+                Day::wednesday(),
+                Day::friday(),
             ],
             $this->dayOfWeekCollection->getDaysOfWeek()
         );
@@ -84,13 +85,13 @@ class DayOfWeekCollectionTest extends TestCase
      */
     public function it_only_adds_unique_days(): void
     {
-        $this->dayOfWeekCollection->addDayOfWeek(DayOfWeek::FRIDAY());
-        $this->dayOfWeekCollection->addDayOfWeek(DayOfWeek::FRIDAY());
+        $this->dayOfWeekCollection->addDayOfWeek(Day::friday());
+        $this->dayOfWeekCollection->addDayOfWeek(Day::friday());
 
         $this->assertEquals(
             [
-                DayOfWeek::WEDNESDAY(),
-                DayOfWeek::FRIDAY(),
+                Day::wednesday(),
+                Day::friday(),
             ],
             $this->dayOfWeekCollection->getDaysOfWeek()
         );
@@ -101,7 +102,7 @@ class DayOfWeekCollectionTest extends TestCase
      */
     public function it_can_be_serialized(): void
     {
-        $this->dayOfWeekCollection->addDayOfWeek(DayOfWeek::MONDAY());
+        $this->dayOfWeekCollection->addDayOfWeek(Day::monday());
 
         $this->assertEquals(
             [
@@ -117,7 +118,7 @@ class DayOfWeekCollectionTest extends TestCase
      */
     public function it_can_be_deserialized(): void
     {
-        $this->dayOfWeekCollection->addDayOfWeek(DayOfWeek::MONDAY());
+        $this->dayOfWeekCollection->addDayOfWeek(Day::monday());
 
         $this->assertEquals(
             DayOfWeekCollection::deserialize(

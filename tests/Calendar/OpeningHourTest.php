@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use PHPUnit\Framework\TestCase;
@@ -27,11 +28,11 @@ class OpeningHourTest extends TestCase
         $this->closes = new OpeningTime(new Hour(17), new Minute(0));
 
         $this->dayOfWeekCollection = new DayOfWeekCollection(
-            new DayOfWeek('monday'),
-            new DayOfWeek('tuesday'),
-            new DayOfWeek('wednesday'),
-            new DayOfWeek('thursday'),
-            new DayOfWeek('friday')
+            new Day('monday'),
+            new Day('tuesday'),
+            new Day('wednesday'),
+            new Day('thursday'),
+            new Day('friday')
         );
 
         $this->openingHourAsArray = [
@@ -83,13 +84,13 @@ class OpeningHourTest extends TestCase
         $sameOpeningHour = new OpeningHour(
             new OpeningTime(new Hour(9), new Minute(30)),
             new OpeningTime(new Hour(17), new Minute(0)),
-            new DayOfWeekCollection(DayOfWeek::MONDAY())
+            new DayOfWeekCollection(Day::monday())
         );
 
         $differentOpeningHour = new OpeningHour(
             new OpeningTime(new Hour(10), new Minute(30)),
             new OpeningTime(new Hour(17), new Minute(0)),
-            new DayOfWeekCollection(DayOfWeek::MONDAY())
+            new DayOfWeekCollection(Day::monday())
         );
 
         $this->assertTrue(

@@ -8,6 +8,7 @@ use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use DateTimeInterface;
 
 final class CalendarFactory implements CalendarFactoryInterface
@@ -209,7 +210,7 @@ final class CalendarFactory implements CalendarFactoryInterface
                     $openingHour = new OpeningHour(
                         OpeningTime::fromNativeDateTime($opens),
                         $closes ? OpeningTime::fromNativeDateTime($closes) : OpeningTime::fromNativeDateTime($opens),
-                        new DayOfWeekCollection(new DayOfWeek($day->getDayName()))
+                        new DayOfWeekCollection(new Day($day->getDayName()))
                     );
 
                     $openingHours = $this->addToOpeningHours($openingHour, ...$openingHours);

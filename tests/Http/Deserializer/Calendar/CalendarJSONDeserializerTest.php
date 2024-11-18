@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
@@ -13,6 +12,7 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
@@ -60,10 +60,10 @@ class CalendarJSONDeserializerTest extends TestCase
                     new Minute(0)
                 ),
                 new DayOfWeekCollection(
-                    DayOfWeek::TUESDAY(),
-                    DayOfWeek::WEDNESDAY(),
-                    DayOfWeek::THURSDAY(),
-                    DayOfWeek::FRIDAY()
+                    Day::tuesday(),
+                    Day::wednesday(),
+                    Day::thursday(),
+                    Day::friday()
                 )
             ),
             new OpeningHour(
@@ -76,7 +76,7 @@ class CalendarJSONDeserializerTest extends TestCase
                     new Minute(0)
                 ),
                 new DayOfWeekCollection(
-                    DayOfWeek::SATURDAY()
+                    Day::saturday()
                 )
             ),
         ];
