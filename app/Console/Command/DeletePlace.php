@@ -76,19 +76,25 @@ class DeletePlace extends AbstractCommand
 
         if ($placeUuid === null || $canonicalUuid === null) {
             $output->writeln('<error>Missing argument, the correct syntax is: place:delete place_uuid_to_delete canonical_place_uuid</error>');
-            return 0;
+            return self::SUCCESS;
+        }
+
+        try {
+            $this->placeDocumentRepository->fetch($canonicalUuid);
+        } catch (DocumentDoesNotExist $e) {
+            $output->writeln('Canonical place does not exist');
+            return self::SUCCESS;
         }
 
         try {
             $this->placeDocumentRepository->fetch($placeUuid);
-            $this->placeDocumentRepository->fetch($canonicalUuid);
         } catch (DocumentDoesNotExist $e) {
-            $output->writeln($e->getMessage());
-            return 0;
+            $output->writeln('Place does not exist');
+            return self::SUCCESS;
         }
 
         if (!$this->askConfirmation($input, $output)) {
-            return 0;
+            return self::SUCCESS;
         }
 
         foreach ($this->eventRelationsRepository->getEventsLocatedAtPlace($placeUuid) as $eventLocatedAtPlace) {
@@ -105,11 +111,13 @@ class DeletePlace extends AbstractCommand
             $this->commandBus->dispatch(new DeleteOffer($placeUuid));
         }
 
-        return 1;
+        return self::SUCCESS;
     }
 
-    private function askConfirmation(InputInterface $input, OutputInterface $output): bool
-    {
+    private function askConfirmation(
+        InputInterface $input,
+        OutputInterface $output
+    ): bool {
         if ($input->getOption(self::FORCE)) {
             return true;
         }
