@@ -10,6 +10,7 @@ use CultureFeed_Cdb_Data_Calendar_Permanent;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use DateTime;
@@ -164,7 +165,7 @@ class CalendarConverterTest extends TestCase
      */
     public function it_converts_permanent_calendar_with_weekscheme_as_a_cdb_calendar_object(): void
     {
-        $weekDays = new DayOfWeekCollection(
+        $weekDays = new Days(
             Day::monday(),
             Day::tuesday(),
             Day::wednesday(),
@@ -172,7 +173,7 @@ class CalendarConverterTest extends TestCase
             Day::friday()
         );
 
-        $weekendDays = new DayOfWeekCollection(
+        $weekendDays = new Days(
             Day::saturday(),
             Day::sunday()
         );
@@ -219,7 +220,7 @@ class CalendarConverterTest extends TestCase
      */
     public function it_converts_periodic_calendar_with_weekscheme_as_a_cdb_calendar_object(): void
     {
-        $weekDays = new DayOfWeekCollection(
+        $weekDays = new Days(
             Day::monday(),
             Day::tuesday(),
             Day::wednesday(),
@@ -227,7 +228,7 @@ class CalendarConverterTest extends TestCase
             Day::friday()
         );
 
-        $weekendDays = new DayOfWeekCollection(
+        $weekendDays = new Days(
             Day::saturday(),
             Day::sunday()
         );
@@ -286,7 +287,7 @@ class CalendarConverterTest extends TestCase
                 new OpeningHour(
                     new OpeningTime(new Hour(9), new Minute(0)),
                     new OpeningTime(new Hour(17), new Minute(0)),
-                    new DayOfWeekCollection(
+                    new Days(
                         Day::monday()
                     )
                 ),

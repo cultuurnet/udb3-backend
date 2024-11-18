@@ -8,6 +8,7 @@ use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultureFeed_Cdb_Data_Calendar_TimestampList;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\SampleFiles;
@@ -67,7 +68,7 @@ class CalendarFactoryTest extends TestCase
      */
     public function it_can_create_a_calendar_from_a_weekscheme(): void
     {
-        $weekDays = new DayOfWeekCollection(
+        $weekDays = new Days(
             Day::monday(),
             Day::tuesday(),
             Day::wednesday(),
@@ -75,7 +76,7 @@ class CalendarFactoryTest extends TestCase
             Day::friday()
         );
 
-        $weekendDays = new DayOfWeekCollection(
+        $weekendDays = new Days(
             Day::saturday(),
             Day::sunday()
         );
@@ -891,7 +892,7 @@ class CalendarFactoryTest extends TestCase
                         new OpeningHour(
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new OpeningTime(new Hour(20), new Minute(30)),
-                            new DayOfWeekCollection(
+                            new Days(
                                 Day::monday(),
                                 Day::thursday(),
                                 Day::friday(),
@@ -901,7 +902,7 @@ class CalendarFactoryTest extends TestCase
                         new OpeningHour(
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new OpeningTime(new Hour(16), new Minute(0)),
-                            new DayOfWeekCollection(
+                            new Days(
                                 Day::sunday()
                             )
                         ),
@@ -921,7 +922,7 @@ class CalendarFactoryTest extends TestCase
                         new OpeningHour(
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new OpeningTime(new Hour(22), new Minute(30)),
-                            new DayOfWeekCollection(
+                            new Days(
                                 Day::monday(),
                                 Day::thursday(),
                                 Day::friday(),
@@ -931,7 +932,7 @@ class CalendarFactoryTest extends TestCase
                         new OpeningHour(
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new OpeningTime(new Hour(20), new Minute(0)),
-                            new DayOfWeekCollection(
+                            new Days(
                                 Day::sunday()
                             )
                         ),
@@ -951,7 +952,7 @@ class CalendarFactoryTest extends TestCase
                         new OpeningHour(
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new OpeningTime(new Hour(22), new Minute(30)),
-                            new DayOfWeekCollection(
+                            new Days(
                                 Day::monday(),
                                 Day::thursday(),
                                 Day::friday(),
@@ -961,7 +962,7 @@ class CalendarFactoryTest extends TestCase
                         new OpeningHour(
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new OpeningTime(new Hour(16), new Minute(0)),
-                            new DayOfWeekCollection(
+                            new Days(
                                 Day::sunday()
                             )
                         ),
@@ -1012,7 +1013,7 @@ class CalendarFactoryTest extends TestCase
                         new OpeningHour(
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new OpeningTime(new Hour(20), new Minute(30)),
-                            new DayOfWeekCollection(
+                            new Days(
                                 Day::monday(),
                                 Day::thursday(),
                                 Day::friday(),
@@ -1022,7 +1023,7 @@ class CalendarFactoryTest extends TestCase
                         new OpeningHour(
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new OpeningTime(new Hour(16), new Minute(0)),
-                            new DayOfWeekCollection(
+                            new Days(
                                 Day::sunday()
                             )
                         ),
@@ -1042,7 +1043,7 @@ class CalendarFactoryTest extends TestCase
                         new OpeningHour(
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new OpeningTime(new Hour(22), new Minute(30)),
-                            new DayOfWeekCollection(
+                            new Days(
                                 Day::monday(),
                                 Day::thursday(),
                                 Day::friday(),
@@ -1052,7 +1053,7 @@ class CalendarFactoryTest extends TestCase
                         new OpeningHour(
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new OpeningTime(new Hour(20), new Minute(0)),
-                            new DayOfWeekCollection(
+                            new Days(
                                 Day::sunday()
                             )
                         ),
@@ -1072,7 +1073,7 @@ class CalendarFactoryTest extends TestCase
                         new OpeningHour(
                             new OpeningTime(new Hour(20), new Minute(30)),
                             new OpeningTime(new Hour(22), new Minute(30)),
-                            new DayOfWeekCollection(
+                            new Days(
                                 Day::monday(),
                                 Day::thursday(),
                                 Day::friday(),
@@ -1082,7 +1083,7 @@ class CalendarFactoryTest extends TestCase
                         new OpeningHour(
                             new OpeningTime(new Hour(16), new Minute(0)),
                             new OpeningTime(new Hour(16), new Minute(0)),
-                            new DayOfWeekCollection(
+                            new Days(
                                 Day::sunday()
                             )
                         ),

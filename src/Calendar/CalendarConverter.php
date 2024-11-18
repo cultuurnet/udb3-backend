@@ -14,6 +14,7 @@ use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultureFeed_Cdb_Data_Calendar_TimestampList;
 use CultureFeed_Cdb_Data_Calendar_Weekscheme;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use DateInterval;
 use DateTimeInterface;
 use InvalidArgumentException;
@@ -119,9 +120,11 @@ class CalendarConverter implements CalendarConverterInterface
                 'sunday' => [],
             ];
 
+            /** @var OpeningHour $openingHour */
             foreach ($openingHours as $openingHour) {
                 // In CDB2 every day needs to be a seperate entry.
-                foreach ($openingHour->getDayOfWeekCollection()->getDaysOfWeek() as $day) {
+                /** @var Day $day */
+                foreach ($openingHour->getDays()->getIterator() as $day) {
                     $openingTimesPerDay[$day->toString()][] = new CultureFeed_Cdb_Data_Calendar_OpeningTime(
                         $openingHour->getOpens()->toNativeString() . ':00',
                         $openingHour->getCloses()->toNativeString() . ':00'
