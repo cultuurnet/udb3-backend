@@ -6,8 +6,10 @@ namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventTypeResolver;
-use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 final class AvailableToTest extends TestCase
@@ -33,9 +35,16 @@ final class AvailableToTest extends TestCase
      */
     public function it_will_use_start_date_for_certain_event_types(): void
     {
-        $startDate = new \DateTime('2016-10-10T18:19:20');
-        $endDate = new \DateTime('2020-10-10T18:19:20');
-        $calendar = new Calendar(CalendarType::multiple(), null, null, [new Timestamp($startDate, $endDate)]);
+        $startDate = new DateTimeImmutable('2016-10-10T18:19:20');
+        $endDate = new DateTimeImmutable('2020-10-10T18:19:20');
+        $calendar = new Calendar(
+            CalendarType::multiple(),
+            null,
+            null,
+            [
+                SubEvent::createAvailable(new DateRange($startDate, $endDate)),
+            ]
+        );
         $eventTypeResolver = new EventTypeResolver();
 
         $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId('0.7.0.0.0'));
@@ -60,11 +69,35 @@ final class AvailableToTest extends TestCase
                 new \DateTime('2100-01-01T00:00:00Z'),
             ],
             [
-                new Calendar(CalendarType::single(), null, null, [new Timestamp($startDate, $startDate)]),
+                new Calendar(
+                    CalendarType::single(),
+                    null,
+                    null,
+                    [
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                DateTimeImmutable::createFromMutable($startDate),
+                                DateTimeImmutable::createFromMutable($startDate)
+                            )
+                        ),
+                    ]
+                ),
                 $startDate,
             ],
             [
-                new Calendar(CalendarType::single(), null, null, [new Timestamp($startDate, $endDate)]),
+                new Calendar(
+                    CalendarType::single(),
+                    null,
+                    null,
+                    [
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                DateTimeImmutable::createFromMutable($startDate),
+                                DateTimeImmutable::createFromMutable($endDate)
+                            )
+                        ),
+                    ]
+                ),
                 $endDate,
             ],
             [
@@ -72,15 +105,51 @@ final class AvailableToTest extends TestCase
                 $endDate,
             ],
             [
-                new Calendar(CalendarType::multiple(), $startDate, $endDate, [new Timestamp($startDate, $endDate)]),
+                new Calendar(
+                    CalendarType::multiple(),
+                    null,
+                    null,
+                    [
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                DateTimeImmutable::createFromMutable($startDate),
+                                DateTimeImmutable::createFromMutable($endDate)
+                            )
+                        ),
+                    ]
+                ),
                 $endDate,
             ],
             [
-                new Calendar(CalendarType::single(), null, null, [new Timestamp($startDateNoHours, $startDateNoHours)]),
+                new Calendar(
+                    CalendarType::single(),
+                    null,
+                    null,
+                    [
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                DateTimeImmutable::createFromMutable($startDateNoHours),
+                                DateTimeImmutable::createFromMutable($startDateNoHours)
+                            )
+                        ),
+                    ]
+                ),
                 $startDateAlmostMidnight,
             ],
             [
-                new Calendar(CalendarType::single(), null, null, [new Timestamp($startDateNoHours, $endDateNoHours)]),
+                new Calendar(
+                    CalendarType::single(),
+                    null,
+                    null,
+                    [
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                DateTimeImmutable::createFromMutable($startDateNoHours),
+                                DateTimeImmutable::createFromMutable($endDateNoHours)
+                            )
+                        ),
+                    ]
+                ),
                 $endDateAlmostMidnight,
             ],
             [
@@ -88,7 +157,19 @@ final class AvailableToTest extends TestCase
                 $endDateAlmostMidnight,
             ],
             [
-                new Calendar(CalendarType::multiple(), null, null, [new Timestamp($startDate, $endDateNoHours)]),
+                new Calendar(
+                    CalendarType::multiple(),
+                    null,
+                    null,
+                    [
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                DateTimeImmutable::createFromMutable($startDate),
+                                DateTimeImmutable::createFromMutable($endDateNoHours)
+                            )
+                        ),
+                    ]
+                ),
                 $endDateAlmostMidnight,
             ],
         ];

@@ -57,19 +57,19 @@ class CalendarForEventDataValidator implements DataValidatorInterface
             $this->throwIfNotEmpty($messages);
         }
 
-        $timestamps = $calendarJSONParser->getTimestamps($data);
+        $subEvents = $calendarJSONParser->getSubEvents($data);
 
-        // Single and multiple calendar types always have `timestamps` from which the start and end date are dynamically
-        // determined. If there are no timestamps though, and a start and end date are given (ie. periodic calendar), the
+        // Single and multiple calendar types always have `sub events` from which the start and end date are dynamically
+        // determined. If there are no sub events though, and a start and end date are given (ie. periodic calendar), the
         // start and end date SHOULD be validated.
-        if (count($timestamps) === 0) {
+        if (count($subEvents) === 0) {
             $messages = array_merge(
                 $messages,
                 (new StartDateEndDateValidator())->validate($data)
             );
         }
 
-        if (count($timestamps) > 0 && count($calendarJSONParser->getOpeningHours($data)) > 0) {
+        if (count($subEvents) > 0 && count($calendarJSONParser->getOpeningHours($data)) > 0) {
             $messages['opening_hours'] = 'When opening hours are given no time spans are allowed.';
         }
 

@@ -18,9 +18,10 @@ use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Calendar\Timestamp;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -72,9 +73,11 @@ final class CopyEventHandlerTest extends TestCase
                 null,
                 null,
                 [
-                    new Timestamp(
-                        DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
-                        DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                        )
                     ),
                 ]
             )
@@ -140,9 +143,11 @@ final class CopyEventHandlerTest extends TestCase
                 null,
                 null,
                 [
-                    new Timestamp(
-                        DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
-                        DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                        )
                     ),
                 ]
             )
@@ -215,9 +220,11 @@ final class CopyEventHandlerTest extends TestCase
                 null,
                 null,
                 [
-                    new Timestamp(
-                        DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
-                        DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                        )
                     ),
                 ]
             )

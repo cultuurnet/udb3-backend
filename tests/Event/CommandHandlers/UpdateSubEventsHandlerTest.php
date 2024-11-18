@@ -18,14 +18,15 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId as LegacyLocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
-use CultuurNet\UDB3\Calendar\Timestamp as LegacyTimestamp;
 use DateTime;
 use DateTimeImmutable;
 
@@ -102,9 +103,11 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 null,
                 null,
                 [
-                    new LegacyTimestamp(
-                        new DateTime('2020-01-01 10:00:00'),
-                        new DateTime('2020-01-01 12:00:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            new DateTimeImmutable('2020-01-01 10:00:00'),
+                            new DateTimeImmutable('2020-01-01 12:00:00')
+                        )
                     ),
                 ]
             )
@@ -148,13 +151,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -170,13 +177,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2019-12-29 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2019-12-29 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -194,13 +205,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -218,13 +233,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2019-12-29 10:00:00'),
-                                new DateTime('2019-12-29 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2019-12-29 10:00:00'),
+                                    new DateTimeImmutable('2019-12-29 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -242,13 +261,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -265,13 +288,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2019-12-29 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2019-12-29 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2019-12-31 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2019-12-31 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -289,13 +316,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -316,13 +347,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2019-12-29 10:00:00'),
-                                new DateTime('2019-12-29 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2019-12-29 10:00:00'),
+                                    new DateTimeImmutable('2019-12-29 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2019-12-31 10:00:00'),
-                                new DateTime('2019-12-31 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2019-12-31 10:00:00'),
+                                    new DateTimeImmutable('2019-12-31 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -340,13 +375,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                        null,
                        null,
                        [
-                           new LegacyTimestamp(
-                               new DateTime('2020-01-01 10:00:00'),
-                               new DateTime('2020-01-01 12:00:00')
+                           SubEvent::createAvailable(
+                               new DateRange(
+                                   new DateTimeImmutable('2020-01-01 10:00:00'),
+                                   new DateTimeImmutable('2020-01-01 12:00:00')
+                               )
                            ),
-                           new LegacyTimestamp(
-                               new DateTime('2020-01-03 10:00:00'),
-                               new DateTime('2020-01-03 12:00:00')
+                           SubEvent::createAvailable(
+                               new DateRange(
+                                   new DateTimeImmutable('2020-01-03 10:00:00'),
+                                   new DateTimeImmutable('2020-01-03 12:00:00')
+                               )
                            ),
                        ]
                    )
@@ -370,13 +409,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                        null,
                        null,
                        [
-                           new LegacyTimestamp(
-                               new DateTime('2020-01-01 10:00:00'),
-                               new DateTime('2020-01-01 12:00:00')
+                           SubEvent::createAvailable(
+                               new DateRange(
+                                   new DateTimeImmutable('2020-01-01 10:00:00'),
+                                   new DateTimeImmutable('2020-01-01 12:00:00')
+                               )
                            ),
-                           (new LegacyTimestamp(
-                               new DateTime('2020-01-03 10:00:00'),
-                               new DateTime('2020-01-03 12:00:00')
+                           (SubEvent::createAvailable(
+                               new DateRange(
+                                   new DateTimeImmutable('2020-01-03 10:00:00'),
+                                   new DateTimeImmutable('2020-01-03 12:00:00')
+                               )
                            ))->withStatus(
                                new Status(
                                    StatusType::Unavailable(),
@@ -402,13 +445,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -441,9 +488,11 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            (new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ))->withStatus(
                                 new Status(
                                     StatusType::Unavailable(),
@@ -453,9 +502,11 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     )
                                 )
                             ),
-                            (new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ))->withStatus(
                                 new Status(
                                     StatusType::TemporarilyUnavailable(),
@@ -481,13 +532,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -507,13 +562,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
-                            (new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
                     )
@@ -531,13 +590,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -562,13 +625,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            (new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
-                            (new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
                     )
@@ -586,13 +653,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -622,13 +693,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
-                            (new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ))->withStatus(
                                 new Status(
                                     StatusType::Unavailable(),
@@ -654,13 +729,17 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ),
-                            new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ),
                         ]
                     )
@@ -705,9 +784,11 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         null,
                         null,
                         [
-                            (new LegacyTimestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ))->withStatus(
                                 new Status(
                                     StatusType::Unavailable(),
@@ -717,9 +798,11 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     )
                                 )
                             )->withBookingAvailability(BookingAvailability::Unavailable()),
-                            (new LegacyTimestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ))->withStatus(
                                 new Status(
                                     StatusType::TemporarilyUnavailable(),

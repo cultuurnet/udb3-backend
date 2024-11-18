@@ -7,12 +7,14 @@ namespace CultuurNet\UDB3\Calendar;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultureFeed_Cdb_Data_Calendar_TimestampList;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\SampleFiles;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -58,7 +60,7 @@ class CalendarFactoryTest extends TestCase
             $expectedStartDate,
             $expectedEndDate,
             [
-                new Timestamp($expectedStartDate, $expectedEndDate),
+                SubEvent::createAvailable(new DateRange($expectedStartDate, $expectedEndDate)),
             ]
         );
 
@@ -156,14 +158,16 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -192,14 +196,16 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -228,14 +234,16 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 11:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 11:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -278,34 +286,40 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-06-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-06-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-06-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-06-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-07-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-07-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-07-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-07-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -348,34 +362,40 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-07-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-07-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-07-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-07-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-06-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-06-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-06-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-06-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -411,24 +431,28 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-06-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-06-21 10:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-06-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-06-21 10:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -464,24 +488,28 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 11:30:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 11:30:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-06-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-06-21 11:30:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-06-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-06-21 11:30:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -524,34 +552,40 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-06-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-06-21 10:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-06-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-06-21 10:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-07-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-07-21 11:30:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-07-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-07-21 11:30:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -594,14 +628,16 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-23 16:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-23 16:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -665,24 +701,28 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-23 16:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-23 16:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-24 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-26 16:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-24 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-26 16:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -739,34 +779,40 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 16:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 16:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 20:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-22 01:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 20:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-22 01:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-23 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-25 16:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-23 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-25 16:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -795,14 +841,16 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2011-11-11 11:11:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2011-11-11 12:12:12',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2011-11-11 11:11:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2011-11-11 12:12:12',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -831,14 +879,16 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2011-11-11 11:11:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2011-11-11 11:11:11',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2011-11-11 11:11:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2011-11-11 11:11:11',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]

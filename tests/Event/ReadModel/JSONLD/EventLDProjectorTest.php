@@ -51,6 +51,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -59,6 +60,7 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
@@ -70,7 +72,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Calendar\Timestamp;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
@@ -462,21 +463,25 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $eventId = 'f0b24f97-4b03-4eb2-96d1-5074819a7648';
-        $timestamps = [
-            new Timestamp(
-                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-                DateTimeFactory::fromAtom('2015-01-27T13:25:21+01:00')
+        $subEvents = [
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                    DateTimeFactory::fromAtom('2015-01-27T13:25:21+01:00')
+                )
             ),
-            new Timestamp(
-                DateTimeFactory::fromAtom('2015-01-28T13:25:21+01:00'),
-                DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2015-01-28T13:25:21+01:00'),
+                    DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
+                )
             ),
         ];
         $calendar = new Calendar(
             CalendarType::multiple(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00'),
-            $timestamps
+            $subEvents
         );
         $eventCopied = new EventCopied($eventId, $originalEventId, $calendar);
 
@@ -548,7 +553,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $startDate,
             $endDate,
             [
-                new Timestamp($startDate, $endDate),
+                SubEvent::createAvailable(new DateRange($startDate, $endDate)),
             ]
         );
 
@@ -585,7 +590,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $startDate,
             $endDate,
             [
-                new Timestamp($startDate, $endDate),
+                SubEvent::createAvailable(new DateRange($startDate, $endDate)),
             ]
         );
 
@@ -611,18 +616,22 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_handles_new_events_with_multiple_timestamps(): void
+    public function it_handles_new_events_with_multiple_sub_events(): void
     {
         $eventId = '926fca95-010e-46b1-8b8e-abe757dd32d5';
 
-        $timestamps = [
-            new Timestamp(
-                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-                DateTimeFactory::fromAtom('2015-01-27T13:25:21+01:00')
+        $subEvents = [
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                    DateTimeFactory::fromAtom('2015-01-27T13:25:21+01:00')
+                )
             ),
-            new Timestamp(
-                DateTimeFactory::fromAtom('2015-01-28T13:25:21+01:00'),
-                DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2015-01-28T13:25:21+01:00'),
+                    DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
+                )
             ),
         ];
 
@@ -630,7 +639,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             CalendarType::multiple(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00'),
-            $timestamps
+            $subEvents
         );
 
         $theme = new Theme('123', 'theme label');
@@ -1617,7 +1626,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 $startDate,
                 $endDate,
                 [
-                    new Timestamp($startDate, $endDate),
+                    SubEvent::createAvailable(new DateRange($startDate, $endDate)),
                 ]
             )
         );

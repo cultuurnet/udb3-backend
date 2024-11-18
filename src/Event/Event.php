@@ -64,13 +64,14 @@ use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\Events\VideoUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -93,7 +94,6 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -360,40 +360,42 @@ final class Event extends Offer
 
     public function updateSubEvents(SubEventUpdate ...$subEventUpdates): void
     {
-        $timestamps = $this->calendar->getTimestamps();
+        $subEvents = $this->calendar->getSubEvents();
 
-        if (empty($timestamps)) {
+        if (empty($subEvents)) {
             throw CalendarTypeNotSupported::forCalendarType($this->calendar->getType());
         }
 
         foreach ($subEventUpdates as $subEventUpdate) {
             $index = $subEventUpdate->getSubEventId();
 
-            if (!isset($timestamps[$index])) {
-                // If the timestamp to update doesn't exist, it's most likely a concurrency issue.
+            if (!isset($subEvents[$index])) {
+                // If the sub event to update doesn't exist, it's most likely a concurrency issue.
                 continue;
             }
 
-            $timestamp = $timestamps[$index];
+            $subEvent = $subEvents[$index];
 
             $subEventStatus = $subEventUpdate->getStatus() ?: null;
             $subEventBookingAvailability = $subEventUpdate->getBookingAvailability() ?: null;
 
-            $updatedTimestamp = new Timestamp(
-                $subEventUpdate->getStartDate() ?: $timestamp->getStartDate(),
-                $subEventUpdate->getEndDate() ?: $timestamp->getEndDate(),
-                $subEventStatus ?? $timestamp->getStatus(),
-                $subEventBookingAvailability ?? $timestamp->getBookingAvailability()
+            $updatedSubEvent = new SubEvent(
+                new DateRange(
+                    $subEventUpdate->getStartDate() ?: $subEvent->getDateRange()->getFrom(),
+                    $subEventUpdate->getEndDate() ?: $subEvent->getDateRange()->getTo()
+                ),
+                $subEventStatus ?? $subEvent->getStatus(),
+                $subEventBookingAvailability ?? $subEvent->getBookingAvailability()
             );
 
-            $timestamps[$index] = $updatedTimestamp;
+            $subEvents[$index] = $updatedSubEvent;
         }
 
         $updatedCalendar = new Calendar(
             $this->calendar->getType(),
             null,
             null,
-            $timestamps,
+            $subEvents,
             $this->calendar->getOpeningHours()
         );
 

@@ -9,13 +9,16 @@ use CultureFeed_Cdb_Data_Calendar_PeriodList;
 use CultureFeed_Cdb_Data_Calendar_Permanent;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class CalendarConverterTest extends TestCase
@@ -42,7 +45,7 @@ class CalendarConverterTest extends TestCase
 
     /**
      * @feature calendar_udb3_update.feature
-     * @scenario event with one timestamp, start and enddate on same day
+     * @scenario event with one sub event, start and enddate on same day
      * @test
      */
     public function it_converts_a_calendar_with_single_timestamp_as_a_cdb_calendar_object(): void
@@ -59,9 +62,11 @@ class CalendarConverterTest extends TestCase
             new DateTime('2017-01-24T08:00:00.000000+0000'),
             new DateTime('2017-01-24T18:00:00.000000+0000'),
             [
-                new Timestamp(
-                    new DateTime('2017-01-24T08:00:00.000000+0000'),
-                    new DateTime('2017-01-24T18:00:00.000000+0000')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new \DateTimeImmutable('2017-01-24T08:00:00.000000+0000'),
+                        new \DateTimeImmutable('2017-01-24T18:00:00.000000+0000')
+                    )
                 ),
             ]
         );
@@ -100,17 +105,23 @@ class CalendarConverterTest extends TestCase
             new DateTime('2017-01-24T08:00:00.000000+0000'),
             new DateTime('2017-01-26T18:00:00.000000+0000'),
             [
-                new Timestamp(
-                    new DateTime('2017-01-24T08:00:00.000000+0000'),
-                    new DateTime('2017-01-24T18:00:00.000000+0000')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2017-01-24T08:00:00.000000+0000'),
+                        new DateTimeImmutable('2017-01-24T18:00:00.000000+0000')
+                    )
                 ),
-                new Timestamp(
-                    new DateTime('2017-01-25T08:00:00.000000+0000'),
-                    new DateTime('2017-01-25T18:00:00.000000+0000')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2017-01-25T08:00:00.000000+0000'),
+                        new DateTimeImmutable('2017-01-25T18:00:00.000000+0000')
+                    )
                 ),
-                new Timestamp(
-                    new DateTime('2017-01-26T08:00:00.000000+0000'),
-                    new DateTime('2017-01-26T18:00:00.000000+0000')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2017-01-26T08:00:00.000000+0000'),
+                        new DateTimeImmutable('2017-01-26T18:00:00.000000+0000')
+                    )
                 ),
             ]
         );
@@ -144,13 +155,17 @@ class CalendarConverterTest extends TestCase
             new DateTime('2017-01-24T18:00:00.000000+0000'),
             new DateTime('2017-01-25T02:00:00.000000+0000'),
             [
-                new Timestamp(
-                    new DateTime('2017-01-24T18:00:00.000000+0000'),
-                    new DateTime('2017-01-25T02:00:00.000000+0000')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2017-01-24T18:00:00.000000+0000'),
+                        new DateTimeImmutable('2017-01-25T02:00:00.000000+0000')
+                    )
                 ),
-                new Timestamp(
-                    new DateTime('2017-01-25T18:00:00.000000+0000'),
-                    new DateTime('2017-01-26T02:00:00.000000+0000')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2017-01-25T18:00:00.000000+0000'),
+                        new DateTimeImmutable('2017-01-26T02:00:00.000000+0000')
+                    )
                 ),
             ]
         );
@@ -352,9 +367,11 @@ class CalendarConverterTest extends TestCase
             null,
             null,
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
-                    DateTimeFactory::fromAtom('2017-05-27T02:00:00+02:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
+                        DateTimeFactory::fromAtom('2017-05-27T02:00:00+02:00')
+                    )
                 ),
             ],
             []
@@ -392,9 +409,11 @@ class CalendarConverterTest extends TestCase
             null,
             null,
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
-                    DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
+                        DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00')
+                    )
                 ),
             ],
             []
@@ -449,9 +468,11 @@ class CalendarConverterTest extends TestCase
             null,
             null,
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
-                    DateTimeFactory::fromAtom('2017-05-07T18:00:00+02:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
+                        DateTimeFactory::fromAtom('2017-05-07T18:00:00+02:00')
+                    )
                 ),
             ],
             []
@@ -519,13 +540,17 @@ class CalendarConverterTest extends TestCase
             DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
             DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00'),
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
-                    DateTimeFactory::fromAtom('2017-05-07T18:00:00+02:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
+                        DateTimeFactory::fromAtom('2017-05-07T18:00:00+02:00')
+                    )
                 ),
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
-                    DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
+                        DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00')
+                    )
                 ),
             ],
             []
@@ -574,17 +599,23 @@ class CalendarConverterTest extends TestCase
             DateTimeFactory::fromAtom('2017-05-25T10:00:00+02:00'),
             DateTimeFactory::fromAtom('2017-06-30T16:00:00+02:00'),
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2017-05-25T10:00:00+02:00'),
-                    DateTimeFactory::fromAtom('2017-05-25T16:00:00+02:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2017-05-25T10:00:00+02:00'),
+                        DateTimeFactory::fromAtom('2017-05-25T16:00:00+02:00')
+                    )
                 ),
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2017-05-25T20:00:00+02:00'),
-                    DateTimeFactory::fromAtom('2017-05-26T01:00:00+02:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2017-05-25T20:00:00+02:00'),
+                        DateTimeFactory::fromAtom('2017-05-26T01:00:00+02:00')
+                    )
                 ),
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2017-06-28T10:00:00+02:00'),
-                    DateTimeFactory::fromAtom('2017-06-30T16:00:00+02:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2017-06-28T10:00:00+02:00'),
+                        DateTimeFactory::fromAtom('2017-06-30T16:00:00+02:00')
+                    )
                 ),
             ],
             []
@@ -614,9 +645,11 @@ class CalendarConverterTest extends TestCase
             new DateTime('2017-05-25T00:00:00+02:00'),
             new DateTime('2017-05-25T23:59:00+02:00'),
             [
-                new Timestamp(
-                    new DateTime('2017-05-25T00:00:00+02:00'),
-                    new DateTime('2017-05-25T23:59:00+02:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2017-05-25T00:00:00+02:00'),
+                        new DateTimeImmutable('2017-05-25T23:59:00+02:00')
+                    )
                 ),
             ]
         );
@@ -647,9 +680,11 @@ class CalendarConverterTest extends TestCase
             new DateTime('2017-07-20T20:00:00+02:00'),
             new DateTime('2017-07-21T20:00:00+02:00'),
             [
-                new Timestamp(
-                    new DateTime('2017-07-20T20:00:00+02:00'),
-                    new DateTime('2017-07-21T20:00:00+02:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2017-07-20T20:00:00+02:00'),
+                        new DateTimeImmutable('2017-07-21T20:00:00+02:00')
+                    )
                 ),
             ]
         );
@@ -680,9 +715,11 @@ class CalendarConverterTest extends TestCase
             new DateTime('2017-07-20T20:00:00+02:00'),
             new DateTime('2017-07-21T21:00:00+02:00'),
             [
-                new Timestamp(
-                    new DateTime('2017-07-20T20:00:00+02:00'),
-                    new DateTime('2017-07-21T21:00:00+02:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2017-07-20T20:00:00+02:00'),
+                        new DateTimeImmutable('2017-07-21T21:00:00+02:00')
+                    )
                 ),
             ]
         );

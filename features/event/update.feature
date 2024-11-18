@@ -339,7 +339,7 @@ Feature: Test the UDB3 events API
            "type": "https://api.publiq.be/probs/body/invalid-data",
            "title": "Invalid body data",
            "status": 400,
-           "detail": "End date can not be earlier than start date."
+           "detail": "\"From\" date should not be later than the \"to\" date."
          }
          """
 

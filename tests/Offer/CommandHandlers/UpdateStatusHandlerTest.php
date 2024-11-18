@@ -10,9 +10,12 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use CultuurNet\UDB3\Event\EventRepository;
@@ -22,7 +25,6 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Calendar\Timestamp;
 
 class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -72,13 +74,13 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
         $startDate = DateTimeFactory::fromFormat('Y-m-d', '2020-12-24');
         $endDate = DateTimeFactory::fromFormat('Y-m-d', '2020-12-24');
 
-        $initialTimestamps = [new Timestamp($startDate, $endDate)];
-        $initialCalendar = new Calendar(CalendarType::single(), $startDate, $startDate, $initialTimestamps);
+        $initialSubEvents = [SubEvent::createAvailable(new DateRange($startDate, $endDate))];
+        $initialCalendar = new Calendar(CalendarType::single(), $startDate, $startDate, $initialSubEvents);
 
         $newStatus = new Status(StatusType::Unavailable(), null);
 
-        $expectedTimestamps = [new Timestamp($startDate, $endDate, new Status(StatusType::Unavailable(), null))];
-        $expectedCalendar = (new Calendar(CalendarType::single(), $startDate, $startDate, $expectedTimestamps, []))->withStatus($newStatus);
+        $expectedSubEvents = [new SubEvent(new DateRange($startDate, $endDate), new Status(StatusType::Unavailable()), BookingAvailability::Available())];
+        $expectedCalendar = (new Calendar(CalendarType::single(), $startDate, $startDate, $expectedSubEvents, []))->withStatus($newStatus);
 
         $command = new UpdateStatus($id, $newStatus);
 
