@@ -20,6 +20,7 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
     private const URL_PARAMETER_TO_COLUMN = [
         'itemId' => 'item_id',
         'state' => 'state',
+        'state[]' => 'state',
         'ownerId' => 'owner_id',
     ];
 
@@ -136,12 +137,35 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         $queryBuilder = $this->connection->createQueryBuilder()
             ->from('ownership_search');
 
-        foreach ($searchQuery->getParameters() as $parameter) {
-            $column = self::URL_PARAMETER_TO_COLUMN[$parameter->getUrlParameter()];
 
-            $queryBuilder
-                ->andWhere($column . ' = :' . $column)
-                ->setParameter($column, $parameter->getValue());
+        /**
+         * @var array<string, array<int, string>> $urlParameterToValues
+         */
+        $urlParameterToValues = [];
+
+        foreach ($searchQuery->getParameters() as $parameter) {
+            $urlParameter = $parameter->getUrlParameter();
+            $urlParameterToValues[$urlParameter][] = $parameter->getValue();
+        }
+
+        foreach ($urlParameterToValues as $urlParameter => $values) {
+            $column = self::URL_PARAMETER_TO_COLUMN[$urlParameter];
+            $count = count($values);
+
+            foreach ($values as $i => $value) {
+                $columnKey = $count > 1 ? $column . $i : $column;
+                $whereCondition = $column . ' = :' . $columnKey;
+
+                if ($i === 0) {
+                    $queryBuilder = $queryBuilder
+                        ->andWhere($whereCondition);
+                } else {
+                    $queryBuilder = $queryBuilder
+                        ->orWhere($whereCondition);
+                }
+
+                $queryBuilder = $queryBuilder->setParameter($columnKey, $value);
+            }
         }
 
         return $queryBuilder;
