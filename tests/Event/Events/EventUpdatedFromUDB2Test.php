@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -95,7 +95,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
@@ -133,7 +133,7 @@ final class EventUpdatedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [

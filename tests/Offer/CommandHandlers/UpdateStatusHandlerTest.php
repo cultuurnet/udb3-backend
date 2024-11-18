@@ -9,8 +9,8 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -44,10 +44,10 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
     public function it_will_handle_update_status_for_permanent_event(): void
     {
         $id = '1';
-        $initialCalendar = new Calendar(CalendarType::PERMANENT());
+        $initialCalendar = new Calendar(CalendarType::permanent());
 
         $newStatus = new Status(StatusType::TemporarilyUnavailable(), null);
-        $expectedCalendar = (new Calendar(CalendarType::PERMANENT()))->withStatus($newStatus);
+        $expectedCalendar = (new Calendar(CalendarType::permanent()))->withStatus($newStatus);
 
         $command = new UpdateStatus($id, $newStatus);
 
@@ -73,12 +73,12 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
         $endDate = DateTimeFactory::fromFormat('Y-m-d', '2020-12-24');
 
         $initialTimestamps = [new Timestamp($startDate, $endDate)];
-        $initialCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $initialTimestamps);
+        $initialCalendar = new Calendar(CalendarType::single(), $startDate, $startDate, $initialTimestamps);
 
         $newStatus = new Status(StatusType::Unavailable(), null);
 
         $expectedTimestamps = [new Timestamp($startDate, $endDate, new Status(StatusType::Unavailable(), null))];
-        $expectedCalendar = (new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $expectedTimestamps, []))->withStatus($newStatus);
+        $expectedCalendar = (new Calendar(CalendarType::single(), $startDate, $startDate, $expectedTimestamps, []))->withStatus($newStatus);
 
         $command = new UpdateStatus($id, $newStatus);
 

@@ -10,8 +10,8 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
@@ -65,7 +65,7 @@ class UpdateMajorInfoRequestHandlerTest extends TestCase
                     new Locality('Leuven'),
                     new CountryCode('BE')
                 ),
-                new Calendar(CalendarType::PERMANENT())
+                new Calendar(CalendarType::permanent())
             )],
             $commandBus->getRecordedCommands()
         );

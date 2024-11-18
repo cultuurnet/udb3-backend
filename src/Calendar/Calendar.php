@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar as Udb3ModelCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
@@ -61,11 +62,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         array $timestamps = [],
         array $openingHours = []
     ) {
-        if (empty($timestamps) && ($type->sameAs(CalendarType::SINGLE()) || $type->sameAs(CalendarType::MULTIPLE()))) {
+        if (empty($timestamps) && ($type->sameAs(CalendarType::single()) || $type->sameAs(CalendarType::multiple()))) {
             throw new \UnexpectedValueException('A single or multiple calendar should have timestamps.');
         }
 
-        if (($startDate === null || $endDate === null) && $type->sameAs(CalendarType::PERIODIC())) {
+        if (($startDate === null || $endDate === null) && $type->sameAs(CalendarType::periodic())) {
             throw new \UnexpectedValueException('A period should have a start- and end-date.');
         }
 
@@ -106,7 +107,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     private function guardUpdatingBookingAvailability(): void
     {
-        if ($this->getType()->sameAs(CalendarType::PERIODIC()) || $this->getType()->sameAs(CalendarType::PERMANENT())) {
+        if ($this->getType()->sameAs(CalendarType::periodic()) || $this->getType()->sameAs(CalendarType::permanent())) {
             throw CalendarTypeNotSupported::forCalendarType($this->getType());
         }
     }
@@ -258,7 +259,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         // Backwards compatibility for serialized single or multiple calendar types that are missing timestamps but do
         // have a start and end date.
         $defaultTimeStamps = [];
-        if ($calendarType->sameAs(CalendarType::SINGLE()) || $calendarType->sameAs(CalendarType::MULTIPLE())) {
+        if ($calendarType->sameAs(CalendarType::single()) || $calendarType->sameAs(CalendarType::multiple())) {
             $defaultTimeStamps = $startDate ? [new Timestamp($startDate, $endDate ?: $startDate)] : [];
         }
 
@@ -362,7 +363,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         ?Status $status = null,
         ?BookingAvailability $bookingAvailability = null
     ): self {
-        $calendar = new self(CalendarType::SINGLE(), null, null, [$timestamp]);
+        $calendar = new self(CalendarType::single(), null, null, [$timestamp]);
         if ($status) {
             $calendar = $calendar->withStatus($status);
         }
@@ -380,7 +381,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         ?Status $status = null,
         ?BookingAvailability $bookingAvailability = null
     ): self {
-        $calendar = new self(CalendarType::MULTIPLE(), null, null, $timestamps);
+        $calendar = new self(CalendarType::multiple(), null, null, $timestamps);
         if ($status) {
             $calendar = $calendar->withStatus($status);
         }
@@ -396,7 +397,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         array $openingHours = [],
         ?Status $status = null
     ): self {
-        $calendar = new self(CalendarType::PERIODIC(), $startDate, $endDate, [], $openingHours);
+        $calendar = new self(CalendarType::periodic(), $startDate, $endDate, [], $openingHours);
         if ($status) {
             $calendar = $calendar->withStatus($status);
         }
@@ -407,7 +408,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         array $openingHours = [],
         ?Status $status = null
     ): self {
-        $calendar = new self(CalendarType::PERMANENT(), null, null, [], $openingHours);
+        $calendar = new self(CalendarType::permanent(), null, null, [], $openingHours);
         if ($status) {
             $calendar = $calendar->withStatus($status);
         }
@@ -451,7 +452,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $topStatus = $udb3Calendar->getStatus();
         $topBookingAvailability = $udb3Calendar->getBookingAvailability();
 
-        if ($type->sameAs(CalendarType::PERIODIC()) || $type->sameAs(CalendarType::PERMANENT())) {
+        if ($type->sameAs(CalendarType::periodic()) || $type->sameAs(CalendarType::permanent())) {
             // If there are no subEvents, set the top status and top bookingAvailability.
             $calendar->status = $topStatus;
             $calendar->bookingAvailability = $topBookingAvailability;

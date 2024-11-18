@@ -13,12 +13,12 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -200,7 +200,7 @@ class OfferMetadataProjectorTest extends TestCase
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
     }
 
@@ -217,7 +217,7 @@ class OfferMetadataProjectorTest extends TestCase
                 new Locality('Leuven'),
                 new CountryCode('BE')
             ),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
     }
 
@@ -226,7 +226,7 @@ class OfferMetadataProjectorTest extends TestCase
         return new EventCopied(
             self::OFFER_ID,
             'original_event_id',
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
     }
 

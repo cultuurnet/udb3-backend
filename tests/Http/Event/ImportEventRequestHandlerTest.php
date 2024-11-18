@@ -10,7 +10,6 @@ use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
@@ -41,6 +40,7 @@ use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -473,7 +473,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateType($eventId, '1.50.0.0.0'),
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
                 new UpdateLocation($eventId, new LocationId('5cf42d51-3a4f-46f0-a8af-1cf672be8c84')),
-                new UpdateCalendar($eventId, new Calendar(CalendarType::PERMANENT())),
+                new UpdateCalendar($eventId, new Calendar(CalendarType::permanent())),
                 new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),

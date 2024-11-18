@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +30,7 @@ class EventCopiedTest extends TestCase
         // explicitly to 0 in this test to make it pass.
         // See http://php.net/manual/en/migration71.incompatible.php#migration71.incompatible.datetime-microseconds.
         $this->calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             new DateTime('2017-01-24T21:47:26.000000+0000'),
             new DateTime('2020-01-24T21:47:26.000000+0000')
         );

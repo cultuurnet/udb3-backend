@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Calendar;
 
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultureFeed_Cdb_Data_Calendar_TimestampList;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\SampleFiles;
@@ -49,7 +50,7 @@ class CalendarFactoryTest extends TestCase
         );
 
         $expectedCalendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             $expectedStartDate,
             $expectedEndDate,
             [
@@ -79,7 +80,7 @@ class CalendarFactoryTest extends TestCase
         );
 
         $expectedCalendar = new Calendar(
-            CalendarType::PERMANENT(),
+            CalendarType::permanent(),
             null,
             null,
             [],
@@ -141,7 +142,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     new DateTimeImmutable(
                         '2017-05-21 00:00:00',
                         $timeZone
@@ -177,7 +178,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -213,7 +214,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -263,7 +264,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 00:00:00',
                         $timeZone
@@ -333,7 +334,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 00:00:00',
                         $timeZone
@@ -396,7 +397,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -449,7 +450,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -509,7 +510,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 00:00:00',
                         $timeZone
@@ -579,7 +580,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -650,7 +651,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -724,7 +725,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -780,7 +781,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     new DateTimeImmutable(
                         '2011-11-11 11:11:00',
                         $timeZone
@@ -816,7 +817,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     new DateTimeImmutable(
                         '2011-11-11 11:11:00',
                         $timeZone
@@ -871,7 +872,7 @@ class CalendarFactoryTest extends TestCase
                     SampleFiles::read(__DIR__ . '/samples/periodic/calendar_udb2_import_example_1101.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERIODIC(),
+                    CalendarType::periodic(),
                     new DateTimeImmutable('2017-09-01 00:00:00', $timeZone),
                     new DateTimeImmutable('2017-12-31 00:00:00', $timeZone)
                 ),
@@ -881,7 +882,7 @@ class CalendarFactoryTest extends TestCase
                     SampleFiles::read(__DIR__ . '/samples/periodic/calendar_udb2_import_example_1201.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERIODIC(),
+                    CalendarType::periodic(),
                     new DateTimeImmutable('2017-09-01 00:00:00', $timeZone),
                     new DateTimeImmutable('2017-12-31 00:00:00', $timeZone),
                     [],
@@ -911,7 +912,7 @@ class CalendarFactoryTest extends TestCase
                     SampleFiles::read(__DIR__ . '/samples/periodic/calendar_udb2_import_example_1301.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERIODIC(),
+                    CalendarType::periodic(),
                     new DateTimeImmutable('2017-09-01 00:00:00', $timeZone),
                     new DateTimeImmutable('2017-12-31 00:00:00', $timeZone),
                     [],
@@ -941,7 +942,7 @@ class CalendarFactoryTest extends TestCase
                     SampleFiles::read(__DIR__ . '/samples/periodic/calendar_udb2_import_example_1401.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERIODIC(),
+                    CalendarType::periodic(),
                     new DateTimeImmutable('2017-09-01 00:00:00', $timeZone),
                     new DateTimeImmutable('2017-12-31 00:00:00', $timeZone),
                     [],
@@ -995,14 +996,14 @@ class CalendarFactoryTest extends TestCase
                 'cdbCalendar' => $this->createPermanentCalendarFromXML(
                     SampleFiles::read(__DIR__ . '/samples/permanent/calendar_udb2_import_example_1501.xml')
                 ),
-                'expectedCalendar' => new Calendar(CalendarType::PERMANENT()),
+                'expectedCalendar' => new Calendar(CalendarType::permanent()),
             ],
             'import permanent event with weekscheme only openingtimes from' => [
                 'cdbCalendar' => $this->createPermanentCalendarFromXML(
                     SampleFiles::read(__DIR__ . '/samples/permanent/calendar_udb2_import_example_1601.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERMANENT(),
+                    CalendarType::permanent(),
                     null,
                     null,
                     [],
@@ -1032,7 +1033,7 @@ class CalendarFactoryTest extends TestCase
                     SampleFiles::read(__DIR__ . '/samples/permanent/calendar_udb2_import_example_1701.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERMANENT(),
+                    CalendarType::permanent(),
                     null,
                     null,
                     [],
@@ -1062,7 +1063,7 @@ class CalendarFactoryTest extends TestCase
                     SampleFiles::read(__DIR__ . '/samples/permanent/calendar_udb2_import_example_1801.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERMANENT(),
+                    CalendarType::permanent(),
                     null,
                     null,
                     [],

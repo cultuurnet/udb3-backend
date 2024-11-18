@@ -8,6 +8,7 @@ use CultureFeed_Cdb_Data_Calendar_Period;
 use CultureFeed_Cdb_Data_Calendar_PeriodList;
 use CultureFeed_Cdb_Data_Calendar_Permanent;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use DateTime;
@@ -27,7 +28,7 @@ class CalendarConverterTest extends TestCase
      */
     public function it_converts_a_permanent_calendar_as_a_cdb_calendar_object(): void
     {
-        $calendar = new Calendar(CalendarType::PERMANENT());
+        $calendar = new Calendar(CalendarType::permanent());
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);
         $expectedCalendar = new \CultureFeed_Cdb_Data_Calendar_Permanent();
@@ -50,7 +51,7 @@ class CalendarConverterTest extends TestCase
         ));
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             new DateTime('2017-01-24T08:00:00.000000+0000'),
             new DateTime('2017-01-24T18:00:00.000000+0000'),
             [
@@ -91,7 +92,7 @@ class CalendarConverterTest extends TestCase
         ));
 
         $calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             new DateTime('2017-01-24T08:00:00.000000+0000'),
             new DateTime('2017-01-26T18:00:00.000000+0000'),
             [
@@ -135,7 +136,7 @@ class CalendarConverterTest extends TestCase
         ));
 
         $calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             new DateTime('2017-01-24T18:00:00.000000+0000'),
             new DateTime('2017-01-25T02:00:00.000000+0000'),
             [
@@ -176,7 +177,7 @@ class CalendarConverterTest extends TestCase
         );
 
         $calendar = new Calendar(
-            CalendarType::PERMANENT(),
+            CalendarType::permanent(),
             null,
             null,
             [],
@@ -231,7 +232,7 @@ class CalendarConverterTest extends TestCase
         );
 
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             new DateTime('2017-01-24T00:00:00.000000+0000'),
             new DateTime('2018-01-24T00:00:00.000000+0000'),
             [],
@@ -276,7 +277,7 @@ class CalendarConverterTest extends TestCase
     public function it_converts_a_periodic_calendar_with_a_single_set_of_opening_hours_as_a_cdb_calendar_with_week_scheme(): void
     {
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             new DateTime('2017-01-24T00:00:00.000000+0000'),
             new DateTime('2018-01-24T00:00:00.000000+0000'),
             [],
@@ -345,7 +346,7 @@ class CalendarConverterTest extends TestCase
         ));
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             null,
             null,
             [
@@ -385,7 +386,7 @@ class CalendarConverterTest extends TestCase
         ));
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             null,
             null,
             [
@@ -442,7 +443,7 @@ class CalendarConverterTest extends TestCase
         ));
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             null,
             null,
             [
@@ -512,7 +513,7 @@ class CalendarConverterTest extends TestCase
         ));
 
         $calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
             DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00'),
             [
@@ -567,7 +568,7 @@ class CalendarConverterTest extends TestCase
         ));
 
         $calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2017-05-25T10:00:00+02:00'),
             DateTimeFactory::fromAtom('2017-06-30T16:00:00+02:00'),
             [
@@ -607,7 +608,7 @@ class CalendarConverterTest extends TestCase
         ));
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             new DateTime('2017-05-25T00:00:00+02:00'),
             new DateTime('2017-05-25T23:59:00+02:00'),
             [
@@ -640,7 +641,7 @@ class CalendarConverterTest extends TestCase
         ));
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             new DateTime('2017-07-20T20:00:00+02:00'),
             new DateTime('2017-07-21T20:00:00+02:00'),
             [
@@ -673,7 +674,7 @@ class CalendarConverterTest extends TestCase
         ));
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             new DateTime('2017-07-20T20:00:00+02:00'),
             new DateTime('2017-07-21T21:00:00+02:00'),
             [

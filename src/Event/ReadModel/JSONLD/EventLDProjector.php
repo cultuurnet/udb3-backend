@@ -8,7 +8,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\EntityNotFoundException;
@@ -69,6 +68,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
@@ -774,7 +774,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
     protected function isPeriodicCalendarWithoutWeekScheme(Calendar $calendar): bool
     {
-        return $calendar->getType()->sameAs(CalendarType::PERIODIC())
+        return $calendar->getType()->sameAs(CalendarType::periodic())
             && $calendar->getOpeningHours() === [];
     }
 }

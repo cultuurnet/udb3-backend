@@ -29,7 +29,6 @@ use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\EntityNotFoundException;
@@ -55,6 +54,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
@@ -196,7 +196,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventId = '1';
 
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
         );
@@ -240,7 +240,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             new EventType('0.14.0.0.0', 'Monument'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(
-                CalendarType::PERIODIC(),
+                CalendarType::periodic(),
                 DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
                 DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
             ),
@@ -259,7 +259,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $newEventId,
             $eventId,
             new Calendar(
-                CalendarType::PERIODIC(),
+                CalendarType::periodic(),
                 DateTimeFactory::fromAtom('2022-01-26T13:25:21+01:00'),
                 DateTimeFactory::fromAtom('2022-01-26T13:25:21+01:00')
             )
@@ -290,7 +290,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $eventId = '1';
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
         );
@@ -338,7 +338,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $eventId = '1';
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
         );
@@ -438,7 +438,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $originalEventId = 'f8e4f084-1b75-4893-b2b9-fc67fd6e73fb';
         $originalCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2017-01-26T13:25:21+01:00')
         );
@@ -473,7 +473,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             ),
         ];
         $calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00'),
             $timestamps
@@ -508,7 +508,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->project($this->aPublishedEvent($eventCreated), $eventCreated->getEventId());
 
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
         );
@@ -544,7 +544,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventType = new EventType('0.3.1.0.0', 'Cursus of workshop');
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             $startDate,
             $endDate,
             [
@@ -581,7 +581,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventType = new EventType('1.50.0.0.0', 'Eten en drinken');
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             $startDate,
             $endDate,
             [
@@ -627,7 +627,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
 
         $calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00'),
             $timestamps
@@ -713,7 +713,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         // First make sure there is already an event, so it is a real update.
         $eventId = 'a2d50a8d-5b83-4c8b-84e6-e9c0bacbb1a3';
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2017-01-26T13:25:21+01:00')
         );
@@ -1018,7 +1018,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     new EventType('0.50.4.0.1', 'concertnew'),
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
                     new Calendar(
-                        CalendarType::PERIODIC(),
+                        CalendarType::periodic(),
                         DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
                         DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
                     ),
@@ -1038,7 +1038,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     new EventType('0.50.4.0.1', 'concertnew'),
                     new LocationId('00000000-0000-0000-0000-000000000000'),
                     new Calendar(
-                        CalendarType::PERIODIC(),
+                        CalendarType::periodic(),
                         DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
                         DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
                     ),
@@ -1055,7 +1055,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     new EventType('0.50.4.0.1', 'concertnew'),
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
                     new Calendar(
-                        CalendarType::PERIODIC(),
+                        CalendarType::periodic(),
                         DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
                         DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
                     ),
@@ -1165,7 +1165,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
 
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
@@ -1316,7 +1316,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
         );
@@ -1373,7 +1373,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'Online workshop',
             new EventType('0.3.1.0.0', 'Cursus of workshop'),
             new LocationId(LocationId::NIL_LOCATION),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $body = $this->project($eventCreated, $eventCreated->getEventId());
@@ -1613,7 +1613,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $calendarUpdated = new CalendarUpdated(
             $eventId,
             new Calendar(
-                CalendarType::SINGLE(),
+                CalendarType::single(),
                 $startDate,
                 $endDate,
                 [
@@ -1904,7 +1904,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         Calendar $calendar = null,
         Theme $theme = null
     ): EventCreated {
-        $calendar = $calendar ?? new Calendar(CalendarType::PERMANENT());
+        $calendar = $calendar ?? new Calendar(CalendarType::permanent());
 
         return new EventCreated(
             $eventId,
@@ -1976,7 +1976,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     protected function aPeriodicCalendarWithWorkScheme(): Calendar
     {
         return new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
             [],

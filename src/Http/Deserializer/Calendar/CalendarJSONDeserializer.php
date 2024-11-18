@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 
 /**
  * @deprecated
@@ -75,19 +75,19 @@ class CalendarJSONDeserializer extends JSONDeserializer
     private function getCalendarType(array $data): CalendarType
     {
         if (count($this->calendarJSONParser->getTimestamps($data)) > 1) {
-            return CalendarType::MULTIPLE();
+            return CalendarType::multiple();
         }
 
         if (count($this->calendarJSONParser->getTimestamps($data)) == 1) {
-            return CalendarType::SINGLE();
+            return CalendarType::single();
         }
 
         if ($this->calendarJSONParser->getStartDate($data) &&
             $this->calendarJSONParser->getEndDate($data)) {
-            return CalendarType::PERIODIC();
+            return CalendarType::periodic();
         }
 
-        return CalendarType::PERMANENT();
+        return CalendarType::permanent();
     }
 
     private function getStartDate(array $data): ?\DateTimeInterface

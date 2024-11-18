@@ -11,7 +11,6 @@ use Broadway\Repository\Repository;
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
@@ -26,6 +25,7 @@ use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
@@ -65,7 +65,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
     }
 
@@ -79,7 +79,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $title = new Title('some representative title');
         $type = new EventType('0.50.4.0.0', 'concert');
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
-        $calendar = new Calendar(CalendarType::PERMANENT());
+        $calendar = new Calendar(CalendarType::permanent());
         $theme = new Theme('0.1.0.1.0.1', 'blues');
 
         $now = Chronos::now();
@@ -132,7 +132,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $title = new Title('foo');
         $eventType = new EventType('0.50.4.0.0', 'concert');
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
-        $calendar = new Calendar(CalendarType::PERMANENT());
+        $calendar = new Calendar(CalendarType::permanent());
 
         $this->scenario
             ->withAggregateId($id)
@@ -156,7 +156,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $title = new Title('foo');
         $eventType = new EventType('0.50.4.0.0', 'concert');
         $location = new LocationId('6f87ce4c-bd39-4c5e-92b5-a9f8bdf4aa31');
-        $calendar = new Calendar(CalendarType::PERMANENT());
+        $calendar = new Calendar(CalendarType::permanent());
 
         $this->scenario
             ->withAggregateId($id)

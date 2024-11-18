@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
@@ -86,7 +87,7 @@ class CalendarTest extends TestCase
         );
 
         $this->calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
             [
@@ -117,7 +118,7 @@ class CalendarTest extends TestCase
         return [
             'single available' => [
                 new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     null,
                     null,
                     [
@@ -133,7 +134,7 @@ class CalendarTest extends TestCase
             ],
             'single unavailable' => [
                 new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     null,
                     null,
                     [
@@ -149,7 +150,7 @@ class CalendarTest extends TestCase
             ],
             'multiple available' => [
                 new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
@@ -171,7 +172,7 @@ class CalendarTest extends TestCase
             ],
             'multiple unavailable' => [
                 new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
@@ -200,7 +201,7 @@ class CalendarTest extends TestCase
     public function it_allows_updating_booking_availability_on_single_type(): void
     {
         $singleCalendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             null,
             null,
             [
@@ -222,7 +223,7 @@ class CalendarTest extends TestCase
     public function it_allows_updating_booking_availability_on_multiple_type(): void
     {
         $multipleCalendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             null,
             null,
             [
@@ -247,7 +248,7 @@ class CalendarTest extends TestCase
      */
     public function it_prevents_updating_booking_availability_on_permanent_type(): void
     {
-        $permanentCalendar = new Calendar(CalendarType::PERMANENT());
+        $permanentCalendar = new Calendar(CalendarType::permanent());
 
         $this->expectException(CalendarTypeNotSupported::class);
 
@@ -260,7 +261,7 @@ class CalendarTest extends TestCase
     public function it_prevents_updating_booking_availability_on_periodic_type(): void
     {
         $periodicCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             new DateTime('2021-03-18T14:00:00+01:00'),
             new DateTime('2021-03-18T14:00:00+01:00')
         );
@@ -276,7 +277,7 @@ class CalendarTest extends TestCase
     public function it_allows_updating_booking_availability_on_timestamp_of_single_type(): void
     {
         $singleCalendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             null,
             null,
             [
@@ -301,7 +302,7 @@ class CalendarTest extends TestCase
     public function it_allows_updating_booking_availability_on_timestamps_of_multiple_type(): void
     {
         $multipleCalendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             null,
             null,
             [
@@ -333,7 +334,7 @@ class CalendarTest extends TestCase
      */
     public function it_prevents_updating_booking_availability_on_timestamps_of_permanent_type(): void
     {
-        $permanentCalendar = new Calendar(CalendarType::PERMANENT());
+        $permanentCalendar = new Calendar(CalendarType::permanent());
 
         $this->expectException(CalendarTypeNotSupported::class);
 
@@ -346,7 +347,7 @@ class CalendarTest extends TestCase
     public function it_prevents_updating_booking_availability_on_timestamps_of_periodic_type(): void
     {
         $periodicCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             new DateTime('2021-03-18T14:00:00+01:00'),
             new DateTime('2021-03-18T14:00:00+01:00')
         );
@@ -510,7 +511,7 @@ class CalendarTest extends TestCase
         );
 
         $calendar = new Calendar(
-            CalendarType::PERMANENT(),
+            CalendarType::permanent(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
         );
@@ -540,7 +541,7 @@ class CalendarTest extends TestCase
     public function it_can_deserialize_with_explicit_booking_availability(): void
     {
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             new DateTime('2021-03-18T14:00:00+01:00'),
             new DateTime('2021-03-18T16:00:00+01:00'),
             [
@@ -607,7 +608,7 @@ class CalendarTest extends TestCase
         );
 
         $expected = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
             [
@@ -643,7 +644,7 @@ class CalendarTest extends TestCase
 
         $this->assertEquals(
             new Calendar(
-                CalendarType::SINGLE(),
+                CalendarType::single(),
                 new DateTime('2021-03-18T14:00:00+01:00'),
                 new DateTime('2021-03-18T14:00:00+01:00'),
                 [
@@ -673,7 +674,7 @@ class CalendarTest extends TestCase
         return [
             'single no sub event status' => [
                 'calendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     null,
                     null,
                     [
@@ -711,7 +712,7 @@ class CalendarTest extends TestCase
             ],
             'single with sub event status postponed' => [
                 'calendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     null,
                     null,
                     [
@@ -762,7 +763,7 @@ class CalendarTest extends TestCase
             ],
             'multiple no sub event status' => [
                 'calendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
@@ -816,7 +817,7 @@ class CalendarTest extends TestCase
             ],
             'multiple with single sub event scheduled' => [
                 'calendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
@@ -888,7 +889,7 @@ class CalendarTest extends TestCase
             ],
             'multiple with single sub event postponed' => [
                 'calendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
@@ -960,7 +961,7 @@ class CalendarTest extends TestCase
             ],
             'multiple with all sub events cancelled' => [
                 'calendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
@@ -1032,7 +1033,7 @@ class CalendarTest extends TestCase
             ],
             'multiple with all sub events cancelled but an incorrect top status which should get corrected' => [
                 'calendar' => (new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
@@ -1110,7 +1111,7 @@ class CalendarTest extends TestCase
             ],
             'multiple with corrected booking availability' => [
                 'calendar' => (new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
@@ -1168,7 +1169,7 @@ class CalendarTest extends TestCase
             ],
             'periodic' => [
                 'calendar' => new Calendar(
-                    CalendarType::PERIODIC(),
+                    CalendarType::periodic(),
                     DateTimeFactory::fromAtom(self::START_DATE),
                     DateTimeFactory::fromAtom(self::END_DATE)
                 ),
@@ -1186,7 +1187,7 @@ class CalendarTest extends TestCase
             ],
             'permanent' => [
                 'calendar' => new Calendar(
-                    CalendarType::PERMANENT()
+                    CalendarType::permanent()
                 ),
                 'jsonld' => [
                     'calendarType' => 'permanent',
@@ -1200,7 +1201,7 @@ class CalendarTest extends TestCase
             ],
             'permanent_with_changed_status_and_reason' => [
                 'calendar' => (new Calendar(
-                    CalendarType::PERMANENT()
+                    CalendarType::permanent()
                 ))->withStatus(
                     new Status(
                         StatusType::TemporarilyUnavailable(),
@@ -1236,7 +1237,7 @@ class CalendarTest extends TestCase
         ];
 
         $expectedCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE)
         );
@@ -1293,7 +1294,7 @@ class CalendarTest extends TestCase
         ];
 
         $expected = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
             [
@@ -1322,7 +1323,7 @@ class CalendarTest extends TestCase
         ];
 
         $expected = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             null,
             [
@@ -1351,7 +1352,7 @@ class CalendarTest extends TestCase
         ];
 
         $expected = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
             [
@@ -1380,7 +1381,7 @@ class CalendarTest extends TestCase
         ];
 
         $expected = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             null,
             [
@@ -1450,7 +1451,7 @@ class CalendarTest extends TestCase
             ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable()));
 
         $expected = (new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             null,
             null,
             [
@@ -1499,7 +1500,7 @@ class CalendarTest extends TestCase
             ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable()));
 
         $expected = (new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             null,
             null,
             [
@@ -1540,7 +1541,7 @@ class CalendarTest extends TestCase
         $udb3ModelCalendar = new PeriodicCalendar($dateRange, $openingHours);
 
         $expected = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
             [],
@@ -1595,7 +1596,7 @@ class CalendarTest extends TestCase
         $udb3ModelCalendar = new PeriodicCalendar($dateRange, $openingHours);
 
         $expected = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
             [],
@@ -1632,7 +1633,7 @@ class CalendarTest extends TestCase
         $udb3ModelCalendar = new PermanentCalendar($openingHours);
 
         $expected = new Calendar(
-            CalendarType::PERMANENT(),
+            CalendarType::permanent(),
             null,
             null,
             [],
@@ -1682,7 +1683,7 @@ class CalendarTest extends TestCase
         $udb3ModelCalendar = new PermanentCalendar($openingHours);
 
         $expected = new Calendar(
-            CalendarType::PERMANENT(),
+            CalendarType::permanent(),
             null,
             null,
             [],
@@ -1716,19 +1717,19 @@ class CalendarTest extends TestCase
     public function it_can_determine_same_calendars(): void
     {
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
 
         $sameCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
 
         $otherCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-27T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-01-28T12:12:12+01:00')
         );
@@ -1743,7 +1744,7 @@ class CalendarTest extends TestCase
     public function it_should_return_timestamps_in_chronological_order(): void
     {
         $calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-04-30T12:12:12+01:00'),
             [
@@ -1816,7 +1817,7 @@ class CalendarTest extends TestCase
         ];
 
         $calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-04-30T12:12:12+01:00'),
             $timestamps
@@ -1844,7 +1845,7 @@ class CalendarTest extends TestCase
     public function it_can_change_top_status_and_timestamp_statuses(): void
     {
         $calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-04-30T12:12:12+01:00'),
             [
@@ -1897,7 +1898,7 @@ class CalendarTest extends TestCase
         $this->expectExceptionMessage('Timestamps should have type TimeStamp.');
 
         new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
             ['wrong timestamp'] // @phpstan-ignore-line
@@ -1913,7 +1914,7 @@ class CalendarTest extends TestCase
         $this->expectExceptionMessage('OpeningHours should have type OpeningHour.');
 
         new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
             [],

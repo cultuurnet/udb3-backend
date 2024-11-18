@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use DateTimeInterface;
 
 /**
@@ -26,7 +26,7 @@ class AvailableTo
 
     public static function createFromCalendar(Calendar $calendar, EventType $eventType = null): AvailableTo
     {
-        if ($calendar->getType()->sameAs(CalendarType::PERMANENT())) {
+        if ($calendar->getType()->sameAs(CalendarType::permanent())) {
             // The fixed date for a permanent calendar type does not require time information.
             return new self(new \DateTime('2100-01-01T00:00:00Z'));
         }

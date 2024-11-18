@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Deserializer\Event;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\SampleFiles;
@@ -32,6 +32,6 @@ final class CreateEventJSONDeserializerTest extends TestCase
         $this->assertEquals(new Title('talking title'), $createEvent->getTitle());
         $this->assertEquals(new EventType('0.17.0.0.0', 'Route'), $createEvent->getType());
         $this->assertEquals($expectedLocation, $createEvent->getLocation());
-        $this->assertEquals(new Calendar(CalendarType::PERMANENT()), $createEvent->getCalendar());
+        $this->assertEquals(new Calendar(CalendarType::permanent()), $createEvent->getCalendar());
     }
 }

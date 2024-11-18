@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
@@ -18,6 +17,7 @@ use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
@@ -113,7 +113,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
@@ -162,7 +162,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
@@ -201,7 +201,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
@@ -239,7 +239,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
@@ -306,7 +306,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::PERIODIC(),
+                        CalendarType::periodic(),
                         DateTimeFactory::fromFormat('Y-m-d', '2017-06-13'),
                         DateTimeFactory::fromFormat('Y-m-d', '2018-01-08'),
                         [],
@@ -389,7 +389,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::PERMANENT(),
+                        CalendarType::permanent(),
                         null,
                         null,
                         [],
@@ -449,7 +449,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
@@ -500,7 +500,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
@@ -540,7 +540,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::PERMANENT(),
+                        CalendarType::permanent(),
                         null,
                         null,
                         []
@@ -572,7 +572,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::PERMANENT(),
+                        CalendarType::permanent(),
                         null,
                         null,
                         []

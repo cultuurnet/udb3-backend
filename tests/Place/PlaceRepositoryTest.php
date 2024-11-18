@@ -14,9 +14,9 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -63,7 +63,7 @@ class PlaceRepositoryTest extends TestCase
                 new Locality('Leuven'),
                 new CountryCode('BE')
             ),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $place1->updateTypicalAgeRange(
@@ -81,7 +81,7 @@ class PlaceRepositoryTest extends TestCase
                 new Locality('Leuven'),
                 new CountryCode('BE')
             ),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $expectedEvents = [
@@ -96,7 +96,7 @@ class PlaceRepositoryTest extends TestCase
                     new Locality('Leuven'),
                     new CountryCode('BE')
                 ),
-                new Calendar(CalendarType::PERMANENT())
+                new Calendar(CalendarType::permanent())
             ),
             new TypicalAgeRangeUpdated(
                 '41c94f16-9edf-4eaf-914a-cfc01336b66e',
@@ -113,7 +113,7 @@ class PlaceRepositoryTest extends TestCase
                     new Locality('Leuven'),
                     new CountryCode('BE')
                 ),
-                new Calendar(CalendarType::PERMANENT())
+                new Calendar(CalendarType::permanent())
             ),
         ];
 
