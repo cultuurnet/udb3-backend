@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\OpeningHour;
-use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
@@ -19,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
@@ -399,16 +399,16 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                         DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         [
                             new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(17), new Minute(0)),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0)),
                                 new Days(
                                     Day::monday(),
                                     Day::wednesday()
                                 )
                             ),
                             new OpeningHour(
-                                new OpeningTime(new Hour(8), new Minute(30)),
-                                new OpeningTime(new Hour(9), new Minute(0)),
+                                new Time(new Hour(8), new Minute(30)),
+                                new Time(new Hour(9), new Minute(0)),
                                 new Days(
                                     Day::tuesday(),
                                     Day::thursday()
@@ -477,16 +477,16 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     Calendar::permanent(
                         [
                             new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(17), new Minute(0)),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0)),
                                 new Days(
                                     Day::monday(),
                                     Day::wednesday()
                                 )
                             ),
                             new OpeningHour(
-                                new OpeningTime(new Hour(8), new Minute(30)),
-                                new OpeningTime(new Hour(9), new Minute(0)),
+                                new Time(new Hour(8), new Minute(30)),
+                                new Time(new Hour(9), new Minute(0)),
                                 new Days(
                                     Day::tuesday(),
                                     Day::thursday()
@@ -866,16 +866,16 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                         DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
                         [
                             new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(17), new Minute(0)),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0)),
                                 new Days(
                                     Day::monday(),
                                     Day::wednesday()
                                 )
                             ),
                             new OpeningHour(
-                                new OpeningTime(new Hour(8), new Minute(30)),
-                                new OpeningTime(new Hour(9), new Minute(0)),
+                                new Time(new Hour(8), new Minute(30)),
+                                new Time(new Hour(9), new Minute(0)),
                                 new Days(
                                     Day::tuesday(),
                                     Day::thursday()
@@ -944,16 +944,16 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     Calendar::permanent(
                         [
                             new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(17), new Minute(0)),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0)),
                                 new Days(
                                     Day::monday(),
                                     Day::wednesday()
                                 )
                             ),
                             new OpeningHour(
-                                new OpeningTime(new Hour(8), new Minute(30)),
-                                new OpeningTime(new Hour(9), new Minute(0)),
+                                new Time(new Hour(8), new Minute(30)),
+                                new Time(new Hour(9), new Minute(0)),
                                 new Days(
                                     Day::tuesday(),
                                     Day::thursday()
