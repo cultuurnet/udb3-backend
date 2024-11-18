@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
@@ -65,15 +65,15 @@ class CalendarTest extends TestCase
             ->with(Day::friday());
 
         $openingHour1 = new OpeningHour(
+            $weekDays,
             new Time(new Hour(9), new Minute(0)),
-            new Time(new Hour(12), new Minute(0)),
-            $weekDays
+            new Time(new Hour(12), new Minute(0))
         );
 
         $openingHour2 = new OpeningHour(
+            $weekDays,
             new Time(new Hour(13), new Minute(0)),
-            new Time(new Hour(17), new Minute(0)),
-            $weekDays
+            new Time(new Hour(17), new Minute(0))
         );
 
         $weekendDays = (new Days())
@@ -81,9 +81,9 @@ class CalendarTest extends TestCase
             ->with(Day::sunday());
 
         $openingHour3 = new OpeningHour(
+            $weekendDays,
             new Time(new Hour(10), new Minute(0)),
-            new Time(new Hour(16), new Minute(0)),
-            $weekendDays
+            new Time(new Hour(16), new Minute(0))
         );
 
         $this->calendar = new Calendar(
@@ -1564,7 +1564,7 @@ class CalendarTest extends TestCase
         );
 
         $openingHours = new OpeningHours(
-            new Udb3ModelOpeningHour(
+            new OpeningHour(
                 new Days(
                     Day::monday(),
                     Day::tuesday()
@@ -1578,7 +1578,7 @@ class CalendarTest extends TestCase
                     new Minute(59)
                 )
             ),
-            new Udb3ModelOpeningHour(
+            new OpeningHour(
                 new Days(
                     Day::saturday()
                 ),
@@ -1602,19 +1602,19 @@ class CalendarTest extends TestCase
             [],
             [
                 new OpeningHour(
-                    new Time(new Hour(8), new Minute(0)),
-                    new Time(new Hour(12), new Minute(59)),
                     new Days(
                         Day::monday(),
                         Day::tuesday()
-                    )
+                    ),
+                    new Time(new Hour(8), new Minute(0)),
+                    new Time(new Hour(12), new Minute(59))
                 ),
                 new OpeningHour(
-                    new Time(new Hour(10), new Minute(0)),
-                    new Time(new Hour(14), new Minute(0)),
                     new Days(
                         Day::saturday()
-                    )
+                    ),
+                    new Time(new Hour(10), new Minute(0)),
+                    new Time(new Hour(14), new Minute(0))
                 ),
             ]
         );
@@ -1651,7 +1651,7 @@ class CalendarTest extends TestCase
     public function it_should_be_creatable_from_an_udb3_model_permanent_calendar_with_opening_hours(): void
     {
         $openingHours = new OpeningHours(
-            new Udb3ModelOpeningHour(
+            new OpeningHour(
                 new Days(
                     Day::monday(),
                     Day::tuesday()
@@ -1665,7 +1665,7 @@ class CalendarTest extends TestCase
                     new Minute(59)
                 )
             ),
-            new Udb3ModelOpeningHour(
+            new OpeningHour(
                 new Days(
                     Day::saturday()
                 ),
@@ -1689,19 +1689,19 @@ class CalendarTest extends TestCase
             [],
             [
                 new OpeningHour(
-                    new Time(new Hour(8), new Minute(0)),
-                    new Time(new Hour(12), new Minute(59)),
                     new Days(
                         Day::monday(),
                         Day::tuesday()
-                    )
+                    ),
+                    new Time(new Hour(8), new Minute(0)),
+                    new Time(new Hour(12), new Minute(59))
                 ),
                 new OpeningHour(
-                    new Time(new Hour(10), new Minute(0)),
-                    new Time(new Hour(14), new Minute(0)),
                     new Days(
                         Day::saturday()
-                    )
+                    ),
+                    new Time(new Hour(10), new Minute(0)),
+                    new Time(new Hour(14), new Minute(0))
                 ),
             ]
         );

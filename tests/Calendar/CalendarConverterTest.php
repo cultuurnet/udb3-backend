@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -186,19 +187,19 @@ class CalendarConverterTest extends TestCase
             [],
             [
                 new OpeningHour(
+                    $weekDays,
                     new Time(new Hour(9), new Minute(0)),
-                    new Time(new Hour(12), new Minute(0)),
-                    $weekDays
+                    new Time(new Hour(12), new Minute(0))
                 ),
                 new OpeningHour(
+                    $weekDays,
                     new Time(new Hour(13), new Minute(0)),
-                    new Time(new Hour(17), new Minute(0)),
-                    $weekDays
+                    new Time(new Hour(17), new Minute(0))
                 ),
                 new OpeningHour(
+                    $weekendDays,
                     new Time(new Hour(10), new Minute(0)),
-                    new Time(new Hour(16), new Minute(0)),
-                    $weekendDays
+                    new Time(new Hour(16), new Minute(0))
                 ),
             ]
         );
@@ -241,19 +242,19 @@ class CalendarConverterTest extends TestCase
             [],
             [
                 new OpeningHour(
+                    $weekDays,
                     new Time(new Hour(9), new Minute(0)),
-                    new Time(new Hour(12), new Minute(0)),
-                    $weekDays
+                    new Time(new Hour(12), new Minute(0))
                 ),
                 new OpeningHour(
+                    $weekDays,
                     new Time(new Hour(13), new Minute(0)),
-                    new Time(new Hour(17), new Minute(0)),
-                    $weekDays
+                    new Time(new Hour(17), new Minute(0))
                 ),
                 new OpeningHour(
+                    $weekendDays,
                     new Time(new Hour(10), new Minute(0)),
-                    new Time(new Hour(16), new Minute(0)),
-                    $weekendDays
+                    new Time(new Hour(16), new Minute(0))
                 ),
             ]
         );
@@ -286,11 +287,9 @@ class CalendarConverterTest extends TestCase
             [],
             [
                 new OpeningHour(
+                    new Days(Day::monday()),
                     new Time(new Hour(9), new Minute(0)),
-                    new Time(new Hour(17), new Minute(0)),
-                    new Days(
-                        Day::monday()
-                    )
+                    new Time(new Hour(17), new Minute(0))
                 ),
             ]
         );

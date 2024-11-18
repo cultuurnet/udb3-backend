@@ -9,7 +9,6 @@ use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -34,6 +33,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
@@ -839,12 +839,12 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         [],
                         [
                             new OpeningHour(
-                                new Time(new Hour(13), new Minute(00)),
-                                new Time(new Hour(23), new Minute(59)),
                                 new Days(
                                     Day::saturday(),
                                     Day::sunday()
-                                )
+                                ),
+                                new Time(new Hour(13), new Minute(00)),
+                                new Time(new Hour(23), new Minute(59))
                             ),
                         ]
                     ))

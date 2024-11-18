@@ -8,6 +8,8 @@ use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\JsonLdSerializableInterface;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHourDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHourNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
@@ -16,7 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar as Udb3ModelCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
@@ -225,7 +227,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $serializedOpeningHours = array_map(
             function (OpeningHour $openingHour) {
-                return $openingHour->serialize();
+                return (new OpeningHourNormalizer())->normalize($openingHour);
             },
             $this->openingHours
         );
@@ -275,7 +277,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             ) : $defaultTimeStamps,
             !empty($data['openingHours']) ? array_map(
                 function ($openingHour) {
-                    return OpeningHour::deserialize($openingHour);
+                    return (new OpeningHourDenormalizer())->denormalize($openingHour, OpeningHour::class);
                 },
                 $data['openingHours']
             ) : []
@@ -346,7 +348,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         if (!empty($openingHours)) {
             $jsonLd['openingHours'] = [];
             foreach ($openingHours as $openingHour) {
-                $jsonLd['openingHours'][] = $openingHour->serialize();
+                $jsonLd['openingHours'][] = (new OpeningHourNormalizer())->normalize($openingHour);
             }
         }
 
@@ -439,12 +441,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         }
 
         if ($udb3Calendar instanceof CalendarWithOpeningHours) {
-            $openingHours = array_map(
-                function (Udb3ModelOpeningHour $openingHour) {
-                    return OpeningHour::fromUdb3ModelOpeningHour($openingHour);
-                },
-                $udb3Calendar->getOpeningHours()->toArray()
-            );
+            $openingHours = $udb3Calendar->getOpeningHours()->toArray();
         }
 
         $calendar = new self($type, $startDate, $endDate, $timestamps, $openingHours);
