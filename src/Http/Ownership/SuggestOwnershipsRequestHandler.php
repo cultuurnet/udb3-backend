@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
@@ -35,7 +34,6 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
     private OfferJsonDocumentReadRepository $offerRepository;
     private CurrentUser $currentUser;
     private UserIdentityResolver $userIdentityResolver;
-    private DocumentRepository $organizerRepository;
     private OwnershipSearchRepository $ownershipSearchRepository;
     private OrganizerIDParser $organizerIDParser;
 
@@ -44,7 +42,6 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
         OfferJsonDocumentReadRepository $offerRepository,
         CurrentUser $currentUser,
         UserIdentityResolver $userIdentityResolver,
-        DocumentRepository $organizerRepository,
         OwnershipSearchRepository $ownershipSearchRepository,
         OrganizerIDParser $organizerIDParser
     ) {
@@ -55,7 +52,6 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
         $this->offerRepository = $offerRepository;
         $this->currentUser = $currentUser;
         $this->userIdentityResolver = $userIdentityResolver;
-        $this->organizerRepository = $organizerRepository;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->organizerIDParser = $organizerIDParser;
     }
@@ -70,13 +66,6 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
         $user = $this->userIdentityResolver->getUserById($id);
 
         $query = (new SuggestOwnershipsSapiQuery($user))->toString();
-
-        $activeOwnerships = $this->ownershipSearchRepository
-            ->search(new SearchQuery([
-                new SearchParameter('ownerId', $user->getUserId()),
-                new SearchParameter('state[]', OwnershipState::requested()->toString()),
-                new SearchParameter('state[]', OwnershipState::approved()->toString()),
-            ]));
 
         /**
          * A map to deduplicate returned organizers
@@ -95,23 +84,36 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
 
             $organizerId = $this->organizerIDParser->fromUrl(new Url($offer['organizer']['@id']))->toString();
 
-            $ownershipsForOrganizer = $activeOwnerships->filter(fn (OwnershipItem $item) => $item->getItemId() === $organizerId);
-
-            // don't suggest item that already has active ownership
-            if (!$ownershipsForOrganizer->isEmpty()) {
-                continue;
-            }
-
-            // don't suggest duplicate items
-            if (isset($idToOrganizerMap[$organizerId])) {
-                continue;
-            }
-
-            $organizer = $this->organizerRepository->fetch($organizerId)->getAssocBody();
-
-            $idToOrganizerMap[$organizerId] = $organizer;
+            $idToOrganizerMap[$organizerId] = [
+                '@id' => $offer['organizer']['@id'],
+                '@type' => 'Organizer',
+            ];
         }
 
-        return new JsonLdResponse(array_values($idToOrganizerMap));
+        $activeOwnerships = $this->ownershipSearchRepository
+            ->search(new SearchQuery([
+                new SearchParameter('ownerId', $user->getUserId()),
+                new SearchParameter('state[]', OwnershipState::requested()->toString()),
+                new SearchParameter('state[]', OwnershipState::approved()->toString()),
+            ]));
+
+        $suggestions = [];
+
+        foreach ($idToOrganizerMap as $organizerId => $organizer) {
+            $count = $activeOwnerships
+                        ->filter(fn (OwnershipItem $it) => $it->getItemId() === $organizerId)
+                        ->count();
+
+            // don't suggest item that already has active ownership
+            if ($count > 0) {
+                continue;
+            }
+
+            $suggestions[] = $organizer;
+        }
+
+        return new JsonLdResponse([
+            'member' => $suggestions,
+        ]);
     }
 }

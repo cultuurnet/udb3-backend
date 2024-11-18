@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Results;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
@@ -45,10 +44,6 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
     private OfferJsonDocumentReadRepository $offerRepository;
     private UserIdentityDetails $user;
     /**
-     * @var DocumentRepository&MockObject
-     */
-    private $organizerRepository;
-    /**
      * @var OwnershipSearchRepository&MockObject
      */
     private $ownershipSearchRepository;
@@ -71,7 +66,6 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             'John Doe',
             'john@doe.com'
         );
-        $this->organizerRepository = $this->createMock(DocumentRepository::class);
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
 
         $this->expectedQuery = "_exists_:organizer.id AND address.\*.addressCountry:* AND workflowStatus:(DRAFT OR READY_FOR_VALIDATION OR APPROVED) AND creator:(auth0|{$this->user->getUserId()} OR {$this->user->getUserId()} OR {$this->user->getEmailAddress()})";
@@ -81,7 +75,6 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             $this->offerRepository,
             $this->currentUser,
             $this->userIdentityResolver,
-            $this->organizerRepository,
             $this->ownershipSearchRepository,
             new OrganizerIDParser()
         );
@@ -123,15 +116,12 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             ]))
             ->willReturn(new OwnershipItemCollection());
 
-        $this->organizerRepository->expects($this->once())
-            ->method('fetch')
-            ->with($organizer['id'])
-            ->willReturn(new JsonDocument($organizer['id'], Json::encode($organizer['body'])));
-
         $response = $this->suggestOwnershipsRequestHandler->handle($request);
 
         $expected = Json::encode([
-            $organizer['body'],
+            'member' => [
+                $organizer['body'],
+            ],
         ]);
 
         $this->assertEquals($expected, $response->getBody()->getContents());
@@ -177,7 +167,9 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
 
         $response = $this->suggestOwnershipsRequestHandler->handle($request);
 
-        $expected = Json::encode([]);
+        $expected = Json::encode([
+            'member' => [],
+        ]);
 
         $this->assertEquals($expected, $response->getBody()->getContents());
     }
@@ -220,15 +212,12 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             ]))
             ->willReturn(new OwnershipItemCollection());
 
-        $this->organizerRepository->expects($this->once())
-            ->method('fetch')
-            ->with($organizer['id'])
-            ->willReturn(new JsonDocument($organizer['id'], Json::encode($organizer)));
-
         $response = $this->suggestOwnershipsRequestHandler->handle($request);
 
         $expected = Json::encode([
-            $organizer,
+            'member' => [
+                $organizer['body'],
+            ],
         ]);
 
         $this->assertEquals($expected, $response->getBody()->getContents());
@@ -242,6 +231,7 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             'id' => $id,
             'body' => [
                 '@id' => 'https://mock.io.uitdatabank.be/organizers/' . $id,
+                '@type' => 'Organizer',
             ],
         ];
     }
