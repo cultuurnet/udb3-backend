@@ -97,23 +97,19 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
                 new SearchParameter('state[]', OwnershipState::approved()->toString()),
             ]));
 
-        $suggestions = [];
+        /**
+         * @var OwnershipItem $activeOwnership
+         */
+        foreach ($activeOwnerships as $activeOwnership) {
+            $itemId = $activeOwnership->getItemId();
 
-        foreach ($idToOrganizerMap as $organizerId => $organizer) {
-            $count = $activeOwnerships
-                        ->filter(fn (OwnershipItem $it) => $it->getItemId() === $organizerId)
-                        ->count();
-
-            // don't suggest item that already has active ownership
-            if ($count > 0) {
-                continue;
+            if (isset($idToOrganizerMap[$itemId])) {
+                unset($idToOrganizerMap[$itemId]);
             }
-
-            $suggestions[] = $organizer;
         }
 
         return new JsonLdResponse([
-            'member' => $suggestions,
+            'member' => array_values($idToOrganizerMap),
         ]);
     }
 }
