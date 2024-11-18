@@ -48,8 +48,10 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     private ?DateTimeInterface $endDate;
 
+    /** @var SubEvent[] */
     private array $subEvents ;
 
+    /** @var OpeningHour[] */
     private array $openingHours ;
 
     private Status $status;
@@ -77,13 +79,13 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         foreach ($subEvents as $subEvent) {
             if (!is_a($subEvent, SubEvent::class)) {
-                throw new \InvalidArgumentException('SubEvents should have type SubEvent.');
+                throw new \InvalidArgumentException('SubEvents should have type ' . SubEvent::class);
             }
         }
 
         foreach ($openingHours as $openingHour) {
             if (!is_a($openingHour, OpeningHour::class)) {
-                throw new \InvalidArgumentException('OpeningHours should have type OpeningHour.');
+                throw new \InvalidArgumentException('OpeningHours should have type ' . OpeningHour::class);
             }
         }
 
@@ -194,7 +196,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     }
 
     /**
-     * @return array|OpeningHour[]
+     * @return OpeningHour[]
      */
     public function getOpeningHours(): array
     {
@@ -202,7 +204,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     }
 
     /**
-     * @return array|SubEvent[]
+     * @return SubEvent[]
      */
     public function getSubEvents(): array
     {
@@ -241,7 +243,9 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             'bookingAvailability' => (new BookingAvailabilityNormalizer())->normalize($this->bookingAvailability),
         ];
 
-        empty($this->startDate) ?: $calendar['startDate'] = $this->startDate->format(DateTimeInterface::ATOM);
+        if (!empty($this->startDate)) {
+            $calendar['startDate'] = $this->startDate->format(DateTimeInterface::ATOM);
+        }
         empty($this->endDate) ?: $calendar['endDate'] = $this->endDate->format(DateTimeInterface::ATOM);
         empty($serializedSubEvents) ?: $calendar['timestamps'] = $serializedSubEvents;
         empty($serializedOpeningHours) ?: $calendar['openingHours'] = $serializedOpeningHours;
@@ -477,24 +481,28 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     private function deriveStatusTypeFromSubEvents(): StatusType
     {
-        $statusTypeCounts = [];
-        $statusTypeCounts[StatusType::Available()->toString()] = 0;
-        $statusTypeCounts[StatusType::TemporarilyUnavailable()->toString()] = 0;
-        $statusTypeCounts[StatusType::Unavailable()->toString()] = 0;
+        $temporarilyUnavailablePresent = false;
+        $unavailablePresent = false;
 
         foreach ($this->subEvents as $subEvent) {
-            ++$statusTypeCounts[$subEvent->getStatus()->getType()->toString()];
+            if ($subEvent->getStatus()->getType()->sameAs(StatusType::Available())) {
+                return StatusType::Available();
+            }
+
+            if ($subEvent->getStatus()->getType()->sameAs(StatusType::TemporarilyUnavailable())) {
+                $temporarilyUnavailablePresent = true;
+            }
+
+            if ($subEvent->getStatus()->getType()->sameAs(StatusType::Unavailable())) {
+                $unavailablePresent = true;
+            }
         }
 
-        if ($statusTypeCounts[StatusType::Available()->toString()] > 0) {
-            return StatusType::Available();
-        }
-
-        if ($statusTypeCounts[StatusType::TemporarilyUnavailable()->toString()] > 0) {
+        if ($temporarilyUnavailablePresent) {
             return StatusType::TemporarilyUnavailable();
         }
 
-        if ($statusTypeCounts[StatusType::Unavailable()->toString()] > 0) {
+        if ($unavailablePresent) {
             return StatusType::Unavailable();
         }
 

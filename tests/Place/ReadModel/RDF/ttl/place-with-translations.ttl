@@ -28,6 +28,6 @@
     locn:postName "Leuven"@nl, "Louvain"@fr ;
     locn:thoroughfare "Martelarenlaan"@nl, "Martelarenlaan"@fr ;
     locn:adminUnitL1 "BE" ;
-    locn:postcode "3000" ;
+    locn:postCode "3000" ;
     locn:locatorDesignator "1"
   ] .
