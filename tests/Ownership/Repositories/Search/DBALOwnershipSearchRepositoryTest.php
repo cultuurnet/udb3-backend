@@ -181,6 +181,9 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
     public function it_can_search_ownerships_by_state(): void
     {
         $ownershipItem = new OwnershipItem(
@@ -202,7 +205,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
         $this->ownershipSearchRepository->save($anotherOwnershipItem);
 
         $this->assertEquals(
-            new OwnershipItemCollection($ownershipItem, $anotherOwnershipItem),
+            new OwnershipItemCollection($anotherOwnershipItem),
             $this->ownershipSearchRepository->search(
                 new SearchQuery([
                     new SearchParameter('state', OwnershipState::approved()->toString()),
