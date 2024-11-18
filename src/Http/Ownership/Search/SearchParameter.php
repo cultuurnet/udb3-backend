@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Ownership\Search;
 
 final class SearchParameter
 {
-    public const SUPPORTED_URL_PARAMETERS = ['itemId', 'state', 'state[]', 'ownerId'];
+    public const SUPPORTED_URL_PARAMETERS = ['itemId', 'state', 'ownerId'];
 
     private string $urlParameter;
     private string $value;
@@ -29,10 +29,5 @@ final class SearchParameter
     public function getValue(): string
     {
         return $this->value;
-    }
-
-    public function hasMultipleValues(): bool
-    {
-        return str_ends_with($this->value, '[]');
     }
 }
