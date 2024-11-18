@@ -25,10 +25,12 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
+use CultuurNet\UDB3\Offer\Events\AbstractDescriptionUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -42,6 +44,8 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use CultuurNet\UDB3\Event\Events\DescriptionUpdated as EventDescriptionUpdated;
+use CultuurNet\UDB3\Place\Events\DescriptionUpdated as PlaceDescriptionUpdated;
 
 class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 {
@@ -759,5 +763,60 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 
         $this->assertEquals('2dotstwice', $labelEvent->getLabelName());
         $this->assertFalse($labelEvent->isLabelVisible());
+    }
+
+    /**
+     * @test
+     * @dataProvider emptyDescriptionsDataProvider
+     */
+    public function it_fills_empty_descriptions(AbstractDescriptionUpdated $expectedEvent, string $serialized): void
+    {
+        $decoded = Json::decodeAssociatively($serialized);
+
+        $event = $this->serializer->deserialize($decoded);
+        $this->assertInstanceOf(AbstractDescriptionUpdated::class, $event);
+
+        $this->assertEquals($expectedEvent->getDescription(), $event->getDescription());
+    }
+
+    public static function emptyDescriptionsDataProvider(): array
+    {
+        return [
+            'Fill empty event description' => [
+                new EventDescriptionUpdated(
+                    '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
+                    new Description('---')
+                ),
+                '{"class":"CultuurNet\\\\UDB3\\\\Event\\\\Events\\\\DescriptionUpdated","payload":{"item_id":"9c6145c5-4a53-4c36-b51b-3ccef8a1507c","description":""}}',
+            ],
+            'Do not fill event with existing description' => [
+                new EventDescriptionUpdated(
+                    '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
+                    new Description('Lorum ipsum')
+                ),
+                '{"class":"CultuurNet\\\\UDB3\\\\Event\\\\Events\\\\DescriptionUpdated","payload":{"item_id":"9c6145c5-4a53-4c36-b51b-3ccef8a1507c","description":"Lorum ipsum"}}',
+            ],
+            'Fill empty place description' => [
+                new PlaceDescriptionUpdated(
+                    '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
+                    new Description('---')
+                ),
+                '{"class":"CultuurNet\\\\UDB3\\\\Place\\\\Events\\\\DescriptionUpdated","payload":{"item_id":"9c6145c5-4a53-4c36-b51b-3ccef8a1507c","description":""}}',
+            ],
+            'Do not fill place with existing description' => [
+                new PlaceDescriptionUpdated(
+                    '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
+                    new Description('Lorum ipsum')
+                ),
+                '{"class":"CultuurNet\\\\UDB3\\\\Place\\\\Events\\\\DescriptionUpdated","payload":{"item_id":"9c6145c5-4a53-4c36-b51b-3ccef8a1507c","description":"Lorum ipsum"}}',
+            ],
+            'Take into account spaces in the description' => [
+                new PlaceDescriptionUpdated(
+                    '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
+                    new Description('---')
+                ),
+                '{"class":"CultuurNet\\\\UDB3\\\\Place\\\\Events\\\\DescriptionUpdated","payload":{"item_id":"9c6145c5-4a53-4c36-b51b-3ccef8a1507c","description":" "}}',
+            ],
+        ];
     }
 }
