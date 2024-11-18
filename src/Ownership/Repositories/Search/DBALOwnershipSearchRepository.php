@@ -137,7 +137,6 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         $queryBuilder = $this->connection->createQueryBuilder()
             ->from('ownership_search');
 
-
         /**
          * @var array<string, array<int, string>> $urlParameterToValues
          */

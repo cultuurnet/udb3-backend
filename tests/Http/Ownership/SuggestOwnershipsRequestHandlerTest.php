@@ -118,6 +118,8 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             ->method('search')
             ->with(new SearchQuery([
                 new SearchParameter('ownerId', $this->currentUser->getId()),
+                new SearchParameter('state[]', OwnershipState::requested()->toString()),
+                new SearchParameter('state[]', OwnershipState::approved()->toString()),
             ]))
             ->willReturn(new OwnershipItemCollection());
 
@@ -166,6 +168,8 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             ->method('search')
             ->with(new SearchQuery([
                 new SearchParameter('ownerId', $this->currentUser->getId()),
+                new SearchParameter('state[]', OwnershipState::requested()->toString()),
+                new SearchParameter('state[]', OwnershipState::approved()->toString()),
             ]))
             ->willReturn(new OwnershipItemCollection(
                 new OwnershipItem(Uuid::uuid4()->toString(), $organizer['id'], ItemType::organizer()->toString(), $this->currentUser->getId(), OwnershipState::requested()->toString()),
@@ -211,6 +215,8 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             ->method('search')
             ->with(new SearchQuery([
                 new SearchParameter('ownerId', $this->currentUser->getId()),
+                new SearchParameter('state[]', OwnershipState::requested()->toString()),
+                new SearchParameter('state[]', OwnershipState::approved()->toString()),
             ]))
             ->willReturn(new OwnershipItemCollection());
 
