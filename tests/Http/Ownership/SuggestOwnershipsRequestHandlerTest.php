@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsReadRepository;
 use CultuurNet\UDB3\Search\Results;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use CultuurNet\UDB3\User\CurrentUser;
@@ -55,10 +54,6 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
     private $ownershipSearchRepository;
     private SuggestOwnershipsRequestHandler $suggestOwnershipsRequestHandler;
     private string $expectedQuery;
-    /**
-     * @var UserPermissionsReadRepository&MockObject
-     */
-    private $userPermissionRepository;
 
     protected function setUp(): void
     {
@@ -78,13 +73,6 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
         );
         $this->organizerRepository = $this->createMock(DocumentRepository::class);
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
-        $this->userPermissionRepository = $this->createMock(UserPermissionsReadRepository::class);
-
-
-        // TODO: Add tests for permissions
-        $this->userPermissionRepository->expects($this->any())
-            ->method('hasPermission')
-            ->willReturn(true);
 
         $this->expectedQuery = "_exists_:organizer.id AND address.\*.addressCountry:* AND workflowStatus:(DRAFT OR READY_FOR_VALIDATION OR APPROVED) AND creator:(auth0|{$this->user->getUserId()} OR {$this->user->getUserId()} OR {$this->user->getEmailAddress()})";
 
@@ -95,8 +83,7 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             $this->userIdentityResolver,
             $this->organizerRepository,
             $this->ownershipSearchRepository,
-            new OrganizerIDParser(),
-            $this->userPermissionRepository
+            new OrganizerIDParser()
         );
     }
 
