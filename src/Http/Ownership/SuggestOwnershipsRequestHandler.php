@@ -93,8 +93,8 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
         $activeOwnerships = $this->ownershipSearchRepository
             ->search(new SearchQuery([
                 new SearchParameter('ownerId', $user->getUserId()),
-                new SearchParameter('state[]', OwnershipState::requested()->toString()),
-                new SearchParameter('state[]', OwnershipState::approved()->toString()),
+                new SearchParameter('state', OwnershipState::requested()->toString()),
+                new SearchParameter('state', OwnershipState::approved()->toString()),
             ]));
 
         /**

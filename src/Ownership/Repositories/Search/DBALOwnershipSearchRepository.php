@@ -20,8 +20,11 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
     private const URL_PARAMETER_TO_COLUMN = [
         'itemId' => 'item_id',
         'state' => 'state',
-        'state[]' => 'state',
         'ownerId' => 'owner_id',
+    ];
+
+    private const URL_PARAMETER_WITH_MULTIPLE_VALUES = [
+        'state',
     ];
 
     public function __construct(Connection $connection)
@@ -149,22 +152,19 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
 
         foreach ($urlParameterToValues as $urlParameter => $values) {
             $column = self::URL_PARAMETER_TO_COLUMN[$urlParameter];
-            $count = count($values);
 
-            foreach ($values as $i => $value) {
-                $columnKey = $count > 1 ? $column . $i : $column;
-                $whereCondition = $column . ' = :' . $columnKey;
-
-                if ($i === 0) {
-                    $queryBuilder = $queryBuilder
-                        ->andWhere($whereCondition);
-                } else {
-                    $queryBuilder = $queryBuilder
-                        ->orWhere($whereCondition);
-                }
-
-                $queryBuilder = $queryBuilder->setParameter($columnKey, $value);
+            if (in_array($urlParameter, self::URL_PARAMETER_WITH_MULTIPLE_VALUES)) {
+                $queryBuilder = $queryBuilder
+                    ->andWhere(
+                        $queryBuilder->expr()->in($column, ":{$column}_values")
+                    )
+                    ->setParameter(":{$column}_values", $values, Connection::PARAM_STR_ARRAY);
+                continue;
             }
+
+            $queryBuilder = $queryBuilder
+                ->andWhere($column . ' = :' . $column)
+                ->setParameter($column, $values[0]);
         }
 
         return $queryBuilder;

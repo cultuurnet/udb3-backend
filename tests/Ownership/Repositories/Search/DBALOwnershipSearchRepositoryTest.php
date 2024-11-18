@@ -239,8 +239,8 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
 
         $results = $this->ownershipSearchRepository->search(
             new SearchQuery([
-                new SearchParameter('state[]', OwnershipState::requested()->toString()),
-                new SearchParameter('state[]', OwnershipState::approved()->toString()),
+                new SearchParameter('state', OwnershipState::requested()->toString()),
+                new SearchParameter('state', OwnershipState::approved()->toString()),
             ])
         );
 
