@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\ContributorVoter;
+use CultuurNet\UDB3\Security\Permission\DeleteUiTPASPlaceVoter;
 use CultuurNet\UDB3\Security\Permission\ResourceOwnerVoter;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
 use CultuurNet\UDB3\Security\ResourceOwner\CombinedResourceOwnerQuery;
@@ -22,6 +23,7 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
         return [
             'offer_owner_query',
             'offer_permission_voter',
+            DeleteUiTPASPlaceVoter::class,
         ];
     }
 
@@ -56,6 +58,15 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
                     $container->get('config')['search']['v3']['api_key'] ?? null,
                     ['disableDefaultFilters' => true]
                 )
+            )
+        );
+
+
+        $container->addShared(
+            DeleteUiTPASPlaceVoter::class,
+            fn () => new DeleteUiTPASPlaceVoter(
+                $container->get('place_jsonld_repository'),
+                $container->get('config')['uitpas']['labels']
             )
         );
     }
