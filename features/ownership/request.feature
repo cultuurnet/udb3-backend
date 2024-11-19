@@ -87,6 +87,46 @@ Feature: Test requesting ownership
     }
     """
 
+  Scenario: Requesting the same ownership of an organizer is not allowed when already approved
+    Given I create a minimal organizer and save the "id" as "organizerId"
+    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I approve the ownership with ownershipId "%{ownershipId}"
+    And I set the JSON request payload to:
+    """
+    {
+      "itemId": "%{organizerId}",
+      "itemType": "organizer",
+      "ownerId": "auth0|64089494e980aedd96740212"
+    }
+    """
+    When I send a POST request to '/ownerships'
+    Then the response status should be 409
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/uitdatabank/ownership-already-exists",
+      "title": "Ownership already exists",
+      "status": 409,
+      "detail": "An ownership request for this item and owner already exists with id %{ownershipId}"
+    }
+    """
+
+  Scenario: Requesting the same ownership of an organizer is allowed when the previous request was rejected
+    Given I create a minimal organizer and save the "id" as "organizerId"
+    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I reject the ownership with ownershipId "%{ownershipId}"
+    When I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I get the ownership with ownershipId "%{ownershipId}"
+    Then the JSON response at "id" should be "%{ownershipId}"
+
+  Scenario: Requesting the same ownership of an organizer is allowed when the previous request was deleted
+    Given I create a minimal organizer and save the "id" as "organizerId"
+    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I delete the ownership with ownershipId "%{ownershipId}"
+    When I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I get the ownership with ownershipId "%{ownershipId}"
+    Then the JSON response at "id" should be "%{ownershipId}"
+
   Scenario: Requesting the ownership of a non-existing organizer is not allowed
     When I set the JSON request payload to:
     """
