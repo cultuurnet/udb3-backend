@@ -96,7 +96,7 @@ class JsonWebTokenTest extends TestCase
     {
         $jwt = JsonWebTokenFactory::createWithClaims(
             [
-                'https://publiq.be/client-name' => 'Example',
+                'https://publiq.be/client_name' => 'Example',
             ]
         );
 
