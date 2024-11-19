@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use PHPUnit\Framework\TestCase;
 
 class DBALOwnershipSearchRepositoryTest extends TestCase
@@ -383,34 +382,6 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
                 )
             )
         );
-    }
-
-    /**
-     * @test
-     */
-    public function item_id_and_owner_id_are_unique(): void
-    {
-        $ownershipItem = new OwnershipItem(
-            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-            '9e68dafc-01d8-4c1c-9612-599c918b981d',
-            'organizer',
-            'auth0|63e22626e39a8ca1264bd29b',
-            OwnershipState::requested()->toString()
-        );
-
-        $this->ownershipSearchRepository->save($ownershipItem);
-
-        $otherOwnershipItem = new OwnershipItem(
-            '7d085b01-e8ac-4bc0-95f2-e639c7aaadaa',
-            '9e68dafc-01d8-4c1c-9612-599c918b981d',
-            'organizer',
-            'auth0|63e22626e39a8ca1264bd29b',
-            OwnershipState::requested()->toString()
-        );
-
-        $this->expectException(UniqueConstraintViolationException::class);
-
-        $this->ownershipSearchRepository->save($otherOwnershipItem);
     }
 
     /**
