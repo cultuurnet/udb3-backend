@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Http\Ownership;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -13,7 +15,8 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
-use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
+use CultuurNet\UDB3\Ownership\OwnershipState;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\Ownership\Serializers\RequestOwnershipDenormalizer;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -71,19 +74,6 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
         /** @var RequestOwnership $requestOwnership */
         $requestOwnership = $requestBodyParser->parse($request)->getParsedBody();
 
-        // Make sure there is no open request for this item and owner
-        try {
-            $ownershipItem = $this->ownershipSearchRepository->getByItemIdAndOwnerId(
-                $requestOwnership->getItemId()->toString(),
-                $requestOwnership->getOwnerId()->toString()
-            );
-
-            throw ApiProblem::ownerShipAlreadyExists(
-                'An ownership request for this item and owner already exists with id ' . $ownershipItem->getId()
-            );
-        } catch (OwnershipItemNotFound $e) {
-        }
-
         // Make sure the organizer does exist
         if ($requestOwnership->getItemType()->sameAs(ItemType::organizer())) {
             try {
@@ -93,11 +83,30 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
             }
         }
 
+        // Make sure the current user is allowed to request ownership for this organizer
         $this->ownershipStatusGuard->isAllowedToRequest(
             $requestOwnership->getItemId()->toString(),
             $requestOwnership->getOwnerId()->toString(),
             $this->currentUser
         );
+
+        // Make sure there is no open request for this item and owner
+        $existingOwnershipItems = $this->ownershipSearchRepository->search(
+            new SearchQuery([
+                new SearchParameter('itemId', $requestOwnership->getItemId()->toString()),
+                new SearchParameter('ownerId', $requestOwnership->getOwnerId()->toString()),
+            ])
+        );
+
+        /** @var OwnershipItem $ownershipItem */
+        foreach ($existingOwnershipItems as $ownershipItem) {
+            if ($ownershipItem->getState() === OwnershipState::requested()->toString() ||
+                $ownershipItem->getState() === OwnershipState::approved()->toString()) {
+                throw ApiProblem::ownerShipAlreadyExists(
+                    'An ownership request for this item and owner already exists with id ' . $ownershipItem->getId()
+                );
+            }
+        }
 
         $this->commandBus->dispatch($requestOwnership);
 
