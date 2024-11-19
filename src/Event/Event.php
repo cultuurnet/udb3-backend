@@ -91,7 +91,6 @@ use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
@@ -506,7 +505,7 @@ final class Event extends Offer
 
         $legacyUiTPASTariffs = [];
         foreach ($tariffs as $tariff) {
-            $legacyUiTPASTariffs[] = Tariff::fromUdb3ModelTariff($tariff);
+            $legacyUiTPASTariffs[] = $tariff;
         }
         $newPriceInfo = $this->priceInfo->withUiTPASTariffs($legacyUiTPASTariffs);
 

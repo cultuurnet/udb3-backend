@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\PriceInfo;
 
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo as Udb3ModelPriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 
 /**
  * @deprecated
@@ -86,12 +89,14 @@ class PriceInfo implements Serializable
             'uitpas_tariffs' => [],
         ];
 
+        $tariffNormalizer = new TariffNormalizer();
+
         foreach ($this->tariffs as $tariff) {
-            $serialized['tariffs'][] = $tariff->serialize();
+            $serialized['tariffs'][] = $tariffNormalizer->normalize($tariff);
         }
 
         foreach ($this->uitpasTariffs as $uitpasTariff) {
-            $serialized['uitpas_tariffs'][] = $uitpasTariff->serialize();
+            $serialized['uitpas_tariffs'][] = $tariffNormalizer->normalize($uitpasTariff);
         }
 
         return $serialized;
@@ -103,16 +108,18 @@ class PriceInfo implements Serializable
 
         $priceInfo = new PriceInfo($basePriceInfo);
 
+        $tariffDenormalizer = new TariffDenormalizer();
+
         foreach ($data['tariffs'] as $tariffData) {
             $priceInfo = $priceInfo->withExtraTariff(
-                Tariff::deserialize($tariffData)
+                $tariffDenormalizer->denormalize($tariffData, Tariff::class)
             );
         }
 
         if (isset($data['uitpas_tariffs'])) {
             foreach ($data['uitpas_tariffs'] as $uitpasTariffData) {
                 $priceInfo = $priceInfo->withExtraUiTPASTariff(
-                    Tariff::deserialize($uitpasTariffData)
+                    $tariffDenormalizer->denormalize($uitpasTariffData, Tariff::class)
                 );
             }
         }
@@ -126,8 +133,7 @@ class PriceInfo implements Serializable
         $priceInfo = new PriceInfo($basePrice);
 
         foreach ($udb3ModelPriceInfo->getTariffs() as $udb3ModelTariff) {
-            $tariff = Tariff::fromUdb3ModelTariff($udb3ModelTariff);
-            $priceInfo = $priceInfo->withExtraTariff($tariff);
+            $priceInfo = $priceInfo->withExtraTariff($udb3ModelTariff);
         }
 
         return $priceInfo;

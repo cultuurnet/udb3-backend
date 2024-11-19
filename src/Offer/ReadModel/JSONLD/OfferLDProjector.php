@@ -676,7 +676,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 'category' => 'tariff',
                 'name' => $translatedTariffNameNormalizer->normalize($tariff->getName()),
                 'price' => $tariff->getPrice()->getAmount() / 100,
-                'priceCurrency' => $tariff->getCurrency()->getName(),
+                'priceCurrency' => $tariff->getPrice()->getCurrency()->getName(),
             ];
         }
 
@@ -685,7 +685,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 'category' => 'uitpas',
                 'name' => $translatedTariffNameNormalizer->normalize($tariff->getName()),
                 'price' => $tariff->getPrice()->getAmount() / 100,
-                'priceCurrency' => $tariff->getCurrency()->getName(),
+                'priceCurrency' => $tariff->getPrice()->getCurrency()->getName(),
             ];
         }
 
