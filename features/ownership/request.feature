@@ -1,4 +1,5 @@
 Feature: Test requesting ownership
+
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
@@ -43,10 +44,10 @@ Feature: Test requesting ownership
     And the JSON response should be:
     """
     {
-     "type": "https://api.publiq.be/probs/auth/forbidden",
-     "title": "Forbidden",
-     "status": 403,
-     "detail": "You are not allowed to request ownership for this item"
+      "type": "https://api.publiq.be/probs/auth/forbidden",
+      "title": "Forbidden",
+      "status": 403,
+      "detail": "You are not allowed to request ownership for this item"
     }
     """
 
@@ -67,42 +68,42 @@ Feature: Test requesting ownership
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I set the JSON request payload to:
-      """
-      {
-        "itemId": "%{organizerId}",
-        "itemType": "organizer",
-        "ownerId": "auth0|64089494e980aedd96740212"
-      }
-      """
+    """
+    {
+      "itemId": "%{organizerId}",
+      "itemType": "organizer",
+      "ownerId": "auth0|64089494e980aedd96740212"
+    }
+    """
     When I send a POST request to '/ownerships'
     Then the response status should be 409
     And the JSON response should be:
     """
     {
-     "type": "https://api.publiq.be/probs/uitdatabank/ownership-already-exists",
-     "title": "Ownership already exists",
-     "status": 409,
-     "detail": "An ownership request for this item and owner already exists with id %{ownershipId}"
+      "type": "https://api.publiq.be/probs/uitdatabank/ownership-already-exists",
+      "title": "Ownership already exists",
+      "status": 409,
+      "detail": "An ownership request for this item and owner already exists with id %{ownershipId}"
     }
     """
 
   Scenario: Requesting the ownership of a non-existing organizer is not allowed
     When I set the JSON request payload to:
-      """
-      {
-        "itemId": "b192b05f-9294-4c07-a3f9-6a15e267d746",
-        "itemType": "organizer",
-        "ownerId": "auth0|64089494e980aedd96740212"
-      }
-      """
+    """
+    {
+      "itemId": "b192b05f-9294-4c07-a3f9-6a15e267d746",
+      "itemType": "organizer",
+      "ownerId": "auth0|64089494e980aedd96740212"
+    }
+    """
     When I send a POST request to '/ownerships'
     Then the response status should be 404
     And the JSON response should be:
     """
     {
-     "type": "https://api.publiq.be/probs/url/not-found",
-     "title": "Not Found",
-     "status": 404,
-     "detail": "The Organizer with id \"b192b05f-9294-4c07-a3f9-6a15e267d746\" was not found."
+      "type": "https://api.publiq.be/probs/url/not-found",
+      "title": "Not Found",
+      "status": 404,
+      "detail": "The Organizer with id \"b192b05f-9294-4c07-a3f9-6a15e267d746\" was not found."
     }
     """
