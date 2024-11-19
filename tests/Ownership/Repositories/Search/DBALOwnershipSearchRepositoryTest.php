@@ -307,7 +307,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
         $this->ownershipSearchRepository->save($ownershipItem);
 
         $anotherOwnershipItem = new OwnershipItem(
-            '672265b6-d4d0-416e-9b0b-c29de7d18125',
+            'a17b54af-6a99-4fdb-bc02-112659be2451',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
             'a75aa571-8131-4fd6-ab9b-59c7672095e5',
@@ -316,7 +316,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
         $this->ownershipSearchRepository->save($anotherOwnershipItem);
 
         $evenAnotherOwnershipItem = new OwnershipItem(
-            'a17b54af-6a99-4fdb-bc02-112659be2451',
+            '672265b6-d4d0-416e-9b0b-c29de7d18125',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
             '5d0891db-1c4d-47b7-88cc-b48844fa259b',
