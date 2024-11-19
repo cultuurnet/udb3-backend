@@ -8,6 +8,8 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
@@ -17,7 +19,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
-use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -99,17 +101,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ->method('uuid4')
             ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
 
-        $this->ownerShipSearchRepository->expects($this->once())
-            ->method('getByItemIdAndOwnerId')
-            ->with(
-                '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'auth0|63e22626e39a8ca1264bd29b'
-            )
-            ->willThrowException(OwnershipItemNotFound::byItemIdAndOwnerId(
-                '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'auth0|63e22626e39a8ca1264bd29b'
-            ));
-
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
             ->with(
@@ -118,6 +109,16 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'auth0|63e22626e39a8ca1264bd29b'
             )
             ->willReturn(true);
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new SearchQuery([
+                    new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                ])
+            )
+            ->willReturn(new OwnershipItemCollection());
 
         $response = $this->requestOwnershipRequestHandler->handle($request);
 
@@ -166,17 +167,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ->method('uuid4')
             ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
 
-        $this->ownerShipSearchRepository->expects($this->once())
-            ->method('getByItemIdAndOwnerId')
-            ->with(
-                '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'google-oauth2|102486314601596809843'
-            )
-            ->willThrowException(OwnershipItemNotFound::byItemIdAndOwnerId(
-                '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'google-oauth2|102486314601596809843'
-            ));
-
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
             ->with(
@@ -185,6 +175,9 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'auth0|63e22626e39a8ca1264bd29b'
             )
             ->willReturn(false);
+
+        $this->ownerShipSearchRepository->expects($this->never())
+            ->method('search');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::forbidden('You are not allowed to request ownership for this item'),
@@ -217,20 +210,10 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'ownerEmail' => 'dev+e2etest@publiq.be',
             ])
             ->build('POST');
+
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
-
-        $this->ownerShipSearchRepository->expects($this->once())
-            ->method('getByItemIdAndOwnerId')
-            ->with(
-                '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'auth0|63e22626e39a8ca1264bd29b'
-            )
-            ->willThrowException(OwnershipItemNotFound::byItemIdAndOwnerId(
-                '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'auth0|63e22626e39a8ca1264bd29b'
-            ));
 
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
@@ -240,6 +223,16 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'auth0|63e22626e39a8ca1264bd29b'
             )
             ->willReturn(true);
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new SearchQuery([
+                    new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                ])
+            )
+            ->willReturn(new OwnershipItemCollection());
 
         $response = $this->requestOwnershipRequestHandler->handle($request);
 
@@ -288,17 +281,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ->method('uuid4')
             ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
 
-        $this->ownerShipSearchRepository->expects($this->once())
-            ->method('getByItemIdAndOwnerId')
-            ->with(
-                '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'auth0|63e22626e39a8ca1264bd29b'
-            )
-            ->willThrowException(OwnershipItemNotFound::byItemIdAndOwnerId(
-                '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'auth0|63e22626e39a8ca1264bd29b'
-            ));
-
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
             ->with(
@@ -307,6 +289,16 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'auth0|63e22626e39a8ca1264bd29b'
             )
             ->willReturn(false);
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new SearchQuery([
+                    new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                ])
+            )
+            ->willReturn(new OwnershipItemCollection());
 
         $response = $this->requestOwnershipRequestHandler->handle($request);
 
@@ -346,19 +338,34 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ->method('uuid4')
             ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
 
-        $this->ownerShipSearchRepository->expects($this->once())
-            ->method('getByItemIdAndOwnerId')
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
             ->with(
+                Permission::organisatiesBewerken(),
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
                 'auth0|63e22626e39a8ca1264bd29b'
             )
-            ->willReturn(new OwnershipItem(
-                'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-                '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'organizer',
-                'auth0|63e22626e39a8ca1264bd29b',
-                OwnershipState::requested()->toString()
-            ));
+            ->willReturn(true);
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new SearchQuery([
+                    new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                ])
+            )
+            ->willReturn(
+                new OwnershipItemCollection(
+                    new OwnershipItem(
+                        'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+                        '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                        'organizer',
+                        'auth0|63e22626e39a8ca1264bd29b',
+                        OwnershipState::requested()->toString()
+                    )
+                )
+            );
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::ownerShipAlreadyExists(
@@ -368,6 +375,196 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_requesting_same_ownership_when_approved(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'itemType' => 'organizer',
+                'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
+            ])
+            ->build('POST');
+
+        $this->uuidFactory->expects($this->once())
+            ->method('uuid4')
+            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
+
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBewerken(),
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willReturn(true);
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new SearchQuery([
+                    new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                ])
+            )
+            ->willReturn(
+                new OwnershipItemCollection(
+                    new OwnershipItem(
+                        'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+                        '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                        'organizer',
+                        'auth0|63e22626e39a8ca1264bd29b',
+                        OwnershipState::approved()->toString()
+                    )
+                )
+            );
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::ownerShipAlreadyExists(
+                'An ownership request for this item and owner already exists with id e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'
+            ),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
+        );
+
+        $this->assertEquals([], $this->commandBus->getRecordedCommands());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_requesting_same_ownership_when_rejected(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'itemType' => 'organizer',
+                'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
+            ])
+            ->build('POST');
+
+        $this->uuidFactory->expects($this->once())
+            ->method('uuid4')
+            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
+
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBewerken(),
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willReturn(true);
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new SearchQuery([
+                    new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                ])
+            )
+            ->willReturn(
+                new OwnershipItemCollection(
+                    new OwnershipItem(
+                        'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+                        '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                        'organizer',
+                        'auth0|63e22626e39a8ca1264bd29b',
+                        OwnershipState::rejected()->toString()
+                    )
+                )
+            );
+
+        $response = $this->requestOwnershipRequestHandler->handle($request);
+
+        $this->assertEquals(
+            201,
+            $response->getStatusCode()
+        );
+
+        $this->assertEquals(
+            [
+                new RequestOwnership(
+                    new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new UUID('9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    ItemType::organizer(),
+                    new UserId('auth0|63e22626e39a8ca1264bd29b'),
+                    new UserId('auth0|63e22626e39a8ca1264bd29b')
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_requesting_same_ownership_when_deleted(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'itemType' => 'organizer',
+                'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
+            ])
+            ->build('POST');
+
+        $this->uuidFactory->expects($this->once())
+            ->method('uuid4')
+            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
+
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBewerken(),
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willReturn(true);
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new SearchQuery([
+                    new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                ])
+            )
+            ->willReturn(
+                new OwnershipItemCollection(
+                    new OwnershipItem(
+                        'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+                        '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                        'organizer',
+                        'auth0|63e22626e39a8ca1264bd29b',
+                        OwnershipState::deleted()->toString()
+                    )
+                )
+            );
+
+        $response = $this->requestOwnershipRequestHandler->handle($request);
+
+        $this->assertEquals(
+            201,
+            $response->getStatusCode()
+        );
+
+        $this->assertEquals(
+            [
+                new RequestOwnership(
+                    new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new UUID('9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    ItemType::organizer(),
+                    new UserId('auth0|63e22626e39a8ca1264bd29b'),
+                    new UserId('auth0|63e22626e39a8ca1264bd29b')
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     /**
@@ -387,16 +584,11 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ->method('uuid4')
             ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
 
-        $this->ownerShipSearchRepository->expects($this->once())
-            ->method('getByItemIdAndOwnerId')
-            ->with(
-                'fc93ceb0-e170-4d92-b496-846b2a194f1c',
-                'auth0|63e22626e39a8ca1264bd29b'
-            )
-            ->willThrowException(OwnershipItemNotFound::byItemIdAndOwnerId(
-                'fc93ceb0-e170-4d92-b496-846b2a194f1c',
-                'auth0|63e22626e39a8ca1264bd29b'
-            ));
+        $this->permissionVoter->expects($this->never())
+            ->method('isAllowed');
+
+        $this->ownerShipSearchRepository->expects($this->never())
+            ->method('search');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::organizerNotFound('fc93ceb0-e170-4d92-b496-846b2a194f1c'),
