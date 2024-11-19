@@ -151,8 +151,8 @@ final class JsonWebToken
     {
         // Check first if the token has the claim, to prevent an OutOfBoundsException (thrown if the default is set to
         // null and the claim is missing).
-        if ($this->token->claims()->has('https://publiq.be/client-name')) {
-            return (string) $this->token->claims()->get('https://publiq.be/client-name');
+        if ($this->token->claims()->has('https://publiq.be/client_name')) {
+            return (string) $this->token->claims()->get('https://publiq.be/client_name');
         }
         return null;
     }
