@@ -127,30 +127,6 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_ownership_items_by_item_id_and_owner_id(): void
-    {
-        $ownershipItem = new OwnershipItem(
-            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-            '9e68dafc-01d8-4c1c-9612-599c918b981d',
-            'organizer',
-            'auth0|63e22626e39a8ca1264bd29b',
-            OwnershipState::requested()->toString()
-        );
-
-        $this->ownershipSearchRepository->save($ownershipItem);
-
-        $this->assertEquals(
-            $ownershipItem,
-            $this->ownershipSearchRepository->getByItemIdAndOwnerId(
-                '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'auth0|63e22626e39a8ca1264bd29b'
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_can_search_ownership_items_by_item_id(): void
     {
         $ownershipItem = new OwnershipItem(
@@ -456,26 +432,5 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
         $this->expectExceptionMessage('Ownership with id "wrong-id" was not found.');
 
         $this->ownershipSearchRepository->getById('wrong-id');
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_when_ownership_not_found_by_item_id_and_owner_id(): void
-    {
-        $ownershipItem = new OwnershipItem(
-            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-            '9e68dafc-01d8-4c1c-9612-599c918b981d',
-            'organizer',
-            'auth0|63e22626e39a8ca1264bd29b',
-            OwnershipState::requested()->toString()
-        );
-
-        $this->ownershipSearchRepository->save($ownershipItem);
-
-        $this->expectException(OwnershipItemNotFound::class);
-        $this->expectExceptionMessage('Ownership with item id "wrong-item-id" and owner id "wrong-owner-id" was not found.');
-
-        $this->ownershipSearchRepository->getByItemIdAndOwnerId('wrong-item-id', 'wrong-owner-id');
     }
 }
