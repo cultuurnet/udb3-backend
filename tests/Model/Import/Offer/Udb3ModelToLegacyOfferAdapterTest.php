@@ -45,7 +45,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\Tariff as LegacyTariff;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
@@ -300,7 +299,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
             )
         );
         $expected = $expected->withExtraTariff(
-            new LegacyTariff(
+            new Tariff(
                 new TranslatedTariffName(new Language('nl'), new TariffName('Senioren')),
                 new Money(1050, new Currency('EUR'))
             )

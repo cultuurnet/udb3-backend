@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\PriceInfo;
 
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
@@ -100,7 +101,7 @@ class PriceInfoTest extends TestCase
     public function it_should_be_creatable_from_an_udb3_model_price_info_without_tariffs(): void
     {
         $udb3ModelPriceInfo = new \CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo(
-            new \CultuurNet\UDB3\Model\ValueObject\Price\Tariff(
+            new Tariff(
                 new TranslatedTariffName(
                     new Language('nl'),
                     new TariffName('Basistarief')
@@ -127,17 +128,17 @@ class PriceInfoTest extends TestCase
     public function it_should_be_creatable_from_an_udb3_model_price_info_with_tariffs(): void
     {
         $udb3ModelPriceInfo = new \CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo(
-            new \CultuurNet\UDB3\Model\ValueObject\Price\Tariff(
+            new Tariff(
                 new TranslatedTariffName(
-                    new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('nl'),
+                    new Language('nl'),
                     new TariffName('Basistarief')
                 ),
                 new Money(1000, new Currency('EUR'))
             ),
             new Tariffs(
-                new \CultuurNet\UDB3\Model\ValueObject\Price\Tariff(
+                new Tariff(
                     new TranslatedTariffName(
-                        new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('nl'),
+                        new Language('nl'),
                         new TariffName('Senioren')
                     ),
                     new Money(500, new Currency('EUR'))
