@@ -13,17 +13,17 @@ Feature: Test the metadata in the history API
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     And I send and accept "application/json"
     And I send a GET request to "%{placeUrl}/history"
-    And the JSON response should include:
-    """
-    "auth0ClientName":"UiTdatabank Acceptance Tests"
-    """
+    And the JSON response at "0/author" should be "pjeOqgEYI0Y4gmr8DWMpUrpTMXrvjgpc@clients"
+    And the JSON response at "0/auth0ClientId" should be "pjeOqgEYI0Y4gmr8DWMpUrpTMXrvjgpc"
+    And the JSON response at "0/auth0ClientName" should be "UiTdatabank Acceptance Tests"
+    And the JSON response at "0/api" should be "JSON-LD API"
 
   Scenario: test metaData event
     Given I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     And I send and accept "application/json"
     And I send a GET request to "%{eventUrl}/history"
-    And the JSON response should include:
-    """
-    "auth0ClientName":"UiTdatabank Acceptance Tests"
-    """
+    And the JSON response at "0/author" should be "pjeOqgEYI0Y4gmr8DWMpUrpTMXrvjgpc@clients"
+    And the JSON response at "0/auth0ClientId" should be "pjeOqgEYI0Y4gmr8DWMpUrpTMXrvjgpc"
+    And the JSON response at "0/auth0ClientName" should be "UiTdatabank Acceptance Tests"
+    And the JSON response at "0/api" should be "JSON-LD API"
