@@ -657,10 +657,10 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
@@ -687,10 +687,10 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(90, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
@@ -725,10 +725,10 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
@@ -748,10 +748,10 @@ class EventTest extends AggregateRootScenarioTestCase
                             )
                         )
                     ))->withUiTPASTariffs([
-                        new \CultuurNet\UDB3\PriceInfo\Tariff(
-                            new MultilingualString(
+                        new Tariff(
+                            new TranslatedTariffName(
                                 new Language('nl'),
-                                'Tariff 1'
+                                new TariffName('Tariff 1')
                             ),
                             new Money(
                                 80,
@@ -766,10 +766,10 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(90, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
@@ -804,10 +804,10 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
@@ -855,10 +855,10 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
@@ -879,10 +879,10 @@ class EventTest extends AggregateRootScenarioTestCase
                         )
                     )
                     )->withUiTPASTariffs([
-                        new \CultuurNet\UDB3\PriceInfo\Tariff(
-                            new MultilingualString(
+                        new Tariff(
+                            new TranslatedTariffName(
                                 new Language('nl'),
-                                'Tariff 1'
+                                new TariffName('Tariff 1')
                             ),
                             new Money(
                                 80,
@@ -947,10 +947,10 @@ class EventTest extends AggregateRootScenarioTestCase
                 fn (Event $event) => $event->updatePriceInfo(
                     (new PriceInfo((new BasePrice(new Money(1250, new Currency('EUR'))))))
                         ->withTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Met kinderen'
+                                    new TariffName('Met kinderen')
                                 ),
                                 new Money(2000, new Currency('EUR'))
                             ),
@@ -961,10 +961,10 @@ class EventTest extends AggregateRootScenarioTestCase
                 fn (Event $event) => $event->updatePriceInfo(
                     (new PriceInfo((new BasePrice(new Money(1250, new Currency('EUR'))))))
                         ->withTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Met kinderen'
+                                    new TariffName('Met kinderen')
                                 ),
                                 new Money(1499, new Currency('EUR'))
                             ),
@@ -976,10 +976,10 @@ class EventTest extends AggregateRootScenarioTestCase
                     $eventId,
                     (new PriceInfo(new BasePrice(new Money(1250, new Currency('EUR')))))
                         ->withTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Met kinderen'
+                                    new TariffName('Met kinderen')
                                 ),
                                 new Money(1499, new Currency('EUR'))
                             ),
@@ -1922,20 +1922,20 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
                                     new Currency('EUR')
                                 )
                             ),
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 2'
+                                    new TariffName('Tariff 2')
                                 ),
                                 new Money(
                                     299,
@@ -2023,20 +2023,20 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
                                     new Currency('EUR')
                                 )
                             ),
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 2'
+                                    new TariffName('Tariff 2')
                                 ),
                                 new Money(
                                     299,

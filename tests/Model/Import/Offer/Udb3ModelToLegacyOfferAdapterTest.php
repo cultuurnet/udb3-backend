@@ -299,8 +299,8 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
             )
         );
         $expected = $expected->withExtraTariff(
-            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                new MultilingualString(new Language('nl'), 'Senioren'),
+            new Tariff(
+                new TranslatedTariffName(new Language('nl'), new TariffName('Senioren')),
                 new Money(1050, new Currency('EUR'))
             )
         );

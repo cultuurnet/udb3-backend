@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 
@@ -140,9 +141,9 @@ final class CdbXMLItemBaseImporter
         foreach ($priceInfo->getTariffs() as $tariff) {
             $jsonLD->priceInfo[] = [
                 'category' => 'tariff',
-                'name' => $tariff->getName()->serialize(),
+                'name' => (new TranslatedTariffNameNormalizer())->normalize($tariff->getName()),
                 'price' => $tariff->getPrice()->getAmount() / 100,
-                'priceCurrency' => $tariff->getCurrency()->getName(),
+                'priceCurrency' => $tariff->getPrice()->getCurrency()->getName(),
             ];
         }
     }
