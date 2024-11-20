@@ -16,6 +16,6 @@ final class AudienceTypeDenormalizer implements DenormalizerInterface
 
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $data === AudienceType::class;
+        return $type === AudienceType::class;
     }
 }

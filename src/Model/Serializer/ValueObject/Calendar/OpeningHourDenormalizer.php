@@ -22,6 +22,6 @@ final class OpeningHourDenormalizer implements DenormalizerInterface
 
     public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $data === OpeningHour::class;
+        return $type === OpeningHour::class;
     }
 }

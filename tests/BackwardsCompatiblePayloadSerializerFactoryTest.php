@@ -26,8 +26,11 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -41,7 +44,6 @@ use CultuurNet\UDB3\Place\Events\DescriptionUpdated as PlaceDescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
@@ -629,18 +631,18 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $expectedPriceInfo = $expectedPriceInfo
             ->withExtraTariff(
                 new Tariff(
-                    new MultilingualString(
+                    new TranslatedTariffName(
                         new Language('nl'),
-                        'Senioren'
+                        new TariffName('Senioren')
                     ),
                     new Money(1000, new Currency('EUR'))
                 )
             )
             ->withExtraTariff(
                 new Tariff(
-                    new MultilingualString(
+                    new TranslatedTariffName(
                         new Language('nl'),
-                        'Studenten'
+                        new TariffName('Studenten')
                     ),
                     new Money(750, new Currency('EUR'))
                 )

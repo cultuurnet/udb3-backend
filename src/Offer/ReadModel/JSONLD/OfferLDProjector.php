@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Offer\AvailableTo;
@@ -668,21 +669,23 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             'priceCurrency' => $basePrice->getCurrency()->getName(),
         ];
 
+        $translatedTariffNameNormalizer = new TranslatedTariffNameNormalizer();
+
         foreach ($priceInfoUpdated->getPriceInfo()->getTariffs() as $tariff) {
             $offerLd->priceInfo[] = [
                 'category' => 'tariff',
-                'name' => $tariff->getName()->serialize(),
+                'name' => $translatedTariffNameNormalizer->normalize($tariff->getName()),
                 'price' => $tariff->getPrice()->getAmount() / 100,
-                'priceCurrency' => $tariff->getCurrency()->getName(),
+                'priceCurrency' => $tariff->getPrice()->getCurrency()->getName(),
             ];
         }
 
         foreach ($priceInfoUpdated->getPriceInfo()->getUiTPASTariffs() as $tariff) {
             $offerLd->priceInfo[] = [
                 'category' => 'uitpas',
-                'name' => $tariff->getName()->serialize(),
+                'name' => $translatedTariffNameNormalizer->normalize($tariff->getName()),
                 'price' => $tariff->getPrice()->getAmount() / 100,
-                'priceCurrency' => $tariff->getCurrency()->getName(),
+                'priceCurrency' => $tariff->getPrice()->getCurrency()->getName(),
             ];
         }
 
