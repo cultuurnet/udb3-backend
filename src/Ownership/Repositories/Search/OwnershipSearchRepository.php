@@ -20,8 +20,6 @@ interface OwnershipSearchRepository
 
     public function getById(string $id): OwnershipItem;
 
-    public function getByItemIdAndOwnerId(string $itemId, string $ownerId): OwnershipItem;
-
     public function search(SearchQuery $searchQuery): OwnershipItemCollection;
 
     public function searchTotal(SearchQuery $searchQuery): int;

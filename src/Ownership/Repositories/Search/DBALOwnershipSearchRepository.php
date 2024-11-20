@@ -75,25 +75,6 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         return $this->createOwnershipSearchItem($ownershipSearchRow);
     }
 
-    public function getByItemIdAndOwnerId(string $itemId, string $ownerId): OwnershipItem
-    {
-        $ownershipSearchRow = $this->connection->createQueryBuilder()
-            ->select('*')
-            ->from('ownership_search')
-            ->where('item_id = :item_id')
-            ->andWhere('owner_id = :owner_id')
-            ->setParameter('item_id', $itemId)
-            ->setParameter('owner_id', $ownerId)
-            ->execute()
-            ->fetchAllAssociative();
-
-        if (count($ownershipSearchRow) !== 1) {
-            throw OwnershipItemNotFound::byItemIdAndOwnerId($itemId, $ownerId);
-        }
-
-        return $this->createOwnershipSearchItem($ownershipSearchRow[0]);
-    }
-
     public function search(SearchQuery $searchQuery): OwnershipItemCollection
     {
         $queryBuilder = $this->createSearchQueryBuilder($searchQuery)
@@ -108,8 +89,7 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         }
 
         $ownershipSearchRows = $queryBuilder
-            ->orderBy('item_id', 'ASC')
-            ->orderBy('state', 'ASC')
+            ->orderBy('owner_id', 'ASC')
             ->execute()
             ->fetchAllAssociative();
 
