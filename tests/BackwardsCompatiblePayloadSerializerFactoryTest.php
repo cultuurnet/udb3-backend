@@ -42,7 +42,6 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated as PlaceDescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated as PlaceDescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
@@ -623,7 +622,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $decoded = Json::decodeAssociatively($serialized);
 
         $expectedPriceInfo = new PriceInfo(
-            new BasePrice(
+            Tariff::createBasePrice(
                 new Money(1500, new Currency('EUR'))
             )
         );

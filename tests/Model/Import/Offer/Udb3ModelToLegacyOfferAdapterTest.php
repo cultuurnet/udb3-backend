@@ -44,7 +44,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
@@ -294,7 +293,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     public function it_should_return_price_info_if_there_is_any(): void
     {
         $expected = new \CultuurNet\UDB3\PriceInfo\PriceInfo(
-            new BasePrice(
+            Tariff::createBasePrice(
                 new Money(1500, new Currency('EUR'))
             )
         );
