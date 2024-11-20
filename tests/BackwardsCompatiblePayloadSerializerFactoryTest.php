@@ -26,6 +26,8 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -627,18 +629,18 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $expectedPriceInfo = $expectedPriceInfo
             ->withExtraTariff(
                 new Tariff(
-                    new MultilingualString(
+                    new TranslatedTariffName(
                         new Language('nl'),
-                        'Senioren'
+                        new TariffName('Senioren')
                     ),
                     new Money(1000, new Currency('EUR'))
                 )
             )
             ->withExtraTariff(
                 new Tariff(
-                    new MultilingualString(
+                    new TranslatedTariffName(
                         new Language('nl'),
-                        'Studenten'
+                        new TariffName('Studenten')
                     ),
                     new Money(750, new Currency('EUR'))
                 )
