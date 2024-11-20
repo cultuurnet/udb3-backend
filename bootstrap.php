@@ -189,7 +189,6 @@ $container->addServiceProvider(new Sapi3SearchServiceProvider());
 // access to services like CurrentUser, which is also provided when an async job is being handled in the CLI and the
 // user who triggered the job is being impersonated.
 $container->addServiceProvider(new AuthServiceProvider());
-$container->addServiceProvider(new Auth0ServiceProvider());
 $container->addServiceProvider(new KeycloakServiceProvider());
 
 /** UDB2 */
