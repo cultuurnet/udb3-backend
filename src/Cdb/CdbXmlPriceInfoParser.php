@@ -6,13 +6,13 @@ namespace CultuurNet\UDB3\Cdb;
 
 use CultureFeed_Cdb_Data_Detail;
 use CultureFeed_Cdb_Data_Price;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\MoneyFactory;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\PriceInfo\Tariff;
 use Money\Currency;
 
 final class CdbXmlPriceInfoParser

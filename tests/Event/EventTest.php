@@ -61,7 +61,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\PriceInfo\Tariff as LegacyTariff;
 use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -658,7 +657,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Tariff 1')
@@ -688,7 +687,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(90, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Tariff 1')
@@ -726,7 +725,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Tariff 1')
@@ -749,7 +748,7 @@ class EventTest extends AggregateRootScenarioTestCase
                             )
                         )
                     ))->withUiTPASTariffs([
-                        new LegacyTariff(
+                        new Tariff(
                             new TranslatedTariffName(
                                 new Language('nl'),
                                 new TariffName('Tariff 1')
@@ -767,7 +766,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(90, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Tariff 1')
@@ -805,7 +804,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Tariff 1')
@@ -856,7 +855,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Tariff 1')
@@ -880,7 +879,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         )
                     )
                     )->withUiTPASTariffs([
-                        new LegacyTariff(
+                        new Tariff(
                             new TranslatedTariffName(
                                 new Language('nl'),
                                 new TariffName('Tariff 1')
@@ -948,7 +947,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 fn (Event $event) => $event->updatePriceInfo(
                     (new PriceInfo((new BasePrice(new Money(1250, new Currency('EUR'))))))
                         ->withTariffs([
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Met kinderen')
@@ -962,7 +961,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 fn (Event $event) => $event->updatePriceInfo(
                     (new PriceInfo((new BasePrice(new Money(1250, new Currency('EUR'))))))
                         ->withTariffs([
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Met kinderen')
@@ -977,7 +976,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     $eventId,
                     (new PriceInfo(new BasePrice(new Money(1250, new Currency('EUR')))))
                         ->withTariffs([
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Met kinderen')
@@ -1923,7 +1922,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Tariff 1')
@@ -1933,7 +1932,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Tariff 2')
@@ -2024,7 +2023,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
                         ->withUiTPASTariffs([
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Tariff 1')
@@ -2034,7 +2033,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                            new LegacyTariff(
+                            new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Tariff 2')
