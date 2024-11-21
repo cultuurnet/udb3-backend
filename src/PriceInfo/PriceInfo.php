@@ -87,20 +87,18 @@ class PriceInfo implements Serializable
             'uitpas_tariffs' => [],
         ];
 
+        $normalize = fn (Tariff $tariff): array => [
+            'price' => $tariff->getPrice()->getAmount(),
+            'currency' => $tariff->getPrice()->getCurrency()->getName(),
+            'name' => (new TranslatedTariffNameNormalizer())->normalize($tariff->getName()),
+        ];
+
         foreach ($this->tariffs as $tariff) {
-            $serialized['tariffs'][] = [
-                'price' => $tariff->getPrice()->getAmount(),
-                'currency' => $tariff->getPrice()->getCurrency()->getName(),
-                'name' => (new TranslatedTariffNameNormalizer())->normalize($tariff->getName()),
-            ];
+            $serialized['tariffs'][] = $normalize($tariff);
         }
 
         foreach ($this->uitpasTariffs as $uitpasTariff) {
-            $serialized['uitpas_tariffs'][] = [
-                'price' => $uitpasTariff->getPrice()->getAmount(),
-                'currency' => $uitpasTariff->getPrice()->getCurrency()->getName(),
-                'name' => (new TranslatedTariffNameNormalizer())->normalize($uitpasTariff->getName()),
-            ];
+            $serialized['uitpas_tariffs'][] = $normalize($uitpasTariff);
         }
 
         return $serialized;
@@ -114,35 +112,26 @@ class PriceInfo implements Serializable
             )
         );
 
-        foreach ($data['tariffs'] as $tariffData) {
+        $denormalize = function (array $tariffData): Tariff {
             /** @var TranslatedTariffName $tariffName */
             $tariffName = (new TranslatedTariffNameDenormalizer())->denormalize(
                 $tariffData['name'],
                 TranslatedTariffName::class
             );
 
-            $priceInfo = $priceInfo->withExtraTariff(
-                new Tariff(
-                    $tariffName,
-                    MoneyFactory::createFromCents($tariffData['price'], new Currency($tariffData['currency']))
-                )
+            return new Tariff(
+                $tariffName,
+                MoneyFactory::createFromCents($tariffData['price'], new Currency($tariffData['currency']))
             );
+        };
+
+        foreach ($data['tariffs'] as $tariffData) {
+            $priceInfo = $priceInfo->withExtraTariff($denormalize($tariffData));
         }
 
         if (isset($data['uitpas_tariffs'])) {
             foreach ($data['uitpas_tariffs'] as $uitpasTariffData) {
-                /** @var TranslatedTariffName $tariffName */
-                $tariffName = (new TranslatedTariffNameDenormalizer())->denormalize(
-                    $uitpasTariffData['name'],
-                    TranslatedTariffName::class
-                );
-
-                $priceInfo = $priceInfo->withExtraUiTPASTariff(
-                    new Tariff(
-                        $tariffName,
-                        MoneyFactory::createFromCents($uitpasTariffData['price'], new Currency($uitpasTariffData['currency']))
-                    )
-                );
+                $priceInfo = $priceInfo->withExtraUiTPASTariff($denormalize($uitpasTariffData));
             }
         }
 
