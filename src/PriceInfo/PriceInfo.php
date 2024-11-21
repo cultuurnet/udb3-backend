@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\PriceInfo;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo as Udb3ModelPriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
+use CultuurNet\UDB3\MoneyFactory;
+use Money\Currency;
 
 /**
  * @deprecated
@@ -76,19 +79,28 @@ class PriceInfo implements Serializable
     public function serialize(): array
     {
         $serialized = [
-            'base' => (new TariffNormalizer(true))->normalize($this->basePrice),
+            'base' => [
+                'price' => $this->basePrice->getPrice()->getAmount(),
+                'currency' => $this->basePrice->getPrice()->getCurrency()->getName(),
+            ],
             'tariffs' => [],
             'uitpas_tariffs' => [],
         ];
 
-        $tariffNormalizer = new TariffNormalizer(false);
-
         foreach ($this->tariffs as $tariff) {
-            $serialized['tariffs'][] = $tariffNormalizer->normalize($tariff);
+            $serialized['tariffs'][] = [
+                'price' => $tariff->getPrice()->getAmount(),
+                'currency' => $tariff->getPrice()->getCurrency()->getName(),
+                'name' => (new TranslatedTariffNameNormalizer())->normalize($tariff->getName()),
+            ];
         }
 
         foreach ($this->uitpasTariffs as $uitpasTariff) {
-            $serialized['uitpas_tariffs'][] = $tariffNormalizer->normalize($uitpasTariff);
+            $serialized['uitpas_tariffs'][] = [
+                'price' => $uitpasTariff->getPrice()->getAmount(),
+                'currency' => $uitpasTariff->getPrice()->getCurrency()->getName(),
+                'name' => (new TranslatedTariffNameNormalizer())->normalize($uitpasTariff->getName()),
+            ];
         }
 
         return $serialized;
@@ -97,21 +109,39 @@ class PriceInfo implements Serializable
     public static function deserialize(array $data): PriceInfo
     {
         $priceInfo = new PriceInfo(
-            (new TariffDenormalizer(true))->denormalize($data['base'], Tariff::class)
+            Tariff::createBasePrice(
+                MoneyFactory::createFromCents($data['base']['price'], new Currency($data['base']['currency']))
+            )
         );
 
-        $tariffDenormalizer = new TariffDenormalizer(false);
-
         foreach ($data['tariffs'] as $tariffData) {
+            /** @var TranslatedTariffName $tariffName */
+            $tariffName = (new TranslatedTariffNameDenormalizer())->denormalize(
+                $tariffData['name'],
+                TranslatedTariffName::class
+            );
+
             $priceInfo = $priceInfo->withExtraTariff(
-                $tariffDenormalizer->denormalize($tariffData, Tariff::class)
+                new Tariff(
+                    $tariffName,
+                    MoneyFactory::createFromCents($tariffData['price'], new Currency($tariffData['currency']))
+                )
             );
         }
 
         if (isset($data['uitpas_tariffs'])) {
             foreach ($data['uitpas_tariffs'] as $uitpasTariffData) {
+                /** @var TranslatedTariffName $tariffName */
+                $tariffName = (new TranslatedTariffNameDenormalizer())->denormalize(
+                    $uitpasTariffData['name'],
+                    TranslatedTariffName::class
+                );
+
                 $priceInfo = $priceInfo->withExtraUiTPASTariff(
-                    $tariffDenormalizer->denormalize($uitpasTariffData, Tariff::class)
+                    new Tariff(
+                        $tariffName,
+                        MoneyFactory::createFromCents($uitpasTariffData['price'], new Currency($uitpasTariffData['currency']))
+                    )
                 );
             }
         }
