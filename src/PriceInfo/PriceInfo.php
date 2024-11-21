@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo as Udb3ModelPriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 
 /**
  * @deprecated
@@ -18,31 +19,25 @@ class PriceInfo implements Serializable
 {
     private Tariff $basePrice;
 
-    /**
-     * @var Tariff[]
-     */
-    private array $tariffs;
+    private Tariffs $tariffs;
 
-    /**
-     * @var Tariff[]
-     */
-    private array $uitpasTariffs;
+    private Tariffs $uitpasTariffs;
 
     public function __construct(Tariff $basePrice)
     {
         $this->basePrice = $basePrice;
-        $this->tariffs = [];
-        $this->uitpasTariffs = [];
+        $this->tariffs = new Tariffs();
+        $this->uitpasTariffs = new Tariffs();
     }
 
     public function withExtraTariff(Tariff $tariff): PriceInfo
     {
         $c = clone $this;
-        $c->tariffs[] = $tariff;
+        $c->tariffs = $this->tariffs->with($tariff);
         return $c;
     }
 
-    public function withTariffs(array $tariffs): PriceInfo
+    public function withTariffs(Tariffs $tariffs): PriceInfo
     {
         $c = clone $this;
         $c->tariffs = $tariffs;
@@ -52,11 +47,11 @@ class PriceInfo implements Serializable
     public function withExtraUiTPASTariff(Tariff $tariff): PriceInfo
     {
         $c = clone $this;
-        $c->uitpasTariffs[] = $tariff;
+        $c->uitpasTariffs = $this->uitpasTariffs->with($tariff);
         return $c;
     }
 
-    public function withUiTPASTariffs(array $tariffs): PriceInfo
+    public function withUiTPASTariffs(Tariffs $tariffs): PriceInfo
     {
         $c = clone $this;
         $c->uitpasTariffs = $tariffs;
@@ -68,15 +63,12 @@ class PriceInfo implements Serializable
         return $this->basePrice;
     }
 
-    /**
-     * @return Tariff[]
-     */
-    public function getTariffs(): array
+    public function getTariffs(): Tariffs
     {
         return $this->tariffs;
     }
 
-    public function getUiTPASTariffs(): array
+    public function getUiTPASTariffs(): Tariffs
     {
         return $this->uitpasTariffs;
     }
