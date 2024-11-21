@@ -655,7 +655,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
+                        ->withUiTPASTariffs(new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -666,7 +666,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ])
             ->when(
@@ -685,7 +685,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(Tariff::createBasePrice(new Money(90, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
+                        ->withUiTPASTariffs(new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -696,7 +696,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ]);
     }
@@ -723,7 +723,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
+                        ->withUiTPASTariffs(new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -734,7 +734,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ])
             ->when(
@@ -746,7 +746,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                 new Currency('EUR')
                             )
                         )
-                    ))->withUiTPASTariffs([
+                    ))->withUiTPASTariffs(new Tariffs(
                         new Tariff(
                             new TranslatedTariffName(
                                 new Language('nl'),
@@ -757,14 +757,14 @@ class EventTest extends AggregateRootScenarioTestCase
                                 new Currency('EUR')
                             )
                         ),
-                    ])
+                    ))
                 )
             )
             ->then([
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(Tariff::createBasePrice(new Money(90, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
+                        ->withUiTPASTariffs(new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -775,7 +775,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ]);
     }
@@ -802,7 +802,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
+                        ->withUiTPASTariffs(new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -813,7 +813,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ])
             ->when(
@@ -853,7 +853,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
+                        ->withUiTPASTariffs(new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -864,7 +864,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ])
             ->when(
@@ -877,7 +877,7 @@ class EventTest extends AggregateRootScenarioTestCase
                             )
                         )
                     )
-                    )->withUiTPASTariffs([
+                    )->withUiTPASTariffs(new Tariffs(
                         new Tariff(
                             new TranslatedTariffName(
                                 new Language('nl'),
@@ -888,7 +888,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                 new Currency('EUR')
                             )
                         ),
-                    ])
+                    ))
                 )
             )
             ->then([]);
@@ -945,7 +945,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 fn (Event $event) => $event->updatePriceInfo(
                     (new PriceInfo((Tariff::createBasePrice(new Money(1250, new Currency('EUR'))))))
-                        ->withTariffs([
+                        ->withTariffs(new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -953,13 +953,13 @@ class EventTest extends AggregateRootScenarioTestCase
                                 ),
                                 new Money(2000, new Currency('EUR'))
                             ),
-                        ])
+                        ))
                 )
             )
             ->when(
                 fn (Event $event) => $event->updatePriceInfo(
                     (new PriceInfo((Tariff::createBasePrice(new Money(1250, new Currency('EUR'))))))
-                        ->withTariffs([
+                        ->withTariffs(new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -967,14 +967,14 @@ class EventTest extends AggregateRootScenarioTestCase
                                 ),
                                 new Money(1499, new Currency('EUR'))
                             ),
-                        ])
+                        ))
                 )
             )
             ->then([
                 new PriceInfoUpdated(
                     $eventId,
                     (new PriceInfo(Tariff::createBasePrice(new Money(1250, new Currency('EUR')))))
-                        ->withTariffs([
+                        ->withTariffs(new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -982,7 +982,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                 ),
                                 new Money(1499, new Currency('EUR'))
                             ),
-                        ])
+                        ))
                 ),
             ]);
     }
@@ -1920,7 +1920,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
+                        ->withUiTPASTariffs(new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -1941,7 +1941,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ])
             ->when(
@@ -2021,7 +2021,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
+                        ->withUiTPASTariffs(new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -2042,7 +2042,7 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        )),
                 ),
             ]);
     }
