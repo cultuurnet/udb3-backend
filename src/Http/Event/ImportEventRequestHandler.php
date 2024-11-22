@@ -238,7 +238,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             );
         }
 
-        $ageRange = $eventAdapter->getAgeRange();
+        $ageRange = $event->getAgeRange();
         if ($ageRange) {
             $commands[] = new UpdateTypicalAgeRange($eventId, $ageRange);
         } else {

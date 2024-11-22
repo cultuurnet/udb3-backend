@@ -15,6 +15,7 @@ use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
@@ -378,7 +379,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     {
         $typicalAgeRangeUpdatedEvent = $this->createTypicalAgeRangeUpdatedEvent($typicalAgeRange);
 
-        if (empty($this->typicalAgeRange) || !$this->typicalAgeRange->sameAs($typicalAgeRangeUpdatedEvent->getTypicalAgeRange())) {
+        if (empty($this->typicalAgeRange) ||
+            !($this->typicalAgeRange->toString() === $typicalAgeRangeUpdatedEvent->getTypicalAgeRange()->toString())) {
             $this->apply($typicalAgeRangeUpdatedEvent);
         }
     }
