@@ -8,6 +8,7 @@ use CultureFeed_Cdb_Data_Detail;
 use CultureFeed_Cdb_Data_Price;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\MoneyFactory;
@@ -118,6 +119,6 @@ final class CdbXmlPriceInfoParser
             }
         }
 
-        return (new PriceInfo($basePrice))->withTariffs($tariffs);
+        return (new PriceInfo($basePrice))->withTariffs(new Tariffs(...$tariffs));
     }
 }

@@ -73,7 +73,7 @@ class PriceInfoTest extends TestCase
      */
     public function it_returns_any_extra_tariffs(): void
     {
-        $this->assertEquals($this->tariffs, $this->priceInfo->getTariffs());
+        $this->assertEquals(new Tariffs(...$this->tariffs), $this->priceInfo->getTariffs());
     }
 
     /**
@@ -81,7 +81,7 @@ class PriceInfoTest extends TestCase
      */
     public function it_returns_any_extra_uitpas_tariffs(): void
     {
-        $this->assertEquals($this->uitpasTariffs, $this->priceInfo->getUiTPASTariffs());
+        $this->assertEquals(new Tariffs(...$this->uitpasTariffs), $this->priceInfo->getUiTPASTariffs());
     }
 
     /**

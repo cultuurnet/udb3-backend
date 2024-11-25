@@ -503,11 +503,7 @@ final class Event extends Offer
             return;
         }
 
-        $legacyUiTPASTariffs = [];
-        foreach ($tariffs as $tariff) {
-            $legacyUiTPASTariffs[] = $tariff;
-        }
-        $newPriceInfo = $this->priceInfo->withUiTPASTariffs($legacyUiTPASTariffs);
+        $newPriceInfo = $this->priceInfo->withUiTPASTariffs($tariffs);
 
         if ($this->priceInfo->serialize() !== $newPriceInfo->serialize()) {
             $this->apply(new PriceInfoUpdated($this->eventId, $newPriceInfo));
