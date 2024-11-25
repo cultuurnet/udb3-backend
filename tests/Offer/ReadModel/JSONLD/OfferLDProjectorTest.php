@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Offer\Item\Events\AvailableFromUpdated;
@@ -2471,7 +2472,7 @@ class OfferLDProjectorTest extends TestCase
             'http://www.google.be',
             new MultilingualString(new Language('nl'), 'Dit is een booking info event'),
             new TelephoneNumber('0471123456'),
-            'test@test.be'
+            new EmailAddress('test@test.be')
         ));
 
         $body = $this->project($event, $id, null, $this->recordedOn->toBroadwayDateTime());

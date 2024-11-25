@@ -2014,21 +2014,21 @@ class OfferTest extends AggregateRootScenarioTestCase
             'www.publiq.be',
             new MultilingualString(new Language('nl'), 'publiq'),
             new TelephoneNumber('02 123 45 67'),
-            'info@publiq.be'
+            new EmailAddress('info@publiq.be')
         );
 
         $sameBookingInfo = new BookingInfo(
             'www.publiq.be',
             new MultilingualString(new Language('nl'), 'publiq'),
             new TelephoneNumber('02 123 45 67'),
-            'info@publiq.be'
+            new EmailAddress('info@publiq.be')
         );
 
         $otherBookingInfo = new BookingInfo(
             'www.2dotstwice.be',
             new MultilingualString(new Language('nl'), '2dotstwice'),
             new TelephoneNumber('016 12 34 56'),
-            'info@2dotstwice.be'
+            new EmailAddress('info@2dotstwice.be')
         );
 
         $this->scenario

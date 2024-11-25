@@ -608,7 +608,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'www.publiq.be',
             new MultilingualString(new Language('nl'), 'publiq'),
             new TelephoneNumber('02 123 45 67'),
-            'info@publiq.be'
+            new EmailAddress('info@publiq.be')
         );
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
         $xmlNamespace = self::NS_CDBXML_3_2;

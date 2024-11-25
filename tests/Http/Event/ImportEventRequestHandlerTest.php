@@ -674,7 +674,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                         (new MultilingualString(new Language('nl'), 'Nederlandse label'))
                             ->withTranslation(new Language('en'), 'English label'),
                         new TelephoneNumber('016 12 34 56'),
-                        'info@publiq.be',
+                        new EmailAddress('info@publiq.be'),
                         new DateTimeImmutable('2021-05-17T22:00:00+00:00'),
                         new DateTimeImmutable('2021-05-21T22:00:00+00:00')
                     )
