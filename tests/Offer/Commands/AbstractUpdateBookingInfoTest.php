@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -40,8 +41,10 @@ class AbstractUpdateBookingInfoTest extends TestCase
             ),
             new TelephoneNumber('0123456789'),
             new EmailAddress('foo@bar.com'),
-            DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
-            DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+            BookingAvailability::fromTo(
+                DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+            )
         );
 
         $this->updateBookingInfo = $this->getMockForAbstractClass(
@@ -66,8 +69,10 @@ class AbstractUpdateBookingInfoTest extends TestCase
             ),
             new TelephoneNumber('0123456789'),
             new EmailAddress('foo@bar.com'),
-            DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
-            DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+            BookingAvailability::fromTo(
+                DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+            )
         );
 
         $this->assertEquals($expectedBookingInfo, $bookingInfo);

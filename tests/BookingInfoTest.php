@@ -92,8 +92,10 @@ class BookingInfoTest extends TestCase
             ),
             new TelephoneNumber('044/444444'),
             new EmailAddress('info@publiq.be'),
-            DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
-            DateTimeFactory::fromAtom('2018-01-10T00:00:00+01:00')
+            BookingAvailability::fromTo(
+                DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2018-01-10T00:00:00+01:00')
+            )
         );
 
         $actual = BookingInfo::fromUdb3ModelBookingInfo($udb3ModelBookingInfo);
@@ -125,7 +127,6 @@ class BookingInfoTest extends TestCase
             null,
             null,
             null,
-            null,
             null
         );
 
@@ -137,24 +138,21 @@ class BookingInfoTest extends TestCase
         $this->assertNull($bookingInfo->getWebsite());
         $this->assertNull($bookingInfo->getPhone());
         $this->assertNull($bookingInfo->getEmail());
-        $this->assertNull($bookingInfo->getAvailabilityStarts());
-        $this->assertNull($bookingInfo->getAvailabilityEnds());
+        $this->assertNull($bookingInfo->getAvailability());
         $this->assertEquals($expectedSerialized, $bookingInfo->serialize());
         $this->assertEquals($expectedJson, $bookingInfo->toJsonLd());
 
         $this->assertNull($bookingInfoWithEmptyString->getWebsite());
         $this->assertNull($bookingInfoWithEmptyString->getPhone());
         $this->assertNull($bookingInfoWithEmptyString->getEmail());
-        $this->assertNull($bookingInfoWithEmptyString->getAvailabilityStarts());
-        $this->assertNull($bookingInfoWithEmptyString->getAvailabilityEnds());
+        $this->assertNull($bookingInfoWithEmptyString->getAvailability());
         $this->assertEquals($expectedSerialized, $bookingInfoWithEmptyString->serialize());
         $this->assertEquals($expectedJson, $bookingInfoWithEmptyString->toJsonLd());
 
         $this->assertNull($deserialized->getWebsite());
         $this->assertNull($deserialized->getPhone());
         $this->assertNull($deserialized->getEmail());
-        $this->assertNull($deserialized->getAvailabilityStarts());
-        $this->assertNull($deserialized->getAvailabilityEnds());
+        $this->assertNull($deserialized->getAvailability());
         $this->assertEquals($expectedSerialized, $deserialized->serialize());
         $this->assertEquals($expectedJson, $deserialized->toJsonLd());
     }
@@ -171,7 +169,6 @@ class BookingInfoTest extends TestCase
             null,
             $phone,
             $email,
-            null,
             null
         );
 
@@ -215,8 +212,10 @@ class BookingInfoTest extends TestCase
             ),
             new TelephoneNumber('044/444444'),
             new EmailAddress('info@publiq.be'),
-            DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
-            DateTimeFactory::fromAtom('2018-01-14T23:59:59+01:00')
+            BookingAvailability::fromTo(
+                DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2018-01-14T23:59:59+01:00')
+            )
         );
 
         $actual = BookingInfo::deserialize($data);

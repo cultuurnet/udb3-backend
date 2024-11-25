@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint as Udb3ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -124,9 +125,11 @@ abstract class OfferLDProjectorTestBase extends TestCase
         );
         $phone = new TelephoneNumber('045');
         $email = new EmailAddress('test@test.com');
-        $availabilityStarts = DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00');
-        $availabilityEnds = DateTimeFactory::fromAtom('2018-01-31T00:00:00+01:00');
-        $bookingInfo = new BookingInfo($websiteLink, $phone, $email, $availabilityStarts, $availabilityEnds);
+        $bookingAvailability = BookingAvailability::fromTo(
+            DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
+            DateTimeFactory::fromAtom('2018-01-31T00:00:00+01:00')
+        );
+        $bookingInfo = new BookingInfo($websiteLink, $phone, $email, $bookingAvailability);
         $eventClass = $this->getEventClass('BookingInfoUpdated');
         $bookingInfoUpdated = new $eventClass($id, $bookingInfo);
 

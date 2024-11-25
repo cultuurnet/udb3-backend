@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Offer;
 
+use CultuurNet\UDB3\BookingInfo as LegacyBookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
@@ -311,7 +312,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
      */
     public function it_should_return_empty_booking_info_by_default(): void
     {
-        $expected = new \CultuurNet\UDB3\BookingInfo();
+        $expected = new LegacyBookingInfo();
         $actual = $this->adapter->getBookingInfo();
         $this->assertEquals($expected, $actual);
     }
@@ -321,7 +322,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
      */
     public function it_should_return_booking_info_if_there_is_any(): void
     {
-        $expected = new \CultuurNet\UDB3\BookingInfo(
+        $expected = new LegacyBookingInfo(
             new WebsiteLink(
                 new Url('https://www.publiq.be'),
                 new TranslatedWebsiteLabel(
@@ -331,8 +332,10 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
             ),
             new TelephoneNumber('044/444444'),
             new EmailAddress('info@publiq.be'),
-            new DateTimeImmutable('2018-01-01T10:00:00+01:00'),
-            new DateTimeImmutable('2018-01-10T10:00:00+01:00')
+            BookingAvailability::fromTo(
+                new DateTimeImmutable('2018-01-01T10:00:00+01:00'),
+                new DateTimeImmutable('2018-01-10T10:00:00+01:00')
+            )
         );
         $actual = $this->completeAdapter->getBookingInfo();
         $this->assertEquals($expected, $actual);

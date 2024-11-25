@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -109,8 +110,10 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             ),
             new TelephoneNumber('02/1232323'),
             new EmailAddress('info@publiq.be'),
-            DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
-            DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
+            BookingAvailability::fromTo(
+                DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
+            )
         );
 
         $bookingInfoSpecialCharactersUrl = new BookingInfo(
@@ -123,8 +126,10 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             ),
             new TelephoneNumber('02/1232323'),
             new EmailAddress('info@publiq.be'),
-            DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
-            DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
+            BookingAvailability::fromTo(
+                DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
+            )
         );
 
         return [
