@@ -403,7 +403,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
             new MultilingualString(new Language('nl'), 'Publiq'),
-            '02 123 45 67',
+            new TelephoneNumber('02 123 45 67'),
             'info@publiq.be'
         );
 

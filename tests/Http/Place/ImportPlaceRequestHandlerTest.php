@@ -866,7 +866,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                             new Language('nl'),
                             'Bestel hier je tickets'
                         ),
-                        '016 10 20 30',
+                        new TelephoneNumber('016 10 20 30'),
                         'booking@dehel.be',
                         new DateTimeImmutable('2020-05-17T22:00:00+00:00'),
                         new DateTimeImmutable('2028-05-17T22:00:00+00:00'),
