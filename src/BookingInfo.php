@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo as Udb3ModelBookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 
@@ -17,7 +18,7 @@ final class BookingInfo implements JsonLdSerializableInterface
 {
     private ?TelephoneNumber $phone;
 
-    private ?string $email;
+    private ?EmailAddress $email;
 
     private ?string $url;
 
@@ -31,7 +32,7 @@ final class BookingInfo implements JsonLdSerializableInterface
         ?string $url = null,
         ?MultilingualString $urlLabel = null,
         ?TelephoneNumber $phone = null,
-        ?string $email = null,
+        ?EmailAddress $email = null,
         ?DateTimeImmutable $availabilityStarts = null,
         ?DateTimeImmutable $availabilityEnds = null
     ) {
@@ -41,7 +42,6 @@ final class BookingInfo implements JsonLdSerializableInterface
         // API clients are also allowed to send empty strings for BookingInfo properties via EntryAPI3, which should
         // also be treated as null.
         $url = $this->castEmptyStringToNull($url);
-        $email = $this->castEmptyStringToNull($email);
 
         $this->url = $url;
         $this->urlLabel = $urlLabel;
@@ -56,7 +56,7 @@ final class BookingInfo implements JsonLdSerializableInterface
         return $this->phone;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): ?EmailAddress
     {
         return $this->email;
     }
@@ -86,7 +86,7 @@ final class BookingInfo implements JsonLdSerializableInterface
         $serialized = array_filter(
             [
               'phone' => $this->phone ? $this->phone->toString() : null,
-              'email' => $this->email,
+              'email' => $this->email ? $this->email->toString() : null,
               'url' => $this->url,
             ]
         );
@@ -138,7 +138,7 @@ final class BookingInfo implements JsonLdSerializableInterface
             $data['url'],
             $urlLabel,
             !empty($data['phone']) ? new TelephoneNumber($data['phone']) : null,
-            $data['email'],
+            !empty($data['email']) ? new EmailAddress($data['email']) : null,
             $availabilityStarts,
             $availabilityEnds
         );
@@ -173,7 +173,7 @@ final class BookingInfo implements JsonLdSerializableInterface
         }
 
         if ($udb3ModelEmail = $udb3ModelBookingInfo->getEmailAddress()) {
-            $email = $udb3ModelEmail->toString();
+            $email = $udb3ModelEmail;
         }
 
         if ($udb3ModelAvailability = $udb3ModelBookingInfo->getAvailability()) {
