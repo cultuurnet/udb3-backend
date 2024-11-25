@@ -62,8 +62,11 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
@@ -75,7 +78,6 @@ use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use Money\Currency;
 use Money\Money;
@@ -670,9 +672,16 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateBookingInfo(
                     $eventId,
                     new BookingInfo(
-                        'https://www.publiq.be',
-                        (new MultilingualString(new Language('nl'), 'Nederlandse label'))
-                            ->withTranslation(new Language('en'), 'English label'),
+                        new WebsiteLink(
+                            new Url('https://www.publiq.be'),
+                            (new TranslatedWebsiteLabel(
+                                new Language('nl'),
+                                new WebsiteLabel('Nederlandse label')
+                            ))->withTranslation(
+                                new Language('en'),
+                                new WebsiteLabel('English label')
+                            )
+                        ),
                         new TelephoneNumber('016 12 34 56'),
                         new EmailAddress('info@publiq.be'),
                         new DateTimeImmutable('2021-05-17T22:00:00+00:00'),

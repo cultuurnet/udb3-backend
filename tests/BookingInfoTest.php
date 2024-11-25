@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\TestCase;
 
 class BookingInfoTest extends TestCase
@@ -23,30 +22,36 @@ class BookingInfoTest extends TestCase
     public function it_can_compare(): void
     {
         $bookingInfo = new BookingInfo(
-            'www.publiq.be',
-            new MultilingualString(
-                new Language('nl'),
-                'publiq'
+            new WebsiteLink(
+                new Url('https://www.publiq.be'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('publiq')
+                )
             ),
             new TelephoneNumber('02 123 45 67'),
             new EmailAddress('info@publiq.be')
         );
 
         $sameBookingInfo = new BookingInfo(
-            'www.publiq.be',
-            new MultilingualString(
-                new Language('nl'),
-                'publiq'
+            new WebsiteLink(
+                new Url('https://www.publiq.be'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('publiq')
+                )
             ),
             new TelephoneNumber('02 123 45 67'),
             new EmailAddress('info@publiq.be')
         );
 
         $otherBookingInfo = new BookingInfo(
-            'www.2dotstwice.be',
-            new MultilingualString(
-                new Language('nl'),
-                '2dotstwice'
+            new WebsiteLink(
+                new Url('https://www.2dotstwice.be'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('2dotstwice')
+                )
             ),
             new TelephoneNumber('016 12 34 56'),
             new EmailAddress('info@2dotstwice.be')
@@ -78,10 +83,12 @@ class BookingInfoTest extends TestCase
         );
 
         $expected = new BookingInfo(
-            'https://publiq.be',
-            new MultilingualString(
-                new Language('nl'),
-                'publiq'
+            new WebsiteLink(
+                new Url('https://publiq.be'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('publiq')
+                )
             ),
             new TelephoneNumber('044/444444'),
             new EmailAddress('info@publiq.be'),
@@ -115,7 +122,6 @@ class BookingInfoTest extends TestCase
         $bookingInfo = new BookingInfo();
 
         $bookingInfoWithEmptyString = new BookingInfo(
-            '',
             null,
             null,
             null,
@@ -128,8 +134,7 @@ class BookingInfoTest extends TestCase
         $expectedSerialized = [];
         $expectedJson = [];
 
-        $this->assertNull($bookingInfo->getUrl());
-        $this->assertNull($bookingInfo->getUrlLabel());
+        $this->assertNull($bookingInfo->getWebsite());
         $this->assertNull($bookingInfo->getPhone());
         $this->assertNull($bookingInfo->getEmail());
         $this->assertNull($bookingInfo->getAvailabilityStarts());
@@ -137,8 +142,7 @@ class BookingInfoTest extends TestCase
         $this->assertEquals($expectedSerialized, $bookingInfo->serialize());
         $this->assertEquals($expectedJson, $bookingInfo->toJsonLd());
 
-        $this->assertNull($bookingInfoWithEmptyString->getUrl());
-        $this->assertNull($bookingInfoWithEmptyString->getUrlLabel());
+        $this->assertNull($bookingInfoWithEmptyString->getWebsite());
         $this->assertNull($bookingInfoWithEmptyString->getPhone());
         $this->assertNull($bookingInfoWithEmptyString->getEmail());
         $this->assertNull($bookingInfoWithEmptyString->getAvailabilityStarts());
@@ -146,8 +150,7 @@ class BookingInfoTest extends TestCase
         $this->assertEquals($expectedSerialized, $bookingInfoWithEmptyString->serialize());
         $this->assertEquals($expectedJson, $bookingInfoWithEmptyString->toJsonLd());
 
-        $this->assertNull($deserialized->getUrl());
-        $this->assertNull($deserialized->getUrlLabel());
+        $this->assertNull($deserialized->getWebsite());
         $this->assertNull($deserialized->getPhone());
         $this->assertNull($deserialized->getEmail());
         $this->assertNull($deserialized->getAvailabilityStarts());
@@ -165,7 +168,6 @@ class BookingInfoTest extends TestCase
         $email = new EmailAddress('info@publiq.be');
 
         $original = new BookingInfo(
-            null,
             null,
             $phone,
             $email,
@@ -204,10 +206,12 @@ class BookingInfoTest extends TestCase
         ];
 
         $expected = new BookingInfo(
-            'https://www.publiq.be',
-            new MultilingualString(
-                new Language('nl'),
-                'publiq'
+            new WebsiteLink(
+                new Url('https://www.publiq.be'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('publiq')
+                )
             ),
             new TelephoneNumber('044/444444'),
             new EmailAddress('info@publiq.be'),

@@ -26,8 +26,11 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionDeleted;
@@ -61,7 +64,6 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\Item;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 
 class OfferTest extends AggregateRootScenarioTestCase
 {
@@ -2011,22 +2013,37 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
 
         $bookingInfo = new BookingInfo(
-            'www.publiq.be',
-            new MultilingualString(new Language('nl'), 'publiq'),
+            new WebsiteLink(
+                new Url('https://www.publiq.be'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('publiq')
+                )
+            ),
             new TelephoneNumber('02 123 45 67'),
             new EmailAddress('info@publiq.be')
         );
 
         $sameBookingInfo = new BookingInfo(
-            'www.publiq.be',
-            new MultilingualString(new Language('nl'), 'publiq'),
+            new WebsiteLink(
+                new Url('https://www.publiq.be'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('publiq')
+                )
+            ),
             new TelephoneNumber('02 123 45 67'),
             new EmailAddress('info@publiq.be')
         );
 
         $otherBookingInfo = new BookingInfo(
-            'www.2dotstwice.be',
-            new MultilingualString(new Language('nl'), '2dotstwice'),
+            new WebsiteLink(
+                new Url('https://www.2dotstwice.be'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('2dotstwice')
+                )
+            ),
             new TelephoneNumber('016 12 34 56'),
             new EmailAddress('info@2dotstwice.be')
         );
