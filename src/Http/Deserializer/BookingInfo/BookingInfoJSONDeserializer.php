@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Deserializer\BookingInfo;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 
 /**
@@ -22,10 +23,7 @@ class BookingInfoJSONDeserializer extends JSONDeserializer
 
     public function deserialize(string $data): BookingInfo
     {
-        /* @var array $data */
-        $data = parent::deserialize($data);
-
-        $bookingInfo = $data['bookingInfo'];
+        $bookingInfo = parent::deserialize($data)['bookingInfo'];
 
         $availabilityStarts = null;
         if (isset($bookingInfo['availabilityStarts'])) {
@@ -40,7 +38,7 @@ class BookingInfoJSONDeserializer extends JSONDeserializer
         return new BookingInfo(
             isset($bookingInfo['url']) ? (string) $bookingInfo['url'] : null,
             isset($bookingInfo['urlLabel']) ? MultilingualString::deserialize($bookingInfo['urlLabel']) : null,
-            isset($bookingInfo['phone']) ? (string) $bookingInfo['phone'] : null,
+            !empty($bookingInfo['phone']) ? new TelephoneNumber($bookingInfo['phone']) : null,
             isset($bookingInfo['email']) ? (string) $bookingInfo['email'] : null,
             $availabilityStarts,
             $availabilityEnds

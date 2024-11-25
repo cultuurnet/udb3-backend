@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo as Udb3ModelBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 
@@ -14,7 +15,7 @@ use DateTimeImmutable;
  */
 final class BookingInfo implements JsonLdSerializableInterface
 {
-    private ?string $phone;
+    private ?TelephoneNumber $phone;
 
     private ?string $email;
 
@@ -29,7 +30,7 @@ final class BookingInfo implements JsonLdSerializableInterface
     public function __construct(
         ?string $url = null,
         ?MultilingualString $urlLabel = null,
-        ?string $phone = null,
+        ?TelephoneNumber $phone = null,
         ?string $email = null,
         ?DateTimeImmutable $availabilityStarts = null,
         ?DateTimeImmutable $availabilityEnds = null
@@ -40,7 +41,6 @@ final class BookingInfo implements JsonLdSerializableInterface
         // API clients are also allowed to send empty strings for BookingInfo properties via EntryAPI3, which should
         // also be treated as null.
         $url = $this->castEmptyStringToNull($url);
-        $phone = $this->castEmptyStringToNull($phone);
         $email = $this->castEmptyStringToNull($email);
 
         $this->url = $url;
@@ -51,7 +51,7 @@ final class BookingInfo implements JsonLdSerializableInterface
         $this->availabilityEnds = $availabilityEnds;
     }
 
-    public function getPhone(): ?string
+    public function getPhone(): ?TelephoneNumber
     {
         return $this->phone;
     }
@@ -85,7 +85,7 @@ final class BookingInfo implements JsonLdSerializableInterface
     {
         $serialized = array_filter(
             [
-              'phone' => $this->phone,
+              'phone' => $this->phone ? $this->phone->toString() : null,
               'email' => $this->email,
               'url' => $this->url,
             ]
@@ -137,7 +137,7 @@ final class BookingInfo implements JsonLdSerializableInterface
         return new self(
             $data['url'],
             $urlLabel,
-            $data['phone'],
+            !empty($data['phone']) ? new TelephoneNumber($data['phone']) : null,
             $data['email'],
             $availabilityStarts,
             $availabilityEnds
@@ -169,7 +169,7 @@ final class BookingInfo implements JsonLdSerializableInterface
         }
 
         if ($udb3ModelPhone = $udb3ModelBookingInfo->getTelephoneNumber()) {
-            $phone = $udb3ModelPhone->toString();
+            $phone = $udb3ModelPhone;
         }
 
         if ($udb3ModelEmail = $udb3ModelBookingInfo->getEmailAddress()) {
