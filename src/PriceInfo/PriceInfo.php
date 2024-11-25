@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
  */
 class PriceInfo implements Serializable
 {
-    private BasePrice $basePrice;
+    private Tariff $basePrice;
 
     /**
      * @var Tariff[]
@@ -28,7 +28,7 @@ class PriceInfo implements Serializable
      */
     private array $uitpasTariffs;
 
-    public function __construct(BasePrice $basePrice)
+    public function __construct(Tariff $basePrice)
     {
         $this->basePrice = $basePrice;
         $this->tariffs = [];
@@ -63,7 +63,7 @@ class PriceInfo implements Serializable
         return $c;
     }
 
-    public function getBasePrice(): BasePrice
+    public function getBasePrice(): Tariff
     {
         return $this->basePrice;
     }
@@ -84,12 +84,12 @@ class PriceInfo implements Serializable
     public function serialize(): array
     {
         $serialized = [
-            'base' => $this->basePrice->serialize(),
+            'base' => (new TariffNormalizer(true))->normalize($this->basePrice),
             'tariffs' => [],
             'uitpas_tariffs' => [],
         ];
 
-        $tariffNormalizer = new TariffNormalizer();
+        $tariffNormalizer = new TariffNormalizer(false);
 
         foreach ($this->tariffs as $tariff) {
             $serialized['tariffs'][] = $tariffNormalizer->normalize($tariff);
@@ -104,11 +104,11 @@ class PriceInfo implements Serializable
 
     public static function deserialize(array $data): PriceInfo
     {
-        $basePriceInfo = BasePrice::deserialize($data['base']);
+        $priceInfo = new PriceInfo(
+            (new TariffDenormalizer(true))->denormalize($data['base'], Tariff::class)
+        );
 
-        $priceInfo = new PriceInfo($basePriceInfo);
-
-        $tariffDenormalizer = new TariffDenormalizer();
+        $tariffDenormalizer = new TariffDenormalizer(false);
 
         foreach ($data['tariffs'] as $tariffData) {
             $priceInfo = $priceInfo->withExtraTariff(
@@ -129,8 +129,7 @@ class PriceInfo implements Serializable
 
     public static function fromUdb3ModelPriceInfo(Udb3ModelPriceInfo $udb3ModelPriceInfo): PriceInfo
     {
-        $basePrice = BasePrice::fromUdb3ModelTariff($udb3ModelPriceInfo->getBasePrice());
-        $priceInfo = new PriceInfo($basePrice);
+        $priceInfo = new PriceInfo($udb3ModelPriceInfo->getBasePrice());
 
         foreach ($udb3ModelPriceInfo->getTariffs() as $udb3ModelTariff) {
             $priceInfo = $priceInfo->withExtraTariff($udb3ModelTariff);

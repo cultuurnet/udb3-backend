@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\MoneyFactory;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use Money\Currency;
 
@@ -63,7 +62,7 @@ final class CdbXmlPriceInfoParser
             return null;
         }
 
-        $basePrice = new BasePrice(
+        $basePrice = Tariff::createBasePrice(
             MoneyFactory::create($basePrice, new Currency('EUR'))
         );
 

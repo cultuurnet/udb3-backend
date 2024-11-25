@@ -9,6 +9,7 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\FlagAsDuplicate;
@@ -22,7 +23,6 @@ use CultuurNet\UDB3\Offer\Item\Events\Moderation\Published;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Offer\Item\ItemCommandHandler;
 use CultuurNet\UDB3\Offer\Item\ItemRepository;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use Money\Currency;
@@ -63,7 +63,7 @@ final class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $this->priceInfo = new PriceInfo(
-            new BasePrice(
+            Tariff::createBasePrice(
                 new Money(1050, new Currency('EUR'))
             )
         );
