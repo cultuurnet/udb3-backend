@@ -8,7 +8,8 @@ use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated as EventBookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated as EventContactPointUpdated;
-use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
+use CultuurNet\UDB3\Event\Events\DescriptionTranslated as EventDescriptionTranslated;
+use CultuurNet\UDB3\Event\Events\DescriptionUpdated as EventDescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
@@ -26,7 +27,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated as PlaceBookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated as PlaceContactPointUpdated;
-use CultuurNet\UDB3\Event\Events\DescriptionUpdated as EventDescriptionUpdated;
+use CultuurNet\UDB3\Place\Events\DescriptionTranslated as PlaceDescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated as PlaceDescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\OrganizerDeleted as PlaceOrganizerDeleted;
 use CultuurNet\UDB3\Place\Events\OrganizerUpdated as PlaceOrganizerUpdated;
@@ -110,7 +111,7 @@ class BackwardsCompatiblePayloadSerializerFactory
         $payloadManipulatingSerializer->manipulateEventsOfClass(
             'CultuurNet\UDB3\Event\DescriptionTranslated',
             function (array $serializedObject) {
-                $serializedObject['class'] = DescriptionTranslated::class;
+                $serializedObject['class'] = EventDescriptionTranslated::class;
 
                 return self::replaceEventIdWithItemId($serializedObject);
             }
@@ -418,18 +419,21 @@ class BackwardsCompatiblePayloadSerializerFactory
             );
         }
 
-        $updateDescriptionEvents = [
+        $descriptionEvents = [
             EventDescriptionUpdated::class,
             PlaceDescriptionUpdated::class,
+            EventDescriptionTranslated::class,
+            PlaceDescriptionTranslated::class,
         ];
 
-        foreach ($updateDescriptionEvents as $descriptionUpdatedEvent) {
+        foreach ($descriptionEvents as $descriptionEvent) {
             $payloadManipulatingSerializer->manipulateEventsOfClass(
-                $descriptionUpdatedEvent,
-                function (array $serializedObject) use ($descriptionUpdatedEvent) {
+                $descriptionEvent,
+                function (array $serializedObject) use ($descriptionEvent) {
                     $serializedObject = self::fillDescriptions($serializedObject);
 
-                    if ($descriptionUpdatedEvent === EventDescriptionUpdated::class) {
+                    if ($descriptionEvent === EventDescriptionUpdated::class ||
+                        $descriptionEvent === EventDescriptionTranslated::class) {
                         return self::replaceEventIdWithItemId($serializedObject);
                     }
                     return self::replacePlaceIdWithItemId($serializedObject);

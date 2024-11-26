@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class PriceInfoTest extends TestCase
 {
-    private BasePrice $basePrice;
+    private Tariff $basePrice;
 
     /**
      * @var Tariff[]
@@ -31,7 +31,7 @@ class PriceInfoTest extends TestCase
 
     public function setUp(): void
     {
-        $this->basePrice = new BasePrice(
+        $this->basePrice = Tariff::createBasePrice(
             new Money(1050, new Currency('EUR'))
         );
 
@@ -73,7 +73,7 @@ class PriceInfoTest extends TestCase
      */
     public function it_returns_any_extra_tariffs(): void
     {
-        $this->assertEquals($this->tariffs, $this->priceInfo->getTariffs());
+        $this->assertEquals(new Tariffs(...$this->tariffs), $this->priceInfo->getTariffs());
     }
 
     /**
@@ -81,7 +81,7 @@ class PriceInfoTest extends TestCase
      */
     public function it_returns_any_extra_uitpas_tariffs(): void
     {
-        $this->assertEquals($this->uitpasTariffs, $this->priceInfo->getUiTPASTariffs());
+        $this->assertEquals(new Tariffs(...$this->uitpasTariffs), $this->priceInfo->getUiTPASTariffs());
     }
 
     /**
@@ -112,7 +112,7 @@ class PriceInfoTest extends TestCase
         );
 
         $expected = new PriceInfo(
-            new BasePrice(
+            Tariff::createBasePrice(
                 new Money(1000, new Currency('EUR'))
             )
         );
@@ -147,7 +147,7 @@ class PriceInfoTest extends TestCase
         );
 
         $expected = new PriceInfo(
-            new BasePrice(
+            Tariff::createBasePrice(
                 new Money(1000, new Currency('EUR'))
             )
         );

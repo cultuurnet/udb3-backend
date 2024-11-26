@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializer;
-use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
-use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
+use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Event\Events\DescriptionTranslated as EventDescriptionTranslated;
+use CultuurNet\UDB3\Event\Events\DescriptionUpdated as EventDescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
@@ -15,39 +16,39 @@ use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Label\Events\AbstractEvent;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
+use CultuurNet\UDB3\Offer\Events\AbstractDescriptionTranslated;
 use CultuurNet\UDB3\Offer\Events\AbstractDescriptionUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
+use CultuurNet\UDB3\Place\Events\DescriptionTranslated as PlaceDescriptionTranslated;
+use CultuurNet\UDB3\Place\Events\DescriptionUpdated as PlaceDescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Event\Events\DescriptionUpdated as EventDescriptionUpdated;
-use CultuurNet\UDB3\Place\Events\DescriptionUpdated as PlaceDescriptionUpdated;
 
 class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 {
@@ -187,7 +188,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     public function it_knows_the_new_namespace_of_event_description_translated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_description_translated_class.json';
-        $this->assertClass($sampleFile, DescriptionTranslated::class);
+        $this->assertClass($sampleFile, EventDescriptionTranslated::class);
     }
 
     /**
@@ -621,7 +622,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $decoded = Json::decodeAssociatively($serialized);
 
         $expectedPriceInfo = new PriceInfo(
-            new BasePrice(
+            Tariff::createBasePrice(
                 new Money(1500, new Currency('EUR'))
             )
         );
@@ -770,13 +771,13 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      * @dataProvider emptyDescriptionsDataProvider
+     * @param AbstractDescriptionUpdated|AbstractDescriptionTranslated $expectedEvent
      */
-    public function it_fills_empty_descriptions(AbstractDescriptionUpdated $expectedEvent, string $serialized): void
+    public function it_fills_empty_descriptions($expectedEvent, string $serialized): void
     {
         $decoded = Json::decodeAssociatively($serialized);
 
         $event = $this->serializer->deserialize($decoded);
-        $this->assertInstanceOf(AbstractDescriptionUpdated::class, $event);
 
         $this->assertEquals($expectedEvent->getDescription(), $event->getDescription());
     }
@@ -789,36 +790,96 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
                     '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
                     new Description('---')
                 ),
-                '{"class":"CultuurNet\\\\UDB3\\\\Event\\\\Events\\\\DescriptionUpdated","payload":{"item_id":"9c6145c5-4a53-4c36-b51b-3ccef8a1507c","description":""}}',
+                self::createDescriptionUpdatedPayload(
+                    EventDescriptionUpdated::class,
+                    ''
+                ),
+            ],
+            'Fill empty event description translated' => [
+                new EventDescriptionTranslated(
+                    '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
+                    new Language('nl'),
+                    new Description('---')
+                ),
+                self::createDescriptionTranslatedPayload(
+                    EventDescriptionTranslated::class,
+                    ''
+                ),
             ],
             'Do not fill event with existing description' => [
                 new EventDescriptionUpdated(
                     '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
                     new Description('Lorum ipsum')
                 ),
-                '{"class":"CultuurNet\\\\UDB3\\\\Event\\\\Events\\\\DescriptionUpdated","payload":{"item_id":"9c6145c5-4a53-4c36-b51b-3ccef8a1507c","description":"Lorum ipsum"}}',
+                self::createDescriptionUpdatedPayload(
+                    EventDescriptionUpdated::class,
+                    'Lorum ipsum'
+                ),
             ],
             'Fill empty place description' => [
                 new PlaceDescriptionUpdated(
                     '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
                     new Description('---')
                 ),
-                '{"class":"CultuurNet\\\\UDB3\\\\Place\\\\Events\\\\DescriptionUpdated","payload":{"item_id":"9c6145c5-4a53-4c36-b51b-3ccef8a1507c","description":""}}',
+                self::createDescriptionUpdatedPayload(
+                    PlaceDescriptionUpdated::class,
+                    ''
+                ),
+            ],
+            'Fill empty place description translated' => [
+                new PlaceDescriptionTranslated(
+                    '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
+                    new Language('nl'),
+                    new Description('---')
+                ),
+                self::createDescriptionTranslatedPayload(
+                    PlaceDescriptionTranslated::class,
+                    ''
+                ),
             ],
             'Do not fill place with existing description' => [
                 new PlaceDescriptionUpdated(
                     '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
                     new Description('Lorum ipsum')
                 ),
-                '{"class":"CultuurNet\\\\UDB3\\\\Place\\\\Events\\\\DescriptionUpdated","payload":{"item_id":"9c6145c5-4a53-4c36-b51b-3ccef8a1507c","description":"Lorum ipsum"}}',
+                self::createDescriptionUpdatedPayload(
+                    PlaceDescriptionUpdated::class,
+                    'Lorum ipsum'
+                ),
             ],
             'Take into account spaces in the description' => [
                 new PlaceDescriptionUpdated(
                     '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
                     new Description('---')
                 ),
-                '{"class":"CultuurNet\\\\UDB3\\\\Place\\\\Events\\\\DescriptionUpdated","payload":{"item_id":"9c6145c5-4a53-4c36-b51b-3ccef8a1507c","description":" "}}',
+                self::createDescriptionUpdatedPayload(
+                    PlaceDescriptionUpdated::class,
+                    ' '
+                ),
             ],
         ];
+    }
+
+    private static function createDescriptionUpdatedPayload(string $class, string $description): string
+    {
+        return Json::encode([
+            'class' => $class,
+            'payload' => [
+                'item_id' => '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
+                'description' => $description,
+            ],
+        ]);
+    }
+
+    private static function createDescriptionTranslatedPayload(string $class, string $description): string
+    {
+        return Json::encode([
+            'class' => $class,
+            'payload' => [
+                'item_id' => '9c6145c5-4a53-4c36-b51b-3ccef8a1507c',
+                'language' => 'nl',
+                'description' => $description,
+            ],
+        ]);
     }
 }

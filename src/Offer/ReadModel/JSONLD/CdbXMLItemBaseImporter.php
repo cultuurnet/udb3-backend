@@ -134,7 +134,7 @@ final class CdbXMLItemBaseImporter
                 'category' => 'base',
                 'name' => $this->basePriceTranslations,
                 'price' => $priceInfo->getBasePrice()->getPrice()->getAmount() / 100,
-                'priceCurrency' => $priceInfo->getBasePrice()->getCurrency()->getName(),
+                'priceCurrency' => $priceInfo->getBasePrice()->getPrice()->getCurrency()->getName(),
             ],
         ];
 
