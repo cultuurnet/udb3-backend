@@ -2,7 +2,6 @@
 
 use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
-use CultuurNet\UDB3\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Cache\CacheServiceProvider;
 use CultuurNet\UDB3\Clock\ClockServiceProvider;
