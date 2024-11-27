@@ -25,6 +25,10 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
@@ -62,7 +66,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             $id,
             new Language('nl'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(CalendarType::permanent())
         );
@@ -76,7 +80,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $id = '5e36d2f2-b5de-4f5e-81b3-a129d996e9b6';
         $language = new Language('nl');
         $title = new Title('some representative title');
-        $type = new EventType('0.50.4.0.0', 'concert');
+        $type = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
         $calendar = new Calendar(CalendarType::permanent());
         $theme = new Theme('0.1.0.1.0.1', 'blues');
@@ -89,7 +93,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             $id,
             $language,
             $title,
-            $type,
+            EventType::fromUdb3ModelCategory($type),
             $location,
             $calendar,
             $theme,
