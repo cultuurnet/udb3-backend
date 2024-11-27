@@ -11,13 +11,13 @@ use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\Formatter\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Formatter\LocalityAddressFormatter;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -90,7 +90,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             'Some place',
             new EventType('01.01', 'Some category'),
             LegacyAddress::fromUdb3ModelAddress($address),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $command = new UpdateGeoCoordinatesFromAddress(self::PLACE_ID, $address);
@@ -132,7 +132,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             'Some place',
             new EventType('01.01', 'Some category'),
             LegacyAddress::fromUdb3ModelAddress($address),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $command = new UpdateGeoCoordinatesFromAddress(self::PLACE_ID, $address);

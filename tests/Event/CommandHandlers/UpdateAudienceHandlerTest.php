@@ -9,15 +9,14 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Theme;
 
@@ -39,7 +38,7 @@ class UpdateAudienceHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($eventId)
             ->given([$this->getEventCreated($eventId)])
             ->when(new UpdateAudience($eventId, AudienceType::education()))
-            ->then([new AudienceUpdated($eventId, new Audience(AudienceType::education()))]);
+            ->then([new AudienceUpdated($eventId, AudienceType::education())]);
     }
 
     private function getEventCreated(string $id): EventCreated
@@ -50,7 +49,7 @@ class UpdateAudienceHandlerTest extends CommandHandlerScenarioTestCase
             'some representative title',
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('bfc60a14-6208-4372-942e-86e63744769a'),
-            new Calendar(CalendarType::PERMANENT()),
+            new Calendar(CalendarType::permanent()),
             new Theme('1.8.1.0.0', 'Rock')
         );
     }

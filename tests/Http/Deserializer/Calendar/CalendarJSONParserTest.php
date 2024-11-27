@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
-use CultuurNet\UDB3\Calendar\DayOfWeek;
-use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
-use CultuurNet\UDB3\Calendar\OpeningHour;
-use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
@@ -132,7 +133,7 @@ class CalendarJSONParserTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_the_timestamps(): void
+    public function it_can_get_the_sub_events(): void
     {
         $startDatePeriod1 = DateTimeFactory::fromAtom('2020-01-26T09:00:00+01:00');
         $endDatePeriod1 = DateTimeFactory::fromAtom('2020-02-01T16:00:00+01:00');
@@ -140,10 +141,9 @@ class CalendarJSONParserTest extends TestCase
         $startDatePeriod2 = DateTimeFactory::fromAtom('2020-02-03T09:00:00+01:00');
         $endDatePeriod2 = DateTimeFactory::fromAtom('2020-02-10T16:00:00+01:00');
 
-        $timestamps = [
-            (new Timestamp(
-                $startDatePeriod1,
-                $endDatePeriod1
+        $subEvents = [
+            (SubEvent::createAvailable(
+                new DateRange($startDatePeriod1, $endDatePeriod1)
             ))->withStatus(
                 new Status(
                     StatusType::TemporarilyUnavailable(),
@@ -156,9 +156,8 @@ class CalendarJSONParserTest extends TestCase
                     )
                 )
             )->withBookingAvailability(BookingAvailability::Unavailable()),
-            (new Timestamp(
-                $startDatePeriod2,
-                $endDatePeriod2
+            (SubEvent::createAvailable(
+                new DateRange($startDatePeriod2, $endDatePeriod2)
             ))->withStatus(
                 new Status(
                     StatusType::Unavailable(),
@@ -174,8 +173,8 @@ class CalendarJSONParserTest extends TestCase
         ];
 
         $this->assertEquals(
-            $timestamps,
-            $this->calendarJSONParser->getTimestamps(
+            $subEvents,
+            $this->calendarJSONParser->getSubEvents(
                 $this->updateCalendarAsArray
             )
         );
@@ -184,28 +183,28 @@ class CalendarJSONParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_create_timestamps_when_json_is_missing_an_end_property(): void
+    public function it_should_not_create_sub_events_when_json_is_missing_an_end_property(): void
     {
         $calendarData = Json::decodeAssociatively(
             SampleFiles::read(__DIR__ . '/samples/calendar_missing_time_span_end.json')
         );
 
         $this->assertEmpty(
-            $this->calendarJSONParser->getTimestamps($calendarData)
+            $this->calendarJSONParser->getSubEvents($calendarData)
         );
     }
 
     /**
      * @test
      */
-    public function it_should_not_create_timestamps_when_json_is_missing_a_start_property(): void
+    public function it_should_not_create_sub_events_when_json_is_missing_a_start_property(): void
     {
         $calendarData = Json::decodeAssociatively(
             SampleFiles::read(__DIR__ . '/samples/calendar_missing_time_span_start.json')
         );
 
         $this->assertEmpty(
-            $this->calendarJSONParser->getTimestamps($calendarData)
+            $this->calendarJSONParser->getSubEvents($calendarData)
         );
     }
 
@@ -216,32 +215,32 @@ class CalendarJSONParserTest extends TestCase
     {
         $openingHours = [
             new OpeningHour(
-                new OpeningTime(
+                new Days(
+                    Day::tuesday(),
+                    Day::wednesday(),
+                    Day::thursday(),
+                    Day::friday()
+                ),
+                new Time(
                     new Hour(9),
                     new Minute(0)
                 ),
-                new OpeningTime(
+                new Time(
                     new Hour(17),
                     new Minute(0)
-                ),
-                new DayOfWeekCollection(
-                    DayOfWeek::TUESDAY(),
-                    DayOfWeek::WEDNESDAY(),
-                    DayOfWeek::THURSDAY(),
-                    DayOfWeek::FRIDAY()
                 )
             ),
             new OpeningHour(
-                new OpeningTime(
+                new Days(
+                    Day::saturday()
+                ),
+                new Time(
                     new Hour(9),
                     new Minute(0)
                 ),
-                new OpeningTime(
+                new Time(
                     new Hour(12),
                     new Minute(0)
-                ),
-                new DayOfWeekCollection(
-                    DayOfWeek::SATURDAY()
                 )
             ),
         ];

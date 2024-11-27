@@ -9,12 +9,12 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultureFeed_Uitpas;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Offer\OfferRepository;
@@ -139,7 +139,7 @@ final class UpdateOrganizerHandlerTest extends CommandHandlerScenarioTestCase
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
     }
 }

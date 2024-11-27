@@ -7,13 +7,14 @@ namespace CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
@@ -35,63 +36,67 @@ class CalendarTest extends TestCase
 {
     public const START_DATE = '2016-03-06T10:00:00+01:00';
     public const END_DATE = '2016-03-13T12:00:00+01:00';
-    public const TIMESTAMP_1 = '1457254800';
-    public const TIMESTAMP_1_START_DATE = '2016-03-06T10:00:00+01:00';
-    public const TIMESTAMP_1_END_DATE = '2016-03-06T10:00:00+01:00';
-    public const TIMESTAMP_2 = '1457859600';
-    public const TIMESTAMP_2_START_DATE = '2016-03-13T10:00:00+01:00';
-    public const TIMESTAMP_2_END_DATE = '2016-03-13T12:00:00+01:00';
+    public const SUB_EVENT_1 = '1457254800';
+    public const SUB_EVENT_1_START_DATE = '2016-03-06T10:00:00+01:00';
+    public const SUB_EVENT_1_END_DATE = '2016-03-06T10:00:00+01:00';
+    public const SUB_EVENT_2 = '1457859600';
+    public const SUB_EVENT_2_START_DATE = '2016-03-13T10:00:00+01:00';
+    public const SUB_EVENT_2_END_DATE = '2016-03-13T12:00:00+01:00';
 
     private Calendar $calendar;
 
     public function setUp(): void
     {
-        $timestamp1 = new Timestamp(
-            DateTimeFactory::fromAtom(self::TIMESTAMP_1_START_DATE),
-            DateTimeFactory::fromAtom(self::TIMESTAMP_1_END_DATE)
+        $subEvent1 = SubEvent::createAvailable(
+            new DateRange(
+                DateTimeFactory::fromAtom(self::SUB_EVENT_1_START_DATE),
+                DateTimeFactory::fromAtom(self::SUB_EVENT_1_END_DATE)
+            )
         );
 
-        $timestamp2 = new Timestamp(
-            DateTimeFactory::fromAtom(self::TIMESTAMP_2_START_DATE),
-            DateTimeFactory::fromAtom(self::TIMESTAMP_2_END_DATE)
+        $subEvent2 = SubEvent::createAvailable(
+            new DateRange(
+                DateTimeFactory::fromAtom(self::SUB_EVENT_2_START_DATE),
+                DateTimeFactory::fromAtom(self::SUB_EVENT_2_END_DATE)
+            )
         );
 
-        $weekDays = (new DayOfWeekCollection())
-            ->addDayOfWeek(DayOfWeek::MONDAY())
-            ->addDayOfWeek(DayOfWeek::TUESDAY())
-            ->addDayOfWeek(DayOfWeek::WEDNESDAY())
-            ->addDayOfWeek(DayOfWeek::THURSDAY())
-            ->addDayOfWeek(DayOfWeek::FRIDAY());
+        $weekDays = (new Days())
+            ->with(Day::monday())
+            ->with(Day::tuesday())
+            ->with(Day::wednesday())
+            ->with(Day::thursday())
+            ->with(Day::friday());
 
         $openingHour1 = new OpeningHour(
-            new OpeningTime(new Hour(9), new Minute(0)),
-            new OpeningTime(new Hour(12), new Minute(0)),
-            $weekDays
+            $weekDays,
+            new Time(new Hour(9), new Minute(0)),
+            new Time(new Hour(12), new Minute(0))
         );
 
         $openingHour2 = new OpeningHour(
-            new OpeningTime(new Hour(13), new Minute(0)),
-            new OpeningTime(new Hour(17), new Minute(0)),
-            $weekDays
+            $weekDays,
+            new Time(new Hour(13), new Minute(0)),
+            new Time(new Hour(17), new Minute(0))
         );
 
-        $weekendDays = (new DayOfWeekCollection())
-            ->addDayOfWeek(DayOfWeek::SATURDAY())
-            ->addDayOfWeek(DayOfWeek::SUNDAY());
+        $weekendDays = (new Days())
+            ->with(Day::saturday())
+            ->with(Day::sunday());
 
         $openingHour3 = new OpeningHour(
-            new OpeningTime(new Hour(10), new Minute(0)),
-            new OpeningTime(new Hour(16), new Minute(0)),
-            $weekendDays
+            $weekendDays,
+            new Time(new Hour(10), new Minute(0)),
+            new Time(new Hour(16), new Minute(0))
         );
 
         $this->calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
             [
-                self::TIMESTAMP_1 => $timestamp1,
-                self::TIMESTAMP_2 => $timestamp2,
+                self::SUB_EVENT_1 => $subEvent1,
+                self::SUB_EVENT_2 => $subEvent2,
             ],
             [
                 $openingHour1,
@@ -117,15 +122,15 @@ class CalendarTest extends TestCase
         return [
             'single available' => [
                 new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     null,
                     null,
                     [
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
-                            null,
-                            BookingAvailability::Available()
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                            )
                         ),
                     ]
                 ),
@@ -133,14 +138,16 @@ class CalendarTest extends TestCase
             ],
             'single unavailable' => [
                 new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     null,
                     null,
                     [
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
-                            null,
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                            ),
+                            new Status(StatusType::Available()),
                             BookingAvailability::Unavailable()
                         ),
                     ]
@@ -149,20 +156,24 @@ class CalendarTest extends TestCase
             ],
             'multiple available' => [
                 new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
-                            null,
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                            ),
+                            new Status(StatusType::Available()),
                             BookingAvailability::Unavailable()
                         ),
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
-                            null,
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
+                            ),
+                            new Status(StatusType::Available()),
                             BookingAvailability::Available()
                         ),
                     ]
@@ -171,20 +182,24 @@ class CalendarTest extends TestCase
             ],
             'multiple unavailable' => [
                 new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
-                            null,
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                            ),
+                            new Status(StatusType::Available()),
                             BookingAvailability::Unavailable()
                         ),
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
-                            null,
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
+                            ),
+                            new Status(StatusType::Available()),
                             BookingAvailability::Unavailable()
                         ),
                     ]
@@ -200,13 +215,15 @@ class CalendarTest extends TestCase
     public function it_allows_updating_booking_availability_on_single_type(): void
     {
         $singleCalendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             null,
             null,
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00')
+                    )
                 ),
             ]
         );
@@ -219,35 +236,9 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_updating_booking_availability_on_multiple_type(): void
-    {
-        $multipleCalendar = new Calendar(
-            CalendarType::MULTIPLE(),
-            null,
-            null,
-            [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
-                ),
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
-                ),
-            ]
-        );
-
-        $multipleCalendar = $multipleCalendar->withBookingAvailability(BookingAvailability::Unavailable());
-
-        $this->assertEquals(BookingAvailability::Unavailable(), $multipleCalendar->getBookingAvailability());
-    }
-
-    /**
-     * @test
-     */
     public function it_prevents_updating_booking_availability_on_permanent_type(): void
     {
-        $permanentCalendar = new Calendar(CalendarType::PERMANENT());
+        $permanentCalendar = new Calendar(CalendarType::permanent());
 
         $this->expectException(CalendarTypeNotSupported::class);
 
@@ -260,7 +251,7 @@ class CalendarTest extends TestCase
     public function it_prevents_updating_booking_availability_on_periodic_type(): void
     {
         $periodicCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             new DateTime('2021-03-18T14:00:00+01:00'),
             new DateTime('2021-03-18T14:00:00+01:00')
         );
@@ -273,87 +264,123 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_updating_booking_availability_on_timestamp_of_single_type(): void
+    public function it_allows_updating_booking_availability_on_sub_event_of_single_type(): void
     {
         $singleCalendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             null,
             null,
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00')
+                    )
                 ),
             ]
         );
 
-        $singleCalendar = $singleCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::Unavailable());
+        $singleCalendar = $singleCalendar->withBookingAvailabilityOnSubEvents(BookingAvailability::Unavailable());
 
         $this->assertEquals(
             BookingAvailability::Unavailable(),
-            $singleCalendar->getTimestamps()[0]->getBookingAvailability()
+            $singleCalendar->getSubEvents()[0]->getBookingAvailability()
         );
     }
 
     /**
      * @test
      */
-    public function it_allows_updating_booking_availability_on_timestamps_of_multiple_type(): void
+    public function it_allows_updating_booking_availability_on_sub_events_of_multiple_type(): void
     {
         $multipleCalendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             null,
             null,
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                    )
                 ),
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
+                    )
                 ),
             ]
         );
 
-        $multipleCalendar = $multipleCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::Unavailable());
+        $multipleCalendar = $multipleCalendar->withBookingAvailabilityOnSubEvents(BookingAvailability::Unavailable());
 
         $this->assertEquals(
             BookingAvailability::Unavailable(),
-            $multipleCalendar->getTimestamps()[0]->getBookingAvailability()
+            $multipleCalendar->getSubEvents()[0]->getBookingAvailability()
         );
         $this->assertEquals(
             BookingAvailability::Unavailable(),
-            $multipleCalendar->getTimestamps()[1]->getBookingAvailability()
+            $multipleCalendar->getSubEvents()[1]->getBookingAvailability()
         );
     }
 
     /**
      * @test
      */
-    public function it_prevents_updating_booking_availability_on_timestamps_of_permanent_type(): void
+    public function it_prevents_updating_booking_availability_on_sub_events_of_permanent_type(): void
     {
-        $permanentCalendar = new Calendar(CalendarType::PERMANENT());
+        $permanentCalendar = new Calendar(CalendarType::permanent());
 
         $this->expectException(CalendarTypeNotSupported::class);
 
-        $permanentCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::Unavailable());
+        $permanentCalendar->withBookingAvailabilityOnSubEvents(BookingAvailability::Unavailable());
     }
 
     /**
      * @test
      */
-    public function it_prevents_updating_booking_availability_on_timestamps_of_periodic_type(): void
+    public function it_allows_updating_booking_availability_on_multiple_type(): void
+    {
+        $multipleCalendar = new Calendar(
+            CalendarType::multiple(),
+            null,
+            null,
+            [
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                    )
+                ),
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
+                    )
+                ),
+            ]
+        );
+
+        $multipleCalendar = $multipleCalendar->withBookingAvailability(BookingAvailability::Unavailable());
+
+        $this->assertEquals(BookingAvailability::Unavailable(), $multipleCalendar->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_updating_booking_availability_on_sub_events_of_periodic_type(): void
     {
         $periodicCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             new DateTime('2021-03-18T14:00:00+01:00'),
             new DateTime('2021-03-18T14:00:00+01:00')
         );
 
         $this->expectException(CalendarTypeNotSupported::class);
 
-        $periodicCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::Unavailable());
+        $periodicCalendar->withBookingAvailabilityOnSubEvents(BookingAvailability::Unavailable());
     }
 
     /**
@@ -374,8 +401,8 @@ class CalendarTest extends TestCase
                 ],
                 'timestamps' => [
                     [
-                        'startDate' => self::TIMESTAMP_1_START_DATE,
-                        'endDate' => self::TIMESTAMP_1_END_DATE,
+                        'startDate' => self::SUB_EVENT_1_START_DATE,
+                        'endDate' => self::SUB_EVENT_1_END_DATE,
                         'status' => [
                             'type' => StatusType::Available()->toString(),
                         ],
@@ -384,8 +411,8 @@ class CalendarTest extends TestCase
                         ],
                     ],
                     [
-                        'startDate' => self::TIMESTAMP_2_START_DATE,
-                        'endDate' => self::TIMESTAMP_2_END_DATE,
+                        'startDate' => self::SUB_EVENT_2_START_DATE,
+                        'endDate' => self::SUB_EVENT_2_END_DATE,
                         'status' => [
                             'type' => StatusType::Available()->toString(),
                         ],
@@ -442,15 +469,15 @@ class CalendarTest extends TestCase
             'endDate' => '2016-03-13T12:00:00+01:00',
             'timestamps' => [
                 [
-                    'startDate' => self::TIMESTAMP_1_START_DATE,
-                    'endDate' => self::TIMESTAMP_1_END_DATE,
+                    'startDate' => self::SUB_EVENT_1_START_DATE,
+                    'endDate' => self::SUB_EVENT_1_END_DATE,
                     'status' => [
                         'type' => StatusType::Available()->toString(),
                     ],
                 ],
                 [
-                    'startDate' => self::TIMESTAMP_2_START_DATE,
-                    'endDate' => self::TIMESTAMP_2_END_DATE,
+                    'startDate' => self::SUB_EVENT_2_START_DATE,
+                    'endDate' => self::SUB_EVENT_2_END_DATE,
                     'status' => [
                         'type' => StatusType::Available()->toString(),
                     ],
@@ -510,7 +537,7 @@ class CalendarTest extends TestCase
         );
 
         $calendar = new Calendar(
-            CalendarType::PERMANENT(),
+            CalendarType::permanent(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
         );
@@ -540,14 +567,16 @@ class CalendarTest extends TestCase
     public function it_can_deserialize_with_explicit_booking_availability(): void
     {
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             new DateTime('2021-03-18T14:00:00+01:00'),
             new DateTime('2021-03-18T16:00:00+01:00'),
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2021-03-18T16:00:00+01:00'),
-                    null,
+                new SubEvent(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2021-03-18T16:00:00+01:00')
+                    ),
+                    new Status(StatusType::Available()),
                     BookingAvailability::Unavailable()
                 ),
             ]
@@ -582,37 +611,43 @@ class CalendarTest extends TestCase
      */
     public function it_can_deserialize_without_overwriting_the_status_of_subEvents(): void
     {
-        $timestamp1 = new Timestamp(
-            DateTimeFactory::fromAtom(self::TIMESTAMP_1_START_DATE),
-            DateTimeFactory::fromAtom(self::TIMESTAMP_1_END_DATE),
+        $subEvent1 = new SubEvent(
+            new DateRange(
+                DateTimeFactory::fromAtom(self::SUB_EVENT_1_START_DATE),
+                DateTimeFactory::fromAtom(self::SUB_EVENT_1_END_DATE)
+            ),
             new Status(
                 StatusType::Unavailable(),
                 new TranslatedStatusReason(
                     new Language('nl'),
                     new StatusReason('Jammer genoeg geannuleerd.')
                 )
-            )
+            ),
+            BookingAvailability::Available()
         );
 
-        $timestamp2 = new Timestamp(
-            DateTimeFactory::fromAtom(self::TIMESTAMP_2_START_DATE),
-            DateTimeFactory::fromAtom(self::TIMESTAMP_2_END_DATE),
+        $subEvent2 = new SubEvent(
+            new DateRange(
+                DateTimeFactory::fromAtom(self::SUB_EVENT_2_START_DATE),
+                DateTimeFactory::fromAtom(self::SUB_EVENT_2_END_DATE)
+            ),
             new Status(
                 StatusType::TemporarilyUnavailable(),
                 new TranslatedStatusReason(
                     new Language('nl'),
                     new StatusReason('Jammer genoeg geannuleerd.')
                 )
-            )
+            ),
+            BookingAvailability::Available()
         );
 
         $expected = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
             [
-                self::TIMESTAMP_1 => $timestamp1,
-                self::TIMESTAMP_2 => $timestamp2,
+                self::SUB_EVENT_1 => $subEvent1,
+                self::SUB_EVENT_2 => $subEvent2,
             ]
         );
 
@@ -620,8 +655,8 @@ class CalendarTest extends TestCase
 
         $this->assertEquals($expected, $actual);
         $this->assertEquals(StatusType::TemporarilyUnavailable(), $actual->getStatus()->getType());
-        $this->assertEquals(StatusType::Unavailable(), $actual->getTimestamps()[0]->getStatus()->getType());
-        $this->assertEquals(StatusType::TemporarilyUnavailable(), $actual->getTimestamps()[1]->getStatus()->getType());
+        $this->assertEquals(StatusType::Unavailable(), $actual->getSubEvents()[0]->getStatus()->getType());
+        $this->assertEquals(StatusType::TemporarilyUnavailable(), $actual->getSubEvents()[1]->getStatus()->getType());
     }
 
     /**
@@ -643,13 +678,15 @@ class CalendarTest extends TestCase
 
         $this->assertEquals(
             new Calendar(
-                CalendarType::SINGLE(),
+                CalendarType::single(),
                 new DateTime('2021-03-18T14:00:00+01:00'),
                 new DateTime('2021-03-18T14:00:00+01:00'),
                 [
-                    new Timestamp(
-                        DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
-                        DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2021-03-18T14:00:00+01:00')
+                        )
                     ),
                 ]
             ),
@@ -673,13 +710,15 @@ class CalendarTest extends TestCase
         return [
             'single no sub event status' => [
                 'calendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     null,
                     null,
                     [
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                            )
                         ),
                     ]
                 ),
@@ -711,18 +750,21 @@ class CalendarTest extends TestCase
             ],
             'single with sub event status postponed' => [
                 'calendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     null,
                     null,
                     [
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
+                            ),
                             new Status(
                                 StatusType::TemporarilyUnavailable(),
                                 (new TranslatedStatusReason(new Language('nl'), new StatusReason('Jammer genoeg uitgesteld.')))
                                     ->withTranslation(new Language('fr'), new StatusReason('Malheureusement reporté.'))
-                            )
+                            ),
+                            BookingAvailability::Available()
                         ),
                     ]
                 ),
@@ -762,17 +804,21 @@ class CalendarTest extends TestCase
             ],
             'multiple no sub event status' => [
                 'calendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                            )
                         ),
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
+                            )
                         ),
                     ]
                 ),
@@ -816,27 +862,33 @@ class CalendarTest extends TestCase
             ],
             'multiple with single sub event scheduled' => [
                 'calendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                            ),
                             new Status(
                                 StatusType::TemporarilyUnavailable(),
                                 (new TranslatedStatusReason(new Language('nl'), new StatusReason('Jammer genoeg uitgesteld.')))
                                     ->withTranslation(new Language('fr'), new StatusReason('Malheureusement reporté.'))
-                            )
+                            ),
+                            BookingAvailability::Available()
                         ),
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
+                            ),
                             new Status(
                                 StatusType::Available(),
                                 (new TranslatedStatusReason(new Language('nl'), new StatusReason('Gelukkig gaat het door.')))
                                     ->withTranslation(new Language('fr'), new StatusReason('Heureusement, ça continue.'))
-                            )
+                            ),
+                            BookingAvailability::Available()
                         ),
                     ]
                 ),
@@ -888,27 +940,33 @@ class CalendarTest extends TestCase
             ],
             'multiple with single sub event postponed' => [
                 'calendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
+                            ),
                             new Status(
                                 StatusType::TemporarilyUnavailable(),
                                 (new TranslatedStatusReason(new Language('nl'), new StatusReason('Jammer genoeg uitgesteld.')))
                                     ->withTranslation(new Language('fr'), new StatusReason('Malheureusement reporté.'))
-                            )
+                            ),
+                            BookingAvailability::Available()
                         ),
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
+                            ),
                             new Status(
                                 StatusType::Unavailable(),
                                 (new TranslatedStatusReason(new Language('nl'), new StatusReason('Nog erger, het is afgelast.')))
                                     ->withTranslation(new Language('fr'), new StatusReason('Pire encore, il a été annulé.'))
-                            )
+                            ),
+                            BookingAvailability::Available()
                         ),
                     ]
                 ),
@@ -960,27 +1018,33 @@ class CalendarTest extends TestCase
             ],
             'multiple with all sub events cancelled' => [
                 'calendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                            ),
                             new Status(
                                 StatusType::Unavailable(),
                                 (new TranslatedStatusReason(new Language('nl'), new StatusReason('Het is afgelast.')))
                                     ->withTranslation(new Language('fr'), new StatusReason('Il a été annulé.'))
-                            )
+                            ),
+                            BookingAvailability::Available()
                         ),
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
+                            ),
                             new Status(
                                 StatusType::Unavailable(),
                                 (new TranslatedStatusReason(new Language('nl'), new StatusReason('Nog erger, het is afgelast.')))
                                     ->withTranslation(new Language('fr'), new StatusReason('Pire encore, il a été annulé.'))
-                            )
+                            ),
+                            BookingAvailability::Available()
                         ),
                     ]
                 ),
@@ -1032,27 +1096,33 @@ class CalendarTest extends TestCase
             ],
             'multiple with all sub events cancelled but an incorrect top status which should get corrected' => [
                 'calendar' => (new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                            ),
                             new Status(
                                 StatusType::Unavailable(),
                                 (new TranslatedStatusReason(new Language('nl'), new StatusReason('Het is afgelast.')))
                                     ->withTranslation(new Language('fr'), new StatusReason('Il a été annulé.'))
-                            )
+                            ),
+                            BookingAvailability::Available()
                         ),
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
+                            ),
                             new Status(
                                 StatusType::Unavailable(),
                                 (new TranslatedStatusReason(new Language('nl'), new StatusReason('Nog erger, het is afgelast.')))
                                     ->withTranslation(new Language('fr'), new StatusReason('Pire encore, il a été annulé.'))
-                            )
+                            ),
+                            BookingAvailability::Available()
                         ),
                     ]
                 ))->withStatus(
@@ -1110,20 +1180,24 @@ class CalendarTest extends TestCase
             ],
             'multiple with corrected booking availability' => [
                 'calendar' => (new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     null,
                     null,
                     [
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
-                            null,
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                            ),
+                            new Status(StatusType::Available()),
                             BookingAvailability::Unavailable()
                         ),
-                        new Timestamp(
-                            DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00'),
-                            null,
+                        new SubEvent(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2020-03-06T10:00:00+01:00'),
+                                DateTimeFactory::fromAtom('2020-03-13T12:00:00+01:00')
+                            ),
+                            new Status(StatusType::Available()),
                             BookingAvailability::Unavailable()
                         ),
                     ]
@@ -1168,7 +1242,7 @@ class CalendarTest extends TestCase
             ],
             'periodic' => [
                 'calendar' => new Calendar(
-                    CalendarType::PERIODIC(),
+                    CalendarType::periodic(),
                     DateTimeFactory::fromAtom(self::START_DATE),
                     DateTimeFactory::fromAtom(self::END_DATE)
                 ),
@@ -1186,7 +1260,7 @@ class CalendarTest extends TestCase
             ],
             'permanent' => [
                 'calendar' => new Calendar(
-                    CalendarType::PERMANENT()
+                    CalendarType::permanent()
                 ),
                 'jsonld' => [
                     'calendarType' => 'permanent',
@@ -1200,7 +1274,7 @@ class CalendarTest extends TestCase
             ],
             'permanent_with_changed_status_and_reason' => [
                 'calendar' => (new Calendar(
-                    CalendarType::PERMANENT()
+                    CalendarType::permanent()
                 ))->withStatus(
                     new Status(
                         StatusType::TemporarilyUnavailable(),
@@ -1236,7 +1310,7 @@ class CalendarTest extends TestCase
         ];
 
         $expectedCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE)
         );
@@ -1283,7 +1357,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_timestamp_based_on_start_and_end_date_if_one_is_missing_for_single_calendars(): void
+    public function it_adds_a_sub_event_based_on_start_and_end_date_if_one_is_missing_for_single_calendars(): void
     {
         $invalidCalendarData = [
             'type' => 'single',
@@ -1293,13 +1367,15 @@ class CalendarTest extends TestCase
         ];
 
         $expected = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                    )
                 ),
             ]
         );
@@ -1312,7 +1388,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_timestamp_based_on_start_date_if_one_is_missing_for_single_calendars(): void
+    public function it_adds_a_sub_event_based_on_start_date_if_one_is_missing_for_single_calendars(): void
     {
         $invalidCalendarData = [
             'type' => 'single',
@@ -1322,13 +1398,15 @@ class CalendarTest extends TestCase
         ];
 
         $expected = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             null,
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00')
+                    )
                 ),
             ]
         );
@@ -1341,7 +1419,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_timestamp_based_on_start_and_end_date_if_one_is_missing_for_multiple_calendars(): void
+    public function it_adds_a_sub_event_based_on_start_and_end_date_if_one_is_missing_for_multiple_calendars(): void
     {
         $invalidCalendarData = [
             'type' => 'multiple',
@@ -1351,13 +1429,15 @@ class CalendarTest extends TestCase
         ];
 
         $expected = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00'),
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2016-03-13T12:00:00+01:00')
+                    )
                 ),
             ]
         );
@@ -1370,7 +1450,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_timestamp_based_on_start_date_if_one_is_missing_for_multiple_calendars(): void
+    public function it_adds_a_sub_event_based_on_start_date_if_one_is_missing_for_multiple_calendars(): void
     {
         $invalidCalendarData = [
             'type' => 'multiple',
@@ -1380,13 +1460,15 @@ class CalendarTest extends TestCase
         ];
 
         $expected = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             null,
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00')
+                    )
                 ),
             ]
         );
@@ -1450,14 +1532,16 @@ class CalendarTest extends TestCase
             ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable()));
 
         $expected = (new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             null,
             null,
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
-                    new Status(StatusType::Unavailable(), null),
+                new SubEvent(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00')
+                    ),
+                    new Status(StatusType::Unavailable()),
                     BookingAvailability::Unavailable()
                 ),
             ],
@@ -1499,19 +1583,23 @@ class CalendarTest extends TestCase
             ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable()));
 
         $expected = (new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             null,
             null,
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
+                new SubEvent(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00')
+                    ),
                     new Status(StatusType::Unavailable(), null),
                     BookingAvailability::Unavailable()
                 ),
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2016-03-09T10:00:00+01:00'),
-                    DateTimeFactory::fromAtom('2016-03-10T10:00:00+01:00'),
+                new SubEvent(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2016-03-09T10:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2016-03-10T10:00:00+01:00')
+                    ),
                     new Status(StatusType::Unavailable(), null),
                     BookingAvailability::Unavailable()
                 ),
@@ -1540,7 +1628,7 @@ class CalendarTest extends TestCase
         $udb3ModelCalendar = new PeriodicCalendar($dateRange, $openingHours);
 
         $expected = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
             [],
@@ -1563,7 +1651,7 @@ class CalendarTest extends TestCase
         );
 
         $openingHours = new OpeningHours(
-            new Udb3ModelOpeningHour(
+            new OpeningHour(
                 new Days(
                     Day::monday(),
                     Day::tuesday()
@@ -1577,7 +1665,7 @@ class CalendarTest extends TestCase
                     new Minute(59)
                 )
             ),
-            new Udb3ModelOpeningHour(
+            new OpeningHour(
                 new Days(
                     Day::saturday()
                 ),
@@ -1595,25 +1683,25 @@ class CalendarTest extends TestCase
         $udb3ModelCalendar = new PeriodicCalendar($dateRange, $openingHours);
 
         $expected = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
             [],
             [
                 new OpeningHour(
-                    new OpeningTime(new Hour(8), new Minute(0)),
-                    new OpeningTime(new Hour(12), new Minute(59)),
-                    new DayOfWeekCollection(
-                        DayOfWeek::MONDAY(),
-                        DayOfWeek::TUESDAY()
-                    )
+                    new Days(
+                        Day::monday(),
+                        Day::tuesday()
+                    ),
+                    new Time(new Hour(8), new Minute(0)),
+                    new Time(new Hour(12), new Minute(59))
                 ),
                 new OpeningHour(
-                    new OpeningTime(new Hour(10), new Minute(0)),
-                    new OpeningTime(new Hour(14), new Minute(0)),
-                    new DayOfWeekCollection(
-                        DayOfWeek::SATURDAY()
-                    )
+                    new Days(
+                        Day::saturday()
+                    ),
+                    new Time(new Hour(10), new Minute(0)),
+                    new Time(new Hour(14), new Minute(0))
                 ),
             ]
         );
@@ -1632,7 +1720,7 @@ class CalendarTest extends TestCase
         $udb3ModelCalendar = new PermanentCalendar($openingHours);
 
         $expected = new Calendar(
-            CalendarType::PERMANENT(),
+            CalendarType::permanent(),
             null,
             null,
             [],
@@ -1650,7 +1738,7 @@ class CalendarTest extends TestCase
     public function it_should_be_creatable_from_an_udb3_model_permanent_calendar_with_opening_hours(): void
     {
         $openingHours = new OpeningHours(
-            new Udb3ModelOpeningHour(
+            new OpeningHour(
                 new Days(
                     Day::monday(),
                     Day::tuesday()
@@ -1664,7 +1752,7 @@ class CalendarTest extends TestCase
                     new Minute(59)
                 )
             ),
-            new Udb3ModelOpeningHour(
+            new OpeningHour(
                 new Days(
                     Day::saturday()
                 ),
@@ -1682,25 +1770,25 @@ class CalendarTest extends TestCase
         $udb3ModelCalendar = new PermanentCalendar($openingHours);
 
         $expected = new Calendar(
-            CalendarType::PERMANENT(),
+            CalendarType::permanent(),
             null,
             null,
             [],
             [
                 new OpeningHour(
-                    new OpeningTime(new Hour(8), new Minute(0)),
-                    new OpeningTime(new Hour(12), new Minute(59)),
-                    new DayOfWeekCollection(
-                        DayOfWeek::MONDAY(),
-                        DayOfWeek::TUESDAY()
-                    )
+                    new Days(
+                        Day::monday(),
+                        Day::tuesday()
+                    ),
+                    new Time(new Hour(8), new Minute(0)),
+                    new Time(new Hour(12), new Minute(59))
                 ),
                 new OpeningHour(
-                    new OpeningTime(new Hour(10), new Minute(0)),
-                    new OpeningTime(new Hour(14), new Minute(0)),
-                    new DayOfWeekCollection(
-                        DayOfWeek::SATURDAY()
-                    )
+                    new Days(
+                        Day::saturday()
+                    ),
+                    new Time(new Hour(10), new Minute(0)),
+                    new Time(new Hour(14), new Minute(0))
                 ),
             ]
         );
@@ -1716,19 +1804,19 @@ class CalendarTest extends TestCase
     public function it_can_determine_same_calendars(): void
     {
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
 
         $sameCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
 
         $otherCalendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-27T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-01-28T12:12:12+01:00')
         );
@@ -1740,54 +1828,70 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_timestamps_in_chronological_order(): void
+    public function it_should_return_sub_events_in_chronological_order(): void
     {
         $calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-04-30T12:12:12+01:00'),
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2020-04-05T11:11:11+01:00'),
-                    DateTimeFactory::fromAtom('2020-04-10T12:12:12+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2020-04-05T11:11:11+01:00'),
+                        DateTimeFactory::fromAtom('2020-04-10T12:12:12+01:00')
+                    )
                 ),
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2020-04-07T11:11:11+01:00'),
-                    DateTimeFactory::fromAtom('2020-04-09T12:12:12+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2020-04-07T11:11:11+01:00'),
+                        DateTimeFactory::fromAtom('2020-04-09T12:12:12+01:00')
+                    )
                 ),
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2020-04-15T11:11:11+01:00'),
-                    DateTimeFactory::fromAtom('2020-04-25T12:12:12+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2020-04-15T11:11:11+01:00'),
+                        DateTimeFactory::fromAtom('2020-04-25T12:12:12+01:00')
+                    )
                 ),
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
-                    DateTimeFactory::fromAtom('2020-04-20T12:12:12+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
+                        DateTimeFactory::fromAtom('2020-04-20T12:12:12+01:00')
+                    )
                 ),
             ]
         );
 
         $expected = [
-            new Timestamp(
-                DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
-                DateTimeFactory::fromAtom('2020-04-20T12:12:12+01:00')
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-20T12:12:12+01:00')
+                )
             ),
-            new Timestamp(
-                DateTimeFactory::fromAtom('2020-04-05T11:11:11+01:00'),
-                DateTimeFactory::fromAtom('2020-04-10T12:12:12+01:00')
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2020-04-05T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-10T12:12:12+01:00')
+                )
             ),
-            new Timestamp(
-                DateTimeFactory::fromAtom('2020-04-07T11:11:11+01:00'),
-                DateTimeFactory::fromAtom('2020-04-09T12:12:12+01:00')
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2020-04-07T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-09T12:12:12+01:00')
+                )
             ),
-            new Timestamp(
-                DateTimeFactory::fromAtom('2020-04-15T11:11:11+01:00'),
-                DateTimeFactory::fromAtom('2020-04-25T12:12:12+01:00')
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2020-04-15T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-25T12:12:12+01:00')
+                )
             ),
         ];
 
         $this->assertEquals(
             $expected,
-            $calendar->getTimestamps()
+            $calendar->getSubEvents()
         );
     }
 
@@ -1796,30 +1900,38 @@ class CalendarTest extends TestCase
      */
     public function it_can_change_top_status(): void
     {
-        $timestamps = [
-            new Timestamp(
-                DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
-                DateTimeFactory::fromAtom('2020-04-20T12:12:12+01:00')
+        $subEvents = [
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-20T12:12:12+01:00')
+                )
             ),
-            new Timestamp(
-                DateTimeFactory::fromAtom('2020-04-05T11:11:11+01:00'),
-                DateTimeFactory::fromAtom('2020-04-10T12:12:12+01:00')
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2020-04-05T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-10T12:12:12+01:00')
+                )
             ),
-            new Timestamp(
-                DateTimeFactory::fromAtom('2020-04-07T11:11:11+01:00'),
-                DateTimeFactory::fromAtom('2020-04-09T12:12:12+01:00')
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2020-04-07T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-09T12:12:12+01:00')
+                )
             ),
-            new Timestamp(
-                DateTimeFactory::fromAtom('2020-04-15T11:11:11+01:00'),
-                DateTimeFactory::fromAtom('2020-04-25T12:12:12+01:00')
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2020-04-15T11:11:11+01:00'),
+                    DateTimeFactory::fromAtom('2020-04-25T12:12:12+01:00')
+                )
             ),
         ];
 
         $calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-04-30T12:12:12+01:00'),
-            $timestamps
+            $subEvents
         );
 
         $this->assertEquals(
@@ -1835,34 +1947,42 @@ class CalendarTest extends TestCase
         $updatedCalendar = $calendar->withStatus($newStatus);
 
         $this->assertEquals($newStatus, $updatedCalendar->getStatus());
-        $this->assertEquals($timestamps, $updatedCalendar->getTimestamps());
+        $this->assertEquals($subEvents, $updatedCalendar->getSubEvents());
     }
 
     /**
      * @test
      */
-    public function it_can_change_top_status_and_timestamp_statuses(): void
+    public function it_can_change_top_status_and_sub_events_statuses(): void
     {
         $calendar = new Calendar(
-            CalendarType::MULTIPLE(),
+            CalendarType::multiple(),
             DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-04-30T12:12:12+01:00'),
             [
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2020-04-05T11:11:11+01:00'),
-                    DateTimeFactory::fromAtom('2020-04-10T12:12:12+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2020-04-05T11:11:11+01:00'),
+                        DateTimeFactory::fromAtom('2020-04-10T12:12:12+01:00')
+                    )
                 ),
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2020-04-07T11:11:11+01:00'),
-                    DateTimeFactory::fromAtom('2020-04-09T12:12:12+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2020-04-07T11:11:11+01:00'),
+                        DateTimeFactory::fromAtom('2020-04-09T12:12:12+01:00')
+                    )
                 ),
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2020-04-15T11:11:11+01:00'),
-                    DateTimeFactory::fromAtom('2020-04-25T12:12:12+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2020-04-15T11:11:11+01:00'),
+                        DateTimeFactory::fromAtom('2020-04-25T12:12:12+01:00')
+                    )
                 ),
-                new Timestamp(
-                    DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
-                    DateTimeFactory::fromAtom('2020-04-20T12:12:12+01:00')
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2020-04-01T11:11:11+01:00'),
+                        DateTimeFactory::fromAtom('2020-04-20T12:12:12+01:00')
+                    )
                 ),
             ]
         );
@@ -1879,25 +1999,25 @@ class CalendarTest extends TestCase
 
         $updatedCalendar = $calendar
             ->withStatus($newStatus)
-            ->withStatusOnTimestamps($newStatus);
+            ->withStatusOnSubEvents($newStatus);
 
         $this->assertEquals($newStatus, $updatedCalendar->getStatus());
 
-        foreach ($updatedCalendar->getTimestamps() as $timestamp) {
-            $this->assertEquals($newStatus, $timestamp->getStatus());
+        foreach ($updatedCalendar->getSubEvents() as $subEvent) {
+            $this->assertEquals($newStatus, $subEvent->getStatus());
         }
     }
 
     /**
      * @test
      */
-    public function time_stamps_need_to_have_type_time_stamp(): void
+    public function sub_events_need_to_have_type_sub_event(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Timestamps should have type TimeStamp.');
+        $this->expectExceptionMessage('SubEvents should have type ' . SubEvent::class);
 
         new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
             ['wrong timestamp'] // @phpstan-ignore-line
@@ -1910,10 +2030,10 @@ class CalendarTest extends TestCase
     public function opening_hours_need_to_have_type_opening_hour(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('OpeningHours should have type OpeningHour.');
+        $this->expectExceptionMessage('OpeningHours should have type ' . OpeningHour::class);
 
         new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom(self::START_DATE),
             DateTimeFactory::fromAtom(self::END_DATE),
             [],

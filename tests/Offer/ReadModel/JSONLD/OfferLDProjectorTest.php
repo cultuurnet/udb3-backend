@@ -24,6 +24,9 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -56,9 +59,7 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD\ItemLDProjector;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -754,16 +755,16 @@ class OfferLDProjectorTest extends TestCase
         $aggregateId = 'a5bafa9d-a71e-4624-835d-57db2832a7d8';
 
         $priceInfo = new PriceInfo(
-            new BasePrice(
+            Tariff::createBasePrice(
                 new Money(1050, new Currency('EUR'))
             )
         );
 
         $priceInfo = $priceInfo->withExtraTariff(
             new Tariff(
-                new MultilingualString(
+                new TranslatedTariffName(
                     new Language('nl'),
-                    'Tarief inwoners'
+                    new TariffName('Tarief inwoners')
                 ),
                 new Money(950, new Currency('EUR'))
             )
@@ -771,9 +772,9 @@ class OfferLDProjectorTest extends TestCase
 
         $priceInfo = $priceInfo->withExtraUiTPASTariff(
             new Tariff(
-                new MultilingualString(
+                new TranslatedTariffName(
                     new Language('nl'),
-                    'UiTPAS tarief'
+                    new TariffName('UiTPAS tarief')
                 ),
                 new Money(650, new Currency('EUR'))
             )

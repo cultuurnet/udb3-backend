@@ -11,9 +11,9 @@ use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactoryInterface;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -193,7 +193,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                             new Locality('Bxl'),
                             new CountryCode('BE')
                         )),
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     )
                 ),
                 new UpdateGeoCoordinatesFromAddress(
@@ -221,7 +221,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                             new Locality('Bxl'),
                             new CountryCode('BE')
                         )),
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     )
                 ),
                 new UpdateGeoCoordinatesFromAddress(

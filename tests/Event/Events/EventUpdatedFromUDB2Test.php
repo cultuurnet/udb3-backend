@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
@@ -95,13 +96,15 @@ final class EventUpdatedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
-                            new Timestamp(
-                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
-                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                                )
                             ),
                         ]
                     )
@@ -133,13 +136,15 @@ final class EventUpdatedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
-                            new Timestamp(
-                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
-                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                                )
                             ),
                         ]
                     )

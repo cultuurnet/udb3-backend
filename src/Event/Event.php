@@ -62,15 +62,15 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\Events\VideoUpdated;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -91,9 +91,7 @@ use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -106,7 +104,7 @@ final class Event extends Offer
 
     private string $onlineUrl = '';
 
-    private ?Audience $audience = null;
+    private ?AudienceType $audienceType = null;
 
     private ?LocationId $locationId = null;
 
@@ -146,7 +144,7 @@ final class Event extends Offer
             // Bookable education events should get education as their audience type. We record this explicitly so we
             // don't have to handle this edge case in every read model projector.
             $event->apply(
-                new AudienceUpdated($eventId, new Audience(AudienceType::education()))
+                new AudienceUpdated($eventId, AudienceType::education())
             );
         }
 
@@ -209,7 +207,7 @@ final class Event extends Offer
         $this->eventId = $eventCreated->getEventId();
         $this->titles[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
         $this->calendar = $eventCreated->getCalendar();
-        $this->audience = new Audience(AudienceType::everyone());
+        $this->audienceType = AudienceType::everyone();
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
         $this->typeId = $eventCreated->getEventType()->getId();
@@ -307,7 +305,7 @@ final class Event extends Offer
             // Bookable education events should get education as their audience type. We record this explicitly so we
             // don't have to handle this edge case in every read model projector.
             $this->apply(
-                new AudienceUpdated($this->eventId, new Audience(AudienceType::education()))
+                new AudienceUpdated($this->eventId, AudienceType::education())
             );
         }
     }
@@ -348,7 +346,7 @@ final class Event extends Offer
             // Bookable education events should get education as their audience type. We record this explicitly so we
             // don't have to handle this edge case in every read model projector.
             $this->apply(
-                new AudienceUpdated($this->eventId, new Audience(AudienceType::education()))
+                new AudienceUpdated($this->eventId, AudienceType::education())
             );
         }
     }
@@ -360,40 +358,42 @@ final class Event extends Offer
 
     public function updateSubEvents(SubEventUpdate ...$subEventUpdates): void
     {
-        $timestamps = $this->calendar->getTimestamps();
+        $subEvents = $this->calendar->getSubEvents();
 
-        if (empty($timestamps)) {
+        if (empty($subEvents)) {
             throw CalendarTypeNotSupported::forCalendarType($this->calendar->getType());
         }
 
         foreach ($subEventUpdates as $subEventUpdate) {
             $index = $subEventUpdate->getSubEventId();
 
-            if (!isset($timestamps[$index])) {
-                // If the timestamp to update doesn't exist, it's most likely a concurrency issue.
+            if (!isset($subEvents[$index])) {
+                // If the sub event to update doesn't exist, it's most likely a concurrency issue.
                 continue;
             }
 
-            $timestamp = $timestamps[$index];
+            $subEvent = $subEvents[$index];
 
             $subEventStatus = $subEventUpdate->getStatus() ?: null;
             $subEventBookingAvailability = $subEventUpdate->getBookingAvailability() ?: null;
 
-            $updatedTimestamp = new Timestamp(
-                $subEventUpdate->getStartDate() ?: $timestamp->getStartDate(),
-                $subEventUpdate->getEndDate() ?: $timestamp->getEndDate(),
-                $subEventStatus ?? $timestamp->getStatus(),
-                $subEventBookingAvailability ?? $timestamp->getBookingAvailability()
+            $updatedSubEvent = new SubEvent(
+                new DateRange(
+                    $subEventUpdate->getStartDate() ?: $subEvent->getDateRange()->getFrom(),
+                    $subEventUpdate->getEndDate() ?: $subEvent->getDateRange()->getTo()
+                ),
+                $subEventStatus ?? $subEvent->getStatus(),
+                $subEventBookingAvailability ?? $subEvent->getBookingAvailability()
             );
 
-            $timestamps[$index] = $updatedTimestamp;
+            $subEvents[$index] = $updatedSubEvent;
         }
 
         $updatedCalendar = new Calendar(
             $this->calendar->getType(),
             null,
             null,
-            $timestamps,
+            $subEvents,
             $this->calendar->getOpeningHours()
         );
 
@@ -448,9 +448,8 @@ final class Event extends Offer
         $this->onlineUrl = '';
     }
 
-    public function updateAudience(Audience $audience): void
+    public function updateAudience(AudienceType $audienceType): void
     {
-        $audienceType = $audience->getAudienceType();
         if ($this->locationId &&
             $this->locationId->isDummyPlaceForEducation() &&
             !$audienceType->sameAs(AudienceType::education())
@@ -458,11 +457,11 @@ final class Event extends Offer
             throw IncompatibleAudienceType::forEvent($this->eventId, $audienceType);
         }
 
-        if (is_null($this->audience) || !$this->audience->equals($audience)) {
+        if (is_null($this->audienceType) || !$this->audienceType->sameAs($audienceType)) {
             $this->apply(
                 new AudienceUpdated(
                     $this->eventId,
-                    $audience
+                    $audienceType
                 )
             );
         }
@@ -470,7 +469,7 @@ final class Event extends Offer
 
     public function applyAudienceUpdated(AudienceUpdated $audienceUpdated): void
     {
-        $this->audience = $audienceUpdated->getAudience();
+        $this->audienceType = $audienceUpdated->getAudienceType();
     }
 
     public function updateTheme(Category $category): void
@@ -504,11 +503,7 @@ final class Event extends Offer
             return;
         }
 
-        $legacyUiTPASTariffs = [];
-        foreach ($tariffs as $tariff) {
-            $legacyUiTPASTariffs[] = Tariff::fromUdb3ModelTariff($tariff);
-        }
-        $newPriceInfo = $this->priceInfo->withUiTPASTariffs($legacyUiTPASTariffs);
+        $newPriceInfo = $this->priceInfo->withUiTPASTariffs($tariffs);
 
         if ($this->priceInfo->serialize() !== $newPriceInfo->serialize()) {
             $this->apply(new PriceInfoUpdated($this->eventId, $newPriceInfo));

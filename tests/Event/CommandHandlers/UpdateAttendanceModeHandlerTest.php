@@ -10,7 +10,6 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
@@ -20,6 +19,7 @@ use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\SampleFiles;
@@ -117,7 +117,7 @@ final class UpdateAttendanceModeHandlerTest extends CommandHandlerScenarioTestCa
             'some representative title',
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('bfc60a14-6208-4372-942e-86e63744769a'),
-            new Calendar(CalendarType::PERMANENT()),
+            new Calendar(CalendarType::permanent()),
             new Theme('1.8.1.0.0', 'Rock')
         );
     }

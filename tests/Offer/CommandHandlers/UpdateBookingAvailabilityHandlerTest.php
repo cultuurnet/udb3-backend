@@ -9,20 +9,22 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Calendar\Timestamp;
 use DateTime;
+use DateTimeImmutable;
 
 final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -47,7 +49,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             'Permanent Event',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $this->expectException(CalendarTypeNotSupported::class);
@@ -71,7 +73,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(
-                CalendarType::PERIODIC(),
+                CalendarType::periodic(),
                 new DateTime('2020-01-01 10:00:00'),
                 new DateTime('2020-01-01 12:00:00')
             )
@@ -98,13 +100,15 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(
-                CalendarType::SINGLE(),
+                CalendarType::single(),
                 null,
                 null,
                 [
-                    new Timestamp(
-                        new DateTime('2020-01-01 10:00:00'),
-                        new DateTime('2020-01-01 12:00:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            new DateTimeImmutable('2020-01-01 10:00:00'),
+                            new DateTimeImmutable('2020-01-01 12:00:00')
+                        )
                     ),
                 ]
             )
@@ -120,13 +124,15 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                 new CalendarUpdated(
                     '1',
                     (new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
-                            (new Timestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
                     ))->withBookingAvailability(BookingAvailability::Unavailable())
@@ -146,17 +152,21 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(
-                CalendarType::MULTIPLE(),
+                CalendarType::multiple(),
                 null,
                 null,
                 [
-                    new Timestamp(
-                        new DateTime('2020-01-01 10:00:00'),
-                        new DateTime('2020-01-01 12:00:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            new DateTimeImmutable('2020-01-01 10:00:00'),
+                            new DateTimeImmutable('2020-01-01 12:00:00')
+                        )
                     ),
-                    new Timestamp(
-                        new DateTime('2020-01-03 10:00:00'),
-                        new DateTime('2020-01-03 12:00:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            new DateTimeImmutable('2020-01-03 10:00:00'),
+                            new DateTimeImmutable('2020-01-03 12:00:00')
+                        )
                     ),
                 ]
             )
@@ -172,17 +182,21 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                 new CalendarUpdated(
                     '1',
                     (new Calendar(
-                        CalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
-                            (new Timestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
-                            (new Timestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
                         ]
                     ))->withBookingAvailability(BookingAvailability::Unavailable())

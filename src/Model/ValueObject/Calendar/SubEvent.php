@@ -19,6 +19,29 @@ final class SubEvent
         $this->bookingAvailability = $bookingAvailability;
     }
 
+    public static function createAvailable(DateRange $dateRange): self
+    {
+        return new self(
+            $dateRange,
+            new Status(StatusType::Available()),
+            new BookingAvailability(BookingAvailabilityType::Available())
+        );
+    }
+
+    public function withStatus(Status $status): self
+    {
+        $clone = clone $this;
+        $clone->status = $status;
+        return $clone;
+    }
+
+    public function withBookingAvailability(BookingAvailability $bookingAvailability): self
+    {
+        $clone = clone $this;
+        $clone->bookingAvailability = $bookingAvailability;
+        return $clone;
+    }
+
     public function getDateRange(): DateRange
     {
         return $this->dateRange;

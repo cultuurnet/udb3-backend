@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
@@ -36,7 +36,7 @@ class EventCreatedTest extends TestCase
             'title',
             new EventType('id', 'label'),
             $this->location,
-            new Calendar(CalendarType::PERMANENT()),
+            new Calendar(CalendarType::permanent()),
             new Theme('id', 'label'),
             $this->publicationDate
         );
@@ -55,7 +55,7 @@ class EventCreatedTest extends TestCase
             'Example title',
             new EventType('0.50.4.0.0', 'Concert'),
             $this->location,
-            new Calendar(CalendarType::PERMANENT()),
+            new Calendar(CalendarType::permanent()),
             new Theme('1.8.3.5.0', 'Amusementsmuziek')
         );
 
@@ -65,7 +65,7 @@ class EventCreatedTest extends TestCase
             'Example title',
             new EventType('0.50.4.0.0', 'Concert'),
             $this->location,
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $expectedWithTheme = [
@@ -73,14 +73,14 @@ class EventCreatedTest extends TestCase
             new TypeUpdated($eventId, new EventType('0.50.4.0.0', 'Concert')),
             new ThemeUpdated($eventId, new Theme('1.8.3.5.0', 'Amusementsmuziek')),
             new LocationUpdated($eventId, $this->location),
-            new CalendarUpdated($eventId, new Calendar(CalendarType::PERMANENT())),
+            new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
         ];
 
         $expectedWithoutTheme = [
             new TitleUpdated($eventId, 'Example title'),
             new TypeUpdated($eventId, new EventType('0.50.4.0.0', 'Concert')),
             new LocationUpdated($eventId, $this->location),
-            new CalendarUpdated($eventId, new Calendar(CalendarType::PERMANENT())),
+            new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
         ];
 
         $this->assertInstanceOf(ConvertsToGranularEvents::class, $eventWithTheme);
@@ -100,7 +100,7 @@ class EventCreatedTest extends TestCase
             'Example title',
             new EventType('0.50.4.0.0', 'Concert'),
             $this->location,
-            new Calendar(CalendarType::PERMANENT()),
+            new Calendar(CalendarType::permanent()),
             new Theme('1.8.3.5.0', 'Amusementsmuziek')
         );
 
@@ -146,7 +146,7 @@ class EventCreatedTest extends TestCase
     public function it_stores_an_event_calendar(): void
     {
         $this->assertEquals(
-            new Calendar(CalendarType::PERMANENT()),
+            new Calendar(CalendarType::permanent()),
             $this->eventCreated->getCalendar()
         );
     }
@@ -223,7 +223,7 @@ class EventCreatedTest extends TestCase
                     new EventType('bar_id', 'bar'),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
                     new Calendar(
-                        CalendarType::PERMANENT()
+                        CalendarType::permanent()
                     )
                 ),
             ],
@@ -261,7 +261,7 @@ class EventCreatedTest extends TestCase
                     new EventType('bar_id', 'bar'),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
                     new Calendar(
-                        CalendarType::PERMANENT()
+                        CalendarType::permanent()
                     ),
                     new Theme('123', 'foo')
                 ),
@@ -296,7 +296,7 @@ class EventCreatedTest extends TestCase
                     new EventType('bar_id', 'bar'),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
                     new Calendar(
-                        CalendarType::PERMANENT()
+                        CalendarType::permanent()
                     ),
                     null,
                     DateTimeFactory::fromAtom('2016-08-01T00:00:00+02:00')

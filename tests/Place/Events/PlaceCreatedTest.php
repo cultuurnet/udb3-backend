@@ -9,11 +9,11 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
@@ -42,7 +42,7 @@ class PlaceCreatedTest extends TestCase
             'title',
             new EventType('id', 'label'),
             $this->address,
-            new Calendar(CalendarType::PERMANENT()),
+            new Calendar(CalendarType::permanent()),
             $this->publicationDate
         );
     }
@@ -56,7 +56,7 @@ class PlaceCreatedTest extends TestCase
             new TitleUpdated('id', 'title'),
             new TypeUpdated('id', new EventType('id', 'label')),
             new AddressUpdated('id', $this->address),
-            new CalendarUpdated('id', new Calendar(CalendarType::PERMANENT())),
+            new CalendarUpdated('id', new Calendar(CalendarType::permanent())),
         ];
 
         $actual = $this->placeCreated->toGranularEvents();
@@ -104,7 +104,7 @@ class PlaceCreatedTest extends TestCase
     public function it_stores_a_place_calendar(): void
     {
         $this->assertEquals(
-            new Calendar(CalendarType::PERMANENT()),
+            new Calendar(CalendarType::permanent()),
             $this->placeCreated->getCalendar()
         );
     }
@@ -190,7 +190,7 @@ class PlaceCreatedTest extends TestCase
                         new CountryCode('BE')
                     ),
                     new Calendar(
-                        CalendarType::PERMANENT()
+                        CalendarType::permanent()
                     )
                 ),
             ],
@@ -233,7 +233,7 @@ class PlaceCreatedTest extends TestCase
                         new CountryCode('BE')
                     ),
                     new Calendar(
-                        CalendarType::PERMANENT()
+                        CalendarType::permanent()
                     )
                 ),
             ],
@@ -276,7 +276,7 @@ class PlaceCreatedTest extends TestCase
                         new CountryCode('BE')
                     ),
                     new Calendar(
-                        CalendarType::PERMANENT()
+                        CalendarType::permanent()
                     ),
                     DateTimeFactory::fromAtom('2016-08-01T00:00:00+02:00')
                 ),

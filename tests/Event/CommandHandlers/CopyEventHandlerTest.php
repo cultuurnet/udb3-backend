@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event\CommandHandlers;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Commands\CopyEvent;
@@ -18,9 +17,11 @@ use CultuurNet\UDB3\Event\Productions\Production;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Calendar\Timestamp;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -68,13 +69,15 @@ final class CopyEventHandlerTest extends TestCase
             new EventType('0.0.0.0.1', 'Mock type'),
             new LocationId('8aa2d316-0f5a-495d-9832-46fc22eeaa89'),
             new Calendar(
-                CalendarType::SINGLE(),
+                CalendarType::single(),
                 null,
                 null,
                 [
-                    new Timestamp(
-                        DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
-                        DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                        )
                     ),
                 ]
             )
@@ -136,13 +139,15 @@ final class CopyEventHandlerTest extends TestCase
             new EventType('0.0.0.0.1', 'Mock type'),
             new LocationId('8aa2d316-0f5a-495d-9832-46fc22eeaa89'),
             new Calendar(
-                CalendarType::SINGLE(),
+                CalendarType::single(),
                 null,
                 null,
                 [
-                    new Timestamp(
-                        DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
-                        DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                        )
                     ),
                 ]
             )
@@ -211,13 +216,15 @@ final class CopyEventHandlerTest extends TestCase
             new EventType('0.0.0.0.1', 'Mock type'),
             new LocationId('8aa2d316-0f5a-495d-9832-46fc22eeaa89'),
             new Calendar(
-                CalendarType::SINGLE(),
+                CalendarType::single(),
                 null,
                 null,
                 [
-                    new Timestamp(
-                        DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
-                        DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                        )
                     ),
                 ]
             )

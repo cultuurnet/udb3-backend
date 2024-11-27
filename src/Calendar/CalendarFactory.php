@@ -7,6 +7,14 @@ namespace CultuurNet\UDB3\Calendar;
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use DateTimeImmutable;
 use DateTimeInterface;
 
 final class CalendarFactory implements CalendarFactoryInterface
@@ -51,7 +59,7 @@ final class CalendarFactory implements CalendarFactoryInterface
             if ($timestamp->getEndTime()) {
                 $endDateString = $timestamp->getDate() . 'T' . $timestamp->getEndTime();
             } else {
-                $endTime = $timestamp->getStartTime() ? $timestamp->getStartTime() : '00:00:00';
+                $endTime = $timestamp->getStartTime() ?: '00:00:00';
                 $endDateString = $timestamp->getDate() . 'T' . $endTime;
             }
         }
@@ -61,7 +69,7 @@ final class CalendarFactory implements CalendarFactoryInterface
         // Get the time stamps.
         //
         $cdbCalendar->rewind();
-        $timestamps = [];
+        $subEvents = [];
         if ($cdbCalendar instanceof \CultureFeed_Cdb_Data_Calendar_TimestampList) {
             $splitPeriods = [];
             while ($cdbCalendar->valid()) {
@@ -69,7 +77,7 @@ final class CalendarFactory implements CalendarFactoryInterface
                 $timestamp = $cdbCalendar->current();
                 $cdbCalendar->next();
 
-                $startTime = $timestamp->getStartTime() ? $timestamp->getStartTime() : '00:00:00';
+                $startTime = $timestamp->getStartTime() ?: '00:00:00';
                 $startDateString = $timestamp->getDate() . 'T' . $startTime;
 
                 if ($timestamp->getEndTime()) {
@@ -78,32 +86,35 @@ final class CalendarFactory implements CalendarFactoryInterface
                     $endDateString = $timestamp->getDate() . 'T' . $startTime;
                 }
 
-                $timestamp = $this->createTimestamp(
+                $subEvent = $this->createSubEvent(
                     $startDateString,
                     $endDateString
                 );
 
-                $index = (int) ($timestamp->getStartDate()->format('s'));
+                $index = (int) ($subEvent->getDateRange()->getFrom()->format('s'));
                 if ($index > 0) {
-                    $splitPeriods[$index][] = $timestamp;
+                    $splitPeriods[$index][] = $subEvent;
                 } else {
-                    $timestamps[] = $timestamp;
+                    $subEvents[] = $subEvent;
                 }
             }
 
             $periods = array_map(
-                function (array $periodParts) {
+                function (array $periodParts): SubEvent {
+                    /** @var SubEvent[] $periodParts */
                     $firstPart = array_shift($periodParts);
                     $lastPart = array_pop($periodParts);
-                    return new Timestamp(
-                        Chronos::instance($firstPart->getStartDate())->second(0),
-                        $lastPart ? $lastPart->getEndDate() : $firstPart->getEndDate()
+                    return SubEvent::createAvailable(
+                        new DateRange(
+                            new DateTimeImmutable(Chronos::instance($firstPart->getDateRange()->getFrom())->second(0)->toAtomString()),
+                            $lastPart ? $lastPart->getDateRange()->getTo() : $firstPart->getDateRange()->getTo()
+                        )
                     );
                 },
                 $splitPeriods
             );
 
-            $timestamps = array_merge($timestamps, $periods);
+            $subEvents = array_merge($subEvents, $periods);
         }
 
         //
@@ -125,7 +136,7 @@ final class CalendarFactory implements CalendarFactoryInterface
         }
 
         if (isset($startDate) && isset($endDate)) {
-            $calendarTimeSpan = $this->createChronologicalTimestamp($startDate, $endDate);
+            $calendarTimeSpan = $this->createChronologicalSubEvent($startDate, $endDate);
         }
 
         //
@@ -133,13 +144,13 @@ final class CalendarFactory implements CalendarFactoryInterface
         //
         $calendarType = null;
         if ($cdbCalendar instanceof \CultureFeed_Cdb_Data_Calendar_Permanent) {
-            $calendarType = CalendarType::PERMANENT();
+            $calendarType = CalendarType::permanent();
         } elseif ($cdbCalendar instanceof \CultureFeed_Cdb_Data_Calendar_PeriodList) {
-            $calendarType = CalendarType::PERIODIC();
+            $calendarType = CalendarType::periodic();
         } elseif ($cdbCalendar instanceof \CultureFeed_Cdb_Data_Calendar_TimestampList) {
-            $calendarType = CalendarType::SINGLE();
-            if (count($timestamps) > 1) {
-                $calendarType = CalendarType::MULTIPLE();
+            $calendarType = CalendarType::single();
+            if (count($subEvents) > 1) {
+                $calendarType = CalendarType::multiple();
             }
         }
 
@@ -148,9 +159,9 @@ final class CalendarFactory implements CalendarFactoryInterface
         //
         return new Calendar(
             $calendarType,
-            isset($calendarTimeSpan) ? $calendarTimeSpan->getStartDate() : null,
-            isset($calendarTimeSpan) ? $calendarTimeSpan->getEndDate() : null,
-            $timestamps,
+            isset($calendarTimeSpan) ? $calendarTimeSpan->getDateRange()->getFrom() : null,
+            isset($calendarTimeSpan) ? $calendarTimeSpan->getDateRange()->getTo() : null,
+            $subEvents,
             $openingHours
         );
     }
@@ -165,7 +176,7 @@ final class CalendarFactory implements CalendarFactoryInterface
         }
 
         return new Calendar(
-            CalendarType::PERMANENT(),
+            CalendarType::permanent(),
             null,
             null,
             [],
@@ -206,9 +217,9 @@ final class CalendarFactory implements CalendarFactoryInterface
                     );
 
                     $openingHour = new OpeningHour(
-                        OpeningTime::fromNativeDateTime($opens),
-                        $closes ? OpeningTime::fromNativeDateTime($closes) : OpeningTime::fromNativeDateTime($opens),
-                        new DayOfWeekCollection(new DayOfWeek($day->getDayName()))
+                        new Days(new Day($day->getDayName())),
+                        Time::fromDateTime($opens),
+                        $closes ? Time::fromDateTime($closes) : Time::fromDateTime($opens)
                     );
 
                     $openingHours = $this->addToOpeningHours($openingHour, ...$openingHours);
@@ -228,9 +239,7 @@ final class CalendarFactory implements CalendarFactoryInterface
     ): array {
         foreach ($openingHours as $openingHour) {
             if ($openingHour->hasEqualHours($newOpeningHour)) {
-                $openingHour->addDayOfWeekCollection(
-                    $newOpeningHour->getDayOfWeekCollection()
-                );
+                $openingHour->addDays($newOpeningHour->getDays());
                 return $openingHours;
             }
         }
@@ -239,14 +248,14 @@ final class CalendarFactory implements CalendarFactoryInterface
         return $openingHours;
     }
 
-    private function createTimestamp(
+    private function createSubEvent(
         string $startDateString,
         string $endDateString
-    ): Timestamp {
+    ): SubEvent {
         $startDate = DateTimeFactory::fromCdbFormat($startDateString);
         $endDate = DateTimeFactory::fromCdbFormat($endDateString);
 
-        return $this->createChronologicalTimestamp($startDate, $endDate);
+        return $this->createChronologicalSubEvent($startDate, $endDate);
     }
 
     /**
@@ -255,7 +264,7 @@ final class CalendarFactory implements CalendarFactoryInterface
      *
      * If the end dates does not make any sense at all, it is forced to the start date.
      */
-    private function createChronologicalTimestamp(DateTimeInterface $start, DateTimeInterface $end): Timestamp
+    private function createChronologicalSubEvent(DateTimeInterface $start, DateTimeInterface $end): SubEvent
     {
         $startDate = Chronos::instance($start);
         $endDate = Chronos::instance($end);
@@ -268,7 +277,12 @@ final class CalendarFactory implements CalendarFactoryInterface
             $endDate = $startDate;
         }
 
-        return new Timestamp($startDate, $endDate);
+        return SubEvent::createAvailable(
+            new DateRange(
+                new DateTimeImmutable($startDate->toAtomString()),
+                new DateTimeImmutable($endDate->toAtomString())
+            )
+        );
     }
 
     /**

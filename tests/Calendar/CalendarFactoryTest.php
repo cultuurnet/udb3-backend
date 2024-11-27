@@ -6,8 +6,15 @@ namespace CultuurNet\UDB3\Calendar;
 
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultureFeed_Cdb_Data_Calendar_TimestampList;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\SampleFiles;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -49,11 +56,11 @@ class CalendarFactoryTest extends TestCase
         );
 
         $expectedCalendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::single(),
             $expectedStartDate,
             $expectedEndDate,
             [
-                new Timestamp($expectedStartDate, $expectedEndDate),
+                SubEvent::createAvailable(new DateRange($expectedStartDate, $expectedEndDate)),
             ]
         );
 
@@ -65,39 +72,39 @@ class CalendarFactoryTest extends TestCase
      */
     public function it_can_create_a_calendar_from_a_weekscheme(): void
     {
-        $weekDays = new DayOfWeekCollection(
-            DayOfWeek::MONDAY(),
-            DayOfWeek::TUESDAY(),
-            DayOfWeek::WEDNESDAY(),
-            DayOfWeek::THURSDAY(),
-            DayOfWeek::FRIDAY()
+        $weekDays = new Days(
+            Day::monday(),
+            Day::tuesday(),
+            Day::wednesday(),
+            Day::thursday(),
+            Day::friday()
         );
 
-        $weekendDays = new DayOfWeekCollection(
-            DayOfWeek::SATURDAY(),
-            DayOfWeek::SUNDAY()
+        $weekendDays = new Days(
+            Day::saturday(),
+            Day::sunday()
         );
 
         $expectedCalendar = new Calendar(
-            CalendarType::PERMANENT(),
+            CalendarType::permanent(),
             null,
             null,
             [],
             [
                 new OpeningHour(
-                    new OpeningTime(new Hour(9), new Minute(0)),
-                    new OpeningTime(new Hour(12), new Minute(0)),
-                    $weekDays
+                    $weekDays,
+                    new Time(new Hour(9), new Minute(0)),
+                    new Time(new Hour(12), new Minute(0))
                 ),
                 new OpeningHour(
-                    new OpeningTime(new Hour(13), new Minute(0)),
-                    new OpeningTime(new Hour(17), new Minute(0)),
-                    $weekDays
+                    $weekDays,
+                    new Time(new Hour(13), new Minute(0)),
+                    new Time(new Hour(17), new Minute(0))
                 ),
                 new OpeningHour(
-                    new OpeningTime(new Hour(10), new Minute(0)),
-                    new OpeningTime(new Hour(16), new Minute(0)),
-                    $weekendDays
+                    $weekendDays,
+                    new Time(new Hour(10), new Minute(0)),
+                    new Time(new Hour(16), new Minute(0))
                 ),
             ]
         );
@@ -141,7 +148,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     new DateTimeImmutable(
                         '2017-05-21 00:00:00',
                         $timeZone
@@ -151,14 +158,16 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -177,7 +186,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -187,14 +196,16 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -213,7 +224,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -223,14 +234,16 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 11:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 11:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -263,7 +276,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 00:00:00',
                         $timeZone
@@ -273,34 +286,40 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-06-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-06-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-06-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-06-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-07-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-07-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-07-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-07-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -333,7 +352,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 00:00:00',
                         $timeZone
@@ -343,34 +362,40 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-07-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-07-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-07-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-07-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-06-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-06-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-06-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-06-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -396,7 +421,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -406,24 +431,28 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-06-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-06-21 10:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-06-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-06-21 10:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -449,7 +478,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -459,24 +488,28 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 11:30:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 11:30:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-06-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-06-21 11:30:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-06-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-06-21 11:30:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -509,7 +542,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 00:00:00',
                         $timeZone
@@ -519,34 +552,40 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 00:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 23:59:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 00:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 23:59:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-06-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-06-21 10:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-06-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-06-21 10:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-07-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-07-21 11:30:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-07-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-07-21 11:30:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -579,7 +618,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -589,14 +628,16 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-23 16:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-23 16:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -650,7 +691,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -660,24 +701,28 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-23 16:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-23 16:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-24 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-26 16:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-24 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-26 16:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -724,7 +769,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::MULTIPLE(),
+                    CalendarType::multiple(),
                     new DateTimeImmutable(
                         '2017-05-21 10:00:00',
                         $timeZone
@@ -734,34 +779,40 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-21 16:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-21 16:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-21 20:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-22 01:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-21 20:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-22 01:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2017-05-23 10:00:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2017-05-25 16:00:00',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2017-05-23 10:00:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2017-05-25 16:00:00',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -780,7 +831,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     new DateTimeImmutable(
                         '2011-11-11 11:11:00',
                         $timeZone
@@ -790,14 +841,16 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2011-11-11 11:11:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2011-11-11 12:12:12',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2011-11-11 11:11:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2011-11-11 12:12:12',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -816,7 +869,7 @@ class CalendarFactoryTest extends TestCase
                     return $cdbCalendar;
                 }),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::SINGLE(),
+                    CalendarType::single(),
                     new DateTimeImmutable(
                         '2011-11-11 11:11:00',
                         $timeZone
@@ -826,14 +879,16 @@ class CalendarFactoryTest extends TestCase
                         $timeZone
                     ),
                     [
-                        new Timestamp(
-                            new DateTimeImmutable(
-                                '2011-11-11 11:11:00',
-                                $timeZone
-                            ),
-                            new DateTimeImmutable(
-                                '2011-11-11 11:11:11',
-                                $timeZone
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable(
+                                    '2011-11-11 11:11:00',
+                                    $timeZone
+                                ),
+                                new DateTimeImmutable(
+                                    '2011-11-11 11:11:11',
+                                    $timeZone
+                                )
                             )
                         ),
                     ]
@@ -871,7 +926,7 @@ class CalendarFactoryTest extends TestCase
                     SampleFiles::read(__DIR__ . '/samples/periodic/calendar_udb2_import_example_1101.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERIODIC(),
+                    CalendarType::periodic(),
                     new DateTimeImmutable('2017-09-01 00:00:00', $timeZone),
                     new DateTimeImmutable('2017-12-31 00:00:00', $timeZone)
                 ),
@@ -881,27 +936,27 @@ class CalendarFactoryTest extends TestCase
                     SampleFiles::read(__DIR__ . '/samples/periodic/calendar_udb2_import_example_1201.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERIODIC(),
+                    CalendarType::periodic(),
                     new DateTimeImmutable('2017-09-01 00:00:00', $timeZone),
                     new DateTimeImmutable('2017-12-31 00:00:00', $timeZone),
                     [],
                     [
                         new OpeningHour(
-                            new OpeningTime(new Hour(20), new Minute(30)),
-                            new OpeningTime(new Hour(20), new Minute(30)),
-                            new DayOfWeekCollection(
-                                DayOfWeek::MONDAY(),
-                                DayOfWeek::THURSDAY(),
-                                DayOfWeek::FRIDAY(),
-                                DayOfWeek::SATURDAY()
-                            )
+                            new Days(
+                                Day::monday(),
+                                Day::thursday(),
+                                Day::friday(),
+                                Day::saturday()
+                            ),
+                            new Time(new Hour(20), new Minute(30)),
+                            new Time(new Hour(20), new Minute(30))
                         ),
                         new OpeningHour(
-                            new OpeningTime(new Hour(16), new Minute(0)),
-                            new OpeningTime(new Hour(16), new Minute(0)),
-                            new DayOfWeekCollection(
-                                DayOfWeek::SUNDAY()
-                            )
+                            new Days(
+                                Day::sunday()
+                            ),
+                            new Time(new Hour(16), new Minute(0)),
+                            new Time(new Hour(16), new Minute(0))
                         ),
                     ]
                 ),
@@ -911,27 +966,27 @@ class CalendarFactoryTest extends TestCase
                     SampleFiles::read(__DIR__ . '/samples/periodic/calendar_udb2_import_example_1301.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERIODIC(),
+                    CalendarType::periodic(),
                     new DateTimeImmutable('2017-09-01 00:00:00', $timeZone),
                     new DateTimeImmutable('2017-12-31 00:00:00', $timeZone),
                     [],
                     [
                         new OpeningHour(
-                            new OpeningTime(new Hour(20), new Minute(30)),
-                            new OpeningTime(new Hour(22), new Minute(30)),
-                            new DayOfWeekCollection(
-                                DayOfWeek::MONDAY(),
-                                DayOfWeek::THURSDAY(),
-                                DayOfWeek::FRIDAY(),
-                                DayOfWeek::SATURDAY()
-                            )
+                            new Days(
+                                Day::monday(),
+                                Day::thursday(),
+                                Day::friday(),
+                                Day::saturday()
+                            ),
+                            new Time(new Hour(20), new Minute(30)),
+                            new Time(new Hour(22), new Minute(30))
                         ),
                         new OpeningHour(
-                            new OpeningTime(new Hour(16), new Minute(0)),
-                            new OpeningTime(new Hour(20), new Minute(0)),
-                            new DayOfWeekCollection(
-                                DayOfWeek::SUNDAY()
-                            )
+                            new Days(
+                                Day::sunday()
+                            ),
+                            new Time(new Hour(16), new Minute(0)),
+                            new Time(new Hour(20), new Minute(0))
                         ),
                     ]
                 ),
@@ -941,27 +996,27 @@ class CalendarFactoryTest extends TestCase
                     SampleFiles::read(__DIR__ . '/samples/periodic/calendar_udb2_import_example_1401.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERIODIC(),
+                    CalendarType::periodic(),
                     new DateTimeImmutable('2017-09-01 00:00:00', $timeZone),
                     new DateTimeImmutable('2017-12-31 00:00:00', $timeZone),
                     [],
                     [
                         new OpeningHour(
-                            new OpeningTime(new Hour(20), new Minute(30)),
-                            new OpeningTime(new Hour(22), new Minute(30)),
-                            new DayOfWeekCollection(
-                                DayOfWeek::MONDAY(),
-                                DayOfWeek::THURSDAY(),
-                                DayOfWeek::FRIDAY(),
-                                DayOfWeek::SATURDAY()
-                            )
+                            new Days(
+                                Day::monday(),
+                                Day::thursday(),
+                                Day::friday(),
+                                Day::saturday()
+                            ),
+                            new Time(new Hour(20), new Minute(30)),
+                            new Time(new Hour(22), new Minute(30))
                         ),
                         new OpeningHour(
-                            new OpeningTime(new Hour(16), new Minute(0)),
-                            new OpeningTime(new Hour(16), new Minute(0)),
-                            new DayOfWeekCollection(
-                                DayOfWeek::SUNDAY()
-                            )
+                            new Days(
+                                Day::sunday()
+                            ),
+                            new Time(new Hour(16), new Minute(0)),
+                            new Time(new Hour(16), new Minute(0))
                         ),
                     ]
                 ),
@@ -995,34 +1050,34 @@ class CalendarFactoryTest extends TestCase
                 'cdbCalendar' => $this->createPermanentCalendarFromXML(
                     SampleFiles::read(__DIR__ . '/samples/permanent/calendar_udb2_import_example_1501.xml')
                 ),
-                'expectedCalendar' => new Calendar(CalendarType::PERMANENT()),
+                'expectedCalendar' => new Calendar(CalendarType::permanent()),
             ],
             'import permanent event with weekscheme only openingtimes from' => [
                 'cdbCalendar' => $this->createPermanentCalendarFromXML(
                     SampleFiles::read(__DIR__ . '/samples/permanent/calendar_udb2_import_example_1601.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERMANENT(),
+                    CalendarType::permanent(),
                     null,
                     null,
                     [],
                     [
                         new OpeningHour(
-                            new OpeningTime(new Hour(20), new Minute(30)),
-                            new OpeningTime(new Hour(20), new Minute(30)),
-                            new DayOfWeekCollection(
-                                DayOfWeek::MONDAY(),
-                                DayOfWeek::THURSDAY(),
-                                DayOfWeek::FRIDAY(),
-                                DayOfWeek::SATURDAY()
-                            )
+                            new Days(
+                                Day::monday(),
+                                Day::thursday(),
+                                Day::friday(),
+                                Day::saturday()
+                            ),
+                            new Time(new Hour(20), new Minute(30)),
+                            new Time(new Hour(20), new Minute(30))
                         ),
                         new OpeningHour(
-                            new OpeningTime(new Hour(16), new Minute(0)),
-                            new OpeningTime(new Hour(16), new Minute(0)),
-                            new DayOfWeekCollection(
-                                DayOfWeek::SUNDAY()
-                            )
+                            new Days(
+                                Day::sunday()
+                            ),
+                            new Time(new Hour(16), new Minute(0)),
+                            new Time(new Hour(16), new Minute(0))
                         ),
                     ]
                 ),
@@ -1032,27 +1087,27 @@ class CalendarFactoryTest extends TestCase
                     SampleFiles::read(__DIR__ . '/samples/permanent/calendar_udb2_import_example_1701.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERMANENT(),
+                    CalendarType::permanent(),
                     null,
                     null,
                     [],
                     [
                         new OpeningHour(
-                            new OpeningTime(new Hour(20), new Minute(30)),
-                            new OpeningTime(new Hour(22), new Minute(30)),
-                            new DayOfWeekCollection(
-                                DayOfWeek::MONDAY(),
-                                DayOfWeek::THURSDAY(),
-                                DayOfWeek::FRIDAY(),
-                                DayOfWeek::SATURDAY()
-                            )
+                            new Days(
+                                Day::monday(),
+                                Day::thursday(),
+                                Day::friday(),
+                                Day::saturday()
+                            ),
+                            new Time(new Hour(20), new Minute(30)),
+                            new Time(new Hour(22), new Minute(30))
                         ),
                         new OpeningHour(
-                            new OpeningTime(new Hour(16), new Minute(0)),
-                            new OpeningTime(new Hour(20), new Minute(0)),
-                            new DayOfWeekCollection(
-                                DayOfWeek::SUNDAY()
-                            )
+                            new Days(
+                                Day::sunday()
+                            ),
+                            new Time(new Hour(16), new Minute(0)),
+                            new Time(new Hour(20), new Minute(0))
                         ),
                     ]
                 ),
@@ -1062,27 +1117,27 @@ class CalendarFactoryTest extends TestCase
                     SampleFiles::read(__DIR__ . '/samples/permanent/calendar_udb2_import_example_1801.xml')
                 ),
                 'expectedCalendar' => new Calendar(
-                    CalendarType::PERMANENT(),
+                    CalendarType::permanent(),
                     null,
                     null,
                     [],
                     [
                         new OpeningHour(
-                            new OpeningTime(new Hour(20), new Minute(30)),
-                            new OpeningTime(new Hour(22), new Minute(30)),
-                            new DayOfWeekCollection(
-                                DayOfWeek::MONDAY(),
-                                DayOfWeek::THURSDAY(),
-                                DayOfWeek::FRIDAY(),
-                                DayOfWeek::SATURDAY()
-                            )
+                            new Days(
+                                Day::monday(),
+                                Day::thursday(),
+                                Day::friday(),
+                                Day::saturday()
+                            ),
+                            new Time(new Hour(20), new Minute(30)),
+                            new Time(new Hour(22), new Minute(30))
                         ),
                         new OpeningHour(
-                            new OpeningTime(new Hour(16), new Minute(0)),
-                            new OpeningTime(new Hour(16), new Minute(0)),
-                            new DayOfWeekCollection(
-                                DayOfWeek::SUNDAY()
-                            )
+                            new Days(
+                                Day::sunday()
+                            ),
+                            new Time(new Hour(16), new Minute(0)),
+                            new Time(new Hour(16), new Minute(0))
                         ),
                     ]
                 ),

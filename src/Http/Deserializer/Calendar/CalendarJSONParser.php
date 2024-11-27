@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
-use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
-use CultuurNet\UDB3\Calendar\OpeningHour;
-use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\DaysDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
-use CultuurNet\UDB3\Calendar\Timestamp;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 
 class CalendarJSONParser
 {
@@ -52,39 +54,41 @@ class CalendarJSONParser
     }
 
     /**
-     * @return Timestamp[]
+     * @return SubEvent[]
      */
-    public function getTimestamps(array $data): array
+    public function getSubEvents(array $data): array
     {
         if (empty($data['timeSpans'])) {
             return [];
         }
 
-        $timestamps = [];
+        $subEvents = [];
         foreach ($data['timeSpans'] as $timeSpan) {
             if (empty($timeSpan['start']) || empty($timeSpan['end'])) {
                 continue;
             }
 
-            $timestamp = new Timestamp(new \DateTime($timeSpan['start']), new \DateTime($timeSpan['end']));
+            $subEvent = SubEvent::createAvailable(
+                new DateRange(new \DateTimeImmutable($timeSpan['start']), new \DateTimeImmutable($timeSpan['end']))
+            );
 
             $status = isset($timeSpan['status']) ? (new StatusDenormalizer())->denormalize($timeSpan['status'], Status::class) : $this->getStatus($data);
             if ($status) {
-                $timestamp = $timestamp->withStatus(new Status($status->getType(), $status->getReason()));
+                $subEvent = $subEvent->withStatus(new Status($status->getType(), $status->getReason()));
             }
 
             $bookingAvailability = isset($timeSpan['bookingAvailability']) ?
                 (new BookingAvailabilityDenormalizer())->denormalize($timeSpan['bookingAvailability'], BookingAvailability::class) : $this->getBookingAvailability($data);
             if ($bookingAvailability) {
-                $timestamp = $timestamp->withBookingAvailability($bookingAvailability);
+                $subEvent = $subEvent->withBookingAvailability($bookingAvailability);
             }
 
-            $timestamps[] = $timestamp;
+            $subEvents[] = $subEvent;
         }
 
-        ksort($timestamps);
+        ksort($subEvents);
 
-        return $timestamps;
+        return $subEvents;
     }
 
     /**
@@ -103,9 +107,9 @@ class CalendarJSONParser
             }
 
             $openingHours[] = new OpeningHour(
-                OpeningTime::fromNativeString($openingHour['opens']),
-                OpeningTime::fromNativeString($openingHour['closes']),
-                DayOfWeekCollection::deserialize($openingHour['dayOfWeek'])
+                (new DaysDenormalizer())->denormalize($openingHour['dayOfWeek'], Days::class),
+                Time::fromString($openingHour['opens']),
+                Time::fromString($openingHour['closes'])
             );
         }
 

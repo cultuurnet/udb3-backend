@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +25,7 @@ class MajorInfoUpdatedTest extends TestCase
             'title',
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
-            new Calendar(CalendarType::PERMANENT()),
+            new Calendar(CalendarType::permanent()),
             new Theme('1.8.3.5.0', 'Amusementsmuziek')
         );
 
@@ -34,7 +34,7 @@ class MajorInfoUpdatedTest extends TestCase
             'title',
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $expectedWithTheme = [
@@ -42,14 +42,14 @@ class MajorInfoUpdatedTest extends TestCase
             new TypeUpdated($eventId, new EventType('0.50.4.0.0', 'Concert')),
             new ThemeUpdated($eventId, new Theme('1.8.3.5.0', 'Amusementsmuziek')),
             new LocationUpdated($eventId, new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e')),
-            new CalendarUpdated($eventId, new Calendar(CalendarType::PERMANENT())),
+            new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
         ];
 
         $expectedWithoutTheme = [
             new TitleUpdated($eventId, 'title'),
             new TypeUpdated($eventId, new EventType('0.50.4.0.0', 'Concert')),
             new LocationUpdated($eventId, new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e')),
-            new CalendarUpdated($eventId, new Calendar(CalendarType::PERMANENT())),
+            new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
         ];
 
         $this->assertEquals($expectedWithTheme, $eventWithTheme->toGranularEvents());
@@ -118,7 +118,7 @@ class MajorInfoUpdatedTest extends TestCase
                     new EventType('bar_id', 'bar'),
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
                     new Calendar(
-                        CalendarType::PERMANENT()
+                        CalendarType::permanent()
                     ),
                     new Theme('themeid', 'theme_label')
                 ),

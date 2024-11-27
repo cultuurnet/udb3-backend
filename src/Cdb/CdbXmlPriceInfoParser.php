@@ -6,12 +6,13 @@ namespace CultuurNet\UDB3\Cdb;
 
 use CultureFeed_Cdb_Data_Detail;
 use CultureFeed_Cdb_Data_Price;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\MoneyFactory;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\PriceInfo\Tariff;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 
 final class CdbXmlPriceInfoParser
@@ -62,7 +63,7 @@ final class CdbXmlPriceInfoParser
             return null;
         }
 
-        $basePrice = new BasePrice(
+        $basePrice = Tariff::createBasePrice(
             MoneyFactory::create($basePrice, new Currency('EUR'))
         );
 
@@ -100,13 +101,13 @@ final class CdbXmlPriceInfoParser
             foreach ($translatedTariffs as $tariffName => $tariffPrice) {
                 if (!isset($tariffs[$tariffIndex])) {
                     $tariff = new Tariff(
-                        new MultilingualString(new Language($language), (string) $tariffName),
+                        new TranslatedTariffName(new Language($language), new TariffName((string) $tariffName)),
                         MoneyFactory::create($tariffPrice, new Currency('EUR'))
                     );
                 } else {
                     $tariff = $tariffs[$tariffIndex];
                     $name = $tariff->getName();
-                    $name = $name->withTranslation(new Language($language), (string) $tariffName);
+                    $name = $name->withTranslation(new Language($language), new TariffName($tariffName));
                     $tariff = new Tariff(
                         $name,
                         $tariff->getPrice()
@@ -118,6 +119,6 @@ final class CdbXmlPriceInfoParser
             }
         }
 
-        return (new PriceInfo($basePrice))->withTariffs($tariffs);
+        return (new PriceInfo($basePrice))->withTariffs(new Tariffs(...$tariffs));
     }
 }

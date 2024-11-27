@@ -5,11 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\Calendar\DayOfWeek;
-use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
-use CultuurNet\UDB3\Calendar\OpeningHour;
-use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
@@ -18,15 +13,21 @@ use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Calendar\Timestamp;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\SampleFiles;
 use DateTimeZone;
@@ -113,13 +114,15 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3',
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
-                            new Timestamp(
-                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
-                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                                )
                             ),
                         ]
                     )
@@ -162,13 +165,15 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
-                            new Timestamp(
-                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
-                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                                )
                             ),
                         ]
                     )
@@ -201,13 +206,15 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
-                            new Timestamp(
-                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
-                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                                )
                             ),
                         ]
                     )
@@ -239,13 +246,15 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
-                            new Timestamp(
-                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
-                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                                )
                             ),
                         ]
                     )
@@ -306,45 +315,45 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::PERIODIC(),
+                        CalendarType::periodic(),
                         DateTimeFactory::fromFormat('Y-m-d', '2017-06-13'),
                         DateTimeFactory::fromFormat('Y-m-d', '2018-01-08'),
                         [],
                         [
                             0 => new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(18), new Minute(0)),
-                                new DayOfWeekCollection(DayOfWeek::MONDAY())
+                                new Days(Day::monday()),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0))
                             ),
                             1 => new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(18), new Minute(0)),
-                                new DayOfWeekCollection(DayOfWeek::TUESDAY())
+                                new Days(Day::tuesday()),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0))
                             ),
                             2 => new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(18), new Minute(0)),
-                                new DayOfWeekCollection(DayOfWeek::WEDNESDAY())
+                                new Days(Day::wednesday()),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0))
                             ),
                             3 => new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(18), new Minute(0)),
-                                new DayOfWeekCollection(DayOfWeek::THURSDAY())
+                                new Days(Day::thursday()),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0))
                             ),
                             4 => new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(18), new Minute(0)),
-                                new DayOfWeekCollection(DayOfWeek::FRIDAY())
+                                new Days(Day::friday()),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0))
                             ),
                             5 => new OpeningHour(
-                                new OpeningTime(new Hour(10), new Minute(0)),
-                                new OpeningTime(new Hour(18), new Minute(0)),
-                                new DayOfWeekCollection(DayOfWeek::SATURDAY())
+                                new Days(Day::saturday()),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0))
                             ),
                             6 => new OpeningHour(
-                                new OpeningTime(new Hour(8), new Minute(0)),
-                                new OpeningTime(new Hour(12), new Minute(0)),
-                                new DayOfWeekCollection(DayOfWeek::SUNDAY())
+                                new Days(Day::sunday()),
+                                new Time(new Hour(8), new Minute(0)),
+                                new Time(new Hour(12), new Minute(0))
                             ),
                         ]
                     )
@@ -389,25 +398,25 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::PERMANENT(),
+                        CalendarType::permanent(),
                         null,
                         null,
                         [],
                         [
                             0 => new OpeningHour(
-                                new OpeningTime(new Hour(9), new Minute(30)),
-                                new OpeningTime(new Hour(11), new Minute(30)),
-                                new DayOfWeekCollection(DayOfWeek::WEDNESDAY())
+                                new Days(Day::wednesday()),
+                                new Time(new Hour(9), new Minute(30)),
+                                new Time(new Hour(11), new Minute(30))
                             ),
                             1 => new OpeningHour(
-                                new OpeningTime(new Hour(9), new Minute(0)),
-                                new OpeningTime(new Hour(17), new Minute(0)),
-                                new DayOfWeekCollection(DayOfWeek::THURSDAY())
+                                new Days(Day::thursday()),
+                                new Time(new Hour(9), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0))
                             ),
                             2 => new OpeningHour(
-                                new OpeningTime(new Hour(9), new Minute(30)),
-                                new OpeningTime(new Hour(11), new Minute(30)),
-                                new DayOfWeekCollection(DayOfWeek::SATURDAY())
+                                new Days(Day::saturday()),
+                                new Time(new Hour(9), new Minute(30)),
+                                new Time(new Hour(11), new Minute(30))
                             ),
                         ]
                     )
@@ -421,7 +430,7 @@ final class EventImportedFromUDB2Test extends TestCase
     /**
      * @test
      */
-    public function it_can_convert_event_with_timestamps_to_granular_events(): void
+    public function it_can_convert_event_with_sub_events_to_granular_events(): void
     {
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
@@ -449,25 +458,33 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::MULTIPLE(),
+                        CalendarType::multiple(),
                         null,
                         null,
                         [
-                            new Timestamp(
-                                new \DateTimeImmutable('2017-02-06T13:00:00.000000+0100'),
-                                new \DateTimeImmutable('2017-02-06T13:00:00.000000+0100')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new \DateTimeImmutable('2017-02-06T13:00:00.000000+0100'),
+                                    new \DateTimeImmutable('2017-02-06T13:00:00.000000+0100')
+                                )
                             ),
-                            new Timestamp(
-                                new \DateTimeImmutable('2017-02-20T13:00:00.000000+0100'),
-                                new \DateTimeImmutable('2017-02-20T13:00:00.000000+0100')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new \DateTimeImmutable('2017-02-20T13:00:00.000000+0100'),
+                                    new \DateTimeImmutable('2017-02-20T13:00:00.000000+0100')
+                                )
                             ),
-                            new Timestamp(
-                                new \DateTimeImmutable('2017-03-06T13:00:00.000000+0100'),
-                                new \DateTimeImmutable('2017-03-06T13:00:00.000000+0100')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new \DateTimeImmutable('2017-03-06T13:00:00.000000+0100'),
+                                    new \DateTimeImmutable('2017-03-06T13:00:00.000000+0100')
+                                )
                             ),
-                            new Timestamp(
-                                new \DateTimeImmutable('2017-03-20T13:00:00.000000+0100'),
-                                new \DateTimeImmutable('2017-03-20T13:00:00.000000+0100')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new \DateTimeImmutable('2017-03-20T13:00:00.000000+0100'),
+                                    new \DateTimeImmutable('2017-03-20T13:00:00.000000+0100')
+                                )
                             ),
                         ]
                     )
@@ -484,7 +501,7 @@ final class EventImportedFromUDB2Test extends TestCase
     /**
      * @test
      */
-    public function it_can_convert_event_with_a_single_timestamps_to_granular_events(): void
+    public function it_can_convert_event_with_a_single_sub_events_to_granular_events(): void
     {
         $eventId = '0452b4ae-7c18-4b33-a6c6-eba2288c9ac3';
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
@@ -500,13 +517,15 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::SINGLE(),
+                        CalendarType::single(),
                         null,
                         null,
                         [
-                            new Timestamp(
-                                new \DateTimeImmutable('2017-04-27T20:15:00.000000+0200'),
-                                new \DateTimeImmutable('2017-04-27T20:15:00.000000+0200')
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new \DateTimeImmutable('2017-04-27T20:15:00.000000+0200'),
+                                    new \DateTimeImmutable('2017-04-27T20:15:00.000000+0200')
+                                )
                             ),
                         ]
                     )
@@ -540,7 +559,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::PERMANENT(),
+                        CalendarType::permanent(),
                         null,
                         null,
                         []
@@ -572,7 +591,7 @@ final class EventImportedFromUDB2Test extends TestCase
                 new CalendarUpdated(
                     $eventId,
                     new Calendar(
-                        CalendarType::PERMANENT(),
+                        CalendarType::permanent(),
                         null,
                         null,
                         []

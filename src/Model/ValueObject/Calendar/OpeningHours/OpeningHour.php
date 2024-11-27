@@ -33,4 +33,17 @@ class OpeningHour
     {
         return $this->closingTime;
     }
+
+    public function addDays(Days $dayOfWeekCollection): void
+    {
+        foreach ($dayOfWeekCollection->getIterator() as $dayOfWeek) {
+            $this->days = $this->days->with($dayOfWeek);
+        }
+    }
+
+    public function hasEqualHours(OpeningHour $otherOpeningHour): bool
+    {
+        return $otherOpeningHour->getOpeningTime()->sameAs($this->getOpeningTime()) &&
+            $otherOpeningHour->getClosingTime()->sameAs($this->getClosingTime());
+    }
 }

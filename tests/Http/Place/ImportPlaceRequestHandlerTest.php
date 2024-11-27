@@ -9,11 +9,6 @@ use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
-use CultuurNet\UDB3\Calendar\DayOfWeek;
-use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
-use CultuurNet\UDB3\Calendar\OpeningHour;
-use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -33,8 +28,13 @@ use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
@@ -833,18 +833,18 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new UpdateCalendar(
                     $placeId,
                     (new Calendar(
-                        CalendarType::PERMANENT(),
+                        CalendarType::permanent(),
                         null,
                         null,
                         [],
                         [
                             new OpeningHour(
-                                new OpeningTime(new Hour(13), new Minute(00)),
-                                new OpeningTime(new Hour(23), new Minute(59)),
-                                new DayOfWeekCollection(
-                                    DayOfWeek::SATURDAY(),
-                                    DayOfWeek::SUNDAY()
-                                )
+                                new Days(
+                                    Day::saturday(),
+                                    Day::sunday()
+                                ),
+                                new Time(new Hour(13), new Minute(00)),
+                                new Time(new Hour(23), new Minute(59))
                             ),
                         ]
                     ))
@@ -1018,7 +1018,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateCalendar(
                     $placeId,
-                    new Calendar(CalendarType::PERMANENT())
+                    new Calendar(CalendarType::permanent())
                 ),
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
@@ -1235,7 +1235,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateCalendar(
                     $placeId,
-                    new Calendar(CalendarType::PERMANENT())
+                    new Calendar(CalendarType::permanent())
                 ),
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
@@ -1322,7 +1322,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateCalendar(
                     $placeId,
-                    new Calendar(CalendarType::PERMANENT())
+                    new Calendar(CalendarType::permanent())
                 ),
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),

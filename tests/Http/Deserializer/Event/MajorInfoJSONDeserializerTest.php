@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Deserializer\Event;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +30,7 @@ final class MajorInfoJSONDeserializerTest extends TestCase
         $this->assertEquals(new Title('talking title'), $majorInfo->getTitle());
         $this->assertEquals(new EventType('0.17.0.0.0', 'Route'), $majorInfo->getType());
         $this->assertEquals($expectedLocation, $majorInfo->getLocation());
-        $this->assertEquals(new Calendar(CalendarType::PERMANENT()), $majorInfo->getCalendar());
+        $this->assertEquals(new Calendar(CalendarType::permanent()), $majorInfo->getCalendar());
     }
 
     /**
@@ -49,6 +49,6 @@ final class MajorInfoJSONDeserializerTest extends TestCase
         $this->assertEquals(new Title('talking title'), $majorInfo->getTitle());
         $this->assertEquals(new EventType('0.17.0.0.0', 'Route'), $majorInfo->getType());
         $this->assertEquals($expectedLocation, $majorInfo->getLocation());
-        $this->assertEquals(new Calendar(CalendarType::PERMANENT()), $majorInfo->getCalendar());
+        $this->assertEquals(new Calendar(CalendarType::permanent()), $majorInfo->getCalendar());
     }
 }

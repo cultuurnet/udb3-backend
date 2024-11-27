@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Commands;
 
-use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
@@ -23,9 +23,7 @@ class UpdateMajorInfoTest extends TestCase
             new Title('title'),
             new EventType('bar_id', 'bar'),
             new LocationId('335be568-aaf0-4147-80b6-9267daafe23b'),
-            new Calendar(
-                CalendarType::PERMANENT()
-            ),
+            new Calendar(CalendarType::permanent()),
             new Theme('themeid', 'theme_label')
         );
     }
@@ -40,7 +38,7 @@ class UpdateMajorInfoTest extends TestCase
         $expectedEventType = new EventType('bar_id', 'bar');
         $expectedLocation = new LocationId('335be568-aaf0-4147-80b6-9267daafe23b');
         $expectedCalendar = new Calendar(
-            CalendarType::PERMANENT()
+            CalendarType::permanent()
         );
         $expectedTheme = new Theme('themeid', 'theme_label');
 

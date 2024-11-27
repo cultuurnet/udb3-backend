@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Calendar\Calendar;
@@ -31,7 +31,7 @@ class UpdateMajorInfoTest extends TestCase
                 new Locality('Leuven'),
                 new CountryCode('BE')
             ),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
     }
 
@@ -49,7 +49,7 @@ class UpdateMajorInfoTest extends TestCase
             new Locality('Leuven'),
             new CountryCode('BE')
         );
-        $expectedCalendar = new Calendar(CalendarType::PERMANENT());
+        $expectedCalendar = new Calendar(CalendarType::permanent());
 
         $this->assertEquals($expectedId, $this->updateMajorInfo->getItemId());
         $this->assertEquals($expectedTitle, $this->updateMajorInfo->getTitle());

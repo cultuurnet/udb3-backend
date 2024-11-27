@@ -12,8 +12,8 @@ use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
 use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -45,7 +46,6 @@ use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\SampleFiles;
@@ -180,7 +180,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $placeId = $placeCreated->getPlaceId();
 
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
@@ -217,7 +217,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $placeId = $placeCreated->getPlaceId();
 
         $priceInfo = new PriceInfo(
-            new BasePrice(
+            Tariff::createBasePrice(
                 new Money(1000, new Currency('EUR'))
             )
         );
@@ -266,7 +266,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                         'Test place',
                         new EventType('0.1.1', 'Jeugdhuis'),
                         LegacyAddress::fromUdb3ModelAddress($originalAddress),
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     ),
                 ]
             )
@@ -451,7 +451,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                         'Test place',
                         new EventType('0.1.1', 'Jeugdhuis'),
                         LegacyAddress::fromUdb3ModelAddress($originalAddress),
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     ),
                 ]
             )
@@ -586,7 +586,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Place $place): void {
                     $place->updateCalendar(
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     );
                 }
             )
@@ -650,7 +650,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             'Test place',
             new EventType('0.1.1', 'Jeugdhuis'),
             $address,
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
     }
 }

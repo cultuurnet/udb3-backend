@@ -22,7 +22,6 @@ final class Version20240306114323 extends AbstractMigration
         $table->setPrimaryKey(['id']);
         $table->addIndex(['item_id']);
         $table->addIndex(['owner_id']);
-        $table->addUniqueIndex(['item_id', 'owner_id']);
     }
 
     public function down(Schema $schema): void

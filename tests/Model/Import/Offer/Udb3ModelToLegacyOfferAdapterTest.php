@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Import\Offer;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
@@ -14,6 +13,7 @@ use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
@@ -44,7 +44,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
@@ -233,7 +232,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
      */
     public function it_should_return_a_calendar(): void
     {
-        $expected = new Calendar(CalendarType::PERMANENT());
+        $expected = new Calendar(CalendarType::permanent());
         $actual = $this->adapter->getCalendar();
         $this->assertEquals($expected, $actual);
     }
@@ -294,13 +293,13 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     public function it_should_return_price_info_if_there_is_any(): void
     {
         $expected = new \CultuurNet\UDB3\PriceInfo\PriceInfo(
-            new BasePrice(
+            Tariff::createBasePrice(
                 new Money(1500, new Currency('EUR'))
             )
         );
         $expected = $expected->withExtraTariff(
-            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                new MultilingualString(new Language('nl'), 'Senioren'),
+            new Tariff(
+                new TranslatedTariffName(new Language('nl'), new TariffName('Senioren')),
                 new Money(1050, new Currency('EUR'))
             )
         );

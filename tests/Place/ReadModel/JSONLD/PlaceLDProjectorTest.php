@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -30,6 +29,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
@@ -156,7 +156,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             $this->address,
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $jsonLD = new stdClass();
@@ -222,7 +222,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             $this->address,
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $jsonLD = new stdClass();
@@ -494,7 +494,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             $this->address,
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
         $this->project(
             $placeCreated,
@@ -668,7 +668,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $title = 'new title';
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
         );
@@ -945,7 +945,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 new Locality('Brussel'),
                 new CountryCode('BE')
             ),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
         $body = $this->project($majorInfoUpdated, '3c4850d7-689a-4729-8c5f-5f6c172ba52d');

@@ -8,7 +8,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Calendar\CalendarType;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
@@ -33,7 +32,6 @@ use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
@@ -41,6 +39,7 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -60,7 +59,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\AgeRange;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
@@ -92,7 +90,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d70f5d94-7072-423d-9144-9354cb794c62'),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
     }
 
@@ -104,7 +102,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
     }
 
@@ -116,7 +114,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'some representative title',
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('59400d1e-6f98-4da9-ab08-f58adceb7204'),
-            new Calendar(CalendarType::PERMANENT()),
+            new Calendar(CalendarType::permanent()),
             new Theme('1.8.3.1.0', 'Pop en rock')
         );
     }
@@ -281,7 +279,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new Title('foo'),
                         new EventType('0.50.4.0.0', 'concert'),
                         new LocationId('00000000-0000-0000-0000-000000000000'),
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     );
                     $event->updateAttendanceMode(AttendanceMode::online());
                 }
@@ -292,7 +290,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'foo',
                     new EventType('0.50.4.0.0', 'concert'),
                     new LocationId('00000000-0000-0000-0000-000000000000'),
-                    new Calendar(CalendarType::PERMANENT())
+                    new Calendar(CalendarType::permanent())
                 ),
             ]);
     }
@@ -313,7 +311,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new Title('foo'),
                         new EventType('0.50.4.0.0', 'concert'),
                         new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     );
                     $event->updateAttendanceMode(AttendanceMode::mixed());
                 }
@@ -324,7 +322,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'foo',
                     new EventType('0.50.4.0.0', 'concert'),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new Calendar(CalendarType::PERMANENT())
+                    new Calendar(CalendarType::permanent())
                 ),
             ]);
     }
@@ -345,7 +343,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new Title('foo'),
                         new EventType('0.50.4.0.0', 'concert'),
                         new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     );
                     $event->updateAttendanceMode(AttendanceMode::offline());
                 }
@@ -356,7 +354,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'foo',
                     new EventType('0.50.4.0.0', 'concert'),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new Calendar(CalendarType::PERMANENT())
+                    new Calendar(CalendarType::permanent())
                 ),
             ]);
     }
@@ -376,10 +374,10 @@ class EventTest extends AggregateRootScenarioTestCase
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId($locationUuid),
-            new Calendar(CalendarType::PERMANENT())
+            new Calendar(CalendarType::permanent())
         );
 
-        $expectedEvent = new AudienceUpdated($eventUuid, new Audience(AudienceType::education()));
+        $expectedEvent = new AudienceUpdated($eventUuid, AudienceType::education());
 
         $actualEvents = array_map(
             function (DomainMessage $domainMessage) {
@@ -399,7 +397,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
-            CalendarType::PERMANENT()
+            CalendarType::permanent()
         );
 
         $event = $this->event;
@@ -506,7 +504,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
 
         $calendar = new Calendar(
-            CalendarType::PERIODIC(),
+            CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
         );
@@ -646,7 +644,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     new PriceInfo(
-                        new BasePrice(
+                        Tariff::createBasePrice(
                             new Money(
                                 100,
                                 new Currency('EUR')
@@ -656,25 +654,25 @@ class EventTest extends AggregateRootScenarioTestCase
                 ),
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs(new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ])
             ->when(
                 fn (Event $event) => $event->updatePriceInfo(
                     new PriceInfo(
-                        new BasePrice(
+                        Tariff::createBasePrice(
                             new Money(
                                 90,
                                 new Currency('EUR')
@@ -686,19 +684,19 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(new BasePrice(new Money(90, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                    (new PriceInfo(Tariff::createBasePrice(new Money(90, new Currency('EUR')))))
+                        ->withUiTPASTariffs(new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ]);
     }
@@ -714,7 +712,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     new PriceInfo(
-                        new BasePrice(
+                        Tariff::createBasePrice(
                             new Money(
                                 100,
                                 new Currency('EUR')
@@ -724,60 +722,60 @@ class EventTest extends AggregateRootScenarioTestCase
                 ),
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs(new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ])
             ->when(
                 fn (Event $event) => $event->updatePriceInfo(
                     (new PriceInfo(
-                        new BasePrice(
+                        Tariff::createBasePrice(
                             new Money(
                                 90,
                                 new Currency('EUR')
                             )
                         )
-                    ))->withUiTPASTariffs([
-                        new \CultuurNet\UDB3\PriceInfo\Tariff(
-                            new MultilingualString(
+                    ))->withUiTPASTariffs(new Tariffs(
+                        new Tariff(
+                            new TranslatedTariffName(
                                 new Language('nl'),
-                                'Tariff 1'
+                                new TariffName('Tariff 1')
                             ),
                             new Money(
                                 80,
                                 new Currency('EUR')
                             )
                         ),
-                    ])
+                    ))
                 )
             )
             ->then([
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(new BasePrice(new Money(90, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                    (new PriceInfo(Tariff::createBasePrice(new Money(90, new Currency('EUR')))))
+                        ->withUiTPASTariffs(new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ]);
     }
@@ -793,7 +791,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     new PriceInfo(
-                        new BasePrice(
+                        Tariff::createBasePrice(
                             new Money(
                                 100,
                                 new Currency('EUR')
@@ -803,25 +801,25 @@ class EventTest extends AggregateRootScenarioTestCase
                 ),
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs(new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ])
             ->when(
                 fn (Event $event) => $event->updatePriceInfo(
                     new PriceInfo(
-                        new BasePrice(
+                        Tariff::createBasePrice(
                             new Money(
                                 100,
                                 new Currency('EUR')
@@ -844,7 +842,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     new PriceInfo(
-                        new BasePrice(
+                        Tariff::createBasePrice(
                             new Money(
                                 100,
                                 new Currency('EUR')
@@ -854,43 +852,43 @@ class EventTest extends AggregateRootScenarioTestCase
                 ),
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs(new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ])
             ->when(
                 fn (Event $event) => $event->updatePriceInfo(
                     (new PriceInfo(
-                        new BasePrice(
+                        Tariff::createBasePrice(
                             new Money(
                                 100,
                                 new Currency('EUR')
                             )
                         )
                     )
-                    )->withUiTPASTariffs([
-                        new \CultuurNet\UDB3\PriceInfo\Tariff(
-                            new MultilingualString(
+                    )->withUiTPASTariffs(new Tariffs(
+                        new Tariff(
+                            new TranslatedTariffName(
                                 new Language('nl'),
-                                'Tariff 1'
+                                new TariffName('Tariff 1')
                             ),
                             new Money(
                                 80,
                                 new Currency('EUR')
                             )
                         ),
-                    ])
+                    ))
                 )
             )
             ->then([]);
@@ -905,7 +903,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $cdbXml = $this->getSample('event_with_price_value_and_description.cdbxml.xml');
 
         $priceInfo = new PriceInfo(
-            new BasePrice(
+            Tariff::createBasePrice(
                 new Money(999, new Currency('EUR'))
             )
         );
@@ -946,45 +944,45 @@ class EventTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 fn (Event $event) => $event->updatePriceInfo(
-                    (new PriceInfo((new BasePrice(new Money(1250, new Currency('EUR'))))))
-                        ->withTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                    (new PriceInfo((Tariff::createBasePrice(new Money(1250, new Currency('EUR'))))))
+                        ->withTariffs(new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Met kinderen'
+                                    new TariffName('Met kinderen')
                                 ),
                                 new Money(2000, new Currency('EUR'))
                             ),
-                        ])
+                        ))
                 )
             )
             ->when(
                 fn (Event $event) => $event->updatePriceInfo(
-                    (new PriceInfo((new BasePrice(new Money(1250, new Currency('EUR'))))))
-                        ->withTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                    (new PriceInfo((Tariff::createBasePrice(new Money(1250, new Currency('EUR'))))))
+                        ->withTariffs(new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Met kinderen'
+                                    new TariffName('Met kinderen')
                                 ),
                                 new Money(1499, new Currency('EUR'))
                             ),
-                        ])
+                        ))
                 )
             )
             ->then([
                 new PriceInfoUpdated(
                     $eventId,
-                    (new PriceInfo(new BasePrice(new Money(1250, new Currency('EUR')))))
-                        ->withTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                    (new PriceInfo(Tariff::createBasePrice(new Money(1250, new Currency('EUR')))))
+                        ->withTariffs(new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Met kinderen'
+                                    new TariffName('Met kinderen')
                                 ),
                                 new Money(1499, new Currency('EUR'))
                             ),
-                        ])
+                        ))
                 ),
             ]);
     }
@@ -1519,7 +1517,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new LocationUpdated($eventId, $newLocationId),
-                    new AudienceUpdated($eventId, new Audience(AudienceType::education())),
+                    new AudienceUpdated($eventId, AudienceType::education()),
                 ]
             );
     }
@@ -1527,11 +1525,11 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      * @dataProvider audienceDataProvider
-     * @param Audience[] $audiences
+     * @param AudienceType[] $audienceTypes
      * @param AudienceUpdated[] $audienceUpdatedEvents
      */
     public function it_applies_the_audience_type(
-        array $audiences,
+        array $audienceTypes,
         array $audienceUpdatedEvents
     ): void {
         $this->scenario
@@ -1539,9 +1537,9 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
             ])
             ->when(
-                function (Event $event) use ($audiences): void {
-                    foreach ($audiences as $audience) {
-                        $event->updateAudience($audience);
+                function (Event $event) use ($audienceTypes): void {
+                    foreach ($audienceTypes as $audienceType) {
+                        $event->updateAudience($audienceType);
                     }
                 }
             )
@@ -1558,42 +1556,42 @@ class EventTest extends AggregateRootScenarioTestCase
             'single audience type' =>
                 [
                     [
-                        new Audience(AudienceType::members()),
+                        AudienceType::members(),
                     ],
                     [
                         new AudienceUpdated(
                             $eventId,
-                            new Audience(AudienceType::members())
+                            AudienceType::members()
                         ),
                     ],
                 ],
             'multiple audience types' =>
                 [
                     [
-                        new Audience(AudienceType::members()),
-                        new Audience(AudienceType::everyone()),
+                        AudienceType::members(),
+                        AudienceType::everyone(),
                     ],
                     [
                         new AudienceUpdated(
                             $eventId,
-                            new Audience(AudienceType::members())
+                            AudienceType::members()
                         ),
                         new AudienceUpdated(
                             $eventId,
-                            new Audience(AudienceType::everyone())
+                            AudienceType::everyone()
                         ),
                     ],
                 ],
             'equal audience types' =>
                 [
                     [
-                        new Audience(AudienceType::members()),
-                        new Audience(AudienceType::members()),
+                        AudienceType::members(),
+                        AudienceType::members(),
                     ],
                     [
                         new AudienceUpdated(
                             $eventId,
-                            new Audience(AudienceType::members())
+                            AudienceType::members()
                         ),
                     ],
                 ],
@@ -1612,12 +1610,12 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new AudienceUpdated($eventId, new Audience(AudienceType::education())),
+                new AudienceUpdated($eventId, AudienceType::education()),
                 new LocationUpdated($eventId, new LocationId($dummyLocationId)),
             ])
             ->when(
                 function (Event $event): void {
-                    $event->updateAudience(new Audience(AudienceType::everyone()));
+                    $event->updateAudience(AudienceType::everyone());
                 }
             )
             ->then([]);
@@ -1636,7 +1634,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $event->copy(
             'e49430ca-5729-4768-8364-02ddb385517a',
             new Calendar(
-                CalendarType::PERMANENT()
+                CalendarType::permanent()
             )
         );
     }
@@ -1649,7 +1647,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
-            CalendarType::PERMANENT()
+            CalendarType::permanent()
         );
         $label = new Label(new LabelName('ABC'));
 
@@ -1693,9 +1691,9 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
-            CalendarType::PERMANENT()
+            CalendarType::permanent()
         );
-        $audience = new Audience(AudienceType::education());
+        $audience = AudienceType::education();
 
         $event = $this->event;
         $event->updateAudience($audience);
@@ -1732,7 +1730,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
-            CalendarType::PERMANENT()
+            CalendarType::permanent()
         );
 
         $publicationDate = new \DateTimeImmutable();
@@ -1804,7 +1802,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Event $event): void {
                     $event->updateCalendar(
-                        new Calendar(CalendarType::PERMANENT())
+                        new Calendar(CalendarType::permanent())
                     );
                 }
             )
@@ -1824,7 +1822,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Event $event): void {
                     $event->updateAudience(
-                        new Audience(AudienceType::everyone())
+                        AudienceType::everyone()
                     );
                 }
             )
@@ -1921,29 +1919,29 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs(new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
                                     new Currency('EUR')
                                 )
                             ),
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 2'
+                                    new TariffName('Tariff 2')
                                 ),
                                 new Money(
                                     299,
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        ))
                 ),
             ])
             ->when(
@@ -1988,7 +1986,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
+                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
                 ),
             ])
             ->when(
@@ -2022,29 +2020,29 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs([
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs(new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 1'
+                                    new TariffName('Tariff 1')
                                 ),
                                 new Money(
                                     199,
                                     new Currency('EUR')
                                 )
                             ),
-                            new \CultuurNet\UDB3\PriceInfo\Tariff(
-                                new MultilingualString(
+                            new Tariff(
+                                new TranslatedTariffName(
                                     new Language('nl'),
-                                    'Tariff 2'
+                                    new TariffName('Tariff 2')
                                 ),
                                 new Money(
                                     299,
                                     new Currency('EUR')
                                 )
                             ),
-                        ])
+                        )),
                 ),
             ]);
     }

@@ -187,7 +187,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->updateCalendar(
             $this->calendar
                 ->withStatus($status)
-                ->withStatusOnTimestamps(new Status($status->getType(), $status->getReason()))
+                ->withStatusOnSubEvents(new Status($status->getType(), $status->getReason()))
         );
     }
 
@@ -196,7 +196,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->updateCalendar(
             $this->calendar
                 ->withBookingAvailability($bookingAvailability)
-                ->withBookingAvailabilityOnTimestamps($bookingAvailability)
+                ->withBookingAvailabilityOnSubEvents($bookingAvailability)
         );
     }
 

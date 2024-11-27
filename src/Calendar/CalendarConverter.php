@@ -13,6 +13,9 @@ use CultureFeed_Cdb_Data_Calendar_SchemeDay;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultureFeed_Cdb_Data_Calendar_TimestampList;
 use CultureFeed_Cdb_Data_Calendar_Weekscheme;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use DateInterval;
 use DateTimeInterface;
 use InvalidArgumentException;
@@ -34,17 +37,17 @@ class CalendarConverter implements CalendarConverterInterface
     public function toCdbCalendar(CalendarInterface $calendar): \CultureFeed_Cdb_Data_Calendar
     {
         $weekScheme = $this->getWeekScheme($calendar);
-        $calendarType = (string) $calendar->getType();
+        $calendarType = $calendar->getType()->toString();
 
         switch ($calendarType) {
-            case CalendarType::MULTIPLE:
+            case CalendarType::multiple()->toString():
                 $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                 $index = 1;
-                foreach ($calendar->getTimestamps() as $timestamp) {
+                foreach ($calendar->getSubEvents() as $subEvent) {
                     $currentCount = $this->countTimestamps($cdbCalendar);
                     $cdbCalendar = $this->createTimestampCalendar(
-                        $this->configureCdbTimezone($timestamp->getStartDate()),
-                        $this->configureCdbTimezone($timestamp->getEndDate()),
+                        $this->configureCdbTimezone($subEvent->getDateRange()->getFrom()),
+                        $this->configureCdbTimezone($subEvent->getDateRange()->getTo()),
                         $cdbCalendar,
                         $index
                     );
@@ -54,7 +57,7 @@ class CalendarConverter implements CalendarConverterInterface
                     }
                 }
                 break;
-            case CalendarType::SINGLE:
+            case CalendarType::single()->toString():
                 $cdbCalendar = $this->createTimestampCalendar(
                     $this->configureCdbTimezone($calendar->getStartDate()),
                     $this->configureCdbTimezone($calendar->getEndDate()),
@@ -62,7 +65,7 @@ class CalendarConverter implements CalendarConverterInterface
                     1
                 );
                 break;
-            case CalendarType::PERIODIC:
+            case CalendarType::periodic()->toString():
                 $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_PeriodList();
 
                 $startDate = $this->configureCdbTimezone($calendar->getStartDate())->format('Y-m-d');
@@ -74,7 +77,7 @@ class CalendarConverter implements CalendarConverterInterface
                 }
                 $cdbCalendar->add($period);
                 break;
-            case CalendarType::PERMANENT:
+            case CalendarType::permanent()->toString():
                 $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_Permanent();
                 if (!empty($weekScheme)) {
                     $cdbCalendar->setWeekScheme($weekScheme);
@@ -118,12 +121,14 @@ class CalendarConverter implements CalendarConverterInterface
                 'sunday' => [],
             ];
 
+            /** @var OpeningHour $openingHour */
             foreach ($openingHours as $openingHour) {
                 // In CDB2 every day needs to be a seperate entry.
-                foreach ($openingHour->getDayOfWeekCollection()->getDaysOfWeek() as $day) {
+                /** @var Day $day */
+                foreach ($openingHour->getDays()->getIterator() as $day) {
                     $openingTimesPerDay[$day->toString()][] = new CultureFeed_Cdb_Data_Calendar_OpeningTime(
-                        $openingHour->getOpens()->toNativeString() . ':00',
-                        $openingHour->getCloses()->toNativeString() . ':00'
+                        $openingHour->getOpeningTime()->toString() . ':00',
+                        $openingHour->getClosingTime()->toString() . ':00'
                     );
                 }
             }
