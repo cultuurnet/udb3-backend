@@ -194,34 +194,53 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
      */
     public function it_can_search_ownerships_by_multiple_states(): void
     {
-        $ownershipItem = new OwnershipItem(
+        $requestedOwnership = new OwnershipItem(
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
             'auth0|63e22626e39a8ca1264bd29b',
             OwnershipState::requested()->toString()
         );
-        $this->ownershipSearchRepository->save($ownershipItem);
+        $this->ownershipSearchRepository->save($requestedOwnership);
 
-        $anotherOwnershipItem = new OwnershipItem(
+        $approvedOwnership = new OwnershipItem(
             '672265b6-d4d0-416e-9b0b-c29de7d18125',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
-            'a75aa571-8131-4fd6-ab9b-59c7672095e5',
+            'auth0|63e22626e39a8ca1264bd29b',
             OwnershipState::approved()->toString()
         );
-        $this->ownershipSearchRepository->save($anotherOwnershipItem);
+        $this->ownershipSearchRepository->save($approvedOwnership);
+
+        $otherOwner = new OwnershipItem(
+            'a17b54af-6a99-4fdb-bc02-112659be2451',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'a75aa571-8131-4fd6-ab9b-59c7672095e5',
+            OwnershipState::rejected()->toString()
+        );
+        $this->ownershipSearchRepository->save($otherOwner);
+
+        $rejectedOwnership = new OwnershipItem(
+            'd3b07384-d9a0-4c1e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|63e22626e39a8ca1264bd29b',
+            OwnershipState::rejected()->toString()
+        );
+        $this->ownershipSearchRepository->save($rejectedOwnership);
 
         $results = $this->ownershipSearchRepository->search(
             new SearchQuery([
                 new SearchParameter('state', OwnershipState::requested()->toString()),
                 new SearchParameter('state', OwnershipState::approved()->toString()),
+                new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
             ])
         );
 
         $this->assertEquals(2, $results->count());
-        $this->assertTrue($results->contains($ownershipItem));
-        $this->assertTrue($results->contains($anotherOwnershipItem));
+        $this->assertTrue($results->contains($requestedOwnership));
+        $this->assertTrue($results->contains($approvedOwnership));
     }
 
     /**
