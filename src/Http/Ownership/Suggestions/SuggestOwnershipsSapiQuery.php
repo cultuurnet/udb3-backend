@@ -24,8 +24,12 @@ final class SuggestOwnershipsSapiQuery
     {
         $statuses = implode(
             ' OR ',
-            array_map(fn (WorkflowStatus $status) => $status->toString(), [WorkflowStatus::DRAFT(), WorkflowStatus::READY_FOR_VALIDATION(), WorkflowStatus::APPROVED()])
+            array_map(
+                fn (WorkflowStatus $status) => $status->toString(),
+                [WorkflowStatus::DRAFT(), WorkflowStatus::READY_FOR_VALIDATION(), WorkflowStatus::APPROVED()]
+            )
         );
+
         return "workflowStatus:({$statuses})";
     }
 
@@ -34,6 +38,7 @@ final class SuggestOwnershipsSapiQuery
         $id = $user->getUserId();
         $ids = ["auth0|{$id}", $id];
         $email = $user->getEmailAddress();
+
         return 'creator:(' . implode(' OR ', [...$ids, $email]) . ')';
     }
 }

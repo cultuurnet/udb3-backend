@@ -59,7 +59,6 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = new QueryParameters($request);
-
         $queryParams->guardRequiredEnum('itemType', [ItemType::organizer()->toString()]);
 
         $id = $this->currentUser->getId();
