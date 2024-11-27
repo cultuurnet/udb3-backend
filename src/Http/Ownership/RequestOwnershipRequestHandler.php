@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
 use CultuurNet\UDB3\Ownership\OwnershipState;
-use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\Ownership\Serializers\RequestOwnershipDenormalizer;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -95,17 +94,15 @@ final class RequestOwnershipRequestHandler implements RequestHandlerInterface
             new SearchQuery([
                 new SearchParameter('itemId', $requestOwnership->getItemId()->toString()),
                 new SearchParameter('ownerId', $requestOwnership->getOwnerId()->toString()),
+                new SearchParameter('state', OwnershipState::requested()->toString()),
+                new SearchParameter('state', OwnershipState::approved()->toString()),
             ])
         );
 
-        /** @var OwnershipItem $ownershipItem */
-        foreach ($existingOwnershipItems as $ownershipItem) {
-            if ($ownershipItem->getState() === OwnershipState::requested()->toString() ||
-                $ownershipItem->getState() === OwnershipState::approved()->toString()) {
-                throw ApiProblem::ownerShipAlreadyExists(
-                    'An ownership request for this item and owner already exists with id ' . $ownershipItem->getId()
-                );
-            }
+        if ($existingOwnershipItems->count() > 0) {
+            throw ApiProblem::ownerShipAlreadyExists(
+                'An ownership request for this item and owner already exists with id ' . $existingOwnershipItems->getFirst()->getId()
+            );
         }
 
         $this->commandBus->dispatch($requestOwnership);
