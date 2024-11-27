@@ -207,7 +207,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
         ];
@@ -302,7 +302,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
             (object)[
@@ -350,7 +350,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
             (object)[
@@ -674,7 +674,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
             (object)[
@@ -1109,7 +1109,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             [
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
         ];

@@ -210,7 +210,7 @@ class OfferMetadataProjectorTest extends TestCase
             self::OFFER_ID,
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'concert'),
+            new EventType('0.50.4.0.0', 'Concert'),
             new Address(
                 new Street('street'),
                 new PostalCode('3000'),

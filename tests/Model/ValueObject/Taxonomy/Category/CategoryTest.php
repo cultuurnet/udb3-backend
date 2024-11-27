@@ -14,7 +14,7 @@ class CategoryTest extends TestCase
     public function it_should_consist_of_an_id_and_label_and_domain(): void
     {
         $id = new CategoryID('0.50.4.0.0');
-        $label = new CategoryLabel('concert');
+        $label = new CategoryLabel('Concert');
         $domain = new CategoryDomain('eventtype');
 
         $category = new Category($id, $label, $domain);

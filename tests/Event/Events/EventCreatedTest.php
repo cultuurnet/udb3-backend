@@ -210,8 +210,8 @@ class EventCreatedTest extends TestCase
                         'type' => 'permanent',
                     ],
                     'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
+                        'id' => '0.50.4.0.0',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                     'publication_date' => null,
@@ -248,8 +248,8 @@ class EventCreatedTest extends TestCase
                         'type' => 'permanent',
                     ],
                     'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
+                        'id' => '0.50.4.0.0',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                     'publication_date' => null,
@@ -283,8 +283,8 @@ class EventCreatedTest extends TestCase
                         'type' => 'permanent',
                     ],
                     'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
+                        'id' => '0.50.4.0.0',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                     'publication_date' => '2016-08-01T00:00:00+02:00',

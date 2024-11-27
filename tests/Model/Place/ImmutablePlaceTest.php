@@ -251,7 +251,7 @@ class ImmutablePlaceTest extends TestCase
         return new Categories(
             new Category(
                 new CategoryID('0.50.1.0.0'),
-                new CategoryLabel('concert'),
+                new CategoryLabel('Concert'),
                 new CategoryDomain('eventtype')
             )
         );

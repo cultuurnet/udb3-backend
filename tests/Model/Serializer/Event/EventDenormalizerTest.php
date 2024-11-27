@@ -1403,7 +1403,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                    'label' => 'concert',
+                    'label' => 'Concert',
                     'domain' => 'eventtype',
                 ],
                 [
@@ -1426,7 +1426,7 @@ class EventDenormalizerTest extends TestCase
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1'),
-                    new CategoryLabel('concert'),
+                    new CategoryLabel('Concert'),
                     new CategoryDomain('eventtype')
                 ),
                 new Category(

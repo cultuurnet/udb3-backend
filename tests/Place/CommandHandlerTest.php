@@ -42,7 +42,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $id = '1';
         $title = new Title('foo');
-        $eventType = new EventType('0.50.4.0.0', 'concert');
+        $eventType = new EventType('0.50.4.0.0', 'Concert');
         $address = new LegacyAddress(
             new LegacyStreet('Kerkstraat 69'),
             new LegacyPostalCode('3000'),
@@ -140,7 +140,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             $id,
             new Language('nl'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'concert'),
+            new EventType('0.50.4.0.0', 'Concert'),
             new LegacyAddress(
                 new LegacyStreet('Kerkstraat 69'),
                 new LegacyPostalCode('3000'),
