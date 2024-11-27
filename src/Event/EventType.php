@@ -53,8 +53,8 @@ final class EventType extends Category
     public function toUdb3ModelCategory(): Udb3ModelCategory
     {
         return new Udb3ModelCategory(
-            new CategoryID('0.50.4.0.0'),
-            new CategoryLabel('Concert'),
+            new CategoryID($this->getId()),
+            new CategoryLabel($this->getLabel()),
             CategoryDomain::eventType()
         );
     }
