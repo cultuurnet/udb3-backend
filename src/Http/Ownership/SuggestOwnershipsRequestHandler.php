@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Http\Ownership\Suggestions\SuggestOwnershipsSapiQuery;
 use CultuurNet\UDB3\Http\Request\QueryParameters;
-use CultuurNet\UDB3\Http\Response\JsonLdResponse;
+use CultuurNet\UDB3\Http\Response\PagedCollectionResponse;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
@@ -107,8 +107,10 @@ final class SuggestOwnershipsRequestHandler implements RequestHandlerInterface
             }
         }
 
-        return new JsonLdResponse([
-            'member' => array_values($idToOrganizerMap),
-        ]);
+        return new PagedCollectionResponse(
+            count($idToOrganizerMap),
+            count($idToOrganizerMap),
+            array_values($idToOrganizerMap)
+        );
     }
 }

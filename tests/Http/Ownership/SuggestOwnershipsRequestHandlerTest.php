@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepositoryMockFactory;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
@@ -35,19 +34,25 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
      * @var SearchServiceInterface&MockObject
      */
     private $searchService;
+
     private CurrentUser $currentUser;
+
     /**
      * @var UserIdentityResolver&MockObject
      */
     private $userIdentityResolver;
+
     private OfferJsonDocumentReadRepositoryMockFactory $offerRepositoryFactory;
-    private OfferJsonDocumentReadRepository $offerRepository;
+
     private UserIdentityDetails $user;
+
     /**
      * @var OwnershipSearchRepository&MockObject
      */
     private $ownershipSearchRepository;
+
     private SuggestOwnershipsRequestHandler $suggestOwnershipsRequestHandler;
+
     private string $expectedQuery;
 
     protected function setUp(): void
@@ -60,7 +65,7 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
         $this->currentUser = new CurrentUser(Uuid::uuid4()->toString());
         $this->userIdentityResolver = $this->createMock(UserIdentityResolver::class);
         $this->offerRepositoryFactory = new OfferJsonDocumentReadRepositoryMockFactory();
-        $this->offerRepository = $this->offerRepositoryFactory->create();
+        $offerRepository = $this->offerRepositoryFactory->create();
         $this->user = new UserIdentityDetails(
             $this->currentUser->getId(),
             'John Doe',
@@ -72,7 +77,7 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
 
         $this->suggestOwnershipsRequestHandler = new SuggestOwnershipsRequestHandler(
             $this->searchService,
-            $this->offerRepository,
+            $offerRepository,
             $this->currentUser,
             $this->userIdentityResolver,
             $this->ownershipSearchRepository,
@@ -119,9 +124,11 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
         $response = $this->suggestOwnershipsRequestHandler->handle($request);
 
         $expected = Json::encode([
-            'member' => [
-                $organizer['body'],
-            ],
+            '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+            '@type' => 'PagedCollection',
+            'itemsPerPage' => 1,
+            'totalItems' => 1,
+            'member' => [$organizer['body']],
         ]);
 
         $this->assertEquals($expected, $response->getBody()->getContents());
@@ -168,6 +175,10 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
         $response = $this->suggestOwnershipsRequestHandler->handle($request);
 
         $expected = Json::encode([
+            '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+            '@type' => 'PagedCollection',
+            'itemsPerPage' => 0,
+            'totalItems' => 0,
             'member' => [],
         ]);
 
@@ -215,14 +226,15 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
         $response = $this->suggestOwnershipsRequestHandler->handle($request);
 
         $expected = Json::encode([
-            'member' => [
-                $organizer['body'],
-            ],
+            '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+            '@type' => 'PagedCollection',
+            'itemsPerPage' => 1,
+            'totalItems' => 1,
+            'member' => [$organizer['body']],
         ]);
 
         $this->assertEquals($expected, $response->getBody()->getContents());
     }
-
 
     private function givenThereIsAnOrganizer(): array
     {
@@ -251,7 +263,6 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
             'body' => $body,
         ];
     }
-
 
     private function givenThereIsAnPlaceWithOrganizer(array $organizer): array
     {
