@@ -132,7 +132,7 @@ final class Event extends Offer
                 $eventId,
                 $mainLanguage,
                 $title->toString(),
-                $eventType,
+                $eventType->toUdb3ModelCategory(),
                 $location,
                 $calendar,
                 $theme,
@@ -210,7 +210,7 @@ final class Event extends Offer
         $this->audienceType = AudienceType::everyone();
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
-        $this->typeId = $eventCreated->getEventType()->getId();
+        $this->typeId = $eventCreated->getEventType()->getId()->toString();
         $this->themeId = $eventCreated->getTheme() ? $eventCreated->getTheme()->getId() : null;
         $this->locationId = $eventCreated->getLocation();
         $this->mainLanguage = $eventCreated->getMainLanguage();
