@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
-use Symfony\Component\Console\Input\InputArgument;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -37,6 +37,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
     private DocumentEventFactory $placeEventFactory;
 
     private DuplicatePlaceRemovedFromClusterRepository $duplicatePlaceRemovedFromClusterRepository;
+    private LoggerInterface $logger;
 
     public function __construct(
         CommandBus $commandBus,
@@ -45,7 +46,8 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         CanonicalService $canonicalService,
         EventBus $eventBus,
         DocumentEventFactory $placeEventFactory,
-        EventRelationsRepository $eventRelationsRepository
+        EventRelationsRepository $eventRelationsRepository,
+        LoggerInterface $logger
     ) {
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
         $this->duplicatePlaceRemovedFromClusterRepository = $duplicatePlaceRemovedFromClusterRepository;
@@ -53,6 +55,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         $this->eventBus = $eventBus;
         $this->placeEventFactory = $placeEventFactory;
         $this->eventRelationsRepository = $eventRelationsRepository;
+        $this->logger = $logger;
 
         parent::__construct($commandBus);
     }
@@ -152,7 +155,12 @@ final class ProcessDuplicatePlaces extends AbstractCommand
                 foreach ($commands as $command) {
                     $output->writeln('Dispatching UpdateLocation for event with id ' . $command->getItemId());
                     if (!$dryRun) {
-                        $this->commandBus->dispatch($command);
+                        try {
+                            $this->commandBus->dispatch($command);
+                        } catch (MuseumPassNotUniqueInCluster $e) {
+                            $output->writeln($e->getMessage());
+                            $this->logger->error($e->getMessage());
+                        }
                     }
                 }
             }
