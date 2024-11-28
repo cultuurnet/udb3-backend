@@ -12,21 +12,8 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class TariffDenormalizer implements DenormalizerInterface
 {
-    private bool $forBasePrice;
-
-    public function __construct(bool $forBasePrice)
-    {
-        $this->forBasePrice = $forBasePrice;
-    }
-
     public function denormalize($data, $class, $format = null, array $context = []): Tariff
     {
-        if ($this->forBasePrice) {
-            return Tariff::createBasePrice(
-                MoneyFactory::createFromCents($data['price'], new Currency($data['currency']))
-            );
-        }
-
         /** @var TranslatedTariffName $tariffName */
         $tariffName = (new TranslatedTariffNameDenormalizer())->denormalize(
             $data['name'],
@@ -35,7 +22,7 @@ final class TariffDenormalizer implements DenormalizerInterface
 
         return new Tariff(
             $tariffName,
-            MoneyFactory::createFromCents($data['price'], new Currency($data['currency']))
+            MoneyFactory::create($data['price'], new Currency($data['priceCurrency']))
         );
     }
 

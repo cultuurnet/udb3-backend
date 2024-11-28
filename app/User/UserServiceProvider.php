@@ -13,10 +13,8 @@ use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Security\InMemoryUserEmailAddressRepository;
 use CultuurNet\UDB3\Security\UserEmailAddressRepository;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
-use CultuurNet\UDB3\User\Auth0\Auth0ManagementTokenGenerator;
-use CultuurNet\UDB3\User\Auth0\Auth0UserIdentityResolver;
-use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
 use CultuurNet\UDB3\User\Keycloak\KeycloakManagementTokenGenerator;
+use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
 use CultuurNet\UDB3\User\ManagementToken\CacheRepository;
 use CultuurNet\UDB3\User\ManagementToken\ManagementTokenProvider;
 use GuzzleHttp\Client;
@@ -84,39 +82,21 @@ final class UserServiceProvider extends AbstractServiceProvider
 
     private function getManagementTokenProvider(DefinitionContainerInterface $container): ManagementTokenProvider
     {
-        if ($container->get('config')['keycloak']['enabled']) {
-            return new ManagementTokenProvider(
-                new KeycloakManagementTokenGenerator(
-                    new Client(),
-                    $container->get('config')['keycloak']['domain'],
-                    $container->get('config')['keycloak']['client_id'],
-                    $container->get('config')['keycloak']['client_secret']
-                ),
-                new CacheRepository(
-                    $container->get('cache')('keycloak-management-token')
-                )
-            );
-        }
-
         return new ManagementTokenProvider(
-            new Auth0ManagementTokenGenerator(
+            new KeycloakManagementTokenGenerator(
                 new Client(),
-                $container->get('config')['auth0']['client_id'],
-                $container->get('config')['auth0']['domain'],
-                $container->get('config')['auth0']['client_secret']
+                $container->get('config')['keycloak']['domain'],
+                $container->get('config')['keycloak']['client_id'],
+                $container->get('config')['keycloak']['client_secret']
             ),
             new CacheRepository(
-                $container->get('cache')('auth0-management-token')
+                $container->get('cache')('keycloak-management-token')
             )
         );
     }
 
     private function getUserIdentityResolver(DefinitionContainerInterface $container): UserIdentityResolver
     {
-        if ($container->get('config')['keycloak']['enabled']) {
-            return $container->get(KeycloakUserIdentityResolver::class);
-        }
-
-        return $container->get(Auth0UserIdentityResolver::class);
+        return $container->get(KeycloakUserIdentityResolver::class);
     }
 }
