@@ -22,7 +22,7 @@ final class TariffDenormalizer implements DenormalizerInterface
 
         return new Tariff(
             $tariffName,
-            MoneyFactory::createFromCents($data['price'], new Currency($data['currency']))
+            MoneyFactory::create($data['price'], new Currency($data['priceCurrency']))
         );
     }
 

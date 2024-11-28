@@ -78,6 +78,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -90,7 +91,6 @@ use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
@@ -503,11 +503,7 @@ final class Event extends Offer
             return;
         }
 
-        $legacyUiTPASTariffs = [];
-        foreach ($tariffs as $tariff) {
-            $legacyUiTPASTariffs[] = $tariff;
-        }
-        $newPriceInfo = $this->priceInfo->withUiTPASTariffs($legacyUiTPASTariffs);
+        $newPriceInfo = $this->priceInfo->withUiTPASTariffs($tariffs);
 
         if ($this->priceInfo->serialize() !== $newPriceInfo->serialize()) {
             $this->apply(new PriceInfoUpdated($this->eventId, $newPriceInfo));

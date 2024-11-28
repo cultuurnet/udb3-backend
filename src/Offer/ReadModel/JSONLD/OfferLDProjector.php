@@ -665,7 +665,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             'category' => 'base',
             'name' => $this->basePriceTranslations,
             'price' => $basePrice->getPrice()->getAmount() / 100,
-            'priceCurrency' => $basePrice->getCurrency()->getName(),
+            'priceCurrency' => $basePrice->getPrice()->getCurrency()->getName(),
         ];
 
         $translatedTariffNameNormalizer = new TranslatedTariffNameNormalizer();
