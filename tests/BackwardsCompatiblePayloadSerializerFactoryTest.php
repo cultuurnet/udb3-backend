@@ -26,7 +26,9 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
@@ -44,7 +46,6 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated as PlaceDescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated as PlaceDescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use Money\Currency;
 use Money\Money;
@@ -622,20 +623,15 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $expectedPriceInfo = new PriceInfo(
             Tariff::createBasePrice(
                 new Money(1500, new Currency('EUR'))
-            )
-        );
-
-        $expectedPriceInfo = $expectedPriceInfo
-            ->withExtraTariff(
+            ),
+            new Tariffs(
                 new Tariff(
                     new TranslatedTariffName(
                         new Language('nl'),
                         new TariffName('Senioren')
                     ),
                     new Money(1000, new Currency('EUR'))
-                )
-            )
-            ->withExtraTariff(
+                ),
                 new Tariff(
                     new TranslatedTariffName(
                         new Language('nl'),
@@ -643,7 +639,8 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
                     ),
                     new Money(750, new Currency('EUR'))
                 )
-            );
+            )
+        );
 
         /**
          * @var PriceInfoUpdated $event
