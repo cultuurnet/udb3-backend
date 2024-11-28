@@ -59,14 +59,16 @@ class BookingInfoDenormalizer implements DenormalizerInterface
         }
 
         if (isset($data['url']) && isset($data['urlLabel'])) {
-            /* @var TranslatedWebsiteLabel $label */
             $url = new Url($data['url']);
+
+            /* @var TranslatedWebsiteLabel $label */
             $label = $this->websiteLabelDenormalizer->denormalize(
                 $data['urlLabel'],
                 TranslatedWebsiteLabel::class,
                 null,
                 $context
             );
+
             $website = new WebsiteLink($url, $label);
         }
 

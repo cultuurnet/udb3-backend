@@ -17,9 +17,12 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo as PlaceUpdateBookingInfo;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Iterator;
 use PHPUnit\Framework\TestCase;
 
@@ -97,8 +100,13 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
         $specialCharactersUrl = 'https://publiq-vzw.com/Inschrijven.aspx?ReservatieCat=2#/inschrijven/activiteiten';
 
         $bookingInfoBasicUrl = new BookingInfo(
-            $basicUrl,
-            new MultilingualString(new Language('nl'), 'Publiq vzw'),
+            new WebsiteLink(
+                new Url($basicUrl),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('Publiq vzw')
+                )
+            ),
             new TelephoneNumber('02/1232323'),
             new EmailAddress('info@publiq.be'),
             DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
@@ -106,8 +114,13 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
         );
 
         $bookingInfoSpecialCharactersUrl = new BookingInfo(
-            $specialCharactersUrl,
-            new MultilingualString(new Language('nl'), 'Publiq vzw'),
+            new WebsiteLink(
+                new Url($specialCharactersUrl),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('Publiq vzw')
+                )
+            ),
             new TelephoneNumber('02/1232323'),
             new EmailAddress('info@publiq.be'),
             DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),

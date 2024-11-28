@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Web\TranslatedWebsiteLabelDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Web\TranslatedWebsiteLabelNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo as Udb3ModelBookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use DateTimeImmutable;
 
 /**
@@ -20,31 +24,20 @@ final class BookingInfo implements JsonLdSerializableInterface
 
     private ?EmailAddress $email;
 
-    private ?string $url;
-
-    private ?MultilingualString $urlLabel;
+    private ?WebsiteLink $website;
 
     private ?DateTimeImmutable $availabilityStarts;
 
     private ?DateTimeImmutable $availabilityEnds;
 
     public function __construct(
-        ?string $url = null,
-        ?MultilingualString $urlLabel = null,
+        ?WebsiteLink $website = null,
         ?TelephoneNumber $phone = null,
         ?EmailAddress $email = null,
         ?DateTimeImmutable $availabilityStarts = null,
         ?DateTimeImmutable $availabilityEnds = null
     ) {
-        // Workaround to maintain compatibility with older BookingInfo data.
-        // Empty BookingInfo properties used to be stored as empty strings in the past.
-        // Convert those to null in case they are injected via the constructor (via BookingInfo::deserialize()).
-        // API clients are also allowed to send empty strings for BookingInfo properties via EntryAPI3, which should
-        // also be treated as null.
-        $url = $this->castEmptyStringToNull($url);
-
-        $this->url = $url;
-        $this->urlLabel = $urlLabel;
+        $this->website = $website;
         $this->phone = $phone;
         $this->email = $email;
         $this->availabilityStarts = $availabilityStarts;
@@ -61,14 +54,9 @@ final class BookingInfo implements JsonLdSerializableInterface
         return $this->email;
     }
 
-    public function getUrl(): ?string
+    public function getWebsite(): ?WebsiteLink
     {
-        return $this->url;
-    }
-
-    public function getUrlLabel(): ?MultilingualString
-    {
-        return $this->urlLabel;
+        return $this->website;
     }
 
     public function getAvailabilityStarts(): ?DateTimeImmutable
@@ -87,7 +75,7 @@ final class BookingInfo implements JsonLdSerializableInterface
             [
               'phone' => $this->phone ? $this->phone->toString() : null,
               'email' => $this->email ? $this->email->toString() : null,
-              'url' => $this->url,
+              'url' => $this->website ? $this->website->getUrl()->toString() : null,
             ]
         );
 
@@ -99,8 +87,8 @@ final class BookingInfo implements JsonLdSerializableInterface
             $serialized['availabilityEnds'] = $this->availabilityEnds->format(\DATE_ATOM);
         }
 
-        if ($this->urlLabel) {
-            $serialized['urlLabel'] = $this->urlLabel->serialize();
+        if ($this->website) {
+            $serialized['urlLabel'] = (new TranslatedWebsiteLabelNormalizer())->normalize($this->website->getLabel());
         }
 
         return $serialized;
@@ -129,14 +117,21 @@ final class BookingInfo implements JsonLdSerializableInterface
             $availabilityEnds = DateTimeFactory::fromISO8601($data['availabilityEnds']);
         }
 
-        $urlLabel = null;
-        if ($data['urlLabel']) {
-            $urlLabel = MultilingualString::deserialize($data['urlLabel']);
+        $website = null;
+        if (!empty($data['url']) && !empty($data['urlLabel'])) {
+            $url = new Url($data['url']);
+
+            /* @var TranslatedWebsiteLabel $label */
+            $label = (new TranslatedWebsiteLabelDenormalizer())->denormalize(
+                $data['urlLabel'],
+                TranslatedWebsiteLabel::class,
+            );
+
+            $website = new WebsiteLink($url, $label);
         }
 
         return new self(
-            $data['url'],
-            $urlLabel,
+            $website,
             !empty($data['phone']) ? new TelephoneNumber($data['phone']) : null,
             !empty($data['email']) ? new EmailAddress($data['email']) : null,
             $availabilityStarts,
@@ -156,16 +151,14 @@ final class BookingInfo implements JsonLdSerializableInterface
 
     public static function fromUdb3ModelBookingInfo(Udb3ModelBookingInfo $udb3ModelBookingInfo): BookingInfo
     {
-        $url = null;
-        $urlLabel = null;
+        $website = null;
         $phone = null;
         $email = null;
         $availabilityStarts = null;
         $availabilityEnds = null;
 
         if ($udb3ModelWebsite = $udb3ModelBookingInfo->getWebsite()) {
-            $url = $udb3ModelWebsite->getUrl()->toString();
-            $urlLabel = MultilingualString::fromUdb3ModelTranslatedValueObject($udb3ModelWebsite->getLabel());
+            $website = $udb3ModelWebsite;
         }
 
         if ($udb3ModelPhone = $udb3ModelBookingInfo->getTelephoneNumber()) {
@@ -182,17 +175,11 @@ final class BookingInfo implements JsonLdSerializableInterface
         }
 
         return new self(
-            $url,
-            $urlLabel,
+            $website,
             $phone,
             $email,
             $availabilityStarts,
             $availabilityEnds
         );
-    }
-
-    private function castEmptyStringToNull(?string $string = null): ?string
-    {
-        return is_string($string) && $string === '' ? null : $string;
     }
 }
