@@ -206,7 +206,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             );
         }
 
-        $ageRange = $placeAdapter->getAgeRange();
+        $ageRange = $place->getAgeRange();
         if ($ageRange) {
             $commands[] = new UpdateTypicalAgeRange($placeId, $ageRange);
         } else {
