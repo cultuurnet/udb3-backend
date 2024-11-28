@@ -65,7 +65,7 @@ final class UpdatePriceInfoHandlerTest extends CommandHandlerScenarioTestCase
 
         $expectedEvent = new PriceInfoUpdated(
             $id,
-            \CultuurNet\UDB3\PriceInfo\PriceInfo::fromUdb3ModelPriceInfo($command->getPriceInfo())
+            $command->getPriceInfo()
         );
 
         $this->scenario

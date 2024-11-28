@@ -45,6 +45,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
@@ -63,7 +64,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\AgeRange;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -653,13 +653,17 @@ class EventTest extends AggregateRootScenarioTestCase
                                 100,
                                 new Currency('EUR')
                             )
-                        )
+                        ),
+                        new Tariffs()
                     )
                 ),
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs(new Tariffs(
+                    (new PriceInfo(
+                        Tariff::createBasePrice(new Money(100, new Currency('EUR'))),
+                        new Tariffs()
+                    ))->withUiTPASTariffs(
+                        new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -670,7 +674,8 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ))
+                        )
+                    )
                 ),
             ])
             ->when(
@@ -681,15 +686,19 @@ class EventTest extends AggregateRootScenarioTestCase
                                 90,
                                 new Currency('EUR')
                             )
-                        )
+                        ),
+                        new Tariffs()
                     )
                 )
             )
             ->then([
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(Tariff::createBasePrice(new Money(90, new Currency('EUR')))))
-                        ->withUiTPASTariffs(new Tariffs(
+                    (new PriceInfo(
+                        Tariff::createBasePrice(new Money(90, new Currency('EUR'))),
+                        new Tariffs()
+                    ))->withUiTPASTariffs(
+                        new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -700,7 +709,8 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ))
+                        )
+                    )
                 ),
             ]);
     }
@@ -721,13 +731,17 @@ class EventTest extends AggregateRootScenarioTestCase
                                 100,
                                 new Currency('EUR')
                             )
-                        )
+                        ),
+                        new Tariffs()
                     )
                 ),
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs(new Tariffs(
+                    (new PriceInfo(
+                        Tariff::createBasePrice(new Money(100, new Currency('EUR'))),
+                        new Tariffs()
+                    ))->withUiTPASTariffs(
+                        new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -738,7 +752,8 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ))
+                        )
+                    )
                 ),
             ])
             ->when(
@@ -749,26 +764,32 @@ class EventTest extends AggregateRootScenarioTestCase
                                 90,
                                 new Currency('EUR')
                             )
-                        )
-                    ))->withUiTPASTariffs(new Tariffs(
-                        new Tariff(
-                            new TranslatedTariffName(
-                                new Language('nl'),
-                                new TariffName('Tariff 1')
-                            ),
-                            new Money(
-                                80,
-                                new Currency('EUR')
-                            )
                         ),
-                    ))
+                        new Tariffs()
+                    ))->withUiTPASTariffs(
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Tariff 1')
+                                ),
+                                new Money(
+                                    80,
+                                    new Currency('EUR')
+                                )
+                            )
+                        )
+                    )
                 )
             )
             ->then([
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(Tariff::createBasePrice(new Money(90, new Currency('EUR')))))
-                        ->withUiTPASTariffs(new Tariffs(
+                    (new PriceInfo(
+                        Tariff::createBasePrice(new Money(90, new Currency('EUR'))),
+                        new Tariffs()
+                    ))->withUiTPASTariffs(
+                        new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -779,7 +800,8 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ))
+                        )
+                    )
                 ),
             ]);
     }
@@ -800,13 +822,17 @@ class EventTest extends AggregateRootScenarioTestCase
                                 100,
                                 new Currency('EUR')
                             )
-                        )
+                        ),
+                        new Tariffs()
                     )
                 ),
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs(new Tariffs(
+                    (new PriceInfo(
+                        Tariff::createBasePrice(new Money(100, new Currency('EUR'))),
+                        new Tariffs()
+                    ))->withUiTPASTariffs(
+                        new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -817,7 +843,8 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ))
+                        )
+                    )
                 ),
             ])
             ->when(
@@ -828,7 +855,8 @@ class EventTest extends AggregateRootScenarioTestCase
                                 100,
                                 new Currency('EUR')
                             )
-                        )
+                        ),
+                        new Tariffs()
                     )
                 )
             )
@@ -851,13 +879,17 @@ class EventTest extends AggregateRootScenarioTestCase
                                 100,
                                 new Currency('EUR')
                             )
-                        )
+                        ),
+                        new Tariffs()
                     )
                 ),
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs(new Tariffs(
+                    (new PriceInfo(
+                        Tariff::createBasePrice(new Money(100, new Currency('EUR'))),
+                        new Tariffs()
+                    ))->withUiTPASTariffs(
+                        new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -868,7 +900,8 @@ class EventTest extends AggregateRootScenarioTestCase
                                     new Currency('EUR')
                                 )
                             ),
-                        ))
+                        )
+                    )
                 ),
             ])
             ->when(
@@ -879,20 +912,22 @@ class EventTest extends AggregateRootScenarioTestCase
                                 100,
                                 new Currency('EUR')
                             )
+                        ),
+                        new Tariffs()
+                    ))->withUiTPASTariffs(
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Tariff 1')
+                                ),
+                                new Money(
+                                    80,
+                                    new Currency('EUR')
+                                )
+                            )
                         )
                     )
-                    )->withUiTPASTariffs(new Tariffs(
-                        new Tariff(
-                            new TranslatedTariffName(
-                                new Language('nl'),
-                                new TariffName('Tariff 1')
-                            ),
-                            new Money(
-                                80,
-                                new Currency('EUR')
-                            )
-                        ),
-                    ))
                 )
             )
             ->then([]);
@@ -909,7 +944,8 @@ class EventTest extends AggregateRootScenarioTestCase
         $priceInfo = new PriceInfo(
             Tariff::createBasePrice(
                 new Money(999, new Currency('EUR'))
-            )
+            ),
+            new Tariffs()
         );
 
         $this->scenario
@@ -948,8 +984,9 @@ class EventTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 fn (Event $event) => $event->updatePriceInfo(
-                    (new PriceInfo((Tariff::createBasePrice(new Money(1250, new Currency('EUR'))))))
-                        ->withTariffs(new Tariffs(
+                    new PriceInfo(
+                        Tariff::createBasePrice(new Money(1250, new Currency('EUR'))),
+                        new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -957,13 +994,15 @@ class EventTest extends AggregateRootScenarioTestCase
                                 ),
                                 new Money(2000, new Currency('EUR'))
                             ),
-                        ))
+                        )
+                    )
                 )
             )
             ->when(
                 fn (Event $event) => $event->updatePriceInfo(
-                    (new PriceInfo((Tariff::createBasePrice(new Money(1250, new Currency('EUR'))))))
-                        ->withTariffs(new Tariffs(
+                    new PriceInfo(
+                        Tariff::createBasePrice(new Money(1250, new Currency('EUR'))),
+                        new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -971,14 +1010,16 @@ class EventTest extends AggregateRootScenarioTestCase
                                 ),
                                 new Money(1499, new Currency('EUR'))
                             ),
-                        ))
+                        )
+                    )
                 )
             )
             ->then([
                 new PriceInfoUpdated(
                     $eventId,
-                    (new PriceInfo(Tariff::createBasePrice(new Money(1250, new Currency('EUR')))))
-                        ->withTariffs(new Tariffs(
+                    new PriceInfo(
+                        Tariff::createBasePrice(new Money(1250, new Currency('EUR'))),
+                        new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -986,7 +1027,8 @@ class EventTest extends AggregateRootScenarioTestCase
                                 ),
                                 new Money(1499, new Currency('EUR'))
                             ),
-                        ))
+                        )
+                    )
                 ),
             ]);
     }
@@ -1923,8 +1965,11 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs(new Tariffs(
+                    (new PriceInfo(
+                        Tariff::createBasePrice(new Money(100, new Currency('EUR'))),
+                        new Tariffs()
+                    ))->withUiTPASTariffs(
+                        new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -1944,8 +1989,9 @@ class EventTest extends AggregateRootScenarioTestCase
                                     299,
                                     new Currency('EUR')
                                 )
-                            ),
-                        ))
+                            )
+                        )
+                    )
                 ),
             ])
             ->when(
@@ -1990,7 +2036,10 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
+                    new PriceInfo(
+                        Tariff::createBasePrice(new Money(100, new Currency('EUR'))),
+                        new Tariffs()
+                    )
                 ),
             ])
             ->when(
@@ -2024,8 +2073,11 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([
                 new PriceInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-                    (new PriceInfo(Tariff::createBasePrice(new Money(100, new Currency('EUR')))))
-                        ->withUiTPASTariffs(new Tariffs(
+                    (new PriceInfo(
+                        Tariff::createBasePrice(new Money(100, new Currency('EUR'))),
+                        new Tariffs()
+                    ))->withUiTPASTariffs(
+                        new Tariffs(
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
@@ -2045,8 +2097,9 @@ class EventTest extends AggregateRootScenarioTestCase
                                     299,
                                     new Currency('EUR')
                                 )
-                            ),
-                        )),
+                            )
+                        )
+                    )
                 ),
             ]);
     }

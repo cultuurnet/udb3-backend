@@ -1544,8 +1544,8 @@ class EventDenormalizerTest extends TestCase
                 [
                     'category' => 'base',
                     'name' => [
-                        'en' => 'Base tariff',
                         'nl' => 'Basistarief',
+                        'en' => 'Base tariff',
                     ],
                     'price' => 15,
                     'priceCurrency' => 'EUR',
