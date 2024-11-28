@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo as PlaceUpdateBookingInfo;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
@@ -99,7 +100,7 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             $basicUrl,
             new MultilingualString(new Language('nl'), 'Publiq vzw'),
             new TelephoneNumber('02/1232323'),
-            'info@publiq.be',
+            new EmailAddress('info@publiq.be'),
             DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
             DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
         );
@@ -108,7 +109,7 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             $specialCharactersUrl,
             new MultilingualString(new Language('nl'), 'Publiq vzw'),
             new TelephoneNumber('02/1232323'),
-            'info@publiq.be',
+            new EmailAddress('info@publiq.be'),
             DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
             DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
         );

@@ -116,7 +116,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
         $url = 'http://www.google.be';
         $urlLabel = new MultilingualString(new Language('nl'), 'Google');
         $phone = new TelephoneNumber('045');
-        $email = 'test@test.com';
+        $email = new EmailAddress('test@test.com');
         $availabilityStarts = DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00');
         $availabilityEnds = DateTimeFactory::fromAtom('2018-01-31T00:00:00+01:00');
         $bookingInfo = new BookingInfo($url, $urlLabel, $phone, $email, $availabilityStarts, $availabilityEnds);
@@ -130,7 +130,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
         $expectedBody = (object)[
             'bookingInfo' => (object)[
                 'phone' => $phone->toString(),
-                'email' => $email,
+                'email' => $email->toString(),
                 'url' => $url,
                 'urlLabel' => (object) $urlLabel->serialize(),
                 'availabilityStarts' => '2018-01-01T00:00:00+01:00',

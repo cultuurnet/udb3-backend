@@ -406,7 +406,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             'www.publiq.be',
             new MultilingualString(new Language('nl'), 'Publiq'),
             new TelephoneNumber('02 123 45 67'),
-            'info@publiq.be'
+            new EmailAddress('info@publiq.be')
         );
 
         $cdbXml = $this->getCdbXML('/ReadModel/JSONLD/place_with_long_description.cdbxml.xml');
