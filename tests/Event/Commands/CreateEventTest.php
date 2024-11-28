@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -24,7 +27,7 @@ class CreateEventTest extends TestCase
         $id = '5e36d2f2-b5de-4f5e-81b3-a129d996e9b6';
         $language = new Language('nl');
         $title = new Title('some representative title');
-        $type = new EventType('0.50.4.0.0', 'Concert');
+        $type = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
         $calendar = new Calendar(CalendarType::permanent());
         $theme = new Theme('0.1.0.1.0.1', 'blues');
@@ -54,7 +57,7 @@ class CreateEventTest extends TestCase
         $id = '5e36d2f2-b5de-4f5e-81b3-a129d996e9b6';
         $language = new Language('nl');
         $title = new Title('some representative title');
-        $type = new EventType('0.50.4.0.0', 'Concert');
+        $type = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
         $calendar = new Calendar(CalendarType::permanent());
         $theme = new Theme('0.1.0.1.0.1', 'blues');
