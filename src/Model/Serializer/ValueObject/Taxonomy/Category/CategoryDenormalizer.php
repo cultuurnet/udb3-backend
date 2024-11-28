@@ -30,11 +30,11 @@ final class CategoryDenormalizer implements DenormalizerInterface
             throw new UnsupportedException('Category data should be an array.');
         }
 
-        $id = new CategoryID($data['id']);
-        $label = isset($data['label']) ? new CategoryLabel($data['label']) : null;
-        $domain = $this->createCategoryDomain($data);
-
-        return new Category($id, $label, $domain);
+        return new Category(
+            new CategoryID($data['id']),
+            isset($data['label']) ? new CategoryLabel($data['label']) : null,
+            $this->createCategoryDomain($data)
+        );
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool
