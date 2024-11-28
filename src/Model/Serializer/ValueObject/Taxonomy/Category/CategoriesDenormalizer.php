@@ -27,8 +27,7 @@ class CategoriesDenormalizer implements DenormalizerInterface
         $categories = array_map(
             fn (array $categoryData): Category => $this->denormalizeCategory($categoryData),
             $data
-        )
-        ;
+        );
         return new Categories(...$categories);
     }
 
