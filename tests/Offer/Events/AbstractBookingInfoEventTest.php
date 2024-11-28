@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +28,7 @@ class AbstractBookingInfoEventTest extends TestCase
         $this->bookingInfo = new BookingInfo(
             'http://foo.bar',
             new MultilingualString(new Language('nl'), 'urlLabel'),
-            '0123456789',
+            new TelephoneNumber('0123456789'),
             'foo@bar.com',
             DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
@@ -47,7 +48,7 @@ class AbstractBookingInfoEventTest extends TestCase
         $expectedBookingInfo = new BookingInfo(
             'http://foo.bar',
             new MultilingualString(new Language('nl'), 'urlLabel'),
-            '0123456789',
+            new TelephoneNumber('0123456789'),
             'foo@bar.com',
             DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
@@ -69,7 +70,7 @@ class AbstractBookingInfoEventTest extends TestCase
         $expectedBookingInfo = new BookingInfo(
             'http://foo.bar',
             new MultilingualString(new Language('nl'), 'urlLabel'),
-            '0123456789',
+            new TelephoneNumber('0123456789'),
             'foo@bar.com',
             DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
             DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
@@ -130,7 +131,7 @@ class AbstractBookingInfoEventTest extends TestCase
                     new BookingInfo(
                         'http://foo.bar',
                         new MultilingualString(new Language('nl'), 'urlLabel'),
-                        '0123456789',
+                        new TelephoneNumber('0123456789'),
                         'foo@bar.com',
                         DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
                         DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')

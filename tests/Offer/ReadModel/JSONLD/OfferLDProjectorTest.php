@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -2470,7 +2471,7 @@ class OfferLDProjectorTest extends TestCase
         $event = new BookingInfoUpdated($id, new BookingInfo(
             'http://www.google.be',
             new MultilingualString(new Language('nl'), 'Dit is een booking info event'),
-            '0471123456',
+            new TelephoneNumber('0471123456'),
             'test@test.be'
         ));
 

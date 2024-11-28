@@ -28,7 +28,7 @@ class BookingInfoTest extends TestCase
                 new Language('nl'),
                 'publiq'
             ),
-            '02 123 45 67',
+            new TelephoneNumber('02 123 45 67'),
             'info@publiq.be'
         );
 
@@ -38,7 +38,7 @@ class BookingInfoTest extends TestCase
                 new Language('nl'),
                 'publiq'
             ),
-            '02 123 45 67',
+            new TelephoneNumber('02 123 45 67'),
             'info@publiq.be'
         );
 
@@ -48,7 +48,7 @@ class BookingInfoTest extends TestCase
                 new Language('nl'),
                 '2dotstwice'
             ),
-            '016 12 34 56',
+            new TelephoneNumber('016 12 34 56'),
             'info@2dotstwice.be'
         );
 
@@ -83,7 +83,7 @@ class BookingInfoTest extends TestCase
                 new Language('nl'),
                 'publiq'
             ),
-            '044/444444',
+            new TelephoneNumber('044/444444'),
             'info@publiq.be',
             DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
             DateTimeFactory::fromAtom('2018-01-10T00:00:00+01:00')
@@ -117,7 +117,7 @@ class BookingInfoTest extends TestCase
         $bookingInfoWithEmptyString = new BookingInfo(
             '',
             null,
-            '',
+            null,
             '',
             null,
             null
@@ -161,7 +161,7 @@ class BookingInfoTest extends TestCase
      */
     public function it_can_serialize_and_deserialize_partial_booking_info(): void
     {
-        $phone = '044/444444';
+        $phone = new TelephoneNumber('044/444444');
         $email = 'info@publiq.be';
 
         $original = new BookingInfo(
@@ -174,7 +174,7 @@ class BookingInfoTest extends TestCase
         );
 
         $expectedSerialized = [
-            'phone' => $phone,
+            'phone' => $phone->toString(),
             'email' => $email,
         ];
 
@@ -209,7 +209,7 @@ class BookingInfoTest extends TestCase
                 new Language('nl'),
                 'publiq'
             ),
-            '044/444444',
+            new TelephoneNumber('044/444444'),
             'info@publiq.be',
             DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
             DateTimeFactory::fromAtom('2018-01-14T23:59:59+01:00')

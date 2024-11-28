@@ -277,7 +277,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
                 new Language('nl'),
                 'Publiq'
             ),
-            '044/444444',
+            new TelephoneNumber('044/444444'),
             'info@publiq.be',
             new DateTimeImmutable('2018-01-01T10:00:00+01:00'),
             new DateTimeImmutable('2018-01-10T10:00:00+01:00')

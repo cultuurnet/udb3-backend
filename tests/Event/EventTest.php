@@ -607,7 +607,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
             new MultilingualString(new Language('nl'), 'publiq'),
-            '02 123 45 67',
+            new TelephoneNumber('02 123 45 67'),
             'info@publiq.be'
         );
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
