@@ -76,11 +76,6 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             InputOption::VALUE_NONE,
             'Execute the script but only set the canonical of the clusters, do not reindex or update event locations.'
         );
-        $this->addArgument(
-            'start-cluster-id',
-            InputArgument::OPTIONAL,
-            'The id of the cluster to start processing from (useful for resuming a previous run).'
-        );
         $this->addOption(
             self::ONLY_RUN_CLUSTER_ID,
             'id',
@@ -93,7 +88,6 @@ final class ProcessDuplicatePlaces extends AbstractCommand
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $dryRun = (bool)$input->getOption('dry-run');
-        $startingClusterId = $input->getArgument('start-cluster-id');
         $onlySetCanonical = (bool)$input->getOption('only-set-canonical');
         $onlyRunClusterId = $input->getOption(self::ONLY_RUN_CLUSTER_ID);
 
@@ -113,10 +107,6 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         }
 
         foreach ($clusterIds as $clusterId) {
-            if ($clusterId < $startingClusterId) {
-                continue;
-            }
-
             // 1. Set the canonical of a cluster
             try {
                 $canonicalId = $this->canonicalService->getCanonical($clusterId);
