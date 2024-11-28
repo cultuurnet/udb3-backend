@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Commands;
 
-use CultuurNet\UDB3\Offer\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use PHPUnit\Framework\TestCase;
 
 class UpdateTypicalAgeRangeTest extends TestCase

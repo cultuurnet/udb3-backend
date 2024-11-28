@@ -8,7 +8,6 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
@@ -29,8 +28,6 @@ interface LegacyOffer
     public function getCalendar(): Calendar;
 
     public function getOrganizerId(): ?string;
-
-    public function getAgeRange(): ?AgeRange;
 
     public function getBookingInfo(): ?BookingInfo;
 

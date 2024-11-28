@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Model\Offer\Offer;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 
@@ -76,17 +75,6 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
 
         if ($reference) {
             return $reference->getOrganizerId()->toString();
-        }
-
-        return null;
-    }
-
-    public function getAgeRange(): ?AgeRange
-    {
-        $ageRange = $this->offer->getAgeRange();
-
-        if ($ageRange) {
-            return AgeRange::fromUbd3ModelAgeRange($ageRange);
         }
 
         return null;
