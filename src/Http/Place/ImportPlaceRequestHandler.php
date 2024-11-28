@@ -192,7 +192,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdateCalendar($placeId, $calendar);
         }
 
-        $bookingInfo = $placeAdapter->getBookingInfo();
+        $bookingInfo = $place->getBookingInfo();
         $commands[] = new UpdateBookingInfo($placeId, $bookingInfo);
 
         $commands[] = new UpdateContactPoint($placeId, $place->getContactPoint());
@@ -206,7 +206,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             );
         }
 
-        $ageRange = $placeAdapter->getAgeRange();
+        $ageRange = $place->getAgeRange();
         if ($ageRange) {
             $commands[] = new UpdateTypicalAgeRange($placeId, $ageRange);
         } else {

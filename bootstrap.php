@@ -2,7 +2,6 @@
 
 use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
-use CultuurNet\UDB3\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Cache\CacheServiceProvider;
 use CultuurNet\UDB3\Clock\ClockServiceProvider;
@@ -189,7 +188,6 @@ $container->addServiceProvider(new Sapi3SearchServiceProvider());
 // access to services like CurrentUser, which is also provided when an async job is being handled in the CLI and the
 // user who triggered the job is being impersonated.
 $container->addServiceProvider(new AuthServiceProvider());
-$container->addServiceProvider(new Auth0ServiceProvider());
 $container->addServiceProvider(new KeycloakServiceProvider());
 
 /** UDB2 */
