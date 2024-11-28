@@ -26,4 +26,14 @@ class Categories extends Collection
         $filtered = $this->filterDuplicateValues($categories);
         parent::__construct(...$filtered);
     }
+
+    public function getEventType(): ?Category
+    {
+        return $this->filter(
+            function (Category $term) {
+                $domain = $term->getDomain();
+                return $domain && $domain->sameAs(CategoryDomain::eventType());
+            }
+        )->getFirst();
+    }
 }
