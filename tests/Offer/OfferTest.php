@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
