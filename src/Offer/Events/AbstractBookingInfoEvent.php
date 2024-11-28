@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\BookingInfo;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 
 abstract class AbstractBookingInfoEvent extends AbstractEvent
 {
-    /**
-     * @var BookingInfo
-     */
-    protected $bookingInfo;
+    protected BookingInfo $bookingInfo;
 
     final public function __construct(string $id, BookingInfo $bookingInfo)
     {
@@ -27,12 +26,15 @@ abstract class AbstractBookingInfoEvent extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'bookingInfo' => $this->bookingInfo->serialize(),
+            'bookingInfo' => (new BookingInfoNormalizer())->normalize($this->bookingInfo),
         ];
     }
 
     public static function deserialize(array $data): AbstractBookingInfoEvent
     {
-        return new static($data['item_id'], BookingInfo::deserialize($data['bookingInfo']));
+        return new static(
+            $data['item_id'],
+            (new BookingInfoDenormalizer())->denormalize($data['bookingInfo'], BookingInfo::class)
+        );
     }
 }

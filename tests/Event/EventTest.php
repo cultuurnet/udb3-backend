@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
@@ -38,8 +37,10 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -61,13 +62,14 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
-use CultuurNet\UDB3\Offer\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 use Money\Money;
 use RuntimeException;
@@ -609,10 +611,15 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
 
         $bookingInfo = new BookingInfo(
-            'www.publiq.be',
-            new MultilingualString(new Language('nl'), 'publiq'),
-            '02 123 45 67',
-            'info@publiq.be'
+            new WebsiteLink(
+                new Url('https://www.publiq.be'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('publiq')
+                )
+            ),
+            new TelephoneNumber('02 123 45 67'),
+            new EmailAddress('info@publiq.be')
         );
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
         $xmlNamespace = self::NS_CDBXML_3_2;

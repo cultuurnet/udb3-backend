@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo as EventUpdateBookingInfo;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
@@ -14,10 +13,17 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo as PlaceUpdateBookingInfo;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Iterator;
 use PHPUnit\Framework\TestCase;
 
@@ -95,21 +101,35 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
         $specialCharactersUrl = 'https://publiq-vzw.com/Inschrijven.aspx?ReservatieCat=2#/inschrijven/activiteiten';
 
         $bookingInfoBasicUrl = new BookingInfo(
-            $basicUrl,
-            new MultilingualString(new Language('nl'), 'Publiq vzw'),
-            '02/1232323',
-            'info@publiq.be',
-            DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
-            DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
+            new WebsiteLink(
+                new Url($basicUrl),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('Publiq vzw')
+                )
+            ),
+            new TelephoneNumber('02/1232323'),
+            new EmailAddress('info@publiq.be'),
+            BookingAvailability::fromTo(
+                DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
+            )
         );
 
         $bookingInfoSpecialCharactersUrl = new BookingInfo(
-            $specialCharactersUrl,
-            new MultilingualString(new Language('nl'), 'Publiq vzw'),
-            '02/1232323',
-            'info@publiq.be',
-            DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
-            DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
+            new WebsiteLink(
+                new Url($specialCharactersUrl),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('Publiq vzw')
+                )
+            ),
+            new TelephoneNumber('02/1232323'),
+            new EmailAddress('info@publiq.be'),
+            BookingAvailability::fromTo(
+                DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
+            )
         );
 
         return [

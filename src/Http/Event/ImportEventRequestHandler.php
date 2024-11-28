@@ -223,7 +223,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         }
         $commands[] = new UpdateAudience($eventId, $audienceType);
 
-        $bookingInfo = $eventAdapter->getBookingInfo();
+        $bookingInfo = $event->getBookingInfo();
         $commands[] = new UpdateBookingInfo($eventId, $bookingInfo);
 
         $commands[] = new UpdateContactPoint($eventId, $event->getContactPoint());
@@ -237,7 +237,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             );
         }
 
-        $ageRange = $eventAdapter->getAgeRange();
+        $ageRange = $event->getAgeRange();
         if ($ageRange) {
             $commands[] = new UpdateTypicalAgeRange($eventId, $ageRange);
         } else {

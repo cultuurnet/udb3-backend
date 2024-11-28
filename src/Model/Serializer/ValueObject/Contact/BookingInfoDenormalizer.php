@@ -50,23 +50,25 @@ class BookingInfoDenormalizer implements DenormalizerInterface
         $website = null;
         $availability = null;
 
-        if (isset($data['phone'])) {
+        if (!empty($data['phone'])) {
             $phone = new TelephoneNumber($data['phone']);
         }
 
-        if (isset($data['email'])) {
+        if (!empty($data['email'])) {
             $email = new EmailAddress($data['email']);
         }
 
-        if (isset($data['url']) && isset($data['urlLabel'])) {
-            /* @var TranslatedWebsiteLabel $label */
+        if (!empty($data['url']) && !empty($data['urlLabel'])) {
             $url = new Url($data['url']);
+
+            /* @var TranslatedWebsiteLabel $label */
             $label = $this->websiteLabelDenormalizer->denormalize(
                 $data['urlLabel'],
                 TranslatedWebsiteLabel::class,
                 null,
                 $context
             );
+
             $website = new WebsiteLink($url, $label);
         }
 
