@@ -29,7 +29,9 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -74,7 +76,6 @@ use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Place\Events\VideoAdded;
 use CultuurNet\UDB3\Place\Events\VideoDeleted;
 use CultuurNet\UDB3\Place\Events\VideoUpdated;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\SampleFiles;
 use DateTimeImmutable;
@@ -814,7 +815,8 @@ class HistoryProjectorTest extends TestCase
             new PriceInfo(
                 Tariff::createBasePrice(
                     new Money(1000, new Currency('EUR'))
-                )
+                ),
+                new Tariffs()
             )
         );
 

@@ -24,8 +24,10 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -59,7 +61,6 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD\ItemLDProjector;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -757,26 +758,26 @@ class OfferLDProjectorTest extends TestCase
         $priceInfo = new PriceInfo(
             Tariff::createBasePrice(
                 new Money(1050, new Currency('EUR'))
+            ),
+            new Tariffs(
+                new Tariff(
+                    new TranslatedTariffName(
+                        new Language('nl'),
+                        new TariffName('Tarief inwoners')
+                    ),
+                    new Money(950, new Currency('EUR'))
+                )
             )
         );
-
-        $priceInfo = $priceInfo->withExtraTariff(
-            new Tariff(
-                new TranslatedTariffName(
-                    new Language('nl'),
-                    new TariffName('Tarief inwoners')
-                ),
-                new Money(950, new Currency('EUR'))
-            )
-        );
-
-        $priceInfo = $priceInfo->withExtraUiTPASTariff(
-            new Tariff(
-                new TranslatedTariffName(
-                    new Language('nl'),
-                    new TariffName('UiTPAS tarief')
-                ),
-                new Money(650, new Currency('EUR'))
+        $priceInfo = $priceInfo->withUiTPASTariffs(
+            new Tariffs(
+                new Tariff(
+                    new TranslatedTariffName(
+                        new Language('nl'),
+                        new TariffName('UiTPAS tarief')
+                    ),
+                    new Money(650, new Currency('EUR'))
+                )
             )
         );
 

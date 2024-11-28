@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 
 abstract class AbstractPriceInfoUpdated extends AbstractEvent
 {
