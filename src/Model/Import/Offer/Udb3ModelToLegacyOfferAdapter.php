@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Model\Offer\Offer;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 
@@ -76,17 +75,6 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
 
         if ($reference) {
             return $reference->getOrganizerId()->toString();
-        }
-
-        return null;
-    }
-
-    public function getPriceInfo(): ?PriceInfo
-    {
-        $priceInfo = $this->offer->getPriceInfo();
-
-        if ($priceInfo) {
-            return PriceInfo::fromUdb3ModelPriceInfo($priceInfo);
         }
 
         return null;

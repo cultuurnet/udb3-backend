@@ -44,7 +44,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
@@ -254,35 +253,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     {
         $expected = 'cc4fa0d1-f86c-42cd-a9c6-995a660ba948';
         $actual = $this->completeAdapter->getOrganizerId();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_no_price_info_by_default(): void
-    {
-        $actual = $this->adapter->getPriceInfo();
-        $this->assertNull($actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_price_info_if_there_is_any(): void
-    {
-        $expected = new \CultuurNet\UDB3\PriceInfo\PriceInfo(
-            new BasePrice(
-                new Money(1500, new Currency('EUR'))
-            )
-        );
-        $expected = $expected->withExtraTariff(
-            new Tariff(
-                new TranslatedTariffName(new Language('nl'), new TariffName('Senioren')),
-                new Money(1050, new Currency('EUR'))
-            )
-        );
-        $actual = $this->completeAdapter->getPriceInfo();
         $this->assertEquals($expected, $actual);
     }
 
