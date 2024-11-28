@@ -42,6 +42,7 @@ use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -684,8 +685,10 @@ final class ImportEventRequestHandlerTest extends TestCase
                         ),
                         new TelephoneNumber('016 12 34 56'),
                         new EmailAddress('info@publiq.be'),
-                        new DateTimeImmutable('2021-05-17T22:00:00+00:00'),
-                        new DateTimeImmutable('2021-05-21T22:00:00+00:00')
+                        BookingAvailability::fromTo(
+                            new DateTimeImmutable('2021-05-17T22:00:00+00:00'),
+                            new DateTimeImmutable('2021-05-21T22:00:00+00:00')
+                        )
                     )
                 ),
                 new UpdateContactPoint(

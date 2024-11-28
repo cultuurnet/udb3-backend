@@ -39,6 +39,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -872,8 +873,10 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         ),
                         new TelephoneNumber('016 10 20 30'),
                         new EmailAddress('booking@dehel.be'),
-                        new DateTimeImmutable('2020-05-17T22:00:00+00:00'),
-                        new DateTimeImmutable('2028-05-17T22:00:00+00:00'),
+                        BookingAvailability::fromTo(
+                            new DateTimeImmutable('2020-05-17T22:00:00+00:00'),
+                            new DateTimeImmutable('2028-05-17T22:00:00+00:00')
+                        )
                     )
                 ),
                 new UpdateContactPoint(

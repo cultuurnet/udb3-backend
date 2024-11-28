@@ -6,13 +6,13 @@ namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Web\TranslatedWebsiteLabelDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Web\TranslatedWebsiteLabelNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo as Udb3ModelBookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
-use DateTimeImmutable;
 
 /**
  * @deprecated
@@ -26,22 +26,18 @@ final class BookingInfo implements JsonLdSerializableInterface
 
     private ?WebsiteLink $website;
 
-    private ?DateTimeImmutable $availabilityStarts;
-
-    private ?DateTimeImmutable $availabilityEnds;
+    private ?BookingAvailability $bookingAvailability;
 
     public function __construct(
         ?WebsiteLink $website = null,
         ?TelephoneNumber $phone = null,
         ?EmailAddress $email = null,
-        ?DateTimeImmutable $availabilityStarts = null,
-        ?DateTimeImmutable $availabilityEnds = null
+        ?BookingAvailability $bookingAvailability = null
     ) {
         $this->website = $website;
         $this->phone = $phone;
         $this->email = $email;
-        $this->availabilityStarts = $availabilityStarts;
-        $this->availabilityEnds = $availabilityEnds;
+        $this->bookingAvailability = $bookingAvailability;
     }
 
     public function getPhone(): ?TelephoneNumber
@@ -59,14 +55,9 @@ final class BookingInfo implements JsonLdSerializableInterface
         return $this->website;
     }
 
-    public function getAvailabilityStarts(): ?DateTimeImmutable
+    public function getAvailability(): ?BookingAvailability
     {
-        return $this->availabilityStarts;
-    }
-
-    public function getAvailabilityEnds(): ?DateTimeImmutable
-    {
-        return $this->availabilityEnds;
+        return $this->bookingAvailability;
     }
 
     public function serialize(): array
@@ -79,12 +70,12 @@ final class BookingInfo implements JsonLdSerializableInterface
             ]
         );
 
-        if ($this->availabilityStarts) {
-            $serialized['availabilityStarts'] = $this->availabilityStarts->format(\DATE_ATOM);
+        if ($this->bookingAvailability && $this->bookingAvailability->getFrom()) {
+            $serialized['availabilityStarts'] = $this->bookingAvailability->getFrom()->format(\DATE_ATOM);
         }
 
-        if ($this->availabilityEnds) {
-            $serialized['availabilityEnds'] = $this->availabilityEnds->format(\DATE_ATOM);
+        if ($this->bookingAvailability && $this->bookingAvailability->getTo()) {
+            $serialized['availabilityEnds'] = $this->bookingAvailability->getTo()->format(\DATE_ATOM);
         }
 
         if ($this->website) {
@@ -107,16 +98,6 @@ final class BookingInfo implements JsonLdSerializableInterface
 
         $data = array_merge($defaults, $data);
 
-        $availabilityStarts = null;
-        if ($data['availabilityStarts']) {
-            $availabilityStarts = DateTimeFactory::fromISO8601($data['availabilityStarts']);
-        }
-
-        $availabilityEnds = null;
-        if ($data['availabilityEnds']) {
-            $availabilityEnds = DateTimeFactory::fromISO8601($data['availabilityEnds']);
-        }
-
         $website = null;
         if (!empty($data['url']) && !empty($data['urlLabel'])) {
             $url = new Url($data['url']);
@@ -134,8 +115,7 @@ final class BookingInfo implements JsonLdSerializableInterface
             $website,
             !empty($data['phone']) ? new TelephoneNumber($data['phone']) : null,
             !empty($data['email']) ? new EmailAddress($data['email']) : null,
-            $availabilityStarts,
-            $availabilityEnds
+            self::createBookingAvailability($data['availabilityStarts'], $data['availabilityEnds'])
         );
     }
 
@@ -151,35 +131,28 @@ final class BookingInfo implements JsonLdSerializableInterface
 
     public static function fromUdb3ModelBookingInfo(Udb3ModelBookingInfo $udb3ModelBookingInfo): BookingInfo
     {
-        $website = null;
-        $phone = null;
-        $email = null;
-        $availabilityStarts = null;
-        $availabilityEnds = null;
-
-        if ($udb3ModelWebsite = $udb3ModelBookingInfo->getWebsite()) {
-            $website = $udb3ModelWebsite;
-        }
-
-        if ($udb3ModelPhone = $udb3ModelBookingInfo->getTelephoneNumber()) {
-            $phone = $udb3ModelPhone;
-        }
-
-        if ($udb3ModelEmail = $udb3ModelBookingInfo->getEmailAddress()) {
-            $email = $udb3ModelEmail;
-        }
-
-        if ($udb3ModelAvailability = $udb3ModelBookingInfo->getAvailability()) {
-            $availabilityStarts = $udb3ModelAvailability->getFrom();
-            $availabilityEnds = $udb3ModelAvailability->getTo();
-        }
-
         return new self(
-            $website,
-            $phone,
-            $email,
-            $availabilityStarts,
-            $availabilityEnds
+            $udb3ModelBookingInfo->getWebsite(),
+            $udb3ModelBookingInfo->getTelephoneNumber(),
+            $udb3ModelBookingInfo->getEmailAddress(),
+            $udb3ModelBookingInfo->getAvailability()
         );
+    }
+
+    private static function createBookingAvailability(?string $from, ?string $to): ?BookingAvailability
+    {
+        if ($from && $to) {
+            return BookingAvailability::fromTo(DateTimeFactory::fromISO8601($from), DateTimeFactory::fromISO8601($to));
+        }
+
+        if ($from) {
+            return BookingAvailability::from(DateTimeFactory::fromISO8601($from));
+        }
+
+        if ($to) {
+            return BookingAvailability::to(DateTimeFactory::fromISO8601($to));
+        }
+
+        return null;
     }
 }
