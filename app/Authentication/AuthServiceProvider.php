@@ -180,12 +180,10 @@ final class AuthServiceProvider extends AbstractServiceProvider
 
     private function createUitIdV2JwtValidator(DefinitionContainerInterface $container): UitIdV2JwtValidator
     {
-        $version = $container->get('config')['keycloak']['enabled'] ? 'keycloak' : 'v2';
-
         return new UitIdV2JwtValidator(
-            'file://' . __DIR__ . '/../../' . $container->get('config')['jwt'][$version]['keys']['public']['file'],
-            $container->get('config')['jwt'][$version]['valid_issuers'],
-            $container->get('config')['jwt'][$version]['jwt_provider_client_id']
+            'file://' . __DIR__ . '/../../' . $container->get('config')['jwt']['keycloak']['keys']['public']['file'],
+            $container->get('config')['jwt']['keycloak']['valid_issuers'],
+            $container->get('config')['jwt']['keycloak']['jwt_provider_client_id']
         );
     }
 }
