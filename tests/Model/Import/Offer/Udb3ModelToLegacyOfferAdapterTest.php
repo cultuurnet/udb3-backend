@@ -259,57 +259,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_age_range_by_default(): void
-    {
-        $actual = $this->adapter->getAgeRange();
-        $this->assertNull($actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_an_age_range_if_there_is_one(): void
-    {
-        $expected = new \CultuurNet\UDB3\Offer\AgeRange(
-            new Age(8),
-            new Age(12)
-        );
-        $actual = $this->completeAdapter->getAgeRange();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_no_price_info_by_default(): void
-    {
-        $actual = $this->adapter->getPriceInfo();
-        $this->assertNull($actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_price_info_if_there_is_any(): void
-    {
-        $expected = new \CultuurNet\UDB3\PriceInfo\PriceInfo(
-            Tariff::createBasePrice(
-                new Money(1500, new Currency('EUR'))
-            )
-        );
-        $expected = $expected->withExtraTariff(
-            new Tariff(
-                new TranslatedTariffName(new Language('nl'), new TariffName('Senioren')),
-                new Money(1050, new Currency('EUR'))
-            )
-        );
-        $actual = $this->completeAdapter->getPriceInfo();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_return_empty_booking_info_by_default(): void
     {
         $expected = new \CultuurNet\UDB3\BookingInfo();

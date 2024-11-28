@@ -16,10 +16,10 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
@@ -69,6 +69,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\Theme;
+use DateTimeInterface;
 
 /**
  * Projects state changes on Place entities to a JSON-LD read model in a
@@ -199,8 +200,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         $calendarJsonLD = $calendar->toJsonLd();
         $jsonLD = (object) array_merge((array) $jsonLD, $calendarJsonLD);
 
-        $availableTo = AvailableTo::createFromCalendar($placeCreated->getCalendar());
-        $jsonLD->availableTo = (string)$availableTo;
+        $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar($placeCreated->getCalendar())->format(DateTimeInterface::ATOM);
 
         $eventType = $placeCreated->getEventType();
         $jsonLD->terms = [
@@ -252,8 +252,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $this->getMainLanguage($jsonLD)
         );
 
-        $availableTo = AvailableTo::createFromCalendar($majorInfoUpdated->getCalendar());
-        $jsonLD->availableTo = (string)$availableTo;
+        $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar($majorInfoUpdated->getCalendar())->format(DateTimeInterface::ATOM);
 
         // Remove old theme and event type.
         $jsonLD->terms = array_filter($jsonLD->terms, function ($term) {
