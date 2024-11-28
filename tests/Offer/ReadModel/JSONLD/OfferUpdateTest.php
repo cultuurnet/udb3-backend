@@ -28,7 +28,7 @@ class OfferUpdateTest extends TestCase
                 'terms' => [
                     [
                         'id' => '0.50.4.0.0',
-                        'label' => 'concert',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                 ],
@@ -50,7 +50,7 @@ class OfferUpdateTest extends TestCase
                 'terms' => [
                     [
                         'id' => '0.50.4.0.0',
-                        'label' => 'concert',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                 ],

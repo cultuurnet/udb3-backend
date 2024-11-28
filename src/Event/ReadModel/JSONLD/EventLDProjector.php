@@ -68,6 +68,7 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AudienceTypeNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
@@ -254,7 +255,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
             $eventCreated->getCalendar(),
-            $eventCreated->getEventType()
+            EventType::fromUdb3ModelCategory($eventCreated->getEventType())
         )->format(DateTimeInterface::ATOM);
 
         // Same as.
@@ -265,7 +266,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $eventType = $eventCreated->getEventType();
         $jsonLD->terms = [
-            $eventType->toJsonLd(),
+            (new CategoryNormalizer())->normalize($eventType),
         ];
 
         $theme = $eventCreated->getTheme();

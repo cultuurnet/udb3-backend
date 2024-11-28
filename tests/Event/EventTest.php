@@ -51,6 +51,10 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -90,7 +94,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'foo',
             new Language('en'),
             new Title('some representative title'),
-            new EventType('0.50.4.0.0', 'concert'),
+            new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('d70f5d94-7072-423d-9144-9354cb794c62'),
             new Calendar(CalendarType::permanent())
         );
@@ -102,7 +106,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
             new Calendar(CalendarType::permanent())
         );
@@ -114,7 +118,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('59400d1e-6f98-4da9-ab08-f58adceb7204'),
             new Calendar(CalendarType::permanent()),
             new Theme('1.8.3.1.0', 'Pop en rock')
@@ -279,7 +283,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 function (Event $event) {
                     $event->updateMajorInfo(
                         new Title('foo'),
-                        new EventType('0.50.4.0.0', 'concert'),
+                        new EventType('0.50.4.0.0', 'Concert'),
                         new LocationId('00000000-0000-0000-0000-000000000000'),
                         new Calendar(CalendarType::permanent())
                     );
@@ -290,7 +294,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new MajorInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     'foo',
-                    new EventType('0.50.4.0.0', 'concert'),
+                    new EventType('0.50.4.0.0', 'Concert'),
                     new LocationId('00000000-0000-0000-0000-000000000000'),
                     new Calendar(CalendarType::permanent())
                 ),
@@ -311,7 +315,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 function (Event $event) {
                     $event->updateMajorInfo(
                         new Title('foo'),
-                        new EventType('0.50.4.0.0', 'concert'),
+                        new EventType('0.50.4.0.0', 'Concert'),
                         new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                         new Calendar(CalendarType::permanent())
                     );
@@ -322,7 +326,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new MajorInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     'foo',
-                    new EventType('0.50.4.0.0', 'concert'),
+                    new EventType('0.50.4.0.0', 'Concert'),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new Calendar(CalendarType::permanent())
                 ),
@@ -343,7 +347,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 function (Event $event) {
                     $event->updateMajorInfo(
                         new Title('foo'),
-                        new EventType('0.50.4.0.0', 'concert'),
+                        new EventType('0.50.4.0.0', 'Concert'),
                         new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                         new Calendar(CalendarType::permanent())
                     );
@@ -354,7 +358,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new MajorInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     'foo',
-                    new EventType('0.50.4.0.0', 'concert'),
+                    new EventType('0.50.4.0.0', 'Concert'),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new Calendar(CalendarType::permanent())
                 ),
@@ -374,7 +378,7 @@ class EventTest extends AggregateRootScenarioTestCase
             $eventUuid,
             new Language('en'),
             new Title('some representative title'),
-            new EventType('0.50.4.0.0', 'concert'),
+            new EventType('0.50.4.0.0', 'Concert'),
             new LocationId($locationUuid),
             new Calendar(CalendarType::permanent())
         );

@@ -7,6 +7,9 @@ namespace CultuurNet\UDB3\Event;
 use CultuurNet\UDB3\Category;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category as Udb3ModelCategory;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use InvalidArgumentException;
 
 /**
@@ -44,6 +47,15 @@ final class EventType extends Category
         return new self(
             $category->getId()->toString(),
             $label->toString()
+        );
+    }
+
+    public function toUdb3ModelCategory(): Udb3ModelCategory
+    {
+        return new Udb3ModelCategory(
+            new CategoryID($this->getId()),
+            new CategoryLabel($this->getLabel()),
+            CategoryDomain::eventType()
         );
     }
 
