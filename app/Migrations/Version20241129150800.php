@@ -13,7 +13,6 @@ final class Version20241129150800 extends AbstractMigration
     {
         $table = $schema->createTable('event_location_history');
 
-        $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('event', 'guid', ['length' => 36]);
         $table->addColumn('old_place', 'guid', ['length' => 36,
             'notnull' => false,
@@ -25,10 +24,9 @@ final class Version20241129150800 extends AbstractMigration
             ['notnull' => true]
         );
 
-        $table->setPrimaryKey(['id']);
-
-        // Index because I assume one of the most asked questions is going to be: "where are all the events of place X?"
-        $table->addIndex(['old_place'], 'idx_old_place');
+        $table->addIndex(['old_place', 'event'], 'idx_old_place');
+        $table->addIndex(['new_place', 'event'], 'idx_new_place');
+        $table->addIndex(['event'], 'idx_event');
     }
 
     public function down(Schema $schema): void
