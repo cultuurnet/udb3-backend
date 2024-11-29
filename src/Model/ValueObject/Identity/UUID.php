@@ -27,4 +27,9 @@ class UUID
 
         $this->setValue($value);
     }
+
+    public static function uuid4(): self
+    {
+        return new UUID(\Ramsey\Uuid\Uuid::uuid4()->toString());
+    }
 }
