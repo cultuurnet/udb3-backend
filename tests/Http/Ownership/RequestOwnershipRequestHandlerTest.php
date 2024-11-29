@@ -116,6 +116,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 new SearchQuery([
                     new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
                     new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                    new SearchParameter('state', OwnershipState::requested()->toString()),
+                    new SearchParameter('state', OwnershipState::approved()->toString()),
                 ])
             )
             ->willReturn(new OwnershipItemCollection());
@@ -230,6 +232,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 new SearchQuery([
                     new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
                     new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                    new SearchParameter('state', OwnershipState::requested()->toString()),
+                    new SearchParameter('state', OwnershipState::approved()->toString()),
                 ])
             )
             ->willReturn(new OwnershipItemCollection());
@@ -296,6 +300,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 new SearchQuery([
                     new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
                     new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                    new SearchParameter('state', OwnershipState::requested()->toString()),
+                    new SearchParameter('state', OwnershipState::approved()->toString()),
                 ])
             )
             ->willReturn(new OwnershipItemCollection());
@@ -353,6 +359,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 new SearchQuery([
                     new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
                     new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                    new SearchParameter('state', OwnershipState::requested()->toString()),
+                    new SearchParameter('state', OwnershipState::approved()->toString()),
                 ])
             )
             ->willReturn(
@@ -409,6 +417,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 new SearchQuery([
                     new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
                     new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                    new SearchParameter('state', OwnershipState::requested()->toString()),
+                    new SearchParameter('state', OwnershipState::approved()->toString()),
                 ])
             )
             ->willReturn(
@@ -465,19 +475,11 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 new SearchQuery([
                     new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
                     new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                    new SearchParameter('state', OwnershipState::requested()->toString()),
+                    new SearchParameter('state', OwnershipState::approved()->toString()),
                 ])
             )
-            ->willReturn(
-                new OwnershipItemCollection(
-                    new OwnershipItem(
-                        'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-                        '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                        'organizer',
-                        'auth0|63e22626e39a8ca1264bd29b',
-                        OwnershipState::rejected()->toString()
-                    )
-                )
-            );
+            ->willReturn(new OwnershipItemCollection());
 
         $response = $this->requestOwnershipRequestHandler->handle($request);
 
@@ -532,19 +534,11 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 new SearchQuery([
                     new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
                     new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                    new SearchParameter('state', OwnershipState::requested()->toString()),
+                    new SearchParameter('state', OwnershipState::approved()->toString()),
                 ])
             )
-            ->willReturn(
-                new OwnershipItemCollection(
-                    new OwnershipItem(
-                        'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-                        '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                        'organizer',
-                        'auth0|63e22626e39a8ca1264bd29b',
-                        OwnershipState::deleted()->toString()
-                    )
-                )
-            );
+            ->willReturn(new OwnershipItemCollection());
 
         $response = $this->requestOwnershipRequestHandler->handle($request);
 
