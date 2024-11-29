@@ -17,6 +17,10 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
@@ -144,7 +148,7 @@ class CompositeDomainMessageEnricherTest extends TestCase
                 '97d50997-2f60-47f2-9861-05be747038fa',
                 new Language('nl'),
                 'test title',
-                new EventType('0.0.1', 'label'),
+                new Category(new CategoryID('0.0.1'), new CategoryLabel('label'), CategoryDomain::eventType()),
                 new LocationId('8bec7ce3-25d0-4677-926f-ac20df8898f1'),
                 new Calendar(CalendarType::permanent())
             ),

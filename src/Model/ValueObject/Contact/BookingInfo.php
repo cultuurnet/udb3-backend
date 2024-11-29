@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Contact;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 
@@ -109,5 +110,12 @@ class BookingInfo
     {
         return is_null($this->website) && is_null($this->telephoneNumber) && is_null($this->emailAddress) &&
             is_null($this->availability);
+    }
+
+    public function sameAs(BookingInfo $other): bool
+    {
+        $bookingInfoNormalizer = new BookingInfoNormalizer();
+
+        return $bookingInfoNormalizer->normalize($this) === $bookingInfoNormalizer->normalize($other);
     }
 }

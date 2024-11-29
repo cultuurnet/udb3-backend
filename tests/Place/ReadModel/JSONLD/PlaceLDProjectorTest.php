@@ -154,7 +154,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             $id,
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'concert'),
+            new EventType('0.50.4.0.0', 'Concert'),
             $this->address,
             new Calendar(CalendarType::permanent())
         );
@@ -177,7 +177,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
         ];
@@ -220,7 +220,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             $id,
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'concert'),
+            new EventType('0.50.4.0.0', 'Concert'),
             $this->address,
             new Calendar(CalendarType::permanent())
         );
@@ -242,7 +242,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
         ];
@@ -324,7 +324,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
         ];
@@ -352,7 +352,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
         ];
@@ -403,7 +403,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
         ];
@@ -437,7 +437,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
         ];
@@ -492,7 +492,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             $placeId,
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'concert'),
+            new EventType('0.50.4.0.0', 'Concert'),
             $this->address,
             new Calendar(CalendarType::permanent())
         );
@@ -621,7 +621,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $initialJsonLd->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
         ];
@@ -690,7 +690,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
         ];

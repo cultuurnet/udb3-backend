@@ -10,7 +10,6 @@ class WebsiteLink
 
     private TranslatedWebsiteLabel $label;
 
-
     public function __construct(Url $url, TranslatedWebsiteLabel $label)
     {
         $this->url = $url;

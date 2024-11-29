@@ -12,12 +12,15 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\OfferRepository;
@@ -47,7 +50,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             '1',
             new Language('nl'),
             'Permanent Event',
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(CalendarType::permanent())
         );
@@ -70,7 +73,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             '1',
             new Language('nl'),
             'Periodic Event',
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(
                 CalendarType::periodic(),
@@ -97,7 +100,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             '1',
             new Language('nl'),
             'Single Event',
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(
                 CalendarType::single(),
@@ -149,7 +152,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             '1',
             new Language('nl'),
             'Multiple Event',
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(
                 CalendarType::multiple(),

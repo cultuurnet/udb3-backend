@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Offer;
 
-use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\Offer\Offer;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 
@@ -79,23 +77,6 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         }
 
         return null;
-    }
-
-    public function getAgeRange(): ?AgeRange
-    {
-        $ageRange = $this->offer->getAgeRange();
-
-        if ($ageRange) {
-            return AgeRange::fromUbd3ModelAgeRange($ageRange);
-        }
-
-        return null;
-    }
-
-    public function getBookingInfo(): ?BookingInfo
-    {
-        $bookingInfo = $this->offer->getBookingInfo();
-        return BookingInfo::fromUdb3ModelBookingInfo($bookingInfo);
     }
 
     public function getAvailableFrom(DateTimeImmutable $default): DateTimeImmutable

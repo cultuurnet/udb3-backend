@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use PHPUnit\Framework\TestCase;
 
 class AbstractBookingInfoEventTest extends TestCase
@@ -25,12 +31,19 @@ class AbstractBookingInfoEventTest extends TestCase
     {
         $this->itemId = 'Foo';
         $this->bookingInfo = new BookingInfo(
-            'http://foo.bar',
-            new MultilingualString(new Language('nl'), 'urlLabel'),
-            '0123456789',
-            'foo@bar.com',
-            DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
-            DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+            new WebsiteLink(
+                new Url('https://foo.bar'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('urlLabel')
+                )
+            ),
+            new TelephoneNumber('0123456789'),
+            new EmailAddress('foo@bar.com'),
+            BookingAvailability::fromTo(
+                DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+            )
         );
         $this->abstractBookingInfoEvent = new MockAbstractBookingInfoEvent(
             $this->itemId,
@@ -45,12 +58,19 @@ class AbstractBookingInfoEventTest extends TestCase
     {
         $expectedItemId = 'Foo';
         $expectedBookingInfo = new BookingInfo(
-            'http://foo.bar',
-            new MultilingualString(new Language('nl'), 'urlLabel'),
-            '0123456789',
-            'foo@bar.com',
-            DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
-            DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+            new WebsiteLink(
+                new Url('https://foo.bar'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('urlLabel')
+                )
+            ),
+            new TelephoneNumber('0123456789'),
+            new EmailAddress('foo@bar.com'),
+            BookingAvailability::fromTo(
+                DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+            )
         );
         $expectedAbstractBookingInfoEvent = new MockAbstractBookingInfoEvent(
             $expectedItemId,
@@ -67,12 +87,19 @@ class AbstractBookingInfoEventTest extends TestCase
     {
         $expectedItemId = 'Foo';
         $expectedBookingInfo = new BookingInfo(
-            'http://foo.bar',
-            new MultilingualString(new Language('nl'), 'urlLabel'),
-            '0123456789',
-            'foo@bar.com',
-            DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
-            DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+            new WebsiteLink(
+                new Url('https://foo.bar'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('urlLabel')
+                )
+            ),
+            new TelephoneNumber('0123456789'),
+            new EmailAddress('foo@bar.com'),
+            BookingAvailability::fromTo(
+                DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+            )
         );
 
         $itemId = $this->abstractBookingInfoEvent->getItemId();
@@ -128,12 +155,19 @@ class AbstractBookingInfoEventTest extends TestCase
                 new MockAbstractBookingInfoEvent(
                     'madId',
                     new BookingInfo(
-                        'http://foo.bar',
-                        new MultilingualString(new Language('nl'), 'urlLabel'),
-                        '0123456789',
-                        'foo@bar.com',
-                        DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
-                        DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+                        new WebsiteLink(
+                            new Url('http://foo.bar'),
+                            new TranslatedWebsiteLabel(
+                                new Language('nl'),
+                                new WebsiteLabel('urlLabel')
+                            )
+                        ),
+                        new TelephoneNumber('0123456789'),
+                        new EmailAddress('foo@bar.com'),
+                        BookingAvailability::fromTo(
+                            DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
+                            DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+                        )
                     )
                 ),
             ],

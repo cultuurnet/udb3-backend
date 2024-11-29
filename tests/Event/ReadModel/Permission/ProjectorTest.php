@@ -12,9 +12,12 @@ use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
@@ -126,7 +129,7 @@ final class ProjectorTest extends TestCase
             $eventId,
             new Language('nl'),
             'test 123',
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(
                 CalendarType::permanent()
