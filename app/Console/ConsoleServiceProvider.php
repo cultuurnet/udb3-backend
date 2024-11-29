@@ -265,8 +265,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('canonical_service'),
                 $container->get(EventBus::class),
                 $container->get('place_jsonld_projected_event_factory'),
-                $container->get(EventRelationsRepository::class),
-                LoggerFactory::create($container, LoggerName::forCli())
+                $container->get(EventRelationsRepository::class)
             )
         );
 
