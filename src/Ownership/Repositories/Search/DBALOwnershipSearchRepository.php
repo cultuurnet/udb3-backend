@@ -23,6 +23,10 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         'ownerId' => 'owner_id',
     ];
 
+    private const URL_PARAMETER_WITH_MULTIPLE_VALUES = [
+        'state',
+    ];
+
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
@@ -116,12 +120,31 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         $queryBuilder = $this->connection->createQueryBuilder()
             ->from('ownership_search');
 
-        foreach ($searchQuery->getParameters() as $parameter) {
-            $column = self::URL_PARAMETER_TO_COLUMN[$parameter->getUrlParameter()];
+        /**
+         * @var array<string, array<int, string>> $urlParameterToValues
+         */
+        $urlParameterToValues = [];
 
-            $queryBuilder
+        foreach ($searchQuery->getParameters() as $parameter) {
+            $urlParameter = $parameter->getUrlParameter();
+            $urlParameterToValues[$urlParameter][] = $parameter->getValue();
+        }
+
+        foreach ($urlParameterToValues as $urlParameter => $values) {
+            $column = self::URL_PARAMETER_TO_COLUMN[$urlParameter];
+
+            if (in_array($urlParameter, self::URL_PARAMETER_WITH_MULTIPLE_VALUES)) {
+                $queryBuilder = $queryBuilder
+                    ->andWhere(
+                        $queryBuilder->expr()->in($column, ":{$column}_values")
+                    )
+                    ->setParameter(":{$column}_values", $values, Connection::PARAM_STR_ARRAY);
+                continue;
+            }
+
+            $queryBuilder = $queryBuilder
                 ->andWhere($column . ' = :' . $column)
-                ->setParameter($column, $parameter->getValue());
+                ->setParameter($column, $values[0]);
         }
 
         return $queryBuilder;
