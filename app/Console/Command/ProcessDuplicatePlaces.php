@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,17 +26,11 @@ final class ProcessDuplicatePlaces extends AbstractCommand
     private const ONLY_RUN_CLUSTER_ID = 'only-run-cluster-id';
     private const FORCE = 'force';
     private DuplicatePlaceRepository $duplicatePlaceRepository;
-
     private CanonicalService $canonicalService;
-
     private EventRelationsRepository $eventRelationsRepository;
-
     private EventBus $eventBus;
-
     private DocumentEventFactory $placeEventFactory;
-
     private DuplicatePlaceRemovedFromClusterRepository $duplicatePlaceRemovedFromClusterRepository;
-    private LoggerInterface $logger;
 
     public function __construct(
         CommandBus $commandBus,
@@ -46,8 +39,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         CanonicalService $canonicalService,
         EventBus $eventBus,
         DocumentEventFactory $placeEventFactory,
-        EventRelationsRepository $eventRelationsRepository,
-        LoggerInterface $logger
+        EventRelationsRepository $eventRelationsRepository
     ) {
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
         $this->duplicatePlaceRemovedFromClusterRepository = $duplicatePlaceRemovedFromClusterRepository;
@@ -55,7 +47,6 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         $this->eventBus = $eventBus;
         $this->placeEventFactory = $placeEventFactory;
         $this->eventRelationsRepository = $eventRelationsRepository;
-        $this->logger = $logger;
 
         parent::__construct($commandBus);
     }
@@ -145,12 +136,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
                 foreach ($commands as $command) {
                     $output->writeln('Dispatching UpdateLocation for event with id ' . $command->getItemId());
                     if (!$dryRun) {
-                        try {
-                            $this->commandBus->dispatch($command);
-                        } catch (MuseumPassNotUniqueInCluster $e) {
-                            $output->writeln($e->getMessage());
-                            $this->logger->error($e->getMessage());
-                        }
+                        $this->commandBus->dispatch($command);
                     }
                 }
             }
