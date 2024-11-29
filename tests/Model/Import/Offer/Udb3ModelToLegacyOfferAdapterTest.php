@@ -45,7 +45,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use Money\Currency;
 use Money\Money;
@@ -253,58 +252,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     {
         $expected = 'cc4fa0d1-f86c-42cd-a9c6-995a660ba948';
         $actual = $this->completeAdapter->getOrganizerId();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_no_age_range_by_default(): void
-    {
-        $actual = $this->adapter->getAgeRange();
-        $this->assertNull($actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_an_age_range_if_there_is_one(): void
-    {
-        $expected = new \CultuurNet\UDB3\Offer\AgeRange(
-            new Age(8),
-            new Age(12)
-        );
-        $actual = $this->completeAdapter->getAgeRange();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_empty_booking_info_by_default(): void
-    {
-        $expected = new \CultuurNet\UDB3\BookingInfo();
-        $actual = $this->adapter->getBookingInfo();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_booking_info_if_there_is_any(): void
-    {
-        $expected = new \CultuurNet\UDB3\BookingInfo(
-            'https://www.publiq.be',
-            new MultilingualString(
-                new Language('nl'),
-                'Publiq'
-            ),
-            '044/444444',
-            'info@publiq.be',
-            new DateTimeImmutable('2018-01-01T10:00:00+01:00'),
-            new DateTimeImmutable('2018-01-10T10:00:00+01:00')
-        );
-        $actual = $this->completeAdapter->getBookingInfo();
         $this->assertEquals($expected, $actual);
     }
 

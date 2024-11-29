@@ -61,6 +61,10 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
@@ -207,7 +211,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
         ];
@@ -237,7 +241,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $eventId,
             new Language('en'),
             'some representative title',
-            new EventType('0.14.0.0.0', 'Monument'),
+            new Category(new CategoryID('0.14.0.0.0'), new CategoryLabel('Monument'), CategoryDomain::eventType()),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(
                 CalendarType::periodic(),
@@ -302,7 +306,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
             (object)[
@@ -350,7 +354,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
             (object)[
@@ -545,7 +549,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $startDate = DateTimeFactory::fromAtom('2018-01-01T12:00:00+01:00');
         $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
-        $eventType = new EventType('0.3.1.0.0', 'Cursus of workshop');
+        $eventType = new Category(new CategoryID('0.3.1.0.0'), new CategoryLabel('Cursus of workshop'), CategoryDomain::eventType());
 
         $calendar = new Calendar(
             CalendarType::single(),
@@ -582,7 +586,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $startDate = DateTimeFactory::fromAtom('2018-01-01T12:00:00+01:00');
         $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
-        $eventType = new EventType('1.50.0.0.0', 'Eten en drinken');
+        $eventType = new Category(new CategoryID('1.50.0.0.0'), new CategoryLabel('Eten en drinken'), CategoryDomain::eventType());
 
         $calendar = new Calendar(
             CalendarType::single(),
@@ -674,7 +678,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
             (object)[
@@ -1109,7 +1113,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->terms = [
             [
                 'id' => '0.50.4.0.0',
-                'label' => 'concert',
+                'label' => 'Concert',
                 'domain' => 'eventtype',
             ],
         ];
@@ -1379,7 +1383,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             '1',
             new Language('en'),
             'Online workshop',
-            new EventType('0.3.1.0.0', 'Cursus of workshop'),
+            new Category(new CategoryID('0.3.1.0.0'), new CategoryLabel('Cursus of workshop'), CategoryDomain::eventType()),
             new LocationId(LocationId::NIL_LOCATION),
             new Calendar(CalendarType::permanent())
         );
@@ -1918,7 +1922,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $eventId,
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             $calendar,
             $theme

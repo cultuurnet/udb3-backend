@@ -129,7 +129,7 @@ final class ProjectorTest extends TestCase
             $placeId,
             new Language('en'),
             'test 123',
-            new EventType('0.50.4.0.0', 'concert'),
+            new EventType('0.50.4.0.0', 'Concert'),
             new Address(
                 new Street('Kerkstraat 69'),
                 new PostalCode('3000'),

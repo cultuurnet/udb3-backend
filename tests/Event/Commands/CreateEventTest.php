@@ -24,7 +24,7 @@ class CreateEventTest extends TestCase
         $id = '5e36d2f2-b5de-4f5e-81b3-a129d996e9b6';
         $language = new Language('nl');
         $title = new Title('some representative title');
-        $type = new EventType('0.50.4.0.0', 'concert');
+        $type = new EventType('0.50.4.0.0', 'Concert');
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
         $calendar = new Calendar(CalendarType::permanent());
         $theme = new Theme('0.1.0.1.0.1', 'blues');
@@ -54,7 +54,7 @@ class CreateEventTest extends TestCase
         $id = '5e36d2f2-b5de-4f5e-81b3-a129d996e9b6';
         $language = new Language('nl');
         $title = new Title('some representative title');
-        $type = new EventType('0.50.4.0.0', 'concert');
+        $type = new EventType('0.50.4.0.0', 'Concert');
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
         $calendar = new Calendar(CalendarType::permanent());
         $theme = new Theme('0.1.0.1.0.1', 'blues');

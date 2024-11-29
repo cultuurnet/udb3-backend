@@ -12,6 +12,9 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint as Udb3ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -21,13 +24,14 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
-use CultuurNet\UDB3\Offer\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -113,13 +117,20 @@ abstract class OfferLDProjectorTestBase extends TestCase
     public function it_projects_the_updating_of_booking_info(): void
     {
         $id = 'foo';
-        $url = 'http://www.google.be';
-        $urlLabel = new MultilingualString(new Language('nl'), 'Google');
-        $phone = '045';
-        $email = 'test@test.com';
-        $availabilityStarts = DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00');
-        $availabilityEnds = DateTimeFactory::fromAtom('2018-01-31T00:00:00+01:00');
-        $bookingInfo = new BookingInfo($url, $urlLabel, $phone, $email, $availabilityStarts, $availabilityEnds);
+        $websiteLink = new WebsiteLink(
+            new Url('https://www.google.be'),
+            new TranslatedWebsiteLabel(
+                new Language('nl'),
+                new WebsiteLabel('Google')
+            )
+        );
+        $phone = new TelephoneNumber('045');
+        $email = new EmailAddress('test@test.com');
+        $bookingAvailability = BookingAvailability::fromTo(
+            DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
+            DateTimeFactory::fromAtom('2018-01-31T00:00:00+01:00')
+        );
+        $bookingInfo = new BookingInfo($websiteLink, $phone, $email, $bookingAvailability);
         $eventClass = $this->getEventClass('BookingInfoUpdated');
         $bookingInfoUpdated = new $eventClass($id, $bookingInfo);
 
@@ -129,10 +140,10 @@ abstract class OfferLDProjectorTestBase extends TestCase
 
         $expectedBody = (object)[
             'bookingInfo' => (object)[
-                'phone' => $phone,
-                'email' => $email,
-                'url' => $url,
-                'urlLabel' => (object) $urlLabel->serialize(),
+                'phone' => $phone->toString(),
+                'email' => $email->toString(),
+                'url' => 'https://www.google.be',
+                'urlLabel' => (object)['nl' => 'Google'],
                 'availabilityStarts' => '2018-01-01T00:00:00+01:00',
                 'availabilityEnds' => '2018-01-31T00:00:00+01:00',
             ],

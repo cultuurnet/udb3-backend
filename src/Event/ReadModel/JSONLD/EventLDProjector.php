@@ -68,13 +68,14 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AudienceTypeNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
-use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
@@ -88,6 +89,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 use CultuurNet\UDB3\Theme;
+use DateTimeInterface;
 use JsonException;
 
 final class EventLDProjector extends OfferLDProjector implements
@@ -251,8 +253,10 @@ final class EventLDProjector extends OfferLDProjector implements
         $calendarJsonLD = $calendar->toJsonLd();
         $jsonLD = (object) array_merge((array) $jsonLD, $calendarJsonLD);
 
-        $availableTo = AvailableTo::createFromCalendar($eventCreated->getCalendar(), $eventCreated->getEventType());
-        $jsonLD->availableTo = (string) $availableTo;
+        $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
+            $eventCreated->getCalendar(),
+            EventType::fromUdb3ModelCategory($eventCreated->getEventType())
+        )->format(DateTimeInterface::ATOM);
 
         // Same as.
         $jsonLD->sameAs = $this->sameAs->generateSameAs(
@@ -262,7 +266,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $eventType = $eventCreated->getEventType();
         $jsonLD->terms = [
-            $eventType->toJsonLd(),
+            (new CategoryNormalizer())->normalize($eventType),
         ];
 
         $theme = $eventCreated->getTheme();
@@ -341,8 +345,10 @@ final class EventLDProjector extends OfferLDProjector implements
         unset($eventJsonLD->hiddenLabels);
 
         // Set available to and from.
-        $availableTo = AvailableTo::createFromCalendar($eventCopied->getCalendar(), $this->getEventType($eventJsonLD));
-        $eventJsonLD->availableTo = (string) $availableTo;
+        $eventJsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
+            $eventCopied->getCalendar(),
+            $this->getEventType($eventJsonLD)
+        )->format(DateTimeInterface::ATOM);
         unset($eventJsonLD->availableFrom);
 
         $newDocument = new JsonDocument($eventCopied->getItemId());
@@ -367,8 +373,10 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $offerLd = $document->getBody();
 
-        $availableTo = AvailableTo::createFromCalendar($calendarUpdated->getCalendar(), $this->getEventType($offerLd));
-        $offerLd->availableTo = (string)$availableTo;
+        $offerLd->availableTo = AvailableTo::createFromLegacyCalendar(
+            $calendarUpdated->getCalendar(),
+            $this->getEventType($offerLd)
+        )->format(DateTimeInterface::ATOM);
 
         return $document->withBody($offerLd);
     }
@@ -428,8 +436,10 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD = $this->setAttendanceMode($jsonLD, $majorInfoUpdated->getLocation());
 
-        $availableTo = AvailableTo::createFromCalendar($majorInfoUpdated->getCalendar(), $majorInfoUpdated->getEventType());
-        $jsonLD->availableTo = (string) $availableTo;
+        $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
+            $majorInfoUpdated->getCalendar(),
+            $majorInfoUpdated->getEventType()
+        )->format(DateTimeInterface::ATOM);
 
         // Remove old theme and event type.
         $jsonLD->terms = array_filter(

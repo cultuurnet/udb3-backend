@@ -16,12 +16,13 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
-use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
@@ -608,8 +609,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
 
-        $availableTo = AvailableTo::createFromCalendar($calendarUpdated->getCalendar());
-        $offerLd->availableTo = (string)$availableTo;
+        $offerLd->availableTo = AvailableTo::createFromLegacyCalendar($calendarUpdated->getCalendar())->format(DateTimeInterface::ATOM);
 
         return $document->withBody($offerLd);
     }
@@ -644,10 +644,11 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
 
-        if (empty($bookingInfoUpdated->getBookingInfo()->toJsonLd())) {
+        $bookingInfoNormalizer = new BookingInfoNormalizer();
+        if (empty($bookingInfoNormalizer->normalize($bookingInfoUpdated->getBookingInfo()))) {
             unset($offerLd->bookingInfo);
         } else {
-            $offerLd->bookingInfo = $bookingInfoUpdated->getBookingInfo()->toJsonLd();
+            $offerLd->bookingInfo = $bookingInfoNormalizer->normalize($bookingInfoUpdated->getBookingInfo());
         }
 
         return $document->withBody($offerLd);
@@ -746,7 +747,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $document = $this->loadDocumentFromRepository($typicalAgeRangeUpdated);
 
         $offerLd = $document->getBody();
-        $offerLd->typicalAgeRange = (string)$typicalAgeRangeUpdated->getTypicalAgeRange();
+        $offerLd->typicalAgeRange = $typicalAgeRangeUpdated->getTypicalAgeRange()->toString();
 
         return $document->withBody($offerLd);
     }
