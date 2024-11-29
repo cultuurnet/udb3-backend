@@ -11,6 +11,10 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
@@ -34,7 +38,7 @@ class EventCreatedTest extends TestCase
             'id',
             new Language('es'),
             'title',
-            new EventType('id', 'label'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->location,
             new Calendar(CalendarType::permanent()),
             new Theme('id', 'label'),
@@ -53,7 +57,7 @@ class EventCreatedTest extends TestCase
             $eventId,
             new Language('nl'),
             'Example title',
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->location,
             new Calendar(CalendarType::permanent()),
             new Theme('1.8.3.5.0', 'Amusementsmuziek')
@@ -63,7 +67,7 @@ class EventCreatedTest extends TestCase
             $eventId,
             new Language('nl'),
             'Example title',
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->location,
             new Calendar(CalendarType::permanent())
         );
@@ -98,7 +102,7 @@ class EventCreatedTest extends TestCase
             '09994540-289f-4ab4-bf77-b83443d3d0fc',
             new Language('fr'),
             'Example title',
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->location,
             new Calendar(CalendarType::permanent()),
             new Theme('1.8.3.5.0', 'Amusementsmuziek')
@@ -210,8 +214,8 @@ class EventCreatedTest extends TestCase
                         'type' => 'permanent',
                     ],
                     'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
+                        'id' => '0.50.4.0.0',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                     'publication_date' => null,
@@ -220,7 +224,7 @@ class EventCreatedTest extends TestCase
                     'test 456',
                     new Language('es'),
                     'title',
-                    new EventType('bar_id', 'bar'),
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
                     new Calendar(
                         CalendarType::permanent()
@@ -248,8 +252,8 @@ class EventCreatedTest extends TestCase
                         'type' => 'permanent',
                     ],
                     'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
+                        'id' => '0.50.4.0.0',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                     'publication_date' => null,
@@ -258,7 +262,7 @@ class EventCreatedTest extends TestCase
                     'test 456',
                     new Language('es'),
                     'title',
-                    new EventType('bar_id', 'bar'),
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
                     new Calendar(
                         CalendarType::permanent()
@@ -283,8 +287,8 @@ class EventCreatedTest extends TestCase
                         'type' => 'permanent',
                     ],
                     'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
+                        'id' => '0.50.4.0.0',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                     'publication_date' => '2016-08-01T00:00:00+02:00',
@@ -293,7 +297,7 @@ class EventCreatedTest extends TestCase
                     'test 456',
                     new Language('es'),
                     'title',
-                    new EventType('bar_id', 'bar'),
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
                     new Calendar(
                         CalendarType::permanent()

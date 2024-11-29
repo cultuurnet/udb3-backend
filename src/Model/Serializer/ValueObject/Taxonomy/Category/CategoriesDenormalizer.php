@@ -6,9 +6,6 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -27,7 +24,10 @@ class CategoriesDenormalizer implements DenormalizerInterface
             throw new UnsupportedException('Categories data should be an array.');
         }
 
-        $categories = array_map([$this, 'denormalizeCategory'], $data);
+        $categories = array_map(
+            fn (array $categoryData): Category => $this->denormalizeCategory($categoryData),
+            $data
+        );
         return new Categories(...$categories);
     }
 
@@ -36,14 +36,8 @@ class CategoriesDenormalizer implements DenormalizerInterface
         return $type === Categories::class;
     }
 
-    /**
-     * @todo Extract to a separate CategoryDenormalizer
-     */
     private function denormalizeCategory(array $categoryData): Category
     {
-        $id = new CategoryID($categoryData['id']);
-        $label = isset($categoryData['label']) ? new CategoryLabel($categoryData['label']) : null;
-        $domain = isset($categoryData['domain']) ? new CategoryDomain($categoryData['domain']) : null;
-        return new Category($id, $label, $domain);
+        return (new CategoryDenormalizer())->denormalize($categoryData, Category::class);
     }
 }

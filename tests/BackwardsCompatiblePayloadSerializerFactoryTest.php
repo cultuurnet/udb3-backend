@@ -35,8 +35,10 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Offer\Events\AbstractDescriptionTranslated;
 use CultuurNet\UDB3\Offer\Events\AbstractDescriptionUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
@@ -45,7 +47,6 @@ use CultuurNet\UDB3\Place\Events\DescriptionTranslated as PlaceDescriptionTransl
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated as PlaceDescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -401,8 +402,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /* @var BookingInfoUpdated $bookingInfoUpdated */
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
 
-        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getAvailabilityStarts());
-        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getAvailabilityEnds());
+        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getAvailability());
 
         $this->assertEventIdReplacedWithItemId($sampleFile);
     }
@@ -422,12 +422,12 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 
         $this->assertEquals(
             DateTimeFactory::fromAtom('2018-02-20T15:11:26+00:00'),
-            $bookingInfoUpdated->getBookingInfo()->getAvailabilityStarts()
+            $bookingInfoUpdated->getBookingInfo()->getAvailability()->getFrom()
         );
 
         $this->assertEquals(
             DateTimeFactory::fromAtom('2018-04-30T14:11:26+00:00'),
-            $bookingInfoUpdated->getBookingInfo()->getAvailabilityEnds()
+            $bookingInfoUpdated->getBookingInfo()->getAvailability()->getTo()
         );
     }
 
@@ -444,8 +444,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /* @var BookingInfoUpdated $bookingInfoUpdated */
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
 
-        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getAvailabilityStarts());
-        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getAvailabilityEnds());
+        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getAvailability());
     }
 
     /**
@@ -462,8 +461,8 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
 
         $this->assertEquals(
-            new MultilingualString(new Language('nl'), 'Reserveer plaatsen'),
-            $bookingInfoUpdated->getBookingInfo()->getUrlLabel()
+            new TranslatedWebsiteLabel(new Language('nl'), new WebsiteLabel('Reserveer plaatsen')),
+            $bookingInfoUpdated->getBookingInfo()->getWebsite()->getLabel()
         );
     }
 
@@ -482,12 +481,12 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 
         $this->assertEquals(
             DateTimeFactory::fromAtom('2018-02-20T15:11:26+01:00'),
-            $bookingInfoUpdated->getBookingInfo()->getAvailabilityStarts()
+            $bookingInfoUpdated->getBookingInfo()->getAvailability()->getFrom()
         );
 
         $this->assertEquals(
             DateTimeFactory::fromAtom('2018-04-30T14:11:26+01:00'),
-            $bookingInfoUpdated->getBookingInfo()->getAvailabilityEnds()
+            $bookingInfoUpdated->getBookingInfo()->getAvailability()->getTo()
         );
     }
 
@@ -504,8 +503,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /* @var BookingInfoUpdated $bookingInfoUpdated */
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
 
-        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getAvailabilityStarts());
-        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getAvailabilityEnds());
+        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getAvailability());
     }
 
     /**

@@ -78,7 +78,7 @@ Feature: Test the UDB3 events API
     [
       {
         "jsonPointer":"\/typicalAgeRange",
-        "error":"\"from\" age should not exceed \"to\" age"
+        "error":"\"From\" age should not be greater than the \"to\" age."
       }
     ]
     """
