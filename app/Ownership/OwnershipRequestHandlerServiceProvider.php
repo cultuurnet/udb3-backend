@@ -12,7 +12,11 @@ use CultuurNet\UDB3\Http\Ownership\OwnershipStatusGuard;
 use CultuurNet\UDB3\Http\Ownership\RejectOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\RequestOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\SearchOwnershipRequestHandler;
+use CultuurNet\UDB3\Http\Ownership\SuggestOwnershipsRequestHandler;
+use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
+use CultuurNet\UDB3\Search\OffersSapi3SearchService;
 use CultuurNet\UDB3\User\CurrentUser;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Ramsey\Uuid\UuidFactory;
@@ -26,6 +30,7 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             RequestOwnershipRequestHandler::class,
             GetOwnershipRequestHandler::class,
             SearchOwnershipRequestHandler::class,
+            SuggestOwnershipsRequestHandler::class,
             ApproveOwnershipRequestHandler::class,
             RejectOwnershipRequestHandler::class,
             DeleteOwnershipRequestHandler::class,
@@ -69,6 +74,18 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             fn () => new SearchOwnershipRequestHandler(
                 $container->get(OwnershipSearchRepository::class),
                 $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY)
+            )
+        );
+
+        $container->addShared(
+            SuggestOwnershipsRequestHandler::class,
+            fn () => new SuggestOwnershipsRequestHandler(
+                $container->get(OffersSapi3SearchService::class),
+                $container->get(OfferJsonDocumentReadRepository::class),
+                $container->get(CurrentUser::class),
+                $container->get(UserIdentityResolver::class),
+                $container->get(OwnershipSearchRepository::class),
+                $container->get(OrganizerIDParser::class)
             )
         );
 
