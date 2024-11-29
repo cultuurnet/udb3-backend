@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,15 +26,10 @@ final class ProcessDuplicatePlaces extends AbstractCommand
     private const ONLY_RUN_CLUSTER_ID = 'only-run-cluster-id';
     private const FORCE = 'force';
     private DuplicatePlaceRepository $duplicatePlaceRepository;
-
     private CanonicalService $canonicalService;
-
     private EventRelationsRepository $eventRelationsRepository;
-
     private EventBus $eventBus;
-
     private DocumentEventFactory $placeEventFactory;
-
     private DuplicatePlaceRemovedFromClusterRepository $duplicatePlaceRemovedFromClusterRepository;
 
     public function __construct(
@@ -73,11 +67,6 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             InputOption::VALUE_NONE,
             'Execute the script but only set the canonical of the clusters, do not reindex or update event locations.'
         );
-        $this->addArgument(
-            'start-cluster-id',
-            InputArgument::OPTIONAL,
-            'The id of the cluster to start processing from (useful for resuming a previous run).'
-        );
         $this->addOption(
             self::ONLY_RUN_CLUSTER_ID,
             'id',
@@ -90,7 +79,6 @@ final class ProcessDuplicatePlaces extends AbstractCommand
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $dryRun = (bool)$input->getOption('dry-run');
-        $startingClusterId = $input->getArgument('start-cluster-id');
         $onlySetCanonical = (bool)$input->getOption('only-set-canonical');
         $onlyRunClusterId = $input->getOption(self::ONLY_RUN_CLUSTER_ID);
 
@@ -110,10 +98,6 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         }
 
         foreach ($clusterIds as $clusterId) {
-            if ($clusterId < $startingClusterId) {
-                continue;
-            }
-
             // 1. Set the canonical of a cluster
             try {
                 $canonicalId = $this->canonicalService->getCanonical($clusterId);
