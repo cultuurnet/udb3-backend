@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
+use CultuurNet\UDB3\Event\ReadModel\History\EventLocationHistoryProjector;
 use CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector as EventHistoryProjector;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsProjector;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
@@ -52,6 +53,7 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                         $subscribers = [
                             EventRelationsProjector::class,
                             PlaceRelationsProjector::class,
+                            EventLocationHistoryProjector::class,
                             EventJSONLDServiceProvider::PROJECTOR,
                             EventHistoryProjector::class,
                             PlaceHistoryProjector::class,
