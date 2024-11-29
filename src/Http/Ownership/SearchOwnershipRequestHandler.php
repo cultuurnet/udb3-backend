@@ -43,7 +43,7 @@ final class SearchOwnershipRequestHandler implements RequestHandlerInterface
 
         $searchQuery = new SearchQuery(
             $searchParameters,
-            !empty($request->getQueryParams()['offset']) ? (int) $request->getQueryParams()['offset'] : null,
+            !empty($request->getQueryParams()['start']) ? (int) $request->getQueryParams()['start'] : null,
             !empty($request->getQueryParams()['limit']) ? (int) $request->getQueryParams()['limit'] : null
         );
 
