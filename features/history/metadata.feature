@@ -2,7 +2,7 @@ Feature: Test the metadata in the history API
 
   Background:
     Given I am using the UDB3 base URL
-    And I am authorized with an Auth0 client access token for "test_client"
+    And I am authorized with an OAuth client access token for "test_client"
     And I create a minimal place and save the "url" as "placeUrl"
     And I wait for the place with url "%{placeUrl}" to be indexed
     And I create a minimal permanent event and save the "url" as "eventUrl"
