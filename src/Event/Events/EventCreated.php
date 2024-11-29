@@ -11,6 +11,10 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
@@ -20,7 +24,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
 {
     private Language $mainLanguage;
     private string $title;
-    private EventType $eventType;
+    private Category $eventType;
     private ?Theme $theme;
     private LocationId $location;
     private Calendar $calendar;
@@ -30,7 +34,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         string $eventId,
         Language $mainLanguage,
         string $title,
-        EventType $eventType,
+        Category $eventType,
         LocationId $location,
         Calendar $calendar,
         ?Theme $theme = null,
@@ -57,7 +61,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         return $this->title;
     }
 
-    public function getEventType(): EventType
+    public function getEventType(): Category
     {
         return $this->eventType;
     }
@@ -88,7 +92,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
             array_filter(
                 [
                     new TitleUpdated($this->eventId, $this->title),
-                    new TypeUpdated($this->eventId, $this->eventType),
+                    new TypeUpdated($this->eventId, EventType::fromUdb3ModelCategory($this->eventType)),
                     $this->theme ? new ThemeUpdated($this->eventId, $this->theme) : null,
                     new LocationUpdated($this->eventId, $this->location),
                     new CalendarUpdated($this->eventId, $this->calendar),
@@ -110,7 +114,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         return parent::serialize() + [
             'main_language' => $this->mainLanguage->getCode(),
             'title' => $this->getTitle(),
-            'event_type' => $this->getEventType()->serialize(),
+            'event_type' => (new CategoryNormalizer())->normalize($this->getEventType()),
             'theme' => $theme,
             'location' => $this->getLocation()->toString(),
             'calendar' => $this->getCalendar()->serialize(),
@@ -132,7 +136,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
             $data['event_id'],
             new Language($data['main_language']),
             $data['title'],
-            EventType::deserialize($data['event_type']),
+            (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['event_type'], Category::class),
             new LocationId($data['location']),
             Calendar::deserialize($data['calendar']),
             $theme,

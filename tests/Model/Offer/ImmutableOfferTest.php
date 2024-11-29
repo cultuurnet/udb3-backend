@@ -181,7 +181,7 @@ class ImmutableOfferTest extends TestCase
         $updatedTerms = new Categories(
             new Category(
                 new CategoryID('0.50.1.0.0'),
-                new CategoryLabel('concert'),
+                new CategoryLabel('Concert'),
                 new CategoryDomain('eventtype')
             ),
             new Category(
@@ -632,7 +632,7 @@ class ImmutableOfferTest extends TestCase
         return new Categories(
             new Category(
                 new CategoryID('0.50.1.0.0'),
-                new CategoryLabel('concert'),
+                new CategoryLabel('Concert'),
                 new CategoryDomain('eventtype')
             )
         );

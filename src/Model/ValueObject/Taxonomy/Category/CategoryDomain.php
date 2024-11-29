@@ -20,4 +20,9 @@ class CategoryDomain
         $this->guardNotEmpty($value);
         $this->setValue($value);
     }
+
+    public static function eventType(): CategoryDomain
+    {
+        return new CategoryDomain('eventtype');
+    }
 }

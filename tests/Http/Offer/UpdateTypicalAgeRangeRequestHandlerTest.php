@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Offer\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange as PlaceUpdateTypicalAgeRange;
 use Iterator;
@@ -169,7 +169,7 @@ final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
                 'offerType' => $offerType,
                 'request' => '{ "typicalAgeRange": "12-6"}',
                 'expectedProblem' => ApiProblem::bodyInvalidData(
-                    new SchemaError('/typicalAgeRange', '"from" age should not exceed "to" age')
+                    new SchemaError('/typicalAgeRange', '"From" age should not be greater than the "to" age.')
                 ),
             ];
         }
