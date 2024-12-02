@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventLocationHistoryRepository;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Psr\Log\LoggerInterface;
@@ -82,7 +83,7 @@ class EventPlaceHistoryProjector implements EventListener
 
         $body = $myEvent->getAssocBody();
 
-        $id = (new PlaceIDParser())->fromUrl($body['location']['@id']);
+        $id = (new PlaceIDParser())->fromUrl(new Url($body['location']['@id']));
         return new UUID($id->toString());
     }
 }

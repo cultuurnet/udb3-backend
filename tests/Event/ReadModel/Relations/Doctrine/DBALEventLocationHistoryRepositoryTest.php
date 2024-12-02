@@ -29,8 +29,7 @@ class DBALEventLocationHistoryRepositoryTest extends TestCase
         $this->repository->storeEventLocationStartingPoint($eventId, $placeId);
 
         $result = $this->connection->fetchAssociative(
-            'SELECT * FROM event_location_history WHERE event = ?',
-            [$eventId->toString()]
+            'SELECT * FROM event_location_history'
         );
 
         $this->assertNotNull($result);
@@ -49,8 +48,7 @@ class DBALEventLocationHistoryRepositoryTest extends TestCase
         $this->repository->storeEventLocationMove($eventId, $oldPlaceId, $newPlaceId);
 
         $result = $this->connection->fetchAssociative(
-            'SELECT * FROM event_location_history WHERE event = ?',
-            [$eventId->toString()]
+            'SELECT * FROM event_location_history'
         );
 
         $this->assertNotNull($result);

@@ -32,12 +32,14 @@ class DBALEventLocationHistoryRepository implements EventLocationHistoryReposito
     {
         $currentTimestamp = new DateTimeImmutable();
 
-        $this->connection->insert('event_location_history',
+        $this->connection->insert(
+            'event_location_history',
             [
                 'event' => $eventId->toString(),
                 'old_place' => $oldPlaceId ? $oldPlaceId->toString() : null,
                 'new_place' => $newPlaceId->toString(),
-                'date' => $currentTimestamp->format('Y-m-d H:i:s')
-            ]);
+                'date' => $currentTimestamp->format('Y-m-d H:i:s'),
+            ]
+        );
     }
 }
