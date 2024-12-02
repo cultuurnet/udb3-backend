@@ -130,9 +130,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         $eventAdapter = new Udb3ModelToLegacyEventAdapter($event);
 
-        $mainLanguage = $eventAdapter->getMainLanguage();
         $title = $event->getTitle()->getOriginalValue();
-        $type = $eventAdapter->getType();
+        $type = $event->getTerms()->getEventType();
         $location = $eventAdapter->getLocation();
         $calendar = $eventAdapter->getCalendar();
         $theme = $eventAdapter->getTheme();
@@ -199,7 +198,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
                 $event->getMainLanguage(),
                 $event->getTitle()->getTranslation($event->getMainLanguage())
             );
-            $commands[] = new UpdateType($eventId, $type->getId());
+            $commands[] = new UpdateType($eventId, $type->getId()->toString());
             // The attendance mode needs to be updated before the location can be changed.
             // For example passing a real location to an online event is not allowed.
             $commands[] = new UpdateAttendanceMode($eventId, $event->getAttendanceMode());

@@ -94,7 +94,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'foo',
             new Language('en'),
             new Title('some representative title'),
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d70f5d94-7072-423d-9144-9354cb794c62'),
             new Calendar(CalendarType::permanent())
         );
@@ -378,7 +378,7 @@ class EventTest extends AggregateRootScenarioTestCase
             $eventUuid,
             new Language('en'),
             new Title('some representative title'),
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId($locationUuid),
             new Calendar(CalendarType::permanent())
         );

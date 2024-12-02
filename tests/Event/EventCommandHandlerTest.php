@@ -93,7 +93,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             $id,
             $language,
             $title,
-            EventType::fromUdb3ModelCategory($type),
+            $type,
             $location,
             $calendar,
             $theme,
