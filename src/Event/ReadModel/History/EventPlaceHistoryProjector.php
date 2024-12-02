@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventLocationHistoryRepository;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -75,10 +76,7 @@ class EventPlaceHistoryProjector implements EventListener
 
         $body = $myEvent->getAssocBody();
 
-        $url = $body['location']['@id'];
-
-        // Return everything after the last slash
-        // https://io.uitdatabank.be/event/fd7dbfaf-5162-4181-9446-e61c4f5ef3f2 -> fd7dbfaf-5162-4181-9446-e61c4f5ef3f2
-        return new UUID(substr($url, strrpos($url, '/') + 1));
+        $id = (new PlaceIDParser())->fromUrl($body['location']['@id']);
+        return new UUID($id->toString());
     }
 }
