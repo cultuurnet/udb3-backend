@@ -37,14 +37,17 @@ class EventPlaceHistoryProjector implements EventListener
     protected function applyLocationUpdated(LocationUpdated $event): void
     {
         try {
-            $this->repository->storeEventLocationMove(
-                new UUID($event->getItemId()),
-                $this->getOldPlaceUuid($event->getItemId()),
-                new UUID($event->getLocationId()->toString())
-            );
+            $oldPlaceId = $this->getOldPlaceUuid($event->getItemId());
         } catch (DocumentDoesNotExist $e) {
             $this->logger->error(sprintf('Failed to store location updated: %s', $e->getMessage()));
+            return;
         }
+
+        $this->repository->storeEventLocationMove(
+            new UUID($event->getItemId()),
+            $oldPlaceId,
+            new UUID($event->getLocationId()->toString())
+        );
     }
 
     protected function applyEventCreated(EventCreated $event): void
@@ -58,13 +61,16 @@ class EventPlaceHistoryProjector implements EventListener
     protected function applyEventCopied(EventCopied $event): void
     {
         try {
-            $this->repository->storeEventLocationStartingPoint(
-                new UUID($event->getItemId()),
-                $this->getOldPlaceUuid($event->getOriginalEventId())
-            );
+            $placeId = $this->getOldPlaceUuid($event->getOriginalEventId());
         } catch (DocumentDoesNotExist $e) {
             $this->logger->error(sprintf('Failed to store location updated: %s', $e->getMessage()));
+            return;
         }
+
+        $this->repository->storeEventLocationStartingPoint(
+            new UUID($event->getItemId()),
+            $placeId
+        );
     }
 
     /**
