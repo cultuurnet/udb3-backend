@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Event\ReadModel\Relations;
+namespace CultuurNet\UDB3\Event\ReadModel\History;
 
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ReadModel\History\EventLocationHistoryProjector;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventLocationHistoryRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Json;
@@ -24,7 +24,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class EventLocationHistoryProjectorTest extends TestCase
+class EventPlaceHistoryProjectorTest extends TestCase
 {
     /** @var EventLocationHistoryRepository|MockObject */
     private $repository;
@@ -35,7 +35,7 @@ class EventLocationHistoryProjectorTest extends TestCase
     /** @var LoggerInterface|MockObject */
     private $logger;
 
-    private EventLocationHistoryProjector $projector;
+    private EventPlaceHistoryProjector $projector;
 
     protected function setUp(): void
     {
@@ -43,7 +43,7 @@ class EventLocationHistoryProjectorTest extends TestCase
         $this->eventRepository = $this->createMock(DocumentRepository::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
-        $this->projector = new EventLocationHistoryProjector(
+        $this->projector = new EventPlaceHistoryProjector(
             $this->repository,
             $this->eventRepository,
             $this->logger

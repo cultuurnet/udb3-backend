@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\Event\ReadModel\History\EventLocationHistoryProjector;
+use CultuurNet\UDB3\Event\ReadModel\History\EventPlaceHistoryProjector;
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventLocationHistoryRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventRelationsRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventLocationHistoryRepository;
@@ -23,7 +23,7 @@ final class EventReadServiceProvider extends AbstractServiceProvider
         return [
             EventRelationsProjector::class,
             EventRelationsRepository::class,
-            EventLocationHistoryProjector::class,
+            EventPlaceHistoryProjector::class,
             EventLocationHistoryRepository::class,
             'event_main_language_query',
         ];
@@ -61,9 +61,9 @@ final class EventReadServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            EventLocationHistoryProjector::class,
-            function () use ($container): EventLocationHistoryProjector {
-                return new EventLocationHistoryProjector(
+            EventPlaceHistoryProjector::class,
+            function () use ($container): EventPlaceHistoryProjector {
+                return new EventPlaceHistoryProjector(
                     $container->get(EventLocationHistoryRepository::class),
                     $container->get('event_jsonld_cache'),
                     LoggerFactory::create($this->getContainer(), LoggerName::forService('event_location_history'))

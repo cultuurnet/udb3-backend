@@ -15,7 +15,7 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Psr\Log\LoggerInterface;
 
-class EventLocationHistoryProjector implements EventListener
+class EventPlaceHistoryProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
