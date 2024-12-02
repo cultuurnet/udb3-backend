@@ -36,6 +36,9 @@ class CanonicalService
         $this->placeRepository = $placeRepository;
     }
 
+    /**
+     * @throws MuseumPassNotUniqueInCluster
+     */
     public function getCanonical(string $clusterId): string
     {
         $placeIds = $this->duplicatePlaceRepository->getPlacesInCluster($clusterId);

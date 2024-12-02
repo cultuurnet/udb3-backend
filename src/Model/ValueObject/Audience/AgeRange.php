@@ -19,7 +19,7 @@ class AgeRange
         }
 
         if ($from && $to && $from->gt($to)) {
-            throw new \InvalidArgumentException('"From" age should not be greater than the "to" age.');
+            throw new InvalidAgeRangeException('"From" age should not be greater than the "to" age.');
         }
 
         $this->from = $from;
@@ -59,5 +59,52 @@ class AgeRange
     public static function any(): AgeRange
     {
         return new self();
+    }
+
+    /**
+     * @throws InvalidAgeRangeException
+     */
+    public static function fromString(string $ageRangeString): AgeRange
+    {
+        $stringValues = explode('-', $ageRangeString);
+        if (!isset($stringValues[1])) {
+            throw new InvalidAgeRangeException(
+                'Date-range string is not valid because it is missing a hyphen.'
+            );
+        }
+
+        if (count($stringValues) !== 2) {
+            throw new InvalidAgeRangeException(
+                'Date-range string is not valid because it has too many hyphens.'
+            );
+        }
+
+        [$fromString, $toString] = $stringValues;
+
+        if (is_numeric($fromString) || empty($fromString)) {
+            $from = is_numeric($fromString) ? new Age((int) $fromString) : null;
+        } else {
+            throw new InvalidAgeRangeException(
+                'The "from" age should be a natural number or empty.'
+            );
+        }
+
+        if (is_numeric($toString) || empty($toString)) {
+            $to = is_numeric($toString) ? new Age((int) $toString) : null;
+        } else {
+            throw new InvalidAgeRangeException(
+                'The "to" age should be a natural number or empty.'
+            );
+        }
+
+        return new self($from, $to);
+    }
+
+    public function toString(): string
+    {
+        $from = $this->from ? $this->from->toInteger() : '';
+        $to = $this->to ? $this->to->toInteger() : '';
+
+        return $from . '-' . $to;
     }
 }

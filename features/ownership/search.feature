@@ -67,14 +67,14 @@ Feature: Test searching ownerships
     And the JSON response at "member/1/ownerId" should be "%{ownerId}"
     And the JSON response at "member/1/state" should be "requested"
 
-  Scenario: Searching ownership of an organizer by state and with offset and limit
+  Scenario: Searching ownership of an organizer by state and with start and limit
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|631748dba64ea78e3983b201" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId1"
     And I request ownership for "auth0|631748dba64ea78e3983b202" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId2"
     And I request ownership for "auth0|631748dba64ea78e3983b203" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId3"
     And I request ownership for "auth0|631748dba64ea78e3983b204" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId4"
     And I request ownership for "auth0|631748dba64ea78e3983b205" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId5"
-    When I send a GET request to '/ownerships/?itemId=%{organizerId}&limit=2&offset=2'
+    When I send a GET request to '/ownerships/?itemId=%{organizerId}&limit=2&start=2'
     Then the response status should be 200
     And the JSON response at "itemsPerPage" should be 2
     And the JSON response at "totalItems" should be 5

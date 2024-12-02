@@ -35,19 +35,19 @@ Feature: Test the Search API v3 authentication
     Then the response status should be "403"
 
   Scenario: Search with a client access token of a client that has access to Search API v3
-    Given I am authorized with an Auth0 client access token for "test_client_sapi3_only"
+    Given I am authorized with an OAuth client access token for "test_client_sapi3_only"
     And I am using the Search API v3 base URL
     When I send a GET request to "/events"
     Then the response status should be "200"
 
   Scenario: Search with a user access token of a client that has access to Search API v3
-    Given I am authorized with an Auth0 user access token for "invoerder" via client "test_client_sapi3_only"
+    Given I am authorized with an OAuth user access token for "invoerder" via client "test_client_sapi3_only"
     And I am using the Search API v3 base URL
     When I send a GET request to "/events"
     Then the response status should be "200"
 
   Scenario: Search with a client access token of a client that has no access to Search API v3
-    Given I am authorized with an Auth0 client access token for "test_client_no_apis"
+    Given I am authorized with an OAuth client access token for "test_client_no_apis"
     And I am using the Search API v3 base URL
     When I send a GET request to "/events"
     Then the response status should be "403"

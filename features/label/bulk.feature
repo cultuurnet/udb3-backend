@@ -7,6 +7,7 @@ Feature: Test the UDB3 Bulk labeling API
     And I send and accept "application/json"
     And I create a minimal place and save the "url" as "placeUrl"
     And I keep the value of the JSON response at "id" as "placeId"
+    And I wait for the place with url "%{placeUrl}" to be indexed
     And I create a minimal permanent event and save the "url" as "eventUrl"
 
   Scenario: Add Label to multiple

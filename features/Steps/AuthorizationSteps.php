@@ -90,9 +90,9 @@ trait AuthorizationSteps
     }
 
     /**
-     * @Given I am authorized with an Auth0 client access token for :clientName
+     * @Given I am authorized with an OAuth client access token for :clientName
      */
-    public function iAmAuthorizedWithAnAuthClientAccessTokenFor(string $clientName): void
+    public function iAmAuthorizedWithAnOAuthClientAccessTokenFor(string $clientName): void
     {
         $this->iAmUsingTheUiTiDBaseURL();
 
@@ -114,9 +114,9 @@ trait AuthorizationSteps
     }
 
     /**
-     * @Given I am authorized with an Auth0 user access token for :userName via client :clientName
+     * @Given I am authorized with an OAuth user access token for :userName via client :clientName
      */
-    public function iAmAuthorizedWithAnAuthUserAccessTokenForViaClient(string $userName, string $clientName): void
+    public function iAmAuthorizedWithAn0AuthUserAccessTokenForViaClient(string $userName, string $clientName): void
     {
         $this->iAmUsingTheUiTiDBaseURL();
 

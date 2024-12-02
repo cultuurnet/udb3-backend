@@ -18,14 +18,14 @@ class CategoryTest extends TestCase
     public function it_should_be_creatable_from_an_udb3_model_category(): void
     {
         $id = new CategoryID('0.50.4.0.0');
-        $label = new CategoryLabel('concert');
+        $label = new CategoryLabel('Concert');
         $domain = new CategoryDomain('eventtype');
 
         $udb3ModelCategory = new Category($id, $label, $domain);
 
         $expected = new \CultuurNet\UDB3\Category(
             '0.50.4.0.0',
-            'concert',
+            'Concert',
             'eventtype'
         );
 
@@ -57,7 +57,7 @@ class CategoryTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $id = new CategoryID('0.50.4.0.0');
-        $label = new CategoryLabel('concert');
+        $label = new CategoryLabel('Concert');
 
         $udb3ModelCategory = new Category($id, $label, null);
 

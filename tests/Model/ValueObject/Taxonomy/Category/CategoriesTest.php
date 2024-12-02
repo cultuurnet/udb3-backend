@@ -21,7 +21,7 @@ class CategoriesTest extends TestCase
             ),
             new Category(
                 new CategoryID('0.50.4.0.0'),
-                new CategoryLabel('concert'),
+                new CategoryLabel('Concert'),
                 new CategoryDomain('eventtype')
             ),
             new Category(
@@ -39,7 +39,7 @@ class CategoriesTest extends TestCase
             ),
             new Category(
                 new CategoryID('0.50.4.0.0'),
-                new CategoryLabel('concert'),
+                new CategoryLabel('Concert'),
                 new CategoryDomain('eventtype')
             ),
         ];

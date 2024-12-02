@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
@@ -38,8 +37,10 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -50,6 +51,10 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -57,13 +62,14 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
-use CultuurNet\UDB3\Offer\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 use Money\Money;
 use RuntimeException;
@@ -88,7 +94,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'foo',
             new Language('en'),
             new Title('some representative title'),
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d70f5d94-7072-423d-9144-9354cb794c62'),
             new Calendar(CalendarType::permanent())
         );
@@ -100,7 +106,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
             new Calendar(CalendarType::permanent())
         );
@@ -112,7 +118,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('59400d1e-6f98-4da9-ab08-f58adceb7204'),
             new Calendar(CalendarType::permanent()),
             new Theme('1.8.3.1.0', 'Pop en rock')
@@ -277,7 +283,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 function (Event $event) {
                     $event->updateMajorInfo(
                         new Title('foo'),
-                        new EventType('0.50.4.0.0', 'concert'),
+                        new EventType('0.50.4.0.0', 'Concert'),
                         new LocationId('00000000-0000-0000-0000-000000000000'),
                         new Calendar(CalendarType::permanent())
                     );
@@ -288,7 +294,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new MajorInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     'foo',
-                    new EventType('0.50.4.0.0', 'concert'),
+                    new EventType('0.50.4.0.0', 'Concert'),
                     new LocationId('00000000-0000-0000-0000-000000000000'),
                     new Calendar(CalendarType::permanent())
                 ),
@@ -309,7 +315,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 function (Event $event) {
                     $event->updateMajorInfo(
                         new Title('foo'),
-                        new EventType('0.50.4.0.0', 'concert'),
+                        new EventType('0.50.4.0.0', 'Concert'),
                         new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                         new Calendar(CalendarType::permanent())
                     );
@@ -320,7 +326,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new MajorInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     'foo',
-                    new EventType('0.50.4.0.0', 'concert'),
+                    new EventType('0.50.4.0.0', 'Concert'),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new Calendar(CalendarType::permanent())
                 ),
@@ -341,7 +347,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 function (Event $event) {
                     $event->updateMajorInfo(
                         new Title('foo'),
-                        new EventType('0.50.4.0.0', 'concert'),
+                        new EventType('0.50.4.0.0', 'Concert'),
                         new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                         new Calendar(CalendarType::permanent())
                     );
@@ -352,7 +358,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new MajorInfoUpdated(
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     'foo',
-                    new EventType('0.50.4.0.0', 'concert'),
+                    new EventType('0.50.4.0.0', 'Concert'),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
                     new Calendar(CalendarType::permanent())
                 ),
@@ -372,7 +378,7 @@ class EventTest extends AggregateRootScenarioTestCase
             $eventUuid,
             new Language('en'),
             new Title('some representative title'),
-            new EventType('0.50.4.0.0', 'concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId($locationUuid),
             new Calendar(CalendarType::permanent())
         );
@@ -605,10 +611,15 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
 
         $bookingInfo = new BookingInfo(
-            'www.publiq.be',
-            new MultilingualString(new Language('nl'), 'publiq'),
-            '02 123 45 67',
-            'info@publiq.be'
+            new WebsiteLink(
+                new Url('https://www.publiq.be'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('publiq')
+                )
+            ),
+            new TelephoneNumber('02 123 45 67'),
+            new EmailAddress('info@publiq.be')
         );
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
         $xmlNamespace = self::NS_CDBXML_3_2;

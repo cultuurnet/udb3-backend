@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Event\Commands\AddImage;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
@@ -28,6 +27,10 @@ use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
@@ -223,7 +226,7 @@ final class KinepolisService
             $eventId,
             new Language('nl'),
             $parsedMovie->getTitle(),
-            new EventType('0.50.6.0.0', 'Film'),
+            new Category(new CategoryID('0.50.6.0.0'), new CategoryLabel('Film'), CategoryDomain::eventType()),
             $parsedMovie->getLocationId(),
             LegacyCalendar::fromUdb3ModelCalendar($parsedMovie->getCalendar()),
             $parsedMovie->getTheme()
