@@ -279,7 +279,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_takes_into_account_offset_when_searching(): void
+    public function it_takes_into_account_start_when_searching(): void
     {
         $ownershipItem = new OwnershipItem(
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
@@ -352,7 +352,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_takes_into_account_limit_and_offset_when_searching(): void
+    public function it_takes_into_account_limit_and_start_when_searching(): void
     {
         $ownershipItem = new OwnershipItem(
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
