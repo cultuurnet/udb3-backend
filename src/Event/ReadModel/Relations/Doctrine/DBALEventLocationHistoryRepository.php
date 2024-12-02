@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine;
 
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventLocationHistoryRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement as DriverStatement;
 
 class DBALEventLocationHistoryRepository implements EventLocationHistoryRepository
 {
@@ -20,30 +20,24 @@ class DBALEventLocationHistoryRepository implements EventLocationHistoryReposito
 
     public function storeEventLocationStartingPoint(UUID $eventId, UUID $placeId): void
     {
-        $insert = $this->prepareInsertStatement();
-        $insert->bindValue('event_id', $eventId->toString());
-        $insert->bindValue('old_place_id', null);
-        $insert->bindValue('new_place_id', $placeId->toString());
-        $insert->execute();
+        $this->insertIntoLocationHistoryTable($eventId, null, $placeId);
     }
 
     public function storeEventLocationMove(UUID $eventId, UUID $oldPlaceId, UUID $newPlaceId): void
     {
-        $insert = $this->prepareInsertStatement();
-        $insert->bindValue('event_id', $eventId->toString());
-        $insert->bindValue('old_place_id', $oldPlaceId->toString());
-        $insert->bindValue('new_place_id', $newPlaceId->toString());
-        $insert->execute();
+        $this->insertIntoLocationHistoryTable($eventId, $oldPlaceId, $newPlaceId);
     }
 
-    private function prepareInsertStatement(): DriverStatement
+    public function insertIntoLocationHistoryTable(UUID $eventId, ?UUID $oldPlaceId, UUID $newPlaceId): void
     {
-        return $this->connection->prepare(
-            'INSERT INTO `event_location_history` SET
-              event = :event_id,
-              old_place = :old_place_id,
-              new_place = :new_place_id,
-              date = now()'
-        );
+        $currentTimestamp = new DateTimeImmutable();
+
+        $this->connection->insert('event_location_history',
+            [
+                'event' => $eventId->toString(),
+                'old_place' => $oldPlaceId ? $oldPlaceId->toString() : null,
+                'new_place' => $newPlaceId->toString(),
+                'date' => $currentTimestamp->format('Y-m-d H:i:s')
+            ]);
     }
 }
