@@ -278,10 +278,10 @@ class SearchOwnershipRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_searching_ownerships_with_offset_and_limit(): void
+    public function it_handles_searching_ownerships_with_start_and_limit(): void
     {
         $getOwnershipRequest = (new Psr7RequestBuilder())
-            ->withUriFromString('?state=approved&offset=1&limit=1')
+            ->withUriFromString('?state=approved&start=1&limit=1')
             ->build('GET');
 
         $approvedOwnership1 = new OwnershipItem(

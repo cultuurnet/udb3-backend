@@ -11,11 +11,11 @@ class SearchQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_the_parameters_offset_and_limit(): void
+    public function it_stores_the_parameters_start_and_limit(): void
     {
         $searchQuery = new SearchQuery([], 2, 20);
 
-        $this->assertEquals(2, $searchQuery->getOffset());
+        $this->assertEquals(2, $searchQuery->getStart());
         $this->assertEquals(20, $searchQuery->getLimit());
     }
 
@@ -37,11 +37,11 @@ class SearchQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_the_parameters_offset_and_limit_with_default_values(): void
+    public function it_stores_the_parameters_start_and_limit_with_default_values(): void
     {
         $searchQuery = new SearchQuery([]);
 
-        $this->assertEquals(0, $searchQuery->getOffset());
+        $this->assertEquals(0, $searchQuery->getStart());
         $this->assertEquals(50, $searchQuery->getLimit());
     }
 }

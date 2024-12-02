@@ -84,8 +84,8 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         $queryBuilder = $this->createSearchQueryBuilder($searchQuery)
             ->select('*');
 
-        if ($searchQuery->getOffset()) {
-            $queryBuilder->setFirstResult($searchQuery->getOffset());
+        if ($searchQuery->getStart()) {
+            $queryBuilder->setFirstResult($searchQuery->getStart());
         }
 
         if ($searchQuery->getLimit()) {
