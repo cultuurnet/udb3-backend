@@ -29,7 +29,7 @@
             <cdb:title>'Bekend met Gent' - quiz</cdb:title>
         </cdb:eventdetail>
     </cdb:eventdetails>
-    <cdb:location>
+    <cdb:location cdbid="">
         <cdb:address>
             <cdb:physical>
                 <cdb:city>Gent</cdb:city>
