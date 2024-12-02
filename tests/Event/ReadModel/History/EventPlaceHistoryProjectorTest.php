@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class EventPlaceHistoryProjectorTest extends TestCase
 {
@@ -53,9 +54,9 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_location_updated(): void
     {
-        $eventId = Uuid::uuid4();
-        $oldPlaceId = Uuid::uuid4();
-        $newPlaceId = Uuid::uuid4();
+        $eventId = $this->uuid4();
+        $oldPlaceId = $this->uuid4();
+        $newPlaceId = $this->uuid4();
 
         $this->eventRepository
             ->expects($this->once())
@@ -82,8 +83,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_event_created(): void
     {
-        $eventId = Uuid::uuid4();
-        $newPlaceId = Uuid::uuid4();
+        $eventId = $this->uuid4();
+        $newPlaceId = $this->uuid4();
 
         $this->repository
             ->expects($this->once())
@@ -111,9 +112,9 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_event_copied(): void
     {
-        $oldEventId = Uuid::uuid4();
-        $eventId = Uuid::uuid4();
-        $oldPlaceId = Uuid::uuid4();
+        $oldEventId = $this->uuid4();
+        $eventId = $this->uuid4();
+        $oldPlaceId = $this->uuid4();
 
         $this->eventRepository
             ->expects($this->once())
@@ -143,8 +144,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_location_updated_logs_error_when_document_does_not_exist(): void
     {
-        $eventId = Uuid::uuid4();
-        $newPlaceId = Uuid::uuid4();
+        $eventId = $this->uuid4();
+        $newPlaceId = $this->uuid4();
 
         $this->eventRepository
             ->expects($this->once())
@@ -170,5 +171,11 @@ class EventPlaceHistoryProjectorTest extends TestCase
                 '@id' => sprintf('https://io.uitdatabank.be/place/%s', $placeId),
             ],
         ]));
+    }
+
+    /** @todo Remove with the refactor of III-6438  */
+    private function uuid4(): UUID
+    {
+        return new UUID(RamseyUuid::uuid4()->toString());
     }
 }

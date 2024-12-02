@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class DBALEventLocationHistoryRepositoryTest extends TestCase
 {
@@ -23,8 +24,8 @@ class DBALEventLocationHistoryRepositoryTest extends TestCase
     /** @test  */
     public function should_store_event_location_starting_point(): void
     {
-        $eventId = Uuid::uuid4();
-        $placeId = Uuid::uuid4();
+        $eventId = $this->uuid4();
+        $placeId = $this->uuid4();
 
         $this->repository->storeEventLocationStartingPoint($eventId, $placeId);
 
@@ -41,9 +42,9 @@ class DBALEventLocationHistoryRepositoryTest extends TestCase
     /** @test  */
     public function should_store_event_location_move(): void
     {
-        $eventId = Uuid::uuid4();
-        $oldPlaceId = Uuid::uuid4();
-        $newPlaceId = Uuid::uuid4();
+        $eventId = $this->uuid4();
+        $oldPlaceId = $this->uuid4();
+        $newPlaceId = $this->uuid4();
 
         $this->repository->storeEventLocationMove($eventId, $oldPlaceId, $newPlaceId);
 
@@ -55,5 +56,11 @@ class DBALEventLocationHistoryRepositoryTest extends TestCase
         $this->assertEquals($eventId->toString(), $result['event']);
         $this->assertEquals($oldPlaceId->toString(), $result['old_place']);
         $this->assertEquals($newPlaceId->toString(), $result['new_place']);
+    }
+
+    /** @todo Remove with the refactor of III-6438  */
+    private function uuid4(): UUID
+    {
+        return new UUID(RamseyUuid::uuid4()->toString());
     }
 }
