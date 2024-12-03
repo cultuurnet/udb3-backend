@@ -12,6 +12,9 @@ use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Http\Deserializer\Theme\ThemeJSONDeserializer;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 /**
@@ -21,8 +24,6 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 class MajorInfoJSONDeserializer extends JSONDeserializer
 {
     private MajorInfoDataValidator $validator;
-
-    private EventTypeJSONDeserializer $typeDeserializer;
 
     private CalendarJSONDeserializer $calendarDeserializer;
 
@@ -34,7 +35,6 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
 
         $this->validator = new MajorInfoDataValidator();
 
-        $this->typeDeserializer = new EventTypeJSONDeserializer();
         $this->calendarDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
             new CalendarForEventDataValidator()
@@ -50,7 +50,7 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
         $data = parent::deserialize($data);
         $this->validator->validate($data);
 
-        $type = $this->typeDeserializer->deserialize(Json::encode($data['type']));
+        $type = (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['type'], Category::class);
 
         $calendar = $this->calendarDeserializer->deserialize(Json::encode($data['calendar']));
 

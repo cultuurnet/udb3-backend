@@ -439,7 +439,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
             $majorInfoUpdated->getCalendar(),
-            $majorInfoUpdated->getEventType()
+            EventType::fromUdb3ModelCategory($majorInfoUpdated->getEventType())
         )->format(DateTimeInterface::ATOM);
 
         // Remove old theme and event type.
@@ -452,7 +452,7 @@ final class EventLDProjector extends OfferLDProjector implements
         $jsonLD->terms = array_values($jsonLD->terms);
 
         $eventType = $majorInfoUpdated->getEventType();
-        $jsonLD->terms[] = $eventType->toJsonLd();
+        $jsonLD->terms[] = (new CategoryNormalizer())->normalize($eventType);
 
         $theme = $majorInfoUpdated->getTheme();
         if (!empty($theme)) {
