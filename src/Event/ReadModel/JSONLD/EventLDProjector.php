@@ -8,6 +8,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Category;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\EntityNotFoundException;
@@ -386,12 +387,12 @@ final class EventLDProjector extends OfferLDProjector implements
         $document = $this->loadDocumentFromRepository($typeUpdated);
         $offerLd = $document->getBody();
 
-        if (EventTypeResolver::isOnlyAvailableUntilStartDate($typeUpdated->getType())) {
+        if (EventTypeResolver::isOnlyAvailableUntilStartDate(EventType::fromUdb3ModelCategory($typeUpdated->getType()))) {
             $offerLd->availableTo = $offerLd->startDate ?? $offerLd->availableTo;
         } else {
             $offerLd->availableTo = $offerLd->endDate ?? $offerLd->availableTo;
         }
-        return $this->updateTerm($document->withBody($offerLd), $typeUpdated->getType());
+        return $this->updateTerm($document->withBody($offerLd), Category::fromUdb3ModelCategory($typeUpdated->getType()));
     }
 
     private function getEventType(\stdClass $eventJsonLD): ?EventType
