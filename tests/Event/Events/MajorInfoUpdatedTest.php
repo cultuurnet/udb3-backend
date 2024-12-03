@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -27,7 +26,7 @@ class MajorInfoUpdatedTest extends TestCase
         $eventWithTheme = new MajorInfoUpdated(
             $eventId,
             'title',
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(CalendarType::permanent()),
             new Theme('1.8.3.5.0', 'Amusementsmuziek')
@@ -36,7 +35,7 @@ class MajorInfoUpdatedTest extends TestCase
         $eventWithoutTheme = new MajorInfoUpdated(
             $eventId,
             'title',
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(CalendarType::permanent())
         );
@@ -117,15 +116,15 @@ class MajorInfoUpdatedTest extends TestCase
                         'type' => 'permanent',
                     ],
                     'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
+                        'id' => '0.50.4.0.0',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                 ],
                 new MajorInfoUpdated(
                     'test 456',
                     'title',
-                    new EventType('bar_id', 'bar'),
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
                     new Calendar(
                         CalendarType::permanent()
