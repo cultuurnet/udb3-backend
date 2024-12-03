@@ -1640,7 +1640,10 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_type_updated(): void
     {
-        $event = new TypeUpdated(self::EVENT_ID_1, new EventType('0.1.1', 'type label'));
+        $event = new TypeUpdated(
+            self::EVENT_ID_1,
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType())
+        );
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

@@ -10,7 +10,6 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Event\Events\Concluded;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
@@ -30,6 +29,10 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -2169,7 +2172,7 @@ class OfferLDProjectorTest extends TestCase
     public function it_should_project_the_new_type_as_a_term_when_updated(): void
     {
         $itemId = '4e40acaa-f57e-4b82-b5d6-e772f8a1c2cf';
-        $type = new EventType('YVBc8KVdrU6XfTNvhMYUpg', 'Discotheek');
+        $type = new Category(new CategoryID('YVBc8KVdrU6XfTNvhMYUpg'), new CategoryLabel('Discotheek'), CategoryDomain::eventType());
         $typeUpdatedEvent = new TypeUpdated($itemId, $type);
 
         $expectedTerms = [
@@ -2209,7 +2212,7 @@ class OfferLDProjectorTest extends TestCase
                 ],
             ])
         );
-        $type = new EventType('YVBc8KVdrU6XfTNvhMYUpg', 'Discotheek');
+        $type = new Category(new CategoryID('YVBc8KVdrU6XfTNvhMYUpg'), new CategoryLabel('Discotheek'), CategoryDomain::eventType());
         $typeUpdatedEvent = new TypeUpdated($itemId, $type);
 
         $this->documentRepository->save($documentWithExistingTerms);
