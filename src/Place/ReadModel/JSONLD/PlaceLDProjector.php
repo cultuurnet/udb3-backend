@@ -205,7 +205,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
 
         $eventType = $placeCreated->getEventType();
         $jsonLD->terms = [
-            $eventType->toJsonLd(),
+            (new CategoryNormalizer())->normalize($eventType),
         ];
 
         $recordedOn = $domainMessage->getRecordedOn()->toString();
