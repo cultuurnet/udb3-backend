@@ -1568,8 +1568,6 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 ],
             ])
         );
-        $theme = new Theme('1.8.2.0.0', 'Jazz en booze');
-        $themeUpdatedEvent = new ThemeUpdated($itemId, $theme);
 
         $this->documentRepository->save($documentWithExistingTerms);
 
@@ -1586,7 +1584,10 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             ],
         ];
 
+        $theme = new Theme('1.8.2.0.0', 'Jazz en booze');
+        $themeUpdatedEvent = new ThemeUpdated($itemId, $theme);
         $updatedItem = $this->project($themeUpdatedEvent, $itemId);
+
         $this->assertEquals($expectedTerms, $updatedItem->terms);
     }
 
