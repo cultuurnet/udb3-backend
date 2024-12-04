@@ -385,7 +385,6 @@ class EventPlaceHistoryProjectorTest extends TestCase
     public function apply_event_imported_from_udb2_with_a_dummy_location(): void
     {
         $eventId = $this->uuid4();
-        $newPlaceId = new UUID('28d2900d-f784-4d04-8d66-5b93900c6f9c');
 
         $this->repository
             ->expects($this->never())
