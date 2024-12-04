@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Offer\ThemeResolverInterface;
-use CultuurNet\UDB3\Theme;
 
 final class EventThemeResolver implements ThemeResolverInterface
 {
     /**
-     * @var Theme[]
+     * @var Category[]
      */
     private array $themes;
 
@@ -703,7 +706,7 @@ final class EventThemeResolver implements ThemeResolverInterface
             function ($themes, array $type) {
                 if (array_key_exists('themes', $type)) {
                     foreach ($type['themes'] as $themeData) {
-                        $themes[$themeData['id']] = new Theme($themeData['id'], $themeData['label']);
+                        $themes[$themeData['id']] = new Category(new CategoryID($themeData['id']), new CategoryLabel($themeData['label']), CategoryDomain::theme());
                     }
                 }
 
@@ -713,7 +716,7 @@ final class EventThemeResolver implements ThemeResolverInterface
         );
     }
 
-    public function byId(string $themeId): Theme
+    public function byId(string $themeId): Category
     {
         if (!array_key_exists($themeId, $this->themes)) {
             throw new \Exception('Unknown event theme id: ' . $themeId);

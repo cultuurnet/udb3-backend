@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
-use CultuurNet\UDB3\Theme;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use PHPUnit\Framework\TestCase;
 
 final class EventThemeResolverTest extends TestCase
@@ -22,7 +25,7 @@ final class EventThemeResolverTest extends TestCase
     public function it_should_resolve_themes_by_matching_id(): void
     {
         $resolvedTheme = $this->themeResolver->byId('0.52.0.0.0');
-        $expectedTheme = new Theme('0.52.0.0.0', 'Circus');
+        $expectedTheme = new Category(new CategoryID('0.52.0.0.0'), new CategoryLabel('Circus'), CategoryDomain::theme());
 
         $this->assertEquals($expectedTheme, $resolvedTheme);
     }
