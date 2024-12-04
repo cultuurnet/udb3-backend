@@ -10,7 +10,6 @@ use CultuurNet\UDB3\CulturefeedSlugger;
 use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\OrganizerServiceInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
-use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\Image;
@@ -24,6 +23,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
@@ -319,13 +319,13 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $terms = array_values(array_filter(
             $terms,
             function ($term) {
-                return $term->domain !== Facility::DOMAIN;
+                return $term->domain !== CategoryDomain::facility()->toString();
             }
         ));
 
         // Add the new facilities.
         foreach ($facilitiesUpdated->getFacilities() as $facility) {
-            $terms[] = $facility->toJsonLd();
+            $terms[] = (object)(new CategoryNormalizer())->normalize($facility);
         }
 
         $offerLd->terms = $terms;
