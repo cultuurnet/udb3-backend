@@ -8,7 +8,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Category;
+use CultuurNet\UDB3\Category as LegacyCategory;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\EntityNotFoundException;
@@ -75,6 +75,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
@@ -348,7 +349,7 @@ final class EventLDProjector extends OfferLDProjector implements
         // Set available to and from.
         $eventJsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
             $eventCopied->getCalendar(),
-            $this->getEventType($eventJsonLD)
+            EventType::fromUdb3ModelCategory($this->getEventType($eventJsonLD))
         )->format(DateTimeInterface::ATOM);
         unset($eventJsonLD->availableFrom);
 
@@ -376,7 +377,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $offerLd->availableTo = AvailableTo::createFromLegacyCalendar(
             $calendarUpdated->getCalendar(),
-            $this->getEventType($offerLd)
+            $this->getEventType($offerLd) === null ? null : EventType::fromUdb3ModelCategory($this->getEventType($offerLd))
         )->format(DateTimeInterface::ATOM);
 
         return $document->withBody($offerLd);
@@ -387,15 +388,15 @@ final class EventLDProjector extends OfferLDProjector implements
         $document = $this->loadDocumentFromRepository($typeUpdated);
         $offerLd = $document->getBody();
 
-        if (EventTypeResolver::isOnlyAvailableUntilStartDate(EventType::fromUdb3ModelCategory($typeUpdated->getType()))) {
+        if (EventTypeResolver::isOnlyAvailableUntilStartDate($typeUpdated->getType())) {
             $offerLd->availableTo = $offerLd->startDate ?? $offerLd->availableTo;
         } else {
             $offerLd->availableTo = $offerLd->endDate ?? $offerLd->availableTo;
         }
-        return $this->updateTerm($document->withBody($offerLd), Category::fromUdb3ModelCategory($typeUpdated->getType()));
+        return $this->updateTerm($document->withBody($offerLd), LegacyCategory::fromUdb3ModelCategory($typeUpdated->getType()));
     }
 
-    private function getEventType(\stdClass $eventJsonLD): ?EventType
+    private function getEventType(\stdClass $eventJsonLD): ?Category
     {
         if (!isset($eventJsonLD->terms)) {
             return null;
