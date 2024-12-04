@@ -7,9 +7,12 @@ namespace CultuurNet\UDB3\Place\Events;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Place\PlaceEvent;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
@@ -19,7 +22,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
 {
     private Language $mainLanguage;
     private string $title;
-    private EventType $eventType;
+    private Category $eventType;
     private Address $address;
     private Calendar $calendar;
     private ?DateTimeImmutable $publicationDate;
@@ -28,7 +31,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
         string $placeId,
         Language $mainLanguage,
         string $title,
-        EventType $eventType,
+        Category $eventType,
         Address $address,
         Calendar $calendar,
         ?DateTimeImmutable $publicationDate = null
@@ -53,7 +56,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
         return $this->title;
     }
 
-    public function getEventType(): EventType
+    public function getEventType(): Category
     {
         return $this->eventType;
     }
@@ -77,7 +80,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
     {
         return [
             new TitleUpdated($this->placeId, $this->title),
-            new TypeUpdated($this->placeId, $this->eventType->toUdb3ModelCategory()),
+            new TypeUpdated($this->placeId, $this->eventType),
             new AddressUpdated($this->placeId, $this->address),
             new CalendarUpdated($this->placeId, $this->calendar),
         ];
@@ -92,7 +95,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
         return parent::serialize() + [
             'main_language' => $this->mainLanguage->getCode(),
             'title' => $this->getTitle(),
-            'event_type' => $this->getEventType()->serialize(),
+            'event_type' => (new CategoryNormalizer())->normalize($this->getEventType()),
             'address' => $this->getAddress()->serialize(),
             'calendar' => $this->getCalendar()->serialize(),
             'publication_date' => $publicationDate,
@@ -109,7 +112,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
             $data['place_id'],
             new Language($data['main_language']),
             $data['title'],
-            EventType::deserialize($data['event_type']),
+            (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['event_type'], Category::class),
             Address::deserialize($data['address']),
             Calendar::deserialize($data['calendar']),
             $publicationDate
