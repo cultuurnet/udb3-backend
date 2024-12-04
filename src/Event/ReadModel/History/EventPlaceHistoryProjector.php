@@ -40,51 +40,51 @@ class EventPlaceHistoryProjector implements EventListener
         $this->logger = $logger;
     }
 
-    protected function applyLocationUpdated(LocationUpdated $event): void
+    protected function applyLocationUpdated(LocationUpdated $locationUpdated): void
     {
         try {
-            $oldPlaceId = $this->getOldPlaceUuid($event->getItemId());
+            $oldPlaceId = $this->getOldPlaceUuid($locationUpdated->getItemId());
         } catch (DocumentDoesNotExist $e) {
             $this->logger->error(sprintf('Failed to store location updated: %s', $e->getMessage()));
             return;
         }
 
         $this->repository->storeEventPlaceMove(
-            new UUID($event->getItemId()),
+            new UUID($locationUpdated->getItemId()),
             $oldPlaceId,
-            new UUID($event->getLocationId()->toString())
+            new UUID($locationUpdated->getLocationId()->toString())
         );
     }
 
-    protected function applyEventCreated(EventCreated $event): void
+    protected function applyEventCreated(EventCreated $eventCreated): void
     {
         $this->repository->storeEventPlaceStartingPoint(
-            new UUID($event->getEventId()),
-            new UUID($event->getLocation()->toString())
+            new UUID($eventCreated->getEventId()),
+            new UUID($eventCreated->getLocation()->toString())
         );
     }
 
-    protected function applyEventCopied(EventCopied $event): void
+    protected function applyEventCopied(EventCopied $eventCopied): void
     {
         try {
-            $placeId = $this->getOldPlaceUuid($event->getOriginalEventId());
+            $placeId = $this->getOldPlaceUuid($eventCopied->getOriginalEventId());
         } catch (DocumentDoesNotExist $e) {
             $this->logger->error(sprintf('Failed to store event copied: %s', $e->getMessage()));
             return;
         }
 
         $this->repository->storeEventPlaceStartingPoint(
-            new UUID($event->getItemId()),
+            new UUID($eventCopied->getItemId()),
             $placeId
         );
     }
 
-    protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $event): void
+    protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImportedFromUDB2): void
     {
         try {
             $udb2Event = EventItemFactory::createEventFromCdbXml(
-                $event->getCdbXmlNamespaceUri(),
-                $event->getCdbXml()
+                $eventImportedFromUDB2->getCdbXmlNamespaceUri(),
+                $eventImportedFromUDB2->getCdbXml()
             );
         } catch (CultureFeed_Cdb_ParseException $e) {
             $this->logger->error(sprintf('Failed to store event imported from UDB2: %s', $e->getMessage()));
@@ -92,17 +92,17 @@ class EventPlaceHistoryProjector implements EventListener
         }
 
         $this->repository->storeEventPlaceStartingPoint(
-            new UUID($event->getEventId()),
+            new UUID($eventImportedFromUDB2->getEventId()),
             new UUID($udb2Event->getLocation()->getCdbid())
         );
     }
 
-    protected function applyEventUpdatedFromUDB2(EventUpdatedFromUDB2 $event): void
+    protected function applyEventUpdatedFromUDB2(EventUpdatedFromUDB2 $eventUpdatedFromUDB2): void
     {
         try {
             $udb2Event = EventItemFactory::createEventFromCdbXml(
-                $event->getCdbXmlNamespaceUri(),
-                $event->getCdbXml()
+                $eventUpdatedFromUDB2->getCdbXmlNamespaceUri(),
+                $eventUpdatedFromUDB2->getCdbXml()
             );
         } catch (CultureFeed_Cdb_ParseException $e) {
             $this->logger->error(sprintf('Failed to store event updated from UDB2, could not read XML: %s', $e->getMessage()));
@@ -110,7 +110,7 @@ class EventPlaceHistoryProjector implements EventListener
         }
 
         try {
-            $oldPlaceId = $this->getOldPlaceUuid($event->getEventId());
+            $oldPlaceId = $this->getOldPlaceUuid($eventUpdatedFromUDB2->getEventId());
         } catch (DocumentDoesNotExist $e) {
             $this->logger->error(sprintf('Failed to store event updated from UDB2: %s', $e->getMessage()));
             return;
@@ -123,29 +123,29 @@ class EventPlaceHistoryProjector implements EventListener
         }
 
         $this->repository->storeEventPlaceMove(
-            new UUID($event->getEventId()),
+            new UUID($eventUpdatedFromUDB2->getEventId()),
             $oldPlaceId,
             $newPlaceId
         );
     }
 
-    protected function applyMajorInfoUpdated(MajorInfoUpdated $event): void
+    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
     {
         try {
-            $oldPlaceId = $this->getOldPlaceUuid($event->getItemId());
+            $oldPlaceId = $this->getOldPlaceUuid($majorInfoUpdated->getItemId());
         } catch (DocumentDoesNotExist $e) {
             $this->logger->error(sprintf('Failed to store location updated: %s', $e->getMessage()));
             return;
         }
 
-        $newPlaceId = new UUID($event->getLocation()->toString());
+        $newPlaceId = new UUID($majorInfoUpdated->getLocation()->toString());
 
         if ($newPlaceId->sameAs($oldPlaceId)) {
             return;
         }
 
         $this->repository->storeEventPlaceMove(
-            new UUID($event->getItemId()),
+            new UUID($majorInfoUpdated->getItemId()),
             $oldPlaceId,
             $newPlaceId
         );
