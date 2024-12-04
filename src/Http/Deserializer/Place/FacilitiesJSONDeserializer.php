@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
-use CultuurNet\UDB3\Facility;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValidator;
@@ -31,13 +31,12 @@ final class FacilitiesJSONDeserializer extends JSONDeserializer
 
     /**
      * @throws DataValidationException
-     * @return Facility[]
+     * @return Category[]
      */
     public function deserialize(string $data): array
     {
         $data = parent::deserialize($data);
         $this->validator->validate($data);
-
 
         if (!is_array($data['facilities'])) {
             throw new DataValidationException('The facilities property should contain a list of ids');
