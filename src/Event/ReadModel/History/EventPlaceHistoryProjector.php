@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\History;
 
 use Broadway\EventHandling\EventListener;
 use CultureFeed_Cdb_ParseException;
+use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractorInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -28,15 +29,18 @@ class EventPlaceHistoryProjector implements EventListener
 
     private EventPlaceHistoryRepository $repository;
     private DocumentRepository $eventRepository;
+    private EventCdbIdExtractorInterface $cdbIdExtractor;
     private LoggerInterface $logger;
 
     public function __construct(
         EventPlaceHistoryRepository $eventLocationHistoryRepository,
         DocumentRepository $eventRepository,
+        EventCdbIdExtractorInterface $cdbIdExtractor,
         LoggerInterface $logger
     ) {
         $this->repository = $eventLocationHistoryRepository;
         $this->eventRepository = $eventRepository;
+        $this->cdbIdExtractor = $cdbIdExtractor;
         $this->logger = $logger;
     }
 
@@ -91,9 +95,15 @@ class EventPlaceHistoryProjector implements EventListener
             return;
         }
 
+        $newPlaceId = $this->cdbIdExtractor->getRelatedPlaceCdbId($udb2Event);
+
+        if ($newPlaceId === null) {
+            return;
+        }
+
         $this->repository->storeEventPlaceStartingPoint(
             new UUID($eventImportedFromUDB2->getEventId()),
-            new UUID($udb2Event->getLocation()->getCdbid())
+            new UUID($newPlaceId)
         );
     }
 
@@ -116,16 +126,16 @@ class EventPlaceHistoryProjector implements EventListener
             return;
         }
 
-        $newPlaceId = new UUID($udb2Event->getLocation()->getCdbid());
+        $newPlaceId = $this->cdbIdExtractor->getRelatedPlaceCdbId($udb2Event);
 
-        if ($newPlaceId->sameAs($oldPlaceId)) {
+        if ($newPlaceId === null || $newPlaceId === $oldPlaceId->toString()) {
             return;
         }
 
         $this->repository->storeEventPlaceMove(
             new UUID($eventUpdatedFromUDB2->getEventId()),
             $oldPlaceId,
-            $newPlaceId
+            new UUID($newPlaceId)
         );
     }
 

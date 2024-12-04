@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Event\ReadModel\History;
 
 use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractorInterface;
+use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
@@ -45,6 +47,9 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @var LoggerInterface|MockObject */
     private $logger;
 
+    /** @var EventCdbIdExtractorInterface|MockObject */
+    private $eventCdbIdExtractor;
+
     private EventPlaceHistoryProjector $projector;
 
     protected function setUp(): void
@@ -52,10 +57,12 @@ class EventPlaceHistoryProjectorTest extends TestCase
         $this->repository = $this->createMock(EventPlaceHistoryRepository::class);
         $this->eventRepository = $this->createMock(DocumentRepository::class);
         $this->logger = $this->createMock(LoggerInterface::class);
+        $this->eventCdbIdExtractor = $this->createMock(EventCdbIdExtractorInterface::class);
 
         $this->projector = new EventPlaceHistoryProjector(
             $this->repository,
             $this->eventRepository,
+            $this->eventCdbIdExtractor,
             $this->logger
         );
     }
@@ -266,6 +273,49 @@ class EventPlaceHistoryProjectorTest extends TestCase
             CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2')
         );
 
+        $this->eventCdbIdExtractor->expects($this->once())
+            ->method('getRelatedPlaceCdbId')
+            ->with(EventItemFactory::createEventFromCdbXml(
+                $eventUpdatedFromUDB2->getCdbXmlNamespaceUri(),
+                $eventUpdatedFromUDB2->getCdbXml()
+            ))
+            ->willReturn($newPlaceId->toString());
+
+        $this->projector->handle(
+            (new DomainMessageBuilder())->create($eventUpdatedFromUDB2)
+        );
+    }
+
+    /** @test */
+    public function apply_event_updated_from_udb2_with_a_dummy_location(): void
+    {
+        $eventId = $this->uuid4();
+        $oldPlaceId = $this->uuid4();
+
+        $this->eventRepository
+            ->expects($this->once())
+            ->method('fetch')
+            ->with($eventId->toString())
+            ->willReturn($this->createMockDocument($oldPlaceId->toString()));
+
+        $this->repository
+            ->expects($this->never())
+            ->method('storeEventPlaceMove');
+
+        $eventUpdatedFromUDB2 = new EventUpdatedFromUDB2(
+            $eventId->toString(),
+            SampleFiles::read(__DIR__ . '/../../samples/event_with_dummy_location.cdbxml.xml'),
+            CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2')
+        );
+
+        $this->eventCdbIdExtractor->expects($this->once())
+            ->method('getRelatedPlaceCdbId')
+            ->with(EventItemFactory::createEventFromCdbXml(
+                $eventUpdatedFromUDB2->getCdbXmlNamespaceUri(),
+                $eventUpdatedFromUDB2->getCdbXml()
+            ))
+            ->willReturn(null);
+
         $this->projector->handle(
             (new DomainMessageBuilder())->create($eventUpdatedFromUDB2)
         );
@@ -276,7 +326,6 @@ class EventPlaceHistoryProjectorTest extends TestCase
     {
         $eventId = $this->uuid4();
         $oldPlaceId = new UUID('28d2900d-f784-4d04-8d66-5b93900c6f9c');
-        $newPlaceId = new UUID('28d2900d-f784-4d04-8d66-5b93900c6f9c');
 
         $this->eventRepository
             ->expects($this->once())
@@ -318,6 +367,43 @@ class EventPlaceHistoryProjectorTest extends TestCase
             SampleFiles::read(__DIR__ . '/../../samples/event_with_existing_location.cdbxml.xml'),
             CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2')
         );
+
+        $this->eventCdbIdExtractor->expects($this->once())
+            ->method('getRelatedPlaceCdbId')
+            ->with(EventItemFactory::createEventFromCdbXml(
+                $eventImportedFromUDB2->getCdbXmlNamespaceUri(),
+                $eventImportedFromUDB2->getCdbXml()
+            ))
+            ->willReturn($newPlaceId->toString());
+
+        $this->projector->handle(
+            (new DomainMessageBuilder())->create($eventImportedFromUDB2)
+        );
+    }
+
+    /** @test */
+    public function apply_event_imported_from_udb2_with_a_dummy_location(): void
+    {
+        $eventId = $this->uuid4();
+        $newPlaceId = new UUID('28d2900d-f784-4d04-8d66-5b93900c6f9c');
+
+        $this->repository
+            ->expects($this->never())
+            ->method('storeEventPlaceStartingPoint');
+
+        $eventImportedFromUDB2 = new EventImportedFromUDB2(
+            $eventId->toString(),
+            SampleFiles::read(__DIR__ . '/../../samples/event_with_dummy_location.cdbxml.xml'),
+            CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2')
+        );
+
+        $this->eventCdbIdExtractor->expects($this->once())
+            ->method('getRelatedPlaceCdbId')
+            ->with(EventItemFactory::createEventFromCdbXml(
+                $eventImportedFromUDB2->getCdbXmlNamespaceUri(),
+                $eventImportedFromUDB2->getCdbXml()
+            ))
+            ->willReturn(null);
 
         $this->projector->handle(
             (new DomainMessageBuilder())->create($eventImportedFromUDB2)
