@@ -197,7 +197,7 @@ class EventCreatedTest extends TestCase
     public function serializationDataProvider(): array
     {
         return [
-            [
+            'without theme and without publication date' => [
                 [
                     'event_id' => 'test 456',
                     'main_language' => 'es',
@@ -231,7 +231,7 @@ class EventCreatedTest extends TestCase
                     )
                 ),
             ],
-            [
+            'with theme and without publication date' => [
                 [
                     'event_id' => 'test 456',
                     'main_language' => 'es',
@@ -270,7 +270,7 @@ class EventCreatedTest extends TestCase
                     new Theme('123', 'foo')
                 ),
             ],
-            [
+            'without theme and with publication date' => [
                 [
                     'event_id' => 'test 456',
                     'main_language' => 'es',
