@@ -18,7 +18,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
 {
     private string $title;
     private Category $eventType;
-    private ?Theme $theme;
+    private ?Category $theme;
     private LocationId $location;
     private Calendar $calendar;
 
@@ -28,7 +28,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         Category $eventType,
         LocationId $location,
         Calendar $calendar,
-        Theme $theme = null
+        Category $theme = null
     ) {
         parent::__construct($eventId);
 
@@ -49,7 +49,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         return $this->eventType;
     }
 
-    public function getTheme(): ?Theme
+    public function getTheme(): ?Category
     {
         return $this->theme;
     }
@@ -71,7 +71,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
                 [
                     new TitleUpdated($this->itemId, $this->title),
                     new TypeUpdated($this->itemId, $this->eventType),
-                    $this->theme ? new ThemeUpdated($this->itemId, $this->theme) : null,
+                    $this->theme ? new ThemeUpdated($this->itemId, Theme::fromUdb3ModelCategory($this->theme)) : null,
                     new LocationUpdated($this->itemId, $this->location),
                     new CalendarUpdated($this->itemId, $this->calendar),
                 ]
@@ -83,7 +83,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
     {
         $theme = null;
         if ($this->getTheme() !== null) {
-            $theme = $this->getTheme()->serialize();
+            $theme = (new CategoryNormalizer())->normalize($this->getTheme());
         }
         return parent::serialize() + [
             'title' => $this->getTitle(),
@@ -102,7 +102,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
             (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['event_type'], Category::class),
             new LocationId($data['location']),
             Calendar::deserialize($data['calendar']),
-            empty($data['theme']) ? null : Theme::deserialize($data['theme'])
+            empty($data['theme']) ? null : (new CategoryDenormalizer(CategoryDomain::theme()))->denormalize($data['theme'], Category::class)
         );
     }
 }

@@ -297,7 +297,7 @@ final class Event extends Offer
         Category $eventType,
         LocationId $location,
         Calendar $calendar,
-        Theme $theme = null
+        Category $theme = null
     ): void {
         $this->apply(new MajorInfoUpdated($this->eventId, $title->toString(), $eventType, $location, $calendar, $theme));
 

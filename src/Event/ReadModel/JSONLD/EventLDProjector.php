@@ -456,7 +456,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $theme = $majorInfoUpdated->getTheme();
         if (!empty($theme)) {
-            $jsonLD->terms[] = $theme->toJsonLd();
+            $jsonLD->terms[] = (new CategoryNormalizer())->normalize($theme);
         }
 
         return $document->withBody($jsonLD);
