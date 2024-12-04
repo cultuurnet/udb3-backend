@@ -9,16 +9,16 @@ use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 
-class DBALEventLocationHistoryRepositoryTest extends TestCase
+class DBALEventPlaceHistoryRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    private DBALEventLocationHistoryRepository $repository;
+    private DBALEventPlaceHistoryRepository $repository;
 
     public function setUp(): void
     {
         $this->setUpDatabase();
-        $this->repository = new DBALEventLocationHistoryRepository($this->connection);
+        $this->repository = new DBALEventPlaceHistoryRepository($this->connection);
     }
 
     /** @test  */

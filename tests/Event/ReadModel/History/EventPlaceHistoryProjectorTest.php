@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ReadModel\Relations\EventLocationHistoryRepository;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventPlaceHistoryRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Json;
@@ -36,7 +36,7 @@ use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class EventPlaceHistoryProjectorTest extends TestCase
 {
-    /** @var EventLocationHistoryRepository|MockObject */
+    /** @var EventPlaceHistoryRepository|MockObject */
     private $repository;
 
     /** @var DocumentRepository|MockObject */
@@ -49,7 +49,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->repository = $this->createMock(EventLocationHistoryRepository::class);
+        $this->repository = $this->createMock(EventPlaceHistoryRepository::class);
         $this->eventRepository = $this->createMock(DocumentRepository::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine;
 
-use CultuurNet\UDB3\Event\ReadModel\Relations\EventLocationHistoryRepository;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventPlaceHistoryRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 
-class DBALEventLocationHistoryRepository implements EventLocationHistoryRepository
+class DBALEventPlaceHistoryRepository implements EventPlaceHistoryRepository
 {
     private Connection $connection;
 

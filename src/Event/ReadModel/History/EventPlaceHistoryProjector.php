@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
-use CultuurNet\UDB3\Event\ReadModel\Relations\EventLocationHistoryRepository;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventPlaceHistoryRepository;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -26,12 +26,12 @@ class EventPlaceHistoryProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    private EventLocationHistoryRepository $repository;
+    private EventPlaceHistoryRepository $repository;
     private DocumentRepository $eventRepository;
     private LoggerInterface $logger;
 
     public function __construct(
-        EventLocationHistoryRepository $eventLocationHistoryRepository,
+        EventPlaceHistoryRepository $eventLocationHistoryRepository,
         DocumentRepository $eventRepository,
         LoggerInterface $logger
     ) {
