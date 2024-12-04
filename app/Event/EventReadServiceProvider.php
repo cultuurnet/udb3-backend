@@ -66,6 +66,7 @@ final class EventReadServiceProvider extends AbstractServiceProvider
                 return new EventPlaceHistoryProjector(
                     $container->get(EventPlaceHistoryRepository::class),
                     $container->get('event_jsonld_cache'),
+                    $container->get('udb2_event_cdbid_extractor'),
                     LoggerFactory::create($this->getContainer(), LoggerName::forWeb())
                 );
             }
