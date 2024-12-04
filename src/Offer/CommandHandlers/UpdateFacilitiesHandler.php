@@ -6,11 +6,11 @@ namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Event\Event;
-use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
@@ -40,7 +40,7 @@ final class UpdateFacilitiesHandler implements CommandHandler
         $facilityResolver = $this->getCategoryResolver($offer);
 
         $facilities = array_map(
-            static function (string $facilityId) use ($facilityResolver, $offer) {
+            static function (string $facilityId) use ($facilityResolver, $offer): Category {
                 $id = new CategoryID($facilityId);
                 $domain = new CategoryDomain('facility');
 
@@ -50,7 +50,7 @@ final class UpdateFacilitiesHandler implements CommandHandler
                     throw CategoryNotFound::withIdInDomainForOfferType($id, $domain, $offer::getOfferType());
                 }
 
-                return Facility::fromUdb3ModelCategory($category);
+                return $category;
             },
             $facilityIds
         );

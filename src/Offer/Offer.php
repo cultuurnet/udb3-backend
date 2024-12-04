@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Offer;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\Media\Image;
@@ -200,6 +199,9 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         );
     }
 
+    /**
+     * @param Category[] $facilities
+     */
     public function updateFacilities(array $facilities): void
     {
         if ($this->facilities === null || !$this->sameFacilities($this->facilities, $facilities)) {
@@ -212,6 +214,10 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->facilities = $facilitiesUpdated->getFacilities();
     }
 
+    /**
+     * @param Category[] $facilities1
+     * @param Category[] $facilities2
+     */
     private function sameFacilities(array $facilities1, array $facilities2): bool
     {
         if (empty($facilities1) && empty($facilities2)) {
@@ -225,8 +231,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $sameFacilities = array_uintersect(
             $facilities1,
             $facilities2,
-            function (Facility $facility1, Facility $facility2) {
-                return strcmp($facility1->getId(), $facility2->getId());
+            function (Category $facility1, Category $facility2) {
+                return strcmp($facility1->getId()->toString(), $facility2->getId()->toString());
             }
         );
 

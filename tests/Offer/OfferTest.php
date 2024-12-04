@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
@@ -20,6 +19,10 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -189,28 +192,28 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = '0fd9a1e5-1406-43b5-a641-4b4d77fe980d';
 
         $facilities = [
-            new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
-            new Facility('3.30.0.0.0', 'Rolstoelpodium'),
+            new Category(new CategoryID('3.27.0.0.0'), new CategoryLabel('Rolstoeltoegankelijk'), CategoryDomain::facility()),
+            new Category(new CategoryID('3.30.0.0.0'), new CategoryLabel('Rolstoelpodium'), CategoryDomain::facility()),
         ];
 
         $sameFacilities = [
-            new Facility('3.30.0.0.0', 'Rolstoelpodium'),
-            new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
+            new Category(new CategoryID('3.30.0.0.0'), new CategoryLabel('Rolstoelpodium'), CategoryDomain::facility()),
+            new Category(new CategoryID('3.27.0.0.0'), new CategoryLabel('Rolstoeltoegankelijk'), CategoryDomain::facility()),
         ];
 
         $otherFacilities = [
-            new Facility('3.34.0.0.0', 'Vereenvoudigde informatie'),
-            new Facility('3.38.0.0.0', 'Inter-assistentie'),
+            new Category(new CategoryID('3.34.0.0.0'), new CategoryLabel('Vereenvoudigde informatie'), CategoryDomain::facility()),
+            new Category(new CategoryID('3.38.0.0.0'), new CategoryLabel('Inter-assistentie'), CategoryDomain::facility()),
         ];
 
         $moreFacilities = [
-            new Facility('3.34.0.0.0', 'Vereenvoudigde informatie'),
-            new Facility('3.38.0.0.0', 'Inter-assistentie'),
-            new Facility('3.40.0.0.0', 'Inter-events'),
+            new Category(new CategoryID('3.34.0.0.0'), new CategoryLabel('Vereenvoudigde informatie'), CategoryDomain::facility()),
+            new Category(new CategoryID('3.38.0.0.0'), new CategoryLabel('Inter-assistentie'), CategoryDomain::facility()),
+            new Category(new CategoryID('3.40.0.0.0'), new CategoryLabel('Inter-events'), CategoryDomain::facility()),
         ];
 
         $lessFacilities = [
-            new Facility('3.34.0.0.0', 'Vereenvoudigde informatie'),
+            new Category(new CategoryID('3.34.0.0.0'), new CategoryLabel('Vereenvoudigde informatie'), CategoryDomain::facility()),
         ];
 
         $this->scenario
