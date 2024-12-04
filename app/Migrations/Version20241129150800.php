@@ -23,10 +23,6 @@ final class Version20241129150800 extends AbstractMigration
             'datetime_immutable',
             ['notnull' => true]
         );
-
-        $table->addIndex(['old_place', 'date', 'event'], 'idx_old_place');
-        $table->addIndex(['new_place', 'date', 'event'], 'idx_new_place');
-        $table->addIndex(['event'], 'idx_event');
     }
 
     public function down(Schema $schema): void
