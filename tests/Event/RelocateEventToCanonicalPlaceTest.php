@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
 use CultuurNet\UDB3\Place\Place;
-use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -68,7 +67,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
                 new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                 $locationId,
                 new Calendar(CalendarType::permanent()),
-                new Theme('1.8.1.0.0', 'Rock')
+                new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
             )
         );
         $this->assertEmpty($this->commandBus->getRecordedCommands());
@@ -96,7 +95,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
                 new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                 $locationId,
                 new Calendar(CalendarType::permanent()),
-                new Theme('1.8.1.0.0', 'Rock')
+                new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
             )
         );
         $this->assertEquals(

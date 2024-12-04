@@ -277,7 +277,7 @@ class HistoryProjectorTest extends TestCase
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),
             new Calendar(CalendarType::permanent()),
-            new Theme('1.8.1.0.0', 'Rock')
+            new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
         );
 
         $now = new \DateTime();

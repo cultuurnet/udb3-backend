@@ -52,7 +52,7 @@ class UpdateThemeHandlerTest extends CommandHandlerScenarioTestCase
     public function it_updates_a_different_existing_theme(): void
     {
         $id = '1';
-        $originalTheme = new Theme('1.8.3.3.0', 'Dance muziek');
+        $originalTheme = new Category(new CategoryID('1.8.3.3.0'), new CategoryLabel('Dance muziek'), CategoryDomain::facility());
         $command = new UpdateTheme($id, '1.8.3.5.0');
         $expectedEvent = new ThemeUpdated($id, new Theme('1.8.3.5.0', 'Amusementsmuziek'));
 
@@ -69,7 +69,7 @@ class UpdateThemeHandlerTest extends CommandHandlerScenarioTestCase
     public function it_does_not_record_a_new_event_if_the_theme_is_the_same_as_before(): void
     {
         $id = '1';
-        $originalTheme = new Theme('1.8.3.3.0', 'Dance muziek');
+        $originalTheme = new Category(new CategoryID('1.8.3.3.0'), new CategoryLabel('Dance muziek'), CategoryDomain::facility());
         $command = new UpdateTheme($id, '1.8.3.3.0');
 
         $this->scenario
@@ -96,7 +96,7 @@ class UpdateThemeHandlerTest extends CommandHandlerScenarioTestCase
             ->then([]);
     }
 
-    private function getEventCreated(string $id, ?Theme $theme = null): EventCreated
+    private function getEventCreated(string $id, ?Category $theme = null): EventCreated
     {
         return new EventCreated(
             $id,

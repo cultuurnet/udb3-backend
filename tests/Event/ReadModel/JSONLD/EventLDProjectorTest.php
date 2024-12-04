@@ -297,7 +297,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
         );
-        $theme = new Theme('123', 'theme label');
+        $theme = new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme());
 
         $eventCreated = $this->createEventCreated($eventId, $calendar, $theme);
 
@@ -309,8 +309,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'eventtype',
             ],
             (object)[
-                'id' => '123',
-                'label' => 'theme label',
+                'id' => '1.8.1.0.0',
+                'label' => 'Rock',
                 'domain' => 'theme',
             ],
         ];
@@ -345,7 +345,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
         );
-        $theme = new Theme('123', 'theme label');
+        $theme = new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme());
 
         $eventCreated = $this->createEventCreated($eventId, $calendar, $theme);
 
@@ -357,8 +357,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'eventtype',
             ],
             (object)[
-                'id' => '123',
-                'label' => 'theme label',
+                'id' => '1.8.1.0.0',
+                'label' => 'Rock',
                 'domain' => 'theme',
             ],
         ];
@@ -644,7 +644,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $subEvents
         );
 
-        $theme = new Theme('123', 'theme label');
+        $theme = new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme());
 
         $eventCreated = $this->createEventCreated($eventId, $calendar, $theme);
 
@@ -681,8 +681,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'eventtype',
             ],
             (object)[
-                'id' => '123',
-                'label' => 'theme label',
+                'id' => '1.8.1.0.0',
+                'label' => 'Rock',
                 'domain' => 'theme',
             ],
         ];
@@ -1914,7 +1914,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     private function createEventCreated(
         string $eventId,
         Calendar $calendar = null,
-        Theme $theme = null
+        Category $theme = null
     ): EventCreated {
         $calendar = $calendar ?? new Calendar(CalendarType::permanent());
 
