@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category as Udb3ModelCategory;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use InvalidArgumentException;
 
 /**
@@ -36,6 +39,15 @@ final class Theme extends Category
         return new self(
             $category->getId()->toString(),
             $label->toString()
+        );
+    }
+
+    public function toUd3ModelCategory(): Udb3ModelCategory
+    {
+        return new Udb3ModelCategory(
+            new CategoryID($this->getId()),
+            new CategoryLabel($this->getLabel()),
+            CategoryDomain::theme()
         );
     }
 }
