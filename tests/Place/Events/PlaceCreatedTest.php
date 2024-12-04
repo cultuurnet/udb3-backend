@@ -157,7 +157,7 @@ class PlaceCreatedTest extends TestCase
     public function serializationDataProvider(): array
     {
         return [
-            [
+            'without publication date' => [
                 [
                     'place_id' => 'test 456',
                     'main_language' => 'es',
@@ -200,50 +200,7 @@ class PlaceCreatedTest extends TestCase
                     )
                 ),
             ],
-            [
-                [
-                    'place_id' => 'test 456',
-                    'main_language' => 'es',
-                    'title' => 'title',
-                    'address' => [
-                        'streetAddress' => 'De straat',
-                        'postalCode' => '9620',
-                        'addressLocality' => 'Zottegem',
-                        'addressCountry' => 'BE',
-                    ],
-                    'calendar' => [
-                        'type' => 'permanent',
-                        'status' => [
-                            'type' => 'Available',
-                        ],
-                        'bookingAvailability' => [
-                            'type' => 'Available',
-                        ],
-                    ],
-                    'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
-                        'domain' => 'eventtype',
-                    ],
-                    'publication_date' => null,
-                ],
-                new PlaceCreated(
-                    'test 456',
-                    new Language('es'),
-                    'title',
-                    new EventType('bar_id', 'bar'),
-                    new Address(
-                        new Street('De straat'),
-                        new PostalCode('9620'),
-                        new Locality('Zottegem'),
-                        new CountryCode('BE')
-                    ),
-                    new Calendar(
-                        CalendarType::permanent()
-                    )
-                ),
-            ],
-            [
+            'with publication date' => [
                 [
                     'place_id' => 'test 456',
                     'main_language' => 'es',
