@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactoryInterface;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
@@ -190,7 +189,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         '4b735422-2bf3-4241-aabb-d70609d2d1d3',
                         new Language('es'),
                         'Het depot',
-                        new EventType('mock.1', 'Mock'),
+                        new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                         LegacyAddress::fromUdb3ModelAddress(new Address(
                             new Street('Teststraat 1'),
                             new PostalCode('1000'),

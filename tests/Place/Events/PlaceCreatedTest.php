@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
@@ -44,7 +43,7 @@ class PlaceCreatedTest extends TestCase
             'id',
             new Language('es'),
             'title',
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->address,
             new Calendar(CalendarType::permanent()),
             $this->publicationDate
@@ -179,8 +178,8 @@ class PlaceCreatedTest extends TestCase
                         ],
                     ],
                     'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
+                        'id' => '0.50.4.0.0',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                     'publication_date' => null,
@@ -189,7 +188,7 @@ class PlaceCreatedTest extends TestCase
                     'test 456',
                     new Language('es'),
                     'title',
-                    new EventType('bar_id', 'bar'),
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new Address(
                         new Street('De straat'),
                         new PostalCode('9620'),
@@ -265,8 +264,8 @@ class PlaceCreatedTest extends TestCase
                         ],
                     ],
                     'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
+                        'id' => '0.50.4.0.0',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                     'publication_date' => '2016-08-01T00:00:00+02:00',
@@ -275,7 +274,7 @@ class PlaceCreatedTest extends TestCase
                     'test 456',
                     new Language('es'),
                     'title',
-                    new EventType('bar_id', 'bar'),
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new Address(
                         new Street('De straat'),
                         new PostalCode('9620'),

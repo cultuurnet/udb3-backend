@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
@@ -214,7 +213,7 @@ class OfferMetadataProjectorTest extends TestCase
             self::OFFER_ID,
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new Address(
                 new Street('street'),
                 new PostalCode('3000'),
