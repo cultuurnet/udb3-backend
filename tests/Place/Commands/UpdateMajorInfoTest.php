@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use PHPUnit\Framework\TestCase;
 
 class UpdateMajorInfoTest extends TestCase

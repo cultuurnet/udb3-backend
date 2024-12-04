@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForPlaceDataValidator;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
-use CultuurNet\UDB3\Http\Deserializer\Event\EventTypeJSONDeserializer;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
