@@ -60,7 +60,7 @@ class EventCreatedTest extends TestCase
             $category,
             $this->location,
             new Calendar(CalendarType::permanent()),
-            new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::facility())
+            new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
         );
 
         $eventWithoutTheme = new EventCreated(
@@ -105,7 +105,7 @@ class EventCreatedTest extends TestCase
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->location,
             new Calendar(CalendarType::permanent()),
-            new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::facility())
+            new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
         );
 
         $this->assertInstanceOf(MainLanguageDefined::class, $event);

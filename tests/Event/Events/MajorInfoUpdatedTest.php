@@ -29,7 +29,7 @@ class MajorInfoUpdatedTest extends TestCase
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
             new Calendar(CalendarType::permanent()),
-            new Theme('1.8.3.5.0', 'Amusementsmuziek')
+            new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
         );
 
         $eventWithoutTheme = new MajorInfoUpdated(
@@ -101,8 +101,8 @@ class MajorInfoUpdatedTest extends TestCase
                     'item_id' => 'test 456',
                     'title' => 'title',
                     'theme' => [
-                        'id' => 'themeid',
-                        'label' => 'theme_label',
+                        'id' => '1.8.3.5.0',
+                        'label' => 'Amusementsmuziek',
                         'domain' => 'theme',
                     ],
                     'location' => '395fe7eb-9bac-4647-acae-316b6446a85e',
@@ -129,7 +129,7 @@ class MajorInfoUpdatedTest extends TestCase
                     new Calendar(
                         CalendarType::permanent()
                     ),
-                    new Theme('themeid', 'theme_label')
+                    new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
                 ),
             ],
         ];
