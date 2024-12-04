@@ -168,36 +168,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_theme(): void
-    {
-        $expected = new Theme('0.52.0.0.0', 'Circus');
-        $actual = $this->adapter->getTheme();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_null_as_theme_if_there_is_none(): void
-    {
-        $offer = $this->offer->withTerms(
-            new Categories(
-                new Category(
-                    new CategoryID('0.6.0.0.0'),
-                    new CategoryLabel('Beurs'),
-                    new CategoryDomain('eventtype')
-                )
-            )
-        );
-        $adapter = new Udb3ModelToLegacyOfferAdapter($offer);
-
-        $actual = $adapter->getTheme();
-        $this->assertNull($actual);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_return_a_calendar(): void
     {
         $expected = new Calendar(CalendarType::permanent());

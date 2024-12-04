@@ -6,9 +6,6 @@ namespace CultuurNet\UDB3\Model\Import\Offer;
 
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Model\Offer\Offer;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
-use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 
 /**
@@ -21,20 +18,6 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
     public function __construct(Offer $offer)
     {
         $this->offer = $offer;
-    }
-
-    public function getTheme(): ?Theme
-    {
-        $theme = $this->offer->getTerms()
-            ->filter(
-                function (Category $term) {
-                    $domain = $term->getDomain();
-                    return $domain && $domain->sameAs(new CategoryDomain('theme'));
-                }
-            )
-            ->getFirst();
-
-        return $theme ? Theme::fromUdb3ModelCategory($theme) : null;
     }
 
     public function getCalendar(): Calendar
