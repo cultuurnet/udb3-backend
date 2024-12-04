@@ -24,7 +24,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
     private Language $mainLanguage;
     private string $title;
     private Category $eventType;
-    private ?Theme $theme;
+    private ?Category $theme;
     private LocationId $location;
     private Calendar $calendar;
     private ?DateTimeImmutable $publicationDate;
@@ -36,7 +36,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         Category $eventType,
         LocationId $location,
         Calendar $calendar,
-        ?Theme $theme = null,
+        ?Category $theme = null,
         ?DateTimeImmutable $publicationDate = null
     ) {
         parent::__construct($eventId);
@@ -65,7 +65,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
         return $this->eventType;
     }
 
-    public function getTheme(): ?Theme
+    public function getTheme(): ?Category
     {
         return $this->theme;
     }
@@ -92,7 +92,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
                 [
                     new TitleUpdated($this->eventId, $this->title),
                     new TypeUpdated($this->eventId, $this->eventType),
-                    $this->theme ? new ThemeUpdated($this->eventId, $this->theme) : null,
+                    $this->theme ? new ThemeUpdated($this->eventId, Theme::fromUdb3ModelCategory($this->theme)) : null,
                     new LocationUpdated($this->eventId, $this->location),
                     new CalendarUpdated($this->eventId, $this->calendar),
                 ]
@@ -104,7 +104,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
     {
         $theme = null;
         if ($this->getTheme() !== null) {
-            $theme = $this->getTheme()->serialize();
+            $theme = (new CategoryNormalizer())->normalize($this->getTheme());
         }
         $publicationDate = null;
         if (!is_null($this->getPublicationDate())) {
@@ -125,7 +125,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
     {
         $theme = null;
         if (!empty($data['theme'])) {
-            $theme = Theme::deserialize($data['theme']);
+            $theme = (new CategoryDenormalizer(CategoryDomain::theme()))->denormalize($data['theme'], Category::class);
         }
         $publicationDate = null;
         if (!empty($data['publication_date'])) {

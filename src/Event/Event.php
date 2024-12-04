@@ -122,7 +122,7 @@ final class Event extends Offer
         Category $eventType,
         LocationId $location,
         Calendar $calendar,
-        Theme $theme = null,
+        Category $theme = null,
         DateTimeImmutable $publicationDate = null
     ): self {
         $event = new self();
@@ -211,7 +211,7 @@ final class Event extends Offer
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
         $this->typeId = $eventCreated->getEventType()->getId()->toString();
-        $this->themeId = $eventCreated->getTheme() ? $eventCreated->getTheme()->getId() : null;
+        $this->themeId = $eventCreated->getTheme() ? $eventCreated->getTheme()->getId()->toString() : null;
         $this->locationId = $eventCreated->getLocation();
         $this->mainLanguage = $eventCreated->getMainLanguage();
         $this->workflowStatus = WorkflowStatus::DRAFT();

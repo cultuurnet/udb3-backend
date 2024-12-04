@@ -36,7 +36,6 @@ use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
-use CultuurNet\UDB3\Theme;
 use Exception;
 use Google\Service\Exception as GoogleException;
 use Psr\Log\LoggerInterface;
@@ -230,7 +229,7 @@ final class KinepolisService
             new Category(new CategoryID('0.50.6.0.0'), new CategoryLabel('Film'), CategoryDomain::eventType()),
             $parsedMovie->getLocationId(),
             LegacyCalendar::fromUdb3ModelCalendar($parsedMovie->getCalendar()),
-            Theme::fromUdb3ModelCategory($parsedMovie->getTheme())
+            $parsedMovie->getTheme()
         );
 
         $this->aggregateRepository->save($eventAggregate);

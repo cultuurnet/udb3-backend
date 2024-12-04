@@ -272,7 +272,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $theme = $eventCreated->getTheme();
         if (!empty($theme)) {
-            $jsonLD->terms[] = $theme->toJsonLd();
+            $jsonLD->terms[] = (new CategoryNormalizer())->normalize($theme);
         }
 
         $created = RecordedOn::fromDomainMessage($domainMessage);
