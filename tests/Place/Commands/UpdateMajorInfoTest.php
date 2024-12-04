@@ -10,6 +10,10 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
@@ -24,7 +28,7 @@ class UpdateMajorInfoTest extends TestCase
         $this->updateMajorInfo = new UpdateMajorInfo(
             'id',
             new Title('title'),
-            new EventType('bar_id', 'bar'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new Address(
                 new Street('Bondgenotenlaan'),
                 new PostalCode('3000'),
@@ -42,7 +46,7 @@ class UpdateMajorInfoTest extends TestCase
     {
         $expectedId = 'id';
         $expectedTitle = new Title('title');
-        $expectedEventType = new EventType('bar_id', 'bar');
+        $expectedEventType = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $expectedAddress = new Address(
             new Street('Bondgenotenlaan'),
             new PostalCode('3000'),

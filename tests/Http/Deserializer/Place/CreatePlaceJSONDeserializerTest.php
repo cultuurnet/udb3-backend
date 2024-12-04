@@ -12,6 +12,10 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\SampleFiles;
@@ -39,7 +43,10 @@ final class CreatePlaceJSONDeserializerTest extends TestCase
 
         $this->assertEquals(new Language('en'), $createPlace->getMainLanguage());
         $this->assertEquals(new Title('Test place'), $createPlace->getTitle());
-        $this->assertEquals(new EventType('3CuHvenJ+EGkcvhXLg9Ykg', 'Archeologische Site'), $createPlace->getType());
+        $this->assertEquals(
+            new Category(new CategoryID('3CuHvenJ+EGkcvhXLg9Ykg'), new CategoryLabel('Archeologische Site'), CategoryDomain::eventType()),
+            $createPlace->getType()
+        );
         $this->assertEquals($expectedAddress, $createPlace->getAddress());
         $this->assertEquals(new Calendar(CalendarType::permanent()), $createPlace->getCalendar());
     }

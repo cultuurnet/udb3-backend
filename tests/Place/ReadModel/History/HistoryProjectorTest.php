@@ -752,7 +752,7 @@ class HistoryProjectorTest extends TestCase
         $event = new MajorInfoUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             'title',
-            new EventType('0.0.0.0', 'event type'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new Address(
                 new Street('straat'),
                 new PostalCode('3000'),

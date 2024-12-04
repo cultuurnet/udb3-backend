@@ -13,6 +13,10 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -58,7 +62,7 @@ class UpdateMajorInfoRequestHandlerTest extends TestCase
             [new UpdateMajorInfo(
                 'place_id',
                 new Title('Updated title'),
-                new EventType('OyaPaf64AEmEAYXHeLMAtA', 'Zaal of expohal'),
+                new Category(new CategoryID('OyaPaf64AEmEAYXHeLMAtA'), new CategoryLabel('Zaal of expohal'), CategoryDomain::eventType()),
                 new Address(
                     new Street('Bondgenotenlaan 1'),
                     new PostalCode('3000'),
