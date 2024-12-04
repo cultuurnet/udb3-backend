@@ -23,7 +23,7 @@ class CreatePlace extends MajorInfo
     ) {
         parent::__construct(
             $title,
-            $type,
+            $type->toUdb3ModelCategory(),
             $address,
             $calendar
         );

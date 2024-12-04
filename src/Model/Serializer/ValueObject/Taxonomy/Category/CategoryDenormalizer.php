@@ -15,7 +15,7 @@ final class CategoryDenormalizer implements DenormalizerInterface
 {
     private ?CategoryDomain $defaultDomain;
 
-    public function __construct(?CategoryDomain $defaultDomain = null)
+    public function __construct(?CategoryDomain $defaultDomain)
     {
         $this->defaultDomain = $defaultDomain;
     }

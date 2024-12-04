@@ -16,6 +16,7 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
@@ -260,9 +261,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         });
 
         $eventType = $majorInfoUpdated->getEventType();
-        $jsonLD->terms = [
-            $eventType->toJsonLd(),
-        ];
+        $jsonLD->terms[] = (new CategoryNormalizer())->normalize($eventType);
 
         // Remove geocoordinates, because the address might have been
         // updated and we might get inconsistent data if it takes a while

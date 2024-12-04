@@ -147,7 +147,7 @@ class Place extends Offer
 
     public function updateMajorInfo(
         Title $title,
-        EventType $eventType,
+        Category $eventType,
         LegacyAddress $address,
         Calendar $calendar
     ): void {

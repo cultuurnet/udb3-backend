@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 /**
@@ -41,7 +42,7 @@ class CreatePlaceJSONDeserializer extends JSONDeserializer
         return new CreatePlace(
             new Language($deserializedData['mainLanguage']),
             $majorInfo->getTitle(),
-            $majorInfo->getType(),
+            EventType::fromUdb3ModelCategory($majorInfo->getType()),
             $majorInfo->getAddress(),
             $majorInfo->getCalendar()
         );
