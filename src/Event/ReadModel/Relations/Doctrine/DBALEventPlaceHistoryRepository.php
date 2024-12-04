@@ -18,22 +18,22 @@ class DBALEventPlaceHistoryRepository implements EventPlaceHistoryRepository
         $this->connection = $connection;
     }
 
-    public function storeEventLocationStartingPoint(UUID $eventId, UUID $placeId): void
+    public function storeEventPlaceStartingPoint(UUID $eventId, UUID $placeId): void
     {
-        $this->insertIntoLocationHistoryTable($eventId, null, $placeId);
+        $this->insertIntoPlaceHistoryTable($eventId, null, $placeId);
     }
 
-    public function storeEventLocationMove(UUID $eventId, UUID $oldPlaceId, UUID $newPlaceId): void
+    public function storeEventPlaceMove(UUID $eventId, UUID $oldPlaceId, UUID $newPlaceId): void
     {
-        $this->insertIntoLocationHistoryTable($eventId, $oldPlaceId, $newPlaceId);
+        $this->insertIntoPlaceHistoryTable($eventId, $oldPlaceId, $newPlaceId);
     }
 
-    public function insertIntoLocationHistoryTable(UUID $eventId, ?UUID $oldPlaceId, UUID $newPlaceId): void
+    public function insertIntoPlaceHistoryTable(UUID $eventId, ?UUID $oldPlaceId, UUID $newPlaceId): void
     {
         $currentTimestamp = new DateTimeImmutable();
 
         $this->connection->insert(
-            'event_location_history',
+            'event_place_history',
             [
                 'event' => $eventId->toString(),
                 'old_place' => $oldPlaceId ? $oldPlaceId->toString() : null,

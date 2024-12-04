@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 interface EventPlaceHistoryRepository
 {
-    public function storeEventLocationStartingPoint(UUID $eventId, UUID $placeId): void;
+    public function storeEventPlaceStartingPoint(UUID $eventId, UUID $placeId): void;
 
-    public function storeEventLocationMove(UUID $eventId, UUID $oldPlaceId, UUID $newPlaceId): void;
+    public function storeEventPlaceMove(UUID $eventId, UUID $oldPlaceId, UUID $newPlaceId): void;
 }

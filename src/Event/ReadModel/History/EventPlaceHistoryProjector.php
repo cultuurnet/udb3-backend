@@ -49,7 +49,7 @@ class EventPlaceHistoryProjector implements EventListener
             return;
         }
 
-        $this->repository->storeEventLocationMove(
+        $this->repository->storeEventPlaceMove(
             new UUID($event->getItemId()),
             $oldPlaceId,
             new UUID($event->getLocationId()->toString())
@@ -58,7 +58,7 @@ class EventPlaceHistoryProjector implements EventListener
 
     protected function applyEventCreated(EventCreated $event): void
     {
-        $this->repository->storeEventLocationStartingPoint(
+        $this->repository->storeEventPlaceStartingPoint(
             new UUID($event->getEventId()),
             new UUID($event->getLocation()->toString())
         );
@@ -73,7 +73,7 @@ class EventPlaceHistoryProjector implements EventListener
             return;
         }
 
-        $this->repository->storeEventLocationStartingPoint(
+        $this->repository->storeEventPlaceStartingPoint(
             new UUID($event->getItemId()),
             $placeId
         );
@@ -91,7 +91,7 @@ class EventPlaceHistoryProjector implements EventListener
             return;
         }
 
-        $this->repository->storeEventLocationStartingPoint(
+        $this->repository->storeEventPlaceStartingPoint(
             new UUID($event->getEventId()),
             new UUID($udb2Event->getLocation()->getCdbid())
         );
@@ -122,7 +122,7 @@ class EventPlaceHistoryProjector implements EventListener
             return;
         }
 
-        $this->repository->storeEventLocationMove(
+        $this->repository->storeEventPlaceMove(
             new UUID($event->getEventId()),
             $oldPlaceId,
             $newPlaceId
@@ -144,7 +144,7 @@ class EventPlaceHistoryProjector implements EventListener
             return;
         }
 
-        $this->repository->storeEventLocationMove(
+        $this->repository->storeEventPlaceMove(
             new UUID($event->getItemId()),
             $oldPlaceId,
             $newPlaceId

@@ -75,7 +75,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
 
         $this->repository
             ->expects($this->once())
-            ->method('storeEventLocationMove')
+            ->method('storeEventPlaceMove')
             ->with(
                 $eventId,
                 $oldPlaceId,
@@ -104,7 +104,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
 
         $this->repository
             ->expects($this->once())
-            ->method('storeEventLocationMove')
+            ->method('storeEventPlaceMove')
             ->with(
                 $eventId,
                 $oldPlaceId,
@@ -139,7 +139,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
 
         $this->repository
             ->expects($this->never())
-            ->method('storeEventLocationMove');
+            ->method('storeEventPlaceMove');
 
         $majorInfoUpdated = new MajorInfoUpdated(
             $eventId->toString(),
@@ -162,7 +162,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
 
         $this->repository
             ->expects($this->once())
-            ->method('storeEventLocationStartingPoint')
+            ->method('storeEventPlaceStartingPoint')
             ->with(
                 $eventId,
                 $newPlaceId
@@ -198,7 +198,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
 
         $this->repository
             ->expects($this->once())
-            ->method('storeEventLocationStartingPoint')
+            ->method('storeEventPlaceStartingPoint')
             ->with(
                 $eventId,
                 $oldPlaceId
@@ -253,7 +253,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
 
         $this->repository
             ->expects($this->once())
-            ->method('storeEventLocationMove')
+            ->method('storeEventPlaceMove')
             ->with(
                 $eventId,
                 $oldPlaceId,
@@ -286,7 +286,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
 
         $this->repository
             ->expects($this->never())
-            ->method('storeEventLocationMove');
+            ->method('storeEventPlaceMove');
 
         $eventUpdatedFromUDB2 = new EventUpdatedFromUDB2(
             $eventId->toString(),
@@ -307,7 +307,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
 
         $this->repository
             ->expects($this->once())
-            ->method('storeEventLocationStartingPoint')
+            ->method('storeEventPlaceStartingPoint')
             ->with(
                 $eventId,
                 $newPlaceId

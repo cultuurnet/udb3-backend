@@ -11,7 +11,7 @@ final class Version20241129150800 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $table = $schema->createTable('event_location_history');
+        $table = $schema->createTable('event_place_history');
 
         $table->addColumn('event', 'guid', ['length' => 36]);
         $table->addColumn('old_place', 'guid', ['length' => 36,
@@ -31,6 +31,6 @@ final class Version20241129150800 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $schema->dropTable('event_location_history');
+        $schema->dropTable('event_place_history');
     }
 }
