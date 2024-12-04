@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Place\Commands;
 
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
@@ -14,7 +14,7 @@ class UpdateMajorInfo extends AbstractCommand
 {
     private Title $title;
 
-    private EventType $eventType;
+    private Category $eventType;
 
     private Address $address;
 
@@ -23,7 +23,7 @@ class UpdateMajorInfo extends AbstractCommand
     public function __construct(
         string $placeId,
         Title $title,
-        EventType $eventType,
+        Category $eventType,
         Address $address,
         Calendar $calendar
     ) {
@@ -39,7 +39,7 @@ class UpdateMajorInfo extends AbstractCommand
         return $this->title;
     }
 
-    public function getEventType(): EventType
+    public function getEventType(): Category
     {
         return $this->eventType;
     }
