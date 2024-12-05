@@ -41,6 +41,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
 {
     private const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
     private const DATE_TIME_VALUE = '2024-1-1 12:30:00';
+
     /** @var EventPlaceHistoryRepository|MockObject */
     private $repository;
 
