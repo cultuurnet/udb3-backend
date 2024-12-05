@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Event\ReadModel\History\EventPlaceHistoryProjector;
+use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventPlaceHistoryRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventRelationsRepository;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventPlaceHistoryRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsProjector;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -18,6 +23,8 @@ final class EventReadServiceProvider extends AbstractServiceProvider
         return [
             EventRelationsProjector::class,
             EventRelationsRepository::class,
+            EventPlaceHistoryProjector::class,
+            EventPlaceHistoryRepository::class,
             'event_main_language_query',
         ];
     }
@@ -50,6 +57,25 @@ final class EventReadServiceProvider extends AbstractServiceProvider
                     $container->get('event_jsonld_repository'),
                     new Language('nl')
                 );
+            }
+        );
+
+        $container->addShared(
+            EventPlaceHistoryProjector::class,
+            function () use ($container): EventPlaceHistoryProjector {
+                return new EventPlaceHistoryProjector(
+                    $container->get(EventPlaceHistoryRepository::class),
+                    $container->get('event_jsonld_cache'),
+                    $container->get('udb2_event_cdbid_extractor'),
+                    LoggerFactory::create($this->getContainer(), LoggerName::forWeb())
+                );
+            }
+        );
+
+        $container->addShared(
+            EventPlaceHistoryRepository::class,
+            function () use ($container): DBALEventPlaceHistoryRepository {
+                return new DBALEventPlaceHistoryRepository($container->get('dbal_connection'));
             }
         );
     }
