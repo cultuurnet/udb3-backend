@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -75,7 +74,7 @@ class EventCreatedTest extends TestCase
         $expectedWithTheme = [
             new TitleUpdated($eventId, 'Example title'),
             new TypeUpdated($eventId, $category),
-            new ThemeUpdated($eventId, new Theme('1.8.3.5.0', 'Amusementsmuziek')),
+            new ThemeUpdated($eventId, new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())),
             new LocationUpdated($eventId, $this->location),
             new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
         ];

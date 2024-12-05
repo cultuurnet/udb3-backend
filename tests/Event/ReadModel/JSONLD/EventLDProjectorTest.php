@@ -73,7 +73,6 @@ use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\SampleFiles;
-use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
@@ -1526,7 +1525,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     public function it_should_project_the_new_theme_as_a_term_when_updated(): void
     {
         $itemId = '528e26f7-9bad-48b8-b47f-c3a4b5b92bf6';
-        $theme = new Theme('1.8.3.3.0', 'Dance');
+        $theme = new Category(new CategoryID('1.8.3.3.0'), new CategoryLabel('Dance'), CategoryDomain::theme());
         $themeUpdatedEvent = new ThemeUpdated($itemId, $theme);
 
         $expectedTerms = [
@@ -1583,7 +1582,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             ],
         ];
 
-        $theme = new Theme('1.8.2.0.0', 'Jazz en booze');
+        $theme = new Category(new CategoryID('1.8.2.0.0'), new CategoryLabel('Jazz en booze'), CategoryDomain::theme());
         $themeUpdatedEvent = new ThemeUpdated($itemId, $theme);
         $updatedItem = $this->project($themeUpdatedEvent, $itemId);
 

@@ -29,7 +29,7 @@ class CreateEventTest extends TestCase
         $type = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
         $calendar = new Calendar(CalendarType::permanent());
-        $theme = new Category(new CategoryID('0.1.0.1.0.1'), new CategoryLabel('blues'), CategoryDomain::facility());
+        $theme = new Category(new CategoryID('0.1.0.1.0.1'), new CategoryLabel('blues'), CategoryDomain::theme());
 
         $publicationDate = new DateTimeImmutable('2019-02-14');
         $now = new DateTimeImmutable();
@@ -59,7 +59,7 @@ class CreateEventTest extends TestCase
         $type = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
         $calendar = new Calendar(CalendarType::permanent());
-        $theme = new Category(new CategoryID('0.1.0.1.0.1'), new CategoryLabel('blues'), CategoryDomain::facility());
+        $theme = new Category(new CategoryID('0.1.0.1.0.1'), new CategoryLabel('blues'), CategoryDomain::theme());
 
         $command = new CreateEvent(
             $id,

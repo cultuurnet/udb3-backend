@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
-use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\TestCase;
 
 class MajorInfoUpdatedTest extends TestCase
@@ -46,7 +45,7 @@ class MajorInfoUpdatedTest extends TestCase
                 $eventId,
                 new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType())
             ),
-            new ThemeUpdated($eventId, new Theme('1.8.3.5.0', 'Amusementsmuziek')),
+            new ThemeUpdated($eventId, new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())),
             new LocationUpdated($eventId, new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e')),
             new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
         ];
