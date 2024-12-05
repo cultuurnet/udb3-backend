@@ -86,7 +86,7 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
         $newStatus = new Status(StatusType::Unavailable(), null);
 
         $expectedSubEvents = [new SubEvent(new DateRange($startDate, $endDate), new Status(StatusType::Unavailable()), BookingAvailability::Available())];
-        $expectedCalendar = (new LegacyCalendar(CalendarType::single(), $startDate, $startDate, $expectedSubEvents, []))->withStatus($newStatus);
+        $expectedCalendar = (new LegacyCalendar(CalendarType::single(), null, null, $expectedSubEvents, []))->withStatus($newStatus);
 
         $command = new UpdateStatus($id, $newStatus);
 
