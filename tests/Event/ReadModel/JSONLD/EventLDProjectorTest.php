@@ -42,7 +42,6 @@ use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
@@ -1027,7 +1026,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 new MajorInfoUpdated(
                     'foo',
                     'new title',
-                    new EventType('0.50.4.0.1', 'concertnew'),
+                    new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType()),
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
                     new Calendar(
                         CalendarType::periodic(),
@@ -1047,7 +1046,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 new MajorInfoUpdated(
                     'foo',
                     'new title',
-                    new EventType('0.50.4.0.1', 'concertnew'),
+                    new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType()),
                     new LocationId('00000000-0000-0000-0000-000000000000'),
                     new Calendar(
                         CalendarType::periodic(),
@@ -1064,7 +1063,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 new MajorInfoUpdated(
                     'foo',
                     'new title',
-                    new EventType('0.50.4.0.1', 'concertnew'),
+                    new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType()),
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
                     new Calendar(
                         CalendarType::periodic(),
@@ -1140,7 +1139,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.1',
-                'label' => 'concertnew',
+                'label' => 'Concert New',
                 'domain' => 'eventtype',
             ],
             (object)[
@@ -1325,7 +1324,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $title = 'new title';
-        $eventType = new EventType('0.50.4.0.1', 'concertnew');
+        $eventType = new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType());
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
         $calendar = new Calendar(
             CalendarType::periodic(),
@@ -1361,7 +1360,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             ],
             (object)[
                 'id' => '0.50.4.0.1',
-                'label' => 'concertnew',
+                'label' => 'Concert New',
                 'domain' => 'eventtype',
             ],
             (object)[

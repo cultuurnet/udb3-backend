@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
@@ -33,6 +32,10 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -748,7 +751,7 @@ class HistoryProjectorTest extends TestCase
         $event = new MajorInfoUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             'title',
-            new EventType('0.0.0.0', 'event type'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new Address(
                 new Street('straat'),
                 new PostalCode('3000'),
@@ -925,7 +928,7 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new TypeUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new EventType('0.1.1', 'type label')
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType())
         );
 
         $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
@@ -989,7 +992,7 @@ class HistoryProjectorTest extends TestCase
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             new Language('en'),
             'Foo',
-            new EventType('1.8.2', 'PARTY!'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new Address(
                 new Street('acmelane 12'),
                 new PostalCode('3000'),

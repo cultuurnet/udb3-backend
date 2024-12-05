@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Event\Events;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventEvent;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -92,7 +91,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
             array_filter(
                 [
                     new TitleUpdated($this->eventId, $this->title),
-                    new TypeUpdated($this->eventId, EventType::fromUdb3ModelCategory($this->eventType)),
+                    new TypeUpdated($this->eventId, $this->eventType),
                     $this->theme ? new ThemeUpdated($this->eventId, $this->theme) : null,
                     new LocationUpdated($this->eventId, $this->location),
                     new CalendarUpdated($this->eventId, $this->calendar),

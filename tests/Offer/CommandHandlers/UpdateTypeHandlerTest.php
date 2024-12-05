@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
@@ -45,7 +44,10 @@ class UpdateTypeHandlerTest extends CommandHandlerScenarioTestCase
 
         $command = new UpdateType($id, '0.5.0.0.0');
 
-        $expectedEvent = new TypeUpdated($id, new EventType('0.5.0.0.0', 'Festival'));
+        $expectedEvent = new TypeUpdated(
+            $id,
+            new Category(new CategoryID('0.5.0.0.0'), new CategoryLabel('Festival'), CategoryDomain::eventType())
+        );
 
         $this->scenario
             ->withAggregateId($id)

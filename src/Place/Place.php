@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -22,6 +21,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -112,7 +112,7 @@ class Place extends Offer
         string $id,
         Language $mainLanguage,
         Title $title,
-        EventType $eventType,
+        Category $eventType,
         LegacyAddress $address,
         Calendar $calendar,
         DateTimeImmutable $publicationDate = null
@@ -138,7 +138,7 @@ class Place extends Offer
         $this->calendar = $placeCreated->getCalendar();
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
-        $this->typeId = $placeCreated->getEventType()->getId();
+        $this->typeId = $placeCreated->getEventType()->getId()->toString();
         $this->addresses[$this->mainLanguage->getCode()] = $placeCreated->getAddress();
         $this->placeId = $placeCreated->getPlaceId();
         $this->workflowStatus = WorkflowStatus::DRAFT();
@@ -146,7 +146,7 @@ class Place extends Offer
 
     public function updateMajorInfo(
         Title $title,
-        EventType $eventType,
+        Category $eventType,
         LegacyAddress $address,
         Calendar $calendar
     ): void {
@@ -510,7 +510,7 @@ class Place extends Offer
         return new ImagesUpdatedFromUDB2($this->placeId, $images);
     }
 
-    protected function createTypeUpdatedEvent(EventType $type): TypeUpdated
+    protected function createTypeUpdatedEvent(Category $type): TypeUpdated
     {
         return new TypeUpdated($this->placeId, $type);
     }

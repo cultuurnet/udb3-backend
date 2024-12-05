@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\Events\EventCreated;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
@@ -166,7 +165,7 @@ class CompositeDomainMessageEnricherTest extends TestCase
                 'fd9e986d-6a23-470c-bf0c-4ad40aa4515e',
                 new Language('nl'),
                 'test title',
-                new EventType('0.0.1', 'label'),
+                new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                 new Address(
                     new Street('street'),
                     new PostalCode('3000'),

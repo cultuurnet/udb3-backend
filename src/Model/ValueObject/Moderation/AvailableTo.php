@@ -35,7 +35,7 @@ class AvailableTo
         /** @var DateTimeInterface $availableTo */
         $availableTo = $calendar->getEndDate();
 
-        if ($eventType && EventTypeResolver::isOnlyAvailableUntilStartDate($eventType)) {
+        if ($eventType && EventTypeResolver::isOnlyAvailableUntilStartDate($eventType->toUdb3ModelCategory())) {
             /** @var DateTimeInterface $availableTo */
             $availableTo = $calendar->getStartDate();
         }

@@ -26,6 +26,10 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -37,7 +41,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
@@ -268,7 +271,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                         'c5c1b435-0f3c-4b75-9f28-94d93be7078b',
                         new Language('nl'),
                         'Test place',
-                        new EventType('0.1.1', 'Jeugdhuis'),
+                        new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                         LegacyAddress::fromUdb3ModelAddress($originalAddress),
                         new Calendar(CalendarType::permanent())
                     ),
@@ -458,7 +461,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                         'c5c1b435-0f3c-4b75-9f28-94d93be7078b',
                         new Language('nl'),
                         'Test place',
-                        new EventType('0.1.1', 'Jeugdhuis'),
+                        new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                         LegacyAddress::fromUdb3ModelAddress($originalAddress),
                         new Calendar(CalendarType::permanent())
                     ),
@@ -657,7 +660,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             $placeId,
             new Language('nl'),
             'Test place',
-            new EventType('0.1.1', 'Jeugdhuis'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $address,
             new Calendar(CalendarType::permanent())
         );
