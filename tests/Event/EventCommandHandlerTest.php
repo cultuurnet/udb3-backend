@@ -25,6 +25,8 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -67,7 +69,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             'some representative title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
     }
 
@@ -81,7 +83,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $title = new Title('some representative title');
         $type = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
-        $calendar = new Calendar(CalendarType::permanent());
+        $calendar = new PermanentCalendar(new OpeningHours());
         $theme = new Category(new CategoryID('0.1.0.1.0.1'), new CategoryLabel('blues'), CategoryDomain::theme());
 
         $now = Chronos::now();

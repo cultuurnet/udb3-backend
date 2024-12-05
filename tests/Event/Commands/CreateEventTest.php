@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Commands;
 
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -28,7 +28,7 @@ class CreateEventTest extends TestCase
         $title = new Title('some representative title');
         $type = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
-        $calendar = new Calendar(CalendarType::permanent());
+        $calendar = new PermanentCalendar(new OpeningHours());
         $theme = new Category(new CategoryID('0.1.0.1.0.1'), new CategoryLabel('blues'), CategoryDomain::theme());
 
         $publicationDate = new DateTimeImmutable('2019-02-14');
@@ -58,7 +58,7 @@ class CreateEventTest extends TestCase
         $title = new Title('some representative title');
         $type = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
-        $calendar = new Calendar(CalendarType::permanent());
+        $calendar = new PermanentCalendar(new OpeningHours());
         $theme = new Category(new CategoryID('0.1.0.1.0.1'), new CategoryLabel('blues'), CategoryDomain::theme());
 
         $command = new CreateEvent(

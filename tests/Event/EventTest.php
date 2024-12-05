@@ -39,6 +39,8 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -94,7 +96,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Title('some representative title'),
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d70f5d94-7072-423d-9144-9354cb794c62'),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
     }
 
@@ -106,7 +108,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'some representative title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
     }
 
@@ -118,7 +120,7 @@ class EventTest extends AggregateRootScenarioTestCase
             'some representative title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('59400d1e-6f98-4da9-ab08-f58adceb7204'),
-            new Calendar(CalendarType::permanent()),
+            new PermanentCalendar(new OpeningHours()),
             new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
         );
     }
@@ -378,7 +380,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Title('some representative title'),
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId($locationUuid),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $expectedEvent = new AudienceUpdated($eventUuid, AudienceType::education());
