@@ -15,6 +15,10 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +44,7 @@ class PlaceCreatedTest extends TestCase
             'id',
             new Language('es'),
             'title',
-            new EventType('id', 'label'),
+            new EventType('0.50.4.0.0', 'Concert'),
             $this->address,
             new Calendar(CalendarType::permanent()),
             $this->publicationDate
@@ -54,7 +58,10 @@ class PlaceCreatedTest extends TestCase
     {
         $expected = [
             new TitleUpdated('id', 'title'),
-            new TypeUpdated('id', new EventType('id', 'label')),
+            new TypeUpdated(
+                'id',
+                new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType())
+            ),
             new AddressUpdated('id', $this->address),
             new CalendarUpdated('id', new Calendar(CalendarType::permanent())),
         ];

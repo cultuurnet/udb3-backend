@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -16,6 +15,10 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\SampleFiles;
@@ -68,7 +71,10 @@ final class EventUpdatedFromUDB2Test extends TestCase
                 new TitleUpdated($eventId, 'Het evenement!'),
                 new TitleTranslated($eventId, new Language('fr'), 'L\'événement!'),
                 new TitleTranslated($eventId, new Language('de'), 'Das Ereignis!'),
-                new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+                new TypeUpdated(
+                    $eventId,
+                    new Category(new CategoryID('0.3.1.0.0'), new CategoryLabel('Cursus of workshop'), CategoryDomain::eventType())
+                ),
             ],
             $eventUpdatedFromUdb2->toGranularEvents()
         );
@@ -91,7 +97,10 @@ final class EventUpdatedFromUDB2Test extends TestCase
                 new TitleUpdated($eventId, 'Het evenement!'),
                 new TitleTranslated($eventId, new Language('fr'), 'L\'événement!'),
                 new TitleTranslated($eventId, new Language('de'), 'Das Ereignis!'),
-                new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+                new TypeUpdated(
+                    $eventId,
+                    new Category(new CategoryID('0.3.1.0.0'), new CategoryLabel('Cursus of workshop'), CategoryDomain::eventType())
+                ),
                 new LocationUpdated($eventId, new LocationId('28d2900d-f784-4d04-8d66-5b93900c6f9c')),
                 new CalendarUpdated(
                     $eventId,
@@ -131,7 +140,10 @@ final class EventUpdatedFromUDB2Test extends TestCase
                 new TitleUpdated($eventId, 'Het evenement!'),
                 new TitleTranslated($eventId, new Language('fr'), 'L\'événement!'),
                 new TitleTranslated($eventId, new Language('de'), 'Das Ereignis!'),
-                new TypeUpdated($eventId, new EventType('0.3.1.0.0', 'Cursus of workshop')),
+                new TypeUpdated(
+                    $eventId,
+                    new Category(new CategoryID('0.3.1.0.0'), new CategoryLabel('Cursus of workshop'), CategoryDomain::eventType())
+                ),
                 new ExternalIdLocationUpdated($eventId, 'SKB:9ccbf9c1-a5c5-4689-9687-9a7dd3c51aee'),
                 new CalendarUpdated(
                     $eventId,

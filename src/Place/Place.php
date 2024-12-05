@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -510,7 +511,7 @@ class Place extends Offer
         return new ImagesUpdatedFromUDB2($this->placeId, $images);
     }
 
-    protected function createTypeUpdatedEvent(EventType $type): TypeUpdated
+    protected function createTypeUpdatedEvent(Category $type): TypeUpdated
     {
         return new TypeUpdated($this->placeId, $type);
     }

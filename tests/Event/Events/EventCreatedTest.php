@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -52,12 +51,13 @@ class EventCreatedTest extends TestCase
     public function it_converts_to_granular_events(): void
     {
         $eventId = '09994540-289f-4ab4-bf77-b83443d3d0fc';
+        $category = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
 
         $eventWithTheme = new EventCreated(
             $eventId,
             new Language('nl'),
             'Example title',
-            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            $category,
             $this->location,
             new Calendar(CalendarType::permanent()),
             new Theme('1.8.3.5.0', 'Amusementsmuziek')
@@ -67,14 +67,14 @@ class EventCreatedTest extends TestCase
             $eventId,
             new Language('nl'),
             'Example title',
-            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            $category,
             $this->location,
             new Calendar(CalendarType::permanent())
         );
 
         $expectedWithTheme = [
             new TitleUpdated($eventId, 'Example title'),
-            new TypeUpdated($eventId, new EventType('0.50.4.0.0', 'Concert')),
+            new TypeUpdated($eventId, $category),
             new ThemeUpdated($eventId, new Theme('1.8.3.5.0', 'Amusementsmuziek')),
             new LocationUpdated($eventId, $this->location),
             new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
@@ -82,7 +82,7 @@ class EventCreatedTest extends TestCase
 
         $expectedWithoutTheme = [
             new TitleUpdated($eventId, 'Example title'),
-            new TypeUpdated($eventId, new EventType('0.50.4.0.0', 'Concert')),
+            new TypeUpdated($eventId, $category),
             new LocationUpdated($eventId, $this->location),
             new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
         ];

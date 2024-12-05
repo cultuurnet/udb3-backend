@@ -67,7 +67,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
             array_filter(
                 [
                     new TitleUpdated($this->itemId, $this->title),
-                    new TypeUpdated($this->itemId, $this->eventType),
+                    new TypeUpdated($this->itemId, $this->eventType->toUdb3ModelCategory()),
                     $this->theme ? new ThemeUpdated($this->itemId, $this->theme) : null,
                     new LocationUpdated($this->itemId, $this->location),
                     new CalendarUpdated($this->itemId, $this->calendar),

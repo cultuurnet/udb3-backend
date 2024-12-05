@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Category;
 use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\CulturefeedSlugger;
 use CultuurNet\UDB3\Event\Events\Concluded;
+use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\OrganizerServiceInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Facility;
@@ -282,7 +283,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         $document = $this->loadDocumentFromRepository($typeUpdated);
 
-        return $this->updateTerm($document, $typeUpdated->getType());
+        return $this->updateTerm($document, EventType::fromUdb3ModelCategory($typeUpdated->getType()));
     }
 
     protected function updateTerm(JsonDocument $document, Category $category): JsonDocument

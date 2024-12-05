@@ -690,7 +690,7 @@ final class Event extends Offer
         return new FlaggedAsInappropriate($this->eventId);
     }
 
-    protected function createTypeUpdatedEvent(EventType $type): TypeUpdated
+    protected function createTypeUpdatedEvent(Category $type): TypeUpdated
     {
         return new TypeUpdated($this->eventId, $type);
     }

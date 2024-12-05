@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Offer;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
@@ -179,7 +178,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public function updateType(Category $category): void
     {
         if (!$this->typeId || $this->typeId !== $category->getId()->toString()) {
-            $this->apply($this->createTypeUpdatedEvent(EventType::fromUdb3ModelCategory($category)));
+            $this->apply($this->createTypeUpdatedEvent($category));
         }
     }
 
@@ -516,7 +515,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyTypeUpdated(AbstractTypeUpdated $themeUpdated): void
     {
-        $this->typeId = $themeUpdated->getType()->getId();
+        $this->typeId = $themeUpdated->getType()->getId()->toString();
     }
 
     protected function applyDescriptionUpdated(AbstractDescriptionUpdated $descriptionUpdated): void
@@ -1109,7 +1108,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createImagesUpdatedFromUDB2(ImageCollection $images): AbstractImagesUpdatedFromUDB2;
 
-    abstract protected function createTypeUpdatedEvent(EventType $type): AbstractTypeUpdated;
+    abstract protected function createTypeUpdatedEvent(Category $type): AbstractTypeUpdated;
 
     abstract protected function createFacilitiesUpdatedEvent(array $facilities): AbstractFacilitiesUpdated;
 }
