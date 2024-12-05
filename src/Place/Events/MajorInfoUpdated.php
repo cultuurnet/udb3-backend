@@ -6,21 +6,24 @@ namespace CultuurNet\UDB3\Place\Events;
 
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Place\PlaceEvent;
 
 final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEvents
 {
     private string $title;
-    private EventType $eventType;
+    private Category $eventType;
     private Address $address;
     private Calendar $calendar;
 
     final public function __construct(
         string $placeId,
         string $title,
-        EventType $eventType,
+        Category $eventType,
         Address $address,
         Calendar $calendar
     ) {
@@ -37,7 +40,7 @@ final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEve
         return $this->title;
     }
 
-    public function getEventType(): EventType
+    public function getEventType(): Category
     {
         return $this->eventType;
     }
@@ -58,7 +61,7 @@ final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEve
             array_filter(
                 [
                     new TitleUpdated($this->placeId, $this->title),
-                    new TypeUpdated($this->placeId, $this->eventType->toUdb3ModelCategory()),
+                    new TypeUpdated($this->placeId, $this->eventType),
                     new AddressUpdated($this->placeId, $this->address),
                     new CalendarUpdated($this->placeId, $this->calendar),
                 ]
@@ -70,7 +73,7 @@ final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEve
     {
         return parent::serialize() + [
             'title' => $this->getTitle(),
-            'event_type' => $this->getEventType()->serialize(),
+            'event_type' => (new CategoryNormalizer())->normalize($this->getEventType()),
             'address' => $this->getAddress()->serialize(),
             'calendar' => $this->getCalendar()->serialize(),
         ];
@@ -81,7 +84,7 @@ final class MajorInfoUpdated extends PlaceEvent implements ConvertsToGranularEve
         return new static(
             $data['place_id'],
             $data['title'],
-            EventType::deserialize($data['event_type']),
+            (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['event_type'], Category::class),
             Address::deserialize($data['address']),
             Calendar::deserialize($data['calendar'])
         );

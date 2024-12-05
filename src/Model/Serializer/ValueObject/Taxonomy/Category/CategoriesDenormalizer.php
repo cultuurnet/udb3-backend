@@ -38,6 +38,6 @@ class CategoriesDenormalizer implements DenormalizerInterface
 
     private function denormalizeCategory(array $categoryData): Category
     {
-        return (new CategoryDenormalizer())->denormalize($categoryData, Category::class);
+        return (new CategoryDenormalizer(null))->denormalize($categoryData, Category::class);
     }
 }

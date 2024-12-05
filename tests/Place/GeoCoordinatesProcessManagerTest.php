@@ -19,6 +19,10 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
@@ -214,7 +218,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new MajorInfoUpdated(
                         '4b735422-2bf3-4241-aabb-d70609d2d1d3',
                         'Het depot',
-                        new EventType('mock.1', 'Mock'),
+                        new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                         LegacyAddress::fromUdb3ModelAddress(new Address(
                             new Street('Teststraat 1'),
                             new PostalCode('1000'),

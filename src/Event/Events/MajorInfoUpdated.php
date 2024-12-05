@@ -10,6 +10,7 @@ use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Theme;
 
@@ -98,7 +99,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         return new self(
             $data['item_id'],
             $data['title'],
-            (new CategoryDenormalizer())->denormalize($data['event_type'], Category::class),
+            (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['event_type'], Category::class),
             new LocationId($data['location']),
             Calendar::deserialize($data['calendar']),
             empty($data['theme']) ? null : Theme::deserialize($data['theme'])

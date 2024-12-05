@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -30,7 +29,7 @@ final class MajorInfoUpdatedTest extends TestCase
         $event = new MajorInfoUpdated(
             $placeId,
             'Title',
-            new EventType('0.14.0.0.0', 'Monument'),
+            new Category(new CategoryID('0.14.0.0.0'), new CategoryLabel('Monument'), CategoryDomain::eventType()),
             new Address(
                 new Street('Martelarenlaan 1'),
                 new PostalCode('3000'),

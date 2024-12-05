@@ -6,14 +6,14 @@ namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 class MajorInfo
 {
     private Title $title;
 
-    private EventType $type;
+    private Category $type;
 
     private Address $address;
 
@@ -21,7 +21,7 @@ class MajorInfo
 
     public function __construct(
         Title $title,
-        EventType $type,
+        Category $type,
         Address $address,
         Calendar $calendar
     ) {
@@ -36,7 +36,7 @@ class MajorInfo
         return $this->title;
     }
 
-    public function getType(): EventType
+    public function getType(): Category
     {
         return $this->type;
     }

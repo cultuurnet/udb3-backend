@@ -31,6 +31,10 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -666,7 +670,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     {
         $id = 'foo';
         $title = 'new title';
-        $eventType = new EventType('0.50.4.0.1', 'Concert New');
+        $eventType = new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType());
         $calendar = new Calendar(
             CalendarType::periodic(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
@@ -938,7 +942,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $majorInfoUpdated = new MajorInfoUpdated(
             '3c4850d7-689a-4729-8c5f-5f6c172ba52d',
             'New title',
-            new EventType('1.0.0.0', 'Mock'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new Address(
                 new Street('Natieplein 2'),
                 new PostalCode('1000'),
