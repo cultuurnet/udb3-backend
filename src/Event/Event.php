@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
-use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
@@ -69,6 +69,7 @@ use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
@@ -159,7 +160,7 @@ final class Event extends Offer
         parent::updateGeoCoordinates($coordinates);
     }
 
-    public function copy(string $newEventId, Calendar $calendar): Event
+    public function copy(string $newEventId, LegacyCalendar $calendar): Event
     {
         if ($this->hasUncommittedEvents()) {
             throw new \RuntimeException('I refuse to copy, there are uncommitted events present.');
@@ -205,7 +206,7 @@ final class Event extends Offer
     {
         $this->eventId = $eventCreated->getEventId();
         $this->titles[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
-        $this->calendar = $eventCreated->getCalendar();
+        $this->calendar = LegacyCalendar::fromUdb3ModelCalendar($eventCreated->getCalendar());
         $this->audienceType = AudienceType::everyone();
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
@@ -295,7 +296,7 @@ final class Event extends Offer
         Title $title,
         Category $eventType,
         LocationId $location,
-        Calendar $calendar,
+        LegacyCalendar $calendar,
         Category $theme = null
     ): void {
         $this->apply(new MajorInfoUpdated($this->eventId, $title->toString(), $eventType, $location, $calendar, $theme));
@@ -388,7 +389,7 @@ final class Event extends Offer
             $subEvents[$index] = $updatedSubEvent;
         }
 
-        $updatedCalendar = new Calendar(
+        $updatedCalendar = new LegacyCalendar(
             $this->calendar->getType(),
             null,
             null,
@@ -609,7 +610,7 @@ final class Event extends Offer
         return new DescriptionDeleted($this->eventId, $language);
     }
 
-    protected function createCalendarUpdatedEvent(Calendar $calendar): CalendarUpdated
+    protected function createCalendarUpdatedEvent(LegacyCalendar $calendar): CalendarUpdated
     {
         return new CalendarUpdated($this->eventId, $calendar);
     }
