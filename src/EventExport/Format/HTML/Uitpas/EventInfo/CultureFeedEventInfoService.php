@@ -131,12 +131,16 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         /** @var CultureFeed_PointsPromotion[] $promotionQueryResults */
         $promotionQueryResults = [];
 
+
+        /**
+         * @see https://jira.publiq.be/browse/III-6439
+         */
         try {
             $promotionQueryResults = $this->uitpas->getPromotionPoints($promotionQuery)->objects;
         } catch (\Exception $e) {
             if ($this->logger) {
                 $this->logger->error(
-                    'Can\'t retrieve promotions for event with id:' . $event->cdbid,
+                    'Can\'t retrieve promotions for event with id:' . $event->cdbid . ' eventOrganizer may no longer be UiTPAS',
                     ['exception' => $e]
                 );
             }
