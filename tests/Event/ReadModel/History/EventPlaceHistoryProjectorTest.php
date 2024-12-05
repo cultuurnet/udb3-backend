@@ -32,6 +32,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
+use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -39,8 +40,8 @@ use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class EventPlaceHistoryProjectorTest extends TestCase
 {
-    private const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
-    private const DATE_TIME_VALUE = '2024-1-1 12:30:00';
+    private const DATE_TIME_FORMAT = DateTimeInterface::ATOM;
+    private const DATE_TIME_VALUE = '2024-1-1T12:30:00+00:00';
 
     /** @var EventPlaceHistoryRepository|MockObject */
     private $repository;

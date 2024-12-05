@@ -36,7 +36,7 @@ class DBALEventPlaceHistoryRepository implements EventPlaceHistoryRepository
                 'event' => $eventId->toString(),
                 'old_place' => $oldPlaceId ? $oldPlaceId->toString() : null,
                 'new_place' => $newPlaceId->toString(),
-                'date' => $date->format('Y-m-d H:i:s'),
+                'date' => $date->format(DateTimeInterface::ATOM),
             ]
         );
     }
