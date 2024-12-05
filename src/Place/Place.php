@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -113,7 +112,7 @@ class Place extends Offer
         string $id,
         Language $mainLanguage,
         Title $title,
-        EventType $eventType,
+        Category $eventType,
         LegacyAddress $address,
         Calendar $calendar,
         DateTimeImmutable $publicationDate = null
@@ -139,7 +138,7 @@ class Place extends Offer
         $this->calendar = $placeCreated->getCalendar();
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
-        $this->typeId = $placeCreated->getEventType()->getId();
+        $this->typeId = $placeCreated->getEventType()->getId()->toString();
         $this->addresses[$this->mainLanguage->getCode()] = $placeCreated->getAddress();
         $this->placeId = $placeCreated->getPlaceId();
         $this->workflowStatus = WorkflowStatus::DRAFT();

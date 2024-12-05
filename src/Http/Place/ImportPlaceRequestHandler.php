@@ -137,9 +137,8 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $placeAdapter = new Udb3ModelToLegacyPlaceAdapter($place);
 
-        $mainLanguage = $placeAdapter->getMainLanguage();
         $title = $place->getTitle()->getOriginalValue();
-        $type = $placeAdapter->getType();
+        $type = $place->getTerms()->getEventType();
         $address = $placeAdapter->getAddress();
         $calendar = $placeAdapter->getCalendar();
         $publishDate = $placeAdapter->getAvailableFrom(new DateTimeImmutable());
@@ -183,7 +182,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
                 $place->getTitle()->getTranslation($place->getMainLanguage())
             );
 
-            $commands[] = new UpdateType($placeId, $type->getId());
+            $commands[] = new UpdateType($placeId, $type->getId()->toString());
             $commands[] = new UpdateAddress(
                 $placeId,
                 $place->getAddress()->getTranslation($place->getMainLanguage()),

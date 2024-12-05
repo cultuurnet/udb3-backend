@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
@@ -158,7 +157,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             $id,
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->address,
             new Calendar(CalendarType::permanent())
         );
@@ -224,7 +223,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             $id,
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->address,
             new Calendar(CalendarType::permanent())
         );
@@ -496,7 +495,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             $placeId,
             new Language('en'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->address,
             new Calendar(CalendarType::permanent())
         );

@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Address\Locality as LegacyLocality;
 use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
 use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
@@ -144,7 +143,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             $id,
             new Language('nl'),
             'some representative title',
-            new EventType('0.50.4.0.0', 'Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LegacyAddress(
                 new LegacyStreet('Kerkstraat 69'),
                 new LegacyPostalCode('3000'),
