@@ -1681,7 +1681,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $startDate = DateTimeFactory::fromAtom('2018-01-01T12:00:00+01:00');
 
-        $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId($termId)->toUdb3ModelCategory());
+        $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId($termId));
 
         $updatedItem = $this->project($typeUpdated, $eventId);
 
@@ -1731,7 +1731,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
 
-        $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0')->toUdb3ModelCategory());
+        $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0'));
 
         $updatedItem = $this->project($typeUpdated, $eventId);
 
@@ -1780,7 +1780,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
 
-        $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0')->toUdb3ModelCategory());
+        $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0'));
 
         $updatedItem = $this->project($typeUpdated, $eventId);
 

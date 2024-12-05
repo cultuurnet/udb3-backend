@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 
 use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
@@ -212,10 +213,10 @@ class AvailableToTest extends TestCase
         );
         $eventTypeResolver = new EventTypeResolver();
 
-        $availableTo = AvailableTo::createFromLegacyCalendar($calendar, $eventTypeResolver->byId('0.7.0.0.0'));
+        $availableTo = AvailableTo::createFromLegacyCalendar($calendar, EventType::fromUdb3ModelCategory($eventTypeResolver->byId('0.7.0.0.0')));
         $this->assertEquals($endDate, $availableTo);
 
-        $availableTo = AvailableTo::createFromLegacyCalendar($calendar, $eventTypeResolver->byId('0.3.1.0.0'));
+        $availableTo = AvailableTo::createFromLegacyCalendar($calendar, EventType::fromUdb3ModelCategory($eventTypeResolver->byId('0.3.1.0.0')));
         $this->assertEquals($startDate, $availableTo);
     }
 }
