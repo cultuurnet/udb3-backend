@@ -54,10 +54,10 @@ final class CalendarSerializer implements Serializable
 
         // Backwards compatibility for serialized single or multiple calendar types that are missing sub events but do
         // have a start and end date.
-        $defaultSubEvents = [];
+        $subEvents = [];
         if ($calendarType->sameAs(CalendarType::single()) || $calendarType->sameAs(CalendarType::multiple())) {
             if ($startDate) {
-                $defaultSubEvents[] = new SubEvent(
+                $subEvents[] = new SubEvent(
                     new DateRange(
                         $startDate,
                         $endDate ?: $startDate
@@ -66,6 +66,15 @@ final class CalendarSerializer implements Serializable
                     new BookingAvailability(BookingAvailabilityType::Available())
                 );
             }
+        }
+
+        if (!empty($data['timestamps'])) {
+            $subEvents = array_map(
+                function ($subEvent) {
+                    return (new SubEventDenormalizer())->denormalize($subEvent, SubEvent::class);
+                },
+                $data['timestamps']
+            );
         }
 
         $openingHours = [];
@@ -80,10 +89,10 @@ final class CalendarSerializer implements Serializable
 
         switch ($calendarType) {
             case CalendarType::single():
-                $calendar = new SingleSubEventCalendar($defaultSubEvents[0]);
+                $calendar = new SingleSubEventCalendar($subEvents[0]);
                 break;
             case CalendarType::multiple():
-                $calendar = new MultipleSubEventsCalendar(new SubEvents(...$defaultSubEvents));
+                $calendar = new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
                 break;
             case CalendarType::periodic():
                 $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), new OpeningHours(...$openingHours));
