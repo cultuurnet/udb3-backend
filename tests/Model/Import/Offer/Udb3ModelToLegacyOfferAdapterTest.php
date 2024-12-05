@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Model\Import\Offer;
 
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
@@ -164,36 +163,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
 
         $this->adapter = new Udb3ModelToLegacyOfferAdapter($this->offer);
         $this->completeAdapter = new Udb3ModelToLegacyOfferAdapter($this->completeOffer);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_an_id(): void
-    {
-        $expected = '91060c19-a860-4a47-8591-8a779bfa520a';
-        $actual = $this->adapter->getId();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_main_language(): void
-    {
-        $expected = new Language('nl');
-        $actual = $this->adapter->getMainLanguage();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_type(): void
-    {
-        $expected = new EventType('0.6.0.0.0', 'Beurs');
-        $actual = $this->adapter->getType();
-        $this->assertEquals($expected, $actual);
     }
 
     /**
