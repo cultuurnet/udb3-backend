@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNorma
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -92,7 +91,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
                 [
                     new TitleUpdated($this->eventId, $this->title),
                     new TypeUpdated($this->eventId, $this->eventType),
-                    $this->theme ? new ThemeUpdated($this->eventId, Theme::fromUdb3ModelCategory($this->theme)) : null,
+                    $this->theme ? new ThemeUpdated($this->eventId, $this->theme) : null,
                     new LocationUpdated($this->eventId, $this->location),
                     new CalendarUpdated($this->eventId, $this->calendar),
                 ]

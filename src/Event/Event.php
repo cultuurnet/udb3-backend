@@ -91,7 +91,6 @@ use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -475,13 +474,13 @@ final class Event extends Offer
     public function updateTheme(Category $category): void
     {
         if (!$this->themeId || $this->themeId !== $category->getId()->toString()) {
-            $this->apply(new ThemeUpdated($this->eventId, Theme::fromUdb3ModelCategory($category)));
+            $this->apply(new ThemeUpdated($this->eventId, $category));
         }
     }
 
     protected function applyThemeUpdated(ThemeUpdated $themeUpdated): void
     {
-        $this->themeId = $themeUpdated->getTheme()->getId();
+        $this->themeId = $themeUpdated->getTheme()->getId()->toString();
     }
 
     public function removeTheme(): void

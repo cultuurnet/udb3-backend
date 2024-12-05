@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNorma
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
-use CultuurNet\UDB3\Theme;
 
 final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranularEvents
 {
@@ -71,7 +70,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
                 [
                     new TitleUpdated($this->itemId, $this->title),
                     new TypeUpdated($this->itemId, $this->eventType),
-                    $this->theme ? new ThemeUpdated($this->itemId, Theme::fromUdb3ModelCategory($this->theme)) : null,
+                    $this->theme ? new ThemeUpdated($this->itemId, $this->theme) : null,
                     new LocationUpdated($this->itemId, $this->location),
                     new CalendarUpdated($this->itemId, $this->calendar),
                 ]

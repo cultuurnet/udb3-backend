@@ -89,7 +89,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SameAsForUitInVlaanderen;
-use CultuurNet\UDB3\Theme;
 use DateTimeInterface;
 use JsonException;
 
@@ -446,7 +445,8 @@ final class EventLDProjector extends OfferLDProjector implements
         $jsonLD->terms = array_filter(
             $jsonLD->terms,
             function ($term) {
-                return $term->domain !== CategoryDomain::eventType()->toString() && $term->domain !== Theme::DOMAIN;
+                return $term->domain !== CategoryDomain::eventType()->toString()
+                    && $term->domain !== CategoryDomain::theme()->toString();
             }
         );
         $jsonLD->terms = array_values($jsonLD->terms);
@@ -548,7 +548,7 @@ final class EventLDProjector extends OfferLDProjector implements
     protected function applyThemeUpdated(ThemeUpdated $themeUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($themeUpdated);
-        return $this->updateTerm($document, $themeUpdated->getTheme()->toUd3ModelCategory());
+        return $this->updateTerm($document, $themeUpdated->getTheme());
     }
 
     protected function applyThemeRemoved(ThemeRemoved $themeRemoved): JsonDocument
