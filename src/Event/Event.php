@@ -294,7 +294,7 @@ final class Event extends Offer
 
     public function updateMajorInfo(
         Title $title,
-        EventType $eventType,
+        Category $eventType,
         LocationId $location,
         Calendar $calendar,
         Theme $theme = null

@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventPlaceHistoryRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
@@ -121,7 +120,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
         $majorInfoUpdated = new MajorInfoUpdated(
             $eventId->toString(),
             'title',
-            new EventType('0.0.0.0', 'event type'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId($newPlaceId->toString()),
             new Calendar(CalendarType::permanent())
         );
@@ -151,7 +150,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
         $majorInfoUpdated = new MajorInfoUpdated(
             $eventId->toString(),
             'title',
-            new EventType('0.0.0.0', 'event type'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId($newPlaceId->toString()),
             new Calendar(CalendarType::permanent())
         );

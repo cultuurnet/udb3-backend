@@ -666,7 +666,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     {
         $id = 'foo';
         $title = 'new title';
-        $eventType = new EventType('0.50.4.0.1', 'concertnew');
+        $eventType = new EventType('0.50.4.0.1', 'Concert New');
         $calendar = new Calendar(
             CalendarType::periodic(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
@@ -718,7 +718,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.1',
-                'label' => 'concertnew',
+                'label' => 'Concert New',
                 'domain' => 'eventtype',
             ],
         ];

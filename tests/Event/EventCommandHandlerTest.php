@@ -133,7 +133,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $id = '1';
         $title = new Title('foo');
-        $eventType = new EventType('0.50.4.0.0', 'Concert');
+        $eventType = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
         $calendar = new Calendar(CalendarType::permanent());
 
@@ -157,7 +157,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $id = '1';
         $title = new Title('foo');
-        $eventType = new EventType('0.50.4.0.0', 'Concert');
+        $eventType = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('6f87ce4c-bd39-4c5e-92b5-a9f8bdf4aa31');
         $calendar = new Calendar(CalendarType::permanent());
 

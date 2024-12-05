@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +24,7 @@ class UpdateMajorInfoTest extends TestCase
         $this->updateMajorInfo = new UpdateMajorInfo(
             'id',
             new Title('title'),
-            new EventType('bar_id', 'bar'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('335be568-aaf0-4147-80b6-9267daafe23b'),
             new Calendar(CalendarType::permanent()),
             new Theme('themeid', 'theme_label')
@@ -35,7 +38,7 @@ class UpdateMajorInfoTest extends TestCase
     {
         $expectedId = 'id';
         $expectedTitle = new Title('title');
-        $expectedEventType = new EventType('bar_id', 'bar');
+        $expectedEventType = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $expectedLocation = new LocationId('335be568-aaf0-4147-80b6-9267daafe23b');
         $expectedCalendar = new Calendar(
             CalendarType::permanent()
