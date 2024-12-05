@@ -58,7 +58,6 @@ use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -1327,7 +1326,7 @@ class HistoryProjectorTest extends TestCase
         $event = new MajorInfoUpdated(
             self::EVENT_ID_1,
             'title',
-            new EventType('0.0.0.0', 'event type'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('a0c6c66e-d933-4817-a335-2a5a51df1fa7'),
             new Calendar(CalendarType::permanent())
         );
@@ -1640,7 +1639,10 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_type_updated(): void
     {
-        $event = new TypeUpdated(self::EVENT_ID_1, new EventType('0.1.1', 'type label'));
+        $event = new TypeUpdated(
+            self::EVENT_ID_1,
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType())
+        );
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

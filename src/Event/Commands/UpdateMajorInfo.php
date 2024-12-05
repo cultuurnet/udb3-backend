@@ -5,20 +5,17 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
-/**
- * Provides a command to update the major info of the event.
- */
 class UpdateMajorInfo extends AbstractCommand
 {
     private Title $title;
 
-    private EventType $eventType;
+    private Category $eventType;
 
     private ?Theme $theme;
 
@@ -29,7 +26,7 @@ class UpdateMajorInfo extends AbstractCommand
     public function __construct(
         string $eventId,
         Title $title,
-        EventType $eventType,
+        Category $eventType,
         LocationId $location,
         Calendar $calendar,
         Theme $theme = null
@@ -47,7 +44,7 @@ class UpdateMajorInfo extends AbstractCommand
         return $this->title;
     }
 
-    public function getEventType(): EventType
+    public function getEventType(): Category
     {
         return $this->eventType;
     }

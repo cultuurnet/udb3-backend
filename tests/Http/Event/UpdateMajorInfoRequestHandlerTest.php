@@ -7,10 +7,13 @@ namespace CultuurNet\UDB3\Http\Event;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use PHPUnit\Framework\TestCase;
 
@@ -51,7 +54,7 @@ class UpdateMajorInfoRequestHandlerTest extends TestCase
             [new UpdateMajorInfo(
                 'event_id',
                 new Title('Updated title'),
-                new EventType('0.17.0.0.0', 'Route'),
+                new Category(new CategoryID('0.17.0.0.0'), new CategoryLabel('Route'), CategoryDomain::eventType()),
                 new LocationId('place_id'),
                 new Calendar(CalendarType::permanent())
             )],

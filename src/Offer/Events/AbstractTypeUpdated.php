@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 
 abstract class AbstractTypeUpdated extends AbstractEvent
 {
-    protected EventType $type;
+    protected Category $type;
 
-    final public function __construct(string $itemId, EventType $type)
+    final public function __construct(string $itemId, Category $type)
     {
         parent::__construct($itemId);
         $this->type = $type;
     }
 
-    public function getType(): EventType
+    public function getType(): Category
     {
         return $this->type;
     }
@@ -24,12 +27,15 @@ abstract class AbstractTypeUpdated extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'type' => $this->type->serialize(),
+            'type' => (new CategoryNormalizer())->normalize($this->type),
         ];
     }
 
     public static function deserialize(array $data): AbstractTypeUpdated
     {
-        return new static($data['item_id'], EventType::deserialize($data['type']));
+        return new static(
+            $data['item_id'],
+            (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['type'], Category::class)
+        );
     }
 }

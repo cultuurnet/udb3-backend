@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Deserializer\Event;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 /**
@@ -41,7 +42,7 @@ class CreateEventJSONDeserializer extends JSONDeserializer
         return new CreateEvent(
             new Language($deserializedData['mainLanguage']),
             $majorInfo->getTitle(),
-            $majorInfo->getType(),
+            EventType::fromUdb3ModelCategory($majorInfo->getType()),
             $majorInfo->getLocation(),
             $majorInfo->getCalendar(),
             $majorInfo->getTheme()

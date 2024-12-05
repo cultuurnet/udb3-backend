@@ -10,11 +10,14 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +43,7 @@ class PlaceCreatedTest extends TestCase
             'id',
             new Language('es'),
             'title',
-            new EventType('id', 'label'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->address,
             new Calendar(CalendarType::permanent()),
             $this->publicationDate
@@ -54,7 +57,10 @@ class PlaceCreatedTest extends TestCase
     {
         $expected = [
             new TitleUpdated('id', 'title'),
-            new TypeUpdated('id', new EventType('id', 'label')),
+            new TypeUpdated(
+                'id',
+                new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType())
+            ),
             new AddressUpdated('id', $this->address),
             new CalendarUpdated('id', new Calendar(CalendarType::permanent())),
         ];
@@ -151,7 +157,7 @@ class PlaceCreatedTest extends TestCase
     public function serializationDataProvider(): array
     {
         return [
-            [
+            'without publication date' => [
                 [
                     'place_id' => 'test 456',
                     'main_language' => 'es',
@@ -172,8 +178,8 @@ class PlaceCreatedTest extends TestCase
                         ],
                     ],
                     'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
+                        'id' => '0.50.4.0.0',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                     'publication_date' => null,
@@ -182,7 +188,7 @@ class PlaceCreatedTest extends TestCase
                     'test 456',
                     new Language('es'),
                     'title',
-                    new EventType('bar_id', 'bar'),
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new Address(
                         new Street('De straat'),
                         new PostalCode('9620'),
@@ -194,7 +200,7 @@ class PlaceCreatedTest extends TestCase
                     )
                 ),
             ],
-            [
+            'with publication date' => [
                 [
                     'place_id' => 'test 456',
                     'main_language' => 'es',
@@ -215,51 +221,8 @@ class PlaceCreatedTest extends TestCase
                         ],
                     ],
                     'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
-                        'domain' => 'eventtype',
-                    ],
-                    'publication_date' => null,
-                ],
-                new PlaceCreated(
-                    'test 456',
-                    new Language('es'),
-                    'title',
-                    new EventType('bar_id', 'bar'),
-                    new Address(
-                        new Street('De straat'),
-                        new PostalCode('9620'),
-                        new Locality('Zottegem'),
-                        new CountryCode('BE')
-                    ),
-                    new Calendar(
-                        CalendarType::permanent()
-                    )
-                ),
-            ],
-            [
-                [
-                    'place_id' => 'test 456',
-                    'main_language' => 'es',
-                    'title' => 'title',
-                    'address' => [
-                        'streetAddress' => 'De straat',
-                        'postalCode' => '9620',
-                        'addressLocality' => 'Zottegem',
-                        'addressCountry' => 'BE',
-                    ],
-                    'calendar' => [
-                        'type' => 'permanent',
-                        'status' => [
-                            'type' => 'Available',
-                        ],
-                        'bookingAvailability' => [
-                            'type' => 'Available',
-                        ],
-                    ],
-                    'event_type' => [
-                        'id' => 'bar_id',
-                        'label' => 'bar',
+                        'id' => '0.50.4.0.0',
+                        'label' => 'Concert',
                         'domain' => 'eventtype',
                     ],
                     'publication_date' => '2016-08-01T00:00:00+02:00',
@@ -268,7 +231,7 @@ class PlaceCreatedTest extends TestCase
                     'test 456',
                     new Language('es'),
                     'title',
-                    new EventType('bar_id', 'bar'),
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new Address(
                         new Street('De straat'),
                         new PostalCode('9620'),

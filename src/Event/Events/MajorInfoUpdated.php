@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Theme;
 
 final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranularEvents
 {
     private string $title;
-    private EventType $eventType;
+    private Category $eventType;
     private ?Theme $theme;
     private LocationId $location;
     private Calendar $calendar;
@@ -22,7 +25,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
     public function __construct(
         string $eventId,
         string $title,
-        EventType $eventType,
+        Category $eventType,
         LocationId $location,
         Calendar $calendar,
         Theme $theme = null
@@ -41,7 +44,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         return $this->title;
     }
 
-    public function getEventType(): EventType
+    public function getEventType(): Category
     {
         return $this->eventType;
     }
@@ -84,7 +87,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         }
         return parent::serialize() + [
             'title' => $this->getTitle(),
-            'event_type' => $this->getEventType()->serialize(),
+            'event_type' => (new CategoryNormalizer())->normalize($this->getEventType()),
             'theme' => $theme,
             'location' => $this->getLocation()->toString(),
             'calendar' => $this->getCalendar()->serialize(),
@@ -96,7 +99,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         return new self(
             $data['item_id'],
             $data['title'],
-            EventType::deserialize($data['event_type']),
+            (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['event_type'], Category::class),
             new LocationId($data['location']),
             Calendar::deserialize($data['calendar']),
             empty($data['theme']) ? null : Theme::deserialize($data['theme'])

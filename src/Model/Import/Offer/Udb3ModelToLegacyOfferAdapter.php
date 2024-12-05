@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Import\Offer;
 
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\Offer\Offer;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 
@@ -23,30 +21,6 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
     public function __construct(Offer $offer)
     {
         $this->offer = $offer;
-    }
-
-    public function getId(): string
-    {
-        return $this->offer->getId()->toString();
-    }
-
-    public function getMainLanguage(): Language
-    {
-        return $this->offer->getMainLanguage();
-    }
-
-    public function getType(): EventType
-    {
-        $type = $this->offer->getTerms()
-            ->filter(
-                function (Category $term) {
-                    $domain = $term->getDomain();
-                    return $domain && $domain->sameAs(new CategoryDomain('eventtype'));
-                }
-            )
-            ->getFirst();
-
-        return EventType::fromUdb3ModelCategory($type);
     }
 
     public function getTheme(): ?Theme

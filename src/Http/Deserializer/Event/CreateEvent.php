@@ -25,7 +25,7 @@ class CreateEvent extends MajorInfo
     ) {
         parent::__construct(
             $title,
-            $type,
+            $type->toUdb3ModelCategory(),
             $location,
             $calendar,
             $theme

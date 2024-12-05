@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use PHPUnit\Framework\TestCase;
 
 class TypeUpdatedTest extends TestCase
@@ -16,7 +19,7 @@ class TypeUpdatedTest extends TestCase
     {
         $event = new TypeUpdated(
             '89491DC9-9C33-4145-ABB4-AEB33FD93CB6',
-            new EventType('0.17.0.0.0', 'Route')
+            new Category(new CategoryID('0.17.0.0.0'), new CategoryLabel('Route'), CategoryDomain::eventType())
         );
 
         $eventData = $event->serialize();
