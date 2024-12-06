@@ -41,7 +41,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
-use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -80,8 +79,8 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $placeId = $placeCreated->getPlaceId();
 
         $facilities = [
-            new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
-            new Facility('3.30.0.0.0', 'Rolstoelpodium'),
+            new Category(new CategoryID('3.27.0.0.0'), new CategoryLabel('Rolstoeltoegankelijk'), CategoryDomain::facility()),
+            new Category(new CategoryID('3.30.0.0.0'), new CategoryLabel('Rolstoelpodium'), CategoryDomain::facility()),
         ];
 
         $cdbXml = $this->getCdbXML('/ReadModel/JSONLD/place_with_long_description.cdbxml.xml');

@@ -91,7 +91,6 @@ use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -122,7 +121,7 @@ final class Event extends Offer
         Category $eventType,
         LocationId $location,
         Calendar $calendar,
-        Theme $theme = null,
+        Category $theme = null,
         DateTimeImmutable $publicationDate = null
     ): self {
         $event = new self();
@@ -211,7 +210,7 @@ final class Event extends Offer
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
         $this->typeId = $eventCreated->getEventType()->getId()->toString();
-        $this->themeId = $eventCreated->getTheme() ? $eventCreated->getTheme()->getId() : null;
+        $this->themeId = $eventCreated->getTheme() ? $eventCreated->getTheme()->getId()->toString() : null;
         $this->locationId = $eventCreated->getLocation();
         $this->mainLanguage = $eventCreated->getMainLanguage();
         $this->workflowStatus = WorkflowStatus::DRAFT();
@@ -297,7 +296,7 @@ final class Event extends Offer
         Category $eventType,
         LocationId $location,
         Calendar $calendar,
-        Theme $theme = null
+        Category $theme = null
     ): void {
         $this->apply(new MajorInfoUpdated($this->eventId, $title->toString(), $eventType, $location, $calendar, $theme));
 
@@ -475,13 +474,13 @@ final class Event extends Offer
     public function updateTheme(Category $category): void
     {
         if (!$this->themeId || $this->themeId !== $category->getId()->toString()) {
-            $this->apply(new ThemeUpdated($this->eventId, Theme::fromUdb3ModelCategory($category)));
+            $this->apply(new ThemeUpdated($this->eventId, $category));
         }
     }
 
     protected function applyThemeUpdated(ThemeUpdated $themeUpdated): void
     {
-        $this->themeId = $themeUpdated->getTheme()->getId();
+        $this->themeId = $themeUpdated->getTheme()->getId()->toString();
     }
 
     public function removeTheme(): void

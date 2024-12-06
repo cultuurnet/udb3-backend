@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Theme;
 
 class RemoveThemeHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -37,7 +36,11 @@ class RemoveThemeHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->scenario
             ->withAggregateId($eventId)
-            ->given([$this->getEventCreated($eventId, new Theme('1.8.3.1.0', 'Pop en rock'))])
+            ->given([$this->getEventCreated(
+                $eventId,
+                new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
+            ),
+            ])
             ->when(new RemoveTheme($eventId))
             ->then([new ThemeRemoved($eventId)]);
     }
@@ -51,7 +54,13 @@ class RemoveThemeHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->scenario
             ->withAggregateId($eventId)
-            ->given([$this->getEventCreated($eventId, new Theme('1.8.3.1.0', 'Pop en rock')), new ThemeRemoved($eventId)])
+            ->given([
+                $this->getEventCreated(
+                    $eventId,
+                    new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
+                ),
+                new ThemeRemoved($eventId),
+            ])
             ->when(new RemoveTheme($eventId))
             ->then([]);
     }
@@ -70,7 +79,7 @@ class RemoveThemeHandlerTest extends CommandHandlerScenarioTestCase
             ->then([]);
     }
 
-    private function getEventCreated(string $eventId, ?Theme $theme): EventCreated
+    private function getEventCreated(string $eventId, ?Category $theme): EventCreated
     {
         return new EventCreated(
             $eventId,

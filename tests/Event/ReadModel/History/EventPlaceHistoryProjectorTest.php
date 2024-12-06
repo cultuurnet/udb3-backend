@@ -189,7 +189,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId($newPlaceId->toString()),
             new Calendar(CalendarType::permanent()),
-            new Theme('1.8.1.0.0', 'Rock')
+            new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
         );
 
         $this->projector->handle(

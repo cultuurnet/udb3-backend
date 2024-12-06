@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\Facility;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 
 abstract class AbstractFacilitiesUpdated extends AbstractEvent
 {
+    /**
+     * @var Category[]
+     */
     protected array $facilities;
 
     final public function __construct(string $id, array $facilities)
@@ -25,7 +31,7 @@ abstract class AbstractFacilitiesUpdated extends AbstractEvent
     {
         $facilities = [];
         foreach ($data['facilities'] as $facility) {
-            $facilities[] = Facility::deserialize($facility);
+            $facilities[] = (new CategoryDenormalizer(CategoryDomain::facility()))->denormalize($facility, Category::class);
         }
 
         return new static($data['item_id'], $facilities);
@@ -35,7 +41,7 @@ abstract class AbstractFacilitiesUpdated extends AbstractEvent
     {
         $facilities = [];
         foreach ($this->facilities as $facility) {
-            $facilities[] = $facility->serialize();
+            $facilities[] = (new CategoryNormalizer())->normalize($facility);
         }
 
         return parent::serialize() + [

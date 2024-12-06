@@ -85,7 +85,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\SampleFiles;
-use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Money\Currency;
@@ -277,7 +276,7 @@ class HistoryProjectorTest extends TestCase
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),
             new Calendar(CalendarType::permanent()),
-            new Theme('1.8.1.0.0', 'Rock')
+            new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
         );
 
         $now = new \DateTime();
@@ -1552,7 +1551,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_theme_updated(): void
     {
-        $event = new ThemeUpdated(self::EVENT_ID_1, new Theme('0.1', 'theme label'));
+        $event = new ThemeUpdated(self::EVENT_ID_1, new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme()));
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

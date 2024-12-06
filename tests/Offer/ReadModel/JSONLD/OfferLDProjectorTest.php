@@ -10,7 +10,6 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Event\Events\Concluded;
-use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\Image;
@@ -2241,8 +2240,8 @@ class OfferLDProjectorTest extends TestCase
     {
         $id = 'foo';
         $facilities = [
-            new Facility('facility1', 'facility label'),
-            new Facility('facility2', 'facility label2'),
+            new Category(new CategoryID('facility1'), new CategoryLabel('facility label'), CategoryDomain::facility()),
+            new Category(new CategoryID('facility2'), new CategoryLabel('facility label2'), CategoryDomain::facility()),
         ];
 
         $facilitiesUpdated = new FacilitiesUpdated($id, $facilities);

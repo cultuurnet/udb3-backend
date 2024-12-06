@@ -242,8 +242,8 @@ class CultureFeedEventInfoServiceTest extends TestCase
         );
 
         $this->assertTrue(
-            $testLogHandler->hasError(
-                'Can\'t retrieve promotions for event with id:' . $event->cdbid
+            $testLogHandler->hasInfo(
+                'Can\'t retrieve promotions for event with id:' . $event->cdbid . ' eventOrganizer may no longer be UiTPAS'
             )
         );
     }

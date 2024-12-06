@@ -73,7 +73,6 @@ use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\SampleFiles;
-use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
@@ -297,7 +296,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
         );
-        $theme = new Theme('123', 'theme label');
+        $theme = new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme());
 
         $eventCreated = $this->createEventCreated($eventId, $calendar, $theme);
 
@@ -309,8 +308,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'eventtype',
             ],
             (object)[
-                'id' => '123',
-                'label' => 'theme label',
+                'id' => '1.8.1.0.0',
+                'label' => 'Rock',
                 'domain' => 'theme',
             ],
         ];
@@ -345,7 +344,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
         );
-        $theme = new Theme('123', 'theme label');
+        $theme = new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme());
 
         $eventCreated = $this->createEventCreated($eventId, $calendar, $theme);
 
@@ -357,8 +356,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'eventtype',
             ],
             (object)[
-                'id' => '123',
-                'label' => 'theme label',
+                'id' => '1.8.1.0.0',
+                'label' => 'Rock',
                 'domain' => 'theme',
             ],
         ];
@@ -644,7 +643,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $subEvents
         );
 
-        $theme = new Theme('123', 'theme label');
+        $theme = new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme());
 
         $eventCreated = $this->createEventCreated($eventId, $calendar, $theme);
 
@@ -681,8 +680,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'eventtype',
             ],
             (object)[
-                'id' => '123',
-                'label' => 'theme label',
+                'id' => '1.8.1.0.0',
+                'label' => 'Rock',
                 'domain' => 'theme',
             ],
         ];
@@ -1033,7 +1032,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                         DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
                         DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
                     ),
-                    new Theme('123', 'theme label')
+                    new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
                 ),
                 AttendanceMode::offline(),
                 [
@@ -1053,7 +1052,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                         DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
                         DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
                     ),
-                    new Theme('123', 'theme label')
+                    new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
                 ),
                 AttendanceMode::online(),
                 EventLDProjectorTest::getNilLocationJsonLD(),
@@ -1070,7 +1069,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                         DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
                         DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
                     ),
-                    new Theme('123', 'theme label')
+                    new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
                 ),
                 AttendanceMode::mixed(),
                 [
@@ -1143,8 +1142,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'eventtype',
             ],
             (object)[
-                'id' => '123',
-                'label' => 'theme label',
+                'id' => '1.8.3.5.0',
+                'label' => 'Amusementsmuziek',
                 'domain' => 'theme',
             ],
         ];
@@ -1331,7 +1330,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
         );
-        $theme = new Theme('123', 'theme label');
+        $theme = new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme());
         $majorInfoUpdated = new MajorInfoUpdated(
             $importedFromUDB2->getEventId(),
             $title,
@@ -1342,7 +1341,6 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $events = [$importedFromUDB2, $majorInfoUpdated];
-        $body = null;
         foreach ($events as $event) {
             $body = $this->project($event, $importedFromUDB2->getEventId());
         }
@@ -1364,8 +1362,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'eventtype',
             ],
             (object)[
-                'id' => '123',
-                'label' => 'theme label',
+                'id' => '1.8.3.5.0',
+                'label' => 'Amusementsmuziek',
                 'domain' => 'theme',
             ],
         ];
@@ -1527,7 +1525,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     public function it_should_project_the_new_theme_as_a_term_when_updated(): void
     {
         $itemId = '528e26f7-9bad-48b8-b47f-c3a4b5b92bf6';
-        $theme = new Theme('1.8.3.3.0', 'Dance');
+        $theme = new Category(new CategoryID('1.8.3.3.0'), new CategoryLabel('Dance'), CategoryDomain::theme());
         $themeUpdatedEvent = new ThemeUpdated($itemId, $theme);
 
         $expectedTerms = [
@@ -1568,8 +1566,6 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 ],
             ])
         );
-        $theme = new Theme('1.8.2.0.0', 'Jazz en booze');
-        $themeUpdatedEvent = new ThemeUpdated($itemId, $theme);
 
         $this->documentRepository->save($documentWithExistingTerms);
 
@@ -1586,7 +1582,10 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             ],
         ];
 
+        $theme = new Category(new CategoryID('1.8.2.0.0'), new CategoryLabel('Jazz en booze'), CategoryDomain::theme());
+        $themeUpdatedEvent = new ThemeUpdated($itemId, $theme);
         $updatedItem = $this->project($themeUpdatedEvent, $itemId);
+
         $this->assertEquals($expectedTerms, $updatedItem->terms);
     }
 
@@ -1913,7 +1912,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     private function createEventCreated(
         string $eventId,
         Calendar $calendar = null,
-        Theme $theme = null
+        Category $theme = null
     ): EventCreated {
         $calendar = $calendar ?? new Calendar(CalendarType::permanent());
 

@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -49,8 +48,8 @@ class UpdateFacilitiesHandlerTest extends CommandHandlerScenarioTestCase
         ];
 
         $facilities = [
-            new Facility('3.13.1.0.0', 'Voorzieningen voor assistentiehonden'),
-            new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
+            new Category(new CategoryID('3.13.1.0.0'), new CategoryLabel('Voorzieningen voor assistentiehonden'), CategoryDomain::facility()),
+            new Category(new CategoryID('3.27.0.0.0'), new CategoryLabel('Rolstoeltoegankelijk'), CategoryDomain::facility()),
         ];
 
         $command = new UpdateFacilities($id, $facilityIds);

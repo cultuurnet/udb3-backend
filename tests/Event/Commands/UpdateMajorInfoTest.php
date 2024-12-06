@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\TestCase;
 
 class UpdateMajorInfoTest extends TestCase
@@ -27,7 +26,7 @@ class UpdateMajorInfoTest extends TestCase
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('335be568-aaf0-4147-80b6-9267daafe23b'),
             new Calendar(CalendarType::permanent()),
-            new Theme('themeid', 'theme_label')
+            new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
         );
     }
 
@@ -43,7 +42,7 @@ class UpdateMajorInfoTest extends TestCase
         $expectedCalendar = new Calendar(
             CalendarType::permanent()
         );
-        $expectedTheme = new Theme('themeid', 'theme_label');
+        $expectedTheme = new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme());
 
         $this->assertEquals($expectedId, $this->updateMajorInfo->getItemId());
         $this->assertEquals($expectedTitle, $this->updateMajorInfo->getTitle());

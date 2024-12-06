@@ -34,7 +34,6 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\SampleFiles;
-use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
@@ -187,7 +186,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),
             new Calendar(CalendarType::permanent()),
-            new Theme('1.8.1.0.0', 'Rock')
+            new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
         );
 
         $command = new UpdateGeoCoordinatesFromAddress(self::EVENT_ID, $address);

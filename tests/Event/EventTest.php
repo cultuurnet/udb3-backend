@@ -31,7 +31,6 @@ use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -68,7 +67,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\SampleFiles;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use Money\Currency;
 use Money\Money;
@@ -121,7 +119,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('59400d1e-6f98-4da9-ab08-f58adceb7204'),
             new Calendar(CalendarType::permanent()),
-            new Theme('1.8.3.1.0', 'Pop en rock')
+            new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
         );
     }
 
@@ -437,8 +435,8 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
 
         $facilities = [
-            new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
-            new Facility('3.30.0.0.0', 'Rolstoelpodium'),
+            new Category(new CategoryID('3.27.0.0.0'), new CategoryLabel('Rolstoeltoegankelijk'), CategoryDomain::facility()),
+            new Category(new CategoryID('3.30.0.0.0'), new CategoryLabel('Rolstoelpodium'), CategoryDomain::facility()),
         ];
 
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
