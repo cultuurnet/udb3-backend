@@ -43,7 +43,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
-use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 use Money\Currency;
 use Money\Money;
@@ -163,36 +162,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
 
         $this->adapter = new Udb3ModelToLegacyOfferAdapter($this->offer);
         $this->completeAdapter = new Udb3ModelToLegacyOfferAdapter($this->completeOffer);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_theme(): void
-    {
-        $expected = new Theme('0.52.0.0.0', 'Circus');
-        $actual = $this->adapter->getTheme();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_null_as_theme_if_there_is_none(): void
-    {
-        $offer = $this->offer->withTerms(
-            new Categories(
-                new Category(
-                    new CategoryID('0.6.0.0.0'),
-                    new CategoryLabel('Beurs'),
-                    new CategoryDomain('eventtype')
-                )
-            )
-        );
-        $adapter = new Udb3ModelToLegacyOfferAdapter($offer);
-
-        $actual = $adapter->getTheme();
-        $this->assertNull($actual);
     }
 
     /**

@@ -7,9 +7,9 @@ namespace CultuurNet\UDB3\Kinepolis\ValueObject;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Theme;
 
 final class ParsedMovie
 {
@@ -19,7 +19,7 @@ final class ParsedMovie
 
     private LocationId $locationId;
 
-    private Theme $theme;
+    private Category $theme;
 
     private Calendar $calendar;
 
@@ -33,7 +33,7 @@ final class ParsedMovie
         string $externalId,
         Title $title,
         LocationId $locationId,
-        Theme $theme,
+        Category $theme,
         Calendar $calendar,
         PriceInfo $priceInfo,
         string $imageUrl
@@ -62,7 +62,7 @@ final class ParsedMovie
         return $this->locationId;
     }
 
-    public function getTheme(): Theme
+    public function getTheme(): Category
     {
         return $this->theme;
     }

@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 
@@ -18,7 +17,7 @@ class CreateEvent
     private Language $mainLanguage;
     private Title $title;
     private Category $eventType;
-    private Theme $theme;
+    private Category $theme;
     private LocationId $location;
     private Calendar $calendar;
     private ?DateTimeImmutable $publicationDate;
@@ -30,7 +29,7 @@ class CreateEvent
         Category $eventType,
         LocationId $location,
         Calendar $calendar,
-        Theme $theme = null,
+        Category $theme = null,
         DateTimeImmutable $publicationDate = null
     ) {
         $this->itemId = $itemId;
@@ -63,7 +62,7 @@ class CreateEvent
         return $this->eventType;
     }
 
-    public function getTheme(): Theme
+    public function getTheme(): Category
     {
         return $this->theme;
     }

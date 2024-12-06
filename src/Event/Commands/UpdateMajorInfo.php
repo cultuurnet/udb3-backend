@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 class UpdateMajorInfo extends AbstractCommand
@@ -17,7 +16,7 @@ class UpdateMajorInfo extends AbstractCommand
 
     private Category $eventType;
 
-    private ?Theme $theme;
+    private ?Category $theme;
 
     private LocationId $location;
 
@@ -29,7 +28,7 @@ class UpdateMajorInfo extends AbstractCommand
         Category $eventType,
         LocationId $location,
         Calendar $calendar,
-        Theme $theme = null
+        Category $theme = null
     ) {
         parent::__construct($eventId);
         $this->title = $title;
@@ -49,7 +48,7 @@ class UpdateMajorInfo extends AbstractCommand
         return $this->eventType;
     }
 
-    public function getTheme(): ?Theme
+    public function getTheme(): ?Category
     {
         return $this->theme;
     }

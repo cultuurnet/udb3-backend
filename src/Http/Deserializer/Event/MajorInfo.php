@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Deserializer\Event;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 class MajorInfo
@@ -20,14 +19,14 @@ class MajorInfo
 
     private Calendar $calendar;
 
-    private ?Theme $theme;
+    private ?Category $theme;
 
     public function __construct(
         Title $title,
         Category $type,
         LocationId $location,
         Calendar $calendar,
-        Theme $theme = null
+        Category $theme = null
     ) {
         $this->title = $title;
         $this->type = $type;
@@ -56,7 +55,7 @@ class MajorInfo
         return $this->calendar;
     }
 
-    public function getTheme(): ?Theme
+    public function getTheme(): ?Category
     {
         return $this->theme;
     }

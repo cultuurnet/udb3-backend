@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer;
 
-use CultuurNet\UDB3\Facility;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 
 abstract class OfferFacilityResolver implements OfferFacilityResolverInterface
 {
     /**
-     * @var Facility[]
+     * @var Category[]
      */
     private array $facilities;
 
@@ -18,7 +18,7 @@ abstract class OfferFacilityResolver implements OfferFacilityResolverInterface
         $this->facilities = $this->getFacilities();
     }
 
-    public function byId(string $facilityId): Facility
+    public function byId(string $facilityId): Category
     {
         if (!array_key_exists($facilityId, $this->facilities)) {
             throw new \Exception("Unknown facility id '{$facilityId}'");
@@ -28,7 +28,7 @@ abstract class OfferFacilityResolver implements OfferFacilityResolverInterface
     }
 
     /**
-     * @return Facility[]
+     * @return Category[]
      */
     abstract protected function getFacilities(): array;
 }

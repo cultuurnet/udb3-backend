@@ -29,10 +29,20 @@ class Categories extends Collection
 
     public function getEventType(): ?Category
     {
+        return $this->filterDomain(CategoryDomain::eventType());
+    }
+
+    public function getTheme(): ?Category
+    {
+        return $this->filterDomain(CategoryDomain::theme());
+    }
+
+    private function filterDomain(CategoryDomain $domainFilter): ?Category
+    {
         return $this->filter(
-            function (Category $term) {
+            function (Category $term) use ($domainFilter) {
                 $domain = $term->getDomain();
-                return $domain && $domain->sameAs(CategoryDomain::eventType());
+                return $domain && $domain->sameAs($domainFilter);
             }
         )->getFirst();
     }

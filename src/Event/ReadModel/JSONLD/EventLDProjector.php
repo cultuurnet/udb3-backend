@@ -8,7 +8,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Category as LegacyCategory;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\EntityNotFoundException;
@@ -60,7 +59,6 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\Events\VideoUpdated;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -76,6 +74,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
@@ -90,7 +89,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SameAsForUitInVlaanderen;
-use CultuurNet\UDB3\Theme;
 use DateTimeInterface;
 use JsonException;
 
@@ -257,7 +255,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
             $eventCreated->getCalendar(),
-            EventType::fromUdb3ModelCategory($eventCreated->getEventType())
+            $eventCreated->getEventType()
         )->format(DateTimeInterface::ATOM);
 
         // Same as.
@@ -273,7 +271,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $theme = $eventCreated->getTheme();
         if (!empty($theme)) {
-            $jsonLD->terms[] = $theme->toJsonLd();
+            $jsonLD->terms[] = (new CategoryNormalizer())->normalize($theme);
         }
 
         $created = RecordedOn::fromDomainMessage($domainMessage);
@@ -349,7 +347,7 @@ final class EventLDProjector extends OfferLDProjector implements
         // Set available to and from.
         $eventJsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
             $eventCopied->getCalendar(),
-            EventType::fromUdb3ModelCategory($this->getEventType($eventJsonLD))
+            $this->getEventType($eventJsonLD)
         )->format(DateTimeInterface::ATOM);
         unset($eventJsonLD->availableFrom);
 
@@ -377,7 +375,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $offerLd->availableTo = AvailableTo::createFromLegacyCalendar(
             $calendarUpdated->getCalendar(),
-            $this->getEventType($offerLd) === null ? null : EventType::fromUdb3ModelCategory($this->getEventType($offerLd))
+            $this->getEventType($offerLd)
         )->format(DateTimeInterface::ATOM);
 
         return $document->withBody($offerLd);
@@ -393,7 +391,7 @@ final class EventLDProjector extends OfferLDProjector implements
         } else {
             $offerLd->availableTo = $offerLd->endDate ?? $offerLd->availableTo;
         }
-        return $this->updateTerm($document->withBody($offerLd), LegacyCategory::fromUdb3ModelCategory($typeUpdated->getType()));
+        return $this->updateTerm($document->withBody($offerLd), $typeUpdated->getType());
     }
 
     private function getEventType(\stdClass $eventJsonLD): ?Category
@@ -440,14 +438,15 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
             $majorInfoUpdated->getCalendar(),
-            EventType::fromUdb3ModelCategory($majorInfoUpdated->getEventType())
+            $majorInfoUpdated->getEventType()
         )->format(DateTimeInterface::ATOM);
 
         // Remove old theme and event type.
         $jsonLD->terms = array_filter(
             $jsonLD->terms,
             function ($term) {
-                return $term->domain !== EventType::DOMAIN &&  $term->domain !== Theme::DOMAIN;
+                return $term->domain !== CategoryDomain::eventType()->toString()
+                    && $term->domain !== CategoryDomain::theme()->toString();
             }
         );
         $jsonLD->terms = array_values($jsonLD->terms);
@@ -457,7 +456,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $theme = $majorInfoUpdated->getTheme();
         if (!empty($theme)) {
-            $jsonLD->terms[] = $theme->toJsonLd();
+            $jsonLD->terms[] = (new CategoryNormalizer())->normalize($theme);
         }
 
         return $document->withBody($jsonLD);

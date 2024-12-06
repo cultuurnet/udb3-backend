@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Taxonomy\Category;
 
-use CultuurNet\UDB3\Category as LegacyCategory;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Offer\ThemeResolverInterface;
 use CultuurNet\UDB3\Offer\TypeResolverInterface;
@@ -70,25 +68,9 @@ class LegacyBridgeCategoryResolver implements CategoryResolverInterface
         }
 
         try {
-            /** @var LegacyCategory|Category $category */
-            $category = $resolver->byId($categoryID->toString());
-
-            if ($category instanceof Category) {
-                return $category;
-            }
-
-            return $this->convertLegacyCategory($category);
+            return $resolver->byId($categoryID->toString());
         } catch (\Exception $e) {
             return null;
         }
-    }
-
-    private function convertLegacyCategory(LegacyCategory $legacyCategory): Category
-    {
-        return new Category(
-            new CategoryID($legacyCategory->getId()),
-            new CategoryLabel($legacyCategory->getLabel()),
-            new CategoryDomain($legacyCategory->getDomain())
-        );
     }
 }

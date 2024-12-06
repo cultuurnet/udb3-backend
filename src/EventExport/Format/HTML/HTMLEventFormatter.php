@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications\EventSpecificationInterface;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications\Has1Taalicoon;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications\Has2Taaliconen;
@@ -25,6 +24,10 @@ use CultuurNet\UDB3\EventExport\Media\MediaFinder;
 use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\StringFilter\CombinedStringFilter;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
 use CultuurNet\UDB3\StringFilter\TruncateStringFilter;
@@ -96,9 +99,9 @@ class HTMLEventFormatter
             $formattedEvent['image'] = $event->image;
         }
 
-        $type = EventType::fromJSONLDEvent($eventString);
+        $type = $this->eventTypeFromJSONLDEvent($eventString);
         if ($type) {
-            $formattedEvent['type'] = $type->getLabel();
+            $formattedEvent['type'] = $type->getLabel()->toString();
         }
 
         $formattedEvent['title'] = reset($event->name);
@@ -281,5 +284,18 @@ class HTMLEventFormatter
         $mainLanguage = $event->mainLanguage ?? 'nl';
 
         return $event->location->address->{$mainLanguage}->{$addressField} ?? '';
+    }
+
+    private function eventTypeFromJSONLDEvent(string $eventString): ?Category
+    {
+        $event = Json::decode($eventString);
+
+        foreach ($event->terms as $term) {
+            if ($term->domain === CategoryDomain::eventType()->toString()) {
+                return new Category(new CategoryID($term->id), new CategoryLabel($term->label), CategoryDomain::eventType());
+            }
+        }
+
+        return null;
     }
 }

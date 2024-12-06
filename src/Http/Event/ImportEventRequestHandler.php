@@ -134,7 +134,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $type = $event->getTerms()->getEventType();
         $location = $eventAdapter->getLocation();
         $calendar = $eventAdapter->getCalendar();
-        $theme = $eventAdapter->getTheme();
+        $theme = $event->getTerms()->getTheme();
         $publishDate = $eventAdapter->getAvailableFrom(new DateTimeImmutable());
 
         if (!$location->isNilLocation()) {
@@ -206,7 +206,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdateCalendar($eventId, $calendar);
 
             if ($theme) {
-                $commands[] = new UpdateTheme($eventId, $theme->getId());
+                $commands[] = new UpdateTheme($eventId, $theme->getId()->toString());
             }
         }
 

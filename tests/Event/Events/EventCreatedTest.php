@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -40,7 +39,7 @@ class EventCreatedTest extends TestCase
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->location,
             new Calendar(CalendarType::permanent()),
-            new Theme('id', 'label'),
+            new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme()),
             $this->publicationDate
         );
     }
@@ -60,7 +59,7 @@ class EventCreatedTest extends TestCase
             $category,
             $this->location,
             new Calendar(CalendarType::permanent()),
-            new Theme('1.8.3.5.0', 'Amusementsmuziek')
+            new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
         );
 
         $eventWithoutTheme = new EventCreated(
@@ -75,7 +74,7 @@ class EventCreatedTest extends TestCase
         $expectedWithTheme = [
             new TitleUpdated($eventId, 'Example title'),
             new TypeUpdated($eventId, $category),
-            new ThemeUpdated($eventId, new Theme('1.8.3.5.0', 'Amusementsmuziek')),
+            new ThemeUpdated($eventId, new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())),
             new LocationUpdated($eventId, $this->location),
             new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
         ];
@@ -105,7 +104,7 @@ class EventCreatedTest extends TestCase
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->location,
             new Calendar(CalendarType::permanent()),
-            new Theme('1.8.3.5.0', 'Amusementsmuziek')
+            new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
         );
 
         $this->assertInstanceOf(MainLanguageDefined::class, $event);
@@ -237,8 +236,8 @@ class EventCreatedTest extends TestCase
                     'main_language' => 'es',
                     'title' => 'title',
                     'theme' => [
-                        'id' => '123',
-                        'label' => 'foo',
+                        'id' => '1.8.1.0.0',
+                        'label' => 'Rock',
                         'domain' => 'theme',
                     ],
                     'location' => 'd379187b-7f71-4403-8fff-645a28be8fd0',
@@ -267,7 +266,7 @@ class EventCreatedTest extends TestCase
                     new Calendar(
                         CalendarType::permanent()
                     ),
-                    new Theme('123', 'foo')
+                    new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
                 ),
             ],
             'without theme and with publication date' => [
