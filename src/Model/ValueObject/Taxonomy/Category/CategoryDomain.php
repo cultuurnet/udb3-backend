@@ -30,4 +30,9 @@ class CategoryDomain
     {
         return new CategoryDomain('theme');
     }
+
+    public static function facility(): CategoryDomain
+    {
+        return new CategoryDomain('facility');
+    }
 }

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Facility;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use PHPUnit\Framework\TestCase;
 
 final class PlaceFacilityResolverTest extends TestCase
@@ -32,7 +35,7 @@ final class PlaceFacilityResolverTest extends TestCase
         $resolver = new PlaceFacilityResolver();
 
         $facility = $resolver->byId('3.23.3.0.0');
-        $expectedFacility = new Facility('3.23.3.0.0', 'Rolstoel ter beschikking');
+        $expectedFacility = new Category(new CategoryID('3.23.3.0.0'), new CategoryLabel('Rolstoel ter beschikking'), CategoryDomain::facility());
 
         $this->assertEquals($expectedFacility, $facility);
     }

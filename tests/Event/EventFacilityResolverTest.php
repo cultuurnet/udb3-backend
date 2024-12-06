@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
-use CultuurNet\UDB3\Facility;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use PHPUnit\Framework\TestCase;
 
 final class EventFacilityResolverTest extends TestCase
@@ -32,7 +35,7 @@ final class EventFacilityResolverTest extends TestCase
         $resolver = new EventFacilityResolver();
 
         $facility = $resolver->byId('3.13.2.0.0');
-        $expectedFacility = new Facility('3.13.2.0.0', 'Audiodescriptie');
+        $expectedFacility = new Category(new CategoryID('3.13.2.0.0'), new CategoryLabel('Audiodescriptie'), CategoryDomain::facility());
 
         $this->assertEquals($expectedFacility, $facility);
     }
