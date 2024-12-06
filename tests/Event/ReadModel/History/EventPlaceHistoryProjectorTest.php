@@ -29,7 +29,6 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\SampleFiles;
-use CultuurNet\UDB3\Theme;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
