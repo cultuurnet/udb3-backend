@@ -25,4 +25,9 @@ class CategoryDomain
     {
         return new CategoryDomain('eventtype');
     }
+
+    public static function theme(): CategoryDomain
+    {
+        return new CategoryDomain('theme');
+    }
 }

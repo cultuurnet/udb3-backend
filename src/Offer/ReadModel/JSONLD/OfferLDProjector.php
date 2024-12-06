@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
 use Broadway\Domain\DomainMessage;
-use CultuurNet\UDB3\Category;
 use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\CulturefeedSlugger;
 use CultuurNet\UDB3\Event\Events\Concluded;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\OrganizerServiceInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Facility;
@@ -21,9 +19,11 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
@@ -283,7 +283,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         $document = $this->loadDocumentFromRepository($typeUpdated);
 
-        return $this->updateTerm($document, EventType::fromUdb3ModelCategory($typeUpdated->getType()));
+        return $this->updateTerm($document, $typeUpdated->getType());
     }
 
     protected function updateTerm(JsonDocument $document, Category $category): JsonDocument
@@ -291,12 +291,12 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $offerLD = $document->getBody();
 
         $oldTerms = property_exists($offerLD, 'terms') ? $offerLD->terms : [];
-        $newTerm = (object)$category->serialize();
+        $newTerm = (object)(new CategoryNormalizer())->normalize($category);
 
         $newTerms = array_filter(
             $oldTerms,
             function ($term) use ($category) {
-                return !property_exists($term, 'domain') || $term->domain !== $category->getDomain();
+                return !property_exists($term, 'domain') || $term->domain !== $category->getDomain()->toString();
             }
         );
 
