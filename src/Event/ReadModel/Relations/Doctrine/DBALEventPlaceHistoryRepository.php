@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine;
 
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventPlaceHistoryRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 
 class DBALEventPlaceHistoryRepository implements EventPlaceHistoryRepository
@@ -18,27 +18,25 @@ class DBALEventPlaceHistoryRepository implements EventPlaceHistoryRepository
         $this->connection = $connection;
     }
 
-    public function storeEventPlaceStartingPoint(UUID $eventId, UUID $placeId): void
+    public function storeEventPlaceStartingPoint(UUID $eventId, UUID $placeId, DateTimeInterface $date): void
     {
-        $this->insertIntoPlaceHistoryTable($eventId, null, $placeId);
+        $this->insertIntoPlaceHistoryTable($eventId, null, $placeId, $date);
     }
 
-    public function storeEventPlaceMove(UUID $eventId, UUID $oldPlaceId, UUID $newPlaceId): void
+    public function storeEventPlaceMove(UUID $eventId, UUID $oldPlaceId, UUID $newPlaceId, DateTimeInterface $date): void
     {
-        $this->insertIntoPlaceHistoryTable($eventId, $oldPlaceId, $newPlaceId);
+        $this->insertIntoPlaceHistoryTable($eventId, $oldPlaceId, $newPlaceId, $date);
     }
 
-    public function insertIntoPlaceHistoryTable(UUID $eventId, ?UUID $oldPlaceId, UUID $newPlaceId): void
+    private function insertIntoPlaceHistoryTable(UUID $eventId, ?UUID $oldPlaceId, UUID $newPlaceId, DateTimeInterface $date): void
     {
-        $currentTimestamp = new DateTimeImmutable();
-
         $this->connection->insert(
             'event_place_history',
             [
                 'event' => $eventId->toString(),
                 'old_place' => $oldPlaceId ? $oldPlaceId->toString() : null,
                 'new_place' => $newPlaceId->toString(),
-                'date' => $currentTimestamp->format('Y-m-d H:i:s'),
+                'date' => $date->format(DateTimeInterface::ATOM),
             ]
         );
     }

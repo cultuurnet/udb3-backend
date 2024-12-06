@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\History;
 
+use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultureFeed_Cdb_ParseException;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractorInterface;
@@ -44,7 +45,7 @@ class EventPlaceHistoryProjector implements EventListener
         $this->logger = $logger;
     }
 
-    protected function applyLocationUpdated(LocationUpdated $locationUpdated): void
+    protected function applyLocationUpdated(LocationUpdated $locationUpdated, DomainMessage $domainMessage): void
     {
         try {
             $oldPlaceId = $this->getOldPlaceUuid($locationUpdated->getItemId());
@@ -56,19 +57,21 @@ class EventPlaceHistoryProjector implements EventListener
         $this->repository->storeEventPlaceMove(
             new UUID($locationUpdated->getItemId()),
             $oldPlaceId,
-            new UUID($locationUpdated->getLocationId()->toString())
+            new UUID($locationUpdated->getLocationId()->toString()),
+            $domainMessage->getRecordedOn()->toNative()
         );
     }
 
-    protected function applyEventCreated(EventCreated $eventCreated): void
+    protected function applyEventCreated(EventCreated $eventCreated, DomainMessage $domainMessage): void
     {
         $this->repository->storeEventPlaceStartingPoint(
             new UUID($eventCreated->getEventId()),
-            new UUID($eventCreated->getLocation()->toString())
+            new UUID($eventCreated->getLocation()->toString()),
+            $domainMessage->getRecordedOn()->toNative()
         );
     }
 
-    protected function applyEventCopied(EventCopied $eventCopied): void
+    protected function applyEventCopied(EventCopied $eventCopied, DomainMessage $domainMessage): void
     {
         try {
             $placeId = $this->getOldPlaceUuid($eventCopied->getOriginalEventId());
@@ -79,11 +82,12 @@ class EventPlaceHistoryProjector implements EventListener
 
         $this->repository->storeEventPlaceStartingPoint(
             new UUID($eventCopied->getItemId()),
-            $placeId
+            $placeId,
+            $domainMessage->getRecordedOn()->toNative()
         );
     }
 
-    protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImportedFromUDB2): void
+    protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImportedFromUDB2, DomainMessage $domainMessage): void
     {
         try {
             $udb2Event = EventItemFactory::createEventFromCdbXml(
@@ -103,11 +107,12 @@ class EventPlaceHistoryProjector implements EventListener
 
         $this->repository->storeEventPlaceStartingPoint(
             new UUID($eventImportedFromUDB2->getEventId()),
-            new UUID($newPlaceId)
+            new UUID($newPlaceId),
+            $domainMessage->getRecordedOn()->toNative()
         );
     }
 
-    protected function applyEventUpdatedFromUDB2(EventUpdatedFromUDB2 $eventUpdatedFromUDB2): void
+    protected function applyEventUpdatedFromUDB2(EventUpdatedFromUDB2 $eventUpdatedFromUDB2, DomainMessage $domainMessage): void
     {
         try {
             $udb2Event = EventItemFactory::createEventFromCdbXml(
@@ -135,11 +140,12 @@ class EventPlaceHistoryProjector implements EventListener
         $this->repository->storeEventPlaceMove(
             new UUID($eventUpdatedFromUDB2->getEventId()),
             $oldPlaceId,
-            new UUID($newPlaceId)
+            new UUID($newPlaceId),
+            $domainMessage->getRecordedOn()->toNative()
         );
     }
 
-    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
+    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated, DomainMessage $domainMessage): void
     {
         try {
             $oldPlaceId = $this->getOldPlaceUuid($majorInfoUpdated->getItemId());
@@ -157,7 +163,8 @@ class EventPlaceHistoryProjector implements EventListener
         $this->repository->storeEventPlaceMove(
             new UUID($majorInfoUpdated->getItemId()),
             $oldPlaceId,
-            $newPlaceId
+            $newPlaceId,
+            $domainMessage->getRecordedOn()->toNative()
         );
     }
 
