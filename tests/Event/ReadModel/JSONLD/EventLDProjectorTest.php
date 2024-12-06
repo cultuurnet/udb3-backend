@@ -23,7 +23,7 @@ use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
@@ -48,8 +48,10 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -57,8 +59,13 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -197,13 +204,15 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $eventId = '1';
 
-        $calendar = new Calendar(
-            CalendarType::periodic(),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
+            ),
+            new OpeningHours()
         );
 
-        $eventCreated = $this->createEventCreated($eventId, $calendar, null);
+        $eventCreated = $this->createEventCreated($eventId, $calendar);
 
         $jsonLD = $this->createJsonLD($eventId, new Language('en'));
         $jsonLD->terms = [
@@ -241,10 +250,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'some representative title',
             new Category(new CategoryID('0.14.0.0.0'), new CategoryLabel('Monument'), CategoryDomain::eventType()),
             new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
-            new Calendar(
-                CalendarType::periodic(),
-                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
+            new PeriodicCalendar(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                    DateTimeFactory::fromAtom('2017-01-26T13:25:21+01:00')
+                ),
+                new OpeningHours()
             ),
             null
         );
@@ -260,7 +271,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventCopied = new EventCopied(
             $newEventId,
             $eventId,
-            new Calendar(
+            new LegacyCalendar(
                 CalendarType::periodic(),
                 DateTimeFactory::fromAtom('2022-01-26T13:25:21+01:00'),
                 DateTimeFactory::fromAtom('2022-01-26T13:25:21+01:00')
@@ -291,10 +302,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     public function it_handles_new_events_with_theme(): void
     {
         $eventId = '1';
-        $calendar = new Calendar(
-            CalendarType::periodic(),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
+            ),
+            new OpeningHours()
         );
         $theme = new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme());
 
@@ -339,10 +352,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     public function it_handles_new_events_with_creator(Metadata $metadata, string $expectedCreator): void
     {
         $eventId = '1';
-        $calendar = new Calendar(
-            CalendarType::periodic(),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
+            ),
+            new OpeningHours()
         );
         $theme = new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme());
 
@@ -439,10 +454,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     public function it_handles_copy_event(): void
     {
         $originalEventId = 'f8e4f084-1b75-4893-b2b9-fc67fd6e73fb';
-        $originalCalendar = new Calendar(
-            CalendarType::periodic(),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-            DateTimeFactory::fromAtom('2017-01-26T13:25:21+01:00')
+        $originalCalendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2017-01-26T13:25:21+01:00')
+            ),
+            new OpeningHours()
         );
         $eventCreated = $this->createEventCreated($originalEventId, $originalCalendar, null);
 
@@ -478,7 +495,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 )
             ),
         ];
-        $calendar = new Calendar(
+        $calendar = new LegacyCalendar(
             CalendarType::multiple(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00'),
@@ -513,7 +530,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->project($eventCreated, $eventCreated->getEventId());
         $this->project($this->aPublishedEvent($eventCreated), $eventCreated->getEventId());
 
-        $calendar = new Calendar(
+        $calendar = new LegacyCalendar(
             CalendarType::periodic(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
@@ -549,13 +566,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
         $eventType = new Category(new CategoryID('0.3.1.0.0'), new CategoryLabel('Cursus of workshop'), CategoryDomain::eventType());
 
-        $calendar = new Calendar(
-            CalendarType::single(),
-            $startDate,
-            $endDate,
-            [
-                SubEvent::createAvailable(new DateRange($startDate, $endDate)),
-            ]
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(new DateRange($startDate, $endDate)),
         );
 
         $eventCreated = new EventCreated(
@@ -571,7 +583,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->assertEquals($startDate->format(DATE_ATOM), $body->availableTo);
 
         $this->project($this->aPublishedEvent($eventCreated), $eventCreated->getEventId());
-        $eventCopied = new EventCopied('2', $eventCreated->getEventId(), $calendar);
+        $eventCopied = new EventCopied('2', $eventCreated->getEventId(), LegacyCalendar::fromUdb3ModelCalendar($calendar));
 
         $body = $this->project($eventCopied, '2');
         $this->assertEquals($startDate->format(DATE_ATOM), $body->availableTo);
@@ -586,13 +598,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
         $eventType = new Category(new CategoryID('1.50.0.0.0'), new CategoryLabel('Eten en drinken'), CategoryDomain::eventType());
 
-        $calendar = new Calendar(
-            CalendarType::single(),
-            $startDate,
-            $endDate,
-            [
-                SubEvent::createAvailable(new DateRange($startDate, $endDate)),
-            ]
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(new DateRange($startDate, $endDate)),
         );
 
         $eventCreated = new EventCreated(
@@ -608,7 +615,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->assertEquals($endDate->format(DATE_ATOM), $body->availableTo);
 
         $this->project($this->aPublishedEvent($eventCreated), $eventCreated->getEventId());
-        $eventCopied = new EventCopied('2', $eventCreated->getEventId(), $calendar);
+        $eventCopied = new EventCopied('2', $eventCreated->getEventId(), LegacyCalendar::fromUdb3ModelCalendar($calendar));
 
         $body = $this->project($eventCopied, '2');
         $this->assertEquals($endDate->format(DATE_ATOM), $body->availableTo);
@@ -636,11 +643,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             ),
         ];
 
-        $calendar = new Calendar(
-            CalendarType::multiple(),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-            DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00'),
-            $subEvents
+        $calendar = new MultipleSubEventsCalendar(
+            new SubEvents(...$subEvents)
         );
 
         $theme = new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme());
@@ -722,12 +726,14 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         // First make sure there is already an event, so it is a real update.
         $eventId = 'a2d50a8d-5b83-4c8b-84e6-e9c0bacbb1a3';
-        $calendar = new Calendar(
-            CalendarType::periodic(),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-            DateTimeFactory::fromAtom('2017-01-26T13:25:21+01:00')
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00')
+            ),
+            new OpeningHours()
         );
-        $eventCreated = $this->createEventCreated($eventId, $calendar, null);
+        $eventCreated = $this->createEventCreated($eventId, $calendar);
         $this->mockPlaceService();
         $this->project(
             $eventCreated,
@@ -1027,7 +1033,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     'new title',
                     new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType()),
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
-                    new Calendar(
+                    new LegacyCalendar(
                         CalendarType::periodic(),
                         DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
                         DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
@@ -1047,7 +1053,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     'new title',
                     new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType()),
                     new LocationId('00000000-0000-0000-0000-000000000000'),
-                    new Calendar(
+                    new LegacyCalendar(
                         CalendarType::periodic(),
                         DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
                         DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
@@ -1064,7 +1070,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     'new title',
                     new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType()),
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
-                    new Calendar(
+                    new LegacyCalendar(
                         CalendarType::periodic(),
                         DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
                         DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
@@ -1174,7 +1180,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $eventId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
 
-        $calendar = new Calendar(
+        $calendar = new LegacyCalendar(
             CalendarType::periodic(),
             DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
             DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
@@ -1325,7 +1331,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $title = 'new title';
         $eventType = new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType());
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
-        $calendar = new Calendar(
+        $calendar = new LegacyCalendar(
             CalendarType::periodic(),
             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
             DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
@@ -1382,7 +1388,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'Online workshop',
             new Category(new CategoryID('0.3.1.0.0'), new CategoryLabel('Cursus of workshop'), CategoryDomain::eventType()),
             new LocationId(LocationId::NIL_LOCATION),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $body = $this->project($eventCreated, $eventCreated->getEventId());
@@ -1622,7 +1628,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
         $calendarUpdated = new CalendarUpdated(
             $eventId,
-            new Calendar(
+            new LegacyCalendar(
                 CalendarType::single(),
                 $startDate,
                 $endDate,
@@ -1914,7 +1920,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         Calendar $calendar = null,
         Category $theme = null
     ): EventCreated {
-        $calendar = $calendar ?? new Calendar(CalendarType::permanent());
+        $calendar = $calendar ?? new PermanentCalendar(new OpeningHours());
 
         return new EventCreated(
             $eventId,
@@ -1982,15 +1988,14 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             );
     }
 
-
     protected function aPeriodicCalendarWithWorkScheme(): Calendar
     {
-        return new Calendar(
-            CalendarType::periodic(),
-            DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
-            DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00'),
-            [],
-            [
+        return new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2016-03-06T10:00:00+01:00'),
+                DateTimeFactory::fromAtom('2016-03-07T10:00:00+01:00')
+            ),
+            new OpeningHours(
                 new OpeningHour(
                     new Days(
                         Day::monday(),
@@ -2005,8 +2010,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     ),
                     new Time(new Hour(10), new Minute(0)),
                     new Time(new Hour(14), new Minute(0))
-                ),
-            ]
+                )
+            )
         );
     }
 

@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventEvent;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -93,7 +95,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
                     new TypeUpdated($this->eventId, $this->eventType),
                     $this->theme ? new ThemeUpdated($this->eventId, $this->theme) : null,
                     new LocationUpdated($this->eventId, $this->location),
-                    new CalendarUpdated($this->eventId, $this->calendar),
+                    new CalendarUpdated($this->eventId, LegacyCalendar::fromUdb3ModelCalendar($this->calendar)),
                 ]
             )
         );
@@ -115,7 +117,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
             'event_type' => (new CategoryNormalizer())->normalize($this->getEventType()),
             'theme' => $theme,
             'location' => $this->getLocation()->toString(),
-            'calendar' => $this->getCalendar()->serialize(),
+            'calendar' => (new CalendarSerializer($this->getCalendar()))->serialize(),
             'publication_date' => $publicationDate,
         ];
     }
@@ -136,7 +138,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
             $data['title'],
             (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['event_type'], Category::class),
             new LocationId($data['location']),
-            Calendar::deserialize($data['calendar']),
+            CalendarSerializer::deserialize($data['calendar']),
             $theme,
             $publicationDate
         );
