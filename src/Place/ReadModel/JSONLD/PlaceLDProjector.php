@@ -69,7 +69,6 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
-use CultuurNet\UDB3\Theme;
 use DateTimeInterface;
 
 /**
@@ -257,7 +256,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
 
         // Remove old theme and event type.
         $jsonLD->terms = array_filter($jsonLD->terms, function ($term) {
-            return $term->domain !== CategoryDomain::eventType()->toString() &&  $term->domain !== Theme::DOMAIN;
+            return $term->domain !== CategoryDomain::eventType()->toString() &&  $term->domain !== CategoryDomain::theme()->toString();
         });
 
         $eventType = $majorInfoUpdated->getEventType();

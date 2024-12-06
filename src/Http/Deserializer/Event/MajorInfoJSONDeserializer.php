@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForEventDataValidator;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
-use CultuurNet\UDB3\Http\Deserializer\Theme\ThemeJSONDeserializer;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -27,8 +26,6 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
 
     private CalendarJSONDeserializer $calendarDeserializer;
 
-    private ThemeJSONDeserializer $themeDeserializer;
-
     public function __construct()
     {
         parent::__construct(true);
@@ -39,7 +36,6 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
             new CalendarJSONParser(),
             new CalendarForEventDataValidator()
         );
-        $this->themeDeserializer = new ThemeJSONDeserializer();
     }
 
     /**
@@ -62,7 +58,7 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
 
         $theme = null;
         if (!empty($data['theme'])) {
-            $theme = $this->themeDeserializer->deserialize(Json::encode($data['theme']));
+            $theme = (new CategoryDenormalizer(CategoryDomain::theme()))->denormalize($data['theme'], Category::class);
         }
 
         return new MajorInfo(

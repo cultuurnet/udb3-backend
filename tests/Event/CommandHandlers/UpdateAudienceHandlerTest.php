@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Theme;
 
 class UpdateAudienceHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -53,7 +52,7 @@ class UpdateAudienceHandlerTest extends CommandHandlerScenarioTestCase
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('bfc60a14-6208-4372-942e-86e63744769a'),
             new Calendar(CalendarType::permanent()),
-            new Theme('1.8.1.0.0', 'Rock')
+            new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
         );
     }
 }

@@ -12,13 +12,12 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNorma
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
-use CultuurNet\UDB3\Theme;
 
 final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranularEvents
 {
     private string $title;
     private Category $eventType;
-    private ?Theme $theme;
+    private ?Category $theme;
     private LocationId $location;
     private Calendar $calendar;
 
@@ -28,7 +27,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         Category $eventType,
         LocationId $location,
         Calendar $calendar,
-        Theme $theme = null
+        Category $theme = null
     ) {
         parent::__construct($eventId);
 
@@ -49,7 +48,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
         return $this->eventType;
     }
 
-    public function getTheme(): ?Theme
+    public function getTheme(): ?Category
     {
         return $this->theme;
     }
@@ -83,7 +82,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
     {
         $theme = null;
         if ($this->getTheme() !== null) {
-            $theme = $this->getTheme()->serialize();
+            $theme = (new CategoryNormalizer())->normalize($this->getTheme());
         }
         return parent::serialize() + [
             'title' => $this->getTitle(),
@@ -102,7 +101,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
             (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['event_type'], Category::class),
             new LocationId($data['location']),
             Calendar::deserialize($data['calendar']),
-            empty($data['theme']) ? null : Theme::deserialize($data['theme'])
+            empty($data['theme']) ? null : (new CategoryDenormalizer(CategoryDomain::theme()))->denormalize($data['theme'], Category::class)
         );
     }
 }

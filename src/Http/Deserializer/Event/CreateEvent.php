@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 
 class CreateEvent extends MajorInfo
@@ -21,7 +20,7 @@ class CreateEvent extends MajorInfo
         Category $type,
         LocationId $location,
         Calendar $calendar,
-        Theme $theme = null
+        Category $theme = null
     ) {
         parent::__construct(
             $title,
