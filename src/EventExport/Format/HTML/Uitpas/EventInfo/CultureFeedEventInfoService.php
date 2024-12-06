@@ -66,14 +66,19 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         /** @var CultureFeed_Uitpas_Event_CultureEvent|false $uitpasEvent */
         $uitpasEvent = reset($resultSet->objects);
 
-        if ($uitpasEvent) {
-            $advantages = $this->getUitpasAdvantagesFromEvent($uitpasEvent);
+        try {
+            if ($uitpasEvent) {
+                $advantages = $this->getUitpasAdvantagesFromEvent($uitpasEvent);
 
-            $prices = $this->getUitpasPricesFromEvent($uitpasEvent);
+                $prices = $this->getUitpasPricesFromEvent($uitpasEvent);
 
-            $promotions = $this->getUitpasPointsPromotionsFromEvent($uitpasEvent);
+                $promotions = $this->getUitpasPointsPromotionsFromEvent($uitpasEvent);
+            }
+            $advantages = array_unique($advantages);
+        } catch (\Exception $exception) {
+            $prices = [];
+            $advantages = [];
         }
-        $advantages = array_unique($advantages);
 
         return new EventInfo(
             $prices,
@@ -126,12 +131,16 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         /** @var CultureFeed_PointsPromotion[] $promotionQueryResults */
         $promotionQueryResults = [];
 
+
+        /**
+         * @see https://jira.publiq.be/browse/III-6439
+         */
         try {
             $promotionQueryResults = $this->uitpas->getPromotionPoints($promotionQuery)->objects;
         } catch (\Exception $e) {
             if ($this->logger) {
-                $this->logger->error(
-                    'Can\'t retrieve promotions for event with id:' . $event->cdbid,
+                $this->logger->info(
+                    'Can\'t retrieve promotions for event with id:' . $event->cdbid . ' eventOrganizer may no longer be UiTPAS',
                     ['exception' => $e]
                 );
             }
