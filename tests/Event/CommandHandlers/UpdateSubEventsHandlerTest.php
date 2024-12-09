@@ -378,33 +378,33 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                        )
                    )
                ),
-               new CalendarUpdated(
-                   '1',
-                   new MultipleSubEventsCalendar(
-                       new SubEvents(
-                           SubEvent::createAvailable(
-                                  new DateRange(
+                new CalendarUpdated(
+                    '1',
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
                                     new DateTimeImmutable('2020-01-01 12:00:00')
                                 )
-                              ),
-                           (SubEvent::createAvailable(
-                                  new DateRange(
+                            ),
+                            (SubEvent::createAvailable(
+                                new DateRange(
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
-                              ))->withStatus(
+                            ))->withStatus(
                                 new Status(
                                     StatusType::Unavailable(),
                                     new TranslatedStatusReason(
-                                         new Language('nl'),
-                                         new StatusReason('Niet beschikbaar')
-                                     )
+                                        new Language('nl'),
+                                        new StatusReason('Niet beschikbaar')
+                                    )
                                 )
                             ),
-                       )
-                   )
-               ),
+                        )
+                    )
+                ),
            ],
             'Update status on 2 sub events' => [
                 new EventCreated(

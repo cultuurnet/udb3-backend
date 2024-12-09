@@ -220,27 +220,23 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     self::EVENT_ID,
                     (
                         (new SingleSubEventCalendar(
-                            (
                             SubEvent::createAvailable(
-                                    new DateRange(
-                                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
-                                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
+                                new DateRange(
+                                    DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                                    DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
+                                )
+                            )
+                            ->withStatus(
+                                new Status(
+                                    StatusType::TemporarilyUnavailable(),
+                                    new TranslatedStatusReason(
+                                        new Language('nl'),
+                                        new StatusReason('Covid')
                                     )
                                 )
-                        )
-                                ->withStatus(
-                                    new Status(
-                                        StatusType::TemporarilyUnavailable(),
-                                        new TranslatedStatusReason(
-                                            new Language('nl'),
-                                            new StatusReason('Covid')
-                                        )
-                                    )
-                                )
-                                ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable())),
-                        )
-                    )
-                    )
+                            )
+                            ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable()))
+                        ))
                         ->withStatus(
                             new Status(
                                 StatusType::TemporarilyUnavailable(),
@@ -250,7 +246,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 )
                             )
                         )
-                    ->withBookingAvailability(BookingAvailability::Unavailable())
+                        ->withBookingAvailability(BookingAvailability::Unavailable())
+                    )
                 ),
             ],
             'multiple_with_one_subEvent' => [
