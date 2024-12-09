@@ -70,8 +70,12 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
@@ -389,15 +393,13 @@ final class Event extends Offer
             $subEvents[$index] = $updatedSubEvent;
         }
 
-        $updatedCalendar = new LegacyCalendar(
-            $this->calendar->getType(),
-            null,
-            null,
-            $subEvents,
-            $this->calendar->getOpeningHours()
-        );
+        if ($this->calendar->getType()->sameAs(CalendarType::single())) {
+            $updatedCalendar = new SingleSubEventCalendar($subEvents[0]);
+        } else {
+            $updatedCalendar = new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
+        }
 
-        if (!$this->calendar->sameAs($updatedCalendar)) {
+        if (!$this->calendar->sameAs(LegacyCalendar::fromUdb3ModelCalendar($updatedCalendar))) {
             $this->apply(
                 new CalendarUpdated($this->eventId, $updatedCalendar)
             );
@@ -610,7 +612,7 @@ final class Event extends Offer
         return new DescriptionDeleted($this->eventId, $language);
     }
 
-    protected function createCalendarUpdatedEvent(LegacyCalendar $calendar): CalendarUpdated
+    protected function createCalendarUpdatedEvent(Calendar $calendar): CalendarUpdated
     {
         return new CalendarUpdated($this->eventId, $calendar);
     }

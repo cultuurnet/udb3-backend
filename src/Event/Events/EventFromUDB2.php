@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
@@ -98,7 +97,7 @@ trait EventFromUDB2
         }
 
         $calendarEvent = $this->getCalendar($eventAsArray['calendar'][0]);
-        $granularEvents[] = new CalendarUpdated($this->eventId, LegacyCalendar::fromUdb3ModelCalendar($calendarEvent));
+        $granularEvents[] = new CalendarUpdated($this->eventId, $calendarEvent);
 
         if (isset($eventAsArray['@attributes']['wfstatus'], $eventAsArray['@attributes']['lastupdated'])) {
             $moderation = $this->getModeration(

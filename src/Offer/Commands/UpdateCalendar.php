@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 
 final class UpdateCalendar extends AbstractCommand
 {

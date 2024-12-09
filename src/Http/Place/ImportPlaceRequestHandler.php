@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\GuardOrganizer;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
@@ -189,7 +188,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
                 $place->getAddress()->getTranslation($place->getMainLanguage()),
                 $place->getMainLanguage()
             );
-            $commands[] = new UpdateCalendar($placeId, LegacyCalendar::fromUdb3ModelCalendar($calendar));
+            $commands[] = new UpdateCalendar($placeId, $calendar);
         }
 
         $bookingInfo = $place->getBookingInfo();

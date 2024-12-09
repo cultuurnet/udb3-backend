@@ -421,7 +421,7 @@ class Place extends Offer
         return new DescriptionDeleted($this->placeId, $language);
     }
 
-    protected function createCalendarUpdatedEvent(LegacyCalendar $calendar): CalendarUpdated
+    protected function createCalendarUpdatedEvent(Calendar $calendar): CalendarUpdated
     {
         return new CalendarUpdated($this->placeId, $calendar);
     }
