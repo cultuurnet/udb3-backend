@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -78,14 +76,14 @@ class EventCreatedTest extends TestCase
             new TypeUpdated($eventId, $category),
             new ThemeUpdated($eventId, new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())),
             new LocationUpdated($eventId, $this->location),
-            new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
+            new CalendarUpdated($eventId, new PermanentCalendar(new OpeningHours())),
         ];
 
         $expectedWithoutTheme = [
             new TitleUpdated($eventId, 'Example title'),
             new TypeUpdated($eventId, $category),
             new LocationUpdated($eventId, $this->location),
-            new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
+            new CalendarUpdated($eventId, new PermanentCalendar(new OpeningHours())),
         ];
 
         $this->assertInstanceOf(ConvertsToGranularEvents::class, $eventWithTheme);

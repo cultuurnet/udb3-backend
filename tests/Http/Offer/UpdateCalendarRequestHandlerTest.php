@@ -14,16 +14,22 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
@@ -80,7 +86,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::single(
+                    new SingleSubEventCalendar(
                         SubEvent::createAvailable(
                             new DateRange(
                                 DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
@@ -102,7 +108,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::single(
+                    new SingleSubEventCalendar(
                         SubEvent::createAvailable(
                             new DateRange(
                                 DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
@@ -120,7 +126,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::single(
+                    new SingleSubEventCalendar(
                         SubEvent::createAvailable(
                             new DateRange(
                                 DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
@@ -144,7 +150,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::single(
+                    new SingleSubEventCalendar(
                         (
                             SubEvent::createAvailable(
                                 new DateRange(
@@ -174,7 +180,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::single(
+                    new SingleSubEventCalendar(
                         (
                             SubEvent::createAvailable(
                                 new DateRange(
@@ -213,8 +219,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
                     (
-                        Calendar::single(
-                            (
+                        (new SingleSubEventCalendar(
+                        (
                                 SubEvent::createAvailable(
                                     new DateRange(
                                         DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
@@ -232,16 +238,19 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                     )
                                 )
                                 ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable())),
+                    )
+                    )
+                    )
+                        ->withStatus(
                             new Status(
                                 StatusType::TemporarilyUnavailable(),
                                 new TranslatedStatusReason(
                                     new Language('nl'),
                                     new StatusReason('Covid')
                                 )
-                            ),
-                            BookingAvailability::Unavailable()
+                            )
                         )
-                    )
+                    ->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ],
             'multiple_with_one_subEvent' => [
@@ -256,7 +265,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::single(
+                    new SingleSubEventCalendar(
                         SubEvent::createAvailable(
                             new DateRange(
                                 DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
@@ -274,7 +283,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::single(
+                    new SingleSubEventCalendar(
                         SubEvent::createAvailable(
                             new DateRange(
                                 DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
@@ -300,8 +309,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::multiple(
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
@@ -313,8 +322,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                     DateTimeFactory::fromAtom('2021-01-03T14:00:30+01:00'),
                                     DateTimeFactory::fromAtom('2021-01-03T17:00:30+01:00')
                                 )
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
             ],
@@ -334,8 +343,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::multiple(
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
@@ -347,8 +356,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                     DateTimeFactory::fromAtom('2021-01-03T14:00:30+01:00'),
                                     DateTimeFactory::fromAtom('2021-01-03T17:00:30+01:00')
                                 )
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
             ],
@@ -360,9 +369,12 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::periodic(
-                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
-                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
+                    new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
+                        ),
+                        new OpeningHours()
                     )
                 ),
             ],
@@ -379,10 +391,13 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::periodic(
-                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
-                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
-                        [],
+                    (new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
+                        ),
+                        new OpeningHours(),
+                    ))->withStatus(
                         new Status(
                             StatusType::TemporarilyUnavailable(),
                             new TranslatedStatusReason(
@@ -419,10 +434,12 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::periodic(
-                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
-                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
-                        [
+                    new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
+                        ),
+                        new OpeningHours(
                             new OpeningHour(
                                 new Days(
                                     Day::monday(),
@@ -438,8 +455,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 ),
                                 new Time(new Hour(8), new Minute(30)),
                                 new Time(new Hour(9), new Minute(0))
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
             ],
@@ -449,7 +466,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::permanent()
+                    new PermanentCalendar(new OpeningHours())
                 ),
             ],
             'permanent_with_status_and_bookingAvailability' => [
@@ -463,16 +480,16 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::permanent(
-                        [],
-                        new Status(
-                            StatusType::TemporarilyUnavailable(),
-                            new TranslatedStatusReason(
-                                new Language('nl'),
-                                new StatusReason('Covid')
+                    (new PermanentCalendar(new OpeningHours()))
+                        ->withStatus(
+                            new Status(
+                                StatusType::TemporarilyUnavailable(),
+                                new TranslatedStatusReason(
+                                    new Language('nl'),
+                                    new StatusReason('Covid')
+                                )
                             )
                         )
-                    )
                 ),
             ],
             'permanent_with_openingHours' => [
@@ -499,8 +516,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    Calendar::permanent(
-                        [
+                    new PermanentCalendar(
+                        new OpeningHours(
                             new OpeningHour(
                                 new Days(
                                     Day::monday(),
@@ -516,8 +533,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 ),
                                 new Time(new Hour(8), new Minute(30)),
                                 new Time(new Hour(9), new Minute(0))
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
             ],
@@ -827,9 +844,12 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::PLACE_ID,
-                    Calendar::periodic(
-                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
-                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
+                    new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
+                        ),
+                        new OpeningHours()
                     )
                 ),
             ],
@@ -846,10 +866,13 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::PLACE_ID,
-                    Calendar::periodic(
-                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
-                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
-                        [],
+                    (new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
+                        ),
+                        new OpeningHours()
+                    ))->withStatus(
                         new Status(
                             StatusType::TemporarilyUnavailable(),
                             new TranslatedStatusReason(
@@ -886,10 +909,12 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::PLACE_ID,
-                    Calendar::periodic(
-                        DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
-                        DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00'),
-                        [
+                    new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
+                        ),
+                        new OpeningHours(
                             new OpeningHour(
                                 new Days(
                                     Day::monday(),
@@ -905,8 +930,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 ),
                                 new Time(new Hour(8), new Minute(30)),
                                 new Time(new Hour(9), new Minute(0))
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
             ],
@@ -916,7 +941,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::PLACE_ID,
-                    Calendar::permanent()
+                    new PermanentCalendar(new OpeningHours())
                 ),
             ],
             'permanent_with_status_and_bookingAvailability' => [
@@ -930,16 +955,16 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::PLACE_ID,
-                    Calendar::permanent(
-                        [],
-                        new Status(
-                            StatusType::TemporarilyUnavailable(),
-                            new TranslatedStatusReason(
-                                new Language('nl'),
-                                new StatusReason('Covid')
+                    (new PermanentCalendar(new OpeningHours()))
+                        ->withStatus(
+                            new Status(
+                                StatusType::TemporarilyUnavailable(),
+                                new TranslatedStatusReason(
+                                    new Language('nl'),
+                                    new StatusReason('Covid')
+                                )
                             )
                         )
-                    )
                 ),
             ],
             'permanent_with_openingHours' => [
@@ -966,8 +991,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::PLACE_ID,
-                    Calendar::permanent(
-                        [
+                    new PermanentCalendar(
+                        new OpeningHours(
                             new OpeningHour(
                                 new Days(
                                     Day::monday(),
@@ -984,7 +1009,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 new Time(new Hour(8), new Minute(30)),
                                 new Time(new Hour(9), new Minute(0))
                             ),
-                        ]
+                        )
                     )
                 ),
             ],

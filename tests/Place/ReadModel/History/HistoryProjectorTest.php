@@ -16,13 +16,11 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
@@ -332,7 +330,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_CalendarUpdated_event(): void
     {
-        $event = new CalendarUpdated('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new Calendar(CalendarType::permanent()));
+        $event = new CalendarUpdated('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new PermanentCalendar(new OpeningHours()));
         $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
 
         $this->historyProjector->handle($domainMessage);
