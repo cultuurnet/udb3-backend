@@ -31,6 +31,8 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\SampleFiles;
+use DateTimeImmutable;
+use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -38,6 +40,9 @@ use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class EventPlaceHistoryProjectorTest extends TestCase
 {
+    private const DATE_TIME_FORMAT = DateTimeInterface::ATOM;
+    private const DATE_TIME_VALUE = '2024-1-1T12:30:00+00:00';
+
     /** @var EventPlaceHistoryRepository|MockObject */
     private $repository;
 
@@ -86,13 +91,14 @@ class EventPlaceHistoryProjectorTest extends TestCase
             ->with(
                 $eventId,
                 $oldPlaceId,
-                $newPlaceId
+                $newPlaceId,
+                DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT, self::DATE_TIME_VALUE)
             );
 
         $locationUpdated = new LocationUpdated($eventId->toString(), new LocationId($newPlaceId->toString()));
 
         $this->projector->handle(
-            (new DomainMessageBuilder())->create($locationUpdated)
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($locationUpdated)
         );
     }
 
@@ -115,7 +121,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
             ->with(
                 $eventId,
                 $oldPlaceId,
-                $newPlaceId
+                $newPlaceId,
+                DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT, self::DATE_TIME_VALUE)
             );
 
         $majorInfoUpdated = new MajorInfoUpdated(
@@ -127,7 +134,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
         );
 
         $this->projector->handle(
-            (new DomainMessageBuilder())->create($majorInfoUpdated)
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($majorInfoUpdated)
         );
     }
 
@@ -157,7 +164,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
         );
 
         $this->projector->handle(
-            (new DomainMessageBuilder())->create($majorInfoUpdated)
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($majorInfoUpdated)
         );
     }
 
@@ -172,7 +179,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
             ->method('storeEventPlaceStartingPoint')
             ->with(
                 $eventId,
-                $newPlaceId
+                $newPlaceId,
+                DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT, self::DATE_TIME_VALUE)
             );
 
         $eventCreated = new EventCreated(
@@ -186,7 +194,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
         );
 
         $this->projector->handle(
-            (new DomainMessageBuilder())->create($eventCreated)
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($eventCreated)
         );
     }
 
@@ -208,7 +216,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
             ->method('storeEventPlaceStartingPoint')
             ->with(
                 $eventId,
-                $oldPlaceId
+                $oldPlaceId,
+                DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT, self::DATE_TIME_VALUE)
             );
 
         $eventCopied = new EventCopied(
@@ -218,7 +227,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
         );
 
         $this->projector->handle(
-            (new DomainMessageBuilder())->create($eventCopied)
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($eventCopied)
         );
     }
 
@@ -241,7 +250,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
 
         $locationUpdated = new LocationUpdated($eventId->toString(), new LocationId($newPlaceId->toString()));
         $this->projector->handle(
-            (new DomainMessageBuilder())->create($locationUpdated)
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($locationUpdated)
         );
     }
 
@@ -264,7 +273,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
             ->with(
                 $eventId,
                 $oldPlaceId,
-                $newPlaceId
+                $newPlaceId,
+                DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT, self::DATE_TIME_VALUE)
             );
 
         $eventUpdatedFromUDB2 = new EventUpdatedFromUDB2(
@@ -282,7 +292,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
             ->willReturn($newPlaceId->toString());
 
         $this->projector->handle(
-            (new DomainMessageBuilder())->create($eventUpdatedFromUDB2)
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($eventUpdatedFromUDB2)
         );
     }
 
@@ -317,7 +327,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
             ->willReturn(null);
 
         $this->projector->handle(
-            (new DomainMessageBuilder())->create($eventUpdatedFromUDB2)
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($eventUpdatedFromUDB2)
         );
     }
 
@@ -344,7 +354,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
         );
 
         $this->projector->handle(
-            (new DomainMessageBuilder())->create($eventUpdatedFromUDB2)
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($eventUpdatedFromUDB2)
         );
     }
 
@@ -359,7 +369,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
             ->method('storeEventPlaceStartingPoint')
             ->with(
                 $eventId,
-                $newPlaceId
+                $newPlaceId,
+                DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT, self::DATE_TIME_VALUE)
             );
 
         $eventImportedFromUDB2 = new EventImportedFromUDB2(
@@ -377,7 +388,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
             ->willReturn($newPlaceId->toString());
 
         $this->projector->handle(
-            (new DomainMessageBuilder())->create($eventImportedFromUDB2)
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($eventImportedFromUDB2)
         );
     }
 
@@ -405,7 +416,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
             ->willReturn(null);
 
         $this->projector->handle(
-            (new DomainMessageBuilder())->create($eventImportedFromUDB2)
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($eventImportedFromUDB2)
         );
     }
 
