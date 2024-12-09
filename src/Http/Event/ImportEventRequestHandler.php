@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
@@ -133,7 +134,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $title = $event->getTitle()->getOriginalValue();
         $type = $event->getTerms()->getEventType();
         $location = $eventAdapter->getLocation();
-        $calendar = $eventAdapter->getCalendar();
+        $calendar = $event->getCalendar();
         $theme = $event->getTerms()->getTheme();
         $publishDate = $eventAdapter->getAvailableFrom(new DateTimeImmutable());
 
@@ -203,7 +204,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             // For example passing a real location to an online event is not allowed.
             $commands[] = new UpdateAttendanceMode($eventId, $event->getAttendanceMode());
             $commands[] = new UpdateLocation($eventId, $location);
-            $commands[] = new UpdateCalendar($eventId, $calendar);
+            $commands[] = new UpdateCalendar($eventId, LegacyCalendar::fromUdb3ModelCalendar($calendar));
 
             if ($theme) {
                 $commands[] = new UpdateTheme($eventId, $theme->getId()->toString());

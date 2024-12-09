@@ -8,12 +8,12 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -66,7 +66,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
                 'Faith no More',
                 new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                 $locationId,
-                new Calendar(CalendarType::permanent()),
+                new PermanentCalendar(new OpeningHours()),
                 new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
             )
         );
@@ -94,7 +94,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
                 'Faith no More',
                 new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                 $locationId,
-                new Calendar(CalendarType::permanent()),
+                new PermanentCalendar(new OpeningHours()),
                 new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
             )
         );
