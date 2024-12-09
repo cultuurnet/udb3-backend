@@ -425,7 +425,7 @@ final class EventLDProjector extends OfferLDProjector implements
     {
         $document = $this
             ->loadDocumentFromRepository($majorInfoUpdated)
-            ->apply(OfferUpdate::calendar($majorInfoUpdated->getCalendar()));
+            ->apply(OfferUpdate::calendar(LegacyCalendar::fromUdb3ModelCalendar($majorInfoUpdated->getCalendar())));
 
         $jsonLD = $document->getBody();
 
@@ -438,7 +438,7 @@ final class EventLDProjector extends OfferLDProjector implements
         $jsonLD = $this->setAttendanceMode($jsonLD, $majorInfoUpdated->getLocation());
 
         $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
-            $majorInfoUpdated->getCalendar(),
+            LegacyCalendar::fromUdb3ModelCalendar($majorInfoUpdated->getCalendar()),
             $majorInfoUpdated->getEventType()
         )->format(DateTimeInterface::ATOM);
 

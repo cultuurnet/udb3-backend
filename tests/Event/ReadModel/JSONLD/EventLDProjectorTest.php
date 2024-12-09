@@ -1033,10 +1033,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     'new title',
                     new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType()),
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
-                    new LegacyCalendar(
-                        CalendarType::periodic(),
-                        DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-                        DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
+                    new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                            DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
+                        ),
+                        new OpeningHours()
                     ),
                     new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
                 ),
@@ -1053,10 +1055,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     'new title',
                     new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType()),
                     new LocationId('00000000-0000-0000-0000-000000000000'),
-                    new LegacyCalendar(
-                        CalendarType::periodic(),
-                        DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-                        DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
+                    new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                            DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
+                        ),
+                        new OpeningHours()
                     ),
                     new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
                 ),
@@ -1070,10 +1074,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     'new title',
                     new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType()),
                     new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
-                    new LegacyCalendar(
-                        CalendarType::periodic(),
-                        DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-                        DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
+                    new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                            DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
+                        ),
+                        new OpeningHours()
                     ),
                     new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
                 ),
@@ -1331,10 +1337,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $title = 'new title';
         $eventType = new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType());
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
-        $calendar = new LegacyCalendar(
-            CalendarType::periodic(),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-            DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
+            ),
+            new OpeningHours()
         );
         $theme = new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme());
         $majorInfoUpdated = new MajorInfoUpdated(

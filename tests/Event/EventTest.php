@@ -285,7 +285,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new Title('foo'),
                         new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                         new LocationId('00000000-0000-0000-0000-000000000000'),
-                        new Calendar(CalendarType::permanent())
+                        new PermanentCalendar(new OpeningHours())
                     );
                     $event->updateAttendanceMode(AttendanceMode::online());
                 }
@@ -296,7 +296,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'foo',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('00000000-0000-0000-0000-000000000000'),
-                    new Calendar(CalendarType::permanent())
+                    new PermanentCalendar(new OpeningHours())
                 ),
             ]);
     }
@@ -317,7 +317,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new Title('foo'),
                         new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                         new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                        new Calendar(CalendarType::permanent())
+                        new PermanentCalendar(new OpeningHours())
                     );
                     $event->updateAttendanceMode(AttendanceMode::mixed());
                 }
@@ -328,7 +328,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'foo',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new Calendar(CalendarType::permanent())
+                    new PermanentCalendar(new OpeningHours())
                 ),
             ]);
     }
@@ -349,7 +349,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new Title('foo'),
                         new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                         new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                        new Calendar(CalendarType::permanent())
+                        new PermanentCalendar(new OpeningHours())
                     );
                     $event->updateAttendanceMode(AttendanceMode::offline());
                 }
@@ -360,7 +360,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'foo',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new Calendar(CalendarType::permanent())
+                    new PermanentCalendar(new OpeningHours())
                 ),
             ]);
     }

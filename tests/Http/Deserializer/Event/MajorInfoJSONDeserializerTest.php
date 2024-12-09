@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Deserializer\Event;
 
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -36,7 +36,7 @@ final class MajorInfoJSONDeserializerTest extends TestCase
             $majorInfo->getType()
         );
         $this->assertEquals($expectedLocation, $majorInfo->getLocation());
-        $this->assertEquals(new Calendar(CalendarType::permanent()), $majorInfo->getCalendar());
+        $this->assertEquals(new PermanentCalendar(new OpeningHours()), $majorInfo->getCalendar());
     }
 
     /**
@@ -58,6 +58,6 @@ final class MajorInfoJSONDeserializerTest extends TestCase
             $majorInfo->getType()
         );
         $this->assertEquals($expectedLocation, $majorInfo->getLocation());
-        $this->assertEquals(new Calendar(CalendarType::permanent()), $majorInfo->getCalendar());
+        $this->assertEquals(new PermanentCalendar(new OpeningHours()), $majorInfo->getCalendar());
     }
 }

@@ -130,7 +130,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
             'title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId($newPlaceId->toString()),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $this->projector->handle(
@@ -160,7 +160,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
             'title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId($newPlaceId->toString()),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $this->projector->handle(

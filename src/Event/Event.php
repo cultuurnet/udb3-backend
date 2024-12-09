@@ -296,7 +296,7 @@ final class Event extends Offer
         Title $title,
         Category $eventType,
         LocationId $location,
-        LegacyCalendar $calendar,
+        Calendar $calendar,
         Category $theme = null
     ): void {
         $this->apply(new MajorInfoUpdated($this->eventId, $title->toString(), $eventType, $location, $calendar, $theme));
@@ -313,7 +313,7 @@ final class Event extends Offer
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
     {
         $this->locationId = $majorInfoUpdated->getLocation();
-        $this->calendar = $majorInfoUpdated->getCalendar();
+        $this->calendar = LegacyCalendar::fromUdb3ModelCalendar($majorInfoUpdated->getCalendar());
 
         if ($this->locationId->isNilLocation()) {
             $this->attendanceMode = AttendanceMode::online()->toString();
