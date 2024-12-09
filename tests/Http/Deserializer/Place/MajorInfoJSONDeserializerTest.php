@@ -8,8 +8,8 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -45,6 +45,6 @@ final class MajorInfoJSONDeserializerTest extends TestCase
             $majorInfo->getType()
         );
         $this->assertEquals($expectedAddress, $majorInfo->getAddress());
-        $this->assertEquals(new Calendar(CalendarType::permanent()), $majorInfo->getCalendar());
+        $this->assertEquals(new PermanentCalendar(new OpeningHours()), $majorInfo->getCalendar());
     }
 }

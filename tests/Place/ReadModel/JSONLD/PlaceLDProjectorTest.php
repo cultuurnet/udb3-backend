@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -28,8 +27,9 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -672,10 +672,12 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $id = 'foo';
         $title = 'new title';
         $eventType = new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType());
-        $calendar = new Calendar(
-            CalendarType::periodic(),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-            DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2015-02-26T13:25:21+01:00')
+            ),
+            new OpeningHours()
         );
         $majorInfoUpdated = new MajorInfoUpdated($id, $title, $eventType, $this->address, $calendar);
 
@@ -950,7 +952,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 new Locality('Brussel'),
                 new CountryCode('BE')
             ),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $body = $this->project($majorInfoUpdated, '3c4850d7-689a-4729-8c5f-5f6c172ba52d');

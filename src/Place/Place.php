@@ -149,7 +149,7 @@ class Place extends Offer
         Title $title,
         Category $eventType,
         LegacyAddress $address,
-        LegacyCalendar $calendar
+        Calendar $calendar
     ): void {
         $this->apply(
             new MajorInfoUpdated(
@@ -165,7 +165,7 @@ class Place extends Offer
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
     {
         $this->addresses[$this->mainLanguage->getCode()] = $majorInfoUpdated->getAddress();
-        $this->calendar = $majorInfoUpdated->getCalendar();
+        $this->calendar = LegacyCalendar::fromUdb3ModelCalendar($majorInfoUpdated->getCalendar());
     }
 
     public function updateAddress(Address $address, Language $language): void

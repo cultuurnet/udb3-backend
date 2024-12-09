@@ -12,9 +12,7 @@ use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\Locality as LegacyLocality;
 use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
 use CultuurNet\UDB3\Address\Street as LegacyStreet;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
@@ -54,7 +52,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             new LegacyLocality('Leuven'),
             new CountryCode('BE')
         );
-        $calendar = new Calendar(CalendarType::permanent());
+        $calendar = new PermanentCalendar(new OpeningHours());
 
         $this->scenario
             ->withAggregateId($id)
