@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarSerializer;
@@ -74,7 +73,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
                     new TypeUpdated($this->itemId, $this->eventType),
                     $this->theme ? new ThemeUpdated($this->itemId, $this->theme) : null,
                     new LocationUpdated($this->itemId, $this->location),
-                    new CalendarUpdated($this->itemId, LegacyCalendar::fromUdb3ModelCalendar($this->calendar)),
+                    new CalendarUpdated($this->itemId, $this->calendar),
                 ]
             )
         );

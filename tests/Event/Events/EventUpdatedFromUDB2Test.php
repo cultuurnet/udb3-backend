@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\ValueObjects\DummyLocation;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
@@ -104,18 +103,13 @@ final class EventUpdatedFromUDB2Test extends TestCase
                 new LocationUpdated($eventId, new LocationId('28d2900d-f784-4d04-8d66-5b93900c6f9c')),
                 new CalendarUpdated(
                     $eventId,
-                    new Calendar(
-                        CalendarType::single(),
-                        null,
-                        null,
-                        [
-                            SubEvent::createAvailable(
-                                new DateRange(
-                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
-                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
-                                )
-                            ),
-                        ]
+                    new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            )
+                        )
                     )
                 ),
             ],
@@ -147,18 +141,13 @@ final class EventUpdatedFromUDB2Test extends TestCase
                 new ExternalIdLocationUpdated($eventId, 'SKB:9ccbf9c1-a5c5-4689-9687-9a7dd3c51aee'),
                 new CalendarUpdated(
                     $eventId,
-                    new Calendar(
-                        CalendarType::single(),
-                        null,
-                        null,
-                        [
-                            SubEvent::createAvailable(
-                                new DateRange(
-                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
-                                    new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
-                                )
-                            ),
-                        ]
+                    new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200'),
+                                new \DateTimeImmutable('2016-04-13T00:00:00.000000+0200')
+                            )
+                        )
                     )
                 ),
             ],

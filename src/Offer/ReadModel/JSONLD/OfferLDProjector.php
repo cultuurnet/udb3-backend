@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
 use Broadway\Domain\DomainMessage;
+use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\CulturefeedSlugger;
 use CultuurNet\UDB3\Event\Events\Concluded;
@@ -610,7 +611,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
 
-        $offerLd->availableTo = AvailableTo::createFromLegacyCalendar($calendarUpdated->getCalendar())->format(DateTimeInterface::ATOM);
+        $offerLd->availableTo = AvailableTo::createFromLegacyCalendar(
+            LegacyCalendar::fromUdb3ModelCalendar($calendarUpdated->getCalendar())
+        )->format(DateTimeInterface::ATOM);
 
         return $document->withBody($offerLd);
     }

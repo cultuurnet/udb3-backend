@@ -662,7 +662,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_calendar_updated(): void
     {
-        $event = new CalendarUpdated(self::EVENT_ID_1, new Calendar(CalendarType::permanent()));
+        $event = new CalendarUpdated(self::EVENT_ID_1, new PermanentCalendar(new OpeningHours()));
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

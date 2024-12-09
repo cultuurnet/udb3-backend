@@ -8,7 +8,6 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use Cake\Chronos\Chronos;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Commands\AddImage;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
@@ -685,26 +684,24 @@ final class KinepolisServiceTest extends TestCase
             [
                 new UpdateCalendar(
                     $this->eventId,
-                    Calendar::fromUdb3ModelCalendar(
-                        new MultipleSubEventsCalendar(
-                            new SubEvents(
-                                new SubEvent(
-                                    new DateRange(
-                                        DateTimeFactory::fromAtom('2024-04-08T18:00:00+00:00'),
-                                        DateTimeFactory::fromAtom('2024-04-08T19:39:00+00:00')
-                                    ),
-                                    new Status(StatusType::Available()),
-                                    new BookingAvailability(BookingAvailabilityType::Available())
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                new DateRange(
+                                    DateTimeFactory::fromAtom('2024-04-08T18:00:00+00:00'),
+                                    DateTimeFactory::fromAtom('2024-04-08T19:39:00+00:00')
                                 ),
-                                new SubEvent(
-                                    new DateRange(
-                                        DateTimeFactory::fromAtom('2024-04-08T20:15:00+00:00'),
-                                        DateTimeFactory::fromAtom('2024-04-08T21:54:00+00:00')
-                                    ),
-                                    new Status(StatusType::Available()),
-                                    new BookingAvailability(BookingAvailabilityType::Available())
+                                new Status(StatusType::Available()),
+                                new BookingAvailability(BookingAvailabilityType::Available())
+                            ),
+                            new SubEvent(
+                                new DateRange(
+                                    DateTimeFactory::fromAtom('2024-04-08T20:15:00+00:00'),
+                                    DateTimeFactory::fromAtom('2024-04-08T21:54:00+00:00')
                                 ),
-                            )
+                                new Status(StatusType::Available()),
+                                new BookingAvailability(BookingAvailabilityType::Available())
+                            ),
                         )
                     )
                 ),

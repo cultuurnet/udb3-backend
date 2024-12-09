@@ -8,14 +8,14 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -50,16 +50,15 @@ class UpdateCalendarHandlerTest extends CommandHandlerScenarioTestCase
 
         $initialCalendar = new PermanentCalendar(new OpeningHours());
 
-        $calendar = new LegacyCalendar(
-            CalendarType::periodic(),
-            new DateTimeImmutable(),
-            new DateTimeImmutable()
+        $calendar = new PeriodicCalendar(
+            new DateRange(new DateTimeImmutable(), new DateTimeImmutable()),
+            new OpeningHours()
         );
 
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->getEventCreated($id, $initialCalendar)])
-            ->when(new UpdateCalendar($id, LegacyCalendar::fromUdb3ModelCalendar($initialCalendar)))
+            ->when(new UpdateCalendar($id, $initialCalendar))
             ->then([])
             ->when(new UpdateCalendar($id, $calendar))
             ->then([new CalendarUpdated($id, $calendar)]);

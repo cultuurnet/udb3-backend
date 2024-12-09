@@ -8,11 +8,9 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -56,7 +54,7 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
         $initialCalendar = new PermanentCalendar(new OpeningHours());
 
         $newStatus = new Status(StatusType::TemporarilyUnavailable(), null);
-        $expectedCalendar = (new LegacyCalendar(CalendarType::permanent()))->withStatus($newStatus);
+        $expectedCalendar = (new PermanentCalendar(new OpeningHours()))->withStatus($newStatus);
 
         $command = new UpdateStatus($id, $newStatus);
 
@@ -85,8 +83,8 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
 
         $newStatus = new Status(StatusType::Unavailable(), null);
 
-        $expectedSubEvents = [new SubEvent(new DateRange($startDate, $endDate), new Status(StatusType::Unavailable()), BookingAvailability::Available())];
-        $expectedCalendar = (new LegacyCalendar(CalendarType::single(), null, null, $expectedSubEvents, []))->withStatus($newStatus);
+        $expectedSubEvents = new SubEvent(new DateRange($startDate, $endDate), new Status(StatusType::Unavailable()), BookingAvailability::Available());
+        $expectedCalendar = (new SingleSubEventCalendar($expectedSubEvents))->withStatus($newStatus);
 
         $command = new UpdateStatus($id, $newStatus);
 

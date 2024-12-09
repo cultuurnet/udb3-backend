@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Place;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -27,13 +26,14 @@ use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
@@ -835,12 +835,8 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateCalendar(
                     $placeId,
-                    (new Calendar(
-                        CalendarType::permanent(),
-                        null,
-                        null,
-                        [],
-                        [
+                    (new PermanentCalendar(
+                        new OpeningHours(
                             new OpeningHour(
                                 new Days(
                                     Day::saturday(),
@@ -848,18 +844,18 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                                 ),
                                 new Time(new Hour(13), new Minute(00)),
                                 new Time(new Hour(23), new Minute(59))
-                            ),
-                        ]
-                    ))
-                        ->withStatus(
-                            new Status(
-                                StatusType::Unavailable(),
-                                new TranslatedStatusReason(
-                                    new Language('nl'),
-                                    new StatusReason('We zijn nog steeds gesloten.')
-                                )
                             )
                         )
+                    ))
+                    ->withStatus(
+                        new Status(
+                            StatusType::Unavailable(),
+                            new TranslatedStatusReason(
+                                new Language('nl'),
+                                new StatusReason('We zijn nog steeds gesloten.')
+                            )
+                        )
+                    )
                 ),
                 new UpdateBookingInfo(
                     $placeId,
@@ -1025,7 +1021,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateCalendar(
                     $placeId,
-                    new Calendar(CalendarType::permanent())
+                    new PermanentCalendar(new OpeningHours())
                 ),
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
@@ -1242,7 +1238,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateCalendar(
                     $placeId,
-                    new Calendar(CalendarType::permanent())
+                    new PermanentCalendar(new OpeningHours())
                 ),
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
@@ -1329,7 +1325,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateCalendar(
                     $placeId,
-                    new Calendar(CalendarType::permanent())
+                    new PermanentCalendar(new OpeningHours())
                 ),
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),

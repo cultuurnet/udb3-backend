@@ -10,11 +10,11 @@ use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\Locality as LegacyLocality;
 use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
 use CultuurNet\UDB3\Address\Street as LegacyStreet;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
@@ -186,10 +186,12 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
 
-        $calendar = new Calendar(
-            CalendarType::periodic(),
-            DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
-            DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
+                DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
+            ),
+            new OpeningHours()
         );
 
         $cdbXml = $this->getCdbXML('/ReadModel/JSONLD/place_with_long_description.cdbxml.xml');
@@ -599,7 +601,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Place $place): void {
                     $place->updateCalendar(
-                        new Calendar(CalendarType::permanent())
+                        new PermanentCalendar(new OpeningHours())
                     );
                 }
             )

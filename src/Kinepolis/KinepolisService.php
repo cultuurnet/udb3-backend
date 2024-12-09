@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Kinepolis;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Event\Commands\AddImage;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
@@ -194,7 +193,7 @@ final class KinepolisService
                 $commands[] = $addVideo;
             }
         } else {
-            $updateCalendar = new UpdateCalendar($eventId, LegacyCalendar::fromUdb3ModelCalendar($parsedMovie->getCalendar()));
+            $updateCalendar = new UpdateCalendar($eventId, $parsedMovie->getCalendar());
             $commands[] = $updateCalendar;
             $this->logger->info('Event with id ' . $eventId . ' updated');
         }

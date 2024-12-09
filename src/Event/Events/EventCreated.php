@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventEvent;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
@@ -95,7 +94,7 @@ final class EventCreated extends EventEvent implements ConvertsToGranularEvents,
                     new TypeUpdated($this->eventId, $this->eventType),
                     $this->theme ? new ThemeUpdated($this->eventId, $this->theme) : null,
                     new LocationUpdated($this->eventId, $this->location),
-                    new CalendarUpdated($this->eventId, LegacyCalendar::fromUdb3ModelCalendar($this->calendar)),
+                    new CalendarUpdated($this->eventId, $this->calendar),
                 ]
             )
         );
