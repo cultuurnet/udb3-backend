@@ -320,10 +320,10 @@ final class EventImportedFromUDB2Test extends TestCase
                         ),
                         new OpeningHours(
                             new OpeningHour(
-                                 new Days(Day::monday()),
-                                 new Time(new Hour(10), new Minute(0)),
-                                 new Time(new Hour(18), new Minute(0))
-                             ),
+                                new Days(Day::monday()),
+                                new Time(new Hour(10), new Minute(0)),
+                                new Time(new Hour(18), new Minute(0))
+                            ),
                             new OpeningHour(
                                 new Days(Day::tuesday()),
                                 new Time(new Hour(10), new Minute(0)),
