@@ -9,12 +9,12 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
@@ -195,12 +195,11 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $this->getMainLanguage($jsonLD)
         );
 
-        /** @var Calendar $calendar */
         $calendar = $placeCreated->getCalendar();
-        $calendarJsonLD = $calendar->toJsonLd();
+        $calendarJsonLD = (new CalendarNormalizer())->normalize($calendar);
         $jsonLD = (object) array_merge((array) $jsonLD, $calendarJsonLD);
 
-        $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar($placeCreated->getCalendar())->format(DateTimeInterface::ATOM);
+        $jsonLD->availableTo = AvailableTo::createFromCalendar($placeCreated->getCalendar())->format(DateTimeInterface::ATOM);
 
         $eventType = $placeCreated->getEventType();
         $jsonLD->terms = [

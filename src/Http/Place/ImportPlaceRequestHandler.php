@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\GuardOrganizer;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
@@ -140,7 +141,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $title = $place->getTitle()->getOriginalValue();
         $type = $place->getTerms()->getEventType();
         $address = $placeAdapter->getAddress();
-        $calendar = $placeAdapter->getCalendar();
+        $calendar = $place->getCalendar();
         $publishDate = $placeAdapter->getAvailableFrom(new DateTimeImmutable());
 
         // Get the workflowStatus from the JSON. If the JSON has no workflowStatus, it will be DRAFT by default.
@@ -188,7 +189,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
                 $place->getAddress()->getTranslation($place->getMainLanguage()),
                 $place->getMainLanguage()
             );
-            $commands[] = new UpdateCalendar($placeId, $calendar);
+            $commands[] = new UpdateCalendar($placeId, LegacyCalendar::fromUdb3ModelCalendar($calendar));
         }
 
         $bookingInfo = $place->getBookingInfo();
