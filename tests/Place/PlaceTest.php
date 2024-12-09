@@ -14,6 +14,8 @@ use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -272,7 +274,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                         'Test place',
                         new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                         LegacyAddress::fromUdb3ModelAddress($originalAddress),
-                        new Calendar(CalendarType::permanent())
+                        new PermanentCalendar(new OpeningHours())
                     ),
                 ]
             )
@@ -462,7 +464,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                         'Test place',
                         new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                         LegacyAddress::fromUdb3ModelAddress($originalAddress),
-                        new Calendar(CalendarType::permanent())
+                        new PermanentCalendar(new OpeningHours())
                     ),
                 ]
             )
@@ -661,7 +663,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             'Test place',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $address,
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
     }
 }

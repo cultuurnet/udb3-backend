@@ -222,7 +222,7 @@ class OfferMetadataProjectorTest extends TestCase
                 new Locality('Leuven'),
                 new CountryCode('BE')
             ),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
     }
 
