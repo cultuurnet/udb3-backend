@@ -1329,7 +1329,7 @@ class HistoryProjectorTest extends TestCase
             'title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('a0c6c66e-d933-4817-a335-2a5a51df1fa7'),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $domainMessage = new DomainMessage(
