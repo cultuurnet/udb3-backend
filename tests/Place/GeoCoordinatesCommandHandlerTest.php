@@ -10,13 +10,13 @@ use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\Formatter\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Formatter\LocalityAddressFormatter;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -93,7 +93,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             'Some place',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             LegacyAddress::fromUdb3ModelAddress($address),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $command = new UpdateGeoCoordinatesFromAddress(self::PLACE_ID, $address);
@@ -135,7 +135,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             'Some place',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             LegacyAddress::fromUdb3ModelAddress($address),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $command = new UpdateGeoCoordinatesFromAddress(self::PLACE_ID, $address);

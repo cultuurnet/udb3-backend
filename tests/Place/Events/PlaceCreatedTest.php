@@ -13,6 +13,8 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -45,7 +47,7 @@ class PlaceCreatedTest extends TestCase
             'title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->address,
-            new Calendar(CalendarType::permanent()),
+            new PermanentCalendar(new OpeningHours()),
             $this->publicationDate
         );
     }
@@ -110,7 +112,7 @@ class PlaceCreatedTest extends TestCase
     public function it_stores_a_place_calendar(): void
     {
         $this->assertEquals(
-            new Calendar(CalendarType::permanent()),
+            new PermanentCalendar(new OpeningHours()),
             $this->placeCreated->getCalendar()
         );
     }
@@ -195,9 +197,7 @@ class PlaceCreatedTest extends TestCase
                         new Locality('Zottegem'),
                         new CountryCode('BE')
                     ),
-                    new Calendar(
-                        CalendarType::permanent()
-                    )
+                    new PermanentCalendar(new OpeningHours())
                 ),
             ],
             'with publication date' => [
@@ -238,9 +238,7 @@ class PlaceCreatedTest extends TestCase
                         new Locality('Zottegem'),
                         new CountryCode('BE')
                     ),
-                    new Calendar(
-                        CalendarType::permanent()
-                    ),
+                    new PermanentCalendar(new OpeningHours()),
                     DateTimeFactory::fromAtom('2016-08-01T00:00:00+02:00')
                 ),
             ],

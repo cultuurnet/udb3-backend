@@ -29,6 +29,8 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -159,7 +161,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'some representative title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->address,
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $jsonLD = new stdClass();
@@ -225,7 +227,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'some representative title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->address,
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $jsonLD = new stdClass();
@@ -497,7 +499,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'some representative title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->address,
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
         $this->project(
             $placeCreated,
