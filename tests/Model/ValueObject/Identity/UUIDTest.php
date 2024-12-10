@@ -49,4 +49,15 @@ class UUIDTest extends TestCase
             'without-separators' => ['74738ff5536759589aee98fffdcd1876'],
         ];
     }
+
+    /** @test */
+    public function it_should_generate_a_valid_uuid4(): void
+    {
+        $uuid = UUID::uuid4();
+        $this->assertMatchesRegularExpression(
+            UUID::BC_REGEX,
+            $uuid->toString(),
+            'The generated UUID is not a valid UUIDv4.'
+        );
+    }
 }

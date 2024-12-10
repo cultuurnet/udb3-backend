@@ -48,7 +48,7 @@ final class ExcludeInvalidLabels extends AbstractCommand
             $labels = $this->getLabelsFromFirstResult($firstResult);
 
             foreach ($labels as $label) {
-                $labelId = new Uuid($label['uuid_col']);
+                $labelId = new UUID($label['uuid_col']);
                 $labelName = $label['name'];
 
                 if (!preg_match(LabelName::REGEX_SUGGESTIONS, $labelName)) {
