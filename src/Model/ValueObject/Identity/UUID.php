@@ -6,8 +6,9 @@ namespace CultuurNet\UDB3\Model\ValueObject\Identity;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\MatchesRegexPattern;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 
-class UUID
+class Uuid
 {
     use IsString;
     use MatchesRegexPattern;
@@ -26,5 +27,10 @@ class UUID
         );
 
         $this->setValue($value);
+    }
+
+    public static function uuid4(): self
+    {
+        return new Uuid(RamseyUuid::uuid4()->toString());
     }
 }
