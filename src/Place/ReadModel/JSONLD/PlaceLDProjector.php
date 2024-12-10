@@ -199,7 +199,10 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         $calendarJsonLD = (new CalendarNormalizer())->normalize($calendar);
         $jsonLD = (object) array_merge((array) $jsonLD, $calendarJsonLD);
 
-        $jsonLD->availableTo = AvailableTo::createFromCalendar($placeCreated->getCalendar())->format(DateTimeInterface::ATOM);
+        $jsonLD->availableTo = AvailableTo::createFromCalendar(
+            $placeCreated->getCalendar(),
+            null
+        )->format(DateTimeInterface::ATOM);
 
         $eventType = $placeCreated->getEventType();
         $jsonLD->terms = [
@@ -251,7 +254,10 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $this->getMainLanguage($jsonLD)
         );
 
-        $jsonLD->availableTo = AvailableTo::createFromCalendar($majorInfoUpdated->getCalendar())->format(DateTimeInterface::ATOM);
+        $jsonLD->availableTo = AvailableTo::createFromCalendar(
+            $majorInfoUpdated->getCalendar(),
+            null
+        )->format(DateTimeInterface::ATOM);
 
         // Remove old theme and event type.
         $jsonLD->terms = array_filter($jsonLD->terms, function ($term) {
