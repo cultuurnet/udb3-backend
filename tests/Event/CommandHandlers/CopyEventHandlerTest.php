@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\CommandHandlers;
 
 use Broadway\Domain\DomainMessage;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Commands\CopyEvent;
@@ -91,7 +90,7 @@ final class CopyEventHandlerTest extends TestCase
             ->willReturn($originalEvent);
 
         $expectedEvents = [
-            new EventCopied($newEventId, $originalEventId, Calendar::fromUdb3ModelCalendar($newCalendar)),
+            new EventCopied($newEventId, $originalEventId, $newCalendar),
         ];
         $actualEvents = [];
 
@@ -156,7 +155,7 @@ final class CopyEventHandlerTest extends TestCase
             ->willReturn($originalEvent);
 
         $expectedEvents = [
-            new EventCopied($newEventId, $originalEventId, Calendar::fromUdb3ModelCalendar($newCalendar)),
+            new EventCopied($newEventId, $originalEventId, $newCalendar),
         ];
         $actualEvents = [];
 
@@ -228,7 +227,7 @@ final class CopyEventHandlerTest extends TestCase
             ->willReturn($originalEvent);
 
         $expectedEvents = [
-            new EventCopied($newEventId, $originalEventId, Calendar::fromUdb3ModelCalendar($newCalendar)),
+            new EventCopied($newEventId, $originalEventId, $newCalendar),
         ];
         $actualEvents = [];
 

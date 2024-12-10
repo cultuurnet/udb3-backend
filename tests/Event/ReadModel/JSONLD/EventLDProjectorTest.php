@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
@@ -49,7 +48,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
@@ -271,10 +269,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventCopied = new EventCopied(
             $newEventId,
             $eventId,
-            new LegacyCalendar(
-                CalendarType::periodic(),
-                DateTimeFactory::fromAtom('2022-01-26T13:25:21+01:00'),
-                DateTimeFactory::fromAtom('2022-01-26T13:25:21+01:00')
+            new PeriodicCalendar(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2022-01-26T13:25:21+01:00'),
+                    DateTimeFactory::fromAtom('2022-01-26T13:25:21+01:00')
+                ),
+                new OpeningHours()
             )
         );
 
@@ -481,7 +481,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $eventId = 'f0b24f97-4b03-4eb2-96d1-5074819a7648';
-        $subEvents = [
+        $subEvents = new SubEvents(
             SubEvent::createAvailable(
                 new DateRange(
                     DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
@@ -494,13 +494,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
                 )
             ),
-        ];
-        $calendar = new LegacyCalendar(
-            CalendarType::multiple(),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-            DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00'),
-            $subEvents
         );
+        $calendar = new MultipleSubEventsCalendar($subEvents);
         $eventCopied = new EventCopied($eventId, $originalEventId, $calendar);
 
         $recordedOn = '2018-01-01T11:55:55+01:00';
@@ -530,10 +525,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->project($eventCreated, $eventCreated->getEventId());
         $this->project($this->aPublishedEvent($eventCreated), $eventCreated->getEventId());
 
-        $calendar = new LegacyCalendar(
-            CalendarType::periodic(),
-            DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
-            DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
+            ),
+            new OpeningHours()
         );
 
         $eventCopied = new EventCopied('f0b24f97-4b03-4eb2-96d1-5074819a7648', $eventCreated->getEventId(), $calendar);
@@ -583,7 +580,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->assertEquals($startDate->format(DATE_ATOM), $body->availableTo);
 
         $this->project($this->aPublishedEvent($eventCreated), $eventCreated->getEventId());
-        $eventCopied = new EventCopied('2', $eventCreated->getEventId(), LegacyCalendar::fromUdb3ModelCalendar($calendar));
+        $eventCopied = new EventCopied('2', $eventCreated->getEventId(), $calendar);
 
         $body = $this->project($eventCopied, '2');
         $this->assertEquals($startDate->format(DATE_ATOM), $body->availableTo);
@@ -615,7 +612,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->assertEquals($endDate->format(DATE_ATOM), $body->availableTo);
 
         $this->project($this->aPublishedEvent($eventCreated), $eventCreated->getEventId());
-        $eventCopied = new EventCopied('2', $eventCreated->getEventId(), LegacyCalendar::fromUdb3ModelCalendar($calendar));
+        $eventCopied = new EventCopied('2', $eventCreated->getEventId(), $calendar);
 
         $body = $this->project($eventCopied, '2');
         $this->assertEquals($endDate->format(DATE_ATOM), $body->availableTo);
