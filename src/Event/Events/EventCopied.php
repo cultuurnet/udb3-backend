@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\EventSourcing\AggregateCopiedEventInterface;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarSerializer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
 final class EventCopied extends AbstractEvent implements AggregateCopiedEventInterface
@@ -51,7 +52,7 @@ final class EventCopied extends AbstractEvent implements AggregateCopiedEventInt
     {
         return parent::serialize() + [
             'original_event_id' => $this->getOriginalEventId(),
-            'calendar' => $this->calendar->serialize(),
+            'calendar' => (new CalendarSerializer($this->calendar))->serialize(),
         ];
     }
 
@@ -60,7 +61,7 @@ final class EventCopied extends AbstractEvent implements AggregateCopiedEventInt
         return new self(
             $data['item_id'],
             $data['original_event_id'],
-            Calendar::deserialize($data['calendar'])
+            CalendarSerializer::deserialize($data['calendar'])
         );
     }
 }
