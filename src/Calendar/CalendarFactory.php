@@ -7,13 +7,20 @@ namespace CultuurNet\UDB3\Calendar;
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -157,13 +164,22 @@ final class CalendarFactory implements CalendarFactoryInterface
         //
         // Create the calendar value object.
         //
-        return new Calendar(
-            $calendarType,
-            isset($calendarTimeSpan) ? $calendarTimeSpan->getDateRange()->getFrom() : null,
-            isset($calendarTimeSpan) ? $calendarTimeSpan->getDateRange()->getTo() : null,
-            $subEvents,
-            $openingHours
-        );
+        if ($calendarType->sameAs(CalendarType::permanent())) {
+            return new PermanentCalendar(new OpeningHours(...$openingHours));
+        }
+
+        if ($calendarType->sameAs(CalendarType::periodic()) && isset($calendarTimeSpan)) {
+            return new PeriodicCalendar(
+                $calendarTimeSpan->getDateRange(),
+                new OpeningHours(...$openingHours)
+            );
+        }
+
+        if ($calendarType->sameAs(CalendarType::single())) {
+            return new SingleSubEventCalendar($subEvents[0]);
+        }
+
+        return new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
     }
 
     public function createFromWeekScheme(
@@ -175,13 +191,7 @@ final class CalendarFactory implements CalendarFactoryInterface
             $openingHours = $this->createOpeningHoursFromWeekScheme($weekScheme);
         }
 
-        return new Calendar(
-            CalendarType::permanent(),
-            null,
-            null,
-            [],
-            $openingHours
-        );
+        return new PermanentCalendar(new OpeningHours(...$openingHours));
     }
 
     /**
