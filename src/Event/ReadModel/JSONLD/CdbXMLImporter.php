@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractorInterface;
 use CultuurNet\UDB3\Cdb\Description\MergedDescription;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AudienceTypeNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporterInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -119,7 +120,10 @@ class CdbXMLImporter
         $this->cdbXMLItemBaseImporter->importPublicationInfo($event, $jsonLD);
 
         $calendar = $this->calendarFactory->createFromCdbCalendar($event->getCalendar());
-        $jsonLD = (object)array_merge((array)$jsonLD, $calendar->toJsonLd());
+        $jsonLD = (object)array_merge(
+            (array)$jsonLD,
+            (new CalendarNormalizer())->normalize($calendar)
+        );
 
         $this->importTypicalAgeRange($event, $jsonLD);
 
