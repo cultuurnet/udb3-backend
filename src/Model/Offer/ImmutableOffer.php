@@ -350,7 +350,7 @@ abstract class ImmutableOffer implements Offer
 
     public function getAvailableTo(): DateTimeImmutable
     {
-        return AvailableTo::createFromCalendar($this->calendar);
+        return AvailableTo::createFromCalendar($this->calendar, null);
     }
 
     /**

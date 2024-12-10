@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use DateTimeImmutable;
@@ -16,19 +14,9 @@ use DateTimeInterface;
 
 class AvailableTo
 {
-    public static function createFromCalendar(Calendar $calendar): DateTimeImmutable
+    public static function createFromCalendar(Calendar $calendar, ?Category $eventType): DateTimeImmutable
     {
-        if ($calendar instanceof CalendarWithDateRange) {
-            return $calendar->getEndDate();
-        }
-
-        return self::forever();
-    }
-
-    public static function createFromLegacyCalendar(LegacyCalendar $calendar, Category $eventType = null): DateTimeImmutable
-    {
-        if ($calendar->getType()->sameAs(CalendarType::permanent())) {
-            // The fixed date for a permanent calendar type does not require time information.
+        if (!$calendar instanceof CalendarWithDateRange) {
             return self::forever();
         }
 
