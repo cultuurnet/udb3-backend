@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Offer;
 
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
@@ -12,7 +11,6 @@ use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
@@ -162,16 +160,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
 
         $this->adapter = new Udb3ModelToLegacyOfferAdapter($this->offer);
         $this->completeAdapter = new Udb3ModelToLegacyOfferAdapter($this->completeOffer);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_calendar(): void
-    {
-        $expected = new Calendar(CalendarType::permanent());
-        $actual = $this->adapter->getCalendar();
-        $this->assertEquals($expected, $actual);
     }
 
     /**

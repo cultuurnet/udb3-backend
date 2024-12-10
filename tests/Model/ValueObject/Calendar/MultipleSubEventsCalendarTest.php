@@ -121,6 +121,18 @@ class MultipleSubEventsCalendarTest extends TestCase
     /**
      * @test
      */
+    public function it_allows_setting_an_explicit_status_on_sub_events(): void
+    {
+        $calendar = $this->multipleSubEventsCalendar->withStatusOnSubEvents(new Status(StatusType::Unavailable()));
+
+        foreach ($calendar->getSubEvents()->toArray() as $subEvent) {
+            $this->assertEquals(new Status(StatusType::Unavailable()), $subEvent->getStatus());
+        }
+    }
+
+    /**
+     * @test
+     */
     public function it_allows_setting_an_explicit_booking_availability(): void
     {
         $calendar = $this->multipleSubEventsCalendar->withBookingAvailability(
@@ -131,5 +143,22 @@ class MultipleSubEventsCalendarTest extends TestCase
             new BookingAvailability(BookingAvailabilityType::Unavailable()),
             $calendar->getBookingAvailability()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_an_explicit_booking_availability_on_sub_events(): void
+    {
+        $calendar = $this->multipleSubEventsCalendar->withBookingAvailabilityOnSubEvents(
+            new BookingAvailability(BookingAvailabilityType::Unavailable())
+        );
+
+        foreach ($calendar->getSubEvents()->toArray() as $subEvent) {
+            $this->assertEquals(
+                new BookingAvailability(BookingAvailabilityType::Unavailable()),
+                $subEvent->getBookingAvailability()
+            );
+        }
     }
 }

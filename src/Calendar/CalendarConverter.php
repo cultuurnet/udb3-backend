@@ -13,9 +13,15 @@ use CultureFeed_Cdb_Data_Calendar_SchemeDay;
 use CultureFeed_Cdb_Data_Calendar_Timestamp;
 use CultureFeed_Cdb_Data_Calendar_TimestampList;
 use CultureFeed_Cdb_Data_Calendar_Weekscheme;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
+use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use DateInterval;
 use DateTimeInterface;
 use InvalidArgumentException;
@@ -34,65 +40,72 @@ class CalendarConverter implements CalendarConverterInterface
         $this->cdbTimezone = $cdbTimezone;
     }
 
-    public function toCdbCalendar(CalendarInterface $calendar): \CultureFeed_Cdb_Data_Calendar
+    public function toCdbCalendar(Calendar $calendar): \CultureFeed_Cdb_Data_Calendar
     {
         $weekScheme = $this->getWeekScheme($calendar);
         $calendarType = $calendar->getType()->toString();
 
-        switch ($calendarType) {
-            case CalendarType::multiple()->toString():
-                $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
-                $index = 1;
-                foreach ($calendar->getSubEvents() as $subEvent) {
-                    $currentCount = $this->countTimestamps($cdbCalendar);
-                    $cdbCalendar = $this->createTimestampCalendar(
-                        $this->configureCdbTimezone($subEvent->getDateRange()->getFrom()),
-                        $this->configureCdbTimezone($subEvent->getDateRange()->getTo()),
-                        $cdbCalendar,
-                        $index
-                    );
-                    $newCount = $this->countTimestamps($cdbCalendar);
-                    if ($currentCount - $newCount !== -1) {
-                        $index++;
-                    }
-                }
-                break;
-            case CalendarType::single()->toString():
-                $cdbCalendar = $this->createTimestampCalendar(
-                    $this->configureCdbTimezone($calendar->getStartDate()),
-                    $this->configureCdbTimezone($calendar->getEndDate()),
-                    new CultureFeed_Cdb_Data_Calendar_TimestampList(),
-                    1
-                );
-                break;
-            case CalendarType::periodic()->toString():
-                $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_PeriodList();
+        if ($calendar instanceof PermanentCalendar) {
+            $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_Permanent();
 
-                $startDate = $this->configureCdbTimezone($calendar->getStartDate())->format('Y-m-d');
-                $endDate = $this->configureCdbTimezone($calendar->getEndDate())->format('Y-m-d');
+            if (!empty($weekScheme)) {
+                $cdbCalendar->setWeekScheme($weekScheme);
+            }
 
-                $period = new CultureFeed_Cdb_Data_Calendar_Period($startDate, $endDate);
-                if (!empty($weekScheme) && !empty($weekScheme->getDays())) {
-                    $period->setWeekScheme($weekScheme);
-                }
-                $cdbCalendar->add($period);
-                break;
-            case CalendarType::permanent()->toString():
-                $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_Permanent();
-                if (!empty($weekScheme)) {
-                    $cdbCalendar->setWeekScheme($weekScheme);
-                }
-                break;
-            default:
-                $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_Permanent();
+            return $cdbCalendar;
         }
 
-        return $cdbCalendar;
+        if ($calendar instanceof PeriodicCalendar) {
+            $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_PeriodList();
+
+            $startDate = $this->configureCdbTimezone($calendar->getStartDate())->format('Y-m-d');
+            $endDate = $this->configureCdbTimezone($calendar->getEndDate())->format('Y-m-d');
+
+            $period = new CultureFeed_Cdb_Data_Calendar_Period($startDate, $endDate);
+            if (!empty($weekScheme) && !empty($weekScheme->getDays())) {
+                $period->setWeekScheme($weekScheme);
+            }
+            $cdbCalendar->add($period);
+
+            return $cdbCalendar;
+        }
+
+        if ($calendar instanceof SingleSubEventCalendar) {
+            return $this->createTimestampCalendar(
+                $this->configureCdbTimezone($calendar->getStartDate()),
+                $this->configureCdbTimezone($calendar->getEndDate()),
+                new CultureFeed_Cdb_Data_Calendar_TimestampList(),
+                1
+            );
+        }
+
+        if ($calendar instanceof MultipleSubEventsCalendar) {
+            $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
+
+            $index = 1;
+            foreach ($calendar->getSubEvents() as $subEvent) {
+                $currentCount = $this->countTimestamps($cdbCalendar);
+                $cdbCalendar = $this->createTimestampCalendar(
+                    $this->configureCdbTimezone($subEvent->getDateRange()->getFrom()),
+                    $this->configureCdbTimezone($subEvent->getDateRange()->getTo()),
+                    $cdbCalendar,
+                    $index
+                );
+                $newCount = $this->countTimestamps($cdbCalendar);
+                if ($currentCount - $newCount !== -1) {
+                    $index++;
+                }
+            }
+
+            return $cdbCalendar;
+        }
+
+        throw new CalendarTypeNotSupported($calendarType);
     }
 
     private function countTimestamps(CultureFeed_Cdb_Data_Calendar_TimestampList $timestamps): int
     {
-        $numberOfTimestamps =  iterator_count($timestamps);
+        $numberOfTimestamps = iterator_count($timestamps);
         $timestamps->rewind();
 
         return $numberOfTimestamps;
@@ -101,13 +114,17 @@ class CalendarConverter implements CalendarConverterInterface
     /**
      * @throws \Exception
      */
-    private function getWeekScheme(CalendarInterface $itemCalendar): ?CultureFeed_Cdb_Data_Calendar_Weekscheme
+    private function getWeekScheme(Calendar $itemCalendar): ?CultureFeed_Cdb_Data_Calendar_Weekscheme
     {
+        if (!$itemCalendar instanceof CalendarWithOpeningHours) {
+            return null;
+        }
+
         // Store opening hours.
         $openingHours = $itemCalendar->getOpeningHours();
         $weekScheme = null;
 
-        if (!empty($openingHours)) {
+        if (!$openingHours->isEmpty()) {
             $weekScheme = new CultureFeed_Cdb_Data_Calendar_Weekscheme();
 
             // Multiple opening times can happen on same day. Store them in array.

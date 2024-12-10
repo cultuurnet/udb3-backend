@@ -17,22 +17,22 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 
 class CalendarJSONParser
 {
-    public function getStartDate(array $data): ?\DateTimeInterface
+    public function getStartDate(array $data): ?\DateTimeImmutable
     {
         if (!isset($data['startDate'])) {
             return null;
         }
 
-        return new \DateTime($data['startDate']);
+        return new \DateTimeImmutable($data['startDate']);
     }
 
-    public function getEndDate(array $data): ?\DateTimeInterface
+    public function getEndDate(array $data): ?\DateTimeImmutable
     {
         if (!isset($data['endDate'])) {
             return null;
         }
 
-        return new \DateTime($data['endDate']);
+        return new \DateTimeImmutable($data['endDate']);
     }
 
     public function getStatus(array $data): ?Status
