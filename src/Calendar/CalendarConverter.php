@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
+use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use DateInterval;
 use DateTimeInterface;
 use InvalidArgumentException;
@@ -99,12 +100,12 @@ class CalendarConverter implements CalendarConverterInterface
             return $cdbCalendar;
         }
 
-        throw new InvalidArgumentException('Unsupported calendar type: ' . $calendarType);
+        throw new CalendarTypeNotSupported($calendarType);
     }
 
     private function countTimestamps(CultureFeed_Cdb_Data_Calendar_TimestampList $timestamps): int
     {
-        $numberOfTimestamps =  iterator_count($timestamps);
+        $numberOfTimestamps = iterator_count($timestamps);
         $timestamps->rewind();
 
         return $numberOfTimestamps;
