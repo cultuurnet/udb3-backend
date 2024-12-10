@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Offer;
 
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 
@@ -13,8 +12,6 @@ use DateTimeImmutable;
  */
 interface LegacyOffer
 {
-    public function getCalendar(): Calendar;
-
     public function getOrganizerId(): ?string;
 
     public function getAvailableFrom(\DateTimeImmutable $default): DateTimeImmutable;
