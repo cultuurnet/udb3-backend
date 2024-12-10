@@ -164,7 +164,7 @@ final class Event extends Offer
         parent::updateGeoCoordinates($coordinates);
     }
 
-    public function copy(string $newEventId, LegacyCalendar $calendar): Event
+    public function copy(string $newEventId, Calendar $calendar): Event
     {
         if ($this->hasUncommittedEvents()) {
             throw new \RuntimeException('I refuse to copy, there are uncommitted events present.');
@@ -224,7 +224,7 @@ final class Event extends Offer
     protected function applyEventCopied(EventCopied $eventCopied): void
     {
         $this->eventId = $eventCopied->getItemId();
-        $this->calendar = $eventCopied->getCalendar();
+        $this->calendar = LegacyCalendar::fromUdb3ModelCalendar($eventCopied->getCalendar());
         $this->workflowStatus = WorkflowStatus::DRAFT();
         $this->labels = new LabelsArray();
     }

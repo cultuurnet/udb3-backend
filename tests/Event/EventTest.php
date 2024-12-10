@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
@@ -38,7 +37,6 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
@@ -404,9 +402,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_handles_copy_event(): void
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
-        $calendar = new Calendar(
-            CalendarType::permanent()
-        );
+        $calendar = new PermanentCalendar(new OpeningHours());
 
         $event = $this->event;
 
@@ -1690,9 +1686,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $event->copy(
             'e49430ca-5729-4768-8364-02ddb385517a',
-            new Calendar(
-                CalendarType::permanent()
-            )
+            new PermanentCalendar(new OpeningHours())
         );
     }
 
@@ -1703,9 +1697,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_resets_labels_on_copy(): void
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
-        $calendar = new Calendar(
-            CalendarType::permanent()
-        );
+        $calendar = new PermanentCalendar(new OpeningHours());
         $label = new Label(new LabelName('ABC'));
 
         $event = $this->event;
@@ -1747,9 +1739,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_keeps_audience_on_copy(): void
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
-        $calendar = new Calendar(
-            CalendarType::permanent()
-        );
+        $calendar = new PermanentCalendar(new OpeningHours());
         $audience = AudienceType::education();
 
         $event = $this->event;
@@ -1786,10 +1776,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_resets_workflow_status_on_copy(): void
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
-        $calendar = new Calendar(
-            CalendarType::permanent()
-        );
-
+        $calendar = new PermanentCalendar(new OpeningHours());
         $publicationDate = new \DateTimeImmutable();
 
         $event = $this->event;

@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarSerializer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class EventCopiedTest extends TestCase
@@ -29,10 +33,12 @@ class EventCopiedTest extends TestCase
         // PHP 7.1 DateTime incorporates them. We set the microseconds
         // explicitly to 0 in this test to make it pass.
         // See http://php.net/manual/en/migration71.incompatible.php#migration71.incompatible.datetime-microseconds.
-        $this->calendar = new Calendar(
-            CalendarType::periodic(),
-            new DateTime('2017-01-24T21:47:26.000000+0000'),
-            new DateTime('2020-01-24T21:47:26.000000+0000')
+        $this->calendar = new PeriodicCalendar(
+            new DateRange(
+                new DateTimeImmutable('2017-01-24T21:47:26.000000+0000'),
+                new DateTimeImmutable('2020-01-24T21:47:26.000000+0000')
+            ),
+            new OpeningHours()
         );
 
         $this->eventCopied = new EventCopied(
@@ -84,7 +90,7 @@ class EventCopiedTest extends TestCase
             [
                 'item_id' => $this->eventId,
                 'original_event_id' => $this->originalEventId,
-                'calendar' => $this->calendar->serialize(),
+                'calendar' => (new CalendarSerializer($this->calendar))->serialize(),
             ],
             $this->eventCopied->serialize()
         );
@@ -101,7 +107,7 @@ class EventCopiedTest extends TestCase
                 [
                     'item_id' => $this->eventId,
                     'original_event_id' => $this->originalEventId,
-                    'calendar' => $this->calendar->serialize(),
+                    'calendar' => (new CalendarSerializer($this->calendar))->serialize(),
                 ]
             )
         );

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\ReadModel\History;
 
 use CultureFeed_Cdb_Xml;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractorInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\EventCopied;
@@ -18,7 +17,6 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventPlaceHistoryRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -223,7 +221,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
         $eventCopied = new EventCopied(
             $eventId->toString(),
             $oldEventId->toString(),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $this->projector->handle(
