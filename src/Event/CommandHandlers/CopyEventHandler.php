@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Commands\CopyEvent;
 use CultuurNet\UDB3\Event\Event;
@@ -37,7 +36,7 @@ final class CopyEventHandler implements CommandHandler
 
         $originalEventId = $command->getOriginalEventId();
         $newEventId = $command->getNewEventId();
-        $calendar = Calendar::fromUdb3ModelCalendar($command->getCalendar());
+        $calendar = $command->getCalendar();
 
         /** @var Event $event */
         $event = $this->eventRepository->load($originalEventId);
